@@ -14,7 +14,7 @@ __KAPAG NASA LABAS NAMAN KASAMA YUNG INDEX.PHP__
 - ang path nung css or js files ay "assets/(name nung folder)/(filename nung css or js file)"
  
 ## YUNG SA DATABASE
-Run mo muna XAMPP tapos import mo yung `sis_cdsp.sql`. Automatic na yan gagawa ng sariling database.
+Run mo muna XAMPP tapos import mo yung `sis_cdsp.sql` sa may phpMyAdmin. Automatic na yan gagawa ng sariling database.
 
 ## WALA SA FIGMA YUNG MGA PAGES NA TO KAYA IKAW NA BAHALA MAG DESIGN
 ### 1. YUNG SA PAG __REGISTER__ NASA ISIP KO NA FLOW GANITO
