@@ -25,7 +25,7 @@ if (isset($_POST['login-button'])) {
             } else {
                 $_SESSION['ID'] = $fetch_ID;
                 if ($fetch_role == "student") {
-                    header('Location: ../student/dashboard.php');
+                    header('Location: ../student/dashboard-user.php');
                 } elseif ($fetch_role == "admin") {
                     header('Location: ../admin/dashboard.php');
                 } elseif ($fetch_role == "faculty") {

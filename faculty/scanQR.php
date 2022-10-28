@@ -1,6 +1,4 @@
-<?php
-require_once("../utils/server.php");
-?>
+<?php require_once("../assets/php/server.php"); ?>
 
 <!DOCTYPE html>
 <html lang="en">

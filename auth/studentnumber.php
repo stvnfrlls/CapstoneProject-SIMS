@@ -1,5 +1,5 @@
 <?php
-require_once("../utils/server.php");
+require_once("../assets/php/server.php");
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +15,6 @@ require_once("../utils/server.php");
 <body>
     <h1>REGISTER PAGE</h1>
     <a href="../index.php">Home</a>
-    2022-00011-SP
     <form method="post" action="<?php $_SERVER["PHP_SELF"] ?>">
         <h1>Enter Student Number</h1>
         <input type="text" name="studentNumber" placeholder="Student Number">

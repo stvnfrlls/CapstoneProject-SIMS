@@ -1,11 +1,9 @@
-<?php require_once("../assets/php/server.php"); ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
-    <title>Login</title>
+    <title>Arkitektur - Architecture HTML Template</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -32,9 +30,7 @@
 
     <!-- Template Stylesheet -->
     <link href="../assets/css/style.css" rel="stylesheet">
-
-    <link rel="stylesheet" type="text/css" href="../assets/login/css/main.css">
-
+    <link href="../assets/css/dashboard-user.css" rel="stylesheet">
 
 </head>
 
@@ -91,67 +87,116 @@
     <!-- Navbar End -->
 
 
-    <div class="limiter">
-        <div class="container-login100">
-            <div class="wrap-login100">
-                <form class="login100-form validate-form" method="post" action="<?php $_SERVER["PHP_SELF"] ?>">
-                    <span class="login100-form-title p-b-43">
-                        LOGIN
-                    </span>
-
-
-                    <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-                        <input class="input100" type="text" name="usersEmail">
-                        <span class="focus-input100"></span>
-                        <span class="label-input100">Email</span>
-                    </div>
-
-
-                    <div class="wrap-input100 validate-input" data-validate="Password is required">
-                        <input class="input100" type="password" name="usersPwd">
-                        <span class="focus-input100"></span>
-                        <span class="label-input100">Password</span>
-                    </div>
-
-                    <div class="flex-sb-m w-full p-t-3 p-b-32">
-                        <div class="contact100-form-checkbox">
-                            <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
-                            <label class="label-checkbox100" for="ckb1">
-                                Remember me  <!-- https://phpgurukul.com/php-login-with-remember-me-function/#:~:text=Remember%20me%20function%20is%20used,password%20in%20the%20login%20from.&text=Step%204%20%3A%20PHP%20Cookies%20to,be%20stored%20%24_COOKIE%20array. -->
-                            </label>
-                        </div>
-
-                        <div>
-                            <a href="reset.php" class="txt1" style="margin-top: 20px;">
-                                Forgot Password?
-                            </a>
+    <!-- Blog Start -->
+    <div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
+                <h5 class="fw-bold text-primary text-uppercase">Announcements</h5>
+            </div>
+            <div class="row g-5">
+                <div class="col-lg-4 wow slideInUp" data-wow-delay="0.3s">
+                    <div class="blog-item bg-light rounded overflow-hidden">
+                        <div class="p-4">
+                            <div class="d-flex mb-3">
+                                <small class="me-3"><i class="far fa-user text-primary me-2"></i>John Doe</small>
+                                <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
+                            </div>
+                            <h4 class="mb-3">How to build a website</h4>
+                            <p>Dolor et eos labore stet justo sed est sed sed sed dolor stet amet</p>
+                            <a class="text-uppercase" href="">Edit<i class="bi bi-arrow-right"></i></a>
                         </div>
                     </div>
-
-
-                    <div class="container-login100-form-btn">
-                        <button type="submit" class="login100-form-btn" name="login-button">
-                            Login
-                        </button>
+                </div>
+                <div class="col-lg-4 wow slideInUp" data-wow-delay="0.6s">
+                    <div class="blog-item bg-light rounded overflow-hidden">
+                        <div class="p-4">
+                            <div class="d-flex mb-3">
+                                <small class="me-3"><i class="far fa-user text-primary me-2"></i>John Doe</small>
+                                <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
+                            </div>
+                            <h4 class="mb-3">How to build a website</h4>
+                            <p>Dolor et eos labore stet justo sed est sed sed sed dolor stet amet</p>
+                            <a class="text-uppercase" href="">Edit<i class="bi bi-arrow-right"></i></a>
+                        </div>
                     </div>
-
-                    <div class="text-center p-t-46 p-b-20">
-                        <a href="studentnumber.php" class="txt2">
-                            Connect your Student Number
-                        </a>
+                </div>
+                <div class="col-lg-4 wow slideInUp" data-wow-delay="0.9s">
+                    <div class="blog-item bg-light rounded overflow-hidden">
+                        <div class="p-4">
+                            <div class="d-flex mb-3">
+                                <small class="me-3"><i class="far fa-user text-primary me-2"></i>John Doe</small>
+                                <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
+                            </div>
+                            <h4 class="mb-3">How to build a website</h4>
+                            <p>Dolor et eos labore stet justo sed est sed sed sed dolor stet amet</p>
+                            <a class="text-uppercase" href="">Edit<i class="bi bi-arrow-right"></i></a>
+                        </div>
                     </div>
-
-
-                </form>
-
-                <div class="login100-more" style="background-image: url('../assets/img/banner_1.jpg');">
                 </div>
             </div>
         </div>
     </div>
+    <!-- Blog Start -->
+
+    <!-- Dashboard Start -->
+    <div class="container py-5 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
+                <h5 class="fw-bold text-primary text-uppercase">D a s h b o a r d</h5>
+            </div>
+            <div class="col-lg-3 col-md-12 col-sm-12 wow zoomIn" data-wow-delay="0.3s">
+                <!-- ADD FUNCTION TO DETERMINE FACULTY ID -->
+                <div class="service-name bg-light rounded d-flex flex-column align-items-left justify-content-center text-left">
+                    <a class="text1" href="">Camille Anne Sabile</a>
+                    <a class="text2" href="">2019-00188-SP-0</a>
+                    <a class="text2" href="">BSIT 4-1<br>Muntinlupa City</a>
+                </div>
+            </div>
+            <div class="row g-5">
+                <div class="col-lg-3 col-md-12 col-sm-12 wow zoomIn" data-wow-delay="0.3s">
+                    <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
+                        <div class="service-icon">
+                            <i class="fa fa-shield-alt text-white"></i>
+                        </div>
+                        <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="scanQR.php">Scan QR Code</a>
+                        <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-12 col-sm-12 wow zoomIn" data-wow-delay="0.6s">
+                    <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
+                        <div class="service-icon">
+                            <i class="fa fa-chart-pie text-white"></i>
+                        </div>
+                        <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href=reminders-teacher.php">Reminders</a>
+                        <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-12 col-sm-12 wow zoomIn" data-wow-delay="0.9s">
+                    <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
+                        <div class="service-icon">
+                            <i class="fa fa-code text-white"></i>
+                        </div>
+                        <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="grades-teacher.php">Grades</a>
+                        <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-12 col-sm-12 wow zoomIn" data-wow-delay="0.3s">
+                    <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
+                        <div class="service-icon">
+                            <i class="fab fa-android text-white"></i>
+                        </div>
+                        <!-- EDIT PROFILE -->
+                        <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="">Edit Profile</a>
+                        <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Dashboard End -->
 
     <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
+    <div class="container-fluid bg-dark text-body footer mt-5 pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
@@ -207,8 +252,7 @@
     <!-- Footer End -->
 
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
 
 
     <!-- JavaScript Libraries -->
@@ -225,6 +269,20 @@
 
     <!-- Template Javascript -->
     <script src="../assets/js/main.js"></script>
+
+    <!-- Javascript -->
+    <script src="../assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="../assets/js/eduwell/isotope.min.js"></script>
+    <script src="../assets/js/eduwell/owl-carousel.js"></script>
+    <script src="../assets/js/eduwell/lightbox.js"></script>
+    <script src="../assets/js/eduwell/tabs.js"></script>
+    <script src="../assets/js/eduwell/video.js"></script>
+    <script src="../assets/js/eduwell/slick-slider.js"></script>
+    <script src="../assets/js/eduwell/custom.js"></script>
+    <script src="../assets/js/startup/main.js"></script>
+
 
 </body>
 
