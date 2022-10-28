@@ -35,5 +35,5 @@ Di ko tanda kung nag d display ba ng error na mali yung QR Code na pinapakita.
 Basta mag base nalang kayo dun sa table `studentrecord` dun sa sis_cdsp nandoon yung `Student Number`.
 
 ### DI KO RIN SURE ABOUT SA CAMERA NA GAGAMITIN SA QR SCANNER.
-Kung ka naman nagamit ng OBS Virtual Camera automatic na niya gagamitin yung Camera sa Laptop mo. 
+Kung di ka naman nagamit ng OBS Virtual Camera automatic na niya gagamitin yung Camera sa Laptop mo. 
 Di siya nagana sa mga hosting site na di paid or wala yung ssl something kaya di ko pa matry sa phone.
