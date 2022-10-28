@@ -1,5 +1,5 @@
 <?php
-require_once("../utils/server.php");
+require_once("../assets/php/server.php");
 $getStudentRecord = "SELECT * FROM studentrecord";
 $result = $mysqli->query($getStudentRecord);
 ?>

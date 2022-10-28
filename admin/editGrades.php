@@ -1,5 +1,5 @@
 <?php
-require_once("../utils/server.php");
+require_once("../assets/php/server.php");
 $getClasslist = "SELECT SR_number, SR_lname, SR_grade, SR_section FROM studentrecord";
 $result = $mysqli->query($getClasslist);
 ?>
