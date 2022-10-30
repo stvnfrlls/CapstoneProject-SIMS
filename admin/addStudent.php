@@ -1,5 +1,5 @@
 <?php 
-    require_once("../utils/server.php");
+    require_once("../assets/php/server.php");
     $get_userID = ("SELECT COUNT(userID) FROM studentrecord");
     $result = $mysqli->query($get_userID);
     $count = $result->fetch_assoc();
