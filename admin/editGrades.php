@@ -101,11 +101,6 @@ $result = $mysqli->query($getClasslist);
             </div>
         </div>
     </div>
-
-    </div>
-    <div class="container">
-
-    </div>
 </body>
 
 </html>

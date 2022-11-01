@@ -1,9 +1,16 @@
+<?php
+require_once("../assets/php/server.php");
+$getClasslist = "SELECT SR_number, SR_lname, SR_grade, SR_section FROM studentrecord";
+$resultgetClasslist = $mysqli->query($getClasslist);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
-    <title>Arkitektur - Architecture HTML Template</title>
+    <title>Login</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -30,7 +37,7 @@
 
     <!-- Template Stylesheet -->
     <link href="../assets/css/style.css" rel="stylesheet">
-    <link href="../assets/css/dashboard-user.css" rel="stylesheet">
+    <link href="../assets/css/form-style.css" rel="stylesheet">
 
 </head>
 
@@ -41,10 +48,6 @@
         <img class="position-absolute top-50 start-50 translate-middle" src="../assets/img/icons/icon-1.png" alt="Icon">
     </div>
     <!-- Spinner End -->
-
-
-
-
 
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
@@ -62,84 +65,138 @@
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse align-items-center" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0 text-center">
-                <a href="index.html" class="nav-item nav-link active" style="color: white">Home</a>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0 ">
+                <a href="index.php" class="nav-item nav-link active" style="color: white">Home</a>
                 <a href="about.html" class="nav-item nav-link" style="color: white">About Us</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: white">Academics</a>
                     <div class="dropdown-menu bg-dark border-0 m-0">
-                        <a href="feature.html" class="dropdown-item" style="color: white">Our Features</a>
-                        <a href="project.html" class="dropdown-item" style="color: white">Our Projects</a>
-                        <a href="team.html" class="dropdown-item" style="color: white">Team Members</a>
-                        <a href="appointment.html" class="dropdown-item" style="color: white">Appointment</a>
-                        <a href="testimonial.html" class="dropdown-item" style="color: white">Testimonial</a>
-                        <a href="404.html" class="dropdown-item" style="color: white">404 Page</a>
+                        <a href="auth/login.php" class="dropdown-item" style="color: white">Student Information System</a>
+                        <a href="" class="dropdown-item" style="color: white">Kindergarten</a>
+                        <a href="" class="dropdown-item" style="color: white">Pre-Elementary</a>
+                        <a href="" class="dropdown-item" style="color: white">Elementary</a>
+                        <a href="" class="dropdown-item" style="color: white">Highschool</a>
+                        <a href="" class="dropdown-item" style="color: white">Senior Highschool</a>
+                        <a href="" class="dropdown-item" style="color: white">College</a>
                     </div>
                 </div>
                 <a href="service.html" class="nav-item nav-link" style="color: white">Admissions</a>
                 <a href="contact.html" class="nav-item nav-link" style="color: white">Scholarship and Discounts</a>
                 <a href="contact.html" class="nav-item nav-link" style="color: white">Contact Us</a>
             </div>
-
         </div>
     </nav>
     <!-- Navbar End -->
 
-    <!-- Dashboard Start -->
-    <div class="container py-5 wow fadeInUp" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
-                <h5 class="fw-bold text-primary text-uppercase">D a s h b o a r d</h5>
+    <div class="container">
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link" href="#editGrades" data-toggle="tab">Grades</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#studentRecords" data-toggle="tab">Student Information</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane active" id="editGrades">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-3 m-3">
+                            <?php
+                            if ($resultgetClasslist->num_rows >= 0) {
+                                $counter = 0;
+                                while ($data = $result->fetch_assoc()) { ?>
+                                    <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
+                                        <div class="list-group w-auto">
+                                            <div class="list-group-item list-group-item-action d-flex gap-3 py-3">
+                                                <?php $counter++;
+                                                echo $counter; ?>
+                                                <img src="https://github.com/twbs.png" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
+                                                <div class="d-flex gap-2 w-100 justify-content-between">
+                                                    <div>
+                                                        <h6 class="mb-0"><input type="submit" name="ST_number" value="<?php echo $data['SR_number']; ?>"></h6>
+                                                        <p class="mb-0 opacity-75"><?php echo $data['SR_lname']; ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                            <?php
+                                }
+                            }
+                            ?>
+                        </div>
+                        <div class="col m-3">
+                            <div class="">
+                                <h1>STUDENT NAME: </h1>
+                                <h3>STUDENT NUMBER: </h3>
+                            </div>
+                            <div class="">
+                                <table class="table text-center">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Quarter</th>
+                                            <th scope="col">English</th>
+                                            <th scope="col">Math</th>
+                                            <th scope="col">Science</th>
+                                            <th scope="col">Physical Education</th>
+                                            <th scope="col">Final Grade</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
+                                            <tr>
+                                                <?php
+                                                if (isset($_GET['ST_number'])) {
+                                                    $ST_number = $_GET['ST_number'];
+
+                                                    $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '$ST_number'";
+                                                    $result = $mysqli->query($getStudentGrades);
+
+                                                    if ($result->num_rows >= 0) {
+                                                        while ($data = $result->fetch_assoc()) { ?>
+                                                            <th scope="row"><?php echo $data['G_grading'] ?></th>
+                                                            <td><input type="text" value="<?php echo $data['G_english'] ?>" size="1"></td>
+                                                            <td><input type="text" value="<?php echo $data['G_math'] ?>" size="1"></td>
+                                                            <td><input type="text" value="<?php echo $data['G_science'] ?>" size="1"></td>
+                                                            <td><input type="text" value="<?php echo $data['G_physicaled'] ?>" size="1"></td>
+                                                            <td><input type="text" value="<?php echo $data['G_finalgrade'] ?>" size="1"></td>
+                                                    <?php
+                                                        }
+                                                    }
+                                                } else { ?>
+                                                    <th class="text-center" colspan="6">No data</th>
+                                                <?php
+                                                }
+                                                ?>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6"><input type="submit" value="submit"></td>
+                                            </tr>
+                                        </form>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-12 col-sm-12 wow zoomIn" data-wow-delay="0.3s">
-                    <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
-                        <div class="service-icon">
-                            <i class="fa fa-shield-alt text-white"></i>
-                        </div>
-                        <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="addStudent.php">Register Student</a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-12 col-sm-12 wow zoomIn" data-wow-delay="0.6s">
-                    <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
-                        <div class="service-icon">
-                            <i class="fa fa-chart-pie text-white"></i>
-                        </div>
-                        <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="">Edit Records</a>
-                        <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="">Grades</a>
-                        <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="">Student Information</a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-12 col-sm-12 wow zoomIn" data-wow-delay="0.9s">
-                    <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
-                        <div class="service-icon">
-                            <i class="fa fa-code text-white"></i>
-                        </div>
-                        <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="manageFaculty.php">Manage Faculty</a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-12 col-sm-12 wow zoomIn" data-wow-delay="0.3s">
-                    <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
-                        <div class="service-icon">
-                            <i class="fab fa-android text-white"></i>
-                        </div>
-                        <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="viewReports.php">Reports</a>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
-    <!-- Dashboard End -->
+    </div>
 
     <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-body footer mt-5 pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
                     <h3 class="text-light mb-4">Address</h3>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro
-                        City, Laguna 4023</p>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
                     <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
                     <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>di ko alam email</p>
                     <div class="d-flex pt-2">
@@ -166,7 +223,7 @@
                     <h3 class="text-light mb-4">Newsletter</h3>
                     <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
                     <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
+                        <input class="fc-footer form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
                         <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
                     </div>
                 </div>
@@ -189,9 +246,8 @@
     </div>
     <!-- Footer End -->
 
-
-
-
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -204,23 +260,11 @@
     <script src="../assets/lib/tempusdominus/js/moment.min.js"></script>
     <script src="../assets/lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="../assets/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
     <!-- Template Javascript -->
-    <script src="../assets/../assets/js/main.js"></script>
-
-    <!-- Javascript -->
-    <script src="../assets/vendor/jquery/jquery.min.js"></script>
-    <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <script src="../assets/js/eduwell/isotope.min.js"></script>
-    <script src="../assets/js/eduwell/owl-carousel.js"></script>
-    <script src="../assets/js/eduwell/lightbox.js"></script>
-    <script src="../assets/js/eduwell/tabs.js"></script>
-    <script src="../assets/js/eduwell/video.js"></script>
-    <script src="../assets/js/eduwell/slick-slider.js"></script>
-    <script src="../assets/js/eduwell/custom.js"></script>
-    <script src="../assets/js/startup/main.js"></script>
-
+    <script src="../assets/js/main.js"></script>
 
 </body>
 
