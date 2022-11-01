@@ -1,70 +1,350 @@
-<?php 
-    require_once("../assets/php/server.php");
-    $get_userID = ("SELECT COUNT(userID) FROM studentrecord");
-    $result = $mysqli->query($get_userID);
-    $count = $result->fetch_assoc();
-    $studentCounter = $count["COUNT(userID)"] + 1;
-    $format_StudentCounter = sprintf("%05d", $studentCounter);
-    $year = date("Y");
-    $studentNumber = $year."-".$format_StudentCounter."-SP";
+<?php
+require_once("../assets/php/server.php");
+$get_userID = ("SELECT COUNT(userID) FROM studentrecord");
+$result = $mysqli->query($get_userID);
+$count = $result->fetch_assoc();
+$studentCounter = $count["COUNT(userID)"] + 1;
+$format_StudentCounter = sprintf("%05d", $studentCounter);
+$year = date("Y");
+$studentNumber = $year . "-" . $format_StudentCounter . "-SP";
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Student</title>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="../assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="../assets/css/style.css" rel="stylesheet">
+    <link href="../assets/css/form-style.css" rel="stylesheet">
+
 </head>
 
 <body>
-    <h1>Add Student</h1>
-    <a href="../index.php">Home</a>
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status"></div>
+        <img class="position-absolute top-50 start-50 translate-middle" src="../assets/img/icons/icon-1.png" alt="Icon">
+    </div>
+    <!-- Spinner End -->
 
-    <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
-        <div class="container">
-            <h1>STUDENT INFORMATION</h1>
-            <div class="row">
-                <label for="SR_number">Student Number</label>
-                <input type="text" name="SR_number" id="SR_number" value="<?php echo $studentNumber ?>" readonly>
-            </div>
-            <div class="row">
-                <label for="SR_fname">First Name</label>
-                <input type="text" name="SR_fname" id="SR_fname">
-                <label for="SR_mname">Middle Name</label>
-                <input type="text" name="SR_mname" id="SR_mname">
-                <label for="SR_lname">Last Name</label>
-                <input type="text" name="SR_lname" id="SR_lname">
-            </div>
-            <div class="row">
-                <label for="SR_age">Age</label>
-                <input type="number" name="SR_age" id="SR_age">
-                <label for="SR_birthday">Birthday</label>
-                <input type="date" name="SR_birthday" id="SR_birthday">
-                <label for="SR_gender">Gender</label>
-                <input type="text" name="SR_gender" id="SR_gender">
-            </div>
-            <div class="row">
-                <label for="SR_address">Address</label>
-                <input type="text" name="SR_address" id="SR_address">
-                <label for="SR_guardian">Guardian</label>
-                <input type="text" name="SR_guardian" id="SR_guardian">
-                <label for="SR_contact">Contact</label>
-                <input type="text" name="SR_contact" id="SR_contact">
-            </div>
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
+        <a href="index.html" class="navbar-brand ms-4 ms-lg-0">
+            <h1 class="cdsp"><img class="me-3" src="../assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">Colegio De San Pedro</h1>
+            <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
+        </a>
 
-            <h1>SCHOOL INFORMATION</h1>
-            <div class="row">
-                <label for="SR_grade">Year Level</label>
-                <input type="text" name="SR_grade" id="SR_grade">
-                <label for="SR_section">Section</label>
-                <input type="text" name="SR_section" id="SR_section">
+    </nav>
+    <!-- Navbar End -->
+
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-dark navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
+
+        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0 ">
+                <a href="index.php" class="nav-item nav-link active" style="color: white">Home</a>
+                <a href="about.html" class="nav-item nav-link" style="color: white">About Us</a>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: white">Academics</a>
+                    <div class="dropdown-menu bg-dark border-0 m-0">
+                        <a href="auth/login.php" class="dropdown-item" style="color: white">Student Information System</a>
+                        <a href="" class="dropdown-item" style="color: white">Kindergarten</a>
+                        <a href="" class="dropdown-item" style="color: white">Pre-Elementary</a>
+                        <a href="" class="dropdown-item" style="color: white">Elementary</a>
+                        <a href="" class="dropdown-item" style="color: white">Highschool</a>
+                        <a href="" class="dropdown-item" style="color: white">Senior Highschool</a>
+                        <a href="" class="dropdown-item" style="color: white">College</a>
+                    </div>
+                </div>
+                <a href="service.html" class="nav-item nav-link" style="color: white">Admissions</a>
+                <a href="contact.html" class="nav-item nav-link" style="color: white">Scholarship and Discounts</a>
+                <a href="contact.html" class="nav-item nav-link" style="color: white">Contact Us</a>
             </div>
         </div>
-        <input type="submit" name="regStudent" id="regStudent" value="Register Student">
-    </form>
+    </nav>
+    <!-- Navbar End -->
+
+    <div class="container m-6">
+        <main>
+            <div class="py-5 text-center">
+                <h2>Student Registration</h2>
+            </div>
+
+            <div class="card row g-5 align-items-center">
+                <div class="col-md-5 col-lg-4 order-md-last">
+                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-primary">Your cart</span>
+                        <span class="badge bg-primary rounded-pill">3</span>
+                    </h4>
+                    <ul class="list-group mb-3">
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div>
+                                <h6 class="my-0">Product name</h6>
+                                <small class="text-muted">Brief description</small>
+                            </div>
+                            <span class="text-muted">$12</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div>
+                                <h6 class="my-0">Second product</h6>
+                                <small class="text-muted">Brief description</small>
+                            </div>
+                            <span class="text-muted">$8</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div>
+                                <h6 class="my-0">Third item</h6>
+                                <small class="text-muted">Brief description</small>
+                            </div>
+                            <span class="text-muted">$5</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between bg-light">
+                            <div class="text-success">
+                                <h6 class="my-0">Promo code</h6>
+                                <small>EXAMPLECODE</small>
+                            </div>
+                            <span class="text-success">−$5</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Total (USD)</span>
+                            <strong>$20</strong>
+                        </li>
+                    </ul>
+
+                    <form class="card p-2">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Promo code">
+                            <button type="submit" class="btn btn-secondary">Redeem</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-7 col-lg-8">
+                    <h4 class="mb-3">Student Information</h4>
+                    <form>
+                        <div class="row g-3 mb-3">
+                            <div class="col-6">
+                                <label for="SR_number" class="form-label">Student Number</label>
+                                <input type="text" class="form-control" name="SR_number" id="SR_number" value="<?php echo $studentNumber ?>" readonly>
+                            </div>
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-4 form-group">
+                                <label for="firstName" class="form-label">First name</label>
+                                <input type="text" class="form-control fullwidth " id="firstName" required>
+                            </div>
+
+                            <div class="col-4 form-group">
+                                <label for="firstName" class="form-label">Middle name</label>
+                                <input type="text" class="form-control fullwidth" id="firstName" required>
+                            </div>
+
+                            <div class="col-4 form-group">
+                                <label for="lastName" class="form-label">Last name</label>
+                                <input type="text" class="form-control fullwidth" id="lastName" placeholder="" value="" required>
+                                <div class="invalid-feedback">
+                                    Valid last name is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-1 form-group">
+                                <label for="firstName" class="form-label">Age</label>
+                                <input type="text" class="form-control fullwidth " id="firstName" required>
+                            </div>
+
+                            <div class="col-3 form-group">
+                                <label for="firstName" class="form-label">Birthday</label>
+                                <input type="date" class="form-control fullwidth" id="firstName" required>
+                            </div>
+
+                            <div class="col-4 form-group">
+                                <label for="lastName" class="form-label">Last name</label>
+                                <input type="text" class="form-control fullwidth" id="lastName" placeholder="" value="" required>
+                                <div class="invalid-feedback">
+                                    Valid last name is required.
+                                </div>
+                            </div>
+                        </div>
+                </div>
+
+                <hr class="my-4">
+
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="same-address">
+                    <label class="form-check-label" for="same-address">Shipping address is the same as my billing address</label>
+                </div>
+
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="save-info">
+                    <label class="form-check-label" for="save-info">Save this information for next time</label>
+                </div>
+
+                <hr class="my-4">
+
+                <h4 class="mb-3">Payment</h4>
+
+                <div class="my-3">
+                    <div class="form-check">
+                        <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required>
+                        <label class="form-check-label" for="credit">Credit card</label>
+                    </div>
+                    <div class="form-check">
+                        <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required>
+                        <label class="form-check-label" for="debit">Debit card</label>
+                    </div>
+                    <div class="form-check">
+                        <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" required>
+                        <label class="form-check-label" for="paypal">PayPal</label>
+                    </div>
+                </div>
+
+                <div class="row gy-3">
+                    <div class="col-md-6">
+                        <label for="cc-name" class="form-label">Name on card</label>
+                        <input type="text" class="form-control" id="cc-name" placeholder="" required>
+                        <small class="text-muted">Full name as displayed on card</small>
+                        <div class="invalid-feedback">
+                            Name on card is required
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="cc-number" class="form-label">Credit card number</label>
+                        <input type="text" class="form-control" id="cc-number" placeholder="" required>
+                        <div class="invalid-feedback">
+                            Credit card number is required
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="cc-expiration" class="form-label">Expiration</label>
+                        <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
+                        <div class="invalid-feedback">
+                            Expiration date required
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="cc-cvv" class="form-label">CVV</label>
+                        <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
+                        <div class="invalid-feedback">
+                            Security code required
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+                </form>
+            </div>
+    </div>
+    </main>
+    </div>
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-light mb-4">Address</h3>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
+                    <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>di ko alam email</p>
+                    <div class="d-flex pt-2">
+                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
+                        <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-light mb-4">Quick Links</h3>
+                    <a class="btn btn-link" href="">Home</a>
+                    <a class="btn btn-link" href="">About Us</a>
+                    <a class="btn btn-link" href="">Academics</a>
+                    <a class="btn btn-link" href="">Admission</a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-light mb-4">Useful Links</h3>
+                    <a class="btn btn-link" href="">DepEd</a>
+                    <a class="btn btn-link" href="">Pag Asa</a>
+                    <a class="btn btn-link" href="">City of San Pedro</a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-light mb-4">Newsletter</h3>
+                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
+                    <div class="position-relative mx-auto" style="max-width: 400px;">
+                        <input class="fc-footer form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
+                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <a href="#">Colegio De San Pedro</a>, All Right Reserved.
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                        Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                        <br> Distributed By: <a class="border-bottom" href="https://themewagon.com" target="_blank">ThemeWagon</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/lib/wow/wow.min.js"></script>
+    <script src="../assets/lib/easing/easing.min.js"></script>
+    <script src="../assets/lib/waypoints/waypoints.min.js"></script>
+    <script src="../assets/lib/counterup/counterup.min.js"></script>
+    <script src="../assets/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="../assets/lib/tempusdominus/js/moment.min.js"></script>
+    <script src="../assets/lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="../assets/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="../assets/js/main.js"></script>
+
 </body>
 
 </html>
