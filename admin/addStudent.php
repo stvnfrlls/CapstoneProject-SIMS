@@ -93,92 +93,39 @@ $studentNumber = $year . "-" . $format_StudentCounter . "-SP";
     </nav>
     <!-- Navbar End -->
 
-    <div class="container m-6">
+    <form class="container m-6">
         <main>
             <div class="py-5 text-center">
                 <h2>Student Registration</h2>
             </div>
-
-            <div class="card row g-5 align-items-center">
-                <div class="col-md-5 col-lg-4 order-md-last">
-                    <h4 class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="text-primary">Your cart</span>
-                        <span class="badge bg-primary rounded-pill">3</span>
-                    </h4>
-                    <ul class="list-group mb-3">
-                        <li class="list-group-item d-flex justify-content-between lh-sm">
-                            <div>
-                                <h6 class="my-0">Product name</h6>
-                                <small class="text-muted">Brief description</small>
-                            </div>
-                            <span class="text-muted">$12</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between lh-sm">
-                            <div>
-                                <h6 class="my-0">Second product</h6>
-                                <small class="text-muted">Brief description</small>
-                            </div>
-                            <span class="text-muted">$8</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between lh-sm">
-                            <div>
-                                <h6 class="my-0">Third item</h6>
-                                <small class="text-muted">Brief description</small>
-                            </div>
-                            <span class="text-muted">$5</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between bg-light">
-                            <div class="text-success">
-                                <h6 class="my-0">Promo code</h6>
-                                <small>EXAMPLECODE</small>
-                            </div>
-                            <span class="text-success">−$5</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>Total (USD)</span>
-                            <strong>$20</strong>
-                        </li>
-                    </ul>
-
-                    <form class="card p-2">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Promo code">
-                            <button type="submit" class="btn btn-secondary">Redeem</button>
-                        </div>
-                    </form>
-                </div>
+            <div class="row g-3">
                 <div class="col-md-7 col-lg-8">
                     <h4 class="mb-3">Student Information</h4>
-                    <form>
-                        <div class="row g-3 mb-3">
-                            <div class="col-6">
-                                <label for="SR_number" class="form-label">Student Number</label>
-                                <input type="text" class="form-control" name="SR_number" id="SR_number" value="<?php echo $studentNumber ?>" readonly>
-                            </div>
-                        </div>
+                    <div class="card p-3">
                         <div class="row g-3 mb-3">
                             <div class="col-4 form-group">
                                 <label for="firstName" class="form-label">First name</label>
                                 <input type="text" class="form-control fullwidth " id="firstName" required>
                             </div>
 
-                            <div class="col-4 form-group">
+                            <div class="col-3 form-group">
                                 <label for="firstName" class="form-label">Middle name</label>
                                 <input type="text" class="form-control fullwidth" id="firstName" required>
                             </div>
 
                             <div class="col-4 form-group">
                                 <label for="lastName" class="form-label">Last name</label>
-                                <input type="text" class="form-control fullwidth" id="lastName" placeholder="" value="" required>
-                                <div class="invalid-feedback">
-                                    Valid last name is required.
-                                </div>
+                                <input type="text" class="form-control fullwidth" id="lastName">
+                            </div>
+                            <div class="col-1 form-group">
+                                <label for="lastName" class="form-label">Suffix</label>
+                                <input type="text" class="form-control fullwidth" id="lastName">
                             </div>
                         </div>
                         <div class="row g-3 mb-3">
                             <div class="col-1 form-group">
                                 <label for="firstName" class="form-label">Age</label>
-                                <input type="text" class="form-control fullwidth " id="firstName" required>
+                                <input type="number" class="form-control fullwidth " id="firstName" required>
                             </div>
 
                             <div class="col-3 form-group">
@@ -187,89 +134,91 @@ $studentNumber = $year . "-" . $format_StudentCounter . "-SP";
                             </div>
 
                             <div class="col-4 form-group">
-                                <label for="lastName" class="form-label">Last name</label>
-                                <input type="text" class="form-control fullwidth" id="lastName" placeholder="" value="" required>
-                                <div class="invalid-feedback">
-                                    Valid last name is required.
-                                </div>
+                                <label for="lastName" class="form-label">Gender</label>
+                                <select class="form-select form-control" id="lastName" required>
+                                    <option value=""></option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="NA">Prefer not to say</option>
+                                </select>
                             </div>
                         </div>
-                </div>
-
-                <hr class="my-4">
-
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="same-address">
-                    <label class="form-check-label" for="same-address">Shipping address is the same as my billing address</label>
-                </div>
-
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="save-info">
-                    <label class="form-check-label" for="save-info">Save this information for next time</label>
-                </div>
-
-                <hr class="my-4">
-
-                <h4 class="mb-3">Payment</h4>
-
-                <div class="my-3">
-                    <div class="form-check">
-                        <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required>
-                        <label class="form-check-label" for="credit">Credit card</label>
-                    </div>
-                    <div class="form-check">
-                        <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required>
-                        <label class="form-check-label" for="debit">Debit card</label>
-                    </div>
-                    <div class="form-check">
-                        <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" required>
-                        <label class="form-check-label" for="paypal">PayPal</label>
-                    </div>
-                </div>
-
-                <div class="row gy-3">
-                    <div class="col-md-6">
-                        <label for="cc-name" class="form-label">Name on card</label>
-                        <input type="text" class="form-control" id="cc-name" placeholder="" required>
-                        <small class="text-muted">Full name as displayed on card</small>
-                        <div class="invalid-feedback">
-                            Name on card is required
+                        <div class="row g-3 mb-3">
+                            <div class="col-8 form-group">
+                                <label for="firstName" class="form-label">Address</label>
+                                <input type="number" class="form-control fullwidth " id="firstName" required>
+                            </div>
+                            <div class="col-4 form-group">
+                                <label for="firstName" class="form-label">City</label>
+                                <input type="number" class="form-control fullwidth " id="firstName" required>
+                            </div>
+                            <div class="col-4 form-group">
+                                <label for="firstName" class="form-label">State</label>
+                                <input type="number" class="form-control fullwidth " id="firstName" required>
+                            </div>
+                            <div class="col-4 form-group">
+                                <label for="firstName" class="form-label">Postal Code</label>
+                                <input type="number" class="form-control fullwidth " id="firstName" required>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label for="cc-number" class="form-label">Credit card number</label>
-                        <input type="text" class="form-control" id="cc-number" placeholder="" required>
-                        <div class="invalid-feedback">
-                            Credit card number is required
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <label for="cc-expiration" class="form-label">Expiration</label>
-                        <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
-                        <div class="invalid-feedback">
-                            Expiration date required
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <label for="cc-cvv" class="form-label">CVV</label>
-                        <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
-                        <div class="invalid-feedback">
-                            Security code required
+                        <div class="row g-3 mb-3">
+                            <div class="col-6 form-group">
+                                <label for="firstName" class="form-label">Guardian Name</label>
+                                <input type="number" class="form-control fullwidth " id="firstName" required>
+                            </div>
+                            <div class="col-6 form-group">
+                                <label for="firstName" class="form-label">Contact Number</label>
+                                <input type="number" class="form-control fullwidth " id="firstName" required>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div class="col-md-5 col-lg-4 order-md-last">
+                    <h4 class="mb-3">Class Information</h4>
+                    <div class="card p-3">
+                        <div class="row g-3 mb-3">
 
-                <hr class="my-4">
-
-                <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
-                </form>
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-6 form-group">
+                                <label for="SR_number" class="form-label">Student Number</label>
+                                <input type="text" class="form-control fullwidth" name="SR_number" id="SR_number" value="<?php echo $studentNumber ?>" readonly>
+                            </div>
+                            <div class="col-6 form-group">
+                                <label for="lastName" class="form-label">Year Level</label>
+                                <select class="form-select form-control fullwidth" id="lastName" required>
+                                    <option value=""></option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="NA">Prefer not to say</option>
+                                </select>
+                            </div>
+                            <div class="col-6 form-group">
+                                <label for="lastName" class="form-label">Section</label>
+                                <select class="form-select form-control fullwidth" id="lastName" required>
+                                    <option value=""></option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="NA">Prefer not to say</option>
+                                </select>
+                            </div>
+                            <div class="col-6 form-group">
+                                <label for="lastName" class="form-label">Schedule</label>
+                                <select class="form-select form-control fullwidth" id="lastName" required>
+                                    <option value=""></option>
+                                    <option value="AM">AM</option>
+                                    <option value="PM">PM</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-    </div>
-    </main>
-    </div>
+            <div class="row py-3 justify-content-center">
+                <button class="w-50 btn btn-primary btn-lg mb-5" type="submit">Register Student</button>
+            </div>
+        </main>
+    </form>
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
