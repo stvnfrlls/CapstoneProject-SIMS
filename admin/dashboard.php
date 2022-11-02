@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Arkitektur - Architecture HTML Template</title>
+    <title>Administrator - Dashboard</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -49,7 +49,7 @@
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
         <a href="index.html" class="navbar-brand ms-4 ms-lg-0">
-            <h1 class="cdsp"><img class="me-3" src="../assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">Colegio De San Pedro</h1>
+            <h1 class="cdsp"><img class="me-3" src="assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">Colegio De San Pedro</h1>
             <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
         </a>
 
@@ -62,26 +62,26 @@
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse align-items-center" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0 text-center">
-                <a href="index.html" class="nav-item nav-link active" style="color: white">Home</a>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0 ">
+                <a href="index.php" class="nav-item nav-link active" style="color: white">Home</a>
                 <a href="about.html" class="nav-item nav-link" style="color: white">About Us</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: white">Academics</a>
                     <div class="dropdown-menu bg-dark border-0 m-0">
-                        <a href="feature.html" class="dropdown-item" style="color: white">Our Features</a>
-                        <a href="project.html" class="dropdown-item" style="color: white">Our Projects</a>
-                        <a href="team.html" class="dropdown-item" style="color: white">Team Members</a>
-                        <a href="appointment.html" class="dropdown-item" style="color: white">Appointment</a>
-                        <a href="testimonial.html" class="dropdown-item" style="color: white">Testimonial</a>
-                        <a href="404.html" class="dropdown-item" style="color: white">404 Page</a>
+                        <a href="auth/login.php" class="dropdown-item" style="color: white">Student Information System</a>
+                        <a href="" class="dropdown-item" style="color: white">Kindergarten</a>
+                        <a href="" class="dropdown-item" style="color: white">Pre-Elementary</a>
+                        <a href="" class="dropdown-item" style="color: white">Elementary</a>
+                        <a href="" class="dropdown-item" style="color: white">Highschool</a>
+                        <a href="" class="dropdown-item" style="color: white">Senior Highschool</a>
+                        <a href="" class="dropdown-item" style="color: white">College</a>
                     </div>
                 </div>
                 <a href="service.html" class="nav-item nav-link" style="color: white">Admissions</a>
                 <a href="contact.html" class="nav-item nav-link" style="color: white">Scholarship and Discounts</a>
                 <a href="contact.html" class="nav-item nav-link" style="color: white">Contact Us</a>
             </div>
-
         </div>
     </nav>
     <!-- Navbar End -->
@@ -98,7 +98,7 @@
                         <div class="service-icon">
                             <i class="fa fa-shield-alt text-white"></i>
                         </div>
-                        <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="addStudent.php">Register Student</a>
+                        <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="">Manage Student</a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-12 col-sm-12 wow zoomIn" data-wow-delay="0.6s">
@@ -107,8 +107,6 @@
                             <i class="fa fa-chart-pie text-white"></i>
                         </div>
                         <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="">Edit Records</a>
-                        <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="">Grades</a>
-                        <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="">Student Information</a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-12 col-sm-12 wow zoomIn" data-wow-delay="0.9s">
