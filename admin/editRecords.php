@@ -1,9 +1,4 @@
-<?php
-require_once("../assets/php/server.php");
-$getClasslist = "SELECT SR_number, SR_lname, SR_grade, SR_section FROM studentrecord";
-$resultgetClasslist = $mysqli->query($getClasslist);
-
-?>
+<?php require_once("../assets/php/server.php"); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -89,25 +84,29 @@ $resultgetClasslist = $mysqli->query($getClasslist);
     </nav>
     <!-- Navbar End -->
 
-    <div class="container">
-        <ul class="nav nav-pills">
-            <li class="nav-item">
-                <a class="nav-link" href="#editGrades" data-toggle="tab">Grades</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#studentRecords" data-toggle="tab">Student Information</a>
-            </li>
-        </ul>
+    <div class="container my-3">
+        <div class="my-3">
+            <ul class="nav nav-pills justify-content-center" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" href="#editGrades" data-toggle="tab">Grades</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" href="#studentRecords" data-toggle="tab">Student Information</a>
+                </li>
+            </ul>
+        </div>
 
         <div class="tab-content">
             <div class="tab-pane active" id="editGrades">
-                <div class="container">
+                <div class="container justify-content-center">
                     <div class="row">
                         <div class="col-3 m-3">
                             <?php
+                            $getClasslist = "SELECT SR_number, SR_lname, SR_grade, SR_section FROM studentrecord";
+                            $resultgetClasslist = $mysqli->query($getClasslist);
                             if ($resultgetClasslist->num_rows >= 0) {
                                 $counter = 0;
-                                while ($data = $result->fetch_assoc()) { ?>
+                                while ($data = $resultgetClasslist->fetch_assoc()) { ?>
                                     <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
                                         <div class="list-group w-auto">
                                             <div class="list-group-item list-group-item-action d-flex gap-3 py-3">
@@ -133,61 +132,192 @@ $resultgetClasslist = $mysqli->query($getClasslist);
                                 <h1>STUDENT NAME: </h1>
                                 <h3>STUDENT NUMBER: </h3>
                             </div>
-                            <div class="">
-                                <table class="table text-center">
-                                    <thead>
+                            <table class="table text-center">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Quarter</th>
+                                        <th scope="col">English</th>
+                                        <th scope="col">Math</th>
+                                        <th scope="col">Science</th>
+                                        <th scope="col">Physical Education</th>
+                                        <th scope="col">Final Grade</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
                                         <tr>
-                                            <th scope="col">Quarter</th>
-                                            <th scope="col">English</th>
-                                            <th scope="col">Math</th>
-                                            <th scope="col">Science</th>
-                                            <th scope="col">Physical Education</th>
-                                            <th scope="col">Final Grade</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
-                                            <tr>
+                                            <?php
+                                            if (isset($_GET['ST_number'])) {
+                                                $ST_number = $_GET['ST_number'];
+
+                                                $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '$ST_number'";
+                                                $resultgetStudentGrades = $mysqli->query($getStudentGrades);
+
+                                                if ($resultgetStudentGrades->num_rows >= 0) {
+                                                    while ($data = $resultgetStudentGrades->fetch_assoc()) { ?>
+                                                        <th scope="row"><?php echo $data['G_grading'] ?></th>
+                                                        <td><input type="text" value="<?php echo $data['G_english'] ?>" size="1"></td>
+                                                        <td><input type="text" value="<?php echo $data['G_math'] ?>" size="1"></td>
+                                                        <td><input type="text" value="<?php echo $data['G_science'] ?>" size="1"></td>
+                                                        <td><input type="text" value="<?php echo $data['G_physicaled'] ?>" size="1"></td>
+                                                        <td><input type="text" value="<?php echo $data['G_finalgrade'] ?>" size="1"></td>
+
                                                 <?php
-                                                if (isset($_GET['ST_number'])) {
-                                                    $ST_number = $_GET['ST_number'];
-
-                                                    $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '$ST_number'";
-                                                    $result = $mysqli->query($getStudentGrades);
-
-                                                    if ($result->num_rows >= 0) {
-                                                        while ($data = $result->fetch_assoc()) { ?>
-                                                            <th scope="row"><?php echo $data['G_grading'] ?></th>
-                                                            <td><input type="text" value="<?php echo $data['G_english'] ?>" size="1"></td>
-                                                            <td><input type="text" value="<?php echo $data['G_math'] ?>" size="1"></td>
-                                                            <td><input type="text" value="<?php echo $data['G_science'] ?>" size="1"></td>
-                                                            <td><input type="text" value="<?php echo $data['G_physicaled'] ?>" size="1"></td>
-                                                            <td><input type="text" value="<?php echo $data['G_finalgrade'] ?>" size="1"></td>
-                                                    <?php
-                                                        }
                                                     }
-                                                } else { ?>
-                                                    <th class="text-center" colspan="6">No data</th>
-                                                <?php
                                                 }
-                                                ?>
+                                            } else { ?>
+                                                <th class="text-center" colspan="6">No data</th>
+                                            <?php
+                                            }
+                                            ?>
 
-                                            </tr>
-                                            <tr>
-                                                <td colspan="6"><input type="submit" value="submit"></td>
-                                            </tr>
-                                        </form>
-                                    </tbody>
-                                </table>
-                            </div>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="6"><input type="submit" value="submit"></td>
+                                        </tr>
+                                    </form>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-
             </div>
+            <div class="tab-pane" id="studentRecords">
+                <div class="row">
+                    <div class="col-3 m-3">
+                        <?php
+                        $getClasslist = "SELECT SR_number, SR_lname, SR_grade, SR_section FROM studentrecord";
+                        $resultgetClasslist = $mysqli->query($getClasslist);
+                        if ($resultgetClasslist->num_rows >= 0) {
+                            $counter = 0;
+                            while ($data = $resultgetClasslist->fetch_assoc()) { ?>
+                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
+                                    <div class="list-group w-auto">
+                                        <div class="list-group-item list-group-item-action d-flex gap-3 py-3">
+                                            <?php $counter++;
+                                            echo $counter; ?>
+                                            <img src="https://github.com/twbs.png" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
+                                            <div class="d-flex gap-2 w-100 justify-content-between">
+                                                <div>
+                                                    <h6 class="mb-0"><input type="submit" name="ST_number" value="<?php echo $data['SR_number']; ?>"></h6>
+                                                    <p class="mb-0 opacity-75"><?php echo $data['SR_lname']; ?></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                        <?php
+                            }
+                        }
+                        ?>
+                    </div>
+                    <div class="col m-3">
+                        <div class="row">
+                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
+                                <?php
+                                if (isset($_GET['ST_number'])) {
+                                    $ST_number = $_GET['ST_number'];
+                                    $getStudentRecord = "SELECT * FROM studentrecord WHERE SR_number = '$ST_number'";
+                                    $resultgetStudentRecord = $mysqli->query($getStudentRecord);
+                                    if ($resultgetStudentRecord->num_rows >= 1) {
+                                        while ($data = $resultgetStudentRecord->fetch_assoc()) { ?>
+                                            <div class="col m-3">
+                                                <div class="form group p-1">
+                                                    <h1>STUDENT INFORMATION</h1>
+                                                    <label for="SR_number">Student Number</label>
+                                                    <input type="text" name="SR_number" id="SR_number" value="<?php echo $data['SR_number'] ?>" readonly>
+                                                </div>
+                                                <div class="form group p-1">
+                                                    <label for="SR_fname">First Name</label>
+                                                    <input type="text" name="SR_fname" id="SR_fname" value="<?php echo $data['SR_fname'] ?>">
+                                                    <label for="SR_mname">Middle Name</label>
+                                                    <input type="text" name="SR_mname" id="SR_mname" value="<?php echo $data['SR_mname'] ?>">
+                                                    <label for="SR_lname">Last Name</label>
+                                                    <input type="text" name="SR_lname" id="SR_lname" value="<?php echo $data['SR_lname'] ?>">
+                                                </div>
+                                                <div class="form group p-1">
+                                                    <label for="SR_age">Age</label>
+                                                    <input type="number" name="SR_age" id="SR_age" value="<?php echo $data['SR_age'] ?>" size="1"> <!-- baguhin yung size kasi ang lapad para sa age lang -->
+                                                    <label for="SR_birthday">Birthday</label>
+                                                    <input type="date" name="SR_birthday" id="SR_birthday" value="<?php echo $data['SR_birthday'] ?>"> <!-- error to ayusin kapag may net -->
+                                                    <label for="SR_gender">Gender</label>
+                                                    <input type="text" name="SR_gender" id="SR_gender" value="<?php echo $data['SR_gender'] ?>" size="3">
+                                                </div>
+                                                <div class="form group p-1">
+                                                    <label for="SR_address">Address</label>
+                                                    <input type="text" name="SR_address" id="SR_address" value="<?php echo $data['SR_address'] ?>">
+                                                    <label for="SR_guardian">Guardian</label>
+                                                    <input type="text" name="SR_guardian" id="SR_guardian" value="<?php echo $data['SR_guardian'] ?>">
+                                                    <label for="SR_contact">Contact</label>
+                                                    <input type="text" name="SR_contact" id="SR_contact" value="<?php echo $data['SR_contact'] ?>">
+                                                </div>
+                                            </div>
+                                            <div class="col m-3">
+                                                <div class="form group p-1">
+                                                    <h1>SCHOOL INFORMATION</h1>
+                                                    <label for="SR_grade">Year Level</label>
+                                                    <input type="text" name="SR_grade" id="SR_grade" value="<?php echo $data['SR_grade'] ?>" size="5">
+                                                    <label for="SR_section">Section</label>
+                                                    <input type="text" name="SR_section" id="SR_section" value="<?php echo $data['SR_section'] ?>" size="25">
+                                                </div>
+                                            </div>
+                                            <div class="col m-3">
+                                                <h1>SUBJECTS ENROLLED</h1>
+                                                <table class="table text-center">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">Quarter</th>
+                                                            <th scope="col">English</th>
+                                                            <th scope="col">Math</th>
+                                                            <th scope="col">Science</th>
+                                                            <th scope="col">Physical Education</th>
+                                                            <th scope="col">Final Grade</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
+                                                            <tr>
+                                                                <?php
+                                                                if (isset($_GET['ST_number'])) {
+                                                                    $ST_number = $_GET['ST_number'];
 
+                                                                    $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '$ST_number'";
+                                                                    $resultgetStudentGrades = $mysqli->query($getStudentGrades);
+
+                                                                    if ($resultgetStudentGrades->num_rows >= 0) {
+                                                                        while ($data = $resultgetStudentGrades->fetch_assoc()) { ?>
+                                                                            <th scope="row"><?php echo $data['G_grading'] ?></th>
+                                                                            <td><input type="text" value="<?php echo $data['G_english'] ?>" size="1"></td>
+                                                                            <td><input type="text" value="<?php echo $data['G_math'] ?>" size="1"></td>
+                                                                            <td><input type="text" value="<?php echo $data['G_science'] ?>" size="1"></td>
+                                                                            <td><input type="text" value="<?php echo $data['G_physicaled'] ?>" size="1"></td>
+                                                                            <td><input type="text" value="<?php echo $data['G_finalgrade'] ?>" size="1"></td>
+                                                                    <?php
+                                                                        }
+                                                                    }
+                                                                } else { ?>
+                                                                    <th class="text-center" colspan="6">No data</th>
+                                                                <?php
+                                                                }
+                                                                ?>
+
+                                                            </tr>
+                                                        </form>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <input type="submit" name="updateStudent" id="updateStudent" value="Update Student">
+                                <?php
+                                        }
+                                    }
+                                }
+                                ?>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
     </div>
 
     <!-- Footer Start -->
@@ -260,12 +390,17 @@ $resultgetClasslist = $mysqli->query($getClasslist);
     <script src="../assets/lib/tempusdominus/js/moment.min.js"></script>
     <script src="../assets/lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="../assets/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
     <!-- Template Javascript -->
     <script src="../assets/js/main.js"></script>
-
+    <script>
+        $('#myTab a').click(function(e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+    </script>
 </body>
 
 </html>
