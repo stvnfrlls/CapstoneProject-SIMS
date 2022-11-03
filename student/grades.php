@@ -39,10 +39,10 @@
                                     $ST_number = $_GET['ST_number'];
 
                                     $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '$ST_number'";
-                                    $result = $mysqli->query($getStudentGrades);
+                                    $resultgetStudentGrades = $mysqli->query($getStudentGrades);
 
-                                    if ($result->num_rows >= 0) {
-                                        while ($data = $result->fetch_assoc()) { ?>
+                                    if ($resultgetStudentGrades->num_rows >= 0) {
+                                        while ($data = $resultgetStudentGrades->fetch_assoc()) { ?>
                                             <th scope="row"><?php echo $data['G_grading'] ?></th>
                                             <td><input type="text" value="<?php echo $data['G_english'] ?>" size="1"></td>
                                             <td><input type="text" value="<?php echo $data['G_math'] ?>" size="1"></td>
