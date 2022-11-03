@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Arkitektur - Architecture HTML Template</title>
+    <title>Faculty - Grades</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -31,6 +31,7 @@
 
     <!-- Template Stylesheet -->
     <link href="../assets/css/style.css" rel="stylesheet">
+    <link href="../assets/css/dashboard-user.css" rel="stylesheet">
 
 
 </head>
@@ -65,24 +66,24 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0 ">
-                <a href="index.html" class="nav-item nav-link active" style="color: white">Home</a>
+                <a href="index.php" class="nav-item nav-link active" style="color: white">Home</a>
                 <a href="about.html" class="nav-item nav-link" style="color: white">About Us</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: white">Academics</a>
                     <div class="dropdown-menu bg-dark border-0 m-0">
-                        <a href="feature.html" class="dropdown-item" style="color: white">Our Features</a>
-                        <a href="project.html" class="dropdown-item" style="color: white">Our Projects</a>
-                        <a href="team.html" class="dropdown-item" style="color: white">Team Members</a>
-                        <a href="appointment.html" class="dropdown-item" style="color: white">Appointment</a>
-                        <a href="testimonial.html" class="dropdown-item" style="color: white">Testimonial</a>
-                        <a href="404.html" class="dropdown-item" style="color: white">404 Page</a>
+                        <a href="auth/login.php" class="dropdown-item" style="color: white">Student Information System</a>
+                        <a href="" class="dropdown-item" style="color: white">Kindergarten</a>
+                        <a href="" class="dropdown-item" style="color: white">Pre-Elementary</a>
+                        <a href="" class="dropdown-item" style="color: white">Elementary</a>
+                        <a href="" class="dropdown-item" style="color: white">Highschool</a>
+                        <a href="" class="dropdown-item" style="color: white">Senior Highschool</a>
+                        <a href="" class="dropdown-item" style="color: white">College</a>
                     </div>
                 </div>
                 <a href="service.html" class="nav-item nav-link" style="color: white">Admissions</a>
                 <a href="contact.html" class="nav-item nav-link" style="color: white">Scholarship and Discounts</a>
                 <a href="contact.html" class="nav-item nav-link" style="color: white">Contact Us</a>
             </div>
-
         </div>
     </nav>
     <!-- Navbar End -->
@@ -110,82 +111,183 @@
         </div>
         <div class="container">
             <div class="row">
-                <div class="col-3">
-                    <?php
-                    $getStudent = ("SELECT * FROM studentrecord WHERE SR_grade = 1");
-                    $res = $mysqli->query($getStudent);
-                    if ($res->num_rows >= 0) {
-                        $counter = 0;
-                        while ($data = $res->fetch_assoc()) { ?>
-                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
-                                <div class="list-group w-auto">
-                                    <div class="list-group-item list-group-item-action d-flex gap-3 py-3">
-                                        <?php $counter++;
-                                        echo $counter; ?>
-                                        <div class="d-flex gap-2 w-100 justify-content-between">
-                                            <div>
-                                                <h6 class="mb-0"><input type="submit" name="ST_number" value="<?php echo $data['SR_number']; ?>"></h6>
-                                                <p class="mb-0 opacity-75"><?php echo $data['SR_lname']; ?></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                    <?php
-                        }
-                    }
-                    ?>
-                </div>
                 <div class="col m-3">
-                    <table class="table table-striped table-class" id="table-id">
-                        <thead>
-                            <tr>
-                                <th scope="col">Quarter</th>
-                                <th scope="col">English</th>
-                                <th scope="col">Math</th>
-                                <th scope="col">Science</th>
-                                <th scope="col">Physical Education</th>
-                                <th scope="col">Final Grade</th>
-                            </tr>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
+                    <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
+                        <h5 class="fw-bold text-primary text-uppercase">Assignments</h5>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-class" id="table-id">
+                            <thead>
                                 <tr>
-                                    <?php
-                                    if (isset($_GET['ST_number'])) {
-                                        $ST_number = $_GET['ST_number'];
-
-                                        $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '$ST_number'";
-                                        $result = $mysqli->query($getStudentGrades);
-
-                                        if ($result->num_rows >= 0) {
-                                            while ($data = $result->fetch_assoc()) { ?>
-                                                <th scope="row"><?php echo $data['G_grading'] ?></th>
-                                                <td><input type="text" value="<?php echo $data['G_english'] ?>" size="1"></td>
-                                                <td><input type="text" value="<?php echo $data['G_math'] ?>" size="1"></td>
-                                                <td><input type="text" value="<?php echo $data['G_science'] ?>" size="1"></td>
-                                                <td><input type="text" value="<?php echo $data['G_physicaled'] ?>" size="1"></td>
-                                                <td><input type="text" value="<?php echo $data['G_finalgrade'] ?>" size="1"></td>
-
+                                    <th scope="col">Subject</th>
+                                    <th scope="col">Assignment</th>
+                                    <th scope="col">Quiz</th>
+                                    <th scope="col">Performances</th>
+                                    <th scope="col">Examinations</th>
+                                    <th scope="col">Final Grade</th>
+                                    <th scope="col">Edit</th>
+                                </tr>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
+                                    <tr>
                                         <?php
-                                            }
-                                        }
-                                    } else { ?>
-                                        <th class="text-center" colspan="6">No data</th>
-                                    <?php
-                                    }
-                                    ?>
+                                        if (isset($_GET['ST_number'])) {
+                                            $ST_number = $_GET['ST_number'];
 
-                                </tr>
-                                <tr>
-                                    <td colspan="6"><input type="submit" value="submit"></td>
-                                </tr>
-                            </form>
-                        </tbody>
-                    </table>
+                                            $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '$ST_number'";
+                                            $result = $mysqli->query($getStudentGrades);
+
+                                            if ($result->num_rows >= 0) {
+                                                while ($data = $result->fetch_assoc()) { ?>
+                                                    <th scope="row"><?php echo $data['G_grading'] ?></th>
+                                                    <td><input type="text" value="<?php echo $data['G_english'] ?>" size="1"></td>
+                                                    <td><input type="text" value="<?php echo $data['G_math'] ?>" size="1"></td>
+                                                    <td><input type="text" value="<?php echo $data['G_science'] ?>" size="1"></td>
+                                                    <td><input type="text" value="<?php echo $data['G_physicaled'] ?>" size="1"></td>
+                                                    <td><input type="text" value="<?php echo $data['G_finalgrade'] ?>" size="1"></td>
+                                                    <td><a class="btn btn-success btn-sm btn-icon-text mr-3" href="">Edit<i class="typcn typcn-edit btn-icon-append"></i></a></td>
+
+                                            <?php
+                                                }
+                                            }
+                                        } else { ?>
+                                            <th class="text-center" colspan="7">No data</th>
+                                        <?php
+                                        }
+                                        ?>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="7"><input type="submit" value="submit"></td>
+                                    </tr>
+                                </form>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col m-3">
+                    <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
+                        <h5 class="fw-bold text-primary text-uppercase">Quizzes</h5>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-class" id="table-id">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Subject</th>
+                                    <th scope="col">Assignment</th>
+                                    <th scope="col">Quiz</th>
+                                    <th scope="col">Performances</th>
+                                    <th scope="col">Examinations</th>
+                                    <th scope="col">Final Grade</th>
+                                    <th scope="col">Edit</th>
+                                </tr>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
+                                    <tr>
+                                        <?php
+                                        if (isset($_GET['ST_number'])) {
+                                            $ST_number = $_GET['ST_number'];
+
+                                            $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '$ST_number'";
+                                            $result = $mysqli->query($getStudentGrades);
+
+                                            if ($result->num_rows >= 0) {
+                                                while ($data = $result->fetch_assoc()) { ?>
+                                                    <th scope="row"><?php echo $data['G_grading'] ?></th>
+                                                    <td><input type="text" value="<?php echo $data['G_english'] ?>" size="1"></td>
+                                                    <td><input type="text" value="<?php echo $data['G_math'] ?>" size="1"></td>
+                                                    <td><input type="text" value="<?php echo $data['G_science'] ?>" size="1"></td>
+                                                    <td><input type="text" value="<?php echo $data['G_physicaled'] ?>" size="1"></td>
+                                                    <td><input type="text" value="<?php echo $data['G_finalgrade'] ?>" size="1"></td>
+                                                    <td><a class="btn btn-success btn-sm btn-icon-text mr-3" href="">Edit<i class="typcn typcn-edit btn-icon-append"></i></a></td>
+
+                                            <?php
+                                                }
+                                            }
+                                        } else { ?>
+                                            <th class="text-center" colspan="7">No data</th>
+                                        <?php
+                                        }
+                                        ?>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="7"><input type="submit" value="submit"></td>
+                                    </tr>
+                                </form>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col m-3">
+                    <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
+                        <h5 class="fw-bold text-primary text-uppercase">Examinations</h5>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-class" id="table-id">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Subject</th>
+                                    <th scope="col">Assignment</th>
+                                    <th scope="col">Quiz</th>
+                                    <th scope="col">Performances</th>
+                                    <th scope="col">Examinations</th>
+                                    <th scope="col">Final Grade</th>
+                                    <th scope="col">Edit</th>
+                                </tr>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
+                                    <tr>
+                                        <?php
+                                        if (isset($_GET['ST_number'])) {
+                                            $ST_number = $_GET['ST_number'];
+
+                                            $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '$ST_number'";
+                                            $result = $mysqli->query($getStudentGrades);
+
+                                            if ($result->num_rows >= 0) {
+                                                while ($data = $result->fetch_assoc()) { ?>
+                                                    <th scope="row"><?php echo $data['G_grading'] ?></th>
+                                                    <td><input type="text" value="<?php echo $data['G_english'] ?>" size="1"></td>
+                                                    <td><input type="text" value="<?php echo $data['G_math'] ?>" size="1"></td>
+                                                    <td><input type="text" value="<?php echo $data['G_science'] ?>" size="1"></td>
+                                                    <td><input type="text" value="<?php echo $data['G_physicaled'] ?>" size="1"></td>
+                                                    <td><input type="text" value="<?php echo $data['G_finalgrade'] ?>" size="1"></td>
+                                                    <td><a class="btn btn-success btn-sm btn-icon-text mr-3" href="">Edit<i class="typcn typcn-edit btn-icon-append"></i></a></td>
+
+                                            <?php
+                                                }
+                                            }
+                                        } else { ?>
+                                            <th class="text-center" colspan="7">No data</th>
+                                        <?php
+                                        }
+                                        ?>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="7"><input type="submit" value="submit"></td>
+                                    </tr>
+                                </form>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
     </div>
 
