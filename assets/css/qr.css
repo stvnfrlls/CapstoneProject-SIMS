@@ -1,0 +1,63 @@
+@media (min-width: 800px) {
+    .camera{
+        width: 100%;
+      
+    }
+    
+    .qrText{
+        width: 30%;
+        margin-left: 400px;
+    }
+    
+    .texttt{
+        margin-top: 10px;
+        margin-left: 520px;
+    }
+    
+    .submittt{
+        margin-left: 535px;
+        margin-top: 5px;
+    }
+  }
+  
+@media (min-width: 992px) {
+    .camera{
+        width: 100%;
+    }
+    
+    .qrText{
+        width: 30%;
+        margin-left: 400px;
+    }
+    
+    .texttt{
+        margin-top: 10px;
+        margin-left: 520px;
+    }
+    
+    .submittt{
+        margin-left: 535px;
+        margin-top: 5px;
+    }
+  }
+
+.camera{
+    width:60%;
+    margin-left: 240px;
+}
+
+.qrText{
+    width: 30%;
+    margin-left: 400px;
+}
+
+.texttt{
+    margin-top: 10px;
+    margin-left: 520px;
+}
+
+.submittt{
+    margin-left: 535px;
+    margin-top: 5px;
+}
+
