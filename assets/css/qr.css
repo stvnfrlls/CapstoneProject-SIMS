@@ -1,63 +1,30 @@
-@media (min-width: 800px) {
-    .camera{
-        width: 100%;
-      
-    }
-    
-    .qrText{
-        width: 30%;
-        margin-left: 400px;
-    }
-    
-    .texttt{
-        margin-top: 10px;
-        margin-left: 520px;
-    }
-    
-    .submittt{
-        margin-left: 535px;
-        margin-top: 5px;
-    }
+.videoWrapper,
+.videoWrapper video {
+  width: 80%;
+  height: auto;
+}
+
+
+@media (min-width: 320px) {
+  .videoWrapper,
+  .videoWrapper video {
+    width: 100%;
+    height: auto;
   }
-  
-@media (min-width: 992px) {
-    .camera{
-        width: 100%;
-    }
-    
-    .qrText{
-        width: 30%;
-        margin-left: 400px;
-    }
-    
-    .texttt{
-        margin-top: 10px;
-        margin-left: 520px;
-    }
-    
-    .submittt{
-        margin-left: 535px;
-        margin-top: 5px;
-    }
+}
+
+@media (min-width: 768px) {
+  .videoWrapper,
+  .videoWrapper video {
+    width: 80%;
+    height: auto;
   }
-
-.camera{
-    width:60%;
-    margin-left: 240px;
 }
 
-.qrText{
-    width: 30%;
-    margin-left: 400px;
+@media (min-width: 1024px) {
+  .videoWrapper,
+  .videoWrapper video {
+    width: 70%;
+    height: auto;
+  }
 }
-
-.texttt{
-    margin-top: 10px;
-    margin-left: 520px;
-}
-
-.submittt{
-    margin-left: 535px;
-    margin-top: 5px;
-}
-

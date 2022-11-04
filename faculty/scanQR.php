@@ -88,25 +88,25 @@
     </nav>
     <!-- Navbar End -->
 
-    <h1>Scan QR Code</h1>
-    <a href="../index.php">Home</a>
-
     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <video class="camera" id="preview"></video>
+        <div class="row d-flex justify-content-center p-3">
+            <div class="col text-center mb-3 videoWrapper">
+                <video id="preview" class="video"></video>
             </div>
-            <div class="col-md-12">
+        </div>
+        <div class="row d-flex justify-content-center mb-3">
+            <div class="col text-center form-group form">
                 <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" class="form-horizontal">
-                    <label class="texttt">Scan QR Code</label><br>
-                    <input type="text" name="qrcode_input" id="qrcode_input" class="qrText" required><br>
-                    <input class="submittt" type="submit" value="present" name="present" id="present">
+                    <label for="qrcode_input" class="form-label">Scan QR Code</label>
+                    <input type="text" name="qrcode_input" id="qrcode_input" required>
+                    <div class="">
+                        <input type="submit" value="present" name="present" id="present">
+                    </div>
                 </form>
             </div>
         </div>
-        <br>
-        <div class="row">
-            <div class="col-md-12">
+        <div class="row d-flex justify-content-center px-5">
+            <div class="col text-center mb-3 table">
                 <table class="table table-striped table-class" id="table-id">
                     <?php
                     $get_present_student = "SELECT * FROM attendance";
@@ -145,31 +145,6 @@
             </div>
         </div>
     </div>
-    <script>
-        let scanner = new Instascan.Scanner({
-            video: document.getElementById('preview')
-        });
-        Instascan.Camera.getCameras().then((cameras) => {
-            if (cameras.length > 0) {
-                if (cameras[2]) {
-                    scanner.start(cameras[2]);
-                } else if (cameras[1]) {
-                    scanner.start(cameras[1]);
-                } else {
-                    scanner.start(cameras[0]);
-                }
-            } else {
-                alert('No Cameras');
-            }
-        }).catch((err) => {
-            console.error(err);
-        });
-
-        scanner.addListener('scan', function(c) {
-            document.getElementById('qrcode_input').value = c;
-
-        })
-    </script>
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer mt-5 pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
@@ -227,5 +202,57 @@
     </div>
     <!-- Footer End -->
 </body>
+<script>
+    let scanner = new Instascan.Scanner({
+        video: document.getElementById('preview')
+    });
+    Instascan.Camera.getCameras().then((cameras) => {
+        if (cameras.length > 0) {
+            if (cameras[2]) {
+                scanner.start(cameras[2]);
+            } else if (cameras[1]) {
+                scanner.start(cameras[1]);
+            } else {
+                scanner.start(cameras[0]);
+            }
+        } else {
+            alert('No Cameras');
+        }
+    }).catch((err) => {
+        console.error(err);
+    });
+
+    scanner.addListener('scan', function(c) {
+        document.getElementById('qrcode_input').value = c;
+
+    })
+</script>
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/lib/wow/wow.min.js"></script>
+<script src="../assets/lib/easing/easing.min.js"></script>
+<script src="../assets/lib/waypoints/waypoints.min.js"></script>
+<script src="../assets/lib/counterup/counterup.min.js"></script>
+<script src="../assets/lib/owlcarousel/owl.carousel.min.js"></script>
+<script src="../assets/lib/tempusdominus/js/moment.min.js"></script>
+<script src="../assets/lib/tempusdominus/js/moment-timezone.min.js"></script>
+<script src="../assets/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+<!-- Template Javascript -->
+<script src="../assets/js/main.js"></script>
+
+<!-- Javascript -->
+<script src="../assets/vendor/jquery/jquery.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script src="../assets/js/eduwell/isotope.min.js"></script>
+<script src="../assets/js/eduwell/owl-carousel.js"></script>
+<script src="../assets/js/eduwell/lightbox.js"></script>
+<script src="../assets/js/eduwell/tabs.js"></script>
+<script src="../assets/js/eduwell/video.js"></script>
+<script src="../assets/js/eduwell/slick-slider.js"></script>
+<script src="../assets/js/eduwell/custom.js"></script>
+<script src="../assets/js/startup/main.js"></script>
 
 </html>
