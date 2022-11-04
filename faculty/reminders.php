@@ -21,16 +21,16 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
   <!-- Libraries Stylesheet -->
-  <link href="lib/animate/animate.min.css" rel="stylesheet">
-  <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-  <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+  <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
+  <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+  <link href="../assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
 
   <!-- Customized Bootstrap Stylesheet -->
-  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Template Stylesheet -->
-  <link href="css/style.css" rel="stylesheet">
-  <link href="css/dashboard-user.css" rel="stylesheet">
+  <link href="../assets/css/style.css" rel="stylesheet">
+  <link href="../assets/css/dashboard-user.css" rel="stylesheet">
 
 </head>
 
@@ -180,7 +180,6 @@
     </div>
   </section>
   <!-- Reminder End -->
-  <!-- Reminder End -->
 
   <!-- Add reminder -->
   <div class="container">
@@ -221,22 +220,7 @@
           </div>
         </form>
       </div>
-
     </div>
-
-  </div>
-
-
-  <div class="container py-5 wow fadeInUp" data-wow-delay="0.1s">
-    <div class="container py-5">
-      <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
-        <h5 class="fw-bold text-primary text-uppercase">D a s h b o a r d</h5>
-      </div>
-
-
-
-    </div>
-  </div>
   </div>
 
   <!-- Footer Start -->
@@ -302,30 +286,30 @@
   <!-- JavaScript Libraries -->
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="lib/wow/wow.min.js"></script>
-  <script src="lib/easing/easing.min.js"></script>
-  <script src="lib/waypoints/waypoints.min.js"></script>
-  <script src="lib/counterup/counterup.min.js"></script>
-  <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-  <script src="lib/tempusdominus/js/moment.min.js"></script>
-  <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-  <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+  <script src="../assets/lib/wow/wow.min.js"></script>
+  <script src="../assets/lib/easing/easing.min.js"></script>
+  <script src="../assets/lib/waypoints/waypoints.min.js"></script>
+  <script src="../assets/lib/counterup/counterup.min.js"></script>
+  <script src="../assets/lib/owlcarousel/owl.carousel.min.js"></script>
+  <script src="../assets/lib/tempusdominus/js/moment.min.js"></script>
+  <script src="../assets/lib/tempusdominus/js/moment-timezone.min.js"></script>
+  <script src="../assets/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
   <!-- Template Javascript -->
-  <script src="js/main.js"></script>
+  <script src="../assets/js/main.js"></script>
 
   <!-- Javascript -->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/vendor/jquery/jquery.min.js"></script>
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-  <script src="js/eduwell/isotope.min.js"></script>
-  <script src="js/eduwell/owl-carousel.js"></script>
-  <script src="js/eduwell/lightbox.js"></script>
-  <script src="js/eduwell/tabs.js"></script>
-  <script src="js/eduwell/video.js"></script>
-  <script src="js/eduwell/slick-slider.js"></script>
-  <script src="js/eduwell/custom.js"></script>
-  <script src="js/startup/main.js"></script>
+  <script src="../assets/js/eduwell/isotope.min.js"></script>
+  <script src="../assets/js/eduwell/owl-carousel.js"></script>
+  <script src="../assets/js/eduwell/lightbox.js"></script>
+  <script src="../assets/js/eduwell/tabs.js"></script>
+  <script src="../assets/js/eduwell/video.js"></script>
+  <script src="../assets/js/eduwell/slick-slider.js"></script>
+  <script src="../assets/js/eduwell/custom.js"></script>
+  <script src="../assets/js/startup/main.js"></script>
 
 
 </body>
