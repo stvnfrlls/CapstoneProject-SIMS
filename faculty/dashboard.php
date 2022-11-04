@@ -167,7 +167,7 @@
                         <div class="service-icon">
                             <i class="fa fa-chart-pie text-white"></i>
                         </div>
-                        <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href=reminders-teacher.php">Reminders</a>
+                        <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="reminders.php">Reminders</a>
                         <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</a>
                     </div>
                 </div>
@@ -176,7 +176,7 @@
                         <div class="service-icon">
                             <i class="fa fa-code text-white"></i>
                         </div>
-                        <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="grades-teacher.php">Grades</a>
+                        <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="classList.php">Grades</a>
                         <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</a>
                     </div>
                 </div>
@@ -186,7 +186,7 @@
                             <i class="fab fa-android text-white"></i>
                         </div>
                         <!-- EDIT PROFILE -->
-                        <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="">Edit Profile</a>
+                        <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="editProfile.php">Edit Profile</a>
                         <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</a>
                     </div>
                 </div>
@@ -282,7 +282,6 @@
     <script src="../assets/js/eduwell/slick-slider.js"></script>
     <script src="../assets/js/eduwell/custom.js"></script>
     <script src="../assets/js/startup/main.js"></script>
-
 
 </body>
 
