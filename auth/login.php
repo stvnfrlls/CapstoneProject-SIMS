@@ -32,9 +32,7 @@
 
     <!-- Template Stylesheet -->
     <link href="../assets/css/style.css" rel="stylesheet">
-
     <link rel="stylesheet" type="text/css" href="../assets/login/css/main.css">
-
 
 </head>
 
