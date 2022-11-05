@@ -1,55 +1,56 @@
-
-
 /*//////////////////////////////////////////////////////////////////
 [ RESTYLE TAG ]*/
 
-
-
 /*---------------------------------------------*/
 a {
-	font-family: 'Monsterrat', sans-serif;
-	font-size: 14px;
-	line-height: 1.7;
-	color: #666666;
-	margin: 0px;
-	transition: all 0.4s;
-	-webkit-transition: all 0.4s;
+  font-family: "Monsterrat", sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #666666;
+  margin: 0px;
+  transition: all 0.4s;
+  -webkit-transition: all 0.4s;
   -o-transition: all 0.4s;
   -moz-transition: all 0.4s;
 }
 
 a:focus {
-	outline: none !important;
+  outline: none !important;
 }
 
 a:hover {
-	text-decoration: none;
-  color: #C02628;
+  text-decoration: none;
+  color: #c02628;
 }
 
 /*---------------------------------------------*/
-h1,h2,h3,h4,h5,h6 {
-	margin: 0px;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0px;
 }
 
 p {
-	font-family: 'Montserrat', sans-serif;
-	font-size: 14px;
-	line-height: 1.7;
-	color: #666666;
-	margin: 0px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #666666;
+  margin: 0px;
 }
 
-ul, li {
-	margin: 0px;
-	list-style-type: none;
+ul,
+li {
+  margin: 0px;
+  list-style-type: none;
 }
-
 
 /*---------------------------------------------*/
 input {
-	outline: none;
-	border: none;
+  outline: none;
+  border: none;
 }
 
 textarea {
@@ -57,12 +58,10 @@ textarea {
   border: none;
 }
 
-textarea:focus, input:focus {
+textarea:focus,
+input:focus {
   border-color: transparent !important;
 }
-
-
-
 
 label {
   display: block;
@@ -71,31 +70,30 @@ label {
 
 /*---------------------------------------------*/
 button {
-	outline: none !important;
-	border: none;
-	background: transparent;
+  outline: none !important;
+  border: none;
+  background: transparent;
 }
 
 button:hover {
-	cursor: pointer;
+  cursor: pointer;
 }
 
 iframe {
-	border: none !important;
+  border: none !important;
 }
 
 /*//////////////////////////////////////////////////////////////////
 [ utility ]*/
 
 /*==================================================================
-[ Text ]*/   
+[ Text ]*/
 
 .txt1 {
   font-family: Montserrat-Regular;
   font-size: 13px;
   line-height: 1.4;
   color: #555555;
- 
 }
 
 .txt2 {
@@ -105,16 +103,13 @@ iframe {
   color: #999999;
 }
 
-
-
-[ login ]*/
-.limiter {
+[login]*/ .limiter {
   width: 100%;
   margin: 0 auto;
 }
 
 .container-login100 {
-  width: 100%;  
+  width: 100%;
   min-height: 100vh;
   display: -webkit-box;
   display: -webkit-flex;
@@ -126,7 +121,6 @@ iframe {
   align-items: center;
   background: #f2f2f2;
 }
-
 
 .wrap-login100 {
   width: 100%;
@@ -140,7 +134,6 @@ iframe {
   flex-wrap: wrap;
   align-items: stretch;
   flex-direction: row-reverse;
- 
 }
 
 /*==================================================================
@@ -163,10 +156,8 @@ iframe {
   height: 100%;
   top: 0;
   left: 0;
-  background: rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.1);
 }
-
-
 
 /*==================================================================
 [ Form ]*/
@@ -182,15 +173,13 @@ iframe {
 .login100-form-title {
   width: 100%;
   display: block;
-  font-family: 'Monsterrat', sans-serif;
+  font-family: "Monsterrat", sans-serif;
   font-size: 30px;
   color: #333333;
   line-height: 1.2;
   text-align: center;
   padding-bottom: 30px;
 }
-
-
 
 /*------------------------------------------------------------------
 [ Input ]*/
@@ -260,7 +249,7 @@ input.input100 {
   top: -1px;
   left: -1px;
   pointer-events: none;
-  border: 1px solid #C02628;
+  border: 1px solid #c02628;
   border-radius: 10px;
 
   visibility: hidden;
@@ -326,7 +315,7 @@ input.input100 {
 }
 
 .label-checkbox100 {
-  font-family: 'Monsterrat', sans-serif;
+  font-family: "Monsterrat", sans-serif;
   font-size: 13px;
   color: #999999;
   line-height: 1.4;
@@ -343,7 +332,7 @@ input.input100 {
   font-family: FontAwesome;
   font-size: 13px;
   color: transparent;
-  
+
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
@@ -356,7 +345,7 @@ input.input100 {
   height: 18px;
   border-radius: 2px;
   background: #fff;
-  border: 1px solid #C02628;
+  border: 1px solid #c02628;
   left: 0;
   top: 50%;
   -webkit-transform: translateY(-50%);
@@ -367,9 +356,8 @@ input.input100 {
 }
 
 .input-checkbox100:checked + .label-checkbox100::before {
-  color: #C02628;
+  color: #c02628;
 }
-
 
 /*------------------------------------------------------------------
 [ Button ]*/
@@ -396,7 +384,7 @@ input.input100 {
   width: 100%;
   height: 50px;
   border-radius: 10px;
-  background: #C02628;
+  background: #c02628;
   margin-top: 25px;
   margin-bottom: 20px;
   font-family: Montserrat-Bold;
@@ -415,8 +403,6 @@ input.input100 {
 .login100-form-btn:hover {
   background: #333333;
 }
-
-
 
 /*------------------------------------------------------------------
 [ Responsive ]*/
@@ -440,7 +426,6 @@ input.input100 {
 
   .login100-more {
     display: none;
-  
   }
 }
 
@@ -451,7 +436,6 @@ input.input100 {
     padding-top: 70px;
   }
 }
-
 
 /*------------------------------------------------------------------
 [ Alert validate ]*/
@@ -478,7 +462,7 @@ input.input100 {
   right: 12px;
   pointer-events: none;
 
-  font-family: 'Monsterrat', sans-serif;
+  font-family: "Monsterrat", sans-serif;
   color: #c80000;
   font-size: 13px;
   line-height: 1.4;
@@ -521,8 +505,6 @@ input.input100 {
     opacity: 1;
   }
 }
-
-
 
 /*==================================================================
 [ Social ]*/
