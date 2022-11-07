@@ -5,39 +5,49 @@ $errors = array();
 $success = array();
 date_default_timezone_set('Asia/Hong_Kong'); //remove mo to kapag nilagay mo na sa hosting sites
 
+//Login and Register Process
 if (isset($_POST['login-button'])) {
-    $email    = $mysqli->real_escape_string($_POST['usersEmail']);
-    $password = $mysqli->real_escape_string($_POST['usersPwd']);
+    $email = $_POST['usersEmail'];
+    $password = $_POST['usersPwd'];
 
-    $check_email = "SELECT * FROM userdetails WHERE username = '$email'";
-    $result = $mysqli->query($check_email);
+    $authAccount = "SELECT * FROM userdetails WHERE username = '$email'";
+    $resultauthAccount = $mysqli->query($authAccount);
 
-    if ($result) {
-        if ($result->num_rows > 0) {
-            $fetch = $result->fetch_assoc();
-            $fetch_ID = $fetch['userID'];
-            $fetch_email = $fetch['username'];
-            $fetch_password = $fetch['password'];
-            $fetch_role = $fetch['role'];
+    if ($resultauthAccount) {
+        if ($resultauthAccount->num_rows >= 0) {
+            $getResultauthAccount = $resultauthAccount->fetch_assoc();
+            $UD_username = $getResultauthAccount['username'];
+            $UD_password = $getResultauthAccount['password'];
+            $UD_role = $getResultauthAccount['role'];
 
-            if ($fetch_password !== $password) {
-                $errors['password'] = "Incorrect Password.";
+            $userDetails = "SELECT SR_number, SR_fname, SR_lname FROM studentrecord WHERE SR_email = '$UD_username'";
+            $resultuserDetails = $mysqli->query($userDetails);
+
+            if ($resultuserDetails->num_rows >= 0) {
+                $getResultuserDetails = $resultuserDetails->fetch_assoc();
+                $SR_fname = $getResultuserDetails['SR_fname'];
+                $SR_lname = $getResultuserDetails['SR_lname'];
+
+                $_SESSION['SR_name'] = $SR_lname.', '.$SR_fname; 
+                $_SESSION['SR_number'] = $getResultuserDetails['SR_number'];
+            }
+
+            if ($password != $UD_password) {
+                echo "error incorrect password";
             } else {
-                $_SESSION['ID'] = $fetch_ID;
-                if ($fetch_role == "student") {
-                    header('Location: ../student/dashboard-user.php');
-                } elseif ($fetch_role == "admin") {
+                if ($UD_role == "student") {
+                    header('Location: ../student/dashboard.php');
+                } elseif ($UD_role == "admin") {
                     header('Location: ../admin/dashboard.php');
-                } elseif ($fetch_role == "faculty") {
+                } elseif ($UD_role == "faculty") {
                     header('Location: ../faculty/dashboard.php');
                 }
             }
+        } else {
+            echo "error" . $mysqli->error;
         }
-    } else {
-        echo "error" . $mysqli->error;
     }
 }
-
 if (isset($_POST['verifyStudentNumber'])) {
     $studentNumber = $_POST['studentNumber'];
 
@@ -55,7 +65,6 @@ if (isset($_POST['verifyStudentNumber'])) {
         }
     }
 }
-
 if (isset($_POST['register-button'])) {
     $email = $mysqli->real_escape_string($_POST['usersEmail']);
     $password  = $mysqli->real_escape_string($_POST['usersPwd']);
@@ -82,7 +91,9 @@ if (isset($_POST['register-button'])) {
         echo "error" . $mysqli->error;
     }
 }
+//END
 
+//Scan QR Code Process
 if (isset($_POST['present'])) {
     $qrCode = $_POST['qrcode_input'];
     $time = date("Y-m-d H:i:s");
@@ -135,7 +146,13 @@ if (isset($_POST['present'])) {
         }
     }
 }
+//END
 
+//Student Process
+
+//End
+
+//Faculty Process
 if (isset($_POST['regStudent'])) {
     $SR_number    = $mysqli->real_escape_string($_POST['SR_number']);
 
@@ -168,3 +185,7 @@ if (isset($_POST['regStudent'])) {
         echo "error" . $mysqli->error;
     }
 }
+//End
+
+//Admin Process
+//End
