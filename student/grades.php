@@ -1,4 +1,11 @@
-<?php require_once("../assets/php/server.php"); ?>
+<?php
+require_once("../assets/php/server.php");
+$ST_number = $_SESSION['SR_number'];
+
+$getStudentGrades = "SELECT * FROM grades WHERE SR_number = '$ST_number'";
+$resultgetStudentGrades = $mysqli->query($getStudentGrades);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -44,10 +51,6 @@
     </div>
     <!-- Spinner End -->
 
-
-
-
-
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
         <a href="index.html" class="navbar-brand ms-4 ms-lg-0">
@@ -88,14 +91,13 @@
     </nav>
     <!-- Navbar End -->
 
-
-    <h1>Grades</h1>
     <div class="container">
         <div class="row">
             <div class="col m-3">
                 <div class="card p-3">
-                    <h1>STUDENT NAME: </h1>
-                    <h3>STUDENT NUMBER: </h3>
+                    <h1>STUDENT NAME: <?php echo $_SESSION['SR_name']; ?></h1>
+                    <h3>STUDENT NUMBER: <?php echo $_SESSION['SR_number']; ?></h3>
+                    <a href="logout.php">Logout</a>
                 </div>
                 <div class="">
                     <table class="table text-center">
@@ -112,30 +114,21 @@
                         <tbody>
                             <tr>
                                 <?php
-                                if (isset($_GET['ST_number'])) {
-                                    $ST_number = $_GET['ST_number'];
-
-                                    $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '$ST_number'";
-                                    $resultgetStudentGrades = $mysqli->query($getStudentGrades);
-
-                                    if ($resultgetStudentGrades->num_rows >= 0) {
-                                        while ($data = $resultgetStudentGrades->fetch_assoc()) { ?>
-                                            <th scope="row"><?php echo $data['G_grading'] ?></th>
-                                            <td><input type="text" value="<?php echo $data['G_english'] ?>" size="1"></td>
-                                            <td><input type="text" value="<?php echo $data['G_math'] ?>" size="1"></td>
-                                            <td><input type="text" value="<?php echo $data['G_science'] ?>" size="1"></td>
-                                            <td><input type="text" value="<?php echo $data['G_physicaled'] ?>" size="1"></td>
-                                            <td><input type="text" value="<?php echo $data['G_finalgrade'] ?>" size="1"></td>
-
+                                if ($resultgetStudentGrades->num_rows >= 0) {
+                                    while ($data = $resultgetStudentGrades->fetch_assoc()) { ?>
+                                        <td><?php echo $data['G_grading'] ?></th>
+                                        <td><?php echo $data['G_english'] ?></td>
+                                        <td><?php echo $data['G_math'] ?></td>
+                                        <td><?php echo $data['G_science'] ?></td>
+                                        <td><?php echo $data['G_physicaled'] ?></td>
+                                        <td><?php echo $data['G_finalgrade'] ?></td>
                                     <?php
-                                        }
                                     }
                                 } else { ?>
                                     <th class="text-center" colspan="6">No data</th>
                                 <?php
                                 }
                                 ?>
-
                             </tr>
                         </tbody>
                     </table>
@@ -219,7 +212,7 @@
 
     <!-- Template Javascript -->
     <script src="../assets/js/main.js"></script>
-    
+
 
 </body>
 
