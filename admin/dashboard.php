@@ -42,17 +42,15 @@
     </div>
     <!-- Spinner End -->
 
-
-
-
-
     <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
-        <a href="index.html" class="navbar-brand ms-4 ms-lg-0">
-            <h1 class="cdsp"><img class="me-3" src="assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">Colegio De San Pedro</h1>
-            <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
-        </a>
-
+    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+        <img class="m-3" src="../assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">
+        <div class="d-flex align-items-center justify-content-center text-center">
+            <a href="../index.php" class="navbar-brand ms-4 ms-lg-0 text-center">
+                <h1 class="cdsp">Colegio De San Pedro</h1>
+                <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
+            </a>
+        </div>
     </nav>
     <!-- Navbar End -->
 
@@ -136,8 +134,7 @@
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
                     <h3 class="text-light mb-4">Address</h3>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro
-                        City, Laguna 4023</p>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
                     <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
                     <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>di ko alam email</p>
                     <div class="d-flex pt-2">
@@ -176,20 +173,14 @@
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
                         &copy; <a href="#">Colegio De San Pedro</a>, All Right Reserved.
                     </div>
-                    <div class="col-md-6 text-center text-md-end">
-                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                        Designed By <a href="https://htmlcodex.com">HTML Codex</a>
-                        <br> Distributed By: <a class="border-bottom" href="https://themewagon.com" target="_blank">ThemeWagon</a>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
     <!-- Footer End -->
-
-
-
-
+    
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

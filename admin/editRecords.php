@@ -45,12 +45,14 @@
     <!-- Spinner End -->
 
     <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
-        <a href="index.html" class="navbar-brand ms-4 ms-lg-0">
-            <h1 class="cdsp"><img class="me-3" src="../assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">Colegio De San Pedro</h1>
-            <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
-        </a>
-
+    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+        <img class="m-3" src="../assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">
+        <div class="d-flex align-items-center justify-content-center text-center">
+            <a href="../index.php" class="navbar-brand ms-4 ms-lg-0 text-center">
+                <h1 class="cdsp">Colegio De San Pedro</h1>
+                <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
+            </a>
+        </div>
     </nav>
     <!-- Navbar End -->
 
@@ -321,7 +323,7 @@
     </div>
 
     <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
+    <div class="container-fluid bg-dark text-body footer mt-5 pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
@@ -353,7 +355,7 @@
                     <h3 class="text-light mb-4">Newsletter</h3>
                     <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
                     <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="fc-footer form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
+                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
                         <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
                     </div>
                 </div>
@@ -364,11 +366,6 @@
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
                         &copy; <a href="#">Colegio De San Pedro</a>, All Right Reserved.
-                    </div>
-                    <div class="col-md-6 text-center text-md-end">
-                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                        Designed By <a href="https://htmlcodex.com">HTML Codex</a>
-                        <br> Distributed By: <a class="border-bottom" href="https://themewagon.com" target="_blank">ThemeWagon</a>
                     </div>
                 </div>
             </div>
