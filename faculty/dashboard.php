@@ -43,17 +43,15 @@
     </div>
     <!-- Spinner End -->
 
-
-
-
-
     <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
-        <a href="index.html" class="navbar-brand ms-4 ms-lg-0">
-            <h1 class="cdsp"><img class="me-3" src="../assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">Colegio De San Pedro</h1>
-            <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
-        </a>
-
+    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+        <img class="m-3" src="../assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">
+        <div class="d-flex align-items-center justify-content-center text-center">
+            <a href="../index.php" class="navbar-brand ms-4 ms-lg-0 text-center">
+                <h1 class="cdsp">Colegio De San Pedro</h1>
+                <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
+            </a>
+        </div>
     </nav>
     <!-- Navbar End -->
 
@@ -87,19 +85,46 @@
     </nav>
     <!-- Navbar End -->
 
-
-    <div class="container-fluid py-5 ">
-        <div class="container py-5">
-            <div class="row g-5 pb-3">
-                <div class="col-lg-12 col-md-12 col-sm-12 service-name bg-light rounded align-items-left justify-content-center text-left">
-                    <h5 class="text1">Camille Anne Sabile</h5>
-                    <p class="text2">Faculty</p>
-                    <p class="text2">Muntinlupa City</p>
+    <div class="container p-5">
+        <div class="container">
+            <div class="row g-3 pb-3">
+                <div class="col-lg-12 col-md-12 col-sm-12 service-name bg-light rounded">
+                    <h5 class="text1 my-3">Camille Anne Sabile</h5>
+                    <p class="text2 mb-1">Faculty</p>
+                    <p class="text2 mb-3">Muntinlupa City</p>
                 </div>
             </div>
-            <div class="row g-5" style="background: red;">
-                <div class="col-lg-4 wow slideInUp" data-wow-delay="0.3s">
-                    <div class="blog-item bg-light rounded overflow-hidden">
+            <div class="row g-3">
+                <div class="text-center">
+                    <h1 class="fw-bold text-primary text-uppercase">Dashboard</h1>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12 mb-3">
+                    <div class="text-center">
+                        <h3 class="fw-bold text-uppercase">Announcement</h3>
+                    </div>
+                    <div class="blog-item bg-light rounded overflow-hidden mb-3">
+                        <div class="p-4">
+                            <div class="d-flex mb-3">
+                                <small class="me-3"><i class="far fa-user text-primary me-2"></i>John Doe</small>
+                                <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
+                            </div>
+                            <h4 class="mb-3">How to build a website</h4>
+                            <p>Dolor et eos labore stet justo sed est sed sed sed dolor stet amet</p>
+                            <a class="text-uppercase" href="">Edit<i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="blog-item bg-light rounded overflow-hidden mb-3">
+                        <div class="p-4">
+                            <div class="d-flex mb-3">
+                                <small class="me-3"><i class="far fa-user text-primary me-2"></i>John Doe</small>
+                                <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
+                            </div>
+                            <h4 class="mb-3">How to build a website</h4>
+                            <p>Dolor et eos labore stet justo sed est sed sed sed dolor stet amet</p>
+                            <a class="text-uppercase" href="">Edit<i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="blog-item bg-light rounded overflow-hidden mb-3">
                         <div class="p-4">
                             <div class="d-flex mb-3">
                                 <small class="me-3"><i class="far fa-user text-primary me-2"></i>John Doe</small>
@@ -111,9 +136,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="col g-5">
+                <div class="col-lg-6 col-md-12 col-sm-12 mb-3">
                     <div class="row g-3">
-                        <div class="col-lg-6 col-md-12 col-sm-12 wow zoomIn" data-wow-delay="0.3s">
+                        <div class="text-center">
+                            <h3 class="fw-bold text-uppercase">Tools</h3>
+                        </div>
+                        <div class="col-lg-6 col-md-12 col-sm-12 mb-3 d-flex flex-column align-items-center justify-content-center text-center">
                             <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
                                 <div class="service-icon">
                                     <i class="fa fa-shield-alt text-white"></i>
@@ -122,7 +150,7 @@
                                 <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</a>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-md-12 col-sm-12 wow zoomIn" data-wow-delay="0.6s">
+                        <div class="col-lg-6 col-md-12 col-sm-12 mb-3 d-flex flex-column align-items-center justify-content-center text-center">
                             <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
                                 <div class="service-icon">
                                     <i class="fa fa-chart-pie text-white"></i>
@@ -133,7 +161,7 @@
                         </div>
                     </div>
                     <div class="row g-3">
-                        <div class="col-lg-6 col-md-12 col-sm-12 wow zoomIn" data-wow-delay="0.9s">
+                        <div class="col-lg-6 col-md-12 col-sm-12 mb-3 d-flex flex-column align-items-center justify-content-center text-center">
                             <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
                                 <div class="service-icon">
                                     <i class="fa fa-code text-white"></i>
@@ -142,7 +170,7 @@
                                 <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</a>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-md-12 col-sm-12 wow zoomIn" data-wow-delay="0.3s">
+                        <div class="col-lg-6 col-md-12 col-sm-12 mb-3 d-flex flex-column align-items-center justify-content-center text-center">
                             <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
                                 <div class="service-icon">
                                     <i class="fab fa-android text-white"></i>
