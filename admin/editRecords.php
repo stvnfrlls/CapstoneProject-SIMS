@@ -114,7 +114,6 @@
                                             <div class="list-group-item list-group-item-action d-flex gap-3 py-3">
                                                 <?php $counter++;
                                                 echo $counter; ?>
-                                                <img src="https://github.com/twbs.png" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
                                                 <div class="d-flex gap-2 w-100 justify-content-between">
                                                     <div>
                                                         <h6 class="mb-0"><input type="submit" name="ST_number" value="<?php echo $data['SR_number']; ?>"></h6>
@@ -198,7 +197,6 @@
                                         <div class="list-group-item list-group-item-action d-flex gap-3 py-3">
                                             <?php $counter++;
                                             echo $counter; ?>
-                                            <img src="https://github.com/twbs.png" alt="twbs" width="32" height="32" class="rounded-circle flex-shrink-0">
                                             <div class="d-flex gap-2 w-100 justify-content-between">
                                                 <div>
                                                     <h6 class="mb-0"><input type="submit" name="ST_number" value="<?php echo $data['SR_number']; ?>"></h6>
