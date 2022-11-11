@@ -85,11 +85,11 @@
     <!-- Navbar End -->
 
     <!-- Dashboard Start -->
-    <div class="container p-5">
+    <div class="container py-5">
         <div class="container">
             <div class="row g-3">
-                <div class="text-center">
-                    <h1 class="fw-bold text-primary text-uppercase">Dashboard</h1>
+                <div class="section-title text-center position-relative pb-3 mb-5 mx-auto">
+                    <h2 class="fw-bold text-primary text-uppercase">Dashboard</h2>
                 </div>
                 <div class="col-lg-6 col-md-12 col-sm-12 mb-3">
                     <div class="text-center">
@@ -106,7 +106,7 @@
                             <a class="text-uppercase" href="">Edit<i class="bi bi-arrow-right"></i></a>
                         </div>
                     </div>
-                    <div class="blog-item bg-light rounded overflow-hidden mb-3">
+                    <div class="blog-item bg-light rounded overflow-hidden mb-3 ">
                         <div class="p-4">
                             <div class="d-flex mb-3">
                                 <small class="me-3"><i class="far fa-user text-primary me-2"></i>John Doe</small>

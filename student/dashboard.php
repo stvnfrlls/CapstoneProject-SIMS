@@ -62,23 +62,23 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <div class="navbar-nav ms-auto p-4 p-lg-0 ">
-        <a href="index.php" class="nav-item nav-link active" style="color: white">Home</a>
-        <a href="about.html" class="nav-item nav-link" style="color: white">About Us</a>
-        <div class="nav-item dropdown">
-          <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: white">Academics</a>
-          <div class="dropdown-menu bg-dark border-0 m-0">
-            <a href="auth/login.php" class="dropdown-item" style="color: white">Student Information System</a>
-            <a href="" class="dropdown-item" style="color: white">Kindergarten</a>
-            <a href="" class="dropdown-item" style="color: white">Pre-Elementary</a>
-            <a href="" class="dropdown-item" style="color: white">Elementary</a>
-            <a href="" class="dropdown-item" style="color: white">Highschool</a>
-            <a href="" class="dropdown-item" style="color: white">Senior Highschool</a>
-            <a href="" class="dropdown-item" style="color: white">College</a>
-          </div>
-        </div>
-        <a href="service.html" class="nav-item nav-link" style="color: white">Admissions</a>
-        <a href="contact.html" class="nav-item nav-link" style="color: white">Scholarship and Discounts</a>
-        <a href="contact.html" class="nav-item nav-link" style="color: white">Contact Us</a>
+      <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
+                <a href="about.html" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Academics</a>
+                    <div class="dropdown-menu bg-dark border-0 m-0">
+                        <a href="auth/login.php" class="dropdown-item" style="color: white; font-size: 14px;">Student Information System</a>
+                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Kindergarten</a>
+                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Pre-Elementary</a>
+                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Elementary</a>
+                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Highschool</a>
+                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Senior Highschool</a>
+                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">College</a>
+                    </div>
+                </div>
+                <a href="service.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Admissions</a>
+                <a href="contact.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Scholarship and Discounts</a>
+                <a href="contact.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Contact Us</a>
       </div>
     </div>
   </nav>
@@ -141,10 +141,9 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-6 offset-lg-3">
-          <div class="section-heading">
-            <h5 class="fw-bold text-primary text-uppercase text-center" style="padding-bottom: 50px;">R e m i n d e r s
-            </h5>
-          </div>
+        <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
+        <h5 class="fw-bold text-primary text-uppercase">Reminders</h5>
+      </div>
         </div>
         <div class="col-lg-12">
           <div class="naccs">
