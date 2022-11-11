@@ -27,6 +27,7 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="..assets/css/materialdesignicons.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
     <link href="assets/css/style.css" rel="stylesheet">
@@ -42,12 +43,14 @@
     <!-- Spinner End -->
 
     <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
-        <a href="index.html" class="navbar-brand ms-4 ms-lg-0">
-            <h1 class="cdsp"><img class="me-3" src="assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">Colegio De San Pedro</h1>
-            <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
-        </a>
-
+    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+        <img class="m-3" src="assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">
+        <div class="d-flex align-items-center justify-content-center text-center">
+            <a href="index.php" class="navbar-brand ms-4 ms-lg-0 text-center">
+                <h1 class="cdsp">Colegio De San Pedro</h1>
+                <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
+            </a>
+        </div>
     </nav>
     <!-- Navbar End -->
 
@@ -59,28 +62,28 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0 ">
-                <a href="index.php" class="nav-item nav-link active" style="color: white">Home</a>
-                <a href="about.html" class="nav-item nav-link" style="color: white">About Us</a>
+                <a href="index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
+                <a href="about.html" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: white">Academics</a>
+                    <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Academics</a>
                     <div class="dropdown-menu bg-dark border-0 m-0">
-                        <a href="auth/login.php" class="dropdown-item" style="color: white">Student Information System</a>
-                        <a href="" class="dropdown-item" style="color: white">Kindergarten</a>
-                        <a href="" class="dropdown-item" style="color: white">Pre-Elementary</a>
-                        <a href="" class="dropdown-item" style="color: white">Elementary</a>
-                        <a href="" class="dropdown-item" style="color: white">Highschool</a>
-                        <a href="" class="dropdown-item" style="color: white">Senior Highschool</a>
-                        <a href="" class="dropdown-item" style="color: white">College</a>
+                        <a href="auth/login.php" class="dropdown-item" style="color: white; font-size: 14px;">Student Information System</a>
+                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Kindergarten</a>
+                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Pre-Elementary</a>
+                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Elementary</a>
+                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Highschool</a>
+                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Senior Highschool</a>
+                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">College</a>
                     </div>
                 </div>
-                <a href="service.html" class="nav-item nav-link" style="color: white">Admissions</a>
-                <a href="contact.html" class="nav-item nav-link" style="color: white">Scholarship and Discounts</a>
-                <a href="contact.html" class="nav-item nav-link" style="color: white">Contact Us</a>
+                <a href="service.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Admissions</a>
+                <a href="contact.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Scholarship and Discounts</a>
+                <a href="contact.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Contact Us</a>
             </div>
         </div>
     </nav>
     <!-- Navbar End -->
-    
+
     <!-- Carousel Start -->
     <div class="container-fluid p-0 pb-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="owl-carousel header-carousel position-relative">
@@ -321,11 +324,6 @@
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
                         &copy; <a href="#">Colegio De San Pedro</a>, All Right Reserved.
-                    </div>
-                    <div class="col-md-6 text-center text-md-end">
-                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                        Designed By <a href="https://htmlcodex.com">HTML Codex</a>
-                        <br> Distributed By: <a class="border-bottom" href="https://themewagon.com" target="_blank">ThemeWagon</a>
                     </div>
                 </div>
             </div>

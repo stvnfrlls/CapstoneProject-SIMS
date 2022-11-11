@@ -64,12 +64,12 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0 ">
-                <a href="index.php" class="nav-item nav-link active" style="color: white">Home</a>
-                <a href="about.html" class="nav-item nav-link" style="color: white">About Us</a>
+                <a href="../index.php" class="nav-item nav-link active" style="color: white">Home</a>
+                <a href="" class="nav-item nav-link" style="color: white">About Us</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: white">Academics</a>
                     <div class="dropdown-menu bg-dark border-0 m-0">
-                        <a href="auth/login.php" class="dropdown-item" style="color: white">Student Information System</a>
+                        <a href="login.php" class="dropdown-item" style="color: white">Student Information System</a>
                         <a href="" class="dropdown-item" style="color: white">Kindergarten</a>
                         <a href="" class="dropdown-item" style="color: white">Pre-Elementary</a>
                         <a href="" class="dropdown-item" style="color: white">Elementary</a>
@@ -94,36 +94,25 @@
                         LOGIN
                     </span>
 
-
-                    <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+                    <div class="wrap-input100 validate-input form-floating" data-validate="Valid email is required: ex@abc.xyz">
                         <input class="input100" type="text" name="usersEmail">
                         <span class="focus-input100"></span>
                         <span class="label-input100">Email</span>
                     </div>
 
-
-                    <div class="wrap-input100 validate-input" data-validate="Password is required">
+                    <div class="wrap-input100 validate-input form-floating" data-validate="Password is required">
                         <input class="input100" type="password" name="usersPwd">
                         <span class="focus-input100"></span>
                         <span class="label-input100">Password</span>
                     </div>
 
                     <div class="flex-sb-m w-full p-t-3 p-b-32">
-                        <div class="contact100-form-checkbox">
-                            <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
-                            <label class="label-checkbox100" for="ckb1">
-                                Remember me
-                                <!-- https://phpgurukul.com/php-login-with-remember-me-function/#:~:text=Remember%20me%20function%20is%20used,password%20in%20the%20login%20from.&text=Step%204%20%3A%20PHP%20Cookies%20to,be%20stored%20%24_COOKIE%20array. -->
-                            </label>
-                        </div>
-
                         <div>
                             <a href="reset.php" class="txt1" style="margin-top: 20px;">
                                 Forgot Password?
                             </a>
                         </div>
                     </div>
-
 
                     <div class="container-login100-form-btn">
                         <button type="submit" class="login100-form-btn" name="login-button">
@@ -137,7 +126,6 @@
                         </a>
                     </div>
 
-
                 </form>
 
                 <div class="login100-more" style="background-image: url('../assets/img/banner_1.jpg');">
@@ -147,7 +135,7 @@
     </div>
 
     <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
+    <div class="container-fluid bg-dark text-body footer">
         <div class="container py-5">
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
@@ -156,10 +144,7 @@
                     <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
                     <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>di ko alam email</p>
                     <div class="d-flex pt-2">
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
                         <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -191,21 +176,11 @@
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
                         &copy; <a href="#">Colegio De San Pedro</a>, All Right Reserved.
                     </div>
-                    <div class="col-md-6 text-center text-md-end">
-                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                        Designed By <a href="https://htmlcodex.com">HTML Codex</a>
-                        <br> Distributed By: <a class="border-bottom" href="https://themewagon.com" target="_blank">ThemeWagon</a>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
     <!-- Footer End -->
-
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

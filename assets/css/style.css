@@ -15,6 +15,7 @@
   color: #ffffff;
   font-family: "Montserrat", sans-serif;
   font-size: 10px;
+  margin-left: 1px;
 }
 
 h1,
@@ -141,6 +142,9 @@ h6,
   transition: 0.5s;
 }
 
+
+
+
 @media (max-width: 991.98px) {
   .navbar .navbar-nav .nav-link {
     margin-right: 0;
@@ -177,6 +181,7 @@ h6,
     transform-origin: 0% 0%;
     transition: 0.5s;
     opacity: 0;
+    text-align: center;
   }
 
   .navbar .nav-item:hover .dropdown-menu {

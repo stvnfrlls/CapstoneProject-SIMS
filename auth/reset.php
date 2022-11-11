@@ -66,23 +66,23 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0 ">
-                <a href="index.php" class="nav-item nav-link active" style="color: white">Home</a>
-                <a href="about.html" class="nav-item nav-link" style="color: white">About Us</a>
+            <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
+                <a href="about.html" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: white">Academics</a>
+                    <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Academics</a>
                     <div class="dropdown-menu bg-dark border-0 m-0">
-                        <a href="auth/login.php" class="dropdown-item" style="color: white">Student Information System</a>
-                        <a href="" class="dropdown-item" style="color: white">Kindergarten</a>
-                        <a href="" class="dropdown-item" style="color: white">Pre-Elementary</a>
-                        <a href="" class="dropdown-item" style="color: white">Elementary</a>
-                        <a href="" class="dropdown-item" style="color: white">Highschool</a>
-                        <a href="" class="dropdown-item" style="color: white">Senior Highschool</a>
-                        <a href="" class="dropdown-item" style="color: white">College</a>
+                        <a href="auth/login.php" class="dropdown-item" style="color: white; font-size: 14px;">Student Information System</a>
+                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Kindergarten</a>
+                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Pre-Elementary</a>
+                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Elementary</a>
+                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Highschool</a>
+                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Senior Highschool</a>
+                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">College</a>
                     </div>
                 </div>
-                <a href="service.html" class="nav-item nav-link" style="color: white">Admissions</a>
-                <a href="contact.html" class="nav-item nav-link" style="color: white">Scholarship and Discounts</a>
-                <a href="contact.html" class="nav-item nav-link" style="color: white">Contact Us</a>
+                <a href="service.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Admissions</a>
+                <a href="contact.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Scholarship and Discounts</a>
+                <a href="contact.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Contact Us</a>
             </div>
         </div>
     </nav>
@@ -124,7 +124,7 @@
     </div>
 
     <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-body footer mt-5 pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container-fluid bg-dark text-body footer">
         <div class="container py-5">
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
@@ -133,10 +133,7 @@
                     <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
                     <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>di ko alam email</p>
                     <div class="d-flex pt-2">
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
                         <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -156,7 +153,7 @@
                     <h3 class="text-light mb-4">Newsletter</h3>
                     <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
                     <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
+                        <input class="fc-footer form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
                         <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
                     </div>
                 </div>
@@ -173,9 +170,6 @@
         </div>
     </div>
     <!-- Footer End -->
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

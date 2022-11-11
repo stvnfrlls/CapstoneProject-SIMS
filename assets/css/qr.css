@@ -1,9 +1,13 @@
+
 .videoWrapper,
 .videoWrapper video {
   width: 80%;
   height: auto;
 }
 
+.bowton{
+  padding-top: 15px;
+}
 
 @media (min-width: 320px) {
   .videoWrapper,

@@ -85,42 +85,94 @@
     <!-- Navbar End -->
 
     <!-- Dashboard Start -->
-    <div class="container py-5 wow fadeInUp" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
-                <h5 class="fw-bold text-primary text-uppercase">D a s h b o a r d</h5>
-            </div>
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-12 col-sm-12 wow zoomIn" data-wow-delay="0.3s">
-                    <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
-                        <div class="service-icon">
-                            <i class="fa fa-shield-alt text-white"></i>
+    <div class="container py-5">
+        <div class="container">
+            <div class="row g-3">
+                <div class="section-title text-center position-relative pb-3 mb-5 mx-auto">
+                    <h2 class="fw-bold text-primary text-uppercase">Dashboard</h2>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12 mb-3">
+                    <div class="text-center">
+                        <h3 class="fw-bold text-uppercase">Announcement</h3>
+                    </div>
+                    <div class="blog-item bg-light rounded overflow-hidden mb-3">
+                        <div class="p-4">
+                            <div class="d-flex mb-3">
+                                <small class="me-3"><i class="far fa-user text-primary me-2"></i>John Doe</small>
+                                <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
+                            </div>
+                            <h4 class="mb-3">How to build a website</h4>
+                            <p>Dolor et eos labore stet justo sed est sed sed sed dolor stet amet</p>
+                            <a class="text-uppercase" href="">Edit<i class="bi bi-arrow-right"></i></a>
                         </div>
-                        <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="">Manage Student</a>
+                    </div>
+                    <div class="blog-item bg-light rounded overflow-hidden mb-3 ">
+                        <div class="p-4">
+                            <div class="d-flex mb-3">
+                                <small class="me-3"><i class="far fa-user text-primary me-2"></i>John Doe</small>
+                                <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
+                            </div>
+                            <h4 class="mb-3">How to build a website</h4>
+                            <p>Dolor et eos labore stet justo sed est sed sed sed dolor stet amet</p>
+                            <a class="text-uppercase" href="">Edit<i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="blog-item bg-light rounded overflow-hidden mb-3">
+                        <div class="p-4">
+                            <div class="d-flex mb-3">
+                                <small class="me-3"><i class="far fa-user text-primary me-2"></i>John Doe</small>
+                                <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
+                            </div>
+                            <h4 class="mb-3">How to build a website</h4>
+                            <p>Dolor et eos labore stet justo sed est sed sed sed dolor stet amet</p>
+                            <a class="text-uppercase" href="">Edit<i class="bi bi-arrow-right"></i></a>
+                        </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-12 col-sm-12 wow zoomIn" data-wow-delay="0.6s">
-                    <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
-                        <div class="service-icon">
-                            <i class="fa fa-chart-pie text-white"></i>
+                <div class="col-lg-6 col-md-12 col-sm-12 mb-3">
+                    <div class="row g-3">
+                        <div class="text-center">
+                            <h3 class="fw-bold text-uppercase">Tools</h3>
                         </div>
-                        <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="">Edit Records</a>
+                        <div class="col-lg-6 col-md-12 col-sm-12 mb-3 d-flex flex-column align-items-center justify-content-center text-center">
+                            <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
+                                <div class="service-icon">
+                                    <i class="fa fa-shield-alt text-white"></i>
+                                </div>
+                                <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="addStudent.php">Registration</a>
+                                <p class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-12 col-sm-12 mb-3 d-flex flex-column align-items-center justify-content-center text-center">
+                            <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
+                                <div class="service-icon">
+                                    <i class="fa fa-chart-pie text-white"></i>
+                                </div>
+                                <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="editRecords.php">Edit Records</a>
+                                <p class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-12 col-sm-12 wow zoomIn" data-wow-delay="0.9s">
-                    <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
-                        <div class="service-icon">
-                            <i class="fa fa-code text-white"></i>
+                    <div class="row g-3">
+                        <div class="col-lg-6 col-md-12 col-sm-12 mb-3 d-flex flex-column align-items-center justify-content-center text-center">
+                            <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
+                                <div class="service-icon">
+                                    <i class="fa fa-code text-white"></i>
+                                </div>
+                                <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="manageFaculty.php">Manage Faculty</a>
+                                <p class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
+                            </div>
                         </div>
-                        <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="manageFaculty.php">Manage Faculty</a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-12 col-sm-12 wow zoomIn" data-wow-delay="0.3s">
-                    <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
-                        <div class="service-icon">
-                            <i class="fab fa-android text-white"></i>
+                        <div class="col-lg-6 col-md-12 col-sm-12 mb-3 d-flex flex-column align-items-center justify-content-center text-center">
+                            <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
+                                <div class="service-icon">
+                                    <i class="fab fa-android text-white"></i>
+                                </div>
+                                <!-- EDIT PROFILE -->
+                                <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="viewReports.php">Reports</a>
+                                <p class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
+                            </div>
                         </div>
-                        <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="viewReports.php">Reports</a>
                     </div>
                 </div>
             </div>
@@ -178,7 +230,7 @@
         </div>
     </div>
     <!-- Footer End -->
-    
+
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
