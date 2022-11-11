@@ -90,14 +90,14 @@ iframe {
 [ Text ]*/
 
 .txt1 {
-  font-family: Montserrat-Regular;
+  font-family: "Montserrat", sans-serif;
   font-size: 13px;
   line-height: 1.4;
   color: #555555;
 }
 
 .txt2 {
-  font-family: Montserrat-Regular;
+  font-family: "Montserrat", sans-serif;
   font-size: 13px;
   line-height: 1.4;
   color: #999999;
@@ -201,7 +201,7 @@ iframe {
 }
 
 .label-input100 {
-  font-family: Montserrat-Regular;
+  font-family: "Montserrat", sans-serif;
   font-size: 15px;
   color: #999999;
   line-height: 1.2;
@@ -224,7 +224,7 @@ iframe {
   display: block;
   width: 100%;
   background: transparent;
-  font-family: Montserrat-Regular;
+  font-family: "Montserrat", sans-serif;
   font-size: 15px;
   color: #555555;
   line-height: 1.2;
@@ -245,7 +245,7 @@ input.input100 {
   position: absolute;
   display: block;
   width: calc(100% + 2px);
-  height: calc(100% + 2px);
+  height: calc(100% + 5px);
   top: -1px;
   left: -1px;
   pointer-events: none;
@@ -387,7 +387,7 @@ input.input100 {
   background: #c02628;
   margin-top: 25px;
   margin-bottom: 20px;
-  font-family: Montserrat-Bold;
+  font-family: "Montserrat", sans-serif;
   font-size: 12px;
   color: #fff;
   line-height: 1.2;
