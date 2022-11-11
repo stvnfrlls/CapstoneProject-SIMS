@@ -67,11 +67,11 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0 ">
                 <a href="index.php" class="nav-item nav-link active" style="color: white">Home</a>
-                <a href="about.html" class="nav-item nav-link" style="color: white">About Us</a>
+                <a href="" class="nav-item nav-link" style="color: white">About Us</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: white">Academics</a>
                     <div class="dropdown-menu bg-dark border-0 m-0">
-                        <a href="auth/login.php" class="dropdown-item" style="color: white">Student Information System</a>
+                        <a href="login.php" class="dropdown-item" style="color: white">Student Information System</a>
                         <a href="" class="dropdown-item" style="color: white">Kindergarten</a>
                         <a href="" class="dropdown-item" style="color: white">Pre-Elementary</a>
                         <a href="" class="dropdown-item" style="color: white">Elementary</a>
