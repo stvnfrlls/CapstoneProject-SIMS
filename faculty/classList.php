@@ -63,7 +63,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0 ">
-            <a href="index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
+                <a href="index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
                 <a href="../index.php" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Academics</a>
@@ -105,81 +105,35 @@
                 <input class="search" type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" placeholder="Search...." class="form-control">
             </div>
         </div>
+
         <div class="container">
             <div class="row">
-                <div class="col-lg-3 col-md-12 col-sm-12">
-                    <?php
-                    $getStudent = ("SELECT * FROM studentrecord WHERE SR_grade = 1");
-                    $res = $mysqli->query($getStudent);
-                    if ($res->num_rows >= 0) {
-                        $counter = 0;
-                        while ($data = $res->fetch_assoc()) { ?>
-                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
-                                <div class="list-group w-auto">
-                                    <div class="list-group-item list-group-item-action d-flex gap-3 py-3">
-                                        <?php $counter++;
-                                        echo $counter; ?>
-                                        <div class="d-flex gap-2 w-100 justify-content-between">
-                                            <div>
-                                                <h6 class="mb-0"><input type="submit" name="ST_number" value="<?php echo $data['SR_number']; ?>"></h6>
-                                                <p class="mb-0 opacity-75"><?php echo $data['SR_lname']; ?></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                    <?php
-                        }
-                    }
-                    ?>
-                </div>
                 <div class="col m-3">
                     <div class="table-responsive">
                         <table class="table table-striped table-class" id="table-id">
                             <thead>
                                 <tr>
+                                    <th scope="col">Section</th>
                                     <th scope="col">Subject</th>
-                                    <th scope="col">Assignment</th>
-                                    <th scope="col">Quiz</th>
-                                    <th scope="col">Performances</th>
-                                    <th scope="col">Examinations</th>
-                                    <th scope="col">Final Grade</th>
-                                    <th scope="col">Edit</th>
+                                    <th scope="col">Schedule</th>
+                                    <th scope="col">Students</th>
+                                    <th scope="col">Action</th>
                                 </tr>
                                 </tr>
                             </thead>
                             <tbody>
                                 <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
                                     <tr>
-                                        <?php
-                                        if (isset($_GET['ST_number'])) {
-                                            $ST_number = $_GET['ST_number'];
-
-                                            $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '$ST_number'";
-                                            $result = $mysqli->query($getStudentGrades);
-
-                                            if ($result->num_rows >= 0) {
-                                                while ($data = $result->fetch_assoc()) { ?>
-                                                    <th scope="row"><?php echo $data['G_grading'] ?></th>
-                                                    <td><input type="text" value="<?php echo $data['G_english'] ?>" size="1"></td>
-                                                    <td><input type="text" value="<?php echo $data['G_math'] ?>" size="1"></td>
-                                                    <td><input type="text" value="<?php echo $data['G_science'] ?>" size="1"></td>
-                                                    <td><input type="text" value="<?php echo $data['G_physicaled'] ?>" size="1"></td>
-                                                    <td><input type="text" value="<?php echo $data['G_finalgrade'] ?>" size="1"></td>
-                                                    <td><a class="btn btn-success btn-sm btn-icon-text mr-3" href="">Edit<i class="typcn typcn-edit btn-icon-append"></i></a></td>
-
-                                            <?php
-                                                }
-                                            }
-                                        } else { ?>
-                                            <th class="text-center" colspan="7">No data</th>
-                                        <?php
-                                        }
-                                        ?>
-
-                                    </tr>
-                                    <tr>
-                                        <td colspan="7"><input type="submit" value="submit"></td>
+                                        <td>Section Name</td>
+                                        <td>Subject Name</td>
+                                        <td>Schedule</td>
+                                        <td>50/50 students</td>
+                                        <td>
+                                            <div class="row">
+                                                <input type="submit" placeholder="Encode Grades">
+                                            </div>
+                                        </td>
+                                        <td></td>
                                     </tr>
                                 </form>
                             </tbody>

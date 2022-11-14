@@ -1,9 +1,9 @@
 <?php
 require_once("../assets/php/server.php");
-$get_userID = ("SELECT COUNT(userID) FROM studentrecord");
+$get_userID = ("SELECT COUNT(SR_ID) FROM studentrecord");
 $result = $mysqli->query($get_userID);
 $count = $result->fetch_assoc();
-$studentCounter = $count["COUNT(userID)"] + 1;
+$studentCounter = $count["COUNT(SR_ID)"] + 1;
 $format_StudentCounter = sprintf("%05d", $studentCounter);
 $year = date("Y");
 $studentNumber = $year . "-" . $format_StudentCounter . "-SP";
