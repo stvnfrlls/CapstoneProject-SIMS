@@ -64,7 +64,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0 ">
-            <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
+                <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
                 <a href="about.html" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Academics</a>
@@ -87,83 +87,256 @@
     <!-- Navbar End -->
 
     <div class="container p-5">
-        <div class="container">
-            <div class="row">
-                <div class="col card">
-                    <h4>Student Name:</h4>
-                    <p>Student Number:</p>
+        <div class="my-3">
+            <ul class="nav nav-pills justify-content-center" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" href="#ClassPerformance" data-toggle="tab">Class Performance</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" href="#FinalGrade" data-toggle="tab">Final Grade</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="tab-content">
+            <div class="tab-pane active" id="ClassPerformance">
+                <div class="container justify-content-center">
+                    <?php
+                    if (empty($_SESSION['SR_number'])) { ?>
+                        <div class="row mb-3">
+                            <div class="col-lg-10 col-md-12 card">
+                                <h4>Section Name: kjashdjkashdjkashdkjas</h4>
+                                <p>Number of Students: 90-218309128</p>
+                            </div>
+                            <div class="col-2">
+                                <button>BACK</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-12 card">
+                                <h4>Student Number: kjashdjkashdjkashdkjas</h4>
+                                <p>Name of Students: 90-218309128</p>
+                            </div>
+                            <div class="col-lg-4 col-md-12 card">
+                                <h4>Student Number: kjashdjkashdjkashdkjas</h4>
+                                <p>Name of Students: 90-218309128</p>
+                            </div>
+                            <div class="col-lg-4 col-md-12 card">
+                                <h4>Student Number: kjashdjkashdjkashdkjas</h4>
+                                <p>Name of Students: 90-218309128</p>
+                            </div>
+                            <div class="col-lg-4 col-md-12 card">
+                                <h4>Student Number: kjashdjkashdjkashdkjas</h4>
+                                <p>Name of Students: 90-218309128</p>
+                            </div>
+                            <div class="col-lg-4 col-md-12 card">
+                                <h4>Student Number: kjashdjkashdjkashdkjas</h4>
+                                <p>Name of Students: 90-218309128</p>
+                            </div>
+                            <div class="col-lg-4 col-md-12 card">
+                                <h4>Student Number: kjashdjkashdjkashdkjas</h4>
+                                <p>Name of Students: 90-218309128</p>
+                            </div>
+                        </div>
+                    <?php
+                    } else { ?>
+                        <div class="container justify-content-center">
+                            <div class="container justify-content-center">
+                                <div class="row mb-3">
+                                    <div class="col-lg-12 col-md-12 card">
+                                        <h4>Student Number: kjashdjkashdjkashdkjas</h4>
+                                        <p>Students: 90-218309128</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col m-3">
+                                        <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
+                                            <h5 class="fw-bold text-primary text-uppercase">Assignments</h5>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-class">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Date Posted</th>
+                                                        <th scope="col">Due Date</th>
+                                                        <th scope="col">Status</th>
+                                                        <th scope="col">Grade</th>
+                                                        <th scope="col">Action</th>
+                                                    </tr>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
+                                                        <tr>
+                                                            <td>120938210938</td>
+                                                            <td>-10293-01293</td>
+                                                            <td>
+                                                                <select class="browser-default custom-select">
+                                                                    <option selected>Open this select menu</option>
+                                                                    <option value="1">One</option>
+                                                                    <option value="2">Two</option>
+                                                                    <option value="3">Three</option>
+                                                                </select>
+                                                            </td>
+                                                            <td><input type="text" size="4" required></td>
+                                                            <td>
+                                                                <div class="row">
+                                                                    <input type="submit" placeholder="Encode Grades">
+                                                                </div>
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+                                                    </form>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col m-3">
+                                        <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
+                                            <h5 class="fw-bold text-primary text-uppercase">Quizzes</h5>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-class">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Date Posted</th>
+                                                        <th scope="col">Due Date</th>
+                                                        <th scope="col">Status</th>
+                                                        <th scope="col">Grade</th>
+                                                        <th scope="col">Action</th>
+                                                    </tr>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
+                                                        <tr>
+                                                            <td>120938210938</td>
+                                                            <td>-10293-01293</td>
+                                                            <td>
+                                                                <select class="browser-default custom-select">
+                                                                    <option selected>Open this select menu</option>
+                                                                    <option value="1">One</option>
+                                                                    <option value="2">Two</option>
+                                                                    <option value="3">Three</option>
+                                                                </select>
+                                                            </td>
+                                                            <td><input type="text" size="4" required></td>
+                                                            <td>
+                                                                <div class="row">
+                                                                    <input type="submit" placeholder="Encode Grades">
+                                                                </div>
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+                                                    </form>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col m-3">
+                                        <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
+                                            <h5 class="fw-bold text-primary text-uppercase">Examinations</h5>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-class">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Date Posted</th>
+                                                        <th scope="col">Due Date</th>
+                                                        <th scope="col">Status</th>
+                                                        <th scope="col">Grade</th>
+                                                        <th scope="col">Action</th>
+                                                    </tr>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
+                                                        <tr>
+                                                            <td>120938210938</td>
+                                                            <td>-10293-01293</td>
+                                                            <td>
+                                                                <select class="browser-default custom-select">
+                                                                    <option selected>Open this select menu</option>
+                                                                    <option value="1">One</option>
+                                                                    <option value="2">Two</option>
+                                                                    <option value="3">Three</option>
+                                                                </select>
+                                                            </td>
+                                                            <td><input type="text" size="4" required></td>
+                                                            <td>
+                                                                <div class="row">
+                                                                    <input type="submit" placeholder="Encode Grades">
+                                                                </div>
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+                                                    </form>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php
+                    }
+                    ?>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col m-3">
-                    <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
-                        <h5 class="fw-bold text-primary text-uppercase">Assignments</h5>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-striped table-class">
-                            <thead>
-                                <tr>
-                                    <th scope="col">No.</th>
-                                    <th scope="col">Date Posted</th>
-                                    <th scope="col">Due Date</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Grade</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col m-3">
-                    <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
-                        <h5 class="fw-bold text-primary text-uppercase">Quizzes</h5>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-striped table-class">
-                            <thead>
-                                <tr>
-                                    <th scope="col">No.</th>
-                                    <th scope="col">Date Posted</th>
-                                    <th scope="col">Due Date</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Grade</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col m-3">
-                    <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
-                        <h5 class="fw-bold text-primary text-uppercase">Examinations</h5>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-striped table-class">
-                            <thead>
-                                <tr>
-                                    <th scope="col">No.</th>
-                                    <th scope="col">Date Posted</th>
-                                    <th scope="col">Due Date</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Grade</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                                </tr>
-                            </thead>
-                        </table>
+            <div class="tab-pane" id="FinalGrade">
+                <div class="container justify-content-center">
+                    <div class="container justify-content-center">
+                        <div class="row mb-3">
+                            <div class="col-lg-10 col-md-12">
+                                <h4>Section Name: kjashdjkashdjkashdkjas</h4>
+                                <p>number of students: 90-218309128</p>
+                            </div>
+                            <div class="col-2">
+                                <button>BACK</button>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-class" id="table-id">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Enrolled Students</th>
+                                                <th scope="col">Attendance</th>
+                                                <th scope="col">Class Performance</th>
+                                                <th scope="col">Final Grade</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
+                                                <tr>
+                                                    <td>Student name or number</td>
+                                                    <td>attendance grade</td>
+                                                    <td>overall class Performance</td>
+                                                    <td>Final Grade</td>
+                                                    <td>
+                                                        <div class="row">
+                                                            <input type="submit" placeholder="Encode Grades">
+                                                        </div>
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                            </form>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <!-- End of Container -->
 
@@ -237,6 +410,13 @@
 
     <!-- Template Javascript -->
     <script src="../assets/js/main.js"></script>
+    <script>
+        $('#myTab a').click(function(e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+    </script>
+
 </body>
 
 </html>
