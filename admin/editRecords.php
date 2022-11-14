@@ -5,7 +5,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Login</title>
+    <title>Administrator - Records</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -33,6 +33,7 @@
     <!-- Template Stylesheet -->
     <link href="../assets/css/style.css" rel="stylesheet">
     <link href="../assets/css/form-style.css" rel="stylesheet">
+    <link href="../assets/css/dashboard-user.css" rel="stylesheet">
 
 </head>
 
@@ -58,36 +59,24 @@
 
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-dark navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
-
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0 ">
-                <a href="index.php" class="nav-item nav-link active" style="color: white">Home</a>
-                <a href="about.html" class="nav-item nav-link" style="color: white">About Us</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: white">Academics</a>
-                    <div class="dropdown-menu bg-dark border-0 m-0">
-                        <a href="auth/login.php" class="dropdown-item" style="color: white">Student Information System</a>
-                        <a href="" class="dropdown-item" style="color: white">Kindergarten</a>
-                        <a href="" class="dropdown-item" style="color: white">Pre-Elementary</a>
-                        <a href="" class="dropdown-item" style="color: white">Elementary</a>
-                        <a href="" class="dropdown-item" style="color: white">Highschool</a>
-                        <a href="" class="dropdown-item" style="color: white">Senior Highschool</a>
-                        <a href="" class="dropdown-item" style="color: white">College</a>
-                    </div>
-                </div>
-                <a href="service.html" class="nav-item nav-link" style="color: white">Admissions</a>
-                <a href="contact.html" class="nav-item nav-link" style="color: white">Scholarship and Discounts</a>
-                <a href="contact.html" class="nav-item nav-link" style="color: white">Contact Us</a>
+        <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
+            <div class="navbar-nav">
+                <a href="dashboard.php" class="nav-item nav-link" style="color: white">Home</a>
+                <a href="addStudent.php" class="nav-item nav-link" style="color: white">Register</a>
+                <a href="editRecords.php" class="nav-item nav-link" style="color: red">Records</a>
+                <a href="manageFaculty.php" class="nav-item nav-link" style="color: white">Faculty</a>
+                <a href="viewReports.php" class="nav-item nav-link" style="color: white">Reports</a>
+                <a href="../auth/logout.php" class="nav-item nav-link" style="color: white">Logout</a>
             </div>
         </div>
     </nav>
     <!-- Navbar End -->
 
-    <div class="container my-3">
-        <div class="my-3">
+    <div class="container my-5">
+        <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
+            <h2 class="fw-bold text-primary text-uppercase">Edit Records</h2>
+        </div>
+        <div class="mb-3">
             <ul class="nav nav-pills justify-content-center" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <a class="nav-link active" href="#editGrades" data-toggle="tab">Grades</a>
