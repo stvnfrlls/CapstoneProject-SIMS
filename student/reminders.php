@@ -31,7 +31,6 @@
   <!-- Template Stylesheet -->
   <link href="../assets/css/style.css" rel="stylesheet">
   <link href="../assets/css/dashboard-user.css" rel="stylesheet">
-
 </head>
 
 <body>
@@ -84,111 +83,128 @@
   </nav>
   <!-- Navbar End -->
 
-  <!-- Reminder Start -->
-  <section class="our-courses" id="courses">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-6 offset-lg-3">
-        <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px; margin-top: 50px;">
-        <h5 class="fw-bold text-primary text-uppercase">Reminders</h5>
-      </div>
-        </div>
-        <div class="col-lg-12">
-          <div class="naccs">
-            <div class="tabs">
-              <div class="row">
-                <div class="col-lg-3">
-                  <div class="menu">
-                    <div class="active gradient-border"><span>Filipino</span></div>
-                    <div class="gradient-border"><span>Science</span></div>
-                    <div class="gradient-border"><span>English</span></div>
-                    <div class="gradient-border"><span>English</span></div>
-                  </div>
+      <!-- Blog Start -->
+      <div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <div class="row g-5">
+                <!-- Blog list Start -->
+                <div class="col-lg-8">
+                    <div class="row g-5">
+                        
+                            <div class="blog-item bg-light rounded overflow-hidden">
+                                <div class="blog-img position-relative overflow-hidden">
+                                    <img class="img-fluid" src="img/blog-1.jpg" alt="">
+                                    <a class="position-absolute top-0 start-0 bg-primary text-white rounded-end mt-5 py-2 px-4" href="">Web Design</a>
+                                </div>
+                                <div class="p-4">
+                                    <div class="d-flex mb-3">
+                                        <small class="me-3"><i>Subject: </i>English</small>
+                                        <small><i>Deadline: </i>01 Jan, 2045</small>
+                                    </div>
+                                    <h4 class="mb-3">Bring a yellow notebook</h4>
+                                    <p>Dolor et eos labore stet justo sed est sed sed sed dolor stet amet (short description)</p>
+                                </div>
+                            </div>
+                            
+                            <div class="blog-item bg-light rounded overflow-hidden">
+                                <div class="p-4">
+                                      <div class="right-content">
+                                          <p>(Description of the reminder)</p>                                          
+                                          <div class="text-button">
+                                            <a href="">Done</a>
+                                          </div>
+                                      </div>
+                                </div>
+                            </div>
+      
+                    </div>
                 </div>
-                <div class="col-lg-9">
-                  <ul class="nacc">
-                    <li class="active">
-                      <div>
-
-                        <div class="right-content">
-                          <h4>Bring notebook</h4>
-                          <p>Did you know that you can visit <a rel="nofollow" href="https://www.toocss.com/" target="_blank">TooCSS website</a> for latest listing of HTML templates and a variety of
-                            useful templates.
-                            <br><br>You just need to go and visit that website right now. IF you have any suggestion or
-                            comment about this template, you can feel free to go to contact page for our email address.
-                          </p>
-                          <span>36 Hours</span>
-                          <span>4 Weeks</span>
-                          <span class="last-span">3 Certificates</span>
-                          <div class="text-button">
-                            <a href="contact-us.html">Subscribe Course</a>
-                          </div>
+                <!-- Blog list End -->
+    
+                <!-- Sidebar Start -->
+                <div class="col-lg-4">
+                    <!-- Search Form Start -->
+                    <div class="mb-5 wow slideInUp" data-wow-delay="0.1s">
+                        <div class="input-group">
+                            <input type="text" class="form-control p-3" placeholder="Keyword">
+                            <button class="btn btn-primary px-4"><i class="bi bi-search"></i></button>
                         </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div>
-                        <div class="right-content">
-                          <h4>Creative Graphic Design</h4>
-                          <p>You are not allowed to redistribute this template ZIP file on any other website without a
-                            permission from us.<br><br>There are some unethical people on this world copied and reposted
-                            our templates without any permission from us. Their Karma will hit them really hard. Yeah!
-                          </p>
-                          <span>48 Hours</span>
-                          <span>6 Weeks</span>
-                          <span class="last-span">1 Certificate</span>
-                          <div class="text-button">
-                            <a href="contact-us.html">Subscribe Course</a>
-                          </div>
+                    </div>
+                    <!-- Search Form End -->
+    
+                    <!-- Recent Post Start -->
+                    <div class="mb-5 wow slideInUp" data-wow-delay="0.1s">
+                        <div class="section-title section-title-sm position-relative pb-3 mb-4">
+                            <h3 class="mb-0">Other Reminders</h3>
                         </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div>
-                        <div class="right-content">
-                          <h4>Web Design</h4>
-                          <p>Quinoa roof party squid prism sustainable letterpress cray hammock tumeric man bun mixtape
-                            tofu subway tile cronut. Deep v ennui subway tile organic seitan.<br><br>Kogi VHS freegan
-                            bicycle rights try-hard green juice probably haven't heard of them cliche la croix af
-                            chillwave.</p>
-                          <span>28 Hours</span>
-                          <span>4 Weeks</span>
-                          <span class="last-span">1 Certificate</span>
-                          <div class="text-button">
-                            <a href="contact-us.html">Subscribe Course</a>
-                          </div>
+                        <div class="d-flex rounded overflow-hidden mb-3">
+                            <img class="img-fluid" src="img/blog-2.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
+                            <a href="" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit</a>
                         </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div>
-                        <div class="right-content">
-                          <h4>WordPress Introduction</h4>
-                          <p>Quinoa roof party squid prism sustainable letterpress cray hammock tumeric man bun mixtape
-                            tofu subway tile cronut. Deep v ennui subway tile organic seitan.<br><br>Kogi VHS freegan
-                            bicycle rights try-hard green juice probably haven't heard of them cliche la croix af
-                            chillwave.</p>
-                          <span>48 Hours</span>
-                          <span>4 Weeks</span>
-                          <span class="last-span">2 Certificates</span>
-                          <div class="text-button">
-                            <a href="contact-us.html">Subscribe Course</a>
-                          </div>
+                        <div class="d-flex rounded overflow-hidden mb-3">
+                            <img class="img-fluid" src="img/blog-3.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
+                            <a href="" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit</a>
                         </div>
-                      </div>
-                    </li>
-                  </ul>
+                        <div class="d-flex rounded overflow-hidden mb-3">
+                            <img class="img-fluid" src="img/blog-1.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
+                            <a href="" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit</a>
+                        </div>
+                        <div class="d-flex rounded overflow-hidden mb-3">
+                            <img class="img-fluid" src="img/blog-2.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
+                            <a href="" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit</a>
+                        </div>
+                        <div class="d-flex rounded overflow-hidden mb-3">
+                            <img class="img-fluid" src="img/blog-3.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
+                            <a href="" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit</a>
+                        </div>
+                    </div>
+                    <!-- Recent Post End -->
+    
+                    <!-- Image Start -->
+                    <div class="mb-5 wow slideInUp" data-wow-delay="0.1s">
+                        <img src="img/blog-1.jpg" alt="" class="img-fluid rounded">
+                    </div>
+                    <!-- Image End -->
+    
+                    <!-- Tags Start -->
+                    <div class="mb-5 wow slideInUp" data-wow-delay="0.1s">
+                        <div class="section-title section-title-sm position-relative pb-3 mb-4">
+                            <h3 class="mb-0">Tag Cloud</h3>
+                        </div>
+                        <div class="d-flex flex-wrap m-n1">
+                            <a href="" class="btn btn-light m-1">Design</a>
+                            <a href="" class="btn btn-light m-1">Development</a>
+                            <a href="" class="btn btn-light m-1">Marketing</a>
+                            <a href="" class="btn btn-light m-1">SEO</a>
+                            <a href="" class="btn btn-light m-1">Writing</a>
+                            <a href="" class="btn btn-light m-1">Consulting</a>
+                            <a href="" class="btn btn-light m-1">Design</a>
+                            <a href="" class="btn btn-light m-1">Development</a>
+                            <a href="" class="btn btn-light m-1">Marketing</a>
+                            <a href="" class="btn btn-light m-1">SEO</a>
+                            <a href="" class="btn btn-light m-1">Writing</a>
+                            <a href="" class="btn btn-light m-1">Consulting</a>
+                        </div>
+                    </div>
+                    <!-- Tags End -->
+    
+                    <!-- Plain Text Start -->
+                    <div class="wow slideInUp" data-wow-delay="0.1s">
+                        <div class="section-title section-title-sm position-relative pb-3 mb-4">
+                            <h3 class="mb-0">Plain Text</h3>
+                        </div>
+                        <div class="bg-light text-center" style="padding: 30px;">
+                            <p>Vero sea et accusam justo dolor accusam lorem consetetur, dolores sit amet sit dolor clita kasd justo, diam accusam no sea ut tempor magna takimata, amet sit et diam dolor ipsum amet diam</p>
+                            <a href="" class="btn btn-primary py-2 px-4">Read More</a>
+                        </div>
+                    </div>
+                    <!-- Plain Text End -->
                 </div>
-              </div>
+                <!-- Sidebar End -->
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </section>
-  <!-- Reminder End -->
-
-  
+    <!-- Blog End -->
 
   <!-- Footer Start -->
   <div class="container-fluid bg-dark text-body footer mt-5 pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
