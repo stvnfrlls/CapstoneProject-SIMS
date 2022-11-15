@@ -58,44 +58,34 @@
 
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-dark navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
-
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0 ">
-                <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
-                <a href="about.html" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Academics</a>
-                    <div class="dropdown-menu bg-dark border-0 m-0">
-                        <a href="auth/login.php" class="dropdown-item" style="color: white; font-size: 14px;">Student Information System</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Kindergarten</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Pre-Elementary</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Elementary</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Highschool</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Senior Highschool</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">College</a>
-                    </div>
-                </div>
-                <a href="service.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Admissions</a>
-                <a href="contact.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Scholarship and Discounts</a>
-                <a href="contact.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Contact Us</a>
+        <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
+            <div class="navbar-nav">
+                <a href="dashboard.php" class="nav-item nav-link" style="color: white">Home</a>
+                <a href="scanQR.php" class="nav-item nav-link" style="color: white">Scan QR</a>
+                <a href="classList.php" class="nav-item nav-link" style="color: red">Grades</a>
+                <a href="reminders.php" class="nav-item nav-link" style="color: white">Reminders/Assignments</a>
+                <a href="editProfile.php" class="nav-item nav-link" style="color: white">Profile</a>
+                <a href="../auth/logout.php" class="nav-item nav-link" style="color: white">Logout</a>
             </div>
         </div>
     </nav>
     <!-- Navbar End -->
 
-    <div class="container p-5">
-        <div class="my-3">
-            <ul class="nav nav-pills justify-content-center" id="myTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link active" href="#ClassPerformance" data-toggle="tab">Class Performance</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" href="#FinalGrade" data-toggle="tab">Final Grade</a>
-                </li>
-            </ul>
+    <div class="container py-5">
+        <div class="mb-3">
+            <div class="section-title text-center position-relative pb-3 mb-4">
+                <h2 class="fw-bold text-primary text-uppercase">Grades</h2>
+            </div>
+            <nav class="pb-3">
+                <ul class="nav nav-pills justify-content-center" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" href="#ClassPerformance" data-toggle="tab">Class Performance</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" href="#FinalGrade" data-toggle="tab">Final Grade</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
 
         <div class="tab-content">
@@ -104,9 +94,11 @@
                     <?php
                     if (empty($_SESSION['SR_number'])) { ?>
                         <div class="row mb-3">
-                            <div class="col-lg-10 col-md-12 card">
-                                <h4>Section Name: kjashdjkashdjkashdkjas</h4>
-                                <p>Number of Students: 90-218309128</p>
+                            <div class="col-lg-10 col-md-12">
+                                <div class="m-2">
+                                    <h4>Section Name: SECTION NAME</h4>
+                                    <p>Number of Students: --/--</p>
+                                </div>
                             </div>
                             <div class="col-2">
                                 <button>BACK</button>
@@ -114,28 +106,52 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-4 col-md-12 card">
-                                <h4>Student Number: kjashdjkashdjkashdkjas</h4>
-                                <p>Name of Students: 90-218309128</p>
+                                <div class="m-2 text-center">
+                                    <h4>Student Number: FULLNAME</h4>
+                                    <p>Name of Students: YYYY-?????-SP</p>
+                                </div>
                             </div>
                             <div class="col-lg-4 col-md-12 card">
-                                <h4>Student Number: kjashdjkashdjkashdkjas</h4>
-                                <p>Name of Students: 90-218309128</p>
+                                <div class="m-2 text-center">
+                                    <h4>Student Number: FULLNAME</h4>
+                                    <p>Name of Students: YYYY-?????-SP</p>
+                                </div>
                             </div>
                             <div class="col-lg-4 col-md-12 card">
-                                <h4>Student Number: kjashdjkashdjkashdkjas</h4>
-                                <p>Name of Students: 90-218309128</p>
+                                <div class="m-2 text-center">
+                                    <h4>Student Number: FULLNAME</h4>
+                                    <p>Name of Students: YYYY-?????-SP</p>
+                                </div>
                             </div>
                             <div class="col-lg-4 col-md-12 card">
-                                <h4>Student Number: kjashdjkashdjkashdkjas</h4>
-                                <p>Name of Students: 90-218309128</p>
+                                <div class="m-2 text-center">
+                                    <h4>Student Number: FULLNAME</h4>
+                                    <p>Name of Students: YYYY-?????-SP</p>
+                                </div>
                             </div>
                             <div class="col-lg-4 col-md-12 card">
-                                <h4>Student Number: kjashdjkashdjkashdkjas</h4>
-                                <p>Name of Students: 90-218309128</p>
+                                <div class="m-2 text-center">
+                                    <h4>Student Number: FULLNAME</h4>
+                                    <p>Name of Students: YYYY-?????-SP</p>
+                                </div>
                             </div>
                             <div class="col-lg-4 col-md-12 card">
-                                <h4>Student Number: kjashdjkashdjkashdkjas</h4>
-                                <p>Name of Students: 90-218309128</p>
+                                <div class="m-2 text-center">
+                                    <h4>Student Number: FULLNAME</h4>
+                                    <p>Name of Students: YYYY-?????-SP</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-12 card">
+                                <div class="m-2 text-center">
+                                    <h4>Student Number: FULLNAME</h4>
+                                    <p>Name of Students: YYYY-?????-SP</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-12 card">
+                                <div class="m-2 text-center">
+                                    <h4>Student Number: FULLNAME</h4>
+                                    <p>Name of Students: YYYY-?????-SP</p>
+                                </div>
                             </div>
                         </div>
                     <?php
@@ -292,8 +308,10 @@
                     <div class="container justify-content-center">
                         <div class="row mb-3">
                             <div class="col-lg-10 col-md-12">
-                                <h4>Section Name: kjashdjkashdjkashdkjas</h4>
-                                <p>number of students: 90-218309128</p>
+                                <div class="m-2">
+                                    <h4>Section Name: SECTION NAME</h4>
+                                    <p>Number of Students: --/--</p>
+                                </div>
                             </div>
                             <div class="col-2">
                                 <button>BACK</button>

@@ -31,7 +31,7 @@
 
     <!-- Template Stylesheet -->
     <link href="../assets/css/style.css" rel="stylesheet">
-
+    <link href="../assets/css/dashboard-user.css" rel="stylesheet">
 
 </head>
 
@@ -57,95 +57,77 @@
 
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-dark navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
-
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0 ">
-                <a href="index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
-                <a href="../index.php" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Academics</a>
-                    <div class="dropdown-menu bg-dark border-0 m-0">
-                        <a href="auth/login.php" class="dropdown-item" style="color: white; font-size: 14px;">Student Information System</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Kindergarten</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Pre-Elementary</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Elementary</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Highschool</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Senior Highschool</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">College</a>
-                    </div>
-                </div>
-                <a href="service.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Admissions</a>
-                <a href="contact.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Scholarship and Discounts</a>
-                <a href="contact.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Contact Us</a>
+        <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
+            <div class="navbar-nav">
+                <a href="dashboard.php" class="nav-item nav-link" style="color: white">Home</a>
+                <a href="scanQR.php" class="nav-item nav-link" style="color: white">Scan QR</a>
+                <a href="classList.php" class="nav-item nav-link" style="color: red">Grades</a>
+                <a href="reminders.php" class="nav-item nav-link" style="color: white">Reminders/Assignments</a>
+                <a href="editProfile.php" class="nav-item nav-link" style="color: white">Profile</a>
+                <a href="../auth/logout.php" class="nav-item nav-link" style="color: white">Logout</a>
             </div>
         </div>
     </nav>
     <!-- Navbar End -->
 
-    <div class="container">
-        <div class="header_wrap">
-            <div class="num_rows">
-
-                <div class="form-group">
-                    <select class="form-control" name="state" id="maxRows">
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="20">20</option>
-                        <option value="50">50</option>
-                        <option value="70">70</option>
-                        <option value="100">100</option>
-                        <option value="5000">Show All</option>
-                    </select>
-                </div>
+    <div class="container py-5">
+        <div class="row">
+            <div class="section-title text-center position-relative mb-3 mx-auto">
+                <h2 class="fw-bold text-primary text-uppercase">Sections Handled</h2>
             </div>
-            <div class="tb_search">
-                <input class="search" type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" placeholder="Search...." class="form-control">
-            </div>
-        </div>
-
-        <div class="container">
-            <div class="row">
-                <div class="col m-3">
-                    <div class="table-responsive">
-                        <table class="table table-striped table-class" id="table-id">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Section</th>
-                                    <th scope="col">Subject</th>
-                                    <th scope="col">Schedule</th>
-                                    <th scope="col">Students</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
-                                    <tr>
-                                        <td>Section Name</td>
-                                        <td>Subject Name</td>
-                                        <td>Schedule</td>
-                                        <td>50/50 students</td>
-                                        <td>
-                                            <div class="row">
-                                                <input type="submit" placeholder="Encode Grades">
-                                            </div>
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                </form>
-                            </tbody>
-                        </table>
+            <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
+                <div class="header_wrap">
+                    <div class="num_rows">
+                        <div class="form-group">
+                            <select class="form-control" name="state" id="maxRows">
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                                <option value="70">70</option>
+                                <option value="100">100</option>
+                                <option value="5000">Show All</option>
+                            </select>
+                        </div>
                     </div>
+                    <div class="tb_search">
+                        <input class="search" type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" placeholder="Search...." class="form-control">
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-class" id="table-id">
+                        <thead>
+                            <tr>
+                                <th scope="col">Section</th>
+                                <th scope="col">Subject</th>
+                                <th scope="col">Schedule</th>
+                                <th scope="col">Students</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
+                                <tr>
+                                    <td>Section Name</td>
+                                    <td>Subject Name</td>
+                                    <td>Schedule</td>
+                                    <td>50/50 students</td>
+                                    <td>
+                                        <div class="row">
+                                            <input type="submit" placeholder="Encode Grades">
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </form>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-
-
-    </div> <!-- End of Container -->
+    <!-- End of Container -->
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer mt-5 pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
