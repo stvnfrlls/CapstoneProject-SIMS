@@ -57,47 +57,32 @@
 
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-dark navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
-
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0 ">
-            <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
-                <a href="about.html" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Academics</a>
-                    <div class="dropdown-menu bg-dark border-0 m-0">
-                        <a href="auth/login.php" class="dropdown-item" style="color: white; font-size: 14px;">Student Information System</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Kindergarten</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Pre-Elementary</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Elementary</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Highschool</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Senior Highschool</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">College</a>
-                    </div>
-                </div>
-                <a href="service.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Admissions</a>
-                <a href="contact.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Scholarship and Discounts</a>
-                <a href="contact.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Contact Us</a>
+        <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
+            <div class="navbar-nav">
+                <a href="dashboard.php" class="nav-item nav-link" style="color: red">Home</a>
+                <a href="scanQR.php" class="nav-item nav-link" style="color: white">Scan QR</a>
+                <a href="classList.php" class="nav-item nav-link" style="color: white">Grades</a>
+                <a href="reminders.php" class="nav-item nav-link" style="color: white">Reminders/Assignments</a>
+                <a href="editProfile.php" class="nav-item nav-link" style="color: white">Profile</a>
+                <a href="../auth/logout.php" class="nav-item nav-link" style="color: white">Logout</a>
             </div>
         </div>
     </nav>
     <!-- Navbar End -->
 
-    <div class="container p-5">
-        <div class="container">
-            <div class="row g-3 pb-3">
-                <div class="col-lg-12 col-md-12 col-sm-12 service-name bg-light rounded">
+    <div class="container py-5">
+        <div class="row g-3">
+            <div class="section-title text-center position-relative pb-3 mb-5">
+                <h2 class="fw-bold text-primary text-uppercase">Dashboard</h2>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 service-name bg-light rounded" style="background: red;">
                     <h5 class="text1 my-3">Camille Anne Sabile</h5>
                     <p class="text2 mb-1">Faculty</p>
                     <p class="text2 mb-3">Muntinlupa City</p>
                 </div>
             </div>
-            <div class="row g-3">
-                <div class="text-center">
-                    <h1 class="fw-bold text-primary text-uppercase">Dashboard</h1>
-                </div>
+            <div class="row">
                 <div class="col-lg-6 col-md-12 col-sm-12 mb-3">
                     <div class="text-center">
                         <h3 class="fw-bold text-uppercase">Announcement</h3>
@@ -185,7 +170,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer mt-5 pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">

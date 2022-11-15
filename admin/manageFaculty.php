@@ -16,7 +16,7 @@ echo  $year . "-" . $month . "-" . $FacultyNumber . "-F";
 
 <head>
     <meta charset="utf-8">
-    <title>Admin - Manage Faculty</title>
+    <title>Administrator - Faculty</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -44,6 +44,7 @@ echo  $year . "-" . $month . "-" . $FacultyNumber . "-F";
     <!-- Template Stylesheet -->
     <link href="../assets/css/style.css" rel="stylesheet">
     <link href="../assets/css/form-style.css" rel="stylesheet">
+    <link href="../assets/css/dashboard-user.css" rel="stylesheet">
 
 </head>
 
@@ -69,36 +70,24 @@ echo  $year . "-" . $month . "-" . $FacultyNumber . "-F";
 
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-dark navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
-
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0 ">
-                <a href="index.php" class="nav-item nav-link active" style="color: white">Home</a>
-                <a href="about.html" class="nav-item nav-link" style="color: white">About Us</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: white">Academics</a>
-                    <div class="dropdown-menu bg-dark border-0 m-0">
-                        <a href="auth/login.php" class="dropdown-item" style="color: white">Student Information System</a>
-                        <a href="" class="dropdown-item" style="color: white">Kindergarten</a>
-                        <a href="" class="dropdown-item" style="color: white">Pre-Elementary</a>
-                        <a href="" class="dropdown-item" style="color: white">Elementary</a>
-                        <a href="" class="dropdown-item" style="color: white">Highschool</a>
-                        <a href="" class="dropdown-item" style="color: white">Senior Highschool</a>
-                        <a href="" class="dropdown-item" style="color: white">College</a>
-                    </div>
-                </div>
-                <a href="service.html" class="nav-item nav-link" style="color: white">Admissions</a>
-                <a href="contact.html" class="nav-item nav-link" style="color: white">Scholarship and Discounts</a>
-                <a href="contact.html" class="nav-item nav-link" style="color: white">Contact Us</a>
+        <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
+            <div class="navbar-nav">
+                <a href="dashboard.php" class="nav-item nav-link" style="color: white">Home</a>
+                <a href="addStudent.php" class="nav-item nav-link" style="color: white">Register</a>
+                <a href="editRecords.php" class="nav-item nav-link" style="color: white">Records</a>
+                <a href="manageFaculty.php" class="nav-item nav-link" style="color: red">Faculty</a>
+                <a href="viewReports.php" class="nav-item nav-link" style="color: white">Reports</a>
+                <a href="../auth/logout.php" class="nav-item nav-link" style="color: white">Logout</a>
             </div>
         </div>
     </nav>
     <!-- Navbar End -->
 
-    <div class="container my-3">
-        <div class="my-3">
+    <div class="container my-5">
+        <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
+            <h2 class="fw-bold text-primary text-uppercase">Faculty Management</h2>
+        </div>
+        <div class="mb-3">
             <ul class="nav nav-pills justify-content-center" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <a class="nav-link active" href="#addfaculty" data-toggle="tab">Add Faculty</a>
@@ -188,26 +177,6 @@ echo  $year . "-" . $month . "-" . $FacultyNumber . "-F";
                                         </div>
                                     </div>
                                 </div>
-                                <div>
-                                    <h4 class="mb-3">Subjects</h4>
-                                    <div class="card p-3">
-                                        <div class="row g-2 mb-3">
-                                            <div class="col-1 form-group">
-                                                <label for="firstName" class="form-label">Role</label>
-                                                <input type="text" class="form-control fullwidth " id="firstName" required>
-                                            </div>
-                                            <div class="col-4 form-group">
-                                                <label for="lastName" class="form-label">Subject</label>
-                                                <select class="form-select form-control" id="lastName" required>
-                                                    <option value=""></option>
-                                                    <option value="Male">Male</option>
-                                                    <option value="Female">Female</option>
-                                                    <option value="NA">Prefer not to say</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </form>
                         </div>
                     </div>
@@ -216,116 +185,160 @@ echo  $year . "-" . $month . "-" . $FacultyNumber . "-F";
             <div class="tab-pane" id="editfaculty">
                 <div class="row">
                     <div class="col-12 m-3">
-                        <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
-                            <div class="mb-3">
-                                <h4 class="mb-3">Faculty Information</h4>
-                                <div class="card p-3">
-                                    <div class="row g-2 mb-3">
-                                        <div class="col-4 form-group">
-                                            <label for="firstName" class="form-label">First name</label>
-                                            <input type="text" class="form-control fullwidth " id="firstName" required>
-                                        </div>
+                        <?php
+                        if (empty($_SESSION['FacultyID'])) { ?>
+                            <div class="d-flex align-item-center justify-content-center text-center py-3">
+                                <form>
+                                    <h1 class="h3 mb-3 fw-normal">Enter Faculty ID</h1>
 
-                                        <div class="col-3 form-group">
-                                            <label for="firstName" class="form-label">Middle name</label>
-                                            <input type="text" class="form-control fullwidth" id="firstName" required>
-                                        </div>
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                                        <label for="floatingInput">Enter faculty ID</label>
+                                    </div>
 
-                                        <div class="col-4 form-group">
-                                            <label for="lastName" class="form-label">Last name</label>
-                                            <input type="text" class="form-control fullwidth" id="lastName">
-                                        </div>
-                                        <div class="col-1 form-group">
-                                            <label for="lastName" class="form-label">Suffix</label>
-                                            <input type="text" class="form-control fullwidth" id="lastName">
-                                        </div>
+                                    <div class="py-3">
+                                        <button class="w-100 btn btn-lg btn-primary" type="submit">Find</button>
                                     </div>
-                                    <div class="row g-2 mb-3">
-                                        <div class="col-1 form-group">
-                                            <label for="firstName" class="form-label">Age</label>
-                                            <input type="number" class="form-control fullwidth " id="firstName" required>
-                                        </div>
+                                </form>
+                            </div>
 
-                                        <div class="col-3 form-group">
-                                            <label for="firstName" class="form-label">Birthday</label>
-                                            <input type="date" class="form-control fullwidth" id="firstName" required>
-                                        </div>
-
-                                        <div class="col-4 form-group">
-                                            <label for="lastName" class="form-label">Gender</label>
-                                            <select class="form-select form-control" id="lastName" required>
-                                                <option value=""></option>
-                                                <option value="Male">Male</option>
-                                                <option value="Female">Female</option>
-                                                <option value="NA">Prefer not to say</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row g-2 mb-3">
-                                        <div class="col-8 form-group">
-                                            <label for="firstName" class="form-label">Address</label>
-                                            <input type="number" class="form-control fullwidth " id="firstName" required>
-                                        </div>
-                                        <div class="col-4 form-group">
-                                            <label for="firstName" class="form-label">City</label>
-                                            <input type="number" class="form-control fullwidth " id="firstName" required>
-                                        </div>
-                                        <div class="col-4 form-group">
-                                            <label for="firstName" class="form-label">State</label>
-                                            <input type="number" class="form-control fullwidth " id="firstName" required>
-                                        </div>
-                                        <div class="col-4 form-group">
-                                            <label for="firstName" class="form-label">Postal Code</label>
-                                            <input type="number" class="form-control fullwidth " id="firstName" required>
-                                        </div>
-                                    </div>
-                                    <div class="row g-2 mb-3">
-                                        <div class="col-6 form-group">
-                                            <label for="firstName" class="form-label">Contact Number</label>
-                                            <input type="number" class="form-control fullwidth " id="firstName" required>
-                                        </div>
-                                    </div>
-                                    <div class="row g-2 mb-3">
-                                        <div class="col-1 form-group">
-                                            <label for="firstName" class="form-label">Role</label>
-                                            <input type="text" class="form-control fullwidth " id="firstName" required>
-                                        </div>
-                                        <div class="col-4 form-group">
-                                            <label for="lastName" class="form-label">Subject</label>
-                                            <select class="form-select form-control" id="lastName" required>
-                                                <option value=""></option>
-                                                <option value="Male">Male</option>
-                                                <option value="Female">Female</option>
-                                                <option value="NA">Prefer not to say</option>
-                                            </select>
-                                        </div>
+                        <?php
+                        } else { ?>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col card">
+                                        <h4>Faculty ID: <?php echo $_SESSION['FacultyID']; ?></h4>
+                                        <p>Name: </p>
                                     </div>
                                 </div>
-                            </div>
-                            <div>
-                                <h4 class="mb-3">Assigned Sections</h4>
-                                <div class="card p-3">
-                                    <table class="table text-center">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">No.</th>
-                                                <th scope="col">Year Level</th>
-                                                <th scope="col">Section</th>
-                                                <th scope="col">No. of Student</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <th></th>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                <div class="row">
+                                    <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
+                                        <div class="mb-3">
+                                            <h4>Faculty Information</h4>
+                                            <div class="card p-3">
+                                                <div class="row g-2 mb-3">
+                                                    <div class="col-4 form-group">
+                                                        <label for="firstName" class="form-label">First name</label>
+                                                        <input type="text" class="form-control fullwidth " id="firstName" required>
+                                                    </div>
+
+                                                    <div class="col-3 form-group">
+                                                        <label for="firstName" class="form-label">Middle name</label>
+                                                        <input type="text" class="form-control fullwidth" id="firstName" required>
+                                                    </div>
+
+                                                    <div class="col-4 form-group">
+                                                        <label for="lastName" class="form-label">Last name</label>
+                                                        <input type="text" class="form-control fullwidth" id="lastName">
+                                                    </div>
+                                                    <div class="col-1 form-group">
+                                                        <label for="lastName" class="form-label">Suffix</label>
+                                                        <input type="text" class="form-control fullwidth" id="lastName">
+                                                    </div>
+                                                </div>
+                                                <div class="row g-2 mb-3">
+                                                    <div class="col-1 form-group">
+                                                        <label for="firstName" class="form-label">Age</label>
+                                                        <input type="number" class="form-control fullwidth " id="firstName" required>
+                                                    </div>
+
+                                                    <div class="col-3 form-group">
+                                                        <label for="firstName" class="form-label">Birthday</label>
+                                                        <input type="date" class="form-control fullwidth" id="firstName" required>
+                                                    </div>
+
+                                                    <div class="col-4 form-group">
+                                                        <label for="lastName" class="form-label">Gender</label>
+                                                        <select class="form-select form-control" id="lastName" required>
+                                                            <option value=""></option>
+                                                            <option value="Male">Male</option>
+                                                            <option value="Female">Female</option>
+                                                            <option value="NA">Prefer not to say</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row g-2 mb-3">
+                                                    <div class="col-8 form-group">
+                                                        <label for="firstName" class="form-label">Address</label>
+                                                        <input type="number" class="form-control fullwidth " id="firstName" required>
+                                                    </div>
+                                                    <div class="col-4 form-group">
+                                                        <label for="firstName" class="form-label">City</label>
+                                                        <input type="number" class="form-control fullwidth " id="firstName" required>
+                                                    </div>
+                                                    <div class="col-4 form-group">
+                                                        <label for="firstName" class="form-label">State</label>
+                                                        <input type="number" class="form-control fullwidth " id="firstName" required>
+                                                    </div>
+                                                    <div class="col-4 form-group">
+                                                        <label for="firstName" class="form-label">Postal Code</label>
+                                                        <input type="number" class="form-control fullwidth " id="firstName" required>
+                                                    </div>
+                                                </div>
+                                                <div class="row g-2 mb-3">
+                                                    <div class="col-6 form-group">
+                                                        <label for="firstName" class="form-label">Contact Number</label>
+                                                        <input type="number" class="form-control fullwidth " id="firstName" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h4 class="mb-3">Subjects</h4>
+                                            <div class="card p-3">
+                                                <div class="row g-2 mb-3">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-striped table-class">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th scope="col">No.</th>
+                                                                    <th scope="col">Subject</th>
+                                                                    <th scope="col">Time</th>
+                                                                    <th scope="col">Section</th>
+                                                                    <th scope="col">Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>1</td>
+                                                                    <td>
+                                                                        <select class="browser-default custom-select">
+                                                                            <option selected>Open this select menu</option>
+                                                                            <option value="1">One</option>
+                                                                            <option value="2">Two</option>
+                                                                            <option value="3">Three</option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td>
+                                                                        <select class="browser-default custom-select">
+                                                                            <option selected>Open this select menu</option>
+                                                                            <option value="1">One</option>
+                                                                            <option value="2">Two</option>
+                                                                            <option value="3">Three</option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td>
+                                                                        <select class="browser-default custom-select">
+                                                                            <option selected>Open this select menu</option>
+                                                                            <option value="1">One</option>
+                                                                            <option value="2">Two</option>
+                                                                            <option value="3">Three</option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td><button class="w-100 btn btn-lg btn-primary" type="submit">Set</button></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-                        </form>
+                        <?php
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
@@ -364,48 +377,97 @@ echo  $year . "-" . $month . "-" . $FacultyNumber . "-F";
                             <table class="table text-center">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Quarter</th>
-                                        <th scope="col">English</th>
-                                        <th scope="col">Math</th>
-                                        <th scope="col">Science</th>
-                                        <th scope="col">Physical Education</th>
-                                        <th scope="col">Final Grade</th>
+                                        <th scope="col">No.</th>
+                                        <th scope="col">Subjects</th>
+                                        <th scope="col">Time</th>
+                                        <th scope="col">professors</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
-                                        <tr>
-                                            <?php
-                                            if (isset($_GET['ST_number'])) {
-                                                $ST_number = $_GET['ST_number'];
-
-                                                $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '$ST_number'";
-                                                $resultgetStudentGrades = $mysqli->query($getStudentGrades);
-
-                                                if ($resultgetStudentGrades->num_rows >= 0) {
-                                                    while ($data = $resultgetStudentGrades->fetch_assoc()) { ?>
-                                                        <th scope="row"><?php echo $data['G_grading'] ?></th>
-                                                        <td><input type="text" value="<?php echo $data['G_english'] ?>" size="1"></td>
-                                                        <td><input type="text" value="<?php echo $data['G_math'] ?>" size="1"></td>
-                                                        <td><input type="text" value="<?php echo $data['G_science'] ?>" size="1"></td>
-                                                        <td><input type="text" value="<?php echo $data['G_physicaled'] ?>" size="1"></td>
-                                                        <td><input type="text" value="<?php echo $data['G_finalgrade'] ?>" size="1"></td>
-                                                <?php
-                                                    }
-                                                }
-                                            } else { ?>
-                                                <th class="text-center" colspan="6">No data</th>
-                                            <?php
-                                            }
-                                            ?>
-
-                                        </tr>
-                                        <tr>
-                                            <td colspan="6"><input type="submit" value="submit"></td>
-                                        </tr>
-                                    </form>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>
+                                            <select class="browser-default custom-select">
+                                                <option selected>Open this select menu</option>
+                                                <option value="1">One</option>
+                                                <option value="2">Two</option>
+                                                <option value="3">Three</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="browser-default custom-select">
+                                                <option selected>Open this select menu</option>
+                                                <option value="1">One</option>
+                                                <option value="2">Two</option>
+                                                <option value="3">Three</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="browser-default custom-select">
+                                                <option selected>Open this select menu</option>
+                                                <option value="1">One</option>
+                                                <option value="2">Two</option>
+                                                <option value="3">Three</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>
+                                            <select class="browser-default custom-select">
+                                                <option selected>Open this select menu</option>
+                                                <option value="1">One</option>
+                                                <option value="2">Two</option>
+                                                <option value="3">Three</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="browser-default custom-select">
+                                                <option selected>Open this select menu</option>
+                                                <option value="1">One</option>
+                                                <option value="2">Two</option>
+                                                <option value="3">Three</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="browser-default custom-select">
+                                                <option selected>Open this select menu</option>
+                                                <option value="1">One</option>
+                                                <option value="2">Two</option>
+                                                <option value="3">Three</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>
+                                            <select class="browser-default custom-select">
+                                                <option selected>Open this select menu</option>
+                                                <option value="1">One</option>
+                                                <option value="2">Two</option>
+                                                <option value="3">Three</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="browser-default custom-select">
+                                                <option selected>Open this select menu</option>
+                                                <option value="1">One</option>
+                                                <option value="2">Two</option>
+                                                <option value="3">Three</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="browser-default custom-select">
+                                                <option selected>Open this select menu</option>
+                                                <option value="1">One</option>
+                                                <option value="2">Two</option>
+                                                <option value="3">Three</option>
+                                            </select>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
+                            <button class="w-100 btn btn-lg btn-primary" type="submit">Set</button>
                         </div>
                     </div>
                 </div>
