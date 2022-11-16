@@ -96,12 +96,12 @@
           <div class="blog-item bg-light rounded overflow-hidden">
             <div class="p-4">
               <div class="d-flex mb-3">
-                <small class="me-3"><i class="far fa-user text-primary me-2"></i>John Doe</small>
+                <small class="me-3"><i class="far fa-user text-primary me-2"></i>Steven Frilles</small>
                 <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
               </div>
               <h4 class="mb-3">How to build a website</h4>
               <p>Dolor et eos labore stet justo sed est sed sed sed dolor stet amet</p>
-              <a class="text-uppercase" href="">Read More <i class="bi bi-arrow-right"></i></a>
+              <a class="text-uppercase" href="../student/announcement.php">Read More <i class="bi bi-arrow-right"></i></a>
             </div>
           </div>
         </div>
@@ -114,7 +114,7 @@
               </div>
               <h4 class="mb-3">How to build a website</h4>
               <p>Dolor et eos labore stet justo sed est sed sed sed dolor stet amet</p>
-              <a class="text-uppercase" href="">Read More <i class="bi bi-arrow-right"></i></a>
+              <a class="text-uppercase" href="../student/announcement.php">Read More <i class="bi bi-arrow-right"></i></a>
             </div>
           </div>
         </div>
@@ -127,7 +127,7 @@
               </div>
               <h4 class="mb-3">How to build a website</h4>
               <p>Dolor et eos labore stet justo sed est sed sed sed dolor stet amet</p>
-              <a class="text-uppercase" href="">Read More <i class="bi bi-arrow-right"></i></a>
+              <a class="text-uppercase" href="../student/announcement.php">Read More <i class="bi bi-arrow-right"></i></a>
             </div>
           </div>
         </div>
@@ -257,7 +257,7 @@
         <div class="col-lg-3 col-md-12 col-sm-12 wow zoomIn" data-wow-delay="0.3s">
           <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
             <div class="service-icon">
-              <i class="fa fa-shield-alt text-white"></i>
+              <i class="fa fa-book text-white"></i>
             </div>
             <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="">Performances</a>
             <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</a>
@@ -266,28 +266,28 @@
         <div class="col-lg-3 col-md-12 col-sm-12 wow zoomIn" data-wow-delay="0.6s">
           <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
             <div class="service-icon">
-              <i class="fa fa-chart-pie text-white"></i>
+              <i class="fa fa-bell text-white"></i>
             </div>
-            <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="">Reminders</a>
-            <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</a>
+            <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="../student/reminders.php">Reminders</a>
+            <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="../student/reminders.php">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</a>
           </div>
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12 wow zoomIn" data-wow-delay="0.9s">
           <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
             <div class="service-icon">
-              <i class="fa fa-code text-white"></i>
+              <i class="fa fa-edit text-white"></i>
             </div>
-            <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="grades.php">Grades</a>
-            <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</a>
+            <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="../student/grades.php">Grades</a>
+            <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="../student/grades.php">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</a>
           </div>
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12 wow zoomIn" data-wow-delay="0.3s">
           <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
             <div class="service-icon">
-              <i class="fab fa-android text-white"></i>
+              <i class="fa fa-user text-white"></i>
             </div>
-            <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="">Edit Profile</a>
-            <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</a>
+            <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="../student/profile.php">Profile</a>
+            <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="../student/profile.php">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</a>
           </div>
         </div>
       </div>
