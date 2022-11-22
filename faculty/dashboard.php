@@ -76,7 +76,7 @@
                 <h2 class="fw-bold text-primary text-uppercase">Dashboard</h2>
             </div>
             <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 service-name bg-light rounded" style="background: red;">
+                <div class="col-lg-12 col-md-12 col-sm-12 service-name bg-light rounded text-center">
                     <h5 class="text1 my-3">Camille Anne Sabile</h5>
                     <p class="text2 mb-1">Faculty</p>
                     <p class="text2 mb-3">Muntinlupa City</p>
@@ -126,7 +126,7 @@
                         <div class="text-center">
                             <h3 class="fw-bold text-uppercase">Tools</h3>
                         </div>
-                        <div class="col-lg-6 col-md-12 col-sm-12 mb-3 d-flex flex-column align-items-center justify-content-center text-center">
+                        <div class="col-lg-6 col-md-12 col-sm-12 mb-3 d-flex flex-column align-items-center justify-content-center text-center" style="margin-top: 0px;">
                             <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
                                 <div class="service-icon">
                                     <i class="fa fa-shield-alt text-white"></i>
@@ -135,7 +135,7 @@
                                 <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</a>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-md-12 col-sm-12 mb-3 d-flex flex-column align-items-center justify-content-center text-center">
+                        <div class="col-lg-6 col-md-12 col-sm-12 mb-3 d-flex flex-column align-items-center justify-content-center text-center" style="margin-top: 0px;">
                             <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
                                 <div class="service-icon">
                                     <i class="fa fa-chart-pie text-white"></i>
@@ -146,7 +146,7 @@
                         </div>
                     </div>
                     <div class="row g-3">
-                        <div class="col-lg-6 col-md-12 col-sm-12 mb-3 d-flex flex-column align-items-center justify-content-center text-center">
+                        <div class="col-lg-6 col-md-12 col-sm-12 mb-3 d-flex flex-column align-items-center justify-content-center text-center" style="margin-top: 10px;">
                             <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
                                 <div class="service-icon">
                                     <i class="fa fa-code text-white"></i>
@@ -155,7 +155,7 @@
                                 <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</a>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-md-12 col-sm-12 mb-3 d-flex flex-column align-items-center justify-content-center text-center">
+                        <div class="col-lg-6 col-md-12 col-sm-12 mb-3 d-flex flex-column align-items-center justify-content-center text-center" style="margin-top: 10px;">
                             <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
                                 <div class="service-icon">
                                     <i class="fab fa-android text-white"></i>

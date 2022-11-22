@@ -284,12 +284,12 @@ section.simple-cta p {
 
 .service-name {
   position: relative;
-  width: 800px;
+  width: 50% !important;
   height: 150px;
-  padding: 0 30px;
+  margin-bottom: 30px;
   transition: 0.5s;
-  margin-bottom: 60px;
-  margin-left: 135px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .text1 {
@@ -350,6 +350,7 @@ body {
   overflow-x: hidden;
 }
 
+
 @media (max-width: 1200px) {
   .our-courses .owl-nav .owl-next {
     right: -70px;
@@ -362,21 +363,15 @@ body {
     position: relative;
     width: 400px;
     height: 300px;
-    padding: 0 30px;
+    
     transition: 0.5s;
-    margin-left: 140px;
-    margin-right: 150px;
+    margin-right: auto;
+    margin-left: auto;
   }
 
   .service-name {
-    position: relative;
-    width: 500px;
-    height: 130px;
-    padding: 0 30px;
-    transition: 0.5s;
-    margin-bottom: 60px;
-    margin-left: 100px;
-    margin-right: 150px;
+    
+    width: 70% !important;
   }
 }
 
@@ -386,6 +381,10 @@ body {
   }
   .our-courses .owl-nav .owl-prev {
     left: -25px;
+  }
+  .service-item {
+    margin-right: auto;
+    margin-left: auto;
   }
 }
 
@@ -405,6 +404,16 @@ body {
   section.our-courses ul.nacc li .right-content span {
     margin-right: 15px;
     padding-right: 15px;
+  }
+
+  .service-item {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    
+    transition: 0.5s;
+    margin-right: auto;
+    margin-left: auto;
   }
 }
 
@@ -430,20 +439,15 @@ body {
     position: relative;
     width: 350px;
     height: 300px;
-    padding: 0 30px;
+    
     transition: 0.5s;
-    margin-left: 1px;
-    margin-right: 150px;
+    margin-right: auto;
+    margin-left: auto;
   }
 
   .service-name {
-    position: relative;
-    width: 350px;
-    height: 130px;
-    padding: 0 30px;
-    transition: 0.5s;
-    margin-bottom: 60px;
-    margin-left: 1px;
-    margin-right: 150px;
+    margin-right: auto;
+    margin-left: auto;
+    width: 95% !important;
   }
 }

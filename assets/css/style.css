@@ -155,21 +155,7 @@ h6,
     border-top: 1px solid #eeeeee;
   }
 
-  th.name {
-    border-color: #e4e3e3;
-    color: #000000;
-    width: 100%;
-  }
 
-  .grade {
-    color: #000000;
-    width: 20%;
-  }
-
-  .section {
-    color: #000000;
-    width: 100%;
-  }
 }
 
 @media (min-width: 992px) {
@@ -190,8 +176,34 @@ h6,
     transition: 0.5s;
     opacity: 1;
   }
+
+ 
 }
 
+@media (min-width: 769px) and (max-width: 990px){
+  #remarkshead{
+    width: 125%  !important;
+    color:black;
+    font-size:15px;
+  }
+  
+  #remarks{
+    width: 125% !important;
+    color:black;
+    font-size:14px;
+  }
+
+  #ave{
+    width: 40% !important;
+    margin-left: auto;
+  }
+  
+  #head{
+    width: 110% !important;
+  }
+
+ 
+}
 /*** Header ***/
 .owl-carousel-inner {
   position: absolute;
@@ -219,6 +231,27 @@ h6,
 
   .header-carousel .owl-carousel-item p {
     font-size: 16px !important;
+  }
+
+    #remarkshead{
+    width: 125%  !important;
+    color:black;
+    font-size:15px;
+  }
+  
+  #remarks{
+    width: 125% !important;
+    color:black;
+    font-size:14px;
+  }
+
+  #ave{
+    width: 40% !important;
+    margin-left: auto;
+  }
+  
+  #head{
+    width: 100% !important;
   }
 }
 
@@ -578,6 +611,24 @@ h6,
 
 table {
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+  border-collapse:collapse;
+}
+
+.hatdog{
+  border: 1px solid #ffffff;
+  text-align: center;
+  vertical-align: middle;
+  height: 30px;
+  color: #000000;
+}
+
+.hatdog1{
+  background-color: #ffffff;
+  border: 1px solid #ffffff;
+  text-align: left;
+  vertical-align: middle;
+  height: 30px;
+  color: #000000;
 }
 
 table th,
@@ -603,22 +654,6 @@ table tr:nth-child(even) {
 table tr:nth-child(odd) {
   background-color: #e4e3e3;
   border-color: #e4e3e3;
-}
-
-.name {
-  border-color: #e4e3e3;
-  color: #000000;
-  width: 40%;
-}
-
-.grade {
-  color: #000000;
-  width: 10%;
-}
-
-.section {
-  color: #000000;
-  width: 30%;
 }
 
 .pagination li:hover {
@@ -662,4 +697,27 @@ table tr:nth-child(odd) {
   background-color: white;
   color: #000000;
 }
+
+#remarkshead{
+  width: 65%;
+  color:black;
+  font-size:15px;
+}
+
+#remarks{
+  width: 65%;
+  color:black;
+  font-size:14px;
+}
+
+#ave{
+  width: 20%;
+  margin-left: auto;
+}
+
+#head{
+  width: 60%;
+}
+
+
 

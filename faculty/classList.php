@@ -91,7 +91,7 @@
                         </div>
                     </div>
                     <div class="tb_search">
-                        <input class="search" type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" placeholder="Search...." class="form-control">
+                        <input class="search" type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" placeholder="  Search...." class="form-control">
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -113,12 +113,7 @@
                                     <td>Subject Name</td>
                                     <td>Schedule</td>
                                     <td>50/50 students</td>
-                                    <td>
-                                        <div class="row">
-                                            <input type="submit" placeholder="Encode Grades">
-                                        </div>
-                                    </td>
-                                    <td></td>
+                                    <td><input type="submit" placeholder="Encode Grades"></td>
                                 </tr>
                             </form>
                         </tbody>
