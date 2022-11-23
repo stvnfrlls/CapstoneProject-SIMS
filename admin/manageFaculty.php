@@ -70,14 +70,17 @@ echo  $year . "-" . $month . "-" . $FacultyNumber . "-F";
 
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-dark navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
+        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
-            <div class="navbar-nav">
-                <a href="dashboard.php" class="nav-item nav-link" style="color: white">Home</a>
-                <a href="addStudent.php" class="nav-item nav-link" style="color: white">Register</a>
-                <a href="editRecords.php" class="nav-item nav-link" style="color: white">Records</a>
-                <a href="manageFaculty.php" class="nav-item nav-link" style="color: red">Faculty</a>
-                <a href="viewReports.php" class="nav-item nav-link" style="color: white">Reports</a>
-                <a href="../auth/logout.php" class="nav-item nav-link" style="color: white">Logout</a>
+            <div class="navbar-nav ms-auto p-4 p-lg-0 ">
+                <a href="dashboard.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Home</a>
+                <a href="addStudent.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Register</a>
+                <a href="editRecords.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Records</a>
+                <a href="manageFaculty.php" class="nav-item nav-link" style="color: red; font-size: 14px;">Faculty</a>
+                <a href="viewReports.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Reports</a>
+                <a href="../auth/logout.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Logout</a>
             </div>
         </div>
     </nav>
@@ -343,134 +346,126 @@ echo  $year . "-" . $month . "-" . $FacultyNumber . "-F";
                 </div>
             </div>
             <div class="tab-pane" id="assignfaculty">
-                <div class="row">
-                    <div class="col-3 m-3">
-                        <h5>SECTIONS</h5>
-                        <?php
-                        $getClasslist = "SELECT SR_number, SR_lname, SR_grade, SR_section FROM studentrecord";
-                        $resultgetClasslist = $mysqli->query($getClasslist);
-                        if ($resultgetClasslist->num_rows >= 0) {
-                            $counter = 0;
-                            while ($data = $resultgetClasslist->fetch_assoc()) { ?>
-                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
-                                    <div class="list-group w-auto">
-                                        <div class="list-group-item list-group-item-action d-flex gap-3 py-3">
-                                            <?php $counter++;
-                                            echo $counter; ?>
-                                            <div class="d-flex gap-2 w-100 justify-content-between">
-                                                <div>
-                                                    <h6 class="mb-0"><input type="submit" name="ST_number" value="<?php echo $data['SR_number']; ?>"></h6>
-                                                    <p class="mb-0 opacity-75"><?php echo $data['SR_lname']; ?></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                        <?php
-                            }
-                        }
-                        ?>
+                <?php
+                if (empty($_SESSION['Section'])) {
+                ?>
+                    <div class="d-flex align-item-center justify-content-center text-center py-3">
+                        <form>
+                            <h1 class="h3 mb-3 fw-normal">Enter Section</h1>
+
+                            <div class="form-floating">
+                                <input type="email" class="form-control" id="floatingInput" placeholder="Section">
+                                <label for="floatingInput">Enter Section</label>
+                            </div>
+
+                            <div class="py-3">
+                                <button class="w-100 btn btn-lg btn-primary" type="submit">Find</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="col m-3">
-                        <div class="row">
-                            <h5>Subjects</h5> <!-- may mga dropdown dito and yung choices is mga name nung professors -->
-                            <table class="table text-center">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">No.</th>
-                                        <th scope="col">Subjects</th>
-                                        <th scope="col">Time</th>
-                                        <th scope="col">professors</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>
-                                            <select class="browser-default custom-select">
-                                                <option selected>Open this select menu</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <select class="browser-default custom-select">
-                                                <option selected>Open this select menu</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <select class="browser-default custom-select">
-                                                <option selected>Open this select menu</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>
-                                            <select class="browser-default custom-select">
-                                                <option selected>Open this select menu</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <select class="browser-default custom-select">
-                                                <option selected>Open this select menu</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <select class="browser-default custom-select">
-                                                <option selected>Open this select menu</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>
-                                            <select class="browser-default custom-select">
-                                                <option selected>Open this select menu</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <select class="browser-default custom-select">
-                                                <option selected>Open this select menu</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <select class="browser-default custom-select">
-                                                <option selected>Open this select menu</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <button class="w-100 btn btn-lg btn-primary" type="submit">Set</button>
-                        </div>
+                <?php
+                } else {
+                ?>
+                    <div>
+                        <h5>Subjects</h5>
+                        <table class="table text-center">
+                            <thead>
+                                <tr>
+                                    <th scope="col">No.</th>
+                                    <th scope="col">Subjects</th>
+                                    <th scope="col">Time</th>
+                                    <th scope="col">professors</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>
+                                        <select class="browser-default custom-select">
+                                            <option selected>Open this select menu</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="browser-default custom-select">
+                                            <option selected>Open this select menu</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="browser-default custom-select">
+                                            <option selected>Open this select menu</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>
+                                        <select class="browser-default custom-select">
+                                            <option selected>Open this select menu</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="browser-default custom-select">
+                                            <option selected>Open this select menu</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="browser-default custom-select">
+                                            <option selected>Open this select menu</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>
+                                        <select class="browser-default custom-select">
+                                            <option selected>Open this select menu</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="browser-default custom-select">
+                                            <option selected>Open this select menu</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="browser-default custom-select">
+                                            <option selected>Open this select menu</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button class="w-100 btn btn-lg btn-primary" type="submit">Set</button>
                     </div>
-                </div>
+                <?php
+                }
+                ?>
             </div>
         </div>
     </div>

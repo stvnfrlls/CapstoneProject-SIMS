@@ -59,14 +59,17 @@
 
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-dark navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
+        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
-            <div class="navbar-nav">
-                <a href="dashboard.php" class="nav-item nav-link" style="color: white">Home</a>
-                <a href="addStudent.php" class="nav-item nav-link" style="color: white">Register</a>
-                <a href="editRecords.php" class="nav-item nav-link" style="color: red">Records</a>
-                <a href="manageFaculty.php" class="nav-item nav-link" style="color: white">Faculty</a>
-                <a href="viewReports.php" class="nav-item nav-link" style="color: white">Reports</a>
-                <a href="../auth/logout.php" class="nav-item nav-link" style="color: white">Logout</a>
+            <div class="navbar-nav ms-auto p-4 p-lg-0 ">
+                <a href="dashboard.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Home</a>
+                <a href="addStudent.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Register</a>
+                <a href="editRecords.php" class="nav-item nav-link" style="color: red; font-size: 14px;">Records</a>
+                <a href="manageFaculty.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Faculty</a>
+                <a href="viewReports.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Reports</a>
+                <a href="../auth/logout.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Logout</a>
             </div>
         </div>
     </nav>
@@ -79,293 +82,440 @@
         <div class="mb-3">
             <ul class="nav nav-pills justify-content-center" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link active" href="#editGrades" data-toggle="tab">Grades</a>
+                    <a class="nav-link active" href="#editgrades" data-toggle="tab">Grades</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" href="#studentRecords" data-toggle="tab">Student Information</a>
+                    <a class="nav-link" href="#studentrecords" data-toggle="tab">Student Information</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" href="#SubjectsandCourses" data-toggle="tab">Subjects and Courses</a>
+                    <a class="nav-link" href="#subjectsandcourses" data-toggle="tab">Subjects and Courses</a>
                 </li>
             </ul>
         </div>
 
         <div class="tab-content">
-            <div class="tab-pane active" id="editGrades">
+            <div class="tab-pane active" id="editgrades">
                 <div class="container justify-content-center">
-                    <div class="row">
-                        <div class="col-3 m-3">
-                            <?php
-                            $getClasslist = "SELECT SR_number, SR_lname, SR_grade, SR_section FROM studentrecord";
-                            $resultgetClasslist = $mysqli->query($getClasslist);
-                            if ($resultgetClasslist->num_rows >= 0) {
-                                $counter = 0;
-                                while ($data = $resultgetClasslist->fetch_assoc()) { ?>
-                                    <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
-                                        <div class="list-group w-auto">
-                                            <div class="list-group-item list-group-item-action d-flex gap-3 py-3">
-                                                <?php $counter++;
-                                                echo $counter; ?>
-                                                <div class="d-flex gap-2 w-100 justify-content-between">
-                                                    <div>
-                                                        <h6 class="mb-0"><input type="submit" name="ST_number" value="<?php echo $data['SR_number']; ?>"></h6>
-                                                        <p class="mb-0 opacity-75"><?php echo $data['SR_lname']; ?></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                            <?php
-                                }
-                            }
-                            ?>
-                        </div>
-                        <div class="col m-3">
-                            <div class="">
-                                <h1>STUDENT NAME: </h1>
-                                <h3>STUDENT NUMBER: </h3>
-                            </div>
-                            <table class="table text-center">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Quarter</th>
-                                        <th scope="col">English</th>
-                                        <th scope="col">Math</th>
-                                        <th scope="col">Science</th>
-                                        <th scope="col">Physical Education</th>
-                                        <th scope="col">Final Grade</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
-                                        <tr>
-                                            <?php
-                                            if (isset($_GET['ST_number'])) {
-                                                $ST_number = $_GET['ST_number'];
+                    <?php
+                    if (empty($_SESSION['section'])) {
+                    ?>
+                        <div class="d-flex align-item-center justify-content-center text-center py-3">
+                            <form>
+                                <h1 class="h3 mb-3 fw-normal">Enter Section</h1>
 
-                                                $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '$ST_number'";
-                                                $resultgetStudentGrades = $mysqli->query($getStudentGrades);
+                                <div class="form-floating">
+                                    <input type="email" class="form-control" id="floatingInput" placeholder="section">
+                                    <label for="floatingInput">Enter Section Name</label>
+                                </div>
 
-                                                if ($resultgetStudentGrades->num_rows >= 0) {
-                                                    while ($data = $resultgetStudentGrades->fetch_assoc()) { ?>
-                                                        <th scope="row"><?php echo $data['G_grading'] ?></th>
-                                                        <td><input type="text" value="<?php echo $data['G_english'] ?>" size="1"></td>
-                                                        <td><input type="text" value="<?php echo $data['G_math'] ?>" size="1"></td>
-                                                        <td><input type="text" value="<?php echo $data['G_science'] ?>" size="1"></td>
-                                                        <td><input type="text" value="<?php echo $data['G_physicaled'] ?>" size="1"></td>
-                                                        <td><input type="text" value="<?php echo $data['G_finalgrade'] ?>" size="1"></td>
-
-                                                <?php
-                                                    }
-                                                }
-                                            } else { ?>
-                                                <th class="text-center" colspan="6">No data</th>
-                                            <?php
-                                            }
-                                            ?>
-
-                                        </tr>
-                                        <tr>
-                                            <td colspan="6"><input type="submit" value="submit"></td>
-                                        </tr>
-                                    </form>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane" id="studentRecords">
-                <div class="row">
-                    <div class="col-3 m-3">
-                        <?php
-                        $getClasslist = "SELECT SR_number, SR_lname, SR_grade, SR_section FROM studentrecord";
-                        $resultgetClasslist = $mysqli->query($getClasslist);
-                        if ($resultgetClasslist->num_rows >= 0) {
-                            $counter = 0;
-                            while ($data = $resultgetClasslist->fetch_assoc()) { ?>
-                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
-                                    <div class="list-group w-auto">
-                                        <div class="list-group-item list-group-item-action d-flex gap-3 py-3">
-                                            <?php $counter++;
-                                            echo $counter; ?>
-                                            <div class="d-flex gap-2 w-100 justify-content-between">
-                                                <div>
-                                                    <h6 class="mb-0"><input type="submit" name="ST_number" value="<?php echo $data['SR_number']; ?>"></h6>
-                                                    <p class="mb-0 opacity-75"><?php echo $data['SR_lname']; ?></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                        <?php
-                            }
-                        }
-                        ?>
-                    </div>
-                    <div class="col m-3">
-                        <div class="row">
-                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
-                                <?php
-                                if (isset($_GET['ST_number'])) {
-                                    $ST_number = $_GET['ST_number'];
-                                    $getStudentRecord = "SELECT * FROM studentrecord WHERE SR_number = '$ST_number'";
-                                    $resultgetStudentRecord = $mysqli->query($getStudentRecord);
-                                    if ($resultgetStudentRecord->num_rows >= 1) {
-                                        while ($data = $resultgetStudentRecord->fetch_assoc()) { ?>
-                                            <div class="col m-3">
-                                                <div class="form group p-1">
-                                                    <h1>STUDENT INFORMATION</h1>
-                                                    <label for="SR_number">Student Number</label>
-                                                    <input type="text" name="SR_number" id="SR_number" value="<?php echo $data['SR_number'] ?>" readonly>
-                                                </div>
-                                                <div class="form group p-1">
-                                                    <label for="SR_fname">First Name</label>
-                                                    <input type="text" name="SR_fname" id="SR_fname" value="<?php echo $data['SR_fname'] ?>">
-                                                    <label for="SR_mname">Middle Name</label>
-                                                    <input type="text" name="SR_mname" id="SR_mname" value="<?php echo $data['SR_mname'] ?>">
-                                                    <label for="SR_lname">Last Name</label>
-                                                    <input type="text" name="SR_lname" id="SR_lname" value="<?php echo $data['SR_lname'] ?>">
-                                                </div>
-                                                <div class="form group p-1">
-                                                    <label for="SR_age">Age</label>
-                                                    <input type="number" name="SR_age" id="SR_age" value="<?php echo $data['SR_age'] ?>" size="1"> <!-- baguhin yung size kasi ang lapad para sa age lang -->
-                                                    <label for="SR_birthday">Birthday</label>
-                                                    <input type="date" name="SR_birthday" id="SR_birthday" value="<?php echo $data['SR_birthday'] ?>"> <!-- error to ayusin kapag may net -->
-                                                    <label for="SR_gender">Gender</label>
-                                                    <input type="text" name="SR_gender" id="SR_gender" value="<?php echo $data['SR_gender'] ?>" size="3">
-                                                </div>
-                                                <div class="form group p-1">
-                                                    <label for="SR_address">Address</label>
-                                                    <input type="text" name="SR_address" id="SR_address" value="<?php echo $data['SR_address'] ?>">
-                                                    <label for="SR_guardian">Guardian</label>
-                                                    <input type="text" name="SR_guardian" id="SR_guardian" value="<?php echo $data['SR_guardian'] ?>">
-                                                    <label for="SR_contact">Contact</label>
-                                                    <input type="text" name="SR_contact" id="SR_contact" value="<?php echo $data['SR_contact'] ?>">
-                                                </div>
-                                            </div>
-                                            <div class="col m-3">
-                                                <div class="form group p-1">
-                                                    <h1>SCHOOL INFORMATION</h1>
-                                                    <label for="SR_grade">Year Level</label>
-                                                    <input type="text" name="SR_grade" id="SR_grade" value="<?php echo $data['SR_grade'] ?>" size="5">
-                                                    <label for="SR_section">Section</label>
-                                                    <input type="text" name="SR_section" id="SR_section" value="<?php echo $data['SR_section'] ?>" size="25">
-                                                </div>
-                                            </div>
-                                            <div class="col m-3">
-                                                <h1>SUBJECTS ENROLLED</h1>
-                                                <table class="table text-center">
-                                                    <thead>
-                                                        <tr>
-                                                            <th scope="col">Quarter</th>
-                                                            <th scope="col">English</th>
-                                                            <th scope="col">Math</th>
-                                                            <th scope="col">Science</th>
-                                                            <th scope="col">Physical Education</th>
-                                                            <th scope="col">Final Grade</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
-                                                            <tr>
-                                                                <?php
-                                                                if (isset($_GET['ST_number'])) {
-                                                                    $ST_number = $_GET['ST_number'];
-
-                                                                    $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '$ST_number'";
-                                                                    $resultgetStudentGrades = $mysqli->query($getStudentGrades);
-
-                                                                    if ($resultgetStudentGrades->num_rows >= 0) {
-                                                                        while ($data = $resultgetStudentGrades->fetch_assoc()) { ?>
-                                                                            <th scope="row"><?php echo $data['G_grading'] ?></th>
-                                                                            <td><input type="text" value="<?php echo $data['G_english'] ?>" size="1"></td>
-                                                                            <td><input type="text" value="<?php echo $data['G_math'] ?>" size="1"></td>
-                                                                            <td><input type="text" value="<?php echo $data['G_science'] ?>" size="1"></td>
-                                                                            <td><input type="text" value="<?php echo $data['G_physicaled'] ?>" size="1"></td>
-                                                                            <td><input type="text" value="<?php echo $data['G_finalgrade'] ?>" size="1"></td>
-                                                                    <?php
-                                                                        }
-                                                                    }
-                                                                } else { ?>
-                                                                    <th class="text-center" colspan="6">No data</th>
-                                                                <?php
-                                                                }
-                                                                ?>
-
-                                                            </tr>
-                                                        </form>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <input type="submit" name="updateStudent" id="updateStudent" value="Update Student">
-                                <?php
-                                        }
-                                    }
-                                }
-                                ?>
+                                <div class="py-3">
+                                    <button class="w-100 btn btn-lg btn-primary" type="submit">Find</button>
+                                </div>
                             </form>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane" id="SubjectsandCourses">
-                <div class="row">
-                    <div class="col-3 m-3">
-                        <h5>Sections/Year Level</h5>
-                        <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
-                            <div class="list-group w-auto">
-                                <div class="list-group-item list-group-item-action d-flex gap-3 py-3">
-                                    <div class="d-flex gap-2 w-100 justify-content-between">
-                                        <div>
-                                            <h6 class="mb-0"><input type="submit" name="ST_number" value="Section Name"></h6>
-                                            <p class="mb-0 opacity-75">Number of Students</p>
+                    <?php
+                    } else {
+                    ?>
+                        <div class="container">
+                            <div class="row">
+                                <div class="container justify-content-center">
+                                    <div class="row">
+                                        <div class="col-3 m-3">
+                                            <form>
+                                                <div class="list-group w-auto">
+                                                    <div class="list-group-item list-group-item-action d-flex gap-3 py-3">
+                                                        <div class="d-flex gap-2 w-100 justify-content-between">
+                                                            <input type="submit" value="Student Number">
+                                                            <p class="mb-0 opacity-75">Student Name</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="list-group-item list-group-item-action d-flex gap-3 py-3">
+                                                        <div class="d-flex gap-2 w-100 justify-content-between">
+                                                            <input type="submit" value="Student Number">
+                                                            <p class="mb-0 opacity-75">Student Name</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="list-group-item list-group-item-action d-flex gap-3 py-3">
+                                                        <div class="d-flex gap-2 w-100 justify-content-between">
+                                                            <input type="submit" value="Student Number">
+                                                            <p class="mb-0 opacity-75">Student Name</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="list-group-item list-group-item-action d-flex gap-3 py-3">
+                                                        <div class="d-flex gap-2 w-100 justify-content-between">
+                                                            <input type="submit" value="Student Number">
+                                                            <p class="mb-0 opacity-75">Student Name</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="list-group-item list-group-item-action d-flex gap-3 py-3">
+                                                        <div class="d-flex gap-2 w-100 justify-content-between">
+                                                            <input type="submit" value="Student Number">
+                                                            <p class="mb-0 opacity-75">Student Name</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="col m-3">
+                                            <div class="card p-3 mb-3">
+                                                <h2>STUDENT NAME: </h2>
+                                                <p>STUDENT NUMBER: </p>
+                                            </div>
+                                            <table class="table text-center">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Quarter</th>
+                                                        <th scope="col">English</th>
+                                                        <th scope="col">Math</th>
+                                                        <th scope="col">Science</th>
+                                                        <th scope="col">P.E.</th>
+                                                        <th scope="col">Final Grade</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <form>
+                                                        <tr>
+                                                            <th scope="row">Quarter No.</th>
+                                                            <td><input type="text" style="text-align: center;" value="##" size="1"></td>
+                                                            <td><input type="text" style="text-align: center;" value="##" size="1"></td>
+                                                            <td><input type="text" style="text-align: center;" value="##" size="1"></td>
+                                                            <td><input type="text" style="text-align: center;" value="##" size="1"></td>
+                                                            <td><input type="text" style="text-align: center;" value="##" size="1" readonly></td>
+                                                        </tr>
+
+                                                    </form>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td colspan="6"><input type="submit" value="Submit"></td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                    </div>
-                    <div class="col m-3">
-                        <h5>sUBJECT AND COURSES</h5>
-                        <div class="row">
-                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
-                                <?php
-                                if (empty($_SESSION['ST_number'])) { ?>
-                                    <table class="table text-center">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">No.</th>
-                                                <th scope="col">Section</th>
-                                                <th scope="col">Subject</th>
-                                                <th scope="col">Schedule</th>
-                                                <th scope="col">Students</th>
-                                                <th scope="col">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
-                                                <tr>
-                                                    <th scope="row">1</th>
-                                                    <td>Section Name</td>
-                                                    <td>Schedule</td>
-                                                    <td>50/50 students</td>
-                                                    <td>
-                                                        <div class="row justify-content-center">
-                                                            <button class="btn btn-primary" type="submit">Encode Grades</button>
-                                                        </div>
-                                                    </td>
-                                                    <td></td>
-                                                </tr>
-                                            </form>
-                                        </tbody>
-                                    </table>
-                                <?php
-                                }
-                                ?>
+                        </div>
+                    <?php
+                    }
+                    ?>
+                </div>
+            </div>
+            <div class="tab-pane" id="studentrecords">
+                <div class="container justify-content-center">
+                    <?php
+                    if (empty($_SESSION['studentnumber'])) { ?>
+                        <div class="d-flex align-item-center justify-content-center text-center py-3">
+                            <form>
+                                <h1 class="h3 mb-3 fw-normal">Enter Student Number</h1>
+
+                                <div class="form-floating">
+                                    <input type="email" class="form-control" id="floatingInput" placeholder="Student Number">
+                                    <label for="floatingInput">Enter Student Number</label>
+                                </div>
+
+                                <div class="py-3">
+                                    <button class="w-100 btn btn-lg btn-primary" type="submit">Find</button>
+                                </div>
                             </form>
                         </div>
-                    </div>
+                    <?php
+                    } else { ?>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-7 col-lg-8">
+                                    <h4 class="mb-3">Student Information</h4>
+                                    <div class="card p-3">
+                                        <div class="row g-3 mb-3">
+                                            <div class="col-4 form-group">
+                                                <label for="firstName" class="form-label">First name</label>
+                                                <input type="text" class="form-control fullwidth " id="firstName" required>
+                                            </div>
+
+                                            <div class="col-3 form-group">
+                                                <label for="firstName" class="form-label">Middle name</label>
+                                                <input type="text" class="form-control fullwidth" id="firstName" required>
+                                            </div>
+
+                                            <div class="col-4 form-group">
+                                                <label for="lastName" class="form-label">Last name</label>
+                                                <input type="text" class="form-control fullwidth" id="lastName">
+                                            </div>
+                                            <div class="col-1 form-group">
+                                                <label for="lastName" class="form-label">Suffix</label>
+                                                <input type="text" class="form-control fullwidth" id="lastName">
+                                            </div>
+                                        </div>
+                                        <div class="row g-3 mb-3">
+                                            <div class="col-1 form-group">
+                                                <label for="firstName" class="form-label">Age</label>
+                                                <input type="number" class="form-control fullwidth " id="firstName" required>
+                                            </div>
+
+                                            <div class="col-3 form-group">
+                                                <label for="firstName" class="form-label">Birthday</label>
+                                                <input type="date" class="form-control fullwidth" id="firstName" required>
+                                            </div>
+
+                                            <div class="col-4 form-group">
+                                                <label for="lastName" class="form-label">Gender</label>
+                                                <select class="form-select form-control" id="lastName" required>
+                                                    <option value=""></option>
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+                                                    <option value="NA">Prefer not to say</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row g-3 mb-3">
+                                            <div class="col-8 form-group">
+                                                <label for="firstName" class="form-label">Address</label>
+                                                <input type="number" class="form-control fullwidth " id="firstName" required>
+                                            </div>
+                                            <div class="col-4 form-group">
+                                                <label for="firstName" class="form-label">City</label>
+                                                <input type="number" class="form-control fullwidth " id="firstName" required>
+                                            </div>
+                                            <div class="col-4 form-group">
+                                                <label for="firstName" class="form-label">State</label>
+                                                <input type="number" class="form-control fullwidth " id="firstName" required>
+                                            </div>
+                                            <div class="col-4 form-group">
+                                                <label for="firstName" class="form-label">Postal Code</label>
+                                                <input type="number" class="form-control fullwidth " id="firstName" required>
+                                            </div>
+                                        </div>
+                                        <div class="row g-3 mb-3">
+                                            <div class="col-6 form-group">
+                                                <label for="firstName" class="form-label">Guardian Name</label>
+                                                <input type="number" class="form-control fullwidth " id="firstName" required>
+                                            </div>
+                                            <div class="col-6 form-group">
+                                                <label for="firstName" class="form-label">Contact Number</label>
+                                                <input type="number" class="form-control fullwidth " id="firstName" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-5 col-lg-4 order-md-last">
+                                    <h4 class="mb-3">Class Information</h4>
+                                    <div class="card p-3">
+                                        <div class="row g-3 mb-3">
+
+                                        </div>
+                                        <div class="row g-3 mb-3">
+                                            <div class="col-6 form-group">
+                                                <label for="SR_number" class="form-label">Student Number</label>
+                                                <input type="text" class="form-control fullwidth" name="SR_number" id="SR_number" value="<?php echo $studentNumber ?>" readonly>
+                                            </div>
+                                            <div class="col-6 form-group">
+                                                <label for="lastName" class="form-label">Year Level</label>
+                                                <select class="form-select form-control fullwidth" id="lastName" required>
+                                                    <option value=""></option>
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+                                                    <option value="NA">Prefer not to say</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-6 form-group">
+                                                <label for="lastName" class="form-label">Section</label>
+                                                <select class="form-select form-control fullwidth" id="lastName" required>
+                                                    <option value=""></option>
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+                                                    <option value="NA">Prefer not to say</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-6 form-group">
+                                                <label for="lastName" class="form-label">Schedule</label>
+                                                <select class="form-select form-control fullwidth" id="lastName" required>
+                                                    <option value=""></option>
+                                                    <option value="AM">AM</option>
+                                                    <option value="PM">PM</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row py-3 justify-content-center">
+                                <button class="w-50 btn btn-primary btn-lg mb-5" type="submit">Update Student</button>
+                            </div>
+                        </div>
+                    <?php
+                    }
+                    ?>
+                </div>
+            </div>
+            <div class="tab-pane" id="subjectsandcourses">
+                <div class="container justify-content-center">
+                    <?php
+                    if (empty($_SESSION['assignSubject'])) {
+                    ?>
+                        <div class="d-flex align-item-center justify-content-center text-center py-3">
+                            <form>
+                                <h1 class="h3 mb-3 fw-normal">Enter Year Level</h1>
+
+                                <div class="form-floating">
+                                    <input type="email" class="form-control" id="floatingInput" placeholder="Section">
+                                    <label for="floatingInput">Enter Section</label>
+                                </div>
+
+                                <div class="py-3">
+                                    <button class="w-100 btn btn-lg btn-primary" type="submit">Find</button>
+                                </div>
+                            </form>
+                        </div>
+                    <?php
+                    } else {
+                    ?>
+                        <div>
+                            <h5>SUBJECT AND COURSES</h5>
+                            <div class="row">
+                                <table class="table text-center">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">No.</th>
+                                            <th scope="col">Section</th>
+                                            <th scope="col">Subject</th>
+                                            <th scope="col">Schedule</th>
+                                            <th scope="col">Students</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td>Section Name</td>
+                                            <td>
+                                                <select class="form-select form-control" id="Subject">
+                                                    <option value="">Select Subject</option>
+                                                    <option value="">....</option>
+                                                    <option value="">....</option>
+                                                    <option value="">....</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select class="form-select form-control" id="Schedule">
+                                                    <option value="">Select Schedule</option>
+                                                    <option value="">AM</option>
+                                                    <option value="">PM</option>
+                                                </select>
+                                            </td>
+                                            <td>50/50 students</td>
+                                            <td>
+                                                <div class="row justify-content-center">
+                                                    <input type="submit" value="Set">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td>Section Name</td>
+                                            <td>
+                                                <select class="form-select form-control" id="Subject">
+                                                    <option value="">Select Subject</option>
+                                                    <option value="">....</option>
+                                                    <option value="">....</option>
+                                                    <option value="">....</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select class="form-select form-control" id="Schedule">
+                                                    <option value="">Select Schedule</option>
+                                                    <option value="">AM</option>
+                                                    <option value="">PM</option>
+                                                </select>
+                                            </td>
+                                            <td>50/50 students</td>
+                                            <td>
+                                                <div class="row justify-content-center">
+                                                    <input type="submit" value="Set">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td>Section Name</td>
+                                            <td>
+                                                <select class="form-select form-control" id="Subject">
+                                                    <option value="">Select Subject</option>
+                                                    <option value="">....</option>
+                                                    <option value="">....</option>
+                                                    <option value="">....</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select class="form-select form-control" id="Schedule">
+                                                    <option value="">Select Schedule</option>
+                                                    <option value="">AM</option>
+                                                    <option value="">PM</option>
+                                                </select>
+                                            </td>
+                                            <td>50/50 students</td>
+                                            <td>
+                                                <div class="row justify-content-center">
+                                                    <input type="submit" value="Set">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td>Section Name</td>
+                                            <td>
+                                                <select class="form-select form-control" id="Subject">
+                                                    <option value="">Select Subject</option>
+                                                    <option value="">....</option>
+                                                    <option value="">....</option>
+                                                    <option value="">....</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select class="form-select form-control" id="Schedule">
+                                                    <option value="">Select Schedule</option>
+                                                    <option value="">AM</option>
+                                                    <option value="">PM</option>
+                                                </select>
+                                            </td>
+                                            <td>50/50 students</td>
+                                            <td>
+                                                <div class="row justify-content-center">
+                                                    <input type="submit" value="Set">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td>Section Name</td>
+                                            <td>
+                                                <select class="form-select form-control" id="Subject">
+                                                    <option value="">Select Subject</option>
+                                                    <option value="">....</option>
+                                                    <option value="">....</option>
+                                                    <option value="">....</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select class="form-select form-control" id="Schedule">
+                                                    <option value="">Select Schedule</option>
+                                                    <option value="">AM</option>
+                                                    <option value="">PM</option>
+                                                </select>
+                                            </td>
+                                            <td>50/50 students</td>
+                                            <td>
+                                                <div class="row justify-content-center">
+                                                    <input type="submit" value="Set">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    <?php
+                    }
+                    ?>
                 </div>
             </div>
         </div>

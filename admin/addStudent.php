@@ -68,145 +68,150 @@ $studentNumber = $year . "-" . $format_StudentCounter . "-SP";
 
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-dark navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
+        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
-            <div class="navbar-nav">
-                <a href="dashboard.php" class="nav-item nav-link" style="color: white">Home</a>
-                <a href="addStudent.php" class="nav-item nav-link" style="color: red">Register</a>
-                <a href="editRecords.php" class="nav-item nav-link" style="color: white">Records</a>
-                <a href="manageFaculty.php" class="nav-item nav-link" style="color: white">Faculty</a>
-                <a href="viewReports.php" class="nav-item nav-link" style="color: white">Reports</a>
-                <a href="../auth/logout.php" class="nav-item nav-link" style="color: white">Logout</a>
+            <div class="navbar-nav ms-auto p-4 p-lg-0 ">
+                <a href="dashboard.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Home</a>
+                <a href="addStudent.php" class="nav-item nav-link" style="color: red; font-size: 14px;">Register</a>
+                <a href="editRecords.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Records</a>
+                <a href="manageFaculty.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Faculty</a>
+                <a href="viewReports.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Reports</a>
+                <a href="../auth/logout.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Logout</a>
             </div>
         </div>
     </nav>
     <!-- Navbar End -->
 
-    <form class="container my-5">
-        <div class="row g-3">
-            <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                <h2 class="fw-bold text-primary text-uppercase">Student Registration</h2>
+    <div class="container my-5">
+        <form>
+            <div class="row g-3">
+                <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
+                    <h2 class="fw-bold text-primary text-uppercase">Student Registration</h2>
+                </div>
             </div>
-        </div>
-        <div class="row g-3">
-            <div class="col-md-7 col-lg-8">
-                <h4 class="mb-3">Student Information</h4>
-                <div class="card p-3">
-                    <div class="row g-3 mb-3">
-                        <div class="col-4 form-group">
-                            <label for="firstName" class="form-label">First name</label>
-                            <input type="text" class="form-control fullwidth " id="firstName" required>
-                        </div>
+            <div class="row g-3">
+                <div class="col-md-7 col-lg-8">
+                    <h4 class="mb-3">Student Information</h4>
+                    <div class="card p-3">
+                        <div class="row g-3 mb-3">
+                            <div class="col-4 form-group">
+                                <label for="firstName" class="form-label">First name</label>
+                                <input type="text" class="form-control fullwidth " id="firstName" required>
+                            </div>
 
-                        <div class="col-3 form-group">
-                            <label for="firstName" class="form-label">Middle name</label>
-                            <input type="text" class="form-control fullwidth" id="firstName" required>
-                        </div>
+                            <div class="col-3 form-group">
+                                <label for="firstName" class="form-label">Middle name</label>
+                                <input type="text" class="form-control fullwidth" id="firstName" required>
+                            </div>
 
-                        <div class="col-4 form-group">
-                            <label for="lastName" class="form-label">Last name</label>
-                            <input type="text" class="form-control fullwidth" id="lastName">
+                            <div class="col-4 form-group">
+                                <label for="lastName" class="form-label">Last name</label>
+                                <input type="text" class="form-control fullwidth" id="lastName">
+                            </div>
+                            <div class="col-1 form-group">
+                                <label for="lastName" class="form-label">Suffix</label>
+                                <input type="text" class="form-control fullwidth" id="lastName">
+                            </div>
                         </div>
-                        <div class="col-1 form-group">
-                            <label for="lastName" class="form-label">Suffix</label>
-                            <input type="text" class="form-control fullwidth" id="lastName">
+                        <div class="row g-3 mb-3">
+                            <div class="col-1 form-group">
+                                <label for="firstName" class="form-label">Age</label>
+                                <input type="number" class="form-control fullwidth " id="firstName" required>
+                            </div>
+
+                            <div class="col-3 form-group">
+                                <label for="firstName" class="form-label">Birthday</label>
+                                <input type="date" class="form-control fullwidth" id="firstName" required>
+                            </div>
+
+                            <div class="col-4 form-group">
+                                <label for="lastName" class="form-label">Gender</label>
+                                <select class="form-select form-control" id="lastName" required>
+                                    <option value=""></option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="NA">Prefer not to say</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-8 form-group">
+                                <label for="firstName" class="form-label">Address</label>
+                                <input type="number" class="form-control fullwidth " id="firstName" required>
+                            </div>
+                            <div class="col-4 form-group">
+                                <label for="firstName" class="form-label">City</label>
+                                <input type="number" class="form-control fullwidth " id="firstName" required>
+                            </div>
+                            <div class="col-4 form-group">
+                                <label for="firstName" class="form-label">State</label>
+                                <input type="number" class="form-control fullwidth " id="firstName" required>
+                            </div>
+                            <div class="col-4 form-group">
+                                <label for="firstName" class="form-label">Postal Code</label>
+                                <input type="number" class="form-control fullwidth " id="firstName" required>
+                            </div>
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-6 form-group">
+                                <label for="firstName" class="form-label">Guardian Name</label>
+                                <input type="number" class="form-control fullwidth " id="firstName" required>
+                            </div>
+                            <div class="col-6 form-group">
+                                <label for="firstName" class="form-label">Contact Number</label>
+                                <input type="number" class="form-control fullwidth " id="firstName" required>
+                            </div>
                         </div>
                     </div>
-                    <div class="row g-3 mb-3">
-                        <div class="col-1 form-group">
-                            <label for="firstName" class="form-label">Age</label>
-                            <input type="number" class="form-control fullwidth " id="firstName" required>
-                        </div>
+                </div>
+                <div class="col-md-5 col-lg-4 order-md-last">
+                    <h4 class="mb-3">Class Information</h4>
+                    <div class="card p-3">
+                        <div class="row g-3 mb-3">
 
-                        <div class="col-3 form-group">
-                            <label for="firstName" class="form-label">Birthday</label>
-                            <input type="date" class="form-control fullwidth" id="firstName" required>
                         </div>
-
-                        <div class="col-4 form-group">
-                            <label for="lastName" class="form-label">Gender</label>
-                            <select class="form-select form-control" id="lastName" required>
-                                <option value=""></option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="NA">Prefer not to say</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row g-3 mb-3">
-                        <div class="col-8 form-group">
-                            <label for="firstName" class="form-label">Address</label>
-                            <input type="number" class="form-control fullwidth " id="firstName" required>
-                        </div>
-                        <div class="col-4 form-group">
-                            <label for="firstName" class="form-label">City</label>
-                            <input type="number" class="form-control fullwidth " id="firstName" required>
-                        </div>
-                        <div class="col-4 form-group">
-                            <label for="firstName" class="form-label">State</label>
-                            <input type="number" class="form-control fullwidth " id="firstName" required>
-                        </div>
-                        <div class="col-4 form-group">
-                            <label for="firstName" class="form-label">Postal Code</label>
-                            <input type="number" class="form-control fullwidth " id="firstName" required>
-                        </div>
-                    </div>
-                    <div class="row g-3 mb-3">
-                        <div class="col-6 form-group">
-                            <label for="firstName" class="form-label">Guardian Name</label>
-                            <input type="number" class="form-control fullwidth " id="firstName" required>
-                        </div>
-                        <div class="col-6 form-group">
-                            <label for="firstName" class="form-label">Contact Number</label>
-                            <input type="number" class="form-control fullwidth " id="firstName" required>
+                        <div class="row g-3 mb-3">
+                            <div class="col-6 form-group">
+                                <label for="SR_number" class="form-label">Student Number</label>
+                                <input type="text" class="form-control fullwidth" name="SR_number" id="SR_number" value="<?php echo $studentNumber ?>" readonly>
+                            </div>
+                            <div class="col-6 form-group">
+                                <label for="lastName" class="form-label">Year Level</label>
+                                <select class="form-select form-control fullwidth" id="lastName" required>
+                                    <option value=""></option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="NA">Prefer not to say</option>
+                                </select>
+                            </div>
+                            <div class="col-6 form-group">
+                                <label for="lastName" class="form-label">Section</label>
+                                <select class="form-select form-control fullwidth" id="lastName" required>
+                                    <option value=""></option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="NA">Prefer not to say</option>
+                                </select>
+                            </div>
+                            <div class="col-6 form-group">
+                                <label for="lastName" class="form-label">Schedule</label>
+                                <select class="form-select form-control fullwidth" id="lastName" required>
+                                    <option value=""></option>
+                                    <option value="AM">AM</option>
+                                    <option value="PM">PM</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-5 col-lg-4 order-md-last">
-                <h4 class="mb-3">Class Information</h4>
-                <div class="card p-3">
-                    <div class="row g-3 mb-3">
-
-                    </div>
-                    <div class="row g-3 mb-3">
-                        <div class="col-6 form-group">
-                            <label for="SR_number" class="form-label">Student Number</label>
-                            <input type="text" class="form-control fullwidth" name="SR_number" id="SR_number" value="<?php echo $studentNumber ?>" readonly>
-                        </div>
-                        <div class="col-6 form-group">
-                            <label for="lastName" class="form-label">Year Level</label>
-                            <select class="form-select form-control fullwidth" id="lastName" required>
-                                <option value=""></option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="NA">Prefer not to say</option>
-                            </select>
-                        </div>
-                        <div class="col-6 form-group">
-                            <label for="lastName" class="form-label">Section</label>
-                            <select class="form-select form-control fullwidth" id="lastName" required>
-                                <option value=""></option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="NA">Prefer not to say</option>
-                            </select>
-                        </div>
-                        <div class="col-6 form-group">
-                            <label for="lastName" class="form-label">Schedule</label>
-                            <select class="form-select form-control fullwidth" id="lastName" required>
-                                <option value=""></option>
-                                <option value="AM">AM</option>
-                                <option value="PM">PM</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
+            <div class="row py-3 justify-content-center">
+                <button class="w-50 btn btn-primary btn-lg mb-5" type="submit">Register Student</button>
             </div>
-        </div>
-        <div class="row py-3 justify-content-center">
-            <button class="w-50 btn btn-primary btn-lg mb-5" type="submit">Register Student</button>
-        </div>
-    </form>
+        </form>
+    </div>
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer mt-5 pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">

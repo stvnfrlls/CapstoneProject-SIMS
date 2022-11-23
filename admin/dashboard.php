@@ -56,14 +56,17 @@
 
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-dark navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
+        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
-            <div class="navbar-nav">
-                <a href="dashboard.php" class="nav-item nav-link" style="color: red">Home</a>
-                <a href="addStudent.php" class="nav-item nav-link" style="color: white">Register</a>
-                <a href="editRecords.php" class="nav-item nav-link" style="color: white">Records</a>
-                <a href="manageFaculty.php" class="nav-item nav-link" style="color: white">Faculty</a>
-                <a href="viewReports.php" class="nav-item nav-link" style="color: white">Reports</a>
-                <a href="../auth/logout.php" class="nav-item nav-link" style="color: white">Logout</a>
+            <div class="navbar-nav ms-auto p-4 p-lg-0 ">
+                <a href="dashboard.php" class="nav-item nav-link" style="color: red; font-size: 14px;">Home</a>
+                <a href="addStudent.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Register</a>
+                <a href="editRecords.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Records</a>
+                <a href="manageFaculty.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Faculty</a>
+                <a href="viewReports.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Reports</a>
+                <a href="../auth/logout.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Logout</a>
             </div>
         </div>
     </nav>
