@@ -189,13 +189,7 @@
     });
     Instascan.Camera.getCameras().then((cameras) => {
         if (cameras.length > 0) {
-            if (cameras[2]) {
-                scanner.start(cameras[2]);
-            } else if (cameras[1]) {
-                scanner.start(cameras[1]);
-            } else {
-                scanner.start(cameras[0]);
-            }
+            scanner.start(cameras[0]);
         } else {
             alert('No Cameras');
         }
