@@ -94,53 +94,82 @@
                             <th>Recitation</th>
                             <th>Assignments</th>
                             <th>Activities</th>
-                            <th>Exams</th>
+                            <th>Midterm</th>
+                            <th>Finals</th>
                             <th>Estimated Final Grade</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <style>
+                            input[type='number'] {
+                                width: 50px;
+                            }
+
+                            /* Chrome, Safari, Edge, Opera */
+                            input::-webkit-outer-spin-button,
+                            input::-webkit-inner-spin-button {
+                                -webkit-appearance: none;
+                                margin: 0;
+                            }
+
+                            /* Firefox */
+                            input[type=number] {
+                                -moz-appearance: textfield;
+                            }
+
+                            .hatdog {
+                                border: 1px solid #ffffff;
+                                text-align: center;
+                                vertical-align: middle;
+                                height: 30px;
+                                color: #000000;
+                            }
+                        </style>
                         <tr>
-                            <td>1</td>
-                            <td>Student 1</td>
-                            <td><input type="text" value="##" size="1" style="text-align: center;"></td>
-                            <td><input type="text" value="##" size="1" style="text-align: center;"></td>
-                            <td><input type="text" value="##" size="1" style="text-align: center;"></td>
-                            <td><input type="text" value="##/##" size="3" style="text-align: center;"></td>
-                            <td>
-                                <input type="text" value="##" size="1" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
+                            <td class="hatdog">1</td>
+                            <td class="hatdog">Student 1</td>
+                            <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                            <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                            <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                            <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                            <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                            <td class="hatdog">
+                                <input type="number" placeholder="##" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
                             </td>
-                            <td>
+                            <td class="hatdog">
                                 <input type="submit" value="Download Record" style="text-align: center;">
                                 <input type="submit" value="Submit Grade" style="text-align: center;">
                             </td>
                         </tr>
                         <tr>
-                            <td>2</td>
-                            <td>Student 2</td>
-                            <td><input type="text" value="##" size="1" style="text-align: center;"></td>
-                            <td><input type="text" value="##" size="1" style="text-align: center;"></td>
-                            <td><input type="text" value="##" size="1" style="text-align: center;"></td>
-                            <td><input type="text" value="##/##" size="3" style="text-align: center;"></td>
-                            <td>
-                                <input type="text" value="##" size="1" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
+                            <td class="hatdog">1</td>
+                            <td class="hatdog">Student 1</td>
+                            <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                            <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                            <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                            <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                            <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                            <td class="hatdog">
+                                <input type="number" placeholder="##" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
                             </td>
-                            <td>
+                            <td class="hatdog">
                                 <input type="submit" value="Download Record" style="text-align: center;">
                                 <input type="submit" value="Submit Grade" style="text-align: center;">
                             </td>
                         </tr>
                         <tr>
-                            <td>3</td>
-                            <td>Student 3</td>
-                            <td><input type="text" value="##" size="1" style="text-align: center;"></td>
-                            <td><input type="text" value="##" size="1" style="text-align: center;"></td>
-                            <td><input type="text" value="##" size="1" style="text-align: center;"></td>
-                            <td><input type="text" value="##/##" size="3" style="text-align: center;"></td>
-                            <td>
-                                <input type="text" value="##" size="1" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
+                            <td class="hatdog">1</td>
+                            <td class="hatdog">Student 1</td>
+                            <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                            <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                            <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                            <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                            <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                            <td class="hatdog">
+                                <input type="number" placeholder="##" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
                             </td>
-                            <td>
+                            <td class="hatdog">
                                 <input type="submit" value="Download Record" style="text-align: center;">
                                 <input type="submit" value="Submit Grade" style="text-align: center;">
                             </td>
