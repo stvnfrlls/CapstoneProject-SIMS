@@ -11,7 +11,7 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
 <head>
     <meta charset="utf-8">
     <title>Student - Grades</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="" name="keywords">
     <meta content="" name="description">
 
@@ -70,7 +70,7 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0 ">
-            <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
+                <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
                 <a href="about.html" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Academics</a>
@@ -94,45 +94,129 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
 
     <div class="container">
         <div class="row">
+            <h2 class="text-uppercase text-center" style="padding-top: 40px;">Report Card</h2>
             <div class="col m-3">
-                <div class="card p-3">
-                    <h1>STUDENT NAME: </h1>
-                    <h3>STUDENT NUMBER: </h3>
-                    <a href="logout.php">Logout</a>
-                </div>
+                <table id="head" class="table">
+                    <tr>
+                        <td class="hatdog" style="text-align: left;">Name: Camille Anne G. Sabile</td>
+                        <td class="hatdog" style="text-align: left;">Student Number: 2019-00188-SP-0</td>
+                    </tr>
+                    <tr>
+                        <td class="hatdog" style="text-align: left;">Grade and Section: 6 - Einstein</td>
+                        <td class="hatdog" style="text-align: left;">Adviser: Ms. Hazel Grace L. Cantuba</td>
+                    </tr>
+                </table>
                 <div class="">
                     <table class="table text-center">
                         <thead>
                             <tr>
-                                <th scope="col">Quarter</th>
-                                <th scope="col">English</th>
-                                <th scope="col">Math</th>
-                                <th scope="col">Science</th>
-                                <th scope="col">Physical Education</th>
-                                <th scope="col">Final Grade</th>
+                                <th rowspan="2" class="hatdog">Subject</th>
+                                <th colspan="4" class="hatdog">Quarter</th>
+                                <th rowspan="2" class="hatdog">Final Grade</th>
+                                <th rowspan="2" class="hatdog">Remarks</th>
+                            </tr>
+                            <tr>
+                                <td class="hatdog" style="border-color: #FFFFFF;">1</td>
+                                <td class="hatdog" style="border-color: #FFFFFF;">2</td>
+                                <td class="hatdog" style="border-color: #FFFFFF;">3</td>
+                                <td class="hatdog" style="border-color: #FFFFFF;">4</td>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <?php
-                                if ($resultgetStudentGrades->num_rows >= 0) {
-                                    while ($data = $resultgetStudentGrades->fetch_assoc()) { ?>
-                                        <td><?php echo $data['G_grading'] ?></th>
-                                        <td><?php echo $data['G_english'] ?></td>
-                                        <td><?php echo $data['G_math'] ?></td>
-                                        <td><?php echo $data['G_science'] ?></td>
-                                        <td><?php echo $data['G_physicaled'] ?></td>
-                                        <td><?php echo $data['G_finalgrade'] ?></td>
-                                    <?php
-                                    }
-                                } else { ?>
-                                    <th class="text-center" colspan="6">No data</th>
-                                <?php
-                                }
-                                ?>
+                                <td class="hatdog">English</td>
+                                <td class="hatdog">90</td>
+                                <td class="hatdog">90</td>
+                                <td class="hatdog">91</td>
+                                <td class="hatdog">91</td>
+                                <td class="hatdog">90.5</td>
+                                <td class="hatdog">Passed</td>
+                            </tr>
+                            <tr>
+                                <td class="hatdog">Mathemics</td>
+                                <td class="hatdog">90</td>
+                                <td class="hatdog">90</td>
+                                <td class="hatdog">91</td>
+                                <td class="hatdog">91</td>
+                                <td class="hatdog">90.5</td>
+                                <td class="hatdog">Passed</td>
+                            </tr>
+                            <tr>
+                                <td class="hatdog">Filipino</td>
+                                <td class="hatdog">90</td>
+                                <td class="hatdog">90</td>
+                                <td class="hatdog">91</td>
+                                <td class="hatdog">91</td>
+                                <td class="hatdog">90.5</td>
+                                <td class="hatdog">Passed</td>
+                            </tr>
+                            <tr>
+                                <td class="hatdog">Science</td>
+                                <td class="hatdog">90</td>
+                                <td class="hatdog">90</td>
+                                <td class="hatdog">91</td>
+                                <td class="hatdog">91</td>
+                                <td class="hatdog">90.5</td>
+                                <td class="hatdog">Passed</td>
+                            </tr>
+                            <tr>
+                                <td class="hatdog">MAPEH</td>
+                                <td class="hatdog">90</td>
+                                <td class="hatdog">90</td>
+                                <td class="hatdog">91</td>
+                                <td class="hatdog">91</td>
+                                <td class="hatdog">90.5</td>
+                                <td class="hatdog">Passed</td>
+                            </tr>
+                            <tr>
+                                <td class="hatdog">Araling Panlipunan</td>
+                                <td class="hatdog">90</td>
+                                <td class="hatdog">90</td>
+                                <td class="hatdog">91</td>
+                                <td class="hatdog">91</td>
+                                <td class="hatdog">90.5</td>
+                                <td class="hatdog">Passed</td>
                             </tr>
                         </tbody>
                     </table>
+                    <table id="ave" class="table text-center">
+                        <tr>
+                            <td class="hatdog"> General Average</td>
+                            <td class="hatdog">90</td>
+                        </tr>
+                    </table>
+                    <div class="container">
+                        <div id="remarkshead" class="row fw-bold">
+                            <div class="col">Descriptors</div>
+                            <div class="col">Grading Scale</div>
+                            <div class="col">Remarks</div>
+                        </div>
+                        <div id="remarks" class="row fw-light">
+                            <div class="col">Outstanding</div>
+                            <div class="col">90-100</div>
+                            <div class="col">Passed</div>
+                        </div>
+                        <div id="remarks" class="row fw-light">
+                            <div class="col">Very Satisfactory</div>
+                            <div class="col">85-89</div>
+                            <div class="col">Passed</div>
+                        </div>
+                        <div id="remarks" class="row fw-light">
+                            <div class="col">Satisfactory</div>
+                            <div class="col">80-84</div>
+                            <div class="col">Passed</div>
+                        </div>
+                        <div id="remarks" class="row fw-light">
+                            <div class="col">Fairly Satisfactory</div>
+                            <div class="col">75-79</div>
+                            <div class="col">Passed</div>
+                        </div>
+                        <div id="remarks" class="row fw-light">
+                            <div class="col">Did Not Meet Expectations</div>
+                            <div class="col">Below 75</div>
+                            <div class="col">Failed</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
