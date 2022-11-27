@@ -57,17 +57,14 @@
 
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-dark navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
         <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0 ">
-                <a href="dashboard.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Home</a>
-                <a href="scanQR.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Scan QR</a>
-                <a href="classList.php" class="nav-item nav-link" style="color: red; font-size: 14px;">Grades</a>
-                <a href="reminders.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Reminders/Assignments</a>
-                <a href="editProfile.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Profile</a>
-                <a href="../auth/logout.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Logout</a>
+            <div class="navbar-nav">
+                <a href="dashboard.php" class="nav-item nav-link" style="color: white">Home</a>
+                <a href="scanQR.php" class="nav-item nav-link" style="color: white">Scan QR</a>
+                <a href="classList.php" class="nav-item nav-link" style="color: red">Grades</a>
+                <a href="reminders.php" class="nav-item nav-link" style="color: white">Reminders/Assignments</a>
+                <a href="editProfile.php" class="nav-item nav-link" style="color: white">Profile</a>
+                <a href="../auth/logout.php" class="nav-item nav-link" style="color: white">Logout</a>
             </div>
         </div>
     </nav>
@@ -116,9 +113,7 @@
                                     <td>Subject Name</td>
                                     <td>Schedule</td>
                                     <td>50/50 students</td>
-                                    <td>
-                                        <input type="submit" value="Select">
-                                    </td>
+                                    <td><input type="submit" placeholder="Encode Grades"></td>
                                 </tr>
                             </form>
                         </tbody>
