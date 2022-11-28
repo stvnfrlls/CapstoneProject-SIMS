@@ -95,110 +95,248 @@
 
         <div class="tab-content">
             <div class="tab-pane active" id="editgrades">
-                <div class="container justify-content-center">
-                    <?php
-                    if (empty($_SESSION['section'])) {
-                    ?>
-                        <div class="d-flex align-item-center justify-content-center text-center py-3">
-                            <form>
-                                <h1 class="h3 mb-3 fw-normal">Enter Section</h1>
-
-                                <div class="form-floating">
-                                    <input type="email" class="form-control" id="floatingInput" placeholder="section">
-                                    <label for="floatingInput">Enter Section Name</label>
+                <div class="container">
+                    <div class="row gx-2 ">
+                        <div class="col-md-2">
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <h5 class="card-title">Section Name</h5>
+                                    <p class="card-text">
+                                        YEAR LEVEL
+                                    </p>
+                                    <button type="button" class="btn btn-primary">SELECT</button>
                                 </div>
-
-                                <div class="py-3">
-                                    <button class="w-100 btn btn-lg btn-primary" type="submit">Find</button>
+                            </div>
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <h5 class="card-title">Section Name</h5>
+                                    <p class="card-text">
+                                        YEAR LEVEL
+                                    </p>
+                                    <button type="button" class="btn btn-primary">SELECT</button>
                                 </div>
-                            </form>
-                        </div>
-                    <?php
-                    } else {
-                    ?>
-                        <div class="container">
-                            <div class="row">
-                                <div class="container justify-content-center">
-                                    <div class="row">
-                                        <div class="col-3 m-3">
-                                            <form>
-                                                <div class="list-group w-auto">
-                                                    <div class="list-group-item list-group-item-action d-flex gap-3 py-3">
-                                                        <div class="d-flex gap-2 w-100 justify-content-between">
-                                                            <input type="submit" value="Student Number">
-                                                            <p class="mb-0 opacity-75">Student Name</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="list-group-item list-group-item-action d-flex gap-3 py-3">
-                                                        <div class="d-flex gap-2 w-100 justify-content-between">
-                                                            <input type="submit" value="Student Number">
-                                                            <p class="mb-0 opacity-75">Student Name</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="list-group-item list-group-item-action d-flex gap-3 py-3">
-                                                        <div class="d-flex gap-2 w-100 justify-content-between">
-                                                            <input type="submit" value="Student Number">
-                                                            <p class="mb-0 opacity-75">Student Name</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="list-group-item list-group-item-action d-flex gap-3 py-3">
-                                                        <div class="d-flex gap-2 w-100 justify-content-between">
-                                                            <input type="submit" value="Student Number">
-                                                            <p class="mb-0 opacity-75">Student Name</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="list-group-item list-group-item-action d-flex gap-3 py-3">
-                                                        <div class="d-flex gap-2 w-100 justify-content-between">
-                                                            <input type="submit" value="Student Number">
-                                                            <p class="mb-0 opacity-75">Student Name</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div class="col m-3">
-                                            <div class="card p-3 mb-3">
-                                                <h2>STUDENT NAME: </h2>
-                                                <p>STUDENT NUMBER: </p>
-                                            </div>
-                                            <table class="table text-center">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">Quarter</th>
-                                                        <th scope="col">English</th>
-                                                        <th scope="col">Math</th>
-                                                        <th scope="col">Science</th>
-                                                        <th scope="col">P.E.</th>
-                                                        <th scope="col">Final Grade</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <form>
-                                                        <tr>
-                                                            <th scope="row">Quarter No.</th>
-                                                            <td><input type="text" style="text-align: center;" value="##" size="1"></td>
-                                                            <td><input type="text" style="text-align: center;" value="##" size="1"></td>
-                                                            <td><input type="text" style="text-align: center;" value="##" size="1"></td>
-                                                            <td><input type="text" style="text-align: center;" value="##" size="1"></td>
-                                                            <td><input type="text" style="text-align: center;" value="##" size="1" readonly></td>
-                                                        </tr>
-
-                                                    </form>
-                                                </tbody>
-                                                <tfoot>
-                                                    <tr>
-                                                        <td colspan="6"><input type="submit" value="Submit"></td>
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
-                                        </div>
-                                    </div>
+                            </div>
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <h5 class="card-title">Section Name</h5>
+                                    <p class="card-text">
+                                        YEAR LEVEL
+                                    </p>
+                                    <button type="button" class="btn btn-primary">SELECT</button>
+                                </div>
+                            </div>
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <h5 class="card-title">Section Name</h5>
+                                    <p class="card-text">
+                                        YEAR LEVEL
+                                    </p>
+                                    <button type="button" class="btn btn-primary">SELECT</button>
+                                </div>
+                            </div>
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <h5 class="card-title">Section Name</h5>
+                                    <p class="card-text">
+                                        YEAR LEVEL
+                                    </p>
+                                    <button type="button" class="btn btn-primary">SELECT</button>
+                                </div>
+                            </div>
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <h5 class="card-title">Section Name</h5>
+                                    <p class="card-text">
+                                        YEAR LEVEL
+                                    </p>
+                                    <button type="button" class="btn btn-primary">SELECT</button>
+                                </div>
+                            </div>
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <h5 class="card-title">Section Name</h5>
+                                    <p class="card-text">
+                                        YEAR LEVEL
+                                    </p>
+                                    <button type="button" class="btn btn-primary">SELECT</button>
+                                </div>
+                            </div>
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <h5 class="card-title">Section Name</h5>
+                                    <p class="card-text">
+                                        YEAR LEVEL
+                                    </p>
+                                    <button type="button" class="btn btn-primary">SELECT</button>
+                                </div>
+                            </div>
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <h5 class="card-title">Section Name</h5>
+                                    <p class="card-text">
+                                        YEAR LEVEL
+                                    </p>
+                                    <button type="button" class="btn btn-primary">SELECT</button>
                                 </div>
                             </div>
                         </div>
-                    <?php
-                    }
-                    ?>
+                        <div class="col-md-10">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Student Name</th>
+                                        <th>English</th>
+                                        <th>Math</th>
+                                        <th>Science</th>
+                                        <th>History</th>
+                                        <th>Filipino</th>
+                                        <th>Final Grade</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <style>
+                                        input[type='number'] {
+                                            width: 50px;
+                                        }
+
+                                        /* Chrome, Safari, Edge, Opera */
+                                        input::-webkit-outer-spin-button,
+                                        input::-webkit-inner-spin-button {
+                                            -webkit-appearance: none;
+                                            margin: 0;
+                                        }
+
+                                        /* Firefox */
+                                        input[type=number] {
+                                            -moz-appearance: textfield;
+                                        }
+
+                                        .hatdog {
+                                            border: 1px solid #ffffff;
+                                            text-align: center;
+                                            vertical-align: middle;
+                                            height: 30px;
+                                            color: #000000;
+                                        }
+                                    </style>
+                                    <tr>
+                                        <td class="hatdog">1</td>
+                                        <td class="hatdog">Student 1</td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog">
+                                            <input type="number" placeholder="##" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
+                                        </td>
+                                        <td class="hatdog">
+                                            <input type="submit" value="Download Record" style="text-align: center;">
+                                            <input type="submit" value="Submit Grade" style="text-align: center;">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="hatdog">1</td>
+                                        <td class="hatdog">Student 1</td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog">
+                                            <input type="number" placeholder="##" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
+                                        </td>
+                                        <td class="hatdog">
+                                            <input type="submit" value="Download Record" style="text-align: center;">
+                                            <input type="submit" value="Submit Grade" style="text-align: center;">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="hatdog">1</td>
+                                        <td class="hatdog">Student 1</td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog">
+                                            <input type="number" placeholder="##" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
+                                        </td>
+                                        <td class="hatdog">
+                                            <input type="submit" value="Download Record" style="text-align: center;">
+                                            <input type="submit" value="Submit Grade" style="text-align: center;">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="hatdog">1</td>
+                                        <td class="hatdog">Student 1</td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog">
+                                            <input type="number" placeholder="##" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
+                                        </td>
+                                        <td class="hatdog">
+                                            <input type="submit" value="Download Record" style="text-align: center;">
+                                            <input type="submit" value="Submit Grade" style="text-align: center;">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="hatdog">1</td>
+                                        <td class="hatdog">Student 1</td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog">
+                                            <input type="number" placeholder="##" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
+                                        </td>
+                                        <td class="hatdog">
+                                            <input type="submit" value="Download Record" style="text-align: center;">
+                                            <input type="submit" value="Submit Grade" style="text-align: center;">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="hatdog">1</td>
+                                        <td class="hatdog">Student 1</td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog">
+                                            <input type="number" placeholder="##" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
+                                        </td>
+                                        <td class="hatdog">
+                                            <input type="submit" value="Download Record" style="text-align: center;">
+                                            <input type="submit" value="Submit Grade" style="text-align: center;">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="hatdog">1</td>
+                                        <td class="hatdog">Student 1</td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <td class="hatdog">
+                                            <input type="number" placeholder="##" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
+                                        </td>
+                                        <td class="hatdog">
+                                            <input type="submit" value="Download Record" style="text-align: center;">
+                                            <input type="submit" value="Submit Grade" style="text-align: center;">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="tab-pane" id="studentrecords">
@@ -348,174 +486,249 @@
                 </div>
             </div>
             <div class="tab-pane" id="subjectsandcourses">
-                <div class="container justify-content-center">
-                    <?php
-                    if (empty($_SESSION['assignSubject'])) {
-                    ?>
-                        <div class="d-flex align-item-center justify-content-center text-center py-3">
-                            <form>
-                                <h1 class="h3 mb-3 fw-normal">Enter Year Level</h1>
-
-                                <div class="form-floating">
-                                    <input type="email" class="form-control" id="floatingInput" placeholder="Section">
-                                    <label for="floatingInput">Enter Section</label>
+                <div class="container">
+                    <div class="row gx-2 ">
+                        <div class="col-md-3">
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <h5 class="card-title">Section Name</h5>
+                                    <p class="card-text">
+                                        YEAR LEVEL
+                                    </p>
+                                    <button type="button" class="btn btn-primary">SELECT</button>
                                 </div>
-
-                                <div class="py-3">
-                                    <button class="w-100 btn btn-lg btn-primary" type="submit">Find</button>
+                            </div>
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <h5 class="card-title">Section Name</h5>
+                                    <p class="card-text">
+                                        YEAR LEVEL
+                                    </p>
+                                    <button type="button" class="btn btn-primary">SELECT</button>
                                 </div>
-                            </form>
-                        </div>
-                    <?php
-                    } else {
-                    ?>
-                        <div>
-                            <h5>SUBJECT AND COURSES</h5>
-                            <div class="row">
-                                <table class="table text-center">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">No.</th>
-                                            <th scope="col">Section</th>
-                                            <th scope="col">Subject</th>
-                                            <th scope="col">Schedule</th>
-                                            <th scope="col">Students</th>
-                                            <th scope="col">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>Section Name</td>
-                                            <td>
-                                                <select class="form-select form-control" id="Subject">
-                                                    <option value="">Select Subject</option>
-                                                    <option value="">....</option>
-                                                    <option value="">....</option>
-                                                    <option value="">....</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <select class="form-select form-control" id="Schedule">
-                                                    <option value="">Select Schedule</option>
-                                                    <option value="">AM</option>
-                                                    <option value="">PM</option>
-                                                </select>
-                                            </td>
-                                            <td>50/50 students</td>
-                                            <td>
-                                                <div class="row justify-content-center">
-                                                    <input type="submit" value="Set">
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>Section Name</td>
-                                            <td>
-                                                <select class="form-select form-control" id="Subject">
-                                                    <option value="">Select Subject</option>
-                                                    <option value="">....</option>
-                                                    <option value="">....</option>
-                                                    <option value="">....</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <select class="form-select form-control" id="Schedule">
-                                                    <option value="">Select Schedule</option>
-                                                    <option value="">AM</option>
-                                                    <option value="">PM</option>
-                                                </select>
-                                            </td>
-                                            <td>50/50 students</td>
-                                            <td>
-                                                <div class="row justify-content-center">
-                                                    <input type="submit" value="Set">
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>Section Name</td>
-                                            <td>
-                                                <select class="form-select form-control" id="Subject">
-                                                    <option value="">Select Subject</option>
-                                                    <option value="">....</option>
-                                                    <option value="">....</option>
-                                                    <option value="">....</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <select class="form-select form-control" id="Schedule">
-                                                    <option value="">Select Schedule</option>
-                                                    <option value="">AM</option>
-                                                    <option value="">PM</option>
-                                                </select>
-                                            </td>
-                                            <td>50/50 students</td>
-                                            <td>
-                                                <div class="row justify-content-center">
-                                                    <input type="submit" value="Set">
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>Section Name</td>
-                                            <td>
-                                                <select class="form-select form-control" id="Subject">
-                                                    <option value="">Select Subject</option>
-                                                    <option value="">....</option>
-                                                    <option value="">....</option>
-                                                    <option value="">....</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <select class="form-select form-control" id="Schedule">
-                                                    <option value="">Select Schedule</option>
-                                                    <option value="">AM</option>
-                                                    <option value="">PM</option>
-                                                </select>
-                                            </td>
-                                            <td>50/50 students</td>
-                                            <td>
-                                                <div class="row justify-content-center">
-                                                    <input type="submit" value="Set">
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>Section Name</td>
-                                            <td>
-                                                <select class="form-select form-control" id="Subject">
-                                                    <option value="">Select Subject</option>
-                                                    <option value="">....</option>
-                                                    <option value="">....</option>
-                                                    <option value="">....</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <select class="form-select form-control" id="Schedule">
-                                                    <option value="">Select Schedule</option>
-                                                    <option value="">AM</option>
-                                                    <option value="">PM</option>
-                                                </select>
-                                            </td>
-                                            <td>50/50 students</td>
-                                            <td>
-                                                <div class="row justify-content-center">
-                                                    <input type="submit" value="Set">
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            </div>
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <h5 class="card-title">Section Name</h5>
+                                    <p class="card-text">
+                                        YEAR LEVEL
+                                    </p>
+                                    <button type="button" class="btn btn-primary">SELECT</button>
+                                </div>
+                            </div>
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <h5 class="card-title">Section Name</h5>
+                                    <p class="card-text">
+                                        YEAR LEVEL
+                                    </p>
+                                    <button type="button" class="btn btn-primary">SELECT</button>
+                                </div>
+                            </div>
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <h5 class="card-title">Section Name</h5>
+                                    <p class="card-text">
+                                        YEAR LEVEL
+                                    </p>
+                                    <button type="button" class="btn btn-primary">SELECT</button>
+                                </div>
+                            </div>
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <h5 class="card-title">Section Name</h5>
+                                    <p class="card-text">
+                                        YEAR LEVEL
+                                    </p>
+                                    <button type="button" class="btn btn-primary">SELECT</button>
+                                </div>
+                            </div>
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <h5 class="card-title">Section Name</h5>
+                                    <p class="card-text">
+                                        YEAR LEVEL
+                                    </p>
+                                    <button type="button" class="btn btn-primary">SELECT</button>
+                                </div>
+                            </div>
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <h5 class="card-title">Section Name</h5>
+                                    <p class="card-text">
+                                        YEAR LEVEL
+                                    </p>
+                                    <button type="button" class="btn btn-primary">SELECT</button>
+                                </div>
+                            </div>
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <h5 class="card-title">Section Name</h5>
+                                    <p class="card-text">
+                                        YEAR LEVEL
+                                    </p>
+                                    <button type="button" class="btn btn-primary">SELECT</button>
+                                </div>
                             </div>
                         </div>
-                    <?php
-                    }
-                    ?>
+                        <div class="col-md-9">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Subject Name</th>
+                                        <th>Subject Code</th>
+                                        <th>Schedule</th>
+                                        <th>Room</th>
+                                        <th>Professor</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <style>
+                                        input[type='number'] {
+                                            width: 50px;
+                                        }
+
+                                        /* Chrome, Safari, Edge, Opera */
+                                        input::-webkit-outer-spin-button,
+                                        input::-webkit-inner-spin-button {
+                                            -webkit-appearance: none;
+                                            margin: 0;
+                                        }
+
+                                        /* Firefox */
+                                        input[type=number] {
+                                            -moz-appearance: textfield;
+                                        }
+
+                                        .hatdog {
+                                            border: 1px solid #ffffff;
+                                            text-align: center;
+                                            vertical-align: middle;
+                                            height: 30px;
+                                            color: #000000;
+                                        }
+                                    </style>
+                                    <tr>
+                                        <td class="hatdog">1</td>
+                                        <td class="hatdog"><input type="text" placeholder="Subject Name" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="text" placeholder="ID" size="3" style="text-align: center;"></td>
+                                        <td class="hatdog">
+                                            <select aria-label="Default select example">
+                                                <option selected>AM/PM</option>
+                                                <option value="1">AM</option>
+                                                <option value="2">PM</option>
+                                            </select>
+                                        </td>
+                                        <td class="hatdog"><input type="text" placeholder="##" size="3" style="text-align: center;"></td>
+                                        <td class="hatdog">
+                                            <select aria-label="Default select example">
+                                                <option selected>Professor</option>
+                                                <option value="1">NAME</option>
+                                                <option value="2">NAME1</option>
+                                            </select>
+                                        </td>
+                                        <td class="hatdog">
+                                            <input type="submit" value="SET" style="text-align: center;">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="hatdog">1</td>
+                                        <td class="hatdog"><input type="text" placeholder="Subject Name" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="text" placeholder="ID" size="3" style="text-align: center;"></td>
+                                        <td class="hatdog">
+                                            <select aria-label="Default select example">
+                                                <option selected>AM/PM</option>
+                                                <option value="1">AM</option>
+                                                <option value="2">PM</option>
+                                            </select>
+                                        </td>
+                                        <td class="hatdog"><input type="text" placeholder="##" size="3" style="text-align: center;"></td>
+                                        <td class="hatdog">
+                                            <select aria-label="Default select example">
+                                                <option selected>Professor</option>
+                                                <option value="1">NAME</option>
+                                                <option value="2">NAME1</option>
+                                            </select>
+                                        </td>
+                                        <td class="hatdog">
+                                            <input type="submit" value="SET" style="text-align: center;">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="hatdog">1</td>
+                                        <td class="hatdog"><input type="text" placeholder="Subject Name" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="text" placeholder="ID" size="3" style="text-align: center;"></td>
+                                        <td class="hatdog">
+                                            <select aria-label="Default select example">
+                                                <option selected>AM/PM</option>
+                                                <option value="1">AM</option>
+                                                <option value="2">PM</option>
+                                            </select>
+                                        </td>
+                                        <td class="hatdog"><input type="text" placeholder="##" size="3" style="text-align: center;"></td>
+                                        <td class="hatdog">
+                                            <select aria-label="Default select example">
+                                                <option selected>Professor</option>
+                                                <option value="1">NAME</option>
+                                                <option value="2">NAME1</option>
+                                            </select>
+                                        </td>
+                                        <td class="hatdog">
+                                            <input type="submit" value="SET" style="text-align: center;">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="hatdog">1</td>
+                                        <td class="hatdog"><input type="text" placeholder="Subject Name" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="text" placeholder="ID" size="3" style="text-align: center;"></td>
+                                        <td class="hatdog">
+                                            <select aria-label="Default select example">
+                                                <option selected>AM/PM</option>
+                                                <option value="1">AM</option>
+                                                <option value="2">PM</option>
+                                            </select>
+                                        </td>
+                                        <td class="hatdog"><input type="text" placeholder="##" size="3" style="text-align: center;"></td>
+                                        <td class="hatdog">
+                                            <select aria-label="Default select example">
+                                                <option selected>Professor</option>
+                                                <option value="1">NAME</option>
+                                                <option value="2">NAME1</option>
+                                            </select>
+                                        </td>
+                                        <td class="hatdog">
+                                            <input type="submit" value="SET" style="text-align: center;">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="hatdog">1</td>
+                                        <td class="hatdog"><input type="text" placeholder="Subject Name" style="text-align: center;"></td>
+                                        <td class="hatdog"><input type="text" placeholder="ID" size="3" style="text-align: center;"></td>
+                                        <td class="hatdog">
+                                            <select aria-label="Default select example">
+                                                <option selected>AM/PM</option>
+                                                <option value="1">AM</option>
+                                                <option value="2">PM</option>
+                                            </select>
+                                        </td>
+                                        <td class="hatdog"><input type="text" placeholder="##" size="3" style="text-align: center;"></td>
+                                        <td class="hatdog">
+                                            <select aria-label="Default select example">
+                                                <option selected>Professor</option>
+                                                <option value="1">NAME</option>
+                                                <option value="2">NAME1</option>
+                                            </select>
+                                        </td>
+                                        <td class="hatdog">
+                                            <input type="submit" value="SET" style="text-align: center;">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
