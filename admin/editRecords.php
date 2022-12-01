@@ -98,87 +98,25 @@
                 <div class="container">
                     <div class="row gx-2 ">
                         <div class="col-md-2">
-                            <div class="card mb-2">
-                                <div class="card-body">
-                                    <h5 class="card-title">Section Name</h5>
-                                    <p class="card-text">
-                                        YEAR LEVEL
-                                    </p>
-                                    <button type="button" class="btn btn-primary">SELECT</button>
-                                </div>
-                            </div>
-                            <div class="card mb-2">
-                                <div class="card-body">
-                                    <h5 class="card-title">Section Name</h5>
-                                    <p class="card-text">
-                                        YEAR LEVEL
-                                    </p>
-                                    <button type="button" class="btn btn-primary">SELECT</button>
-                                </div>
-                            </div>
-                            <div class="card mb-2">
-                                <div class="card-body">
-                                    <h5 class="card-title">Section Name</h5>
-                                    <p class="card-text">
-                                        YEAR LEVEL
-                                    </p>
-                                    <button type="button" class="btn btn-primary">SELECT</button>
-                                </div>
-                            </div>
-                            <div class="card mb-2">
-                                <div class="card-body">
-                                    <h5 class="card-title">Section Name</h5>
-                                    <p class="card-text">
-                                        YEAR LEVEL
-                                    </p>
-                                    <button type="button" class="btn btn-primary">SELECT</button>
-                                </div>
-                            </div>
-                            <div class="card mb-2">
-                                <div class="card-body">
-                                    <h5 class="card-title">Section Name</h5>
-                                    <p class="card-text">
-                                        YEAR LEVEL
-                                    </p>
-                                    <button type="button" class="btn btn-primary">SELECT</button>
-                                </div>
-                            </div>
-                            <div class="card mb-2">
-                                <div class="card-body">
-                                    <h5 class="card-title">Section Name</h5>
-                                    <p class="card-text">
-                                        YEAR LEVEL
-                                    </p>
-                                    <button type="button" class="btn btn-primary">SELECT</button>
-                                </div>
-                            </div>
-                            <div class="card mb-2">
-                                <div class="card-body">
-                                    <h5 class="card-title">Section Name</h5>
-                                    <p class="card-text">
-                                        YEAR LEVEL
-                                    </p>
-                                    <button type="button" class="btn btn-primary">SELECT</button>
-                                </div>
-                            </div>
-                            <div class="card mb-2">
-                                <div class="card-body">
-                                    <h5 class="card-title">Section Name</h5>
-                                    <p class="card-text">
-                                        YEAR LEVEL
-                                    </p>
-                                    <button type="button" class="btn btn-primary">SELECT</button>
-                                </div>
-                            </div>
-                            <div class="card mb-2">
-                                <div class="card-body">
-                                    <h5 class="card-title">Section Name</h5>
-                                    <p class="card-text">
-                                        YEAR LEVEL
-                                    </p>
-                                    <button type="button" class="btn btn-primary">SELECT</button>
-                                </div>
-                            </div>
+                            <?php
+                            $getTableData_Section = 'SELECT * FROM sections ORDER BY S_yearLevel';
+                            $getResult_Section = $mysqli->query($getTableData_Section);
+
+                            while ($sectionRow = $getResult_Section->fetch_assoc()) { ?>
+                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
+                                    <div class="card mb-2">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><?php echo $sectionRow['S_name'] ?></h5>
+                                            <p class="card-text">
+                                                <?php echo "Year Level: " . $sectionRow['S_yearLevel'] ?>
+                                            </p>
+                                            <button type="submit" class="btn btn-primary" name="SectionName" value="<?php echo $sectionRow['S_name'] ?>">SELECT</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            <?php
+                            }
+                            ?>
                         </div>
                         <div class="col-md-10">
                             <table class="table">
@@ -221,118 +159,39 @@
                                             color: #000000;
                                         }
                                     </style>
-                                    <tr>
-                                        <td class="hatdog">1</td>
-                                        <td class="hatdog">Student 1</td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog">
-                                            <input type="number" placeholder="##" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
-                                        </td>
-                                        <td class="hatdog">
-                                            <input type="submit" value="Download Record" style="text-align: center;">
-                                            <input type="submit" value="Submit Grade" style="text-align: center;">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="hatdog">1</td>
-                                        <td class="hatdog">Student 1</td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog">
-                                            <input type="number" placeholder="##" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
-                                        </td>
-                                        <td class="hatdog">
-                                            <input type="submit" value="Download Record" style="text-align: center;">
-                                            <input type="submit" value="Submit Grade" style="text-align: center;">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="hatdog">1</td>
-                                        <td class="hatdog">Student 1</td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog">
-                                            <input type="number" placeholder="##" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
-                                        </td>
-                                        <td class="hatdog">
-                                            <input type="submit" value="Download Record" style="text-align: center;">
-                                            <input type="submit" value="Submit Grade" style="text-align: center;">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="hatdog">1</td>
-                                        <td class="hatdog">Student 1</td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog">
-                                            <input type="number" placeholder="##" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
-                                        </td>
-                                        <td class="hatdog">
-                                            <input type="submit" value="Download Record" style="text-align: center;">
-                                            <input type="submit" value="Submit Grade" style="text-align: center;">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="hatdog">1</td>
-                                        <td class="hatdog">Student 1</td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog">
-                                            <input type="number" placeholder="##" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
-                                        </td>
-                                        <td class="hatdog">
-                                            <input type="submit" value="Download Record" style="text-align: center;">
-                                            <input type="submit" value="Submit Grade" style="text-align: center;">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="hatdog">1</td>
-                                        <td class="hatdog">Student 1</td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog">
-                                            <input type="number" placeholder="##" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
-                                        </td>
-                                        <td class="hatdog">
-                                            <input type="submit" value="Download Record" style="text-align: center;">
-                                            <input type="submit" value="Submit Grade" style="text-align: center;">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="hatdog">1</td>
-                                        <td class="hatdog">Student 1</td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                        <td class="hatdog">
-                                            <input type="number" placeholder="##" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
-                                        </td>
-                                        <td class="hatdog">
-                                            <input type="submit" value="Download Record" style="text-align: center;">
-                                            <input type="submit" value="Submit Grade" style="text-align: center;">
-                                        </td>
-                                    </tr>
+                                    <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
+                                        <?php
+                                        if (isset($_GET['SectionName'])) {
+                                            $SectionName = $_GET['SectionName'];
+                                            $getEnrolledStudents = "SELECT * FROM grades WHERE SR_section = '$SectionName'";
+                                            $resultgetEnrolledStudents = $mysqli->query($getEnrolledStudents);
+
+                                            if ($resultgetEnrolledStudents->num_rows >= 0) {
+                                                while ($EnrolledData = $resultgetEnrolledStudents->fetch_assoc()) { ?>
+                                                    <tr>
+                                                        <td class="hatdog"><?php echo $EnrolledData['G_id'] ?></td>
+                                                        <td class="hatdog"><?php echo $EnrolledData['SR_number'] ?></td>
+                                                        <td class="hatdog"><input type="number" name="g_english" placeholder="<?php echo $EnrolledData['G_english'] ?>" style="text-align: center;"></td>
+                                                        <td class="hatdog"><input type="number" name="g_english"placeholder="<?php echo $EnrolledData['G_math'] ?>" style="text-align: center;"></td>
+                                                        <td class="hatdog"><input type="number" placeholder="<?php echo $EnrolledData['G_science'] ?>" style="text-align: center;"></td>
+                                                        <td class="hatdog"><input type="number" placeholder="<?php echo $EnrolledData['G_history'] ?>" style="text-align: center;"></td>
+                                                        <td class="hatdog"><input type="number" placeholder="<?php echo $EnrolledData['G_filipino'] ?>" style="text-align: center;"></td>
+                                                        <td class="hatdog">
+                                                            <input type="number" placeholder="<?php echo $EnrolledData['G_finalgrade'] ?>" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
+                                                        </td>
+                                                        <td class="hatdog">
+                                                            <button type="submit" class="btn btn-primary" name="UpdateGrade" value="<?php echo $EnrolledData['SR_number'] ?>" style="text-align: center;">Update Grade</button>
+                                                        </td>
+                                                    </tr>
+                                            <?php
+                                                }
+                                            }
+                                        } else { ?>
+                                            <td colspan="9">No Data</td>
+                                        <?php
+                                        }
+                                        ?>
+                                    </form>
                                 </tbody>
                             </table>
                         </div>
