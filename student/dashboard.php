@@ -246,7 +246,7 @@
       <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
         <h5 class="fw-bold text-primary text-uppercase">D a s h b o a r d</h5>
       </div>
-      <div class="col-lg-3 col-md-12 col-sm-12 wow zoomIn" data-wow-delay="0.3s">
+      <div class="col-lg-12 col-md-12 col-sm-12 wow zoomIn" data-wow-delay="0.3s">
         <div class="service-name bg-light rounded d-flex flex-column align-items-left justify-content-center text-left">
           <a class="text1" href="">Camille Anne Sabile</a>
           <a class="text2" href="">2019-00188-SP-0</a>
@@ -259,8 +259,8 @@
             <div class="service-icon">
               <i class="fa fa-book text-white"></i>
             </div>
-            <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="">Performances</a>
-            <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</a>
+            <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="performance.php">Performances</a>
+            <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="performance.php">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</a>
           </div>
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12 wow zoomIn" data-wow-delay="0.6s">
