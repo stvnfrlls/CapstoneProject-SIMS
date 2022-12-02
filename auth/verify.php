@@ -94,7 +94,7 @@
             <div class="wrap-login100">
                 <form class="login100-form validate-form" method="post" action="<?php $_SERVER["PHP_SELF"] ?>">
                     <span class="login100-form-title p-b-43">
-                        Forget Password
+                        Add Email Address
                     </span>
 
                     <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">

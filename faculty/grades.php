@@ -138,13 +138,12 @@
                                 <input type="number" placeholder="##" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
                             </td>
                             <td class="hatdog">
-                                <input type="submit" value="Download Record" style="text-align: center;">
                                 <input type="submit" value="Submit Grade" style="text-align: center;">
                             </td>
                         </tr>
                         <tr>
-                            <td class="hatdog">1</td>
-                            <td class="hatdog">Student 1</td>
+                            <td class="hatdog">2</td>
+                            <td class="hatdog">Student 2</td>
                             <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
                             <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
                             <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
@@ -154,13 +153,12 @@
                                 <input type="number" placeholder="##" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
                             </td>
                             <td class="hatdog">
-                                <input type="submit" value="Download Record" style="text-align: center;">
                                 <input type="submit" value="Submit Grade" style="text-align: center;">
                             </td>
                         </tr>
                         <tr>
-                            <td class="hatdog">1</td>
-                            <td class="hatdog">Student 1</td>
+                            <td class="hatdog">3</td>
+                            <td class="hatdog">Student 3</td>
                             <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
                             <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
                             <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
@@ -170,7 +168,6 @@
                                 <input type="number" placeholder="##" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
                             </td>
                             <td class="hatdog">
-                                <input type="submit" value="Download Record" style="text-align: center;">
                                 <input type="submit" value="Submit Grade" style="text-align: center;">
                             </td>
                         </tr>

@@ -88,7 +88,7 @@
 
     <div class="container">
         <div class="row">
-            <h2 class="text-uppercase text-center" style="padding-top: 40px;">Report Card</h2>
+            <h2 class="text-uppercase text-center" style="padding-top: 40px;">Class Performance</h2>
             <div class="col m-3">
                 <table id="head" class="table">
                     <tr>
@@ -118,7 +118,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="hatdog">English</td>
+                                <td class="hatdog">Recitations</td>
                                 <td class="hatdog">90</td>
                                 <td class="hatdog">90</td>
                                 <td class="hatdog">91</td>
@@ -127,7 +127,7 @@
                                 <td class="hatdog">Passed</td>
                             </tr>
                             <tr>
-                                <td class="hatdog">Mathemics</td>
+                                <td class="hatdog">Activities</td>
                                 <td class="hatdog">90</td>
                                 <td class="hatdog">90</td>
                                 <td class="hatdog">91</td>
@@ -136,7 +136,7 @@
                                 <td class="hatdog">Passed</td>
                             </tr>
                             <tr>
-                                <td class="hatdog">Filipino</td>
+                                <td class="hatdog">Assignments</td>
                                 <td class="hatdog">90</td>
                                 <td class="hatdog">90</td>
                                 <td class="hatdog">91</td>
@@ -145,25 +145,7 @@
                                 <td class="hatdog">Passed</td>
                             </tr>
                             <tr>
-                                <td class="hatdog">Science</td>
-                                <td class="hatdog">90</td>
-                                <td class="hatdog">90</td>
-                                <td class="hatdog">91</td>
-                                <td class="hatdog">91</td>
-                                <td class="hatdog">90.5</td>
-                                <td class="hatdog">Passed</td>
-                            </tr>
-                            <tr>
-                                <td class="hatdog">MAPEH</td>
-                                <td class="hatdog">90</td>
-                                <td class="hatdog">90</td>
-                                <td class="hatdog">91</td>
-                                <td class="hatdog">91</td>
-                                <td class="hatdog">90.5</td>
-                                <td class="hatdog">Passed</td>
-                            </tr>
-                            <tr>
-                                <td class="hatdog">Araling Panlipunan</td>
+                                <td class="hatdog">Attendance</td>
                                 <td class="hatdog">90</td>
                                 <td class="hatdog">90</td>
                                 <td class="hatdog">91</td>
