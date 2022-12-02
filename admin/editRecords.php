@@ -88,7 +88,7 @@
                     <a class="nav-link" href="#studentrecords" data-toggle="tab">Student Information</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" href="#subjectsandcourses" data-toggle="tab">Subjects and Courses</a>
+                    <a class="nav-link" href="#subjectsandcourses" data-toggle="tab">Class Scheduling</a>
                 </li>
             </ul>
         </div>
@@ -108,7 +108,7 @@
                                         <div class="card-body">
                                             <h5 class="card-title"><?php echo $sectionRow['S_name'] ?></h5>
                                             <p class="card-text">
-                                                <?php echo "Year Level: " . $sectionRow['S_yearLevel'] ?>
+                                                <?php echo "Grade: " . $sectionRow['S_yearLevel'] ?>
                                             </p>
                                             <button type="submit" class="btn btn-primary" name="SectionName" value="<?php echo $sectionRow['S_name'] ?>">SELECT</button>
                                         </div>
@@ -172,7 +172,7 @@
                                                         <td class="hatdog"><?php echo $EnrolledData['G_id'] ?></td>
                                                         <td class="hatdog"><?php echo $EnrolledData['SR_number'] ?></td>
                                                         <td class="hatdog"><input type="number" name="g_english" placeholder="<?php echo $EnrolledData['G_english'] ?>" style="text-align: center;"></td>
-                                                        <td class="hatdog"><input type="number" name="g_english"placeholder="<?php echo $EnrolledData['G_math'] ?>" style="text-align: center;"></td>
+                                                        <td class="hatdog"><input type="number" name="g_english" placeholder="<?php echo $EnrolledData['G_math'] ?>" style="text-align: center;"></td>
                                                         <td class="hatdog"><input type="number" placeholder="<?php echo $EnrolledData['G_science'] ?>" style="text-align: center;"></td>
                                                         <td class="hatdog"><input type="number" placeholder="<?php echo $EnrolledData['G_history'] ?>" style="text-align: center;"></td>
                                                         <td class="hatdog"><input type="number" placeholder="<?php echo $EnrolledData['G_filipino'] ?>" style="text-align: center;"></td>
@@ -348,87 +348,25 @@
                 <div class="container">
                     <div class="row gx-2 ">
                         <div class="col-md-3">
-                            <div class="card mb-2">
-                                <div class="card-body">
-                                    <h5 class="card-title">Section Name</h5>
-                                    <p class="card-text">
-                                        YEAR LEVEL
-                                    </p>
-                                    <button type="button" class="btn btn-primary">SELECT</button>
-                                </div>
-                            </div>
-                            <div class="card mb-2">
-                                <div class="card-body">
-                                    <h5 class="card-title">Section Name</h5>
-                                    <p class="card-text">
-                                        YEAR LEVEL
-                                    </p>
-                                    <button type="button" class="btn btn-primary">SELECT</button>
-                                </div>
-                            </div>
-                            <div class="card mb-2">
-                                <div class="card-body">
-                                    <h5 class="card-title">Section Name</h5>
-                                    <p class="card-text">
-                                        YEAR LEVEL
-                                    </p>
-                                    <button type="button" class="btn btn-primary">SELECT</button>
-                                </div>
-                            </div>
-                            <div class="card mb-2">
-                                <div class="card-body">
-                                    <h5 class="card-title">Section Name</h5>
-                                    <p class="card-text">
-                                        YEAR LEVEL
-                                    </p>
-                                    <button type="button" class="btn btn-primary">SELECT</button>
-                                </div>
-                            </div>
-                            <div class="card mb-2">
-                                <div class="card-body">
-                                    <h5 class="card-title">Section Name</h5>
-                                    <p class="card-text">
-                                        YEAR LEVEL
-                                    </p>
-                                    <button type="button" class="btn btn-primary">SELECT</button>
-                                </div>
-                            </div>
-                            <div class="card mb-2">
-                                <div class="card-body">
-                                    <h5 class="card-title">Section Name</h5>
-                                    <p class="card-text">
-                                        YEAR LEVEL
-                                    </p>
-                                    <button type="button" class="btn btn-primary">SELECT</button>
-                                </div>
-                            </div>
-                            <div class="card mb-2">
-                                <div class="card-body">
-                                    <h5 class="card-title">Section Name</h5>
-                                    <p class="card-text">
-                                        YEAR LEVEL
-                                    </p>
-                                    <button type="button" class="btn btn-primary">SELECT</button>
-                                </div>
-                            </div>
-                            <div class="card mb-2">
-                                <div class="card-body">
-                                    <h5 class="card-title">Section Name</h5>
-                                    <p class="card-text">
-                                        YEAR LEVEL
-                                    </p>
-                                    <button type="button" class="btn btn-primary">SELECT</button>
-                                </div>
-                            </div>
-                            <div class="card mb-2">
-                                <div class="card-body">
-                                    <h5 class="card-title">Section Name</h5>
-                                    <p class="card-text">
-                                        YEAR LEVEL
-                                    </p>
-                                    <button type="button" class="btn btn-primary">SELECT</button>
-                                </div>
-                            </div>
+                            <?php
+                            $getTableData_Section = 'SELECT * FROM sections ORDER BY S_yearLevel';
+                            $getResult_Section = $mysqli->query($getTableData_Section);
+
+                            while ($sectionRow = $getResult_Section->fetch_assoc()) { ?>
+                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
+                                    <div class="card mb-2">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><?php echo $sectionRow['S_name'] ?></h5>
+                                            <p class="card-text">
+                                                <?php echo "Grade: " . $sectionRow['S_yearLevel'] ?>
+                                            </p>
+                                            <button type="submit" class="btn btn-primary" name="SectionSchedule" value="<?php echo $sectionRow['S_name'] ?>">SELECT</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            <?php
+                            }
+                            ?>
                         </div>
                         <div class="col-md-9">
                             <table class="table">
@@ -439,7 +377,7 @@
                                         <th>Subject Code</th>
                                         <th>Schedule</th>
                                         <th>Room</th>
-                                        <th>Professor</th>
+                                        <th>Teacher</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -469,6 +407,13 @@
                                             color: #000000;
                                         }
                                     </style>
+                                    <div class="m-1">
+                                        <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
+                                            <h4>How Many Rows: </h4>
+                                            <input type="number" name="input_numrows">
+                                            <input type="submit" name="numrows">
+                                        </form>
+                                    </div>
                                     <tr>
                                         <td class="hatdog">1</td>
                                         <td class="hatdog"><input type="text" placeholder="Subject Name" style="text-align: center;"></td>
@@ -483,7 +428,7 @@
                                         <td class="hatdog"><input type="text" placeholder="##" size="3" style="text-align: center;"></td>
                                         <td class="hatdog">
                                             <select aria-label="Default select example">
-                                                <option selected>Professor</option>
+                                                <option selected>Teacher</option>
                                                 <option value="1">NAME</option>
                                                 <option value="2">NAME1</option>
                                             </select>
@@ -492,98 +437,44 @@
                                             <input type="submit" value="SET" style="text-align: center;">
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td class="hatdog">1</td>
-                                        <td class="hatdog"><input type="text" placeholder="Subject Name" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="text" placeholder="ID" size="3" style="text-align: center;"></td>
-                                        <td class="hatdog">
-                                            <select aria-label="Default select example">
-                                                <option selected>AM/PM</option>
-                                                <option value="1">AM</option>
-                                                <option value="2">PM</option>
-                                            </select>
-                                        </td>
-                                        <td class="hatdog"><input type="text" placeholder="##" size="3" style="text-align: center;"></td>
-                                        <td class="hatdog">
-                                            <select aria-label="Default select example">
-                                                <option selected>Professor</option>
-                                                <option value="1">NAME</option>
-                                                <option value="2">NAME1</option>
-                                            </select>
-                                        </td>
-                                        <td class="hatdog">
-                                            <input type="submit" value="SET" style="text-align: center;">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="hatdog">1</td>
-                                        <td class="hatdog"><input type="text" placeholder="Subject Name" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="text" placeholder="ID" size="3" style="text-align: center;"></td>
-                                        <td class="hatdog">
-                                            <select aria-label="Default select example">
-                                                <option selected>AM/PM</option>
-                                                <option value="1">AM</option>
-                                                <option value="2">PM</option>
-                                            </select>
-                                        </td>
-                                        <td class="hatdog"><input type="text" placeholder="##" size="3" style="text-align: center;"></td>
-                                        <td class="hatdog">
-                                            <select aria-label="Default select example">
-                                                <option selected>Professor</option>
-                                                <option value="1">NAME</option>
-                                                <option value="2">NAME1</option>
-                                            </select>
-                                        </td>
-                                        <td class="hatdog">
-                                            <input type="submit" value="SET" style="text-align: center;">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="hatdog">1</td>
-                                        <td class="hatdog"><input type="text" placeholder="Subject Name" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="text" placeholder="ID" size="3" style="text-align: center;"></td>
-                                        <td class="hatdog">
-                                            <select aria-label="Default select example">
-                                                <option selected>AM/PM</option>
-                                                <option value="1">AM</option>
-                                                <option value="2">PM</option>
-                                            </select>
-                                        </td>
-                                        <td class="hatdog"><input type="text" placeholder="##" size="3" style="text-align: center;"></td>
-                                        <td class="hatdog">
-                                            <select aria-label="Default select example">
-                                                <option selected>Professor</option>
-                                                <option value="1">NAME</option>
-                                                <option value="2">NAME1</option>
-                                            </select>
-                                        </td>
-                                        <td class="hatdog">
-                                            <input type="submit" value="SET" style="text-align: center;">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="hatdog">1</td>
-                                        <td class="hatdog"><input type="text" placeholder="Subject Name" style="text-align: center;"></td>
-                                        <td class="hatdog"><input type="text" placeholder="ID" size="3" style="text-align: center;"></td>
-                                        <td class="hatdog">
-                                            <select aria-label="Default select example">
-                                                <option selected>AM/PM</option>
-                                                <option value="1">AM</option>
-                                                <option value="2">PM</option>
-                                            </select>
-                                        </td>
-                                        <td class="hatdog"><input type="text" placeholder="##" size="3" style="text-align: center;"></td>
-                                        <td class="hatdog">
-                                            <select aria-label="Default select example">
-                                                <option selected>Professor</option>
-                                                <option value="1">NAME</option>
-                                                <option value="2">NAME1</option>
-                                            </select>
-                                        </td>
-                                        <td class="hatdog">
-                                            <input type="submit" value="SET" style="text-align: center;">
-                                        </td>
-                                    </tr>
+                                    <?php
+                                    /* if (isset($_GET['SectionSchedule'])) {
+                                        $subjectQTY = $_POST['input_numrows'];
+                                        if (empty($subjectQTY)) { ?>
+                                            <td colspan="9">Input how many rows first</td>
+                                        <?php
+                                        } else { ?>
+                                            <tr>
+                                                <td class="hatdog">1</td>
+                                                <td class="hatdog"><input type="text" placeholder="Subject Name" style="text-align: center;"></td>
+                                                <td class="hatdog"><input type="text" placeholder="ID" size="3" style="text-align: center;"></td>
+                                                <td class="hatdog">
+                                                    <select aria-label="Default select example">
+                                                        <option selected>AM/PM</option>
+                                                        <option value="1">AM</option>
+                                                        <option value="2">PM</option>
+                                                    </select>
+                                                </td>
+                                                <td class="hatdog"><input type="text" placeholder="##" size="3" style="text-align: center;"></td>
+                                                <td class="hatdog">
+                                                    <select aria-label="Default select example">
+                                                        <option selected>Teacher</option>
+                                                        <option value="1">NAME</option>
+                                                        <option value="2">NAME1</option>
+                                                    </select>
+                                                </td>
+                                                <td class="hatdog">
+                                                    <input type="submit" value="SET" style="text-align: center;">
+                                                </td>
+                                            </tr>
+                                        <?php
+                                        }
+                                    } else { ?>
+                                        <td colspan="9">No Data or No Class Section Selected</td>
+                                    <?php
+                                    }
+                                    */
+                                    ?>
                                 </tbody>
                             </table>
                         </div>

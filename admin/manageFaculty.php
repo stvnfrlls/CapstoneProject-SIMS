@@ -9,7 +9,7 @@ $getFacultyCount = $resultFacultyCount->fetch_assoc();
 
 $FacultyNumber = sprintf("%05d", ($getFacultyCount["COUNT(F_number)"] + 1));
 
-echo  $year . "-" . $month . "-" . $FacultyNumber . "-F";
+/* echo  $year . "-" . $month . "-" . $FacultyNumber . "-F"; */
 ?>
 <!DOCTYPE html>
 <html lang="en">

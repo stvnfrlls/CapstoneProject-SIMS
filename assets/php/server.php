@@ -188,4 +188,7 @@ if (isset($_POST['regStudent'])) {
 //End
 
 //Admin Process
+if (isset($_POST['UpdateGrade'])) {
+    # code...
+}
 //End
