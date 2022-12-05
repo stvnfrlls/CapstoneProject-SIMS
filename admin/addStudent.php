@@ -1,13 +1,4 @@
-<?php
-require_once("../assets/php/server.php");
-$get_userID = ("SELECT COUNT(SR_ID) FROM studentrecord");
-$result = $mysqli->query($get_userID);
-$count = $result->fetch_assoc();
-$studentCounter = $count["COUNT(SR_ID)"] + 1;
-$format_StudentCounter = sprintf("%05d", $studentCounter);
-$year = date("Y");
-$studentNumber = $year . "-" . $format_StudentCounter . "-SP";
-?>
+<?php require_once("../assets/php/server.php"); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -97,38 +88,38 @@ $studentNumber = $year . "-" . $format_StudentCounter . "-SP";
                     <div class="card p-3">
                         <div class="row g-3 mb-3">
                             <div class="col-4 form-group">
-                                <label for="firstName" class="form-label">First name</label>
-                                <input type="text" class="form-control fullwidth " id="firstName" required>
+                                <label for="SR_fname" class="form-label">First name</label>
+                                <input type="text" class="form-control fullwidth " id="SR_fname" name="SR_fname" required>
                             </div>
 
                             <div class="col-3 form-group">
-                                <label for="firstName" class="form-label">Middle name</label>
-                                <input type="text" class="form-control fullwidth" id="firstName" required>
+                                <label for="SR_mname" class="form-label">Middle name</label>
+                                <input type="text" class="form-control fullwidth" id="SR_mname" name="SR_mname" required>
                             </div>
 
                             <div class="col-4 form-group">
-                                <label for="lastName" class="form-label">Last name</label>
-                                <input type="text" class="form-control fullwidth" id="lastName">
+                                <label for="SR_lname" class="form-label">Last name</label>
+                                <input type="text" class="form-control fullwidth" id="SR_lname" name="SR_lname" required>
                             </div>
                             <div class="col-1 form-group">
-                                <label for="lastName" class="form-label">Suffix</label>
-                                <input type="text" class="form-control fullwidth" id="lastName">
+                                <label for="SR_suffix" class="form-label">Suffix</label>
+                                <input type="text" class="form-control fullwidth" id="SR_suffix" name="SR_suffix" required>
                             </div>
                         </div>
                         <div class="row g-3 mb-3">
                             <div class="col-1 form-group">
-                                <label for="firstName" class="form-label">Age</label>
-                                <input type="number" class="form-control fullwidth " id="firstName" required>
+                                <label for="SR_age" class="form-label">Age</label>
+                                <input type="number" class="form-control fullwidth " id="SR_age" name="SR_age" required>
                             </div>
 
                             <div class="col-3 form-group">
-                                <label for="firstName" class="form-label">Birthday</label>
-                                <input type="date" class="form-control fullwidth" id="firstName" required>
+                                <label for="SR_birthday" class="form-label">Birthday</label>
+                                <input type="date" class="form-control fullwidth" id="SR_birthday" name="SR_birthday" required>
                             </div>
 
                             <div class="col-4 form-group">
-                                <label for="lastName" class="form-label">Gender</label>
-                                <select class="form-select form-control" id="lastName" required>
+                                <label for="SR_gender" class="form-label">Gender</label>
+                                <select class="form-select form-control" id="SR_gender" name="SR_gender" required>
                                     <option value=""></option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
@@ -138,30 +129,26 @@ $studentNumber = $year . "-" . $format_StudentCounter . "-SP";
                         </div>
                         <div class="row g-3 mb-3">
                             <div class="col-8 form-group">
-                                <label for="firstName" class="form-label">Address</label>
-                                <input type="number" class="form-control fullwidth " id="firstName" required>
+                                <label for="SR_address" class="form-label">Address</label>
+                                <input type="text" class="form-control fullwidth" id="SR_address" name="SR_address" required>
                             </div>
                             <div class="col-4 form-group">
-                                <label for="firstName" class="form-label">City</label>
-                                <input type="number" class="form-control fullwidth " id="firstName" required>
+                                <label for="SR_city" class="form-label">City</label>
+                                <input type="text" class="form-control fullwidth " id="SR_city" name="SR_city" required>
                             </div>
                             <div class="col-4 form-group">
-                                <label for="firstName" class="form-label">State</label>
-                                <input type="number" class="form-control fullwidth " id="firstName" required>
-                            </div>
-                            <div class="col-4 form-group">
-                                <label for="firstName" class="form-label">Postal Code</label>
-                                <input type="number" class="form-control fullwidth " id="firstName" required>
+                                <label for="SR_postal" class="form-label">Postal Code</label>
+                                <input type="number" class="form-control fullwidth " id="SR_postal" name="SR_postal" required>
                             </div>
                         </div>
                         <div class="row g-3 mb-3">
                             <div class="col-6 form-group">
-                                <label for="firstName" class="form-label">Guardian Name</label>
-                                <input type="number" class="form-control fullwidth " id="firstName" required>
+                                <label for="SR_guardian" class="form-label">Guardian Name</label>
+                                <input type="text" class="form-control fullwidth " id="SR_guardian" name="SR_guardian" required>
                             </div>
                             <div class="col-6 form-group">
-                                <label for="firstName" class="form-label">Contact Number</label>
-                                <input type="number" class="form-control fullwidth " id="firstName" required>
+                                <label for="SR_contact" class="form-label">Contact Number</label>
+                                <input type="number" class="form-control fullwidth " id="SR_contact" name="SR_contact" required>
                             </div>
                         </div>
                     </div>
@@ -174,12 +161,8 @@ $studentNumber = $year . "-" . $format_StudentCounter . "-SP";
                         </div>
                         <div class="row g-3 mb-3">
                             <div class="col-6 form-group">
-                                <label for="SR_number" class="form-label">Student Number</label>
-                                <input type="text" class="form-control fullwidth" name="SR_number" id="SR_number" value="<?php echo $studentNumber ?>" readonly>
-                            </div>
-                            <div class="col-6 form-group">
-                                <label for="lastName" class="form-label">Year Level</label>
-                                <select class="form-select form-control fullwidth" id="lastName" required>
+                                <label for="SR_grade" class="form-label">Year Level</label>
+                                <select class="form-select form-control fullwidth" id="SR_grade" name="SR_grade" required>
                                     <option value=""></option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
@@ -187,8 +170,8 @@ $studentNumber = $year . "-" . $format_StudentCounter . "-SP";
                                 </select>
                             </div>
                             <div class="col-6 form-group">
-                                <label for="lastName" class="form-label">Section</label>
-                                <select class="form-select form-control fullwidth" id="lastName" required>
+                                <label for="SR_section" class="form-label">Section</label>
+                                <select class="form-select form-control fullwidth" id="SR_section" name="SR_section" required>
                                     <option value=""></option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
@@ -196,8 +179,8 @@ $studentNumber = $year . "-" . $format_StudentCounter . "-SP";
                                 </select>
                             </div>
                             <div class="col-6 form-group">
-                                <label for="lastName" class="form-label">Schedule</label>
-                                <select class="form-select form-control fullwidth" id="lastName" required>
+                                <label for="SR_schedule" class="form-label">Schedule</label>
+                                <select class="form-select form-control fullwidth" id="SR_schedule" name="SR_schedule" required>
                                     <option value=""></option>
                                     <option value="AM">AM</option>
                                     <option value="PM">PM</option>
