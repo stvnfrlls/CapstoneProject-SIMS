@@ -1,9 +1,4 @@
-<?php 
-require_once("../assets/php/server.php");
-$code = "2022-0001-SRVC";
-
-
-?>
+<?php require_once("../assets/php/server.php"); ?>
 
 <!DOCTYPE html>
 <html lang="en">
