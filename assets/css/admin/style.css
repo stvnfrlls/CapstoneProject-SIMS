@@ -116,7 +116,7 @@
 /* === Import template variables === */
 /*-------------------------------------------------------------------*/
 /* === SCSS Compass Functions === */
-@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @-moz-keyframes flash {
   0% {
     opacity: 1;
@@ -8661,16 +8661,16 @@
   --bs-gray-light: #aab2bd;
   --bs-gray-lighter: #e8eff4;
   --bs-gray-lightest: #e6e9ed;
-  --bs-gray-dark: #0f1531;
+  
   --bs-black: #000000;
-  --bs-primary: #1F3BB3;
+
   --bs-secondary: #F1F1F1;
   --bs-success: #34B1AA;
   --bs-info: #52CDFF;
   --bs-warning: #ffaf00;
   --bs-danger: #F95F53;
   --bs-light: #fbfbfb;
-  --bs-dark: #1E283D;
+
   --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
@@ -8847,14 +8847,7 @@ sup {
   top: -.5em;
 }
 
-a {
-  color: #0d6efd;
-  text-decoration: underline;
-}
 
-a:hover {
-  color: #0a58ca;
-}
 
 a:not([href]):not([class]), a:not([href]):not([class]):hover {
   color: inherit;
@@ -10526,17 +10519,7 @@ progress {
   border-color: #dfe0e1;
 }
 
-.table-dark {
-  --bs-table-bg: #212529;
-  --bs-table-striped-bg: #2c3034;
-  --bs-table-striped-color: #fff;
-  --bs-table-active-bg: #373b3e;
-  --bs-table-active-color: #fff;
-  --bs-table-hover-bg: #323539;
-  --bs-table-hover-color: #fff;
-  color: #fff;
-  border-color: #373b3e;
-}
+
 
 .table-responsive {
   overflow-x: auto;
@@ -10608,23 +10591,6 @@ progress {
   color: #6c757d;
 }
 
-.form-control, .asColorPicker-input, .dataTables_wrapper select, .select2-container--default .select2-selection--single, .select2-container--default .select2-selection--single .select2-search__field, .typeahead,
-.tt-query,
-.tt-hint {
-  display: block;
-  width: 100%;
-  padding: 0.875rem 1.375rem;
-  font-size: 0.875rem;
-  font-weight: 400;
-  line-height: 1;
-  color: #212529;
-  background-color: color(white);
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  appearance: none;
-  border-radius: 2px;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
 
 @media (prefers-reduced-motion: reduce) {
   .form-control, .asColorPicker-input, .dataTables_wrapper select, .select2-container--default .select2-selection--single, .select2-container--default .select2-selection--single .select2-search__field, .typeahead,
@@ -10649,7 +10615,7 @@ progress {
 .form-control:focus, .asColorPicker-input:focus, .dataTables_wrapper select:focus, .select2-container--default .select2-selection--single:focus, .select2-container--default .select2-selection--single .select2-search__field:focus, .typeahead:focus,
 .tt-query:focus,
 .tt-hint:focus {
-  color: #212529;
+  color: #777;
   background-color: #fff;
   border-color: #86b7fe;
   outline: 0;
@@ -10747,8 +10713,7 @@ progress {
   margin-bottom: 0;
   line-height: 1;
   color: #212529;
-  background-color: transparent;
-  border: solid transparent;
+  border: solid;
   border-width: 1px 0;
 }
 
@@ -10863,7 +10828,6 @@ textarea.form-control-lg {
 }
 
 .form-select:-moz-focusring {
-  color: transparent;
   text-shadow: 0 0 0 #212529;
 }
 
@@ -11003,7 +10967,6 @@ textarea.form-control-lg {
   width: 100%;
   height: 1.5rem;
   padding: 0;
-  background-color: transparent;
   appearance: none;
 }
 
@@ -11047,7 +11010,6 @@ textarea.form-control-lg {
 .form-range::-webkit-slider-runnable-track {
   width: 100%;
   height: 0.5rem;
-  color: transparent;
   cursor: pointer;
   background-color: #dee2e6;
   border-color: transparent;
@@ -11077,7 +11039,6 @@ textarea.form-control-lg {
 .form-range::-moz-range-track {
   width: 100%;
   height: 0.5rem;
-  color: transparent;
   cursor: pointer;
   background-color: #dee2e6;
   border-color: transparent;
@@ -11126,11 +11087,7 @@ textarea.form-control-lg {
   }
 }
 
-.form-floating > .form-control::placeholder, .form-floating > .asColorPicker-input::placeholder, .dataTables_wrapper .form-floating > select::placeholder, .select2-container--default .form-floating > .select2-selection--single::placeholder, .select2-container--default .select2-selection--single .form-floating > .select2-search__field::placeholder, .form-floating > .typeahead::placeholder,
-.form-floating > .tt-query::placeholder,
-.form-floating > .tt-hint::placeholder {
-  color: transparent;
-}
+
 
 .form-floating > .form-control:focus, .form-floating > .asColorPicker-input:focus, .dataTables_wrapper .form-floating > select:focus, .select2-container--default .form-floating > .select2-selection--single:focus, .select2-container--default .select2-selection--single .form-floating > .select2-search__field:focus, .form-floating > .typeahead:focus,
 .form-floating > .tt-query:focus,
@@ -11499,19 +11456,13 @@ textarea.is-invalid.tt-hint {
 }
 
 .btn, .ajax-upload-dragdrop .ajax-file-upload, .swal2-modal .swal2-buttonswrapper .swal2-styled, .swal2-modal .swal2-buttonswrapper .swal2-styled.swal2-confirm, .swal2-modal .swal2-buttonswrapper .swal2-styled.swal2-cancel {
-  display: inline-block;
   font-weight: 400;
-  line-height: 1;
-  color: #1F1F1F;
   text-align: center;
   text-decoration: none;
   vertical-align: middle;
   cursor: pointer;
   user-select: none;
   background-color: transparent;
-  border: 1px solid transparent;
-  padding: 0.875rem 1.5rem;
-  font-size: 0.875rem;
   border-radius: 0.1875rem;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
@@ -11544,20 +11495,20 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
 .btn-primary {
   color: #fff;
   background-color: #1F3BB3;
-  border-color: #1F3BB3;
+  
 }
 
 .btn-primary:hover {
   color: #fff;
-  background-color: #1a3298;
-  border-color: #192f8f;
+  background-color: #252525;
+  border-color: #252525;
 }
 
 .btn-check:focus + .btn-primary, .btn-primary:focus {
   color: #fff;
-  background-color: #1a3298;
-  border-color: #192f8f;
-  box-shadow: 0 0 0 0.25rem rgba(65, 88, 190, 0.5);
+  background-color: #252525;
+  border-color: #252525;
+  box-shadow: 0 0 0 0.25rem #252525;
 }
 
 .btn-check:checked + .btn-primary,
@@ -11814,17 +11765,9 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
   border-color: #fbfbfb;
 }
 
-.btn-dark {
-  color: #fff;
-  background-color: #1E283D;
-  border-color: #1E283D;
-}
 
-.btn-dark:hover {
-  color: #fff;
-  background-color: #1a2234;
-  border-color: #182031;
-}
+
+
 
 .btn-check:focus + .btn-dark, .btn-dark:focus {
   color: #fff;
@@ -11854,14 +11797,14 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
 }
 
 .btn-outline-primary {
-  color: #1F3BB3;
-  border-color: #1F3BB3;
+  color: #fff;
+  border-color: #252525;
 }
 
 .btn-outline-primary:hover {
   color: #fff;
-  background-color: #1F3BB3;
-  border-color: #1F3BB3;
+  background-color: #252525;
+  border-color: #252525;
 }
 
 .btn-check:focus + .btn-outline-primary, .btn-outline-primary:focus {
@@ -12113,25 +12056,8 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
   background-color: transparent;
 }
 
-.btn-link {
-  font-weight: 400;
-  color: #0d6efd;
-  text-decoration: underline;
-}
 
-.btn-link:hover {
-  color: #0a58ca;
-}
 
-.btn-link:disabled, .btn-link.disabled {
-  color: #6c757d;
-}
-
-.btn-lg, .btn-group-lg > .btn, .ajax-upload-dragdrop .btn-group-lg > .ajax-file-upload, .swal2-modal .swal2-buttonswrapper .btn-group-lg > .swal2-styled {
-  padding: 1rem 3rem;
-  font-size: 0.875rem;
-  border-radius: 0.1875rem;
-}
 
 .btn-sm, .btn-group-sm > .btn, .ajax-upload-dragdrop .btn-group-sm > .ajax-file-upload, .swal2-modal .swal2-buttonswrapper .btn-group-sm > .swal2-styled {
   padding: 0.5rem 0.81rem;
@@ -13446,7 +13372,7 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
 
 .page-link:hover {
   z-index: 2;
-  color: #0a58ca;
+  color: #fff;
   background-color: #e9ecef;
   border-color: #dee2e6;
 }
@@ -15980,6 +15906,7 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
 
 .mb-2 {
   margin-bottom: 0.5rem !important;
+  font-size: 14px;
 }
 
 .mb-3, .template-demo .circle-progress-block {
@@ -16290,17 +16217,7 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
   text-align: center !important;
 }
 
-.text-decoration-none {
-  text-decoration: none !important;
-}
 
-.text-decoration-underline {
-  text-decoration: underline !important;
-}
-
-.text-decoration-line-through {
-  text-decoration: line-through !important;
-}
 
 .text-lowercase {
   text-transform: lowercase !important;
@@ -16329,9 +16246,7 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
 }
 
 /* rtl:end:remove */
-.text-primary {
-  color: #1F3BB3 !important;
-}
+
 
 .text-secondary {
   color: #F1F1F1 !important;
@@ -16365,9 +16280,7 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
   color: #ffffff !important;
 }
 
-.text-body {
-  color: #1F1F1F !important;
-}
+
 
 .text-muted, .preview-list .preview-item .preview-item-content p .content-category, .email-wrapper .mail-sidebar .menu-bar .profile-list-item a .user .u-designation, .email-wrapper .mail-list-container .mail-list .content .message_text, .email-wrapper .mail-list-container .mail-list .details .date {
   color: #737F8B !important;
@@ -16385,9 +16298,7 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
   color: inherit !important;
 }
 
-.bg-primary, .settings-panel .color-tiles .tiles.primary {
-  background-color: #1F3BB3 !important;
-}
+
 
 .bg-secondary {
   background-color: #F1F1F1 !important;
@@ -16413,9 +16324,7 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
   background-color: #fbfbfb !important;
 }
 
-.bg-dark, .settings-panel .color-tiles .tiles.dark {
-  background-color: #1E283D !important;
-}
+
 
 .bg-body {
   background-color: #fff !important;
@@ -19189,67 +19098,9 @@ textarea {
   overflow-x: hidden;
 }
 
-.btn, .ajax-upload-dragdrop .ajax-file-upload, .swal2-modal .swal2-buttonswrapper .swal2-styled, .swal2-modal .swal2-buttonswrapper .swal2-styled.swal2-confirm, .swal2-modal .swal2-buttonswrapper .swal2-styled.swal2-cancel,
-.btn-group.open .dropdown-toggle,
-.btn:active,
-.ajax-upload-dragdrop .ajax-file-upload:active,
-.swal2-modal .swal2-buttonswrapper .swal2-styled:active, .btn:focus, .ajax-upload-dragdrop .ajax-file-upload:focus, .swal2-modal .swal2-buttonswrapper .swal2-styled:focus, .btn:hover, .ajax-upload-dragdrop .ajax-file-upload:hover, .swal2-modal .swal2-buttonswrapper .swal2-styled:hover,
-.btn:visited,
-.ajax-upload-dragdrop .ajax-file-upload:visited,
-.swal2-modal .swal2-buttonswrapper .swal2-styled:visited,
-a,
-a:active,
-a:checked,
-a:focus,
-a:hover,
-a:visited,
-body,
-button,
-button:active,
-button:hover,
-button:visited,
-div,
-input,
-input:active,
-input:focus,
-input:hover,
-input:visited,
-select,
-select:active,
-select:focus,
-select:visited,
-textarea,
-textarea:active,
-textarea:focus,
-textarea:hover,
-textarea:visited {
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-}
 
-.btn.active.focus, .ajax-upload-dragdrop .active.focus.ajax-file-upload, .swal2-modal .swal2-buttonswrapper .active.focus.swal2-styled,
-.btn.active:focus,
-.ajax-upload-dragdrop .active.ajax-file-upload:focus,
-.swal2-modal .swal2-buttonswrapper .active.swal2-styled:focus,
-.btn.focus,
-.ajax-upload-dragdrop .focus.ajax-file-upload,
-.swal2-modal .swal2-buttonswrapper .focus.swal2-styled,
-.btn:active.focus,
-.ajax-upload-dragdrop .ajax-file-upload:active.focus,
-.swal2-modal .swal2-buttonswrapper .swal2-styled:active.focus,
-.btn:active:focus,
-.ajax-upload-dragdrop .ajax-file-upload:active:focus,
-.swal2-modal .swal2-buttonswrapper .swal2-styled:active:focus, .btn:focus, .ajax-upload-dragdrop .ajax-file-upload:focus, .swal2-modal .swal2-buttonswrapper .swal2-styled:focus,
-button,
-button:active,
-button:checked,
-button:focus,
-button:hover,
-button:visited {
-  outline: 0;
-  outline-offset: 0;
-}
+
+
 
 .bootstrap-select .dropdown-toggle:focus {
   outline: 0;
@@ -19344,7 +19195,7 @@ input:focus {
 /* Typography */
 body {
   font-size: 1rem;
-  font-family: "Manrope", sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: initial;
   line-height: normal;
   -webkit-font-smoothing: antialiased;
@@ -19362,9 +19213,7 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6,
 }
 
 p {
-  font-size: 0.812rem;
-  margin-bottom: .5rem;
-  line-height: 1.3rem;
+  margin-top: 0;
 }
 
 h1, .h1,
@@ -19613,7 +19462,7 @@ pre {
 code {
   padding: 5px;
   color: #F95F53;
-  font-family: "Manrope", sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 300;
   font-size: 0.812rem;
   border-radius: 4px;
@@ -19623,32 +19472,7 @@ code {
   display: flex;
 }
 
-/* Footer */
-.footer {
-  background: #F4F5F7;
-  color: color(dark);
-  padding: 30px 2.45rem;
-  transition: all 0.25s ease;
-  -moz-transition: all 0.25s ease;
-  -webkit-transition: all 0.25s ease;
-  -ms-transition: all 0.25s ease;
-  font-size: calc(0.812rem - 0.05rem);
-  font-family: "Manrope", sans-serif;
-  font-weight: 400;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
-}
 
-.footer a {
-  color: #1F3BB3;
-  font-size: inherit;
-}
-
-@media (max-width: 991px) {
-  .footer {
-    margin-left: 0;
-    width: 100%;
-  }
-}
 
 /* Utilities */
 .grid-margin {
@@ -20177,7 +20001,7 @@ code {
   vertical-align: bottom;
 }
 
-.home-tab .btn.btn-lg, .home-tab .btn-group-lg > .btn, .home-tab .ajax-upload-dragdrop .btn-group-lg > .ajax-file-upload, .ajax-upload-dragdrop .home-tab .btn-group-lg > .ajax-file-upload, .home-tab .swal2-modal .swal2-buttonswrapper .btn-group-lg > .swal2-styled, .swal2-modal .swal2-buttonswrapper .home-tab .btn-group-lg > .swal2-styled, .home-tab .ajax-upload-dragdrop .btn-lg.ajax-file-upload, .ajax-upload-dragdrop .home-tab .btn-lg.ajax-file-upload, .home-tab .swal2-modal .swal2-buttonswrapper .btn-lg.swal2-styled, .swal2-modal .swal2-buttonswrapper .home-tab .btn-lg.swal2-styled {
+.home-tab, .home-tab .btn-group-lg > .btn, .home-tab .ajax-upload-dragdrop .btn-group-lg > .ajax-file-upload, .ajax-upload-dragdrop .home-tab .btn-group-lg > .ajax-file-upload, .home-tab .swal2-modal .swal2-buttonswrapper .btn-group-lg > .swal2-styled, .swal2-modal .swal2-buttonswrapper .home-tab .btn-group-lg > .swal2-styled, .home-tab .ajax-upload-dragdrop .btn-lg.ajax-file-upload, .ajax-upload-dragdrop .home-tab .btn-lg.ajax-file-upload, .home-tab .swal2-modal .swal2-buttonswrapper .btn-lg.swal2-styled, .swal2-modal .swal2-buttonswrapper .home-tab .btn-lg.swal2-styled {
   font-size: 14px;
   line-height: 18px;
   padding: 10px;
@@ -20692,7 +20516,7 @@ code {
 
 .badge-opacity-primary {
   background: #b6c1f2;
-  color: #172d88;
+  color: #fff;
 }
 
 .badge-opacity-secondary {
@@ -20882,8 +20706,7 @@ code {
 
 /* Buttons */
 .btn, .ajax-upload-dragdrop .ajax-file-upload, .swal2-modal .swal2-buttonswrapper .swal2-styled, .swal2-modal .swal2-buttonswrapper .swal2-styled.swal2-confirm, .swal2-modal .swal2-buttonswrapper .swal2-styled.swal2-cancel {
-  font-size: 0.875rem;
-  line-height: 1;
+  
   font-weight: 400;
   border-radius: 5px;
   /* Buttons with only icons */
@@ -20903,7 +20726,7 @@ code {
   border-radius: 15px;
 }
 
-.btn.btn-lg, .btn-group-lg > .btn, .ajax-upload-dragdrop .btn-group-lg > .ajax-file-upload, .swal2-modal .swal2-buttonswrapper .btn-group-lg > .swal2-styled, .ajax-upload-dragdrop .btn-lg.ajax-file-upload, .swal2-modal .swal2-buttonswrapper .btn-lg.swal2-styled {
+.btn-group-lg > .btn, .ajax-upload-dragdrop .btn-group-lg > .ajax-file-upload, .swal2-modal .swal2-buttonswrapper .btn-group-lg > .swal2-styled, .ajax-upload-dragdrop .btn-lg.ajax-file-upload, .swal2-modal .swal2-buttonswrapper .btn-lg.swal2-styled {
   font-size: 0.875rem;
   padding: 1.375rem 3.4rem;
 }
@@ -20962,7 +20785,7 @@ code {
 
 /*social buttons*/
 .btn-primary {
-  background: #1F3BB3;
+  background: #c02628;;
   color: #ffffff;
 }
 
@@ -20971,7 +20794,7 @@ code {
 }
 
 .btn-primary:hover, .btn-primary:focus {
-  background: #172d88;
+  background: #3b3b3b;
   color: #ffffff;
 }
 
@@ -21345,27 +21168,7 @@ code {
   color: #ffffff;
 }
 
-.btn-linkedin {
-  background: #7978E9;
-  color: #ffffff;
-}
 
-.btn-linkedin:hover, .btn-linkedin:focus {
-  background: #4d4ce2;
-  color: #ffffff;
-}
-
-.btn-linkedin.btn-social-icon-text {
-  padding: 0 1.5rem 0 0;
-  background: #a5a4f0;
-}
-
-.btn-linkedin.btn-social-icon-text i {
-  background: #7978E9;
-  padding: .75rem;
-  display: inline-block;
-  margin-right: 1.5rem;
-}
 
 .btn-outline-linkedin {
   border: 1px solid #7978E9;
@@ -23153,9 +22956,8 @@ code {
 .tt-hint {
   border: 1px solid #dee2e6;
   font-weight: 400;
-  font-size: 0.875rem;
   border-radius: 4px;
-  height: 2rem;
+  
 }
 
 select.form-control, select.asColorPicker-input, .dataTables_wrapper select, .select2-container--default select.select2-selection--single, .select2-container--default .select2-selection--single select.select2-search__field, select.typeahead,
@@ -24251,7 +24053,7 @@ dl li {
   padding-left: 0;
   position: relative;
   margin-bottom: 0;
-  font-family: "Manrope", sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .icon-data-list li {
@@ -25095,7 +24897,7 @@ dl li {
 }
 
 .table.select-table td {
-  font-family: Manrope;
+  font-family: Montserrat;
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
@@ -25345,11 +25147,11 @@ dl li {
 }
 
 .home-tab {
-  font-family: "Manrope", sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .home-tab .nav-tabs {
-  font-family: "Manrope", sans-serif;
+  font-family: "Montserrat", sans-serif;
   border-bottom: none;
 }
 
@@ -25366,7 +25168,7 @@ dl li {
   padding: 12px 14px;
   border: none;
   border-right: 1px solid #dee2e6;
-  font-family: "Manrope", sans-serif;
+  font-family: "Montserrat", sans-serif;
   background: transparent;
 }
 
@@ -25384,7 +25186,7 @@ dl li {
 
 .home-tab .tab-content {
   padding: 24px 0;
-  font-family: "Manrope", sans-serif;
+  font-family: "Montserrat", sans-serif;
   border: none;
 }
 
@@ -26936,7 +26738,7 @@ table.dataTable tbody td.select-checkbox:after {
 
 .datepicker.datepicker-dropdown .datepicker-days table.table-condensed thead tr th.dow,
 .datepicker.datepicker-inline .datepicker-days table.table-condensed thead tr th.dow {
-  font-family: "Manrope", sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: #1F1F1F;
   font-size: 0.875rem;
   font-weight: initial;
@@ -28353,7 +28155,7 @@ div.tagsinput span.tag a {
   flex-direction: row;
   padding-left: 0;
   padding-right: 0;
-  padding-top: 97px;
+
 }
 
 .page-body-wrapper.full-page-wrapper {
@@ -28397,7 +28199,7 @@ div.tagsinput span.tag a {
 .sidebar {
   min-height: calc(100vh - 97px);
   background: #252525 !important;
-  font-family: "Manrope", sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 500;
   padding: 0;
   width: 220px;
@@ -28505,6 +28307,7 @@ div.tagsinput span.tag a {
   font-size: 12px;
   line-height: 1;
   vertical-align: middle;
+  text-align: center;
 }
 
 .sidebar .nav .nav-item .nav-link .badge {
@@ -28564,6 +28367,7 @@ div.tagsinput span.tag a {
   padding: 20px 0px 5px 0px;
   text-transform: uppercase;
 }
+
 
 .sidebar-dark .sidebar .nav .nav-item.nav-category {
   color: #fff;
@@ -29185,7 +28989,7 @@ div.tagsinput span.tag a {
 }
 
 .navbar .navbar-menu-wrapper .navbar-nav .nav-item .welcome-text {
-  font-family: "Manrope", sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 28px;
@@ -29199,7 +29003,7 @@ div.tagsinput span.tag a {
 }
 
 .navbar .navbar-menu-wrapper .navbar-nav .nav-item .welcome-sub-text {
-  font-family: "Manrope", sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 16px;
@@ -29216,7 +29020,7 @@ div.tagsinput span.tag a {
   font-weight: 500;
   font-size: 12px;
   line-height: 16px;
-  font-family: "Manrope", sans-serif;
+  font-family: "Montserrat", sans-serif;
   min-width: 170px;
   height: 34px;
   background: #ffffff;
@@ -29232,7 +29036,7 @@ div.tagsinput span.tag a {
 
 .navbar .navbar-menu-wrapper .navbar-nav .nav-item .navbar-date-picker {
   background: #ffffff;
-  font-family: "Manrope", sans-serif;
+  font-family: "Montserrat", sans-serif;
   height: 36px;
   border: 1px solid #DFDFDF;
   border-radius: 6px;
@@ -30477,7 +30281,7 @@ div.tagsinput span.tag a {
 .settings-panel .settings-heading {
   padding: 16px 0 13px 35px;
   font-size: 0.812rem;
-  font-family: "Manrope", sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 500;
   line-height: 1;
   color: rgba(0, 0, 0, 0.9);
@@ -30672,7 +30476,7 @@ div.tagsinput span.tag a {
 }
 
 .settings-panel .events p {
-  font-family: "Manrope", sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 400;
 }
 
