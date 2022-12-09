@@ -129,6 +129,7 @@
                         <tr>
                             <td class="hatdog">1</td>
                             <td class="hatdog">Student 1</td>
+                            
                             <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
                             <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
                             <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
