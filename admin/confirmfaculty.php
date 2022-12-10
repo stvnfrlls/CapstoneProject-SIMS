@@ -154,14 +154,8 @@ require_once("../assets/php/server.php");
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Department</label>
                                   <div class="col-sm-12">
-                                    <select class="form-select form-control" name="department" readonly>
-                                      <option value=""></option>
-                                      <option value="English">English Department</option>
-                                      <option value="Filipino">Filipino Department</option>
-                                      <option value="Mathematics">Mathematics Department</option>
-                                      <option value="Science">Science Department</option>
-                                      <option value="History">History Department</option>
-                                      <option value="Personality Development">Personality Development Department</option>
+                                    <select class="form-select form-control" name="F_department" readonly>
+                                      <option value="<?php echo $_POST['F_department'] ?>" selected><?php echo $_POST['F_department'] ?></option>
                                     </select>
                                   </div>
                                 </div>
@@ -172,28 +166,28 @@ require_once("../assets/php/server.php");
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Last Name</label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="lname" readonly>
+                                    <input type="text" class="form-control" value="<?php echo $_POST['F_lname'] ?>" name="F_lname" readonly>
                                   </div>
                                 </div>
 
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">First Name</label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="fname" readonly>
+                                    <input type="text" class="form-control" value="<?php echo $_POST['F_fname'] ?>" name="F_fname" readonly>
                                   </div>
                                 </div>
 
                                 <div class="col-md-3">
                                   <label class="col-sm-12 col-form-label">Middle Name</label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="mname" readonly>
+                                    <input type="text" class="form-control" value="<?php echo $_POST['F_mname'] ?>" name="F_mname" readonly>
                                   </div>
                                 </div>
 
                                 <div class="col-md-1">
                                   <label class="col-sm-12 col-form-label">Suffix</label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="suffix" readonly>
+                                    <input type="text" class="form-control" value="<?php echo $_POST['F_suffix'] ?>" name="F_suffix" readonly>
                                   </div </div>
 
                                 </div>
@@ -203,25 +197,22 @@ require_once("../assets/php/server.php");
                                   <div class="col-md-4">
                                     <label class="col-sm-12 col-form-label">Age</label>
                                     <div class="col-sm-12">
-                                      <input type="number" class="form-control" name="age" readonly>
+                                      <input type="number" class="form-control" value="<?php echo $_POST['F_age'] ?>" name="F_age" readonly>
                                     </div>
                                   </div>
 
                                   <div class="col-md-4">
                                     <label class="col-sm-12 col-form-label">Birthdate</label>
                                     <div class="col-sm-12">
-                                      <input type="date" class="form-control" name="birthday" readonly>
+                                      <input type="date" class="form-control" value="<?php echo $_POST['F_birthday'] ?>" name="F_birthday" readonly>
                                     </div>
                                   </div>
 
                                   <div class="col-md-4">
                                     <label class="col-sm-12 col-form-label">Gender</label>
                                     <div class="col-sm-12">
-                                      <select class="form-select form-control" name="gender" readonly>
-                                        <option value=""></option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="NA">Prefer not to say</option>
+                                      <select class="form-select form-control" name="F_gender" readonly>
+                                        <option value="<?php echo $_POST['F_gender'] ?>"><?php echo $_POST['F_gender'] ?></option>
                                       </select>
                                     </div>
                                   </div>
@@ -234,21 +225,21 @@ require_once("../assets/php/server.php");
                                   <div class="col-md-6">
                                     <label label class="col-sm-12 col-form-label">Address</label>
                                     <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="address" readonly>
+                                      <input type="text" class="form-control" value="<?php echo $_POST['F_address'] ?>" name="F_address" readonly>
                                     </div>
                                   </div>
 
                                   <div class="col-md-3">
                                     <label label class="col-sm-12 col-form-label">Barangay</label>
                                     <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="barangay" readonly>
+                                      <input type="text" class="form-control" value="<?php echo $_POST['F_barangay'] ?>" name="F_barangay" readonly>
                                     </div>
                                   </div>
 
                                   <div class="col-md-3">
                                     <label label class="col-sm-12 col-form-label">City</label>
                                     <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="city" readonly>
+                                      <input type="text" class="form-control" value="<?php echo $_POST['F_city'] ?>" name="F_city" readonly>
                                     </div>
                                   </div>
 
@@ -259,14 +250,14 @@ require_once("../assets/php/server.php");
                                   <div class="col-md-4">
                                     <label label class="col-sm-12 col-form-label">State</label>
                                     <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="state" readonly>
+                                      <input type="text" class="form-control" value="<?php echo $_POST['F_state'] ?>" name="F_state" readonly>
                                     </div>
                                   </div>
 
                                   <div class="col-md-4">
                                     <label label class="col-sm-12 col-form-label">Postal Code</label>
                                     <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="postal" readonly>
+                                      <input type="text" class="form-control" value="<?php echo $_POST['F_postal'] ?>" name="F_postal" readonly>
                                     </div>
                                   </div>
 
@@ -277,14 +268,14 @@ require_once("../assets/php/server.php");
                                   <div class="col-md-6">
                                     <label label class="col-sm-12 col-form-label">Contact Number</label>
                                     <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="contact" readonly>
+                                      <input type="text" class="form-control" value="<?php echo $_POST['F_contact'] ?>" name="F_contact" readonly>
                                     </div>
                                   </div>
 
                                   <div class="col-md-6">
                                     <label label class="col-sm-12 col-form-label">Email Address</label>
                                     <div class="col-sm-12">
-                                      <input type="email" class="form-control" name="email" readonly>
+                                      <input type="email" class="form-control" value="<?php echo $_POST['F_email'] ?>" name="F_email" readonly>
                                     </div>
                                   </div>
 

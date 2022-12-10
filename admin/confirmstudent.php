@@ -155,28 +155,28 @@ if (!isset($_POST['confirm_student'])) {
                                                                 <div class="col-md-4">
                                                                     <label class="col-sm-12 col-form-label">Last Name</label>
                                                                     <div class="col-sm-12">
-                                                                        <input type="text" class="form-control" name="S_lname" readonly>
+                                                                        <input type="text" class="form-control" value="<?php echo $_POST['S_lname']; ?>" name="S_lname" readonly>
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="col-md-4">
                                                                     <label class="col-sm-12 col-form-label">First Name</label>
                                                                     <div class="col-sm-12">
-                                                                        <input type="text" class="form-control" name="S_fname" readonly>
+                                                                        <input type="text" class="form-control" value="<?php echo $_POST['S_fname']; ?>" name="S_fname" readonly>
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="col-md-3">
                                                                     <label class="col-sm-12 col-form-label">Middle Name</label>
                                                                     <div class="col-sm-12">
-                                                                        <input type="text" class="form-control" name="S_mname" readonly>
+                                                                        <input type="text" class="form-control" value="<?php echo $_POST['S_mname']; ?>" name="S_mname" readonly>
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="col-md-1">
                                                                     <label class="col-sm-12 col-form-label">Suffix</label>
                                                                     <div class="col-sm-12">
-                                                                        <input type="text" class="form-control" name="S_suffix" readonly>
+                                                                        <input type="text" class="form-control" value="<?php echo $_POST['S_suffix']; ?>" name="S_suffix" readonly>
                                                                     </div>
                                                                 </div>
 
@@ -187,25 +187,22 @@ if (!isset($_POST['confirm_student'])) {
                                                                 <div class="col-md-4">
                                                                     <label label class="col-sm-12 col-form-label">Age</label>
                                                                     <div class="col-sm-12">
-                                                                        <input type="number" class="form-control" name="S_age" readonly>
+                                                                        <input type="number" class="form-control" value="<?php echo $_POST['S_age']; ?>" name="S_age" readonly>
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="col-md-4">
                                                                     <label label class="col-sm-12 col-form-label">birthday</label>
                                                                     <div class="col-sm-12">
-                                                                        <input type="date" class="form-control" name="S_birthday" readonly>
+                                                                        <input type="date" class="form-control" value="<?php echo $_POST['S_birthday']; ?>" name="S_birthday" readonly>
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="col-md-4">
                                                                     <label label class="col-sm-12 col-form-label">Gender</label>
                                                                     <div class="col-sm-12">
-                                                                        <select class="form-select form-control" name="S_gender" readonly>
-                                                                            <option value=""></option>
-                                                                            <option value="Male">Male</option>
-                                                                            <option value="Female">Female</option>
-                                                                            <option value="NA">Prefer not to say</option>
+                                                                        <select class="form-select form-control" value="<?php echo $_POST['S_gender']; ?>" name="S_gender" readonly>
+                                                                            <option value="<?php echo $_POST['S_gender']; ?>" selected><?php echo $_POST['S_gender']; ?></option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -218,21 +215,21 @@ if (!isset($_POST['confirm_student'])) {
                                                                 <div class="col-md-6">
                                                                     <label label class="col-sm-12 col-form-label">Address</label>
                                                                     <div class="col-sm-12">
-                                                                        <input type="text" class="form-control" name="S_address" readonly>
+                                                                        <input type="text" class="form-control" value="<?php echo $_POST['S_address']; ?>" name="S_address" readonly>
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="col-md-3">
                                                                     <label label class="col-sm-12 col-form-label">Barangay</label>
                                                                     <div class="col-sm-12">
-                                                                        <input type="text" class="form-control" name="S_barangay" readonly>
+                                                                        <input type="text" class="form-control" value="<?php echo $_POST['S_barangay']; ?>" name="S_barangay" readonly>
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="col-md-3">
                                                                     <label label class="col-sm-12 col-form-label">City</label>
                                                                     <div class="col-sm-12">
-                                                                        <input type="text" class="form-control" name="S_city" readonly>
+                                                                        <input type="text" class="form-control" value="<?php echo $_POST['S_city']; ?>" name="S_city" readonly>
                                                                     </div>
                                                                 </div>
 
@@ -243,14 +240,14 @@ if (!isset($_POST['confirm_student'])) {
                                                                 <div class="col-md-4">
                                                                     <label label class="col-sm-12 col-form-label">State</label>
                                                                     <div class="col-sm-12">
-                                                                        <input type="text" class="form-control" name="S_state" readonly>
+                                                                        <input type="text" class="form-control" value="<?php echo $_POST['S_state']; ?>" name="S_state" readonly>
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="col-md-4">
                                                                     <label label class="col-sm-12 col-form-label">Postal Code</label>
                                                                     <div class="col-sm-12">
-                                                                        <input type="text" class="form-control" name="S_postal" readonly>
+                                                                        <input type="text" class="form-control" value="<?php echo $_POST['S_postal']; ?>" name="S_postal" readonly>
                                                                     </div>
                                                                 </div>
 
@@ -261,14 +258,14 @@ if (!isset($_POST['confirm_student'])) {
                                                                 <div class="col-md-6">
                                                                     <label label class="col-sm-12 col-form-label">Guardian Name</label>
                                                                     <div class="col-sm-12">
-                                                                        <input type="text" class="form-control" name="S_guardian" readonly>
+                                                                        <input type="text" class="form-control" value="<?php echo $_POST['S_guardian']; ?>" name="S_guardian" readonly>
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="col-md-6">
                                                                     <label label class="col-sm-12 col-form-label">Contact Number</label>
                                                                     <div class="col-sm-12">
-                                                                        <input type="tel" class="form-control" name="S_contact" readonly>
+                                                                        <input type="tel" class="form-control" value="<?php echo $_POST['S_contact']; ?>" name="S_contact" readonly>
                                                                     </div>
                                                                 </div>
 
@@ -289,13 +286,7 @@ if (!isset($_POST['confirm_student'])) {
                                                                     <label class="col-sm-12 col-form-label">Grade Level</label>
                                                                     <div class="col-sm-12">
                                                                         <select class="form-select form-control" name="S_gradelevel" readonly>
-                                                                            <option value="Kinder">Kinder</option>
-                                                                            <option value="Grade 1">Grade 1</option>
-                                                                            <option value="Grade 2">Grade 2</option>
-                                                                            <option value="Grade 3">Grade 3</option>
-                                                                            <option value="Grade 4">Grade 4</option>
-                                                                            <option value="Grade 5">Grade 5</option>
-                                                                            <option value="Grade 6">Grade 6</option>
+                                                                            <option value="<?php echo $_POST['S_gradelevel'] ?>" selected>Kinder</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -303,7 +294,7 @@ if (!isset($_POST['confirm_student'])) {
                                                                 <div class="col-md-6">
                                                                     <label label class="col-sm-12 col-form-label">Section</label>
                                                                     <div class="col-sm-12">
-                                                                        <input type="text" class="form-control" name="Section" readonly>
+                                                                        <input type="text" class="form-control" value="<?php echo $_POST['S_section']; ?>" name="S_section" readonly>
                                                                     </div>
                                                                 </div>
 
@@ -314,7 +305,7 @@ if (!isset($_POST['confirm_student'])) {
                                                                     <label label class="col-sm-12 col-form-label">Schedule</label>
                                                                     <div class="col-sm-12">
                                                                         <select class="form-select form-control fullwidth" name="S_schedule" readonly>
-                                                                            <option value="NA">Monday - Friday 7:00AM-2:00PM</option>
+                                                                            <option value="<?php echo $_POST['S_schedule'] ?>" selected>Monday - Friday 7:00AM-2:00PM</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>

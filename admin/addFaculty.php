@@ -149,13 +149,13 @@ if (isset($_POST['confirm_faculty'])) {
                         <div class="card">
                           <div class="card-body">
                             <h4 class="card-title">Personal Information</h4>
-                            <form class="form-sample" action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
+                            <form class="form-sample" action="confirmfaculty.php" method="POST">
 
                               <div class="row" style="padding-bottom: 15px;">
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Department</label>
                                   <div class="col-sm-12">
-                                    <select class="form-select form-control" name="department" required>
+                                    <select class="form-select form-control" name="F_department" required>
                                       <option value=""></option>
                                       <option value="English">English Department</option>
                                       <option value="Filipino">Filipino Department</option>
@@ -173,28 +173,28 @@ if (isset($_POST['confirm_faculty'])) {
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Last Name</label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="lname" required>
+                                    <input type="text" class="form-control" name="F_lname" required>
                                   </div>
                                 </div>
 
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">First Name</label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="fname" required>
+                                    <input type="text" class="form-control" name="F_fname" required>
                                   </div>
                                 </div>
 
                                 <div class="col-md-3">
                                   <label class="col-sm-12 col-form-label">Middle Name</label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="mname">
+                                    <input type="text" class="form-control" name="F_mname">
                                   </div>
                                 </div>
 
                                 <div class="col-md-1">
                                   <label class="col-sm-12 col-form-label">Suffix</label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="suffix">
+                                    <input type="text" class="form-control" name="F_suffix">
                                   </div </div>
 
                                 </div>
@@ -204,21 +204,21 @@ if (isset($_POST['confirm_faculty'])) {
                                   <div class="col-md-4">
                                     <label class="col-sm-12 col-form-label">Age</label>
                                     <div class="col-sm-12">
-                                      <input type="number" class="form-control" name="age" required>
+                                      <input type="number" class="form-control" name="F_age" required>
                                     </div>
                                   </div>
 
                                   <div class="col-md-4">
                                     <label class="col-sm-12 col-form-label">Birthdate</label>
                                     <div class="col-sm-12">
-                                      <input type="date" class="form-control" name="birthday" required>
+                                      <input type="date" class="form-control" name="F_birthday" required>
                                     </div>
                                   </div>
 
                                   <div class="col-md-4">
                                     <label class="col-sm-12 col-form-label">Gender</label>
                                     <div class="col-sm-12">
-                                      <select class="form-select form-control" name="gender" required>
+                                      <select class="form-select form-control" name="F_gender" required>
                                         <option value=""></option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
@@ -235,21 +235,21 @@ if (isset($_POST['confirm_faculty'])) {
                                   <div class="col-md-6">
                                     <label label class="col-sm-12 col-form-label">Address</label>
                                     <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="address" required>
+                                      <input type="text" class="form-control" name="F_address" required>
                                     </div>
                                   </div>
 
                                   <div class="col-md-3">
                                     <label label class="col-sm-12 col-form-label">Barangay</label>
                                     <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="barangay" required>
+                                      <input type="text" class="form-control" name="F_barangay" required>
                                     </div>
                                   </div>
 
                                   <div class="col-md-3">
                                     <label label class="col-sm-12 col-form-label">City</label>
                                     <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="city" required>
+                                      <input type="text" class="form-control" name="F_city" required>
                                     </div>
                                   </div>
 
@@ -260,14 +260,14 @@ if (isset($_POST['confirm_faculty'])) {
                                   <div class="col-md-4">
                                     <label label class="col-sm-12 col-form-label">State</label>
                                     <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="state" required>
+                                      <input type="text" class="form-control" name="F_state" required>
                                     </div>
                                   </div>
 
                                   <div class="col-md-4">
                                     <label label class="col-sm-12 col-form-label">Postal Code</label>
                                     <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="postal" required>
+                                      <input type="text" class="form-control" name="F_postal" required>
                                     </div>
                                   </div>
 
@@ -278,14 +278,14 @@ if (isset($_POST['confirm_faculty'])) {
                                   <div class="col-md-6">
                                     <label label class="col-sm-12 col-form-label">Contact Number</label>
                                     <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="contact" required>
+                                      <input type="text" class="form-control" name="F_contact" required>
                                     </div>
                                   </div>
 
                                   <div class="col-md-6">
                                     <label label class="col-sm-12 col-form-label">Email Address</label>
                                     <div class="col-sm-12">
-                                      <input type="email" class="form-control" name="email" required>
+                                      <input type="email" class="form-control" name="F_email" required>
                                     </div>
                                   </div>
 

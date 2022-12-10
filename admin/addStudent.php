@@ -140,7 +140,7 @@ if (isset($_POST['confirm_student'])) {
                                         <h2 class="fw-bold text-primary text-uppercase">Student Registration</h2>
                                     </div>
                                 </div>
-                                <form class="form-sample" action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
+                                <form class="form-sample" action="confirmstudent.php" method="POST">
                                     <div class="tab-content tab-content-basic">
                                         <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                                             <div class="row">
@@ -301,7 +301,7 @@ if (isset($_POST['confirm_student'])) {
                                                                 <div class="col-md-6">
                                                                     <label label class="col-sm-12 col-form-label">Section</label>
                                                                     <div class="col-sm-12">
-                                                                        <input type="text" class="form-control" name="Section" required>
+                                                                        <input type="text" class="form-control" name="S_section" required>
                                                                     </div>
                                                                 </div>
 
@@ -312,7 +312,7 @@ if (isset($_POST['confirm_student'])) {
                                                                     <label label class="col-sm-12 col-form-label">Schedule</label>
                                                                     <div class="col-sm-12">
                                                                         <select class="form-select form-control fullwidth" name="S_schedule" required>
-                                                                            <option value="NA">Monday - Friday 7:00AM-2:00PM</option>
+                                                                            <option value="Mon-Fri 7:00AM-2:00PM">Mon-Fri 7:00AM-2:00PM</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
