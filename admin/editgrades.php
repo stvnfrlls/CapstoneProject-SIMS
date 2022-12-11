@@ -289,34 +289,54 @@ require_once("../assets/php/server.php");
                                         <td class="grade_table"><?php echo $rowNum ?></td>
                                         <td class="grade_table"><?php echo $data['SR_lname'] . ", " . $data['SR_fname'] ?></td>
                                         <td class="grade_table"><?php echo $data['SR_gradeLevel'] . " - " . $data['SR_section'] ?></td>
-
-                                        <?php if ($data['G_quarter'] == 1 || !empty($data['G_quarter'])) { ?>
-                                          <td class="hatdog"><input type="number" value="<?php echo $data['G_grades']; ?>" style="text-align: center;"></td>
                                         <?php
+                                        if ($data['G_learningArea'] == $_GET['orderByLearningArea']) {
+                                          if ($data['G_quarter'] == 1 && !empty($data['G_quarter'])) { ?>
+                                            <td class="hatdog"><input type="number" value="<?php echo $data['G_grades']; ?>" style="text-align: center;"></td>
+                                          <?php
+                                          } else { ?>
+                                            <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                          <?php }
                                         } else { ?>
                                           <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
                                         <?php } ?>
 
-                                        <?php if ($data['G_quarter'] == 2 && !empty($data['G_quarter'])) { ?>
-                                          <td class="hatdog"><input type="number" value="<?php echo $data['G_grades']; ?>" style="text-align: center;"></td>
                                         <?php
+                                        if ($data['G_learningArea'] == $_GET['orderByLearningArea']) {
+                                          if ($data['G_quarter'] == 2 && !empty($data['G_quarter'])) { ?>
+                                            <td class="hatdog"><input type="number" value="<?php echo $data['G_grades']; ?>" style="text-align: center;"></td>
+                                          <?php
+                                          } else { ?>
+                                            <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                          <?php }
                                         } else { ?>
                                           <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
                                         <?php } ?>
 
-                                        <?php if ($data['G_quarter'] == 3 && !empty($data['G_quarter'])) { ?>
-                                          <td class="hatdog"><input type="number" value="<?php echo $data['G_grades']; ?>" style="text-align: center;"></td>
                                         <?php
+                                        if ($data['G_learningArea'] == $_GET['orderByLearningArea']) {
+                                          if ($data['G_quarter'] == 3 && !empty($data['G_quarter'])) { ?>
+                                            <td class="hatdog"><input type="number" value="<?php echo $data['G_grades']; ?>" style="text-align: center;"></td>
+                                          <?php
+                                          } else { ?>
+                                            <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                          <?php }
                                         } else { ?>
                                           <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
                                         <?php } ?>
 
-                                        <?php if ($data['G_quarter'] == 4 && !empty($data['G_quarter'])) { ?>
-                                          <td class="hatdog"><input type="number" value="<?php echo $data['G_grades']; ?>" style="text-align: center;"></td>
                                         <?php
+                                        if ($data['G_learningArea'] == $_GET['orderByLearningArea']) {
+                                          if ($data['G_quarter'] == 4 && !empty($data['G_quarter'])) { ?>
+                                            <td class="hatdog"><input type="number" value="<?php echo $data['G_grades']; ?>" style="text-align: center;"></td>
+                                          <?php
+                                          } else { ?>
+                                            <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                          <?php }
                                         } else { ?>
                                           <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
                                         <?php } ?>
+
 
                                         <td class="grade_table">
                                           <input type="number" placeholder="##" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
