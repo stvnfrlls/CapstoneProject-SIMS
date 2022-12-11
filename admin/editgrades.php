@@ -311,9 +311,9 @@ require_once("../assets/php/server.php");
                                         </tr>
                                       <?php $rowNum++; }
                                     } else { ?>
-                                      <td>
-                                        <tr colspan="10">No Data. Please Select from the options above.</tr>
-                                      </td>
+                                      <tr>
+                                        <td colspan="10">No Data. Please Select from the options above.</td>
+                                      </tr>
                                     <?php } ?>
                                   </tbody>
                                 </table>
