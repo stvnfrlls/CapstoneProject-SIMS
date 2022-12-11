@@ -38,6 +38,9 @@ require_once("../assets/php/server.php");
   <link href="../assets/css/admin/style.css" rel="stylesheet">
   <link href="../assets/css/admin/materialdesignicons.min.css" rel="stylesheet">
 
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+
 </head>
 
 <body>
@@ -143,39 +146,67 @@ require_once("../assets/php/server.php");
                     <div class="btn-group">
                       <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                          Grade and Section
+                          <?php
+                          if (isset($_GET['orderByGradeLevel'])) {
+                            echo $_GET['orderByGradeLevel'];
+                          } else {
+                            echo "Grade and Section";
+                          }
+                          ?>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                          <a class="dropdown-item" href="#">Grade 1 - SECTION 1</a>
-                          <a class="dropdown-item" href="#">Grade 1 - SECTION 2</a>
-                          <a class="dropdown-item" href="#">Grade 2 - SECTION 1</a>
-                          <a class="dropdown-item" href="#">Grade 2 - SECTION 2</a>
-                          <a class="dropdown-item" href="#">Grade 3 - SECTION 1</a>
-                          <a class="dropdown-item" href="#">Grade 3 - SECTION 2</a>
-                          <a class="dropdown-item" href="#">Grade 4 - SECTION 1</a>
-                          <a class="dropdown-item" href="#">Grade 4 - SECTION 2</a>
-                          <a class="dropdown-item" href="#">Grade 5 - SECTION 1</a>
-                          <a class="dropdown-item" href="#">Grade 5 - SECTION 2</a>
-                          <a class="dropdown-item" href="#">Grade 6 - SECTION 1</a>
-                          <a class="dropdown-item" href="#">Grade 6 - SECTION 2</a>
+                          <a class="dropdown-item" href="editgrades.php?orderByGradeLevel=Flower">Grade 1 - Flower</a>
+                          <a class="dropdown-item" href="editgrades.php?orderByGradeLevel=Plant">Grade 1 - Plant</a>
+                          <a class="dropdown-item" href="editgrades.php?orderByGradeLevel=Animal">Grade 2 - Animal</a>
+                          <a class="dropdown-item" href="editgrades.php?orderByGradeLevel=">Grade 2 - SECTION 2</a>
+                          <a class="dropdown-item" href="editgrades.php?orderByGradeLevel=Shape">Grade 3 - Shape</a>
+                          <a class="dropdown-item" href="editgrades.php?orderByGradeLevel=">Grade 3 - SECTION 2</a>
+                          <a class="dropdown-item" href="editgrades.php?orderByGradeLevel=Element">Grade 4 - Element</a>
+                          <a class="dropdown-item" href="editgrades.php?orderByGradeLevel=">Grade 4 - SECTION 2</a>
+                          <a class="dropdown-item" href="editgrades.php?orderByGradeLevel=President">Grade 5 - President</a>
+                          <a class="dropdown-item" href="editgrades.php?orderByGradeLevel=">Grade 5 - SECTION 2</a>
+                          <a class="dropdown-item" href="editgrades.php?orderByGradeLevel=">Grade 6 - SECTION 1</a>
+                          <a class="dropdown-item" href="editgrades.php?orderByGradeLevel=">Grade 6 - SECTION 2</a>
                         </div>
                       </div>
                     </div>
-                    <div class="btn-group">
-                      <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                          Learning Areas
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                          <a class="dropdown-item" href="#">Mathematics</a>
-                          <a class="dropdown-item" href="#">English</a>
-                          <a class="dropdown-item" href="#">Filipino</a>
-                          <a class="dropdown-item" href="#">Science</a>
-                          <a class="dropdown-item" href="#">History</a>
-                          <a class="dropdown-item" href="#">Character Development</a>
+                    <?php
+                    if (isset($_GET['orderByGradeLevel'])) { ?>
+                      <div class="btn-group">
+                        <div class="dropdown">
+                          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <?php
+                            if (isset($_GET['orderByLearningArea'])) {
+                              echo $_GET['orderByLearningArea'];
+                              $current_url = $_SERVER["REQUEST_URI"];
+                              $value =
+                                $find = "&orderByLearningArea=" . $_GET['orderByLearningArea'];
+                              if (strpos($current_url, $find)) {
+                                $current_url = str_replace($find, "", $current_url);
+                              }
+                            } else {
+                              echo "Learning Areas";
+                              $current_url = $_SERVER["REQUEST_URI"];
+                              $value =
+                                $find = "orderByLearningArea=";
+                              if (strpos($current_url, $find)) {
+                                $current_url = str_replace($find, "", $current_url);
+                              }
+                            }
+
+                            ?>
+                          </button>
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                            <a class="dropdown-item" href="<?php echo $current_url . "&orderByLearningArea=Mathematics" ?>">Mathematics</a>
+                            <a class="dropdown-item" href="<?php echo $current_url . "&orderByLearningArea=English" ?>">English</a>
+                            <a class="dropdown-item" href="<?php echo $current_url . "&orderByLearningArea=Filipino" ?>">Filipino</a>
+                            <a class="dropdown-item" href="<?php echo $current_url . "&orderByLearningArea=Science" ?>">Science</a>
+                            <a class="dropdown-item" href="<?php echo $current_url . "&orderByLearningArea=History" ?>">History</a>
+                            <a class="dropdown-item" href="<?php echo $current_url . "&orderByLearningArea=Character_Development" ?>">Character Development</a>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    <?php } ?>
                     <div class="row">
                       <div class="col-lg-12 d-flex flex-column">
                         <div class="row flex-grow">
@@ -185,30 +216,14 @@ require_once("../assets/php/server.php");
                                 <table class="table">
                                   <thead>
                                     <style>
-                                      .hatdog {
+                                      .grade_table {
                                         border: 1px solid #ffffff;
                                         text-align: center;
                                         vertical-align: middle;
                                         height: 30px;
                                         color: #000000;
                                       }
-                                    </style>
-                                    <tr>
-                                      <th rowspan="2" class="hatdog">No.</th>
-                                      <th rowspan="2" class="hatdog">Student Name</th>
-                                      <th colspan="4" class="hatdog">Quarter</th>
-                                      <th rowspan="2" class="hatdog">Final Grade</th>
-                                      <th rowspan="2" class="hatdog">Action</th>
-                                    </tr>
-                                    <tr>
-                                      <th class="hatdog">1</th>
-                                      <th class="hatdog">2</th>
-                                      <th class="hatdog">3</th>
-                                      <th class="hatdog">4</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <style>
+
                                       input[type='number'] {
                                         width: 50px;
                                       }
@@ -224,120 +239,97 @@ require_once("../assets/php/server.php");
                                       input[type=number] {
                                         -moz-appearance: textfield;
                                       }
-
-                                      .hatdog {
-                                        border: 1px solid #ffffff;
-                                        text-align: center;
-                                        vertical-align: middle;
-                                        height: 30px;
-                                        color: #000000;
-                                      }
                                     </style>
                                     <tr>
-                                      <td class="hatdog">1</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog">
-                                        <input type="number" placeholder="##" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
-                                      </td>
-                                      <td class="hatdog">
-                                        <input type="submit" value="Download" style="text-align: center;"><br>
-                                        <input type="submit" value="Submit" style="text-align: center;">
-                                      </td>
+                                      <th rowspan="2" class="grade_table">No.</th>
+                                      <th rowspan="2" class="grade_table">Student Name</th>
+                                      <th rowspan="2" class="grade_table">Grade Level - Section</th>
+                                      <th colspan="4" class="grade_table">Quarter</th>
+                                      <th rowspan="2" class="grade_table">Final Grade</th>
+                                      <th rowspan="2" class="grade_table">Action</th>
                                     </tr>
                                     <tr>
-                                      <td class="hatdog">1</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog">
-                                        <input type="number" placeholder="##" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
-                                      </td>
-                                      <td class="hatdog">
-                                        <input type="submit" value="Download" style="text-align: center;"><br>
-                                        <input type="submit" value="Submit" style="text-align: center;">
-                                      </td>
+                                      <th class="grade_table">1</th>
+                                      <th class="grade_table">2</th>
+                                      <th class="grade_table">3</th>
+                                      <th class="grade_table">4</th>
                                     </tr>
-                                    <tr>
-                                      <td class="hatdog">1</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog">
-                                        <input type="number" placeholder="##" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
-                                      </td>
-                                      <td class="hatdog">
-                                        <input type="submit" value="Download" style="text-align: center;"><br>
-                                        <input type="submit" value="Submit" style="text-align: center;">
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td class="hatdog">1</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog">
-                                        <input type="number" placeholder="##" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
-                                      </td>
-                                      <td class="hatdog">
-                                        <input type="submit" value="Download" style="text-align: center;"><br>
-                                        <input type="submit" value="Submit" style="text-align: center;">
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td class="hatdog">1</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog">
-                                        <input type="number" placeholder="##" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
-                                      </td>
-                                      <td class="hatdog">
-                                        <input type="submit" value="Download" style="text-align: center;"><br>
-                                        <input type="submit" value="Submit" style="text-align: center;">
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td class="hatdog">1</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog">
-                                        <input type="number" placeholder="##" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
-                                      </td>
-                                      <td class="hatdog">
-                                        <input type="submit" value="Download" style="text-align: center;"><br>
-                                        <input type="submit" value="Submit" style="text-align: center;">
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td class="hatdog">1</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                      <td class="hatdog">
-                                        <input type="number" placeholder="##" style="text-align: center;" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
-                                      </td>
-                                      <td class="hatdog">
-                                        <input type="submit" value="Download" style="text-align: center;"><br>
-                                        <input type="submit" value="Submit" style="text-align: center;">
-                                      </td>
-                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <?php
+                                    if (isset($_GET['orderByGradeLevel'])) {
+                                      $orderByGradeLevel = $_GET['orderByGradeLevel'];
+                                      $studentgrades = "SELECT studentrecord.SR_number, studentrecord.SR_fname, studentrecord.SR_lname,
+                                                        grades.SR_gradeLevel, grades.SR_section, grades.G_learningArea, grades.G_grades, grades.G_quarter
+                                                        FROM studentrecord
+                                                        LEFT JOIN grades
+                                                        ON studentrecord.SR_number = grades.SR_number
+                                                        WHERE grades.SR_section = '$orderByGradeLevel'";
+                                    } else if (isset($_GET['orderByGradeLevel']) && isset($_GET['orderByLearningArea'])) {
+                                      $orderByGradeLevel = $_GET['orderByGradeLevel'];
+                                      $orderByLearningArea = $_GET['orderByLearningArea'];
+                                      $studentgrades = "SELECT studentrecord.SR_number, studentrecord.SR_fname, studentrecord.SR_lname,
+                                                        grades.SR_gradeLevel, grades.SR_section, grades.G_learningArea, grades.G_grades, grades.G_quarter
+                                                        FROM studentrecord
+                                                        LEFT JOIN grades
+                                                        ON studentrecord.SR_number = grades.SR_number
+                                                        WHERE grades.SR_section = '$orderByGradeLevel'
+                                                        AND grades.G_learningArea = '$orderByLearningArea'";
+                                    } else {
+                                      $studentgrades = "SELECT *
+                                                        FROM studentrecord
+                                                        LEFT JOIN grades
+                                                        ON studentrecord.SR_number = grades.SR_number";
+                                    }
+                                    $resultstudentgrades = $mysqli->query($studentgrades);
+
+                                    $rowNum = 1;
+                                    while ($data = $resultstudentgrades->fetch_assoc()) { ?>
+                                      <tr>
+                                        <td class="grade_table"><?php echo $rowNum ?></td>
+                                        <td class="grade_table"><?php echo $data['SR_lname'] . ", " . $data['SR_fname'] ?></td>
+                                        <td class="grade_table"><?php echo $data['SR_gradeLevel'] . " - " . $data['SR_section'] ?></td>
+
+                                        <?php if ($data['G_quarter'] == 1 || !empty($data['G_quarter'])) { ?>
+                                          <td class="hatdog"><input type="number" value="<?php echo $data['G_grades']; ?>" style="text-align: center;"></td>
+                                        <?php
+                                        } else { ?>
+                                          <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <?php } ?>
+
+                                        <?php if ($data['G_quarter'] == 2 && !empty($data['G_quarter'])) { ?>
+                                          <td class="hatdog"><input type="number" value="<?php echo $data['G_grades']; ?>" style="text-align: center;"></td>
+                                        <?php
+                                        } else { ?>
+                                          <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <?php } ?>
+
+                                        <?php if ($data['G_quarter'] == 3 && !empty($data['G_quarter'])) { ?>
+                                          <td class="hatdog"><input type="number" value="<?php echo $data['G_grades']; ?>" style="text-align: center;"></td>
+                                        <?php
+                                        } else { ?>
+                                          <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <?php } ?>
+
+                                        <?php if ($data['G_quarter'] == 4 && !empty($data['G_quarter'])) { ?>
+                                          <td class="hatdog"><input type="number" value="<?php echo $data['G_grades']; ?>" style="text-align: center;"></td>
+                                        <?php
+                                        } else { ?>
+                                          <td class="hatdog"><input type="number" placeholder="##" style="text-align: center;"></td>
+                                        <?php } ?>
+
+                                        <td class="grade_table">
+                                          <input type="number" placeholder="##" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
+                                        </td>
+                                        <td class="grade_table">
+                                          <input type="submit" value="Download">
+                                          <input type="submit" value="Submit">
+                                        </td>
+                                      </tr>
+                                    <?php
+                                      $rowNum++;
+                                    }
+                                    ?>
                                   </tbody>
                                 </table>
                               </div>
