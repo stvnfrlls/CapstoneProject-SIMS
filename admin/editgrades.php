@@ -235,7 +235,6 @@
                                       <th rowspan="2" class="grade_table">No.</th>
                                       <th rowspan="2" class="grade_table">Student Name</th>
                                       <th rowspan="2" class="grade_table">Grade Level - Section</th>
-                                      <th rowspan="2" class="grade_table">Subject</th>
                                       <th colspan="4" class="grade_table">Quarter</th>
                                       <th rowspan="2" class="grade_table">Final Grade</th>
                                       <th rowspan="2" class="grade_table">Action</th>
@@ -266,8 +265,11 @@
                                           <tr>
                                             <td class="grade_table"><?php echo $rowNum; ?><input type="hidden" value="<?php echo $gradeData['G_id']; ?>" name="G_id"></td>
                                             <td class="grade_table"><?php echo $gradeData['SR_lname'] . ", " . $gradeData['SR_fname'] ?><input type="hidden" name="SR_number" value="<?php echo $gradeData['SR_number'] ?>"></td>
-                                            <td class="grade_table"><?php echo $gradeData['SR_gradeLevel'] . " - " . $gradeData['SR_section'] ?><input type="hidden" name="SR_section" value="<?php echo $gradeData['SR_section'] ?>"></td>
-                                            <td class="grade_table"><?php echo $gradeData['G_learningArea'] ?><input type="hidden" name="G_learningArea" value="<?php echo $gradeData['G_learningArea'] ?>"></td>
+                                            <td class="grade_table">
+                                              <?php echo $gradeData['SR_gradeLevel'] . " - " . $gradeData['SR_section'] ?>
+                                              <input type="hidden" name="SR_section" value="<?php echo $gradeData['SR_section'] ?>">
+                                              <input type="hidden" name="G_learningArea" value="<?php echo $gradeData['G_learningArea'] ?>">
+                                            </td>
                                             <?php
                                             if ($gradeData['G_gradesQ1']) { ?>
                                               <td class="grade_table"><input type="number" value="<?php echo $gradeData['G_gradesQ1']; ?>" name="G_gradesQ1" style="text-align: center;"></td>
