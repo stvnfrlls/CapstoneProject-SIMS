@@ -555,25 +555,36 @@ if (isset($_POST['editFaculty'])) {
 }
 
 if (isset($_POST['UpdateGrade'])) {
-    $SR_number = $mysqli->real_escape_string($_POST['SR_number']);
-    $G_english = $mysqli->real_escape_string($_POST['G_english']);
-    $G_math = $mysqli->real_escape_string($_POST['G_math']);
-    $G_science = $mysqli->real_escape_string($_POST['G_science']);
-    $G_history = $mysqli->real_escape_string($_POST['G_history']);
-    $G_filipino = $mysqli->real_escape_string($_POST['G_filipino']);
+    $current_url = $_POST['current_url'];
 
-    $updateGrade = "UPDATE faculty 
+    $G_id = $mysqli->real_escape_string($_POST['G_id']);
+    $SR_number = $mysqli->real_escape_string($_POST['SR_number']);
+    $SR_section = $mysqli->real_escape_string($_POST['SR_section']);
+    $G_learningArea = $mysqli->real_escape_string($_POST['G_learningArea']);
+
+    $G_gradesQ1 = $mysqli->real_escape_string($_POST['G_gradesQ1']);
+    $G_gradesQ2 = $mysqli->real_escape_string($_POST['G_gradesQ2']);
+    $G_gradesQ3 = $mysqli->real_escape_string($_POST['G_gradesQ3']);
+    $G_gradesQ4 = $mysqli->real_escape_string($_POST['G_gradesQ4']);
+
+    $updateGrade = "UPDATE grades 
                     SET 
-                        G_english = '$G_english',
-                        G_math = '$G_math',
-                        G_science = '$G_science',
-                        G_history = '$G_history',
-                        G_filipino = '$G_filipino',
-                    WHERE SR_number = '$SR_number'";
+                    G_gradesQ1 = '$G_gradesQ1',
+                    G_gradesQ2 = '$G_gradesQ2',
+                    G_gradesQ3 = '$G_gradesQ3',
+                    G_gradesQ4 = '$G_gradesQ4'
+                    WHERE G_id = '$G_id'
+                    AND G_learningArea = '$G_learningArea'";
     $resultupdateGrade = $mysqli->query($updateGrade);
 
     if ($resultupdateGrade) {
-        header('Location: ../admin/grades.php');
+        $url_components = parse_url($current_url);
+        parse_str($url_components['query'], $params);
+        $param1 = $params['orderByGradeLevel'];
+        $param2 = $params['orderByLearningArea'];
+
+        $url = "../admin/editgrades.php";
+        header("Location: " . $url . "?orderByGradeLevel=" . $param1 . "&orderByLearningArea=" . $param2);
     } else {
         echo "error" . $mysqli->error;
     }

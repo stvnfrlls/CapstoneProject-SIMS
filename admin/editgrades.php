@@ -1,6 +1,4 @@
-<?php
-require_once("../assets/php/server.php");
-?>
+<?php require_once("../assets/php/server.php"); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -255,7 +253,7 @@ require_once("../assets/php/server.php");
                                       $bySubject = $_GET['orderByLearningArea'];
                                       $getData = "SELECT studentrecord.SR_number, studentrecord.SR_fname, studentrecord.SR_lname,
                                                          grades.SR_gradeLevel, grades.SR_section, grades.G_learningArea, 
-                                                         grades.G_gradesQ1, grades.G_gradesQ2, grades.G_gradesQ3, grades.G_gradesQ4
+                                                         grades.G_id, grades.G_gradesQ1, grades.G_gradesQ2, grades.G_gradesQ3, grades.G_gradesQ4
                                                   FROM studentrecord 
                                                   INNER JOIN grades
                                                   ON studentrecord.SR_number = grades.SR_number
@@ -264,52 +262,55 @@ require_once("../assets/php/server.php");
                                       $rungetData = $mysqli->query($getData);
                                       $rowNum = 1;
                                       while ($gradeData =  $rungetData->fetch_assoc()) { ?>
-                                        <tr>
-                                          <td class="grade_table"><?php echo $rowNum ?></td>
-                                          <td class="grade_table"><?php echo $gradeData['SR_lname'] . ", " . $gradeData['SR_fname'] ?></td>
-                                          <td class="grade_table"><?php echo $gradeData['SR_gradeLevel'] . " - " . $gradeData['SR_section'] ?></td>
-                                          <td class="grade_table"><?php echo $gradeData['G_learningArea'] ?></td>
-                                          <?php
-                                          if ($gradeData['G_gradesQ1']) { ?>
-                                            <td class="grade_table"><input type="number" value="<?php echo $gradeData['G_gradesQ1']; ?>" style="text-align: center;"></td>
-                                          <?php
-                                          } else { ?>
-                                            <td class="grade_table"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                          <?php } ?>
+                                        <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
+                                          <tr>
+                                            <td class="grade_table"><?php echo $rowNum; ?><input type="hidden" value="<?php echo $gradeData['G_id']; ?>" name="G_id"></td>
+                                            <td class="grade_table"><?php echo $gradeData['SR_lname'] . ", " . $gradeData['SR_fname'] ?><input type="hidden" name="SR_number" value="<?php echo $gradeData['SR_number'] ?>"></td>
+                                            <td class="grade_table"><?php echo $gradeData['SR_gradeLevel'] . " - " . $gradeData['SR_section'] ?><input type="hidden" name="SR_section" value="<?php echo $gradeData['SR_section'] ?>"></td>
+                                            <td class="grade_table"><?php echo $gradeData['G_learningArea'] ?><input type="hidden" name="G_learningArea" value="<?php echo $gradeData['G_learningArea'] ?>"></td>
+                                            <?php
+                                            if ($gradeData['G_gradesQ1']) { ?>
+                                              <td class="grade_table"><input type="number" value="<?php echo $gradeData['G_gradesQ1']; ?>" name="G_gradesQ1" style="text-align: center;"></td>
+                                            <?php
+                                            } else { ?>
+                                              <td class="grade_table"><input type="number" placeholder="##" style="text-align: center;" disabled></td>
+                                            <?php } ?>
 
-                                          <?php
-                                          if ($gradeData['G_gradesQ2']) { ?>
-                                            <td class="grade_table"><input type="number" value="<?php echo $gradeData['G_gradesQ2']; ?>" style="text-align: center;"></td>
-                                          <?php
-                                          } else { ?>
-                                            <td class="grade_table"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                          <?php } ?>
+                                            <?php
+                                            if ($gradeData['G_gradesQ2']) { ?>
+                                              <td class="grade_table"><input type="number" value="<?php echo $gradeData['G_gradesQ2']; ?>" name="G_gradesQ2" style="text-align: center;"></td>
+                                            <?php
+                                            } else { ?>
+                                              <td class="grade_table"><input type="number" placeholder="##" style="text-align: center;" disabled></td>
+                                            <?php } ?>
 
-                                          <?php
-                                          if ($gradeData['G_gradesQ3']) { ?>
-                                            <td class="grade_table"><input type="number" value="<?php echo $gradeData['G_gradesQ3']; ?>" style="text-align: center;"></td>
-                                          <?php
-                                          } else { ?>
-                                            <td class="grade_table"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                          <?php } ?>
+                                            <?php
+                                            if ($gradeData['G_gradesQ3']) { ?>
+                                              <td class="grade_table"><input type="number" value="<?php echo $gradeData['G_gradesQ3']; ?>" name="G_gradesQ3" style="text-align: center;"></td>
+                                            <?php
+                                            } else { ?>
+                                              <td class="grade_table"><input type="number" placeholder="##" style="text-align: center;" disabled></td>
+                                            <?php } ?>
 
-                                          <?php
-                                          if ($gradeData['G_gradesQ4']) { ?>
-                                            <td class="grade_table"><input type="number" value="<?php echo $gradeData['G_gradesQ4']; ?>" style="text-align: center;"></td>
-                                          <?php
-                                          } else { ?>
-                                            <td class="grade_table"><input type="number" placeholder="##" style="text-align: center;"></td>
-                                          <?php } ?>
+                                            <?php
+                                            if ($gradeData['G_gradesQ4']) { ?>
+                                              <td class="grade_table"><input type="number" value="<?php echo $gradeData['G_gradesQ4']; ?>" name="G_gradesQ4" style="text-align: center;"></td>
+                                            <?php
+                                            } else { ?>
+                                              <td class="grade_table"><input type="number" placeholder="##" style="text-align: center;" disabled></td>
+                                            <?php } ?>
 
-                                          <td class="grade_table">
-                                            <input type="number" placeholder="##" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" readonly>
-                                          </td>
-                                          <td class="grade_table">
-                                            <input type="submit" value="Download">
-                                            <input type="submit" value="Submit">
-                                          </td>
-                                        </tr>
-                                      <?php $rowNum++; }
+                                            <td class="grade_table">
+                                              <input type="number" placeholder="##" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" style="text-align: center;" disabled>
+                                            </td>
+                                            <td class="grade_table">
+                                              <input type="hidden" value="<?php echo $_SERVER['REQUEST_URI'] ?>" name="current_url">
+                                              <input type="submit" class="btn btn-primary" name="UpdateGrade">
+                                            </td>
+                                          </tr>
+                                        </form>
+                                      <?php $rowNum++;
+                                      }
                                     } else { ?>
                                       <tr>
                                         <td colspan="10">No Data. Please Select from the options above.</td>
