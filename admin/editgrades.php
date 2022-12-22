@@ -141,30 +141,33 @@
                     <div class="btn-group">
                       <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                          <?php if (isset($_GET['orderByGradeLevel'])) {
-                            echo $_GET['orderByGradeLevel'];
+                          <?php if (isset($_GET['orderByGradeSection'])) {
+                            echo "Grade Level: " . $_GET['GradeLevel'] . " - " . $_GET['orderByGradeSection'];
                           } else {
                             echo "Grade and Section";
                           }
                           ?>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                          <a class="dropdown-item" href="editgrades.php?orderByGradeLevel=Flower">Grade 1 - Flower</a>
-                          <a class="dropdown-item" href="editgrades.php?orderByGradeLevel=Plant">Grade 1 - Plant</a>
-                          <a class="dropdown-item" href="editgrades.php?orderByGradeLevel=Animal">Grade 2 - Animal</a>
-                          <a class="dropdown-item" href="editgrades.php?orderByGradeLevel=">Grade 2 - SECTION 2</a>
-                          <a class="dropdown-item" href="editgrades.php?orderByGradeLevel=Shape">Grade 3 - Shape</a>
-                          <a class="dropdown-item" href="editgrades.php?orderByGradeLevel=">Grade 3 - SECTION 2</a>
-                          <a class="dropdown-item" href="editgrades.php?orderByGradeLevel=Element">Grade 4 - Element</a>
-                          <a class="dropdown-item" href="editgrades.php?orderByGradeLevel=">Grade 4 - SECTION 2</a>
-                          <a class="dropdown-item" href="editgrades.php?orderByGradeLevel=President">Grade 5 - President</a>
-                          <a class="dropdown-item" href="editgrades.php?orderByGradeLevel=">Grade 5 - SECTION 2</a>
-                          <a class="dropdown-item" href="editgrades.php?orderByGradeLevel=">Grade 6 - SECTION 1</a>
-                          <a class="dropdown-item" href="editgrades.php?orderByGradeLevel=">Grade 6 - SECTION 2</a>
+                          <?php
+                          $sectionList = "SELECT S_name, S_yearLevel FROM sections";
+                          $runsectionList = $mysqli->query($sectionList);
+
+                          while ($sectionData = $runsectionList->fetch_assoc()) { ?>
+                            <a class="dropdown-item" href="editgrades.php?GradeLevel=<?php echo $sectionData['S_yearLevel'] ?>&orderByGradeSection=<?php echo $sectionData['S_name'] ?>">
+                              <?php
+                              if (strpos($sectionData['S_yearLevel'], "KINDER")) {
+                                echo $sectionData['S_yearLevel'] . " - " . $sectionData['S_name'];
+                              } else {
+                                echo "Grade - " . $sectionData['S_yearLevel'] . " - " . $sectionData['S_name'];
+                              }
+                              ?>
+                            </a>
+                          <?php } ?>
                         </div>
                       </div>
                     </div>
-                    <?php if (isset($_GET['orderByGradeLevel'])) { ?>
+                    <?php if (isset($_GET['orderByGradeSection'])) { ?>
                       <div class="btn-group">
                         <div class="dropdown">
                           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -247,8 +250,8 @@
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <?php if (!empty(isset($_GET['orderByGradeLevel'])) && !empty(isset($_GET['orderByLearningArea']))) {
-                                      $byGradeLevel = $_GET['orderByGradeLevel'];
+                                    <?php if (!empty(isset($_GET['orderByGradeSection'])) && !empty(isset($_GET['orderByLearningArea']))) {
+                                      $byGradeLevel = $_GET['orderByGradeSection'];
                                       $bySubject = $_GET['orderByLearningArea'];
                                       $getData = "SELECT studentrecord.SR_number, studentrecord.SR_fname, studentrecord.SR_lname,
                                                          grades.SR_gradeLevel, grades.SR_section, grades.G_learningArea, 
