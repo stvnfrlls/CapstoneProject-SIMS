@@ -139,13 +139,94 @@ require_once("../assets/php/server.php");
                     </div>
                 </div>
                 <div class="tab-content tab-content-basic">
-                  <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">                     
+                  <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                    <div class="row">                     
+                        <div class="col-lg-4 col-sm-12 grid-margin">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Profile</h4>
+                                    <form class="form-sample">                                        
+                                        <div class="row" style="padding-bottom: 15px;">
+                                            <div class="col-md-6 col-sm-6" style="text-align: center; margin-bottom: 20px; margin-top: 10px;">
+                                                                    
+                                                <img src="../assets/img/profile.jpg" alt="avatar" class="rounded-circle img-fluidr" style="width: 150px;">
+                                                                    
+                                            </div>
+                                            <div class="col-md-6 col-sm-6" style="text-align: center; margin-top: 10px;">
+                                                                    
+                                                <img src="../assets/img/profile.jpg" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                                                                    
+                                            </div>                                           
+                                        </div>                                                                                            
+                                    </form>                                    
+                                </div>                                    
+                            </div>
+                        </div>
+                        <div class="col-lg-8 col-sm-12 grid-margin">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Class Information</h4>
+                                    <form class="form-sample">                                        
+                                        <div class="row" style="padding-bottom: 15px;">
+                                            <div class="col-md-6">
+                                                                    
+                                                <label class="col-sm-12 col-form-label">Grade Level</label>
+
+                                                <div class="col-sm-12">
+                                                    <select class="form-select form-control fullwidth" id="lastName" required readonly>
+                                                        <option value="Male">Kinder</option>
+                                                        <option value="Female">1</option>
+                                                        <option value="NA">2</option>
+                                                        <option value="NA">3</option>
+                                                        <option value="NA">4</option>
+                                                        <option value="NA">5</option>
+                                                        <option value="NA">6</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                                    
+                                                <label label class="col-sm-12 col-form-label">Section</label>
+                                                <div class="col-sm-12">                                                    
+                                                    <input type="text" class="form-control" readonly/>                                                    
+                                                </div> 
+                                                                    
+                                            </div>                                            
+                                        </div>
+
+                                        <div class="row" style="padding-bottom: 15px;">
+                                            <div class="col-md-6">
+                                                <label   label class="col-sm-12 col-form-label">Schedule</label>
+                                                <div class="col-sm-12">                                                    
+                                                    <select class="form-select form-control fullwidth" id="lastName" required readonly>
+                                                        <option value="NA">Monday - Friday</option>
+                                                    </select>                                                   
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label   label class="col-sm-12 col-form-label" style="color:white;"> .</label>
+                                                <div class="col-sm-12">                                                    
+                                                    <select class="form-select form-control fullwidth" id="lastName" required readonly>
+                                                        <option value="AM">7:00AM-2:00PM</option>
+                                                    </select>                                             
+                                                </div>
+                                            </div>
+                                            
+                                        </div>                                  
+                                    </form>                                    
+                                </div>                                    
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">                      
                             <div class="col-12 grid-margin">
                                 <div class="card">
                                     <div class="card-body">
                                     <h4 class="card-title">Personal Information</h4>
-                                    <form class="form-sample">                                        
+                                    <form class="form-sample">
+                                        
+
+                                        <!-- next row -->                                   
                                         <div class="row" style="padding-bottom: 15px;">
                                             <div class="col-md-4">
                                                 
@@ -170,8 +251,6 @@ require_once("../assets/php/server.php");
                                                     <input type="text" class="form-control" readonly />
                                                 </div>
                                                 
-                                                
-                                                
                                             </div>
                                             <div class="col-md-1">
                                                     
@@ -183,19 +262,25 @@ require_once("../assets/php/server.php");
                                             </div>
                                         </div>
                                         <div class="row" style="padding-bottom: 15px;">
-                                            <div class="col-md-4">
+                                            <div class="col-md-1">
                                                     <label   label class="col-sm-12 col-form-label">Age</label>
                                                     <div class="col-sm-12">                                                    
                                                         <input type="text" class="form-control" readonly/>                                                    
                                                     </div>
                                             </div>
                                             <div class="col-md-4">
-                                                    <label   label class="col-sm-12 col-form-label">Age</label>
+                                                    <label   label class="col-sm-12 col-form-label">Birthdate</label>
                                                     <div class="col-sm-12">                                                    
                                                         <input type="date" class="form-control fullwidth" id="firstName" required readonly>                                                
                                                     </div>
                                             </div>
                                             <div class="col-md-4">
+                                                    <label   label class="col-sm-12 col-form-label">Birthplace</label>
+                                                    <div class="col-sm-12">                                                    
+                                                    <input type="text" class="form-control" readonly/>                                                
+                                                    </div>
+                                            </div>
+                                            <div class="col-md-3">
                                                 <label   label class="col-sm-12 col-form-label">Gender</label>
                                                  <div class="col-sm-12">                                                    
                                                     <select class="form-select form-control" id="lastName" required readonly>
@@ -205,6 +290,24 @@ require_once("../assets/php/server.php");
                                                         <option value="NA">Prefer not to say</option>
                                                     </select>                                             
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="padding-bottom: 15px;">
+                                            <div class="col-md-4">
+                                                
+                                                <label class="col-sm-12 col-form-label">Religion</label>
+                                                <div class="col-sm-12">
+                                                    <input type="text" class="form-control" readonly/>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="col-md-4">
+                                                
+                                                <label class="col-sm-12 col-form-label">Citizenship</label>
+                                                <div class="col-sm-12">
+                                                    <input type="text" class="form-control" readonly/>
+                                                </div>
+                                                
                                             </div>
                                         </div>
                                         
@@ -244,22 +347,14 @@ require_once("../assets/php/server.php");
                                                     <input type="text" class="form-control" readonly/>                                                    
                                                 </div> 
                                             </div>
-                                        </div>
+                                            <div class="col-md-4">
+                                                <label label class="col-sm-12 col-form-label">Email Address</label>
+                                                <div class="col-sm-12">                                                    
+                                                    <input type="text" class="form-control" readonly/>                                                    
+                                                </div> 
+                                            </div>
+                                        </div>    
 
-                                        <div class="row" style="padding-bottom: 15px;">
-                                            <div class="col-md-6">
-                                                <label label class="col-sm-12 col-form-label">Guardian Name</label>
-                                                <div class="col-sm-12">                                                    
-                                                    <input type="text" class="form-control" readonly/>                                                    
-                                                </div> 
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label label class="col-sm-12 col-form-label">Contact Number</label>
-                                                <div class="col-sm-12">                                                    
-                                                    <input type="text" class="form-control" readonly/>                                                    
-                                                </div> 
-                                            </div>
-                                        </div>                                    
                                     </form>
                                     </div>
                                 </div>
@@ -267,59 +362,111 @@ require_once("../assets/php/server.php");
                         </div>
                     </div>
 
-                    <!-- next row -->
-                    <div class="row">                      
-                            <div class="col-lg-6 col-sm-12 grid-margin">
+                        <!-- next row -->
+                        <div class="row">                      
+                            <div class="col-lg-12 col-sm-12 grid-margin">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h4 class="card-title">Class Information</h4>
-                                        <form class="form-sample">                                        
-                                            <div class="row" style="padding-bottom: 15px;">
-                                                <div class="col-md-6">
-                                                    
-                                                <label class="col-sm-12 col-form-label">Grade Level</label>
+                                        <h4 class="card-title">Contact Person</h4>
+                                        <form class="form-sample">
 
+                                            <div class="row" style="padding-bottom: 15px;">
+                                                <div class="col-md-4">
+                                                    
+                                                    <label class="col-sm-12 col-form-label">Last Name</label>
                                                     <div class="col-sm-12">
-                                                        <select class="form-select form-control fullwidth" id="lastName" required readonly>
-                                                            <option value="Male">Kinder</option>
-                                                            <option value="Female">1</option>
-                                                            <option value="NA">2</option>
-                                                            <option value="NA">3</option>
-                                                            <option value="NA">4</option>
-                                                            <option value="NA">5</option>
-                                                            <option value="NA">6</option>
-                                                        </select>
+                                                        <input type="text" class="form-control" readonly/>
                                                     </div>
                                                     
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     
-                                                    <label label class="col-sm-12 col-form-label">Section</label>
+                                                    <label class="col-sm-12 col-form-label">First Name</label>
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="form-control" readonly/>
+                                                    </div>
+                                                    
+                                                </div>
+                                                <div class="col-md-3">
+                                                    
+                                                    <label class="col-sm-12 col-form-label">Middle Name</label>
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="form-control" readonly />
+                                                    </div>
+                                                    
+                                                </div>
+                                                <div class="col-md-1">
+                                                        
+                                                    <label class="col-sm-12 col-form-label">Suffix</label>
                                                     <div class="col-sm-12">                                                    
                                                         <input type="text" class="form-control" readonly/>                                                    
-                                                    </div> 
+                                                    </div>
                                                     
-                                                </div>                                            
+                                                </div>
                                             </div>
                                             <div class="row" style="padding-bottom: 15px;">
                                                 <div class="col-md-6">
-                                                        <label   label class="col-sm-12 col-form-label">Schedule</label>
-                                                        <div class="col-sm-12">                                                    
-                                                            <select class="form-select form-control fullwidth" id="lastName" required readonly>
-                                                                <option value="NA">Monday - Friday</option>
-                                                            </select>                                                   
-                                                        </div>
+                                                    <label label class="col-sm-12 col-form-label">Address</label>
+                                                    <div class="col-sm-12">                                                    
+                                                        <input type="text" class="form-control" readonly/>                                                    
+                                                    </div>        
                                                 </div>
-                                                <div class="col-md-6">
-                                                        <label   label class="col-sm-12 col-form-label" style="color:white;"> .</label>
-                                                        <div class="col-sm-12">                                                    
-                                                            <select class="form-select form-control fullwidth" id="lastName" required readonly>
-                                                                <option value="AM">7:00AM-2:00PM</option>
-                                                            </select>                                             
-                                                        </div>
+                                                <div class="col-md-3">
+                                                    <label label class="col-sm-12 col-form-label">Barangay</label>
+                                                    <div class="col-sm-12">                                                    
+                                                        <input type="text" class="form-control" readonly/>                                                    
+                                                    </div>        
                                                 </div>
-                            
-                                            </div>                                  
+                                                <div class="col-md-3">
+                                                    <label label class="col-sm-12 col-form-label">City</label>
+                                                    <div class="col-sm-12">                                                    
+                                                        <input type="text" class="form-control" readonly/>                                                    
+                                                    </div>        
+                                                </div>                              
+                                            </div>
+
+                                            <div class="row" style="padding-bottom: 15px;">
+                                                <div class="col-md-4">
+                                                    <label label class="col-sm-12 col-form-label">State</label>
+                                                    <div class="col-sm-12">                                                    
+                                                        <input type="text" class="form-control" readonly />                                                    
+                                                    </div> 
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label label class="col-sm-12 col-form-label">Postal Code</label>
+                                                    <div class="col-sm-12">                                                    
+                                                        <input type="text" class="form-control" readonly/>                                                    
+                                                    </div> 
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label label class="col-sm-12 col-form-label">Email Address</label>
+                                                    <div class="col-sm-12">                                                    
+                                                        <input type="text" class="form-control" readonly/>                                                    
+                                                    </div> 
+                                                </div>
+                                            </div>
+
+                                            <div class="row" style="padding-bottom: 15px;">
+                                                <div class="col-md-4">
+                                                    <label label class="col-sm-12 col-form-label">Relationship to Student</label>
+                                                    <div class="col-sm-12">                                                    
+                                                        <input type="text" class="form-control" readonly />                                                    
+                                                    </div> 
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label label class="col-sm-12 col-form-label">Telephone Number</label>
+                                                    <div class="col-sm-12">                                                    
+                                                        <input type="text" class="form-control" readonly/>                                                    
+                                                    </div> 
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label label class="col-sm-12 col-form-label">Contact Number</label>
+                                                    <div class="col-sm-12">                                                    
+                                                        <input type="text" class="form-control" readonly/>                                                    
+                                                    </div> 
+                                                </div>
+                                            </div> 
+                                                                          
                                         </form>                                    
                                     </div>                                    
                                 </div>
