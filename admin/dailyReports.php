@@ -221,7 +221,7 @@ require_once("../assets/php/server.php");
                                         -moz-appearance: textfield;
                                       }
 
-                                      .hatdog {
+                                      .tabledata {
                                         border: 1px solid #ffffff;
                                         text-align: center;
                                         vertical-align: middle;
@@ -230,12 +230,12 @@ require_once("../assets/php/server.php");
                                       }
                                     </style>
                                     <tr>
-                                      <td class="hatdog">1</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
+                                      <td class="tabledata">1</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
                                     </tr>
                                   </tbody>
                                 </table>

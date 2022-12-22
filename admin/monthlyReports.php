@@ -163,30 +163,28 @@ require_once("../assets/php/server.php");
                         </form>
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="col-12 grid-margin">
                         <form class="form-sample">
                           <div class="row" style="padding-bottom: 15px;">
                             <div class="col-md-4">
-
                               <label class="col-sm-12 col-form-label">Name</label>
                               <div class="col-sm-12">
                                 <input type="text" class="form-control" readonly />
                               </div>
-
                             </div>
                             <div class="col-md-4">
-
                               <label class="col-sm-12 col-form-label">Grade and Section</label>
                               <div class="col-sm-12">
                                 <input type="text" class="form-control" readonly />
                               </div>
-
                             </div>
                           </div>
                         </form>
                       </div>
                     </div>
+
                     <div class="row">
                       <div class="col-lg-12 d-flex flex-column">
                         <div class="row flex-grow">
@@ -220,7 +218,7 @@ require_once("../assets/php/server.php");
                                         -moz-appearance: textfield;
                                       }
 
-                                      .hatdog {
+                                      .tabledata {
                                         border: 1px solid #ffffff;
                                         text-align: center;
                                         vertical-align: middle;
@@ -229,87 +227,87 @@ require_once("../assets/php/server.php");
                                       }
                                     </style>
                                     <tr>
-                                      <td class="hatdog">January</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
+                                      <td class="tabledata">January</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
                                     </tr>
 
                                     <tr>
-                                      <td class="hatdog">February</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
+                                      <td class="tabledata">February</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
                                     </tr>
 
                                     <tr>
-                                      <td class="hatdog">March</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
+                                      <td class="tabledata">March</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
                                     </tr>
 
                                     <tr>
-                                      <td class="hatdog">April</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
+                                      <td class="tabledata">April</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
                                     </tr>
 
                                     <tr>
-                                      <td class="hatdog">May</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
+                                      <td class="tabledata">May</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
                                     </tr>
 
                                     <tr>
-                                      <td class="hatdog">June</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
+                                      <td class="tabledata">June</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
                                     </tr>
 
                                     <tr>
-                                      <td class="hatdog">July</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
+                                      <td class="tabledata">July</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
                                     </tr>
 
                                     <tr>
-                                      <td class="hatdog">August</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
+                                      <td class="tabledata">August</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
                                     </tr>
 
                                     <tr>
-                                      <td class="hatdog">September</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
+                                      <td class="tabledata">September</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
                                     </tr>
 
                                     <tr>
-                                      <td class="hatdog">October</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
+                                      <td class="tabledata">October</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
                                     </tr>
 
                                     <tr>
-                                      <td class="hatdog">November</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
+                                      <td class="tabledata">November</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
                                     </tr>
 
                                     <tr>
-                                      <td class="hatdog">December</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
-                                      <td class="hatdog">Student 1</td>
+                                      <td class="tabledata">December</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Student 1</td>
                                     </tr>
                                   </tbody>
                                 </table>
