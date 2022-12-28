@@ -143,13 +143,24 @@ require_once("../assets/php/server.php");
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                     <div class="btn-group">
                       <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                          Grade and Section
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          <?php if (isset($_GET['GradeLevel'])) {
+                            echo "Grade " . $_GET['GradeLevel'];
+                          } else {
+                            echo "Grade Level";
+                          }
+                          ?>
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                          <a class="dropdown-item" href="#">Grade 1 - Einstein</a>
-                          <a class="dropdown-item" href="#">Grade 2 - Armstrong</a>
-                          <a class="dropdown-item" href="#">Grade 3 - Evans</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                          <?php
+                          $sectionList = "SELECT DISTINCT(S_yearLevel) FROM sections";
+                          $runsectionList = $mysqli->query($sectionList);
+
+                          while ($sectionData = $runsectionList->fetch_assoc()) { ?>
+                            <a class="dropdown-item" href="student.php?GradeLevel=<?php echo $sectionData['S_yearLevel'] ?>">
+                              <?php echo "Grade - " . $sectionData['S_yearLevel']; ?>
+                            </a>
+                          <?php } ?>
                         </div>
                       </div>
                     </div>
@@ -162,7 +173,7 @@ require_once("../assets/php/server.php");
                                 <table class="table">
                                   <thead>
                                     <style>
-                                      .hatdog {
+                                      .tablestyle {
                                         border: 1px solid #ffffff;
                                         text-align: center;
                                         vertical-align: middle;
@@ -171,28 +182,37 @@ require_once("../assets/php/server.php");
                                       }
                                     </style>
                                     <tr>
-                                      <th class="hatdog">No.</th>
-                                      <th class="hatdog">Student Number</th>
-                                      <th class="hatdog">Grades and Section</th>
-                                      <th class="hatdog">Student Name</th>
+                                      <th class="tablestyle">No.</th>
+                                      <th class="tablestyle">Student Number</th>
+                                      <th class="tablestyle">Grades and Section</th>
+                                      <th class="tablestyle">Student Name</th>
                                     </tr>
                                   </thead>
                                   <tbody>
                                     <?php
-                                    $ListofStudents = "SELECT * FROM studentrecord ORDER BY SR_grade";
-                                    $resultListofStudents = $mysqli->query($ListofStudents);
-
-                                    while ($data = $resultListofStudents->fetch_assoc()) { ?>
-                                      <tr>
-                                        <td class="hatdog"><?php echo $data['SR_ID'] ?></td>
-                                        <td class="hatdog"><?php echo $data['SR_number'] ?></td>
-                                        <td class="hatdog"><?php echo "Grade " . $data['SR_grade'] . " - " . $data['SR_section'] ?></td>
-                                        <td class="hatdog"><a href="#"><?php echo $data['SR_lname'] . ", " . $data['SR_fname'] ?></a></td>
-                                      </tr>
-                                    <?php
+                                    $gradeLevel = $_GET['GradeLevel'];
+                                    if (isset($_GET['GradeLevel'])) {
+                                      $ListofStudents = "SELECT * FROM studentrecord WHERE SR_grade = '$gradeLevel'";
+                                      $resultListofStudents = $mysqli->query($ListofStudents);
+                                    } else {
+                                      $ListofStudents = "SELECT * FROM studentrecord ORDER BY SR_grade";
+                                      $resultListofStudents = $mysqli->query($ListofStudents);
                                     }
-                                    ?>
 
+                                    if (!empty($data = $resultListofStudents->fetch_assoc())) {
+                                      while ($data = $resultListofStudents->fetch_assoc()) { ?>
+                                        <tr>
+                                          <td class="tablestyle"><?php echo $data['SR_ID'] ?></td>
+                                          <td class="tablestyle"><?php echo $data['SR_number'] ?></td>
+                                          <td class="tablestyle"><?php echo "Grade " . $data['SR_grade'] . " - " . $data['SR_section'] ?></td>
+                                          <td class="tablestyle"><a href="viewstudent.php?SR_Number=<?php echo $data['SR_number'] ?>"><?php echo $data['SR_lname'] . ", " . $data['SR_fname'] ?></a></td>
+                                        </tr>
+                                      <?php }
+                                    } else { ?>
+                                      <tr>
+                                        <td colspan="10">No Data.</td>
+                                      </tr>
+                                    <?php } ?>
                                   </tbody>
                                 </table>
                               </div>
