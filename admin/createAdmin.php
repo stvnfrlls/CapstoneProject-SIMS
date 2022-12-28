@@ -1,7 +1,4 @@
-<?php require_once("../assets/php/server.php");
-if (isset($_POST['confirm_student'])) {
-    header('Location: confirmstudent.php');
-} ?>
+<?php require_once("../assets/php/server.php"); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -153,7 +150,7 @@ if (isset($_POST['confirm_student'])) {
                                         <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                                             <div class="row">
                                                 <div class="col-12 grid-margin">
-                                                    <div class="card"  style="width:70%; margin:auto;">
+                                                    <div class="card" style="width:70%; margin:auto;">
                                                         <div class="card-body">
                                                             <h4 class="card-title">Personal Information</h4>
                                                             <div class="row" style="padding-bottom: 15px;">
@@ -170,10 +167,10 @@ if (isset($_POST['confirm_student'])) {
                                                             <div class="row" style="padding-bottom: 15px;">
 
                                                                 <div class="col-md-12">
-                                                                        <label class="col-sm-12 col-form-label">Email</label>
-                                                                        <div class="col-sm-12">
-                                                                            <input type="text" class="form-control" name="S_fname" required>
-                                                                        </div>
+                                                                    <label class="col-sm-12 col-form-label">Email</label>
+                                                                    <div class="col-sm-12">
+                                                                        <input type="text" class="form-control" name="S_fname" required>
+                                                                    </div>
                                                                 </div>
 
 
@@ -282,7 +279,7 @@ if (isset($_POST['confirm_student'])) {
 
     <!-- JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
 
     <!-- Template Javascript -->
     <script src="../assets/js/main.js"></script>
