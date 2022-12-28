@@ -190,25 +190,27 @@ require_once("../assets/php/server.php");
                                   </thead>
                                   <tbody>
                                     <?php
-                                    $gradeLevel = $_GET['GradeLevel'];
-                                    if (isset($_GET['GradeLevel'])) {
-                                      $ListofStudents = "SELECT * FROM studentrecord WHERE SR_grade = '$gradeLevel'";
-                                      $resultListofStudents = $mysqli->query($ListofStudents);
+                                    if (!empty($_GET['GradeLevel'])) {
+                                      $ListofStudents = "SELECT * FROM studentrecord WHERE SR_grade = '{$_GET['GradeLevel']}'";
                                     } else {
                                       $ListofStudents = "SELECT * FROM studentrecord ORDER BY SR_grade";
-                                      $resultListofStudents = $mysqli->query($ListofStudents);
                                     }
 
-                                    if (!empty($data = $resultListofStudents->fetch_assoc())) {
+                                    $resultListofStudents = $mysqli->query($ListofStudents);
+                                    $rowCount = 1;
+
+                                    $numrows = mysqli_num_rows($resultListofStudents);
+                                    if ($numrows >= 1) {
                                       while ($data = $resultListofStudents->fetch_assoc()) { ?>
                                         <tr>
-                                          <td class="tablestyle"><?php echo $data['SR_ID'] ?></td>
+                                          <td class="tablestyle"><?php echo $rowCount ?></td>
                                           <td class="tablestyle"><?php echo $data['SR_number'] ?></td>
                                           <td class="tablestyle"><?php echo "Grade " . $data['SR_grade'] . " - " . $data['SR_section'] ?></td>
                                           <td class="tablestyle"><a href="viewstudent.php?SR_Number=<?php echo $data['SR_number'] ?>"><?php echo $data['SR_lname'] . ", " . $data['SR_fname'] ?></a></td>
                                         </tr>
-                                      <?php }
-                                    } else { ?>
+                                      <?php $rowCount++;
+                                      }
+                                    } else if ($numrows == 0) { ?>
                                       <tr>
                                         <td colspan="10">No Data.</td>
                                       </tr>

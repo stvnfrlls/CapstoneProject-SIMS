@@ -1,7 +1,7 @@
 <?php
 require_once("../assets/php/server.php");
 if (!isset($_POST['confirm_student'])) {
-    //header('Location: addStudent.php');
+    header('Location: addStudent.php');
 }
 ?>
 
@@ -136,24 +136,22 @@ if (!isset($_POST['confirm_student'])) {
                 <div class="content-wrapper">
                     <div class="row">
                         <div class="col-sm-12">
-                            <div class="home-tab">
-                                <div class="d-sm-flex align-items-center justify-content-between border-bottom">
-                                    <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                                        <h2 class="fw-bold text-primary text-uppercase">Student Registration</h2>
+                            <form action="" method="">
+                                <div class="home-tab">
+                                    <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                                        <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
+                                            <h2 class="fw-bold text-primary text-uppercase">Student Registration</h2>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="tab-content tab-content-basic">
-                                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                                        <div class="row">
-                                            <div class="col-12 grid-margin">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <h4 class="card-title">Personal Information</h4>
-                                                        <form class="form-sample">
-
+                                    <div class="tab-content tab-content-basic">
+                                        <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                                            <div class="row">
+                                                <div class="col-12 grid-margin">
+                                                    <div class="card">
+                                                        <div class="card-body">
                                                             <div class="row" style="padding-bottom: 15px;">
+                                                                <h4 class="card-title">Personal Information</h4>
                                                                 <div class="col-md-12">
-
                                                                     <label class="col-sm-12 col-form-label">Profile Picture</label>
                                                                     <div class="col-sm-12">
                                                                         <div class="form-group">
@@ -161,7 +159,7 @@ if (!isset($_POST['confirm_student'])) {
                                                                             <div class="input-group col-xs-12">
                                                                                 <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
                                                                                 <span class="input-group-append">
-                                                                                    <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                                                                    <button class="file-upload-browse btn btn-primary m-2" type="button">Upload</button>
                                                                                 </span>
                                                                             </div>
                                                                         </div>
@@ -171,108 +169,96 @@ if (!isset($_POST['confirm_student'])) {
                                                                 <!-- next row -->
                                                                 <div class="row" style="padding-bottom: 15px;">
                                                                     <div class="col-md-4">
-
                                                                         <label class="col-sm-12 col-form-label">Last Name</label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="text" class="form-control" readonly />
+                                                                            <input type="text" class="form-control" />
                                                                         </div>
-
                                                                     </div>
                                                                     <div class="col-md-4">
-
                                                                         <label class="col-sm-12 col-form-label">First Name</label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="text" class="form-control" readonly />
+                                                                            <input type="text" class="form-control" />
                                                                         </div>
-
                                                                     </div>
                                                                     <div class="col-md-3">
-
                                                                         <label class="col-sm-12 col-form-label">Middle Name</label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="text" class="form-control" readonly />
+                                                                            <input type="text" class="form-control" />
                                                                         </div>
-
                                                                     </div>
                                                                     <div class="col-md-1">
-
                                                                         <label class="col-sm-12 col-form-label">Suffix</label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="text" class="form-control" readonly />
+                                                                            <input type="text" class="form-control" />
                                                                         </div>
-
                                                                     </div>
                                                                 </div>
+
                                                                 <div class="row" style="padding-bottom: 15px;">
                                                                     <div class="col-md-1">
                                                                         <label label class="col-sm-12 col-form-label">Age</label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="text" class="form-control" readonly />
+                                                                            <input type="text" class="form-control" />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-4">
                                                                         <label label class="col-sm-12 col-form-label">Birthdate</label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="date" class="form-control fullwidth" id="firstName" required readonly>
+                                                                            <input type="date" class="form-control fullwidth" id="firstName" required>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-4">
                                                                         <label label class="col-sm-12 col-form-label">Birthplace</label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="text" class="form-control" readonly />
+                                                                            <input type="text" class="form-control" />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-3">
                                                                         <label label class="col-sm-12 col-form-label">Gender</label>
                                                                         <div class="col-sm-12">
-                                                                            <fieldset disabled="disabled">
-                                                                                <select class="form-select form-control" id="lastName" required>
-                                                                                    <option value=""></option>
-                                                                                    <option value="Male">Male</option>
-                                                                                    <option value="Female">Female</option>
-                                                                                    <option value="NA">Prefer not to say</option>
-                                                                                </select>
+                                                                            <select class="form-select form-control" id="lastName" required>
+                                                                                <option value=""></option>
+                                                                                <option value="Male">Male</option>
+                                                                                <option value="Female">Female</option>
+                                                                                <option value="NA">Prefer not to say</option>
+                                                                            </select>
                                                                         </div>
                                                                     </div>
                                                                 </div>
+
                                                                 <div class="row" style="padding-bottom: 15px;">
                                                                     <div class="col-md-4">
-
                                                                         <label class="col-sm-12 col-form-label">Religion</label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="text" class="form-control" readonly />
+                                                                            <input type="text" class="form-control" />
                                                                         </div>
-
                                                                     </div>
                                                                     <div class="col-md-4">
-
                                                                         <label class="col-sm-12 col-form-label">Citizenship</label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="text" class="form-control" readonly />
+                                                                            <input type="text" class="form-control" />
                                                                         </div>
-
                                                                     </div>
                                                                 </div>
 
-                                                                <h4 class="card-title">Address</h4>
-
                                                                 <div class="row" style="padding-bottom: 15px;">
+                                                                    <h4 class="card-title m-1">Address</h4>
                                                                     <div class="col-md-6">
                                                                         <label label class="col-sm-12 col-form-label">Address</label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="text" class="form-control" readonly />
+                                                                            <input type="text" class="form-control" />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-3">
                                                                         <label label class="col-sm-12 col-form-label">Barangay</label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="text" class="form-control" readonly />
+                                                                            <input type="text" class="form-control" />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-3">
                                                                         <label label class="col-sm-12 col-form-label">City</label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="text" class="form-control" readonly />
+                                                                            <input type="text" class="form-control" />
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -281,89 +267,79 @@ if (!isset($_POST['confirm_student'])) {
                                                                     <div class="col-md-4">
                                                                         <label label class="col-sm-12 col-form-label">State</label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="text" class="form-control" readonly />
+                                                                            <input type="text" class="form-control" />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-4">
                                                                         <label label class="col-sm-12 col-form-label">Postal Code</label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="text" class="form-control" readonly />
+                                                                            <input type="text" class="form-control" />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-4">
                                                                         <label label class="col-sm-12 col-form-label">Email Address</label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="text" class="form-control" readonly />
+                                                                            <input type="text" class="form-control" />
                                                                         </div>
                                                                     </div>
                                                                 </div>
-
-                                                        </form>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <!-- next row -->
-                                    <div class="row">
-                                        <div class="col-lg-12 col-sm-12 grid-margin">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <h4 class="card-title">Contact Person</h4>
-                                                    <form class="form-sample">
-
+                                        <!-- next row -->
+                                        <div class="row">
+                                            <div class="col-lg-12 col-sm-12 grid-margin">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title">Contact Person</h4>
                                                         <div class="row" style="padding-bottom: 15px;">
                                                             <div class="col-md-4">
-
                                                                 <label class="col-sm-12 col-form-label">Last Name</label>
                                                                 <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" readonly />
+                                                                    <input type="text" class="form-control" />
                                                                 </div>
-
                                                             </div>
                                                             <div class="col-md-4">
-
                                                                 <label class="col-sm-12 col-form-label">First Name</label>
                                                                 <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" readonly />
+                                                                    <input type="text" class="form-control" />
                                                                 </div>
-
                                                             </div>
                                                             <div class="col-md-3">
-
                                                                 <label class="col-sm-12 col-form-label">Middle Name</label>
                                                                 <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" readonly />
+                                                                    <input type="text" class="form-control" />
                                                                 </div>
-
                                                             </div>
                                                             <div class="col-md-1">
-
                                                                 <label class="col-sm-12 col-form-label">Suffix</label>
                                                                 <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" readonly />
+                                                                    <input type="text" class="form-control" />
                                                                 </div>
-
                                                             </div>
                                                         </div>
+
                                                         <div class="row" style="padding-bottom: 15px;">
                                                             <div class="col-md-6">
                                                                 <label label class="col-sm-12 col-form-label">Address</label>
                                                                 <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" readonly />
+                                                                    <input type="text" class="form-control" />
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <label label class="col-sm-12 col-form-label">Barangay</label>
                                                                 <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" readonly />
+                                                                    <input type="text" class="form-control" />
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <label label class="col-sm-12 col-form-label">City</label>
                                                                 <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" readonly />
+                                                                    <input type="text" class="form-control" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -372,19 +348,19 @@ if (!isset($_POST['confirm_student'])) {
                                                             <div class="col-md-4">
                                                                 <label label class="col-sm-12 col-form-label">State</label>
                                                                 <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" readonly />
+                                                                    <input type="text" class="form-control" />
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label label class="col-sm-12 col-form-label">Postal Code</label>
                                                                 <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" readonly />
+                                                                    <input type="text" class="form-control" />
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label label class="col-sm-12 col-form-label">Email Address</label>
                                                                 <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" readonly />
+                                                                    <input type="text" class="form-control" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -393,97 +369,85 @@ if (!isset($_POST['confirm_student'])) {
                                                             <div class="col-md-4">
                                                                 <label label class="col-sm-12 col-form-label">Relationship to Student</label>
                                                                 <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" readonly />
+                                                                    <input type="text" class="form-control" />
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label label class="col-sm-12 col-form-label">Telephone Number</label>
                                                                 <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" readonly />
+                                                                    <input type="text" class="form-control" />
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label label class="col-sm-12 col-form-label">Contact Number</label>
                                                                 <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" readonly />
+                                                                    <input type="text" class="form-control" />
                                                                 </div>
                                                             </div>
                                                         </div>
-
-                                                    </form>
+                                                    </div>
                                                 </div>
                                             </div>
-
                                         </div>
-                                    </div>
 
-                                    <div class="row">
-                                        <div class="col-lg-8 col-sm-12 grid-margin" style="margin: auto;">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <h4 class="card-title">Class Information</h4>
-                                                    <form class="form-sample">
+                                        <div class="row">
+                                            <div class="col-lg-8 col-sm-12 grid-margin" style="margin: auto;">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title">Class Information</h4>
                                                         <div class="row" style="padding-bottom: 15px;">
                                                             <div class="col-md-6">
-
                                                                 <label class="col-sm-12 col-form-label">Grade Level</label>
-
                                                                 <div class="col-sm-12">
-                                                                    <fieldset disabled="disabled">
-                                                                        <select class="form-select form-control fullwidth" id="lastName" required>
-                                                                            <option value="Male">Kinder</option>
-                                                                            <option value="Female">1</option>
-                                                                            <option value="NA">2</option>
-                                                                            <option value="NA">3</option>
-                                                                            <option value="NA">4</option>
-                                                                            <option value="NA">5</option>
-                                                                            <option value="NA">6</option>
-                                                                        </select>
+                                                                    <select class="form-select form-control fullwidth" id="lastName" required>
+                                                                        <option value="Male">Kinder</option>
+                                                                        <option value="Female">1</option>
+                                                                        <option value="NA">2</option>
+                                                                        <option value="NA">3</option>
+                                                                        <option value="NA">4</option>
+                                                                        <option value="NA">5</option>
+                                                                        <option value="NA">6</option>
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
-
                                                                 <label label class="col-sm-12 col-form-label">Section</label>
                                                                 <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" readonly />
+                                                                    <input type="text" class="form-control" />
                                                                 </div>
-
                                                             </div>
                                                         </div>
 
                                                         <div class="row" style="padding-bottom: 15px;">
                                                             <div class="col-md-6">
-                                                                <label class="col-sm-12 col-form-label">Schedule</label>
+                                                                <label label class="col-sm-12 col-form-label">Schedule</label>
                                                                 <div class="col-sm-12">
-                                                                    <fieldset disabled="disabled">
-                                                                        <select class="form-select form-control fullwidth" id="lastName" required>
-                                                                            <option value="NA">Monday - Friday</option>
-                                                                        </select>
+                                                                    <select class="form-select form-control fullwidth" id="lastName" required>
+                                                                        <option value="NA">Monday - Friday</option>
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <label class="col-sm-12 col-form-label" style="color:white;"> .</label>
+                                                                <label label class="col-sm-12 col-form-label" style="color:white;"> .</label>
                                                                 <div class="col-sm-12">
-                                                                    <fieldset disabled="disabled">
-                                                                        <select class="form-select form-control fullwidth" id="lastName" required>
-                                                                            <option value="AM">7:00AM-2:00PM</option>
-                                                                        </select>
+                                                                    <select class="form-select form-control fullwidth" id="lastName" required>
+                                                                        <option value="AM">7:00AM-2:00PM</option>
+                                                                    </select>
                                                                 </div>
                                                             </div>
-
                                                         </div>
-                                                    </form>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                                <div style="text-align: center;">
+                                    <button type="submit" class="btn btn-primary me-2">Save</button>
+                                    <button class="btn btn-light">Back</button>
+                                </div>
+                            </form>
                         </div>
-                        <form style="text-align: center;">
-                            <button type="submit" class="btn btn-primary me-2">Save</button>
-                            <button class="btn btn-light">Back</button>
-                        </form>
                     </div>
                 </div>
             </div>
