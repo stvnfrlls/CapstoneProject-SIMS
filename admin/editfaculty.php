@@ -1,7 +1,7 @@
-<?php 
+<?php
 require_once("../assets/php/server.php");
 if (empty($_GET['F_number'])) {
-  header('Location: faculty.php');
+  //header('Location: faculty.php');
 } else {
   $FacultyInformation = "SELECT * FROM faculty";
   $resultFacultyInformation = $mysqli->query($FacultyInformation);
@@ -152,14 +152,14 @@ if (empty($_GET['F_number'])) {
                         <div class="card">
                           <div class="card-body">
                             <h4 class="card-title">Personal Information</h4>
-                            <form class="form-sample" action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
+                            <form class="form-sample" action="confirmfaculty.php" method="POST">
 
                               <div class="row" style="padding-bottom: 15px;">
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Department</label>
                                   <div class="col-sm-12">
                                     <select class="form-select form-control" name="F_department" required>
-                                      <option value="<?php echo $data['F_department']?>"><?php echo "CURRENT: ".$data['F_department']?></option>
+                                      <option value=""></option>
                                       <option value="English">English Department</option>
                                       <option value="Filipino">Filipino Department</option>
                                       <option value="Mathematics">Mathematics Department</option>
@@ -169,6 +169,20 @@ if (empty($_GET['F_number'])) {
                                     </select>
                                   </div>
                                 </div>
+                                <div class="col-md-8">
+                                  <label class="col-sm-12 col-form-label">Profile Picture</label>
+                                  <div class="col-sm-12">
+                                    <div class="form-group">
+                                      <input type="file" name="img[]" class="file-upload-default">
+                                      <div class="input-group col-xs-12">
+                                        <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
+                                        <span class="input-group-append">
+                                          <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
 
                               <div class="row" style="padding-bottom: 15px;">
@@ -176,29 +190,29 @@ if (empty($_GET['F_number'])) {
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Last Name</label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" value="<?php echo $data['F_lname'] ?>" name="F_lname" required>
+                                    <input type="text" class="form-control" name="F_lname" required>
                                   </div>
                                 </div>
 
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">First Name</label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" value="<?php echo $data['F_fname'] ?>" name="F_fname" required>
+                                    <input type="text" class="form-control" name="F_fname" required>
                                   </div>
                                 </div>
 
                                 <div class="col-md-3">
                                   <label class="col-sm-12 col-form-label">Middle Name</label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" value="<?php echo $data['F_mname'] ?>" name="F_mname">
+                                    <input type="text" class="form-control" name="F_mname">
                                   </div>
                                 </div>
 
                                 <div class="col-md-1">
                                   <label class="col-sm-12 col-form-label">Suffix</label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" value="<?php echo $data['F_suffix'] ?>" name="F_suffix">
-                                  </div </div>
+                                    <input type="text" class="form-control" name="F_suffix">
+                                  </div>
 
                                 </div>
 
@@ -207,14 +221,14 @@ if (empty($_GET['F_number'])) {
                                   <div class="col-md-4">
                                     <label class="col-sm-12 col-form-label">Age</label>
                                     <div class="col-sm-12">
-                                      <input type="number" class="form-control" value="<?php echo $data['F_age'] ?>" name="F_age" required>
+                                      <input type="number" class="form-control" name="F_age" required>
                                     </div>
                                   </div>
 
                                   <div class="col-md-4">
                                     <label class="col-sm-12 col-form-label">Birthdate</label>
                                     <div class="col-sm-12">
-                                      <input type="date" class="form-control" value="<?php echo $data['F_birthday'] ?>" name="F_birthday" required>
+                                      <input type="date" class="form-control" name="F_birthday" required>
                                     </div>
                                   </div>
 
@@ -222,7 +236,7 @@ if (empty($_GET['F_number'])) {
                                     <label class="col-sm-12 col-form-label">Gender</label>
                                     <div class="col-sm-12">
                                       <select class="form-select form-control" name="F_gender" required>
-                                        <option value="<?php echo $data['F_birthday'] ?>" selected><?php echo "CURRENT: ".$data['F_gender'] ?></option>
+                                        <option value=""></option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
                                         <option value="NA">Prefer not to say</option>
@@ -232,27 +246,45 @@ if (empty($_GET['F_number'])) {
 
                                 </div>
 
+                                <div class="row" style="padding-bottom: 15px;">
+                                  <div class="col-md-4">
+
+                                    <label class="col-sm-12 col-form-label">Religion</label>
+                                    <div class="col-sm-12">
+                                      <input type="text" class="form-control" />
+                                    </div>
+
+                                  </div>
+                                  <div class="col-md-4">
+
+                                    <label class="col-sm-12 col-form-label">Citizenship</label>
+                                    <div class="col-sm-12">
+                                      <input type="text" class="form-control" />
+                                    </div>
+                                  </div>
+                                </div>
+
                                 <h4 class="card-title">Address</h4>
                                 <div class="row" style="padding-bottom: 15px;">
 
                                   <div class="col-md-6">
                                     <label label class="col-sm-12 col-form-label">Address</label>
                                     <div class="col-sm-12">
-                                      <input type="text" class="form-control" value="<?php echo $data['F_address'] ?>" name="F_address" required>
+                                      <input type="text" class="form-control" name="F_address" required>
                                     </div>
                                   </div>
 
                                   <div class="col-md-3">
                                     <label label class="col-sm-12 col-form-label">Barangay</label>
                                     <div class="col-sm-12">
-                                      <input type="text" class="form-control" value="<?php echo $data['F_barangay'] ?>" name="F_barangay" required>
+                                      <input type="text" class="form-control" name="F_barangay" required>
                                     </div>
                                   </div>
 
                                   <div class="col-md-3">
                                     <label label class="col-sm-12 col-form-label">City</label>
                                     <div class="col-sm-12">
-                                      <input type="text" class="form-control" value="<?php echo $data['F_city'] ?>" name="F_city" required>
+                                      <input type="text" class="form-control" name="F_city" required>
                                     </div>
                                   </div>
 
@@ -263,14 +295,14 @@ if (empty($_GET['F_number'])) {
                                   <div class="col-md-4">
                                     <label label class="col-sm-12 col-form-label">State</label>
                                     <div class="col-sm-12">
-                                      <input type="text" class="form-control" value="<?php echo $data['F_state'] ?>" name="F_state" required>
+                                      <input type="text" class="form-control" name="F_state" required>
                                     </div>
                                   </div>
 
                                   <div class="col-md-4">
                                     <label label class="col-sm-12 col-form-label">Postal Code</label>
                                     <div class="col-sm-12">
-                                      <input type="text" class="form-control" value="<?php echo $data['F_postal'] ?>" name="F_postal" required>
+                                      <input type="text" class="form-control" name="F_postal" required>
                                     </div>
                                   </div>
 
@@ -281,24 +313,18 @@ if (empty($_GET['F_number'])) {
                                   <div class="col-md-6">
                                     <label label class="col-sm-12 col-form-label">Contact Number</label>
                                     <div class="col-sm-12">
-                                      <input type="text" class="form-control" value="<?php echo $data['F_contactNumber'] ?>" name="F_contact" required>
+                                      <input type="text" class="form-control" name="F_contact" required>
                                     </div>
                                   </div>
 
                                   <div class="col-md-6">
                                     <label label class="col-sm-12 col-form-label">Email Address</label>
                                     <div class="col-sm-12">
-                                      <input type="email" class="form-control" value="<?php echo $data['F_email'] ?>" name="F_email" required>
+                                      <input type="email" class="form-control" name="F_email" required>
                                     </div>
                                   </div>
 
                                 </div>
-
-                                <div style="text-align: right;">
-                                  <input type="submit" class="btn btn-primary me-2" value="Confirm" name="confirm_faculty">
-                                  <button class="btn btn-light">Cancel</button>
-                                </div>
-
                             </form>
                           </div>
                         </div>
@@ -306,8 +332,13 @@ if (empty($_GET['F_number'])) {
                     </div>
                   </div>
                 </div>
+
               </div>
             </div>
+            <form style="text-align: center;">
+              <button type="submit" class="btn btn-primary me-2">Save</button>
+              <button class="btn btn-light">Back</button>
+            </form>
           </div>
         </div>
         <!-- content-wrapper ends -->

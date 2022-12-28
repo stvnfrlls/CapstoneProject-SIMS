@@ -1,7 +1,6 @@
 <?php
 require_once("../assets/php/server.php");
 
-
 if (!empty($_GET['F_number'])) {
   header('Location: ../editfaculty.php?F_number=' . $_GET['F_number']);
 }

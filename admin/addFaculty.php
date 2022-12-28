@@ -166,6 +166,20 @@ if (isset($_POST['confirm_faculty'])) {
                                     </select>
                                   </div>
                                 </div>
+                                <div class="col-md-8">
+                                  <label class="col-sm-12 col-form-label">Profile Picture</label>
+                                  <div class="col-sm-12">
+                                    <div class="form-group">
+                                      <input type="file" name="img[]" class="file-upload-default">
+                                      <div class="input-group col-xs-12">
+                                        <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
+                                        <span class="input-group-append">
+                                          <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
 
                               <div class="row" style="padding-bottom: 15px;">
@@ -195,7 +209,7 @@ if (isset($_POST['confirm_faculty'])) {
                                   <label class="col-sm-12 col-form-label">Suffix</label>
                                   <div class="col-sm-12">
                                     <input type="text" class="form-control" name="F_suffix">
-                                  </div </div>
+                                  </div>
 
                                 </div>
 
@@ -227,6 +241,24 @@ if (isset($_POST['confirm_faculty'])) {
                                     </div>
                                   </div>
 
+                                </div>
+
+                                <div class="row" style="padding-bottom: 15px;">
+                                  <div class="col-md-4">
+
+                                    <label class="col-sm-12 col-form-label">Religion</label>
+                                    <div class="col-sm-12">
+                                      <input type="text" class="form-control" />
+                                    </div>
+
+                                  </div>
+                                  <div class="col-md-4">
+
+                                    <label class="col-sm-12 col-form-label">Citizenship</label>
+                                    <div class="col-sm-12">
+                                      <input type="text" class="form-control" />
+                                    </div>
+                                  </div>
                                 </div>
 
                                 <h4 class="card-title">Address</h4>
@@ -290,12 +322,6 @@ if (isset($_POST['confirm_faculty'])) {
                                   </div>
 
                                 </div>
-
-                                <div style="text-align: right;">
-                                  <input type="submit" class="btn btn-primary me-2" value="Confirm" name="confirm_faculty">
-                                  <button class="btn btn-light">Cancel</button>
-                                </div>
-
                             </form>
                           </div>
                         </div>
@@ -303,8 +329,13 @@ if (isset($_POST['confirm_faculty'])) {
                     </div>
                   </div>
                 </div>
+
               </div>
             </div>
+            <form style="text-align: center;">
+              <button type="submit" class="btn btn-primary me-2">Save</button>
+              <button class="btn btn-light">Back</button>
+            </form>
           </div>
         </div>
         <!-- content-wrapper ends -->
@@ -373,6 +404,11 @@ if (isset($_POST['confirm_faculty'])) {
 
 
   <!-- Template Javascript -->
+  <script src="../assets/js/main.js"></script>
+
+  <script src="../assets/js/admin/vendor.bundle.base.js"></script>
+  <script src="../assets/js/admin/js/off-canvas.js"></script>
+  -- Template Javascript -->
   <script src="../assets/js/main.js"></script>
 
   <script src="../assets/js/admin/vendor.bundle.base.js"></script>
