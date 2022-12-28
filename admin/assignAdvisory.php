@@ -174,7 +174,6 @@ require_once("../assets/php/server.php");
                                     <tr>
                                         <th class="hatdog" style="border-bottom: #ffffff;">No.</th>
                                         <th class="hatdog" style="border-bottom: #ffffff;">Section</th>
-                                        <th class="hatdog" style="border-bottom: #ffffff;">Schedule</th>
                                         <th class="hatdog" style="border-bottom: #ffffff;">Adviser</th>
                                         <th class="hatdog" style="border-bottom: #ffffff;">Action</th>
                                     </tr>
@@ -208,7 +207,6 @@ require_once("../assets/php/server.php");
                                     <tr>
                                         <td class="hatdog">1</td>
                                         <td class="hatdog">Einstein</td>
-                                        <td class="hatdog">7:00AM-2:00PM</td>
                                         <td class="hatdog">
                                             <select aria-label="Default select example">
                                                 <option selected>Professor</option>
@@ -223,7 +221,6 @@ require_once("../assets/php/server.php");
                                     <tr>
                                         <td class="hatdog">1</td>
                                         <td class="hatdog">Einstein</td>
-                                        <td class="hatdog">7:00AM-2:00PM</td>
                                         <td class="hatdog">
                                             <select aria-label="Default select example">
                                                 <option selected>Professor</option>
@@ -238,7 +235,6 @@ require_once("../assets/php/server.php");
                                     <tr>
                                         <td class="hatdog">1</td>
                                         <td class="hatdog">Einstein</td>
-                                        <td class="hatdog">7:00AM-2:00PM</td>
                                         <td class="hatdog">
                                             <select aria-label="Default select example">
                                                 <option selected>Professor</option>
@@ -253,7 +249,6 @@ require_once("../assets/php/server.php");
                                     <tr>
                                         <td class="hatdog">1</td>
                                         <td class="hatdog">Einstein</td>
-                                        <td class="hatdog">7:00AM-2:00PM</td>
                                         <td class="hatdog">
                                             <select aria-label="Default select example">
                                                 <option selected>Professor</option>
@@ -341,15 +336,13 @@ require_once("../assets/php/server.php");
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
-    <!-- JavaScript Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+
 
     <!-- Template Javascript -->
     <script src="../assets/js/main.js"></script>
     
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>
-    <script src="../assets/js/admin/js/off-canvas.js"></script>
+    <script src="../assets/js/admin/off-canvas.js"></script>
 </body>
 
 </html>

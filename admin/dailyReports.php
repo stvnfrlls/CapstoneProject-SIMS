@@ -145,44 +145,74 @@ require_once("../assets/php/server.php");
                       <div class="col-12 grid-margin">
                         <form class="form-sample">
                           <div class="row" style="padding-bottom: 15px;">
-                            <div class="col-md-4">
 
-                              <label class="col-sm-12 col-form-label">Student Number</label>
-                              <div class="col-sm-12">
-                                <input type="text" class="form-control" />
-                              </div>
+                            <div class="row">
+                              <div class="col-12 grid-margin">
+                                <form class="form-sample">
+                                  <div class="row">
+                                    <div class="col-md-4">
 
-                            </div>
-                            <div class="col-md-4">
-                              <label class="col-sm-12 col-form-label" style="padding-top: 2rem;"></label>
-                              <div class="col-sm-12">
-                                <input type="submit" value="Filter" style="text-align: center;">
-                              </div>
+                                      <label class="col-sm-12 col-form-label">Student Number</label>
+                                      <div class="col-sm-12">
+                                        <input type="text" class="form-control" />
+                                      </div>
 
-                            </div>
-                            <div class="col-md-4">
-                              <div class="col-md-12" style="padding-top: 3rem; margin-right:auto;">
-                                <div class="dropdown">
-                                  <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton4" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    Month
-                                  </button>
-                                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton4">
-                                    <a class="dropdown-item" href="#">January</a>
-                                    <a class="dropdown-item" href="#">February</a>
-                                    <a class="dropdown-item" href="#">March</a>
-                                    <a class="dropdown-item" href="#">April</a>
-                                    <a class="dropdown-item" href="#">May</a>
-                                    <a class="dropdown-item" href="#">June</a>
-                                    <a class="dropdown-item" href="#">July</a>
-                                    <a class="dropdown-item" href="#">August</a>
-                                    <a class="dropdown-item" href="#">September</a>
-                                    <a class="dropdown-item" href="#">October</a>
-                                    <a class="dropdown-item" href="#">November</a>
-                                    <a class="dropdown-item" href="#">December</a>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <label class="col-sm-12 col-form-label" style="padding-top: 2rem;"></label>
+                                      <div class="col-sm-12">
+                                        <input type="submit" value="Filter" style="text-align: center;">
+                                      </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <label class="col-sm-12 col-form-label" style="padding-top: 2rem; margin-right:auto;"></label>
+                                      <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton4" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                          Month
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton4">
+                                          <a class="dropdown-item" href="#">January</a>
+                                          <a class="dropdown-item" href="#">February</a>
+                                          <a class="dropdown-item" href="#">March</a>
+                                          <a class="dropdown-item" href="#">April</a>
+                                          <a class="dropdown-item" href="#">May</a>
+                                          <a class="dropdown-item" href="#">June</a>
+                                          <a class="dropdown-item" href="#">July</a>
+                                          <a class="dropdown-item" href="#">August</a>
+                                          <a class="dropdown-item" href="#">September</a>
+                                          <a class="dropdown-item" href="#">October</a>
+                                          <a class="dropdown-item" href="#">November</a>
+                                          <a class="dropdown-item" href="#">December</a>
+                                        </div>
+                                      </div>
+                                    </div>
                                   </div>
-                                </div>
+                                </form>
                               </div>
                             </div>
+
+                            <div class="row">
+                              <div class="col-12 grid-margin">
+                                <form class="form-sample">
+                                  <div class="row" style="padding-bottom: 15px;">
+                                    <div class="col-md-4">
+                                      <label class="col-sm-12 col-form-label">Name</label>
+                                      <div class="col-sm-12">
+                                        <input type="text" class="form-control" readonly />
+                                      </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <label class="col-sm-12 col-form-label">Grade and Section</label>
+                                      <div class="col-sm-12">
+                                        <input type="text" class="form-control" readonly />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+
+
                         </form>
                       </div>
                     </div>

@@ -1,12 +1,12 @@
 <?php
-require 'assets/vendor/fpdf/fpdf.php';
+require '../assets/fpdf/fpdf.php';
 
 class PDF extends FPDF
 {
     function Header()
     {
         //Logo Image
-        $this->Image('assets/image/logo.png', 50, 15, 20, 20);
+        $this->Image('../assets/img/logo.png', 50, 15, 20, 20);
         // Select Arial bold 15
         $this->SetFont('Arial', '', 7);
         $this->Cell(70);
