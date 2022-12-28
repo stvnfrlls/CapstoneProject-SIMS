@@ -1,7 +1,4 @@
-<?php
-require_once("../assets/php/server.php");
-
-?>
+<?php require_once("../assets/php/server.php"); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -141,40 +138,40 @@ require_once("../assets/php/server.php");
                 </div>
                 <div class="tab-content tab-content-basic">
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                    <div class="row" >
-                        <div class="col-lg-4 col-sm-12 grid-margin" style="margin: auto; margin-bottom: 30px;">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title">Profile</h4>
-                                    <form class="form-sample">                                        
-                                        <div class="row" style="padding-bottom: 15px;">
-                                            <div class="col-md-12 col-sm-6" style="text-align: center; margin-bottom: 20px; margin-top: 10px;">
-                                                                    
-                                                <img src="../assets/img/profile.jpg" alt="avatar" class="rounded-circle img-fluidr" style="width: 150px;">
-                                                                    
-                                            </div>                                          
-                                        </div>     
-                                        <div class="row" style="padding-bottom: 15px;">
-                                            <div class="col-12">
-                                                <label class="col-sm-12 col-form-label">Department</label>
-                                                <div class="col-sm-12">
-                                                    <select class="form-select form-control" name="F_department" required readonly>
-                                                        <option value=""></option>
-                                                        <option value="English">English Department</option>
-                                                        <option value="Filipino">Filipino Department</option>
-                                                        <option value="Mathematics">Mathematics Department</option>
-                                                        <option value="Science">Science Department</option>
-                                                        <option value="History">History Department</option>
-                                                        <option value="Personality Development">Personality Development Department</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>                                                                                       
-                                    </form>                                    
-                                </div>                                    
-                            </div>
+                    <div class="row">
+                      <div class="col-lg-4 col-sm-12 grid-margin" style="margin: auto; margin-bottom: 30px;">
+                        <div class="card">
+                          <div class="card-body">
+                            <h4 class="card-title">Profile</h4>
+                            <form class="form-sample">
+                              <div class="row" style="padding-bottom: 15px;">
+                                <div class="col-md-12 col-sm-6" style="text-align: center; margin-bottom: 20px; margin-top: 10px;">
+
+                                  <img src="../assets/img/profile.jpg" alt="avatar" class="rounded-circle img-fluidr" style="width: 150px;">
+
+                                </div>
+                              </div>
+                              <div class="row" style="padding-bottom: 15px;">
+                                <div class="col-12">
+                                  <label class="col-sm-12 col-form-label">Department</label>
+                                  <div class="col-sm-12">
+                                    <select class="form-select form-control" name="F_department" required readonly>
+                                      <option value=""></option>
+                                      <option value="English">English Department</option>
+                                      <option value="Filipino">Filipino Department</option>
+                                      <option value="Mathematics">Mathematics Department</option>
+                                      <option value="Science">Science Department</option>
+                                      <option value="History">History Department</option>
+                                      <option value="Personality Development">Personality Development Department</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
                         </div>
-                    </div>                
+                      </div>
+                    </div>
                     <div class="row">
                       <div class="col-12 grid-margin">
                         <div class="card">
@@ -182,7 +179,7 @@ require_once("../assets/php/server.php");
                             <h4 class="card-title">Personal Information</h4>
                             <form class="form-sample" action="confirmfaculty.php" method="POST">
 
-                                
+
 
                               <div class="row" style="padding-bottom: 15px;">
 
@@ -244,23 +241,23 @@ require_once("../assets/php/server.php");
                                   </div>
                                 </div>
                                 <div class="row" style="padding-bottom: 15px;">
-                                        <div class="col-md-4">
-                                                
-                                            <label class="col-sm-12 col-form-label">Religion</label>
-                                            <div class="col-sm-12">
-                                                <input type="text" class="form-control" readonly/>
-                                            </div>
-                                                
-                                            </div>
-                                            <div class="col-md-4">
-                                                
-                                            <label class="col-sm-12 col-form-label">Citizenship</label>
-                                                <div class="col-sm-12">
-                                                    <input type="text" class="form-control" readonly/>
-                                                </div>
-                                                
-                                            </div>
+                                  <div class="col-md-4">
+
+                                    <label class="col-sm-12 col-form-label">Religion</label>
+                                    <div class="col-sm-12">
+                                      <input type="text" class="form-control" readonly />
                                     </div>
+
+                                  </div>
+                                  <div class="col-md-4">
+
+                                    <label class="col-sm-12 col-form-label">Citizenship</label>
+                                    <div class="col-sm-12">
+                                      <input type="text" class="form-control" readonly />
+                                    </div>
+
+                                  </div>
+                                </div>
 
                                 <h4 class="card-title">Address</h4>
                                 <div class="row" style="padding-bottom: 15px;">
@@ -323,22 +320,22 @@ require_once("../assets/php/server.php");
                                   </div>
 
                                 </div>
-                                
+
                             </form>
                           </div>
                         </div>
                       </div>
-                      
+
                     </div>
                   </div>
 
                 </div>
               </div>
             </div>
-                <form style="text-align: center;">
-                    <button type="submit" class="btn btn-primary me-2">Confirm</button>
-                    <button class="btn btn-light">Back</button>
-                </form>
+            <form style="text-align: center;">
+              <button type="submit" class="btn btn-primary me-2">Confirm</button>
+              <button class="btn btn-light">Back</button>
+            </form>
           </div>
         </div>
         <!-- content-wrapper ends -->
