@@ -1,7 +1,7 @@
 <?php
 require_once("../assets/php/server.php");
 if (!isset($_POST['confirm_faculty'])) {
-  //header('Location: addFaculty.php'); 
+  header('Location: addFaculty.php');
 }
 ?>
 
@@ -134,28 +134,27 @@ if (!isset($_POST['confirm_faculty'])) {
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
-            <div class="col-sm-12">
-              <div class="home-tab">
-                <div class="d-sm-flex align-items-center justify-content-between border-bottom">
-                  <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                    <h2 class="fw-bold text-primary text-uppercase">Faculty Registration</h2>
+            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
+              <div class="col-sm-12">
+                <div class="home-tab">
+                  <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                    <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
+                      <h2 class="fw-bold text-primary text-uppercase">Faculty Registration</h2>
+                    </div>
                   </div>
-                </div>
-                <div class="tab-content tab-content-basic">
-                  <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                    <div class="row">
-                      <div class="col-12 grid-margin">
-                        <div class="card">
-                          <div class="card-body">
-                            <h4 class="card-title">Personal Information</h4>
-                            <form class="form-sample" action="confirmfaculty.php" method="POST">
-
+                  <div class="tab-content tab-content-basic">
+                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                      <div class="row">
+                        <div class="col-12 grid-margin">
+                          <div class="card">
+                            <div class="card-body">
+                              <h4 class="card-title">Personal Information</h4>
                               <div class="row" style="padding-bottom: 15px;">
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Department</label>
                                   <div class="col-sm-12">
-                                    <select class="form-select form-control" name="F_department" required>
-                                      <option value=""></option>
+                                    <select class="form-select form-control" name="F_department" value="<?php echo $_POST[''] ?>" required readonly>
+                                      <option selected><?php echo $_POST['F_department']; ?></option>
                                       <option value="English">English Department</option>
                                       <option value="Filipino">Filipino Department</option>
                                       <option value="Mathematics">Mathematics Department</option>
@@ -169,171 +168,139 @@ if (!isset($_POST['confirm_faculty'])) {
                                   <label class="col-sm-12 col-form-label">Profile Picture</label>
                                   <div class="col-sm-12">
                                     <div class="form-group">
-                                      <input type="file" name="img[]" class="file-upload-default">
                                       <div class="input-group col-xs-12">
-                                        <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
-                                        <span class="input-group-append">
-                                          <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
-                                        </span>
+                                        <input type="file" class="form-control file-upload-info" placeholder="Upload Image" disabled>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-
                               <div class="row" style="padding-bottom: 15px;">
-
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Last Name</label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="F_lname" required readonly>
+                                    <input type="text" class="form-control" name="F_lname" value="<?php echo $_POST['F_lname'] ?>" required readonly>
                                   </div>
                                 </div>
-
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">First Name</label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="F_fname" required readonly>
+                                    <input type="text" class="form-control" name="F_fname" value="<?php echo $_POST['F_fname'] ?>" required readonly>
                                   </div>
                                 </div>
-
                                 <div class="col-md-3">
                                   <label class="col-sm-12 col-form-label">Middle Name</label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="F_mname" readonly>
+                                    <input type="text" class="form-control" name="F_mname" value="<?php echo $_POST['F_mname'] ?>" required readonly>
                                   </div>
                                 </div>
-
                                 <div class="col-md-1">
                                   <label class="col-sm-12 col-form-label">Suffix</label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="F_suffix" readonly>
-                                  </div>
-
-                                </div>
-
-                                <div class="row" style="padding-bottom: 15px;">
-
-                                  <div class="col-md-4">
-                                    <label class="col-sm-12 col-form-label">Age</label>
-                                    <div class="col-sm-12">
-                                      <input type="number" class="form-control" name="F_age" required readonly>
-                                    </div>
-                                  </div>
-
-                                  <div class="col-md-4">
-                                    <label class="col-sm-12 col-form-label">Birthdate</label>
-                                    <div class="col-sm-12">
-                                      <input type="date" class="form-control" name="F_birthday" required readonly>
-                                    </div>
-                                  </div>
-
-                                  <div class="col-md-4">
-                                    <label class="col-sm-12 col-form-label">Gender</label>
-                                    <div class="col-sm-12">
-                                      <select class="form-select form-control" name="F_gender" required readonly>
-                                        <option value=""></option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="NA">Prefer not to say</option>
-                                      </select>
-                                    </div>
-                                  </div>
-
-                                </div>
-
-                                <div class="row" style="padding-bottom: 15px;">
-                                  <div class="col-md-4">
-
-                                    <label class="col-sm-12 col-form-label">Religion</label>
-                                    <div class="col-sm-12">
-                                      <input type="text" class="form-control" readonly />
-                                    </div>
-
-                                  </div>
-                                  <div class="col-md-4">
-
-                                    <label class="col-sm-12 col-form-label">Citizenship</label>
-                                    <div class="col-sm-12">
-                                      <input type="text" class="form-control" readonly />
-                                    </div>
+                                    <input type="text" class="form-control" name="F_suffix" value="<?php echo $_POST['F_suffix'] ?>" readonly>
                                   </div>
                                 </div>
-
+                              </div>
+                              <div class="row" style="padding-bottom: 15px;">
+                                <div class="col-md-4">
+                                  <label class="col-sm-12 col-form-label">Age</label>
+                                  <div class="col-sm-12">
+                                    <input type="number" class="form-control" name="F_age" value="<?php echo $_POST['F_age'] ?>" required readonly>
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <label class="col-sm-12 col-form-label">Birthdate</label>
+                                  <div class="col-sm-12">
+                                    <input type="date" class="form-control" name="F_birthday" value="<?php echo $_POST['F_birthday'] ?>" required readonly>
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <label class="col-sm-12 col-form-label">Gender</label>
+                                  <div class="col-sm-12">
+                                    <select class="form-select form-control" name="F_gender" required readonly>
+                                      <option selected><?php echo $_POST['F_gender'] ?></option>
+                                      <option value="Male">Male</option>
+                                      <option value="Female">Female</option>
+                                      <option value="NA">Prefer not to say</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row" style="padding-bottom: 15px;">
+                                <div class="col-md-4">
+                                  <label class="col-sm-12 col-form-label">Religion</label>
+                                  <div class="col-sm-12">
+                                    <input type="text" class="form-control" name="F_religion" value="<?php echo $_POST['F_religion'] ?>" required readonly>
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <label class="col-sm-12 col-form-label">Citizenship</label>
+                                  <div class="col-sm-12">
+                                    <input type="text" class="form-control" name="F_citizenship" value="<?php echo $_POST['F_citizenship'] ?>" required readonly>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row" style="padding-bottom: 15px;">
                                 <h4 class="card-title">Address</h4>
-                                <div class="row" style="padding-bottom: 15px;">
-
-                                  <div class="col-md-6">
-                                    <label label class="col-sm-12 col-form-label">Address</label>
-                                    <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="F_address" required readonly>
-                                    </div>
+                                <div class="col-md-6">
+                                  <label label class="col-sm-12 col-form-label">Address</label>
+                                  <div class="col-sm-12">
+                                    <input type="text" class="form-control" name="F_address" value="<?php echo $_POST['F_address'] ?>" required readonly>
                                   </div>
-
-                                  <div class="col-md-3">
-                                    <label label class="col-sm-12 col-form-label">Barangay</label>
-                                    <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="F_barangay" required readonly>
-                                    </div>
-                                  </div>
-
-                                  <div class="col-md-3">
-                                    <label label class="col-sm-12 col-form-label">City</label>
-                                    <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="F_city" required readonly>
-                                    </div>
-                                  </div>
-
                                 </div>
-
-                                <div class="row" style="padding-bottom: 15px;">
-
-                                  <div class="col-md-4">
-                                    <label label class="col-sm-12 col-form-label">State</label>
-                                    <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="F_state" required readonly>
-                                    </div>
+                                <div class="col-md-3">
+                                  <label label class="col-sm-12 col-form-label">Barangay</label>
+                                  <div class="col-sm-12">
+                                    <input type="text" class="form-control" name="F_barangay" value="<?php echo $_POST['F_barangay'] ?>" required readonly>
                                   </div>
-
-                                  <div class="col-md-4">
-                                    <label label class="col-sm-12 col-form-label">Postal Code</label>
-                                    <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="F_postal" required readonly>
-                                    </div>
-                                  </div>
-
                                 </div>
-
-                                <div class="row" style="padding-bottom: 15px;">
-
-                                  <div class="col-md-6">
-                                    <label label class="col-sm-12 col-form-label">Contact Number</label>
-                                    <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="F_contact" required readonly>
-                                    </div>
+                                <div class="col-md-3">
+                                  <label label class="col-sm-12 col-form-label">City</label>
+                                  <div class="col-sm-12">
+                                    <input type="text" class="form-control" name="F_city" value="<?php echo $_POST['F_city'] ?>" required readonly>
                                   </div>
-
-                                  <div class="col-md-6">
-                                    <label label class="col-sm-12 col-form-label">Email Address</label>
-                                    <div class="col-sm-12">
-                                      <input type="email" class="form-control" name="F_email" required readonly>
-                                    </div>
-                                  </div>
-
                                 </div>
-                            </form>
+                              </div>
+                              <div class="row" style="padding-bottom: 15px;">
+                                <div class="col-md-4">
+                                  <label label class="col-sm-12 col-form-label">State</label>
+                                  <div class="col-sm-12">
+                                    <input type="text" class="form-control" name="F_state" value="<?php echo $_POST['F_state'] ?>" required readonly>
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <label label class="col-sm-12 col-form-label">Postal Code</label>
+                                  <div class="col-sm-12">
+                                    <input type="text" class="form-control" name="F_postal" value="<?php echo $_POST['F_postal'] ?>" required readonly>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row" style="padding-bottom: 15px;">
+                                <div class="col-md-6">
+                                  <label label class="col-sm-12 col-form-label">Contact Number</label>
+                                  <div class="col-sm-12">
+                                    <input type="tel" class="form-control" name="F_contact" value="<?php echo $_POST['F_contact'] ?>" required readonly>
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <label label class="col-sm-12 col-form-label">Email Address</label>
+                                  <div class="col-sm-12">
+                                    <input type="email" class="form-control" name="F_email" value="<?php echo $_POST['F_email'] ?>" required readonly>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-
               </div>
-            </div>
-            <form style="text-align: center;">
-              <button type="submit" class="btn btn-primary me-2">Confirm</button>
-              <button class="btn btn-light">Back</button>
+              <div style="text-align: center;">
+                <button type="submit" class="btn btn-primary me-2" name="regFaculty">Confirm</button>
+                <button class="btn btn-light">Back</button>
+              </div>
             </form>
           </div>
         </div>

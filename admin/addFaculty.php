@@ -135,22 +135,21 @@ if (isset($_POST['confirm_faculty'])) {
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
-            <div class="col-sm-12">
-              <div class="home-tab">
-                <div class="d-sm-flex align-items-center justify-content-between border-bottom">
-                  <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                    <h2 class="fw-bold text-primary text-uppercase">Faculty Registration</h2>
+            <form action="confirmfaculty.php" method="POST">
+              <div class="col-sm-12">
+                <div class="home-tab">
+                  <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                    <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
+                      <h2 class="fw-bold text-primary text-uppercase">Faculty Registration</h2>
+                    </div>
                   </div>
-                </div>
-                <div class="tab-content tab-content-basic">
-                  <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                    <div class="row">
-                      <div class="col-12 grid-margin">
-                        <div class="card">
-                          <div class="card-body">
-                            <h4 class="card-title">Personal Information</h4>
-                            <form class="form-sample" action="confirmfaculty.php" method="POST">
-
+                  <div class="tab-content tab-content-basic">
+                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                      <div class="row">
+                        <div class="col-12 grid-margin">
+                          <div class="card">
+                            <div class="card-body">
+                              <h4 class="card-title">Personal Information</h4>
                               <div class="row" style="padding-bottom: 15px;">
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Department</label>
@@ -170,171 +169,139 @@ if (isset($_POST['confirm_faculty'])) {
                                   <label class="col-sm-12 col-form-label">Profile Picture</label>
                                   <div class="col-sm-12">
                                     <div class="form-group">
-                                      <input type="file" name="img[]" class="file-upload-default">
                                       <div class="input-group col-xs-12">
-                                        <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
-                                        <span class="input-group-append">
-                                          <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
-                                        </span>
+                                        <input type="file" class="form-control file-upload-info" placeholder="Upload Image">
                                       </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-
                               <div class="row" style="padding-bottom: 15px;">
-
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Last Name</label>
                                   <div class="col-sm-12">
                                     <input type="text" class="form-control" name="F_lname" required>
                                   </div>
                                 </div>
-
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">First Name</label>
                                   <div class="col-sm-12">
                                     <input type="text" class="form-control" name="F_fname" required>
                                   </div>
                                 </div>
-
                                 <div class="col-md-3">
                                   <label class="col-sm-12 col-form-label">Middle Name</label>
                                   <div class="col-sm-12">
                                     <input type="text" class="form-control" name="F_mname">
                                   </div>
                                 </div>
-
                                 <div class="col-md-1">
                                   <label class="col-sm-12 col-form-label">Suffix</label>
                                   <div class="col-sm-12">
                                     <input type="text" class="form-control" name="F_suffix">
                                   </div>
-
                                 </div>
-
-                                <div class="row" style="padding-bottom: 15px;">
-
-                                  <div class="col-md-4">
-                                    <label class="col-sm-12 col-form-label">Age</label>
-                                    <div class="col-sm-12">
-                                      <input type="number" class="form-control" name="F_age" required>
-                                    </div>
-                                  </div>
-
-                                  <div class="col-md-4">
-                                    <label class="col-sm-12 col-form-label">Birthdate</label>
-                                    <div class="col-sm-12">
-                                      <input type="date" class="form-control" name="F_birthday" required>
-                                    </div>
-                                  </div>
-
-                                  <div class="col-md-4">
-                                    <label class="col-sm-12 col-form-label">Gender</label>
-                                    <div class="col-sm-12">
-                                      <select class="form-select form-control" name="F_gender" required>
-                                        <option value=""></option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="NA">Prefer not to say</option>
-                                      </select>
-                                    </div>
-                                  </div>
-
-                                </div>
-
-                                <div class="row" style="padding-bottom: 15px;">
-                                  <div class="col-md-4">
-
-                                    <label class="col-sm-12 col-form-label">Religion</label>
-                                    <div class="col-sm-12">
-                                      <input type="text" class="form-control" />
-                                    </div>
-
-                                  </div>
-                                  <div class="col-md-4">
-
-                                    <label class="col-sm-12 col-form-label">Citizenship</label>
-                                    <div class="col-sm-12">
-                                      <input type="text" class="form-control" />
-                                    </div>
+                              </div>
+                              <div class="row" style="padding-bottom: 15px;">
+                                <div class="col-md-4">
+                                  <label class="col-sm-12 col-form-label">Age</label>
+                                  <div class="col-sm-12">
+                                    <input type="number" class="form-control" name="F_age" required>
                                   </div>
                                 </div>
-
+                                <div class="col-md-4">
+                                  <label class="col-sm-12 col-form-label">Birthdate</label>
+                                  <div class="col-sm-12">
+                                    <input type="date" class="form-control" name="F_birthday" required>
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <label class="col-sm-12 col-form-label">Gender</label>
+                                  <div class="col-sm-12">
+                                    <select class="form-select form-control" name="F_gender" required>
+                                      <option value=""></option>
+                                      <option value="Male">Male</option>
+                                      <option value="Female">Female</option>
+                                      <option value="NA">Prefer not to say</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row" style="padding-bottom: 15px;">
+                                <div class="col-md-4">
+                                  <label class="col-sm-12 col-form-label">Religion</label>
+                                  <div class="col-sm-12">
+                                    <input type="text" class="form-control" name="F_religion" required>
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <label class="col-sm-12 col-form-label">Citizenship</label>
+                                  <div class="col-sm-12">
+                                    <input type="text" class="form-control" name="F_citizenship" required>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row" style="padding-bottom: 15px;">
                                 <h4 class="card-title">Address</h4>
-                                <div class="row" style="padding-bottom: 15px;">
-
-                                  <div class="col-md-6">
-                                    <label label class="col-sm-12 col-form-label">Address</label>
-                                    <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="F_address" required>
-                                    </div>
+                                <div class="col-md-6">
+                                  <label label class="col-sm-12 col-form-label">Address</label>
+                                  <div class="col-sm-12">
+                                    <input type="text" class="form-control" name="F_address" required>
                                   </div>
-
-                                  <div class="col-md-3">
-                                    <label label class="col-sm-12 col-form-label">Barangay</label>
-                                    <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="F_barangay" required>
-                                    </div>
-                                  </div>
-
-                                  <div class="col-md-3">
-                                    <label label class="col-sm-12 col-form-label">City</label>
-                                    <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="F_city" required>
-                                    </div>
-                                  </div>
-
                                 </div>
-
-                                <div class="row" style="padding-bottom: 15px;">
-
-                                  <div class="col-md-4">
-                                    <label label class="col-sm-12 col-form-label">State</label>
-                                    <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="F_state" required>
-                                    </div>
+                                <div class="col-md-3">
+                                  <label label class="col-sm-12 col-form-label">Barangay</label>
+                                  <div class="col-sm-12">
+                                    <input type="text" class="form-control" name="F_barangay" required>
                                   </div>
-
-                                  <div class="col-md-4">
-                                    <label label class="col-sm-12 col-form-label">Postal Code</label>
-                                    <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="F_postal" required>
-                                    </div>
-                                  </div>
-
                                 </div>
-
-                                <div class="row" style="padding-bottom: 15px;">
-
-                                  <div class="col-md-6">
-                                    <label label class="col-sm-12 col-form-label">Contact Number</label>
-                                    <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="F_contact" required>
-                                    </div>
+                                <div class="col-md-3">
+                                  <label label class="col-sm-12 col-form-label">City</label>
+                                  <div class="col-sm-12">
+                                    <input type="text" class="form-control" name="F_city" required>
                                   </div>
-
-                                  <div class="col-md-6">
-                                    <label label class="col-sm-12 col-form-label">Email Address</label>
-                                    <div class="col-sm-12">
-                                      <input type="email" class="form-control" name="F_email" required>
-                                    </div>
-                                  </div>
-
                                 </div>
-                            </form>
+                              </div>
+                              <div class="row" style="padding-bottom: 15px;">
+                                <div class="col-md-4">
+                                  <label label class="col-sm-12 col-form-label">State</label>
+                                  <div class="col-sm-12">
+                                    <input type="text" class="form-control" name="F_state" required>
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <label label class="col-sm-12 col-form-label">Postal Code</label>
+                                  <div class="col-sm-12">
+                                    <input type="text" class="form-control" name="F_postal" required>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row" style="padding-bottom: 15px;">
+                                <div class="col-md-6">
+                                  <label label class="col-sm-12 col-form-label">Contact Number</label>
+                                  <div class="col-sm-12">
+                                    <input type="text" class="form-control" name="F_contact" required>
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <label label class="col-sm-12 col-form-label">Email Address</label>
+                                  <div class="col-sm-12">
+                                    <input type="email" class="form-control" name="F_email" required>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-
               </div>
-            </div>
-            <form style="text-align: center;">
-              <button type="submit" class="btn btn-primary me-2">Save</button>
-              <button class="btn btn-light">Back</button>
+              <div style="text-align: center;">
+                <button type="submit" class="btn btn-primary me-2" name="confirm_faculty">Save</button>
+                <button class="btn btn-light">Back</button>
+              </div>
             </form>
           </div>
         </div>

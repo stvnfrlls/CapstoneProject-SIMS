@@ -136,7 +136,7 @@ if (!isset($_POST['confirm_student'])) {
                 <div class="content-wrapper">
                     <div class="row">
                         <div class="col-sm-12">
-                            <form action="" method="">
+                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
                                 <div class="home-tab">
                                     <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                                         <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
@@ -443,7 +443,7 @@ if (!isset($_POST['confirm_student'])) {
                                     </div>
                                 </div>
                                 <div style="text-align: center;">
-                                    <button type="submit" class="btn btn-primary me-2">Save</button>
+                                    <button type="submit" class="btn btn-primary me-2" name="regStudent">Save</button>
                                     <button class="btn btn-light">Back</button>
                                 </div>
                             </form>

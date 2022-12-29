@@ -2,7 +2,18 @@
 require_once("../assets/php/server.php");
 
 if (!empty($_GET['F_number'])) {
-  header('Location: ../editfaculty.php?F_number=' . $_GET['F_number']);
+  header('Location: ../viewFaculty.php?F_number=' . $_GET['F_number']);
+}
+
+$Department = "SELECT F_department FROM faculty";
+$runDepartment = $mysqli->query($Department);
+
+if (!empty($_GET['department'])) {
+  $ListofFaculty = "SELECT * FROM faculty WHERE F_department = '{$_GET['department']}'";
+  $resultListofFaculty = $mysqli->query($ListofFaculty);
+} else {
+  $ListofFaculty = "SELECT * FROM faculty";
+  $resultListofFaculty = $mysqli->query($ListofFaculty);
 }
 ?>
 
@@ -41,6 +52,15 @@ if (!empty($_GET['F_number'])) {
   <link href="../assets/css/form-style.css" rel="stylesheet">
   <link href="../assets/css/admin/style.css" rel="stylesheet">
   <link href="../assets/css/admin/materialdesignicons.min.css" rel="stylesheet">
+  <style>
+    .hatdog {
+      border: 1px solid #ffffff;
+      text-align: center;
+      vertical-align: middle;
+      height: 30px;
+      color: #000000;
+    }
+  </style>
 
 </head>
 
@@ -146,13 +166,15 @@ if (!empty($_GET['F_number'])) {
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                     <div class="btn-group">
                       <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                           Department
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                          <a class="dropdown-item" href="#">Science</a>
-                          <a class="dropdown-item" href="#">Mathematics</a>
-                          <a class="dropdown-item" href="#">English</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                          <?php while ($deptData = $runDepartment->fetch_assoc()) { ?>
+                            <a class="dropdown-item" href="faculty.php?department=<?php echo $deptData['F_department'] ?>">
+                              <?php echo $deptData['F_department'] ?>
+                            </a>
+                          <?php } ?>
                         </div>
                       </div>
                     </div>
@@ -164,15 +186,6 @@ if (!empty($_GET['F_number'])) {
                               <div class="table-responsive">
                                 <table class="table">
                                   <thead>
-                                    <style>
-                                      .hatdog {
-                                        border: 1px solid #ffffff;
-                                        text-align: center;
-                                        vertical-align: middle;
-                                        height: 30px;
-                                        color: #000000;
-                                      }
-                                    </style>
                                     <tr>
                                       <th class="hatdog">No.</th>
                                       <th class="hatdog">Faculty ID</th>
@@ -181,20 +194,16 @@ if (!empty($_GET['F_number'])) {
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <?php
-                                    $ListofFaculty = "SELECT * FROM faculty";
-                                    $resultListofFaculty = $mysqli->query($ListofFaculty);
-
+                                    <?php $rowCount = 1;
                                     while ($data = $resultListofFaculty->fetch_assoc()) { ?>
                                       <tr>
-                                        <td class="hatdog"><?php echo $data['F_ID'] ?></td>
+                                        <td class="hatdog"><?php echo $rowCount ?></td>
                                         <td class="hatdog"><?php echo $data['F_number'] ?></td>
                                         <td class="hatdog"><?php echo $data['F_department'] ?></td>
                                         <td class="hatdog"><a href="faculty.php/get?F_number=<?php echo $data['F_number'] ?>"><?php echo $data['F_lname'] . ", " . $data['F_fname'] ?></a></td>
                                       </tr>
-                                    <?php
-                                    }
-                                    ?>
+                                    <?php $rowCount++;
+                                    } ?>
                                   </tbody>
                                 </table>
                               </div>
