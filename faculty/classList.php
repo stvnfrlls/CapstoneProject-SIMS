@@ -1,198 +1,255 @@
-<?php require_once("../assets/php/server.php"); ?>
+<?php
+require_once("../assets/php/server.php");
+
+if (isset($_POST['confirm_faculty'])) {
+  header('Location: confirmfaculty.php');
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <title>Faculty - Class List</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+  <meta charset="utf-8">
+  <title>Faculty - Class List</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="" name="keywords">
+  <meta content="" name="description">
 
-    <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+  <!-- Favicon -->
+  <link href="img/favicon.ico" rel="icon">
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Icon Font Stylesheet -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- Libraries Stylesheet -->
-    <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
-    <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="../assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+  <!-- Libraries Stylesheet -->
+  <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
+  <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+  <link href="../assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
 
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Customized Bootstrap Stylesheet -->
+  <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Template Stylesheet -->
-    <link href="../assets/css/style.css" rel="stylesheet">
-    <link href="../assets/css/dashboard-user.css" rel="stylesheet">
+  <!-- Template Stylesheet -->
+  <link href="../assets/css/style.css" rel="stylesheet">
+  <link href="../assets/css/form-style.css" rel="stylesheet">
+  <link href="../assets/css/admin/style.css" rel="stylesheet">
+  <link href="../assets/css/admin/materialdesignicons.min.css" rel="stylesheet">
 
 </head>
 
 <body>
-    <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status"></div>
-        <img class="position-absolute top-50 start-50 translate-middle" src="../assets/img/icons/icon-1.png" alt="Icon">
+  <!-- Navbar Start -->
+  <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+    <img class="m-3" src="../assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">
+    <div class="d-flex align-items-center justify-content-center text-center">
+      <a href="../index.php" class="navbar-brand ms-4 ms-lg-0 text-center">
+        <h1 class="cdsp">Colegio De San Pedro</h1>
+        <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
+      </a>
     </div>
-    <!-- Spinner End -->
+    <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+      <span class="mdi mdi-menu"></span>
+    </button>
+  </nav>
+  <!-- Navbar End -->
 
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-        <img class="m-3" src="../assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">
-        <div class="d-flex align-items-center justify-content-center text-center">
-            <a href="../index.php" class="navbar-brand ms-4 ms-lg-0 text-center">
-                <h1 class="cdsp">Colegio De San Pedro</h1>
-                <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
+  <div class="container-scroller">
+    <div class="container-fluid page-body-wrapper">
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <li class="nav-item" style="text-align:center; font-size: 20px; color: #b9b9b9; margin-top:20px;">FACULTY</li>
+            <!-- line 1 -->
+          <li class="nav-item nav-category">Profile</li>
+          <li class="nav-item">
+            <a class="nav-link" href="">
+              <i class=""></i>
+              <span class="menu-title">Dashboard</span>
             </a>
-        </div>
-    </nav>
-    <!-- Navbar End -->
-
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-dark navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
-        <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
-            <div class="navbar-nav">
-                <a href="dashboard.php" class="nav-item nav-link" style="color: white">Home</a>
-                <a href="scanQR.php" class="nav-item nav-link" style="color: white">Scan QR</a>
-                <a href="classList.php" class="nav-item nav-link" style="color: red">Grades</a>
-                <a href="reminders.php" class="nav-item nav-link" style="color: white">Reminders/Assignments</a>
-                <a href="editProfile.php" class="nav-item nav-link" style="color: white">Profile</a>
-                <a href="../auth/logout.php" class="nav-item nav-link" style="color: white">Logout</a>
-            </div>
-        </div>
-    </nav>
-    <!-- Navbar End -->
-
-    <div class="container py-5">
-        <div class="row">
-            <div class="section-title text-center position-relative mb-3 mx-auto">
-                <h2 class="fw-bold text-primary text-uppercase">Sections Handled</h2>
-            </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
-                <div class="header_wrap">
-                    <div class="num_rows">
-                        <div class="form-group">
-                            <select class="form-control" name="state" id="maxRows">
-                                <option value="10">10</option>
-                                <option value="15">15</option>
-                                <option value="20">20</option>
-                                <option value="50">50</option>
-                                <option value="70">70</option>
-                                <option value="100">100</option>
-                                <option value="5000">Show All</option>
-                            </select>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../faculty/viewProfile.php">
+              <i class=""></i>
+              <span class="menu-title">View Profile</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../faculty/createReminder.php">
+              <i class=""></i>
+              <span class="menu-title">Create Reminders</span>
+            </a>
+          </li>
+            <!-- line 2 -->
+          <li class="nav-item nav-category">Menu</li>
+          <li class="nav-item">
+            <a class="nav-link" href="../faculty/scanQR.php">
+              <i class=""></i>
+              <span class="menu-title">Scan QR</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../faculty/advisoryPage.php">
+              <i class=""></i>
+              <span class="menu-title">Advisory</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../faculty/classList.php">
+              <i class=""></i>
+              <span class="menu-title">Class List</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../faculty/encodegrades.php">
+              <i class=""></i>
+              <span class="menu-title">Encode Grades</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../faculty/viewReminders.php">
+              <i class=""></i>
+              <span class="menu-title">View Reminders</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="home-tab">
+                <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                  <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
+                    <h2 class="fw-bold text-primary text-uppercase">Class List</h2>
+                  </div>
+                </div>
+                <div class="tab-content tab-content-basic">
+                  <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                    <div class="row">
+                      <div class="col-12 grid-margin">
+                        <div class="card">
+                          <div class="card-body">
+                                <div class="dropdown" style="margin-bottom: 30px;">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Grade and Section</button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                        <a class="dropdown-item" href="#">Grade 1 - Einstein</a>
+                                        <a class="dropdown-item" href="#">Grade 2 - Armstrong</a>
+                                        <a class="dropdown-item" href="#">Grade 1 = Evans</a>
+                                    </div>
+                                    <div class="tb_search">
+                                      <input class="search" type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" placeholder="  Search...." class="form-control">
+                                    </div>
+                                </div>
+                           
+                            <div class="table-responsive">
+                                <table class="table table-striped table-class" id="table-id">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Student Number</th>
+                                            <th scope="col">Student Name</th>
+                                        </tr>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
+                                            <tr>
+                                                <td>2019-00188-SP-0</td>
+                                                <td><a href="#">Jennie Kim</a></td>
+                                            </tr>
+                                        </form>
+                                    </tbody>
+                                </table>
+                            </div>
+                          </div>
                         </div>
+                      </div>
                     </div>
-                    <div class="tb_search">
-                        <input class="search" type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" placeholder="  Search...." class="form-control">
-                    </div>
+                  </div>
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-striped table-class" id="table-id">
-                        <thead>
-                            <tr>
-                                <th scope="col">Section</th>
-                                <th scope="col">Subject</th>
-                                <th scope="col">Schedule</th>
-                                <th scope="col">Students</th>
-                                <th scope="col">Action</th>
-                            </tr>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
-                                <tr>
-                                    <td>Section Name</td>
-                                    <td>Subject Name</td>
-                                    <td>Schedule</td>
-                                    <td>50/50 students</td>
-                                    <td><input type="submit" placeholder="Encode Grades"></td>
-                                </tr>
-                            </form>
-                        </tbody>
-                    </table>
-                </div>
+                  
+              </div>
             </div>
+          </div>
         </div>
+        <!-- content-wrapper ends -->
+      </div>
+      <!-- main-panel ends -->
     </div>
-    <!-- End of Container -->
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
 
-    <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-body footer mt-5 pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Address</h3>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
-                    <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>di ko alam email</p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Quick Links</h3>
-                    <a class="btn btn-link" href="">Home</a>
-                    <a class="btn btn-link" href="">About Us</a>
-                    <a class="btn btn-link" href="">Academics</a>
-                    <a class="btn btn-link" href="">Admission</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Useful Links</h3>
-                    <a class="btn btn-link" href="">DepEd</a>
-                    <a class="btn btn-link" href="">Pag Asa</a>
-                    <a class="btn btn-link" href="">City of San Pedro</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Newsletter</h3>
-                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                    <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                    </div>
-                </div>
-            </div>
+  <!-- Footer Start -->
+  <div class="container-fluid bg-dark text-body footer mt-5 pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container py-5">
+      <div class="row g-5">
+        <div class="col-lg-3 col-md-6">
+          <h3 class="text-light mb-4">Address</h3>
+          <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
+          <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
+          <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>di ko alam email</p>
+          <div class="d-flex pt-2">
+            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
+            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
+            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
+            <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
+          </div>
         </div>
-        <div class="container-fluid copyright">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a href="#">Colegio De San Pedro</a>, All Right Reserved.
-                    </div>
-                </div>
-            </div>
+        <div class="col-lg-3 col-md-6">
+          <h3 class="text-light mb-4">Quick Links</h3>
+          <a class="btn btn-link" href="">Home</a>
+          <a class="btn btn-link" href="">About Us</a>
+          <a class="btn btn-link" href="">Academics</a>
+          <a class="btn btn-link" href="">Admission</a>
         </div>
+        <div class="col-lg-3 col-md-6">
+          <h3 class="text-light mb-4">Useful Links</h3>
+          <a class="btn btn-link" href="">DepEd</a>
+          <a class="btn btn-link" href="">Pag Asa</a>
+          <a class="btn btn-link" href="">City of San Pedro</a>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <h3 class="text-light mb-4">Newsletter</h3>
+          <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
+          <div class="position-relative mx-auto" style="max-width: 400px;">
+            <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
+            <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
+          </div>
+        </div>
+      </div>
     </div>
-    <!-- Footer End -->
+    <div class="container-fluid copyright">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+            &copy; <a href="#">Colegio De San Pedro</a>, All Right Reserved.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Footer End -->
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+  <!-- Back to Top -->
+  <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/lib/wow/wow.min.js"></script>
-    <script src="../assets/lib/easing/easing.min.js"></script>
-    <script src="../assets/lib/waypoints/waypoints.min.js"></script>
-    <script src="../assets/lib/counterup/counterup.min.js"></script>
-    <script src="../assets/lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="../assets/lib/tempusdominus/js/moment.min.js"></script>
-    <script src="../assets/lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="../assets/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+  <!-- JavaScript Libraries -->
 
-    <!-- Template Javascript -->
-    <script src="../assets/js/main.js"></script>
-    <script>
+
+  <!-- Template Javascript -->
+  <script src="../assets/js/main.js"></script>
+
+  <script src="../assets/js/admin/vendor.bundle.base.js"></script>
+  <script src="../assets/js/admin/off-canvas.js"></script>
+  <script src="../assets/js/admin/file-upload.js"></script>
+  <script>
         getPagination('#table-id');
         $('#maxRows').trigger('change');
 
@@ -284,7 +341,7 @@
 
         // CREATING INDEX
         function default_index() {
-            $('table tr:eq(0)').prepend('<th style="border-color: #e4e3e3;"> ID </th>')
+            $('table tr:eq(0)').prepend('<th style="border-color: #e4e3e3;"> No. </th>')
 
             var id = 0;
 
