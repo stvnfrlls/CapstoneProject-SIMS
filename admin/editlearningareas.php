@@ -1,11 +1,59 @@
-<?php require_once("../assets/php/server.php"); ?>
+<?php
+require_once("../assets/php/server.php");
+
+$gradeList = "SELECT DISTINCT S_yearLevel FROM sections";
+$rungradeList = $mysqli->query($gradeList);
+
+if (isset($_GET['GradeLevel'])) {
+  $current_url = $_SERVER["REQUEST_URI"];
+  $sectionList = "SELECT S_name FROM sections WHERE S_yearLevel = '{$_GET['GradeLevel']}'";
+  $runsectionList = $mysqli->query($sectionList);
+}
+
+if (isset($_GET['GradeLevel']) && isset($_GET['SectionName'])) {
+  $subjects     = array();
+  array_unshift($subjects, null);
+  $schedule     = array();
+  array_unshift($schedule, null);
+  $FacultyName  = array();
+  array_unshift($FacultyName, null);
+  $AllFacultyName  = array();
+  array_unshift($AllFacultyName, null);
+
+  if ($_GET['GradeLevel'] == "KINDER") {
+    $getSubject = "SELECT subjectName FROM subjectperyear
+                  WHERE
+                  subjectperyear.minYearLevel = '0' 
+                  AND
+                  subjectperyear.maxYearLevel >= '0'";
+  } else {
+    $getSubject = "SELECT subjectName FROM subjectperyear
+                  WHERE 
+                  subjectperyear.minYearLevel <= '{$_GET['GradeLevel']}' 
+                  AND
+                  subjectperyear.maxYearLevel >= '{$_GET['GradeLevel']}'";
+  }
+  $rungetSubject = $mysqli->query($getSubject);
+  while ($dataSubject = $rungetSubject->fetch_assoc()) {
+    $subjects[] = $dataSubject;
+  }
+
+  $getSchedule = "SELECT F_number, S_subject, WS_start_time, WS_end_time FROM workschedule
+                  WHERE SR_grade = '{$_GET['GradeLevel']}' 
+                  AND SR_section = '{$_GET['SectionName']}'";
+  $rungetSchedule = $mysqli->query($getSchedule);
+  while ($dataSchedule = $rungetSchedule->fetch_assoc()) {
+    $schedule[] = $dataSchedule;
+  }
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="utf-8">
-  <title>Administrator - Grades</title>
+  <title>Learning Areas</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta content="" name="keywords">
   <meta content="" name="description">
@@ -158,9 +206,6 @@
                           </button>
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                             <?php
-                            $gradeList = "SELECT DISTINCT S_yearLevel FROM sections";
-                            $rungradeList = $mysqli->query($gradeList);
-
                             while ($gradeData = $rungradeList->fetch_assoc()) { ?>
                               <a class="dropdown-item" href="editlearningareas.php?GradeLevel=<?php echo $gradeData['S_yearLevel'] ?>">
                                 <?php
@@ -186,11 +231,6 @@
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                               <?php
-                              $current_url = $_SERVER["REQUEST_URI"];
-
-                              $sectionList = "SELECT S_name FROM sections WHERE S_yearLevel = '{$_GET['GradeLevel']}'";
-                              $runsectionList = $mysqli->query($sectionList);
-
                               while ($sectionData = $runsectionList->fetch_assoc()) { ?>
                                 <a class="dropdown-item" href="<?php echo $current_url . "&SectionName=" . $sectionData['S_name']; ?>">
                                   <?php
@@ -222,81 +262,102 @@
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <style>
-                                      .tablerow {
-                                        border: 1px solid #ffffff;
-                                        text-align: center;
-                                        vertical-align: middle;
-                                        height: 30px;
-                                        color: #000000;
-                                      }
-                                    </style>
-                                    <?php if (isset($_GET['GradeLevel']) && isset($_GET['SectionName'])) {
-                                      $Schedule = "SELECT * FROM workschedule WHERE SR_section = '{$_GET['SectionName']}'";
-                                      $runSchedule = $mysqli->query($Schedule);
-                                      $rowCount = 0;
-                                      while ($DataSchedule = $runSchedule->fetch_assoc()) { ?>
-                                        <tr>
-                                          <td class=""><?php echo $rowCount; ?></td>
-                                          <td class="tablerow"><input type="text" placeholder="Subject Name" value="<?php $DataSchedule['S_subject'] ?>" style="text-align: center;"></td>
-                                          <td class="tablerow">
-                                            <select aria-label="Default select example">
-                                              <option selected>Professor</option>
-                                              <option value="1">NAME</option>
-                                              <option value="2">NAME1</option>
-                                            </select>
-                                          </td>
-                                          <td class="tablerow"><input type="text" placeholder="HH:MM" value="<?php $DataSchedule['WS_start_time'] ?>" style="text-align: center;"></td>
-                                          <td class="tablerow"><input type="text" placeholder="HH:MM" value="<?php $DataSchedule['WS_end_time'] ?>" style="text-align: center;"></td>
-                                          <td class="tablerow"><input type="text" placeholder="##" size="3" style="text-align: center;"></td>
-                                          <td class="tablerow">
-                                            <input type="submit" class="btn btn-primary" value="SET" style="text-align: center;">
-                                          </td>
-                                        </tr>
-                                        <?php
-                                        $rowCount++;
-                                        if ($rowCount = 0) { ?>
+                                    <?php
+                                    $rowCount = 1;
+                                    if (isset($_GET['GradeLevel']) && isset($_GET['SectionName'])) {
+                                      $subjectRowCount = sizeof($subjects);
+                                      while ($rowCount != $subjectRowCount) { ?>
+                                        <form action="" method="">
                                           <tr>
-                                            <td class=""><?php echo $rowCount; ?></td>
-                                            <td class="tablerow"><input type="text" placeholder="Subject Name" value="<?php $DataSchedule['S_subject'] ?>" style="text-align: center;"></td>
-                                            <td class="tablerow">
-                                              <select aria-label="Default select example">
-                                                <option selected>Professor</option>
-                                                <option value="1">NAME</option>
-                                                <option value="2">NAME1</option>
-                                              </select>
+                                            <td><?php echo $rowCount; ?></td>
+                                            <td>
+                                              <?php echo $subjects[$rowCount]['subjectName'] ?>
+                                              
                                             </td>
-                                            <td class="tablerow"><input type="text" placeholder="HH:MM" value="<?php $DataSchedule['WS_start_time'] ?>" style="text-align: center;"></td>
-                                            <td class="tablerow"><input type="text" placeholder="HH:MM" value="<?php $DataSchedule['WS_end_time'] ?>" style="text-align: center;"></td>
-                                            <td class="tablerow"><input type="text" placeholder="##" size="3" style="text-align: center;"></td>
-                                            <td class="tablerow">
-                                              <input type="submit" class="btn btn-primary" value="SET" style="text-align: center;">
+                                            <td>
+                                              <?php
+                                              if (empty($schedule[$rowCount]['F_number'])) {
+                                                $getAllFacultyName = "SELECT F_number, F_lname, F_fname, F_mname, F_suffix FROM faculty";
+                                                $runAllFacultyName = $mysqli->query($getAllFacultyName);
+                                                while ($dataAllFacultyName = $runAllFacultyName->fetch_assoc()) {
+                                                  $AllFacultyName[] = $dataAllFacultyName;
+                                                }
+                                                $arrayRowCount = 1;
+                                                $arrayCount = count($AllFacultyName); ?>
+                                                <select class="form-select" aria-label="Default select example">
+                                                  <option selected></option>
+                                                  <?php
+                                                  while ($arrayRowCount < $arrayCount) { ?>
+                                                    <option value="<?php echo $AllFacultyName[$arrayRowCount]['F_number']; ?>">
+                                                      <?php
+                                                      echo $AllFacultyName[$arrayRowCount]['F_lname'] . ", " . $AllFacultyName[$arrayRowCount]['F_fname'] . " " . substr($AllFacultyName[$arrayRowCount]['F_mname'], 0, 1);
+                                                      ?>
+                                                    </option>
+                                                  <?php $arrayRowCount++;
+                                                  }
+                                                  ?>
+                                                </select>
+                                              <?php
+                                              } else {
+                                                $getFacultyName = "SELECT F_number, F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$schedule[$rowCount]['F_number']}'";
+                                                $rungetFacultyName = $mysqli->query($getFacultyName);
+                                                while ($dataFacultyName = $rungetFacultyName->fetch_assoc()) {
+                                                  $FacultyName[] = $dataFacultyName;
+                                                } ?>
+                                                <select class="form-select" aria-label="Default select example">
+                                                  <option selected><?php echo $FacultyName[$rowCount]['F_lname'] . ", " . $FacultyName[$rowCount]['F_fname'] . " " . substr($FacultyName[$rowCount]['F_mname'], 0, 1); ?></option>
+                                                </select>
+                                              <?php
+                                              }
+                                              ?>
+                                            </td>
+                                            <td>
+                                              <?php
+                                              if (empty($schedule[$rowCount]['WS_start_time'])) {
+                                                echo '<input type="time" class="form-control" name="WS_start_time">';
+                                              } else {
+                                                echo '<input type="time" class="form-control" name="WS_start_time" value=' . $schedule[$rowCount]['WS_start_time'] . '>';
+                                              }
+                                              ?>
+                                            </td>
+                                            <td>
+                                              <?php
+                                              if (empty($schedule[$rowCount]['WS_start_time'])) {
+                                                echo '<input type="time" class="form-control" name="WS_end_time">';
+                                              } else {
+                                                echo '<input type="time" class="form-control" name="WS_end_time" value=' . $schedule[$rowCount]['WS_end_time'] . '>';
+                                              }
+                                              ?>
+                                            </td>
+                                            <td>
+                                              <?php
+                                              if (empty($schedule[$rowCount]['WS_start_time'])) {
+                                                echo '<input type="text" class="form-control" size="4" name="WS_room">';
+                                              } else {
+                                                echo '<input type="time" class="form-control" size="4" name="WS_room">';
+                                              }
+                                              ?>
+                                            </td>
+                                            <td>
+
+                                              <?php
+                                              if (empty($schedule[$rowCount]['F_number'])) {
+                                                echo '<input type="submit" class="btn btn-primary" value="SET">';
+                                              } else {
+                                                echo '<input type="submit" class="btn btn-primary" value="UPDATE">';
+                                              }
+                                              ?>
                                             </td>
                                           </tr>
-                                      <?php }
-                                      } ?>
+                                        </form>
+                                      <?php $rowCount++;
+                                      }
+                                    } else { ?>
                                       <tr>
-                                        <td class="">TESTING</td>
-                                        <td class="tablerow"><input type="text" placeholder="Subject Name" style="text-align: center;"></td>
-                                        <td class="tablerow">
-                                          <select aria-label="Default select example">
-                                            <option selected>Professor</option>
-                                            <option value="1">NAME</option>
-                                            <option value="2">NAME1</option>
-                                          </select>
-                                        </td>
-                                        <td class="tablerow"><input type="text" placeholder="HH:MM" style="text-align: center;"></td>
-                                        <td class="tablerow"><input type="text" placeholder="HH:MM" style="text-align: center;"></td>
-                                        <td class="tablerow"><input type="text" placeholder="##" size="3" style="text-align: center;"></td>
-                                        <td class="tablerow">
-                                          <input type="submit" class="btn btn-primary" value="SET" style="text-align: center;">
-                                        </td>
+                                        <td colspan="10">NO GRADE AND SECTION SELECTED</td>
                                       </tr>
-                                    <?php } else { ?>
-                                      <tr>
-                                        <td colspan="10">No Data. Please Select from the options above.</td>
-                                      </tr>
-                                    <?php } ?>
+                                    <?php }
+                                    ?>
                                   </tbody>
                                 </table>
                               </div>
@@ -375,10 +436,8 @@
 
   <!-- JavaScript Libraries -->
 
-
   <!-- Template Javascript -->
   <script src="../assets/js/main.js"></script>
-
   <script src="../assets/js/admin/vendor.bundle.base.js"></script>
   <script src="../assets/js/admin/js/off-canvas.js"></script>
 </body>
