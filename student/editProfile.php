@@ -98,7 +98,7 @@
               <p class="text-muted mb-1">2019-00188-SP-0</p>
               <p class="text-muted mb-4">Grade 1 - Einstein</p>
               <div class="d-flex justify-content-center mb-2">
-                <button type="button" class="btn btn-outline-primary ms-1">Edit</button>
+                <button type="button" class="btn btn-outline-primary ms-1">Save</button>
                 <button type="button" class="btn btn-outline-primary ms-1">View QR Code</button>
               </div>
             </div>
@@ -138,92 +138,92 @@
           <div class="card mb-4">
             <div class="card-body">
               <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-3" style="padding-top:11px;">
                   <p class="mb-0">Full Name</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">Camille Anne G. Sabile</p>
+                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
                 </div>
               </div>
               <hr>
               <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-3" style="padding-top:11px;">
                   <p class="mb-0">Age</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">22 years Old</p>
+                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
                 </div>
               </div>
               <hr>
               <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-3" style="padding-top:11px;">
                   <p class="mb-0">Gender</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">Female</p>
+                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
                 </div>
               </div>
               <hr>
               <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-3" style="padding-top:11px;">
                   <p class="mb-0">Birthdate</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">October 24, 2000</p>
+                  <p class="text-muted mb-0"><input type="date" class="form-control" name="F_mname"></p>
                 </div>
               </div>
               <hr>
               <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-3" style="padding-top:11px;">
                   <p class="mb-0">Birthplace</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">Muntinlupa City</p>
+                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
                 </div>
               </div>
               <hr>
               <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-3" style="padding-top:11px;">
                   <p class="mb-0">Religion</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">Roman Catholic</p>
+                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
                 </div>
               </div>
               <hr>
               <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-3" style="padding-top:11px;">
                   <p class="mb-0">Citizenship</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">Filipino</p>
+                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
                 </div>
               </div>
               <hr>
               <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-3" style="padding-top:11px;">
                   <p class="mb-0">Address</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">Blk 4e Lot 32 Claret St. Sapphire Hills Victoria Homes Victoria Homes Tunasan Muntinlupa City Metro Manila, 1773</p>
+                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
                 </div>
               </div>
               <hr>
               <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-3" style="padding-top:11px;">
                   <p class="mb-0">Guardian</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">Analiza G. Sabile</p>
+                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
                 </div>
               </div>
               <hr>
               <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-3" style="padding-top:11px;">
                   <p class="mb-0">Contact Number</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">0975 345 2152</p>
+                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
                 </div>
               </div>
             </div>
@@ -231,56 +231,56 @@
           <div class="card mb-4">
             <div class="card-body">
               <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-3" style="padding-top:11px;">
                   <p class="mb-0">Guardian Name</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">Analiza G. Sabile</p>
+                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
                 </div>
               </div>
               <hr>
               <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-3" style="padding-top:11px;">
                   <p class="mb-0">Relationship to Student</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">Mother</p>
+                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
                 </div>
               </div>
               <hr>
               <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-3" style="padding-top:11px;">
                   <p class="mb-0">Email Address</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">analizasabile@gmail.com</p>
+                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
                 </div>
               </div>
               <hr>
               <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-3" style="padding-top:11px;">
                   <p class="mb-0">Telephone Number</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">088456457</p>
+                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
                 </div>
               </div>
               <hr>
               <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-3" style="padding-top:11px;">
                   <p class="mb-0">Phone Number</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">093536236426</p>
+                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
                 </div>
               </div>
               <hr>
               <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-3" style="padding-top:11px;">
                   <p class="mb-0">Address</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">Blk 4e Lot 32 Claret St. Sapphire Hills Victoria Homes Victoria Homes Tunasan Muntinlupa City Metro Manila, 1773</p>
+                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
                 </div>
               </div>
             </div>

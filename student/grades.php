@@ -10,7 +10,7 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
 
 <head>
     <meta charset="utf-8">
-    <title>Student - Grades</title>
+    <title>Student - Report Card</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -38,7 +38,7 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
     <!-- Template Stylesheet -->
     <link href="../assets/css/style.css" rel="stylesheet">
     <link href="../assets/css/dashboard-user.css" rel="stylesheet">
-
+    <link href="../assets/css/admin/style.css" rel="stylesheet">
 
 </head>
 
@@ -70,10 +70,10 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0 ">
-                <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
+                <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px; margin-top: 5px;">Home</a>
                 <a href="about.html" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Academics</a>
+                    <a href="#" class="nav-item nav-link" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Academics <i class="fa fa-caret-down" aria-hidden="true"></i></a>
                     <div class="dropdown-menu bg-dark border-0 m-0">
                         <a href="auth/login.php" class="dropdown-item" style="color: white; font-size: 14px;">Student Information System</a>
                         <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Kindergarten</a>
@@ -96,7 +96,7 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
         <div class="row">
             <h2 class="text-uppercase text-center" style="padding-top: 40px;">Report Card</h2>
             <div class="col m-3">
-                <table id="head" class="table">
+                <table id="head" class="table" style="margin-bottom:20px;">
                     <tr>
                         <td class="hatdog" style="text-align: left;">Name: Camille Anne G. Sabile</td>
                         <td class="hatdog" style="text-align: left;">Student Number: 2019-00188-SP-0</td>
@@ -107,79 +107,81 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                     </tr>
                 </table>
                 <div class="">
-                    <table class="table text-center">
-                        <thead>
-                            <tr>
-                                <th rowspan="2" class="hatdog">Subject</th>
-                                <th colspan="4" class="hatdog">Quarter</th>
-                                <th rowspan="2" class="hatdog">Final Grade</th>
-                                <th rowspan="2" class="hatdog">Remarks</th>
-                            </tr>
-                            <tr>
-                                <td class="hatdog" style="border-color: #FFFFFF;">1</td>
-                                <td class="hatdog" style="border-color: #FFFFFF;">2</td>
-                                <td class="hatdog" style="border-color: #FFFFFF;">3</td>
-                                <td class="hatdog" style="border-color: #FFFFFF;">4</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="hatdog">English</td>
-                                <td class="hatdog">90</td>
-                                <td class="hatdog">90</td>
-                                <td class="hatdog">91</td>
-                                <td class="hatdog">91</td>
-                                <td class="hatdog">90.5</td>
-                                <td class="hatdog">Passed</td>
-                            </tr>
-                            <tr>
-                                <td class="hatdog">Mathemics</td>
-                                <td class="hatdog">90</td>
-                                <td class="hatdog">90</td>
-                                <td class="hatdog">91</td>
-                                <td class="hatdog">91</td>
-                                <td class="hatdog">90.5</td>
-                                <td class="hatdog">Passed</td>
-                            </tr>
-                            <tr>
-                                <td class="hatdog">Filipino</td>
-                                <td class="hatdog">90</td>
-                                <td class="hatdog">90</td>
-                                <td class="hatdog">91</td>
-                                <td class="hatdog">91</td>
-                                <td class="hatdog">90.5</td>
-                                <td class="hatdog">Passed</td>
-                            </tr>
-                            <tr>
-                                <td class="hatdog">Science</td>
-                                <td class="hatdog">90</td>
-                                <td class="hatdog">90</td>
-                                <td class="hatdog">91</td>
-                                <td class="hatdog">91</td>
-                                <td class="hatdog">90.5</td>
-                                <td class="hatdog">Passed</td>
-                            </tr>
-                            <tr>
-                                <td class="hatdog">MAPEH</td>
-                                <td class="hatdog">90</td>
-                                <td class="hatdog">90</td>
-                                <td class="hatdog">91</td>
-                                <td class="hatdog">91</td>
-                                <td class="hatdog">90.5</td>
-                                <td class="hatdog">Passed</td>
-                            </tr>
-                            <tr>
-                                <td class="hatdog">Araling Panlipunan</td>
-                                <td class="hatdog">90</td>
-                                <td class="hatdog">90</td>
-                                <td class="hatdog">91</td>
-                                <td class="hatdog">91</td>
-                                <td class="hatdog">90.5</td>
-                                <td class="hatdog">Passed</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table id="ave" class="table text-center">
+                    <div class="table-responsive">
+                        <table class="table text-center">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" class="hatdog">Subject</th>
+                                    <th colspan="4" class="hatdog">Quarter</th>
+                                    <th rowspan="2" class="hatdog">Final Grade</th>
+                                    <th rowspan="2" class="hatdog">Remarks</th>
+                                </tr>
+                                <tr>
+                                    <td class="hatdog" style="border-color: #FFFFFF;">1</td>
+                                    <td class="hatdog" style="border-color: #FFFFFF;">2</td>
+                                    <td class="hatdog" style="border-color: #FFFFFF;">3</td>
+                                    <td class="hatdog" style="border-color: #FFFFFF;">4</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="hatdog">English</td>
+                                    <td class="hatdog">90</td>
+                                    <td class="hatdog">90</td>
+                                    <td class="hatdog">91</td>
+                                    <td class="hatdog">91</td>
+                                    <td class="hatdog">90.5</td>
+                                    <td class="hatdog">Passed</td>
+                                </tr>
+                                <tr>
+                                    <td class="hatdog">Mathemics</td>
+                                    <td class="hatdog">90</td>
+                                    <td class="hatdog">90</td>
+                                    <td class="hatdog">91</td>
+                                    <td class="hatdog">91</td>
+                                    <td class="hatdog">90.5</td>
+                                    <td class="hatdog">Passed</td>
+                                </tr>
+                                <tr>
+                                    <td class="hatdog">Filipino</td>
+                                    <td class="hatdog">90</td>
+                                    <td class="hatdog">90</td>
+                                    <td class="hatdog">91</td>
+                                    <td class="hatdog">91</td>
+                                    <td class="hatdog">90.5</td>
+                                    <td class="hatdog">Passed</td>
+                                </tr>
+                                <tr>
+                                    <td class="hatdog">Science</td>
+                                    <td class="hatdog">90</td>
+                                    <td class="hatdog">90</td>
+                                    <td class="hatdog">91</td>
+                                    <td class="hatdog">91</td>
+                                    <td class="hatdog">90.5</td>
+                                    <td class="hatdog">Passed</td>
+                                </tr>
+                                <tr>
+                                    <td class="hatdog">MAPEH</td>
+                                    <td class="hatdog">90</td>
+                                    <td class="hatdog">90</td>
+                                    <td class="hatdog">91</td>
+                                    <td class="hatdog">91</td>
+                                    <td class="hatdog">90.5</td>
+                                    <td class="hatdog">Passed</td>
+                                </tr>
+                                <tr>
+                                    <td class="hatdog">Araling Panlipunan</td>
+                                    <td class="hatdog">90</td>
+                                    <td class="hatdog">90</td>
+                                    <td class="hatdog">91</td>
+                                    <td class="hatdog">91</td>
+                                    <td class="hatdog">90.5</td>
+                                    <td class="hatdog">Passed</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <table id="ave" class="table text-center" style="margin-top: 20px; margin-bottom: 20px;">
                         <tr>
                             <td class="hatdog"> General Average</td>
                             <td class="hatdog">90</td>
@@ -215,6 +217,107 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                             <div class="col">Did Not Meet Expectations</div>
                             <div class="col">Below 75</div>
                             <div class="col">Failed</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="">
+                    <div class="table-responsive">
+                        <table class="table text-center" style="margin-top: 30px;">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" class="hatdog">Core Values</th>
+                                    <th rowspan="2" class="hatdog">Behavior Statements</th>
+                                    <th colspan="4" class="hatdog">Periodic Rating</th>
+                                </tr>
+                                <tr>
+                                    <td class="hatdog" style="border-color: #FFFFFF;">1</td>
+                                    <td class="hatdog" style="border-color: #FFFFFF;">2</td>
+                                    <td class="hatdog" style="border-color: #FFFFFF;">3</td>
+                                    <td class="hatdog" style="border-color: #FFFFFF;">4</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td rowspan="2" class="hatdog">Maka-Diyos</td>
+                                    <td rowspan="1" class="hatdog">Expresses one spiritual beliefs while respecting the spiritual beliefs of others.</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="1" class="hatdog">Show adherence to ethical principle by upholding truth.</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                </tr>
+
+                                <tr>
+                                    <td rowspan="2" class="hatdog">Makatao</td>
+                                    <td rowspan="1" class="hatdog">Is sensitive to individual, social, and cultural differences.</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="1" class="hatdog">Demonstrates contributions toward solidarity.</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                </tr>
+
+                                <tr>
+                                    <td rowspan="1" class="hatdog">Makalikasan</td>
+                                    <td rowspan="1" class="hatdog">Cares for the environment and utilizes resources wisely, judiously and economically.</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                </tr>
+
+                                <tr>
+                                    <td rowspan="2" class="hatdog">Makabansa</td>
+                                    <td rowspan="1" class="hatdog">Demonstrates pride in being a Filipino, exercises the rights and responsibilities of a Filipino citizen.</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="1" class="hatdog">Demonstrates appropriate behavior in carrying out activities in the school, community and country.</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                    <td rowspan="1" class="hatdog">AO</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="container">
+                        <div id="remarkshead" class="row fw-bold" style="margin-top: 20px;">
+                            <div class="col">Marking</div>
+                            <div class="col">Non-Numerical Rating</div>
+                        </div>
+                        <div id="remarks" class="row fw-light">
+                            <div class="col">AO</div>
+                            <div class="col">Always Observed</div>
+                        </div>
+                        <div id="remarks" class="row fw-light">
+                            <div class="col">SO</div>
+                            <div class="col">Sometimes Observed</div>
+                        </div>
+                        <div id="remarks" class="row fw-light">
+                            <div class="col">RO</div>
+                            <div class="col">Rarely Observed</div>
+                        </div>
+                        <div id="remarks" class="row fw-light">
+                            <div class="col">NO</div>
+                            <div class="col">Not Observed</div>
                         </div>
                     </div>
                 </div>
