@@ -12,20 +12,22 @@ if (isset($_POST['login-button'])) {
     $email = $_POST['usersEmail'];
     $password = $_POST['usersPwd'];
 
-    $authAccount = "SELECT * FROM userdetails WHERE username = '$email'";
-    $resultauthAccount = $mysqli->query($authAccount);
+    if (empty($email) && empty($password)) {
+        $errors['NoInputs'] = "Please enter your login credentials.";
+    } else {
+        $authAccount = "SELECT * FROM userdetails WHERE SR_email = '$email'";
+        $resultauthAccount = $mysqli->query($authAccount);
 
-    if ($resultauthAccount) {
-        if ($resultauthAccount->num_rows >= 0) {
+        if ($resultauthAccount->num_rows > 0) {
             $getResultauthAccount = $resultauthAccount->fetch_assoc();
-            $UD_username = $getResultauthAccount['username'];
-            $UD_password = $getResultauthAccount['password'];
+            $UD_username = $getResultauthAccount['SR_email'];
+            $UD_password = $getResultauthAccount['SR_password'];
             $UD_role = $getResultauthAccount['role'];
 
             $userDetails = "SELECT SR_number, SR_fname, SR_lname FROM studentrecord WHERE SR_email = '$UD_username'";
             $resultuserDetails = $mysqli->query($userDetails);
 
-            if ($resultuserDetails->num_rows >= 0) {
+            if ($resultuserDetails->num_rows > 0) {
                 $getResultuserDetails = $resultuserDetails->fetch_assoc();
                 $SR_fname = $getResultuserDetails['SR_fname'];
                 $SR_lname = $getResultuserDetails['SR_lname'];
@@ -35,7 +37,7 @@ if (isset($_POST['login-button'])) {
             }
 
             if ($password != $UD_password) {
-                echo "error incorrect password";
+                $errors['PasswordError'] = "Incorrect Password!";
             } else {
                 if ($UD_role == "student") {
                     header('Location: ../student/dashboard.php');
@@ -46,24 +48,30 @@ if (isset($_POST['login-button'])) {
                 }
             }
         } else {
-            echo "error" . $mysqli->error;
+            $errors['LoginError'] = "Account does not exist!";
         }
     }
 }
 if (isset($_POST['verifyStudentNumber'])) {
     $studentNumber = $_POST['studentNumber'];
 
-    $check_studentNumber = "SELECT * FROM studentrecord WHERE SR_number = '$studentNumber'";
-    $result = $mysqli->query($check_studentNumber);
+    if (empty($studentNumber)) {
+        $errors['NoInputs'] = "Please enter your Student Number.";
+    } else {
+        $check_studentNumber = "SELECT * FROM studentrecord WHERE SR_number = '$studentNumber'";
+        $result = $mysqli->query($check_studentNumber);
 
-    if ($result) {
         if ($result->num_rows == 1) {
             $data = $result->fetch_assoc();
-            $sr_num = $data['SR_number'];
-            $_SESSION['student_num'] = $sr_num;
-            header('Location: signup.php');
+            if (!empty($data['SR_email'])) {
+                $errors['NoData'] = "Account already linked to an Email. Contact the admin for changing of Email Address";
+            } else {
+                $sr_num = $data['SR_number'];
+                $_SESSION['student_num'] = $sr_num;
+                header('Location: signup.php');
+            }
         } else {
-            echo "error" . $mysqli->error;
+            $errors['NoData'] = "Account does not exist. Double check your student number.";
         }
     }
 }
@@ -71,26 +79,83 @@ if (isset($_POST['register-button'])) {
     $email = $mysqli->real_escape_string($_POST['usersEmail']);
     $password  = $mysqli->real_escape_string($_POST['usersPwd']);
 
-    $check_email = "SELECT * FROM userdetails WHERE username = '$email'";
+    $check_email = "SELECT * FROM userdetails WHERE SR_email = '$email'";
     $result = $mysqli->query($check_email);
 
-    if ($result->num_rows === 0) {
+    if ($result->num_rows == 0) {
         $studentNumber = $_SESSION['student_num'];
-        $signup = "UPDATE student (user_name, password) VALUES('$email', '$password') WHERE SR_number = '$studentNum'";
-        $result = $mysqli->query($signup);
 
-        if ($result) {
-            if ($result->affected_rows >= 0) {
-                header('Location: auth/login.php');
-            } else {
-                $errors['unknown'] = "Error inputting Data";
-            }
-        } else {
-            $errors['unknown'] = "Error inputting Data";
+        if (strpos($studentNumber, "S")) {
+            $role = "student";
+        } else if (strpos($studentNumber, "F")) {
+            $role = "faculty";
+        }
+        $ADDuserDetails = "INSERT INTO userdetails (SR_email, SR_password, role) 
+                           VALUES ('$email', '$password', '$role')";
+        $runADDuserDetails = $mysqli->query($ADDuserDetails);
+
+        $signup = "UPDATE studentrecord
+                   SET 
+                   SR_email = '$email'
+                   WHERE SR_number = '$studentNumber'";
+        $runsignup = $mysqli->query($signup);
+
+        if (mysqli_affected_rows($runsignup) > 0) {
+            header('Location: login.php');
         }
     } else {
-        $errors['email'] = "Email already in use." . $email;
-        echo "error" . $mysqli->error;
+        $errors['email'] = "Email already in use.";
+    }
+}
+if (isset($_POST['verifyEmail'])) {
+    $email = $_POST['usersEmail'];
+
+    if (empty($email)) {
+        $errors['NoInputs'] = "Please enter your login credentials.";
+    } else {
+        $authAccount = "SELECT * FROM userdetails WHERE SR_email = '$email'";
+        $resultauthAccount = $mysqli->query($authAccount);
+
+        if ($resultauthAccount->num_rows > 0) {
+            $getResultauthAccount = $resultauthAccount->fetch_assoc();
+
+            $studentrecord = "SELECT SR_email FROM studentrecord WHERE SR_email = '$email'";
+            $resultstudentrecord = $mysqli->query($studentrecord);
+            $verifyData = $resultstudentrecord->fetch_assoc();
+
+            if ($resultstudentrecord->num_rows == 1) {
+                $_SESSION['verifyEmailData'] = $verifyData['SR_email'];
+                header('Location: ../auth/reset.php');
+            }
+        } else {
+            $errors['LoginError'] = "Account does not exist!";
+        }
+    }
+}
+if (isset($_POST['updatePassword'])) {
+    $newPasssword = $_POST['newPasssword'];
+    $confirmPassword = $_POST['confirmPassword'];
+
+    if (empty($newPasssword) && empty($confirmPassword)) {
+        $errors['NoInputs'] = "Please enter your new password.";
+    } elseif (strcmp($newPasssword, $confirmPassword)) {
+        $errors['NoMatch'] = "Password does not match.";
+    } else {
+        $checkOldPassword = "SELECT SR_password FROM userdetails WHERE SR_email = '{$_SESSION['verifyEmail']}'";
+        $runcheckOldPassword = $mysqli->query($checkOldPassword);
+        $datacOldPassword = $runcheckOldPassword->fetch_assoc();
+
+        if (strcmp($datacOldPassword['SR_password'], $confirmPassword) == 0) {
+            $errors['samePassword'] = "Password is the same with the old password.";
+        } else {
+            $updatePassword = "UPDATE userdetails SET SR_password = '$confirmPassword'
+                          WHERE SR_email = '{$_SESSION['verifyEmailData']}'";
+            $ResultupdatePassword = $mysqli->query($updatePassword);
+
+            if ($ResultupdatePassword) {
+                header('Location: login.php');
+            }
+        }
     }
 }
 //END
@@ -394,7 +459,6 @@ if (isset($_POST['regStudent'])) {
         echo "error" . $mysqli->error;
     }
 }
-
 if (isset($_POST['regFaculty'])) {
     $F_department = $mysqli->real_escape_string($_POST['F_department']);
 
@@ -453,7 +517,6 @@ if (isset($_POST['regFaculty'])) {
         echo "error" . $mysqli->error;
     }
 }
-
 if (isset($_POST['editStudent'])) {
     $S_fname = $mysqli->real_escape_string($_POST['S_fname']);
     $S_mname    = $mysqli->real_escape_string($_POST['S_mname']);
@@ -553,7 +616,6 @@ if (isset($_POST['editFaculty'])) {
         echo "error" . $mysqli->error;
     }
 }
-
 if (isset($_POST['UpdateGrade'])) {
     $current_url = $_POST['current_url'];
 
