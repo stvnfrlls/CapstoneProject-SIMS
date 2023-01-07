@@ -89,11 +89,23 @@
     <div class="limiter">
         <div class="container-login100">
             <div class="wrap-login100">
-                <form class="login100-form validate-form" method="post" action="<?php $_SERVER["PHP_SELF"] ?>">
+                <form class="login100-form validate-form" method="POST" action="<?php $_SERVER["PHP_SELF"] ?>">
                     <span class="login100-form-title p-b-43">
                         LOGIN
                     </span>
-
+                    <?php
+                    if (count($errors) > 0) {
+                    ?>
+                        <div class="alert alert-danger text-center">
+                            <?php
+                            foreach ($errors as $showerror) {
+                                echo $showerror;
+                            }
+                            ?>
+                        </div>
+                    <?php
+                    }
+                    ?>
                     <div class="wrap-input100 validate-input form-floating" data-validate="Valid email is required: ex@abc.xyz">
                         <input class="input100" type="text" name="usersEmail">
                         <span class="focus-input100"></span>
@@ -108,7 +120,7 @@
 
                     <div class="flex-sb-m w-full p-t-3 p-b-32">
                         <div>
-                            <a href="reset.php" class="txt1" style="margin-top: 20px;">
+                            <a href="verify.php" class="txt1" style="margin-top: 20px;">
                                 Forgot Password?
                             </a>
                         </div>

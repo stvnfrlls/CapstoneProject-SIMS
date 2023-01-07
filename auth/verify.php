@@ -1,4 +1,7 @@
-<?php require_once("../assets/php/server.php"); ?>
+<?php
+require_once("../assets/php/server.php");
+unset($_SESSION['verifyEmailData']);
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -66,7 +69,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0 ">
-            <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
+                <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
                 <a href="about.html" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Academics</a>
@@ -94,9 +97,21 @@
             <div class="wrap-login100">
                 <form class="login100-form validate-form" method="post" action="<?php $_SERVER["PHP_SELF"] ?>">
                     <span class="login100-form-title p-b-43">
-                        Add Email Address
+                        Enter Email Address
                     </span>
-
+                    <?php
+                    if (count($errors) > 0) {
+                    ?>
+                        <div class="alert alert-danger text-center">
+                            <?php
+                            foreach ($errors as $showerror) {
+                                echo $showerror;
+                            }
+                            ?>
+                        </div>
+                    <?php
+                    }
+                    ?>
                     <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                         <input class="input100" type="text" name="usersEmail">
                         <span class="focus-input100"></span>

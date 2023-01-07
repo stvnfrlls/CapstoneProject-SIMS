@@ -66,7 +66,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0 ">
-            <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
+                <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
                 <a href="about.html" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Academics</a>
@@ -95,7 +95,19 @@
                     <span class="login100-form-title p-b-43">
                         SIGN UP
                     </span>
-
+                    <?php
+                    if (count($errors) > 0) {
+                    ?>
+                        <div class="alert alert-danger text-center">
+                            <?php
+                            foreach ($errors as $showerror) {
+                                echo $showerror;
+                            }
+                            ?>
+                        </div>
+                    <?php
+                    }
+                    ?>
                     <div class="wrap-input100 validate-input" data-validate="Valid Student Number is required">
                         <input class="input100" type="text" name="studentNumber">
                         <span class="focus-input100"></span>
