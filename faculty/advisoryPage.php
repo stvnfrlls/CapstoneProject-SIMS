@@ -1,8 +1,26 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (isset($_POST['confirm_faculty'])) {
-  header('Location: confirmfaculty.php');
+$_SESSION['F_number'] = "2022-12-00001-F";
+
+if (!isset($_SESSION['F_number'])) {
+  header('Location: ../auth/login.php');
+} elseif (isset($_SESSION['F_number'])) {
+  $getSectionInfo = "SELECT * FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'";
+  $rungetSectionInfo = $mysqli->query($getSectionInfo);
+
+  $SectionData = $rungetSectionInfo->fetch_assoc();
+
+  $getFacultyName = "SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'";
+  $rungetFacultyName = $mysqli->query($getFacultyName);
+
+  $FacultyData = $rungetFacultyName->fetch_assoc();
+
+  $ClassListRow = 1;
+  $getSectionClassList = "SELECT * FROM studentrecord WHERE SR_section = '{$SectionData['S_name']}'";
+  $rungetSectionClassList = $mysqli->query($getSectionClassList);
+} else {
+  header('Location: ../auth/login.php');
 }
 ?>
 
@@ -66,7 +84,7 @@ if (isset($_POST['confirm_faculty'])) {
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item" style="text-align:center; font-size: 20px; color: #b9b9b9; margin-top:20px;">FACULTY</li>
-            <!-- line 1 -->
+          <!-- line 1 -->
           <li class="nav-item nav-category">Profile</li>
           <li class="nav-item">
             <a class="nav-link" href="">
@@ -86,7 +104,7 @@ if (isset($_POST['confirm_faculty'])) {
               <span class="menu-title">Create Reminders</span>
             </a>
           </li>
-            <!-- line 2 -->
+          <!-- line 2 -->
           <li class="nav-item nav-category">Menu</li>
           <li class="nav-item">
             <a class="nav-link" href="../faculty/scanQR.php">
@@ -132,62 +150,67 @@ if (isset($_POST['confirm_faculty'])) {
                   </div>
                 </div>
                 <div class="tab-content tab-content-basic">
-                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                        <div class="row">
-                            <div class="  col-sm-12  col-lg-4 grid-margin">
-                                <div class="card">
-                                <div class="card-body">
-                                <h3>GRADE 1 - EINSTEIN</h3>
-                                <p>Hazel Grace L. Cantuba</p>
-                                </div>
-                                </div>
-                            </div>
-                            
+                  <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                    <div class="row">
+                      <div class="  col-sm-12  col-lg-4 grid-margin">
+                        <div class="card">
+                          <div class="card-body">
+                            <h3><?php echo "Grade " . $SectionData['S_yearLevel'] . " - " . $SectionData['S_name']; ?></h3>
+                            <p><?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1); ?></p>
+                          </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12 grid-margin">
-                                <div class="card">
-                                <div class="card-body">
-                                    <form class="form-sample" action="confirmfaculty.php" method="POST">
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                        <thead>
-                                            <style>
-                                            .hatdog {
-                                                border: 1px solid #ffffff;
-                                                text-align: center;
-                                                vertical-align: middle;
-                                                height: 30px;
-                                                color: #000000;
-                                            }
-                                            </style>
-                                            <tr>
-                                            <th class="hatdog">No.</th>
-                                            <th class="hatdog">Student Number</th>
-                                            <th class="hatdog">Student Name</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                      </div>
 
-                                            <tr>
-                                                <td class="hatdog">1</td>
-                                                <td class="hatdog">2019-00188-SP-0</td>
-                                                <td class="hatdog"><a href="#">Camille Anne G. Sabile</a></td>
-                                            </tr>
-                                            
-                                        </tbody>
-                                        </table>
-                                    </div>
-                                        
-                                    </form>
-                                </div>
-                                </div>
-                            </div>
-                            
-                        </div>
                     </div>
+                    <div class="row">
+                      <div class="col-12 grid-margin">
+                        <div class="card">
+                          <div class="card-body">
+                            <form class="form-sample" action="confirmfaculty.php" method="POST">
+                              <div class="table-responsive">
+                                <table class="table">
+                                  <thead>
+                                    <style>
+                                      .hatdog {
+                                        border: 1px solid #ffffff;
+                                        text-align: center;
+                                        vertical-align: middle;
+                                        height: 30px;
+                                        color: #000000;
+                                      }
+                                    </style>
+                                    <tr>
+                                      <th class="hatdog">No.</th>
+                                      <th class="hatdog">Student Number</th>
+                                      <th class="hatdog">Student Name</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <?php
+                                    while ($SectionClassListData = $rungetSectionClassList->fetch_assoc()) { ?>
+                                      <tr>
+                                        <td class="hatdog"><?php echo $ClassListRow; ?></td>
+                                        <td class="hatdog"><?php echo $SectionClassListData['SR_number']; ?></td>
+                                        <td class="hatdog">
+                                          <a href="viewCard.php?viewStudent=<?php echo $SectionClassListData['SR_number']; ?>">
+                                            <?php echo $SectionClassListData['SR_lname'] . ", " . $SectionClassListData['SR_fname'] . " " . substr($SectionClassListData['SR_mname'], 0, 1); ?>
+                                          </a>
+                                        </td>
+                                      </tr>
+                                    <?php $ClassListRow++;
+                                    }
+                                    ?>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                  
+
               </div>
             </div>
           </div>

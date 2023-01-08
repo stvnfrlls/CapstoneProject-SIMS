@@ -1,9 +1,54 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (isset($_POST['confirm_faculty'])) {
-  header('Location: confirmfaculty.php');
+$current_url = $_SERVER["REQUEST_URI"];
+$_SESSION['F_number'] = "2022-12-00001-F";
+
+if (!isset($_SESSION['F_number'])) {
+  header('Location: ../auth/login.php');
+} else if (isset($_SESSION['F_number'])) {
+  $getWorkSchedule = "SELECT SR_grade, SR_section, S_subject FROM workschedule WHERE F_number = '{$_SESSION['F_number']}'";
+  $rungetWorkSchedule = $mysqli->query($getWorkSchedule);
+  $array_GradeSection = array();
+  array_unshift($array_GradeSection, null);
+
+  while ($dataWorkSchedule = $rungetWorkSchedule->fetch_assoc()) {
+    $array_GradeSection[] = $dataWorkSchedule;
+  }
+} else {
+  header('Location: ../auth/login.php');
 }
+
+if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject'])) {
+  $getStudentName = "SELECT studentrecord.SR_number, studentrecord.SR_fname, studentrecord.SR_lname, studentrecord.SR_mname,
+                    studentrecord.SR_grade, studentrecord.SR_section
+                    FROM studentrecord
+                    WHERE SR_grade = '{$_GET['Grade']}'
+                    AND SR_section = '{$_GET['Section']}'";
+  $rungetStudentName = $mysqli->query($getStudentName);
+  $arrayStudentName = array();
+
+  while ($dataStudentName = $rungetStudentName->fetch_assoc()) {
+    $arrayStudentName[] = $dataStudentName;
+  }
+
+  $getClassList = "SELECT studentrecord.SR_number, studentrecord.SR_fname, studentrecord.SR_lname, studentrecord.SR_mname,
+                    studentrecord.SR_grade, studentrecord.SR_section, grades.G_learningArea, 
+                    grades.G_id, grades.G_gradesQ1, grades.G_gradesQ2, grades.G_gradesQ3, grades.G_gradesQ4
+                  FROM studentrecord 
+                  INNER JOIN grades
+                  ON studentrecord.SR_number = grades.SR_number
+                  WHERE studentrecord.SR_grade = '{$_GET['Grade']}'
+                  AND studentrecord.SR_section = '{$_GET['Section']}'
+                  AND grades.G_learningArea = '{$_GET['Subject']}'";
+  $rungetClassList = $mysqli->query($getClassList);
+  $arrayClassList = array();
+
+  while ($dataClassList = $rungetClassList->fetch_assoc()) {
+    $arrayClassList[] = $dataClassList;
+  }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -66,7 +111,7 @@ if (isset($_POST['confirm_faculty'])) {
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item" style="text-align:center; font-size: 20px; color: #b9b9b9; margin-top:20px;">FACULTY</li>
-            <!-- line 1 -->
+          <!-- line 1 -->
           <li class="nav-item nav-category">Profile</li>
           <li class="nav-item">
             <a class="nav-link" href="">
@@ -86,7 +131,7 @@ if (isset($_POST['confirm_faculty'])) {
               <span class="menu-title">Create Reminders</span>
             </a>
           </li>
-            <!-- line 2 -->
+          <!-- line 2 -->
           <li class="nav-item nav-category">Menu</li>
           <li class="nav-item">
             <a class="nav-link" href="../faculty/scanQR.php">
@@ -132,147 +177,188 @@ if (isset($_POST['confirm_faculty'])) {
                   </div>
                 </div>
                 <div class="tab-content tab-content-basic">
-                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                        <div class="row">
-                            <div class="col-12 grid-margin">
-                                <div class="card">
-                                <div class="card-body">
-                                    <form class="form-sample" action="confirmfaculty.php" method="POST">
-                                        <div class="btn-group">
-                                            <div class="dropdown">
-                                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                Grade and Section
-                                                </button>
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                <a class="dropdown-item" href="#">Grade 1 - SECTION 1</a>
-                                                <a class="dropdown-item" href="#">Grade 1 - SECTION 2</a>
-                                                <a class="dropdown-item" href="#">Grade 2 - SECTION 1</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="btn-group">
-                                            <div class="dropdown">
-                                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                Learning Areas
-                                                </button>
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                                <a class="dropdown-item" href="#">Mathematics</a>
-                                                <a class="dropdown-item" href="#">English</a>
-                                                <a class="dropdown-item" href="#">Filipino</a>
-                                                <a class="dropdown-item" href="#">Science</a>
-                                                <a class="dropdown-item" href="#">History</a>
-                                                <a class="dropdown-item" href="#">Character Development</a>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="table-responsive">
-                                                <table class="table text-center">
-                                                    <thead>
-                                                        <tr>
-                                                            <th rowspan="2" class="hatdog">Student Name</th>
-                                                            <th colspan="4" class="hatdog">Quarter</th>
-                                                            <th rowspan="2" class="hatdog">Final Grade</th>
-                                                            <th rowspan="2" class="hatdog">Remarks</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="hatdog" style="border-color: #FFFFFF;">1</td>
-                                                            <td class="hatdog" style="border-color: #FFFFFF;">2</td>
-                                                            <td class="hatdog" style="border-color: #FFFFFF;">3</td>
-                                                            <td class="hatdog" style="border-color: #FFFFFF;">4</td>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class="hatdog">Camille Anne G. Sabile</td>
-                                                            <td class="hatdog"><input type="text" placeholder="##" style="text-align: center; width: 30px;"></td>
-                                                            <td class="hatdog"><input type="text" placeholder="##" style="text-align: center; width: 30px;"></td>
-                                                            <td class="hatdog"><input type="text" placeholder="##" style="text-align: center; width: 30px;"></td>
-                                                            <td class="hatdog"><input type="text" placeholder="##" style="text-align: center; width: 30px;"></td>
-                                                            <td class="hatdog">90.5</td>
-                                                            <td class="hatdog">Passed</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="hatdog">Camille Anne G. Sabile</td>
-                                                            <td class="hatdog"><input type="text" placeholder="##" style="text-align: center; width: 30px;"></td>
-                                                            <td class="hatdog"><input type="text" placeholder="##" style="text-align: center; width: 30px;"></td>
-                                                            <td class="hatdog"><input type="text" placeholder="##" style="text-align: center; width: 30px;"></td>
-                                                            <td class="hatdog"><input type="text" placeholder="##" style="text-align: center; width: 30px;"></td>
-                                                            <td class="hatdog">90.5</td>
-                                                            <td class="hatdog">Passed</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="hatdog">Camille Anne G. Sabile</td>
-                                                            <td class="hatdog"><input type="text" placeholder="##" style="text-align: center; width: 30px;"></td>
-                                                            <td class="hatdog"><input type="text" placeholder="##" style="text-align: center; width: 30px;"></td>
-                                                            <td class="hatdog"><input type="text" placeholder="##" style="text-align: center; width: 30px;"></td>
-                                                            <td class="hatdog"><input type="text" placeholder="##" style="text-align: center; width: 30px;"></td>
-                                                            <td class="hatdog">90.5</td>
-                                                            <td class="hatdog">Passed</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="hatdog">Camille Anne G. Sabile</td>
-                                                            <td class="hatdog"><input type="text" placeholder="##" style="text-align: center; width: 30px;"></td>
-                                                            <td class="hatdog"><input type="text" placeholder="##" style="text-align: center; width: 30px;"></td>
-                                                            <td class="hatdog"><input type="text" placeholder="##" style="text-align: center; width: 30px;"></td>
-                                                            <td class="hatdog"><input type="text" placeholder="##" style="text-align: center; width: 30px;"></td>
-                                                            <td class="hatdog">90.5</td>
-                                                            <td class="hatdog">Passed</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-
-                                            <div class="container">
-                                                <div id="remarkshead" class="row fw-bold" style="margin-top: 20px;">
-                                                    <div class="col">Descriptors</div>
-                                                    <div class="col">Grading Scale</div>
-                                                    <div class="col">Remarks</div>
-                                                </div>
-                                                <div id="remarks" class="row fw-light">
-                                                    <div class="col">Outstanding</div>
-                                                    <div class="col">90-100</div>
-                                                    <div class="col">Passed</div>
-                                                </div>
-                                                <div id="remarks" class="row fw-light">
-                                                    <div class="col">Very Satisfactory</div>
-                                                    <div class="col">85-89</div>
-                                                    <div class="col">Passed</div>
-                                                </div>
-                                                <div id="remarks" class="row fw-light">
-                                                    <div class="col">Satisfactory</div>
-                                                    <div class="col">80-84</div>
-                                                    <div class="col">Passed</div>
-                                                </div>
-                                                <div id="remarks" class="row fw-light">
-                                                    <div class="col">Fairly Satisfactory</div>
-                                                    <div class="col">75-79</div>
-                                                    <div class="col">Passed</div>
-                                                </div>
-                                                <div id="remarks" class="row fw-light">
-                                                    <div class="col">Did Not Meet Expectations</div>
-                                                    <div class="col">Below 75</div>
-                                                    <div class="col">Failed</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                    </form>
+                  <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                    <div class="row">
+                      <div class="col-12 grid-margin">
+                        <div class="card">
+                          <div class="card-body">
+                            <div class="btn-group">
+                              <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                  <?php
+                                  if (isset($_GET['Grade']) && isset($_GET['Section'])) {
+                                    echo "Grade " . $_GET['Grade'] . " - " . $_GET['Section'];
+                                  } else {
+                                    echo "Grade and Section";
+                                  }
+                                  ?>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                  <?php
+                                  $rowCount = 1;
+                                  $GradeSectionRowCount = sizeof($array_GradeSection);
+                                  while ($rowCount != $GradeSectionRowCount) { ?>
+                                    <a class="dropdown-item" href="<?php echo $current_url . "?Grade=" . $array_GradeSection[$rowCount]['SR_grade'] . "&Section=" . $array_GradeSection[$rowCount]['SR_section']; ?>">
+                                      <?php echo "Grade " . $array_GradeSection[$rowCount]['SR_grade'] . "-" . $array_GradeSection[$rowCount]['SR_section']; ?>
+                                    </a>
+                                  <?php $rowCount++;
+                                  }
+                                  ?>
                                 </div>
-                                </div>
+                              </div>
                             </div>
-                            
+                            <div class="btn-group">
+                              <?php
+                              if (isset($_GET['Grade']) && isset($_GET['Section'])) { ?>
+                                <div class="dropdown">
+                                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <?php
+                                    if (isset($_GET['Subject'])) {
+                                      echo $_GET['Subject'];
+                                    } else {
+                                      echo "Learning Areas";
+                                    }
+                                    ?>
+                                  </button>
+                                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                    <?php
+                                    $rowCount = 1;
+                                    $GradeSectionRowCount = sizeof($array_GradeSection);
+                                    while ($rowCount != $GradeSectionRowCount) { ?>
+                                      <a class="dropdown-item" href="<?php echo $current_url . "&Subject=" . $array_GradeSection[$rowCount]['S_subject']; ?>">
+                                        <?php echo $array_GradeSection[$rowCount]['S_subject']; ?>
+                                      </a>
+                                    <?php $rowCount++;
+                                    }
+                                    ?>
+                                  </div>
+                                </div>
+                              <?php } ?>
+
+                            </div>
+
+                            <div class="row">
+                              <div class="table-responsive">
+                                <table class="table text-center">
+                                  <thead>
+                                    <tr>
+                                      <th rowspan="2" class="hatdog">Student Name</th>
+                                      <th colspan="4" class="hatdog">Quarter</th>
+                                      <th rowspan="2" class="hatdog">Final Grade</th>
+                                      <th rowspan="2" class="hatdog">Remarks</th>
+                                    </tr>
+                                    <tr>
+                                      <td class="hatdog" style="border-color: #FFFFFF;">1</td>
+                                      <td class="hatdog" style="border-color: #FFFFFF;">2</td>
+                                      <td class="hatdog" style="border-color: #FFFFFF;">3</td>
+                                      <td class="hatdog" style="border-color: #FFFFFF;">4</td>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <?php
+                                    if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject'])) {
+                                      $rowCount = 0;
+                                      $studentRowCount = sizeof($arrayStudentName);
+                                      while ($rowCount != $studentRowCount) { ?>
+                                        <form action="" method="">
+                                          <tr>
+                                            <td class="hatdog">
+                                              <?php
+                                              echo $arrayStudentName[$rowCount]['SR_lname'] . ", " . $arrayStudentName[$rowCount]['SR_fname'] . " " . substr($arrayStudentName[$rowCount]['SR_mname'], 0, 1);
+                                              ?>
+                                            </td>
+                                            <?php
+                                            if (!empty($arrayClassList[$rowCount]['G_gradesQ1'])) { ?>
+                                              <td class="hatdog"><input type="number" value="<?php echo $arrayClassList[$rowCount]['G_gradesQ1']; ?>" name="G_gradesQ1" style="text-align: center; width: 30px;"></td>
+                                            <?php
+                                            } else { ?>
+                                              <td class="hatdog"><input type="number" placeholder="##" style="text-align: center; width: 30px;"></td>
+                                            <?php } ?>
+
+                                            <?php
+                                            if (!empty($arrayClassList[$rowCount]['G_gradesQ2'])) { ?>
+                                              <td class="hatdog"><input type="number" value="<?php echo $arrayClassList[$rowCount]['G_gradesQ2']; ?>" name="G_gradesQ2" style="text-align: center; width: 30px;"></td>
+                                            <?php
+                                            } else { ?>
+                                              <td class="hatdog"><input type="number" placeholder="##" style="text-align: center; width: 30px;"></td>
+                                            <?php } ?>
+
+                                            <?php
+                                            if (!empty($arrayClassList[$rowCount]['G_gradesQ3'])) { ?>
+                                              <td class="hatdog"><input type="number" value="<?php echo $arrayClassList[$rowCount]['G_gradesQ3']; ?>" name="G_gradesQ3" style="text-align: center; width: 30px;"></td>
+                                            <?php
+                                            } else { ?>
+                                              <td class="hatdog"><input type="number" placeholder="##" style="text-align: center; width: 30px;"></td>
+                                            <?php } ?>
+
+                                            <?php
+                                            if (!empty($arrayClassList[$rowCount]['G_gradesQ4'])) { ?>
+                                              <td class="hatdog"><input type="number" value="<?php echo $arrayClassList[$rowCount]['G_gradesQ4']; ?>" name="G_gradesQ4" style="text-align: center; width: 30px;"></td>
+                                            <?php
+                                            } else { ?>
+                                              <td class="hatdog"><input type="number" placeholder="##" style="text-align: center; width: 30px;"></td>
+                                            <?php } ?>
+
+                                            <td class="hatdog">90.5</td>
+                                            <td class="hatdog">Passed</td>
+                                          </tr>
+                                        </form>
+                                      <?php $rowCount++;
+                                      }
+                                    } else { ?>
+                                      <tr>
+                                        <td colspan="10">NO GRADE AND SECTION SELECTED</td>
+                                      </tr>
+                                    <?php } ?>
+                                  </tbody>
+                                </table>
+                              </div>
+
+                              <div class="container">
+                                <div id="remarkshead" class="row fw-bold" style="margin-top: 20px;">
+                                  <div class="col">Descriptors</div>
+                                  <div class="col">Grading Scale</div>
+                                  <div class="col">Remarks</div>
+                                </div>
+                                <div id="remarks" class="row fw-light">
+                                  <div class="col">Outstanding</div>
+                                  <div class="col">90-100</div>
+                                  <div class="col">Passed</div>
+                                </div>
+                                <div id="remarks" class="row fw-light">
+                                  <div class="col">Very Satisfactory</div>
+                                  <div class="col">85-89</div>
+                                  <div class="col">Passed</div>
+                                </div>
+                                <div id="remarks" class="row fw-light">
+                                  <div class="col">Satisfactory</div>
+                                  <div class="col">80-84</div>
+                                  <div class="col">Passed</div>
+                                </div>
+                                <div id="remarks" class="row fw-light">
+                                  <div class="col">Fairly Satisfactory</div>
+                                  <div class="col">75-79</div>
+                                  <div class="col">Passed</div>
+                                </div>
+                                <div id="remarks" class="row fw-light">
+                                  <div class="col">Did Not Meet Expectations</div>
+                                  <div class="col">Below 75</div>
+                                  <div class="col">Failed</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
+                      </div>
                     </div>
+                  </div>
                 </div>
-                  
               </div>
             </div>
-                <form style="text-align: center;">
-                    <button type="submit" class="btn btn-primary me-2">Save</button>
-                    <button class="btn btn-light">Cancel</button>
-                </form>
+            <form style="text-align: center;">
+              <button type="submit" class="btn btn-primary me-2">Save</button>
+              <button class="btn btn-light">Cancel</button>
+            </form>
           </div>
         </div>
         <!-- content-wrapper ends -->
