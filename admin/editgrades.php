@@ -1,7 +1,7 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (empty($_SESSION['UD_role']) && $_SESSION['UD_role'] != "admin") {
+if (empty($_SESSION['AD_number'])) {
   header('Location: ../auth/login.php');
 }
 ?>
@@ -147,8 +147,8 @@ if (empty($_SESSION['UD_role']) && $_SESSION['UD_role'] != "admin") {
                     <div class="btn-group">
                       <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                          <?php if (isset($_GET['orderByGradeSection'])) {
-                            echo "Grade Level: " . $_GET['GradeLevel'] . " - " . $_GET['orderByGradeSection'];
+                          <?php if (isset($_GET['Section'])) {
+                            echo "Grade Level: " . $_GET['Grade'] . " - " . $_GET['Section'];
                           } else {
                             echo "Grade and Section";
                           }
@@ -160,7 +160,7 @@ if (empty($_SESSION['UD_role']) && $_SESSION['UD_role'] != "admin") {
                           $runsectionList = $mysqli->query($sectionList);
 
                           while ($sectionData = $runsectionList->fetch_assoc()) { ?>
-                            <a class="dropdown-item" href="editgrades.php?GradeLevel=<?php echo $sectionData['S_yearLevel'] ?>&orderByGradeSection=<?php echo $sectionData['S_name'] ?>">
+                            <a class="dropdown-item" href="editgrades.php?Grade=<?php echo $sectionData['S_yearLevel'] ?>&Section=<?php echo $sectionData['S_name'] ?>">
                               <?php
                               if (strpos($sectionData['S_yearLevel'], "KINDER")) {
                                 echo $sectionData['S_yearLevel'] . " - " . $sectionData['S_name'];
@@ -173,23 +173,23 @@ if (empty($_SESSION['UD_role']) && $_SESSION['UD_role'] != "admin") {
                         </div>
                       </div>
                     </div>
-                    <?php if (isset($_GET['orderByGradeSection'])) { ?>
+                    <?php if (isset($_GET['Section'])) { ?>
                       <div class="btn-group">
                         <div class="dropdown">
                           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                             <?php
                             $current_url = $_SERVER["REQUEST_URI"];
-                            if (isset($_GET['orderByLearningArea'])) {
-                              echo $_GET['orderByLearningArea'];
+                            if (isset($_GET['LearningArea'])) {
+                              echo $_GET['LearningArea'];
 
-                              $find = "&orderByLearningArea=" . $_GET['orderByLearningArea'];
+                              $find = "&LearningArea=" . $_GET['LearningArea'];
                               if (strpos($current_url, $find)) {
                                 $current_url = str_replace($find, "", $current_url);
                               }
                             } else {
                               echo "Learning Areas";
 
-                              $find = "orderByLearningArea=";
+                              $find = "LearningArea=";
                               if (strpos($current_url, $find)) {
                                 $current_url = str_replace($find, "", $current_url);
                               }
@@ -197,12 +197,12 @@ if (empty($_SESSION['UD_role']) && $_SESSION['UD_role'] != "admin") {
                             ?>
                           </button>
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                            <a class="dropdown-item" href="<?php echo $current_url . "&orderByLearningArea=Math" ?>">Mathematics</a>
-                            <a class="dropdown-item" href="<?php echo $current_url . "&orderByLearningArea=English" ?>">English</a>
-                            <a class="dropdown-item" href="<?php echo $current_url . "&orderByLearningArea=Filipino" ?>">Filipino</a>
-                            <a class="dropdown-item" href="<?php echo $current_url . "&orderByLearningArea=Science" ?>">Science</a>
-                            <a class="dropdown-item" href="<?php echo $current_url . "&orderByLearningArea=History" ?>">History</a>
-                            <a class="dropdown-item" href="<?php echo $current_url . "&orderByLearningArea=Character_Development" ?>">Character Development</a>
+                            <a class="dropdown-item" href="<?php echo $current_url . "&LearningArea=Math" ?>">Mathematics</a>
+                            <a class="dropdown-item" href="<?php echo $current_url . "&LearningArea=English" ?>">English</a>
+                            <a class="dropdown-item" href="<?php echo $current_url . "&LearningArea=Filipino" ?>">Filipino</a>
+                            <a class="dropdown-item" href="<?php echo $current_url . "&LearningArea=Science" ?>">Science</a>
+                            <a class="dropdown-item" href="<?php echo $current_url . "&LearningArea=History" ?>">History</a>
+                            <a class="dropdown-item" href="<?php echo $current_url . "&LearningArea=Character_Development" ?>">Character Development</a>
                           </div>
                         </div>
                       </div>
@@ -251,9 +251,9 @@ if (empty($_SESSION['UD_role']) && $_SESSION['UD_role'] != "admin") {
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <?php if (!empty(isset($_GET['orderByGradeSection'])) && !empty(isset($_GET['orderByLearningArea']))) {
-                                      $byGradeLevel = $_GET['orderByGradeSection'];
-                                      $bySubject = $_GET['orderByLearningArea'];
+                                    <?php if (!empty(isset($_GET['Section'])) && !empty(isset($_GET['LearningArea']))) {
+                                      $byGradeLevel = $_GET['Section'];
+                                      $bySubject = $_GET['LearningArea'];
                                       $getData = "SELECT studentrecord.SR_number, studentrecord.SR_fname, studentrecord.SR_lname,
                                                          grades.SR_gradeLevel, grades.SR_section, grades.G_learningArea, 
                                                          grades.G_id, grades.G_gradesQ1, grades.G_gradesQ2, grades.G_gradesQ3, grades.G_gradesQ4

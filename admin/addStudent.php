@@ -1,6 +1,8 @@
 <?php
 require_once("../assets/php/server.php");
 
+$_SESSION['fromAddStudent'] = "TRUE";
+
 if (empty($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 } else {

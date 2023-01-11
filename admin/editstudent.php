@@ -6,15 +6,15 @@ if (empty($_SESSION['AD_number'])) {
 } else {
     $sr_number = $_GET['SR_Number'];
 
-    if (!isset($_GET['SR_Number'])) {
-        header('Location: viewStudent.php');
-    } else {
+    if (isset($_GET['SR_Number'])) {
         $verifySR_number = "SELECT * FROM studentrecord 
-                        INNER JOIN guardian_fetcher
-                        ON studentrecord.SR_number = guardian_fetcher.G_guardianOfStudent
-                        WHERE studentrecord.SR_number = '{$sr_number}'";
+                            JOIN guardian_fetcher
+                            ON studentrecord.SR_number = guardian_fetcher.G_guardianOfStudent
+                            WHERE studentrecord.SR_number = '{$sr_number}'";
         $runverifySR_number = $mysqli->query($verifySR_number);
         $getRecord =  $runverifySR_number->fetch_assoc();
+    } else {
+        header('Location: viewStudent.php');
     }
 }
 ?>
@@ -148,7 +148,7 @@ if (empty($_SESSION['AD_number'])) {
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="row">
-                        <form action="" method="">
+                        <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
                             <div class="col-sm-12">
                                 <div class="home-tab">
                                     <div class="d-sm-flex align-items-center justify-content-between border-bottom">
@@ -223,7 +223,7 @@ if (empty($_SESSION['AD_number'])) {
                                                                     <div class="col-md-3">
                                                                         <label label class="col-sm-12 col-form-label">Gender</label>
                                                                         <div class="col-sm-12">
-                                                                            <select class="form-select form-control" name="SR_gender">
+                                                                            <select class="form-select" name="SR_gender">
                                                                                 <option selected><?php echo $getRecord['SR_gender'] ?></option>
                                                                                 <option value="Male">Male</option>
                                                                                 <option value="Female">Female</option>
@@ -397,7 +397,7 @@ if (empty($_SESSION['AD_number'])) {
                                                                 <div class="col-md-6">
                                                                     <label class="col-sm-12 col-form-label">Grade Level</label>
                                                                     <div class="col-sm-12">
-                                                                        <select class="form-select form-control" name="SR_gradelevel">
+                                                                        <select class="form-select" name="SR_gradelevel">
                                                                             <option selected><?php echo $getRecord['SR_grade'] ?></option>
                                                                             <option value="1">1</option>
                                                                             <option value="2">2</option>
@@ -419,16 +419,16 @@ if (empty($_SESSION['AD_number'])) {
                                                                 <div class="col-md-6">
                                                                     <label label class="col-sm-12 col-form-label">Schedule</label>
                                                                     <div class="col-sm-12">
-                                                                        <select class="form-select form-control">
-                                                                            <option value="NA">Monday - Friday</option>
+                                                                        <select class="form-select" disabled>
+                                                                            <option>UNDER DEVELOPMENT</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <label label class="col-sm-12 col-form-label" style="color:white;"> .</label>
                                                                     <div class="col-sm-12">
-                                                                        <select class="form-select form-control">
-                                                                            <option value="AM">7:00AM-2:00PM</option>
+                                                                        <select class="form-select" disabled>
+                                                                            <option>UNDER DEVELOPMENT</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>

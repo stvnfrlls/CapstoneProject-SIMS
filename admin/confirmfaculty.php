@@ -4,10 +4,11 @@ require_once("../assets/php/server.php");
 if (empty($_SESSION['AD_number'])) {
   header('Location: ../auth/login.php');
 } else {
-  if (!isset($_POST['confirm_faculty'])) {
+  if (!isset($_SESSION['fromAddFaculty'])) {
     header('Location: addFaculty.php');
   }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -158,7 +159,7 @@ if (empty($_SESSION['AD_number'])) {
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Department</label>
                                   <div class="col-sm-12">
-                                    <select class="form-select form-control" name="F_department" value="<?php echo $_POST[''] ?>" required readonly>
+                                    <select class="form-select" name="F_department" required disabled>
                                       <option selected><?php echo $_POST['F_department']; ?></option>
                                       <option value="English">English Department</option>
                                       <option value="Filipino">Filipino Department</option>
@@ -222,7 +223,7 @@ if (empty($_SESSION['AD_number'])) {
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Gender</label>
                                   <div class="col-sm-12">
-                                    <select class="form-select form-control" name="F_gender" required readonly>
+                                    <select class="form-select" name="F_gender" required disabled>
                                       <option selected><?php echo $_POST['F_gender'] ?></option>
                                       <option value="Male">Male</option>
                                       <option value="Female">Female</option>
@@ -235,13 +236,13 @@ if (empty($_SESSION['AD_number'])) {
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Religion</label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="F_religion" value="<?php echo $_POST['F_religion'] ?>" required readonly>
+                                    <input type="text" class="form-control" name="F_religion" value="<?php echo $_POST['F_religion'] ?>" readonly>
                                   </div>
                                 </div>
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Citizenship</label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="F_citizenship" value="<?php echo $_POST['F_citizenship'] ?>" required readonly>
+                                    <input type="text" class="form-control" name="F_citizenship" value="<?php echo $_POST['F_citizenship'] ?>" readonly>
                                   </div>
                                 </div>
                               </div>
@@ -276,7 +277,7 @@ if (empty($_SESSION['AD_number'])) {
                                 <div class="col-md-4">
                                   <label label class="col-sm-12 col-form-label">Postal Code</label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="F_postal" value="<?php echo $_POST['F_postal'] ?>" required readonly>
+                                    <input type="number" class="form-control" name="F_postal" value="<?php echo $_POST['F_postal'] ?>" required readonly>
                                   </div>
                                 </div>
                               </div>

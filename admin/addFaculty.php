@@ -1,7 +1,9 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['UD_role'] != "admin") {
+$_SESSION['fromAddFaculty'] = "TRUE";
+
+if (empty($_SESSION['AD_number'])) {
   header('Location: ../auth/login.php');
 } else {
   if (isset($_POST['confirm_faculty'])) {
@@ -235,13 +237,13 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Religion</label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="F_religion" required>
+                                    <input type="text" class="form-control" name="F_religion">
                                   </div>
                                 </div>
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Citizenship</label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="F_citizenship" required>
+                                    <input type="text" class="form-control" name="F_citizenship">
                                   </div>
                                 </div>
                               </div>
@@ -276,7 +278,7 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
                                 <div class="col-md-4">
                                   <label label class="col-sm-12 col-form-label">Postal Code</label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="F_postal" required>
+                                    <input type="number" class="form-control" name="F_postal" required>
                                   </div>
                                 </div>
                               </div>

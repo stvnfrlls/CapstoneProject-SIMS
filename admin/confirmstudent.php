@@ -3,10 +3,12 @@ require_once("../assets/php/server.php");
 
 if (empty($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
+} else {
+    if (!isset($_SESSION['fromAddStudent'])) {
+        header('Location: addStudent.php');
+    }
 }
-if (empty($_POST['confirm_student'])) {
-    header('Location: addStudent.php');
-}
+
 ?>
 
 <!DOCTYPE html>
@@ -160,7 +162,7 @@ if (empty($_POST['confirm_student'])) {
                                                                     <div class="col-sm-12">
                                                                         <div class="form-group">
                                                                             <div class="input-group col-xs-12">
-                                                                                <input type="file" class="form-control file-upload-info" placeholder="Upload Image" readonly>
+                                                                                <input type="file" class="form-control file-upload-info" placeholder="Upload Image" disabled>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -216,7 +218,7 @@ if (empty($_POST['confirm_student'])) {
                                                                     <div class="col-md-3">
                                                                         <label label class="col-sm-12 col-form-label">Gender</label>
                                                                         <div class="col-sm-12">
-                                                                            <select class="form-select" name="S_gender" readonly>
+                                                                            <select class="form-select" name="S_gender" disabled>
                                                                                 <option selected><?php echo $_POST['S_gender'] ?></option>
                                                                                 <option value="Male">Male</option>
                                                                                 <option value="Female">Female</option>
@@ -399,7 +401,7 @@ if (empty($_POST['confirm_student'])) {
                                                             <div class="col-md-6">
                                                                 <label class="col-sm-12 col-form-label">Grade Level</label>
                                                                 <div class="col-sm-12">
-                                                                    <select class="form-select" name="S_gradelevel" readonly>
+                                                                    <select class="form-select" name="S_gradelevel" disabled>
                                                                         <option selected><?php echo $_POST['S_gradelevel'] ?></option>
                                                                         <option value="0">Kinder</option>
                                                                         <option value="1">Grade - 1</option>
@@ -414,7 +416,7 @@ if (empty($_POST['confirm_student'])) {
                                                             <div class="col-md-6">
                                                                 <label label class="col-sm-12 col-form-label">Section</label>
                                                                 <div class="col-sm-12">
-                                                                    <select class="form-select" name="S_section" readonly>
+                                                                    <select class="form-select" name="S_section" disabled>
                                                                         <option selected><?php echo $_POST['S_section'] ?></option>
                                                                         <option value="1">1</option>
                                                                         <option value="2">2</option>
@@ -427,7 +429,7 @@ if (empty($_POST['confirm_student'])) {
                                                             <div class="col-md-6">
                                                                 <label label class="col-sm-12 col-form-label">Schedule</label>
                                                                 <div class="col-sm-12">
-                                                                    <select class="form-select form-control" readonly>
+                                                                    <select class="form-select" disabled>
                                                                         <option value="NA">UNDER DEVELOPMENT</option>
                                                                     </select>
                                                                 </div>
@@ -435,7 +437,7 @@ if (empty($_POST['confirm_student'])) {
                                                             <div class="col-md-6">
                                                                 <label label class="col-sm-12 col-form-label" style="color:white;"> .</label>
                                                                 <div class="col-sm-12">
-                                                                    <select class="form-select form-control" readonly>
+                                                                    <select class="form-select" disabled>
                                                                         <option value="AM">UNDER DEVELOPMENT</option>
                                                                     </select>
                                                                 </div>
