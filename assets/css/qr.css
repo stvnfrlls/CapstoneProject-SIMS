@@ -1,11 +1,12 @@
-
-.videoWrapper,
-.videoWrapper video {
-  width: 80%;
-  height: auto;
+.videoWrapper {
+  width: 300;
+  height: 300;
+}
+video {
+  object-fit: contain;
 }
 
-.bowton{
+.bowton {
   padding-top: 15px;
 }
 
