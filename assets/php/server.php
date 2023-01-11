@@ -500,72 +500,76 @@ if (isset($_POST['regStudent'])) {
                     '$S_address', '$S_barangay', '$S_city', '$S_state', '$S_postal',
                     '$S_guardian', '$S_contact', '$S_email')";
     $RunregStudent = $mysqli->query($regStudent);
-    if ($RunregStudent) {
-        $regGuardian = "INSERT INTO guardian_fetcher(
-                        G_guardianOfStudent, 
-                        G_fname, G_mname, G_lname, G_suffix,
-                        G_address, G_barangay, G_city, G_state, G_postal, 
-                        G_email, G_relationshipStudent, G_telephone, G_contact)
-                        VALUES(
-                        '$SR_number', '$G_lname', '$G_fname', '$G_mname', '$G_suffix',
-                        '$G_address', '$G_barangay', '$G_city', '$G_state', '$G_postal',
-                        '$G_email', '$G_relationshipStudent', '$G_telephone', '$G_contact')";
-        $RunregGuardian = $mysqli->query($regGuardian);
-        if ($RunregGuardian) {
-            header('Location: student.php');
-        } else {
-            echo "error" . $mysqli->error;
-        }
+    $regGuardian = "INSERT INTO guardian_fetcher(
+                    G_guardianOfStudent, 
+                    G_fname, G_mname, G_lname, G_suffix,
+                    G_address, G_barangay, G_city, G_state, G_postal, 
+                    G_email, G_relationshipStudent, G_telephone, G_contact)
+                    VALUES(
+                    '$SR_number', '$G_lname', '$G_fname', '$G_mname', '$G_suffix',
+                    '$G_address', '$G_barangay', '$G_city', '$G_state', '$G_postal',
+                    '$G_email', '$G_relationshipStudent', '$G_telephone', '$G_contact')";
+    $RunregGuardian = $mysqli->query($regGuardian);
+    unset($_SESSION['fromAddStudent']);
+    if ($RunregGuardian) {
+        header('Location: student.php');
+    } else {
+        echo "error" . $mysqli->error;
     }
 }
-if (isset($_POST['editStudent'])) {
-    $S_fname = $mysqli->real_escape_string($_POST['S_fname']);
-    $S_mname    = $mysqli->real_escape_string($_POST['S_mname']);
-    $S_lname = $mysqli->real_escape_string($_POST['S_lname']);
-    $S_suffix = $mysqli->real_escape_string($_POST['S_suffix']);
+if (isset($_POST['updateInformation'])) {
+    $S_lname = $mysqli->real_escape_string($_POST['SR_lname']);
+    $S_fname = $mysqli->real_escape_string($_POST['SR_fname']);
+    $S_mname    = $mysqli->real_escape_string($_POST['SR_mname']);
+    $S_suffix = $mysqli->real_escape_string($_POST['SR_suffix']);
 
-    $S_age    = $mysqli->real_escape_string($_POST['S_age']);
-    $S_birthday = $mysqli->real_escape_string($_POST['S_birthday']);
-    $S_gender = $mysqli->real_escape_string($_POST['S_gender']);
+    $S_age    = $mysqli->real_escape_string($_POST['SR_age']);
+    $S_birthday = $mysqli->real_escape_string($_POST['SR_birthday']);
+    $S_birthplace = $mysqli->real_escape_string($_POST['SR_birthplace']);
+    $S_gender = $mysqli->real_escape_string($_POST['SR_gender']);
 
-    $S_address    = $mysqli->real_escape_string($_POST['S_address']);
-    $S_city    = $mysqli->real_escape_string($_POST['S_city']);
-    $S_state    = $mysqli->real_escape_string($_POST['S_state']);
-    $S_postal    = $mysqli->real_escape_string($_POST['S_postal']);
+    $S_religion = $mysqli->real_escape_string($_POST['SR_religion']);
+    $S_citizenship = $mysqli->real_escape_string($_POST['SR_citizenship']);
 
-    $S_guardian = $mysqli->real_escape_string($_POST['S_guardian']);
-    $S_contact    = $mysqli->real_escape_string($_POST['S_contact']);
+    $S_address    = $mysqli->real_escape_string($_POST['SR_address']);
+    $S_barangay    = $mysqli->real_escape_string($_POST['SR_barangay']);
+    $S_city    = $mysqli->real_escape_string($_POST['SR_city']);
+    $S_state    = $mysqli->real_escape_string($_POST['SR_state']);
+    $S_postal    = $mysqli->real_escape_string($_POST['SR_postal']);
 
-    $S_grade = $mysqli->real_escape_string($_POST['S_grade']);
-    $S_section    = $mysqli->real_escape_string($_POST['S_section']);
-    $S_schedule    = $mysqli->real_escape_string($_POST['S_schedule']);
+    $S_email    = $mysqli->real_escape_string($_POST['SR_email']);
 
-    $S_number = $mysqli->real_escape_string($_POST['S_number']);
+    $S_grade = $mysqli->real_escape_string($_POST['SR_gradelevel']);
+    $S_section    = $mysqli->real_escape_string($_POST['SR_section']);
+
+    $S_number = $mysqli->real_escape_string($_GET['SR_Number']);
 
     $updateStudent = "UPDATE studentrecord 
                       SET 
+                        SR_lname = '$S_lname',
                         SR_fname = '$S_fname', 
                         SR_mname = '$S_mname',
-                        SR_lname = '$S_lname',
                         SR_suffix = '$S_suffix',
                         SR_age = '$S_age',
                         SR_birthday = '$S_birthday',
+                        SR_birthplace = '$S_birthplace',
                         SR_gender = '$S_gender',
+                        SR_religion = '$S_religion',
+                        SR_citizenship = '$S_citizenship',
                         SR_address = '$S_address',
-                        S_barangay = '$S_barangay',
+                        SR_barangay = '$S_barangay',
                         SR_city = '$S_city',
                         SR_state = '$S_state',
                         SR_postal = '$S_postal',
-                        SR_guardian = '$S_guardian',
                         SR_contact = '$S_contact',
+                        SR_email = '$S_email',
                         SR_grade = '$S_grade',
-                        SR_section = '$S_section',
-                        SR_schedule = '$S_schedule',
+                        SR_section = '$S_section'
                       WHERE SR_number = '$S_number'";
     $resultupdateStudent = $mysqli->query($updateStudent);
 
     if ($resultupdateStudent) {
-        header('Location: ../admin/addStudent.php');
+        header('Location: ../admin/student.php');
     } else {
         echo "error" . $mysqli->error;
     }
@@ -622,14 +626,16 @@ if (isset($_POST['regFaculty'])) {
     }
     $F_number = $year . "-" . $month . "-" . $FacultyNumber . "-F";
 
-    $regFaculty = "INSERT INTO faculty(F_department, F_number, F_year, F_lname, F_fname, F_mname, F_suffix, 
-                   F_age, F_birthday, F_gender, F_religion, F_citizenship, F_address, F_barangay, F_city, F_state, F_postal, 
-                   F_contactNumber, F_email)
-                   VALUES('$F_department', '$F_number', '$F_year', '$F_lname', '$F_fname', '$F_mname', '$F_suffix', 
-                   '$F_age', '$F_birthday', '$F_gender', '$F_religion', '$F_citizenship', '$F_address', '$F_barangay', '$F_city', '$F_state', '$F_postal', 
-                   '$F_contactNumber', '$F_email')";
+    $regFaculty = "INSERT INTO faculty(
+                    F_department, F_number, F_year, F_lname, F_fname, F_mname, F_suffix, 
+                    F_age, F_birthday, F_gender, F_religion, F_citizenship, F_address, F_barangay, F_city, F_state, F_postal, 
+                    F_contactNumber, F_email)
+                   VALUES(
+                    '$F_department', '$F_number', '$year', '$F_lname', '$F_fname', '$F_mname', '$F_suffix', 
+                    '$F_age', '$F_birthday', '$F_gender', '$F_religion', '$F_citizenship', '$F_address', '$F_barangay', '$F_city', '$F_state', '$F_postal', 
+                    '$F_contactNumber', '$F_email')";
     $resultregFaculty = $mysqli->query($regFaculty);
-
+    unset($_SESSION['fromAddFaculty']);
     if ($resultregFaculty) {
         header('Location: ../admin/faculty.php');
     } else {
@@ -715,15 +721,18 @@ if (isset($_POST['UpdateGrade'])) {
     if ($resultupdateGrade) {
         $url_components = parse_url($current_url);
         parse_str($url_components['query'], $params);
-        $param1 = $params['orderByGradeLevel'];
-        $param2 = $params['orderByLearningArea'];
+        $param1 = $params['Grade'];
+        $param2 = $params['Section'];
+        $param3 = $params['LearningArea'];
 
         $url = "../admin/editgrades.php";
-        header("Location: " . $url . "?orderByGradeLevel=" . $param1 . "&orderByLearningArea=" . $param2);
+        header("Location: " . $url . "?Grade=" . $param1 . "&Section=" . $param2 . "&LearningArea=" . $param3);
     } else {
         echo "error" . $mysqli->error;
     }
 }
+
+
 if (isset($_POST['addSchedule'])) {
     # code...
 }
