@@ -4,7 +4,7 @@ require_once("../assets/php/server.php");
 $current_url = $_SERVER["REQUEST_URI"];
 $_SESSION['F_number'] = "2022-12-00001-F";
 
-if (!isset($_SESSION['F_number'])) {
+if (empty($_SESSION['F_number'])) {
   header('Location: ../auth/login.php');
 } else if (isset($_SESSION['F_number'])) {
   $getWorkSchedule = "SELECT SR_grade, SR_section, S_subject FROM workschedule WHERE F_number = '{$_SESSION['F_number']}'";

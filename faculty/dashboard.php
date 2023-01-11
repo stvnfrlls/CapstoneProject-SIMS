@@ -1,4 +1,10 @@
-<?php require_once("../assets/php/server.php"); ?>
+<?php
+require_once("../assets/php/server.php");
+
+if (empty($_SESSION['F_number'])) {
+    header('Location: ../auth/login.php');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 

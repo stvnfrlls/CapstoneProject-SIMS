@@ -1,7 +1,7 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (!isset($_SESSION['F_number'])) {
+if (empty($_SESSION['F_number'])) {
   header('Location: advisoryPage.php');
 } elseif ($_GET['viewStudent']) {
   $getStudentRecord = "SELECT * FROM studentrecord WHERE SR_number = '{$_GET['viewStudent']}'";
