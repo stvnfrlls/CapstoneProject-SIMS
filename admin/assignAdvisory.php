@@ -1,5 +1,9 @@
 <?php
 require_once("../assets/php/server.php");
+
+if (empty($_SESSION['AD_number'])) {
+  header('Location: ../auth/login.php');
+}
 ?>
 
 <!DOCTYPE html>
@@ -191,11 +195,6 @@ require_once("../assets/php/server.php");
                                         margin: 0;
                                       }
 
-                                      /* Firefox */
-                                      input[type=number] {
-                                        -moz-appearance: textfield;
-                                      }
-
                                       .hatdog {
                                         border: 1px solid #ffffff;
                                         text-align: center;
@@ -204,62 +203,39 @@ require_once("../assets/php/server.php");
                                         color: #000000;
                                       }
                                     </style>
-                                    <tr>
-                                      <td class="hatdog">1</td>
-                                      <td class="hatdog">Einstein</td>
-                                      <td class="hatdog">
-                                        <select aria-label="Default select example">
-                                          <option selected>Professor</option>
-                                          <option value="1">NAME</option>
-                                          <option value="2">NAME1</option>
-                                        </select>
-                                      </td>
-                                      <td class="hatdog">
-                                        <input type="submit" value="SET" style="text-align: center;">
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td class="hatdog">1</td>
-                                      <td class="hatdog">Einstein</td>
-                                      <td class="hatdog">
-                                        <select aria-label="Default select example">
-                                          <option selected>Professor</option>
-                                          <option value="1">NAME</option>
-                                          <option value="2">NAME1</option>
-                                        </select>
-                                      </td>
-                                      <td class="hatdog">
-                                        <input type="submit" value="SET" style="text-align: center;">
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td class="hatdog">1</td>
-                                      <td class="hatdog">Einstein</td>
-                                      <td class="hatdog">
-                                        <select aria-label="Default select example">
-                                          <option selected>Professor</option>
-                                          <option value="1">NAME</option>
-                                          <option value="2">NAME1</option>
-                                        </select>
-                                      </td>
-                                      <td class="hatdog">
-                                        <input type="submit" value="SET" style="text-align: center;">
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td class="hatdog">1</td>
-                                      <td class="hatdog">Einstein</td>
-                                      <td class="hatdog">
-                                        <select aria-label="Default select example">
-                                          <option selected>Professor</option>
-                                          <option value="1">NAME</option>
-                                          <option value="2">NAME1</option>
-                                        </select>
-                                      </td>
-                                      <td class="hatdog">
-                                        <input type="submit" value="SET" style="text-align: center;">
-                                      </td>
-                                    </tr>
+                                    <?php
+                                    $rowCount = 1;
+                                    $getAdvisoryData = $mysqli->query("SELECT * FROM sections");
+                                    while ($AdvisoryData = $getAdvisoryData->fetch_assoc()) { ?>
+                                      <tr>
+                                        <td class="hatdog"><?php echo $rowCount; ?></td>
+                                        <td class="hatdog">
+                                          <input type="hidden" name="section" value="<?php echo $AdvisoryData['S_name']; ?>">
+                                          <?php echo "Grade " . $AdvisoryData['S_yearLevel'] . " - " . $AdvisoryData['S_name'] ?>
+                                        </td>
+                                        <td class="hatdog">
+                                          <select class="form-select" aria-label="Default select example">
+                                            <?php
+                                            $getAssignedFacultyData = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$AdvisoryData['S_adviser']}'");
+                                            $AssignedFacultyData = $getAssignedFacultyData->fetch_assoc();
+                                            if (empty($AdvisoryData['S_adviser'])) {
+                                              echo "<option selected>assign a teacher</option>";
+                                            } else {
+                                              echo "<option selected>" . $AssignedFacultyData['F_lname'] . ", " . $AssignedFacultyData['F_fname'] . " " . substr($AssignedFacultyData['F_mname'], 0, 1) . "</option>";
+                                            }
+                                            $getFacultyData = $mysqli->query("SELECT * FROM faculty");
+                                            while ($FacultyData = $getFacultyData->fetch_assoc()) { ?>
+                                              <option value="<?php echo $FacultyData['F_number'] ?>"><?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1); ?></option>
+                                            <?php } ?>
+                                          </select>
+                                        </td>
+                                        <td class="hatdog">
+                                          <input type="submit" class="btn btn-primary" value="SET" style="text-align: center;">
+                                        </td>
+                                      </tr>
+                                    <?php $rowCount++;
+                                    }
+                                    ?>
                                   </tbody>
                                 </table>
                               </div>

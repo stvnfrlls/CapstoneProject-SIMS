@@ -1,4 +1,10 @@
-<?php require_once("../assets/php/server.php"); ?>
+<?php
+require_once("../assets/php/server.php");
+
+if (empty($_SESSION['UD_role']) && $_SESSION['UD_role'] != "admin") {
+  header('Location: ../auth/login.php');
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -227,11 +233,6 @@
                                       input::-webkit-inner-spin-button {
                                         -webkit-appearance: none;
                                         margin: 0;
-                                      }
-
-                                      /* Firefox */
-                                      input[type=number] {
-                                        -moz-appearance: textfield;
                                       }
                                     </style>
                                     <tr>

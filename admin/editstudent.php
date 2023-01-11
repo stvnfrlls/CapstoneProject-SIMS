@@ -1,17 +1,21 @@
 <?php
 require_once("../assets/php/server.php");
 
-$sr_number = $_GET['SR_Number'];
-
-if (!isset($_GET['SR_Number'])) {
-    header('Location: viewStudent.php');
+if (empty($_SESSION['AD_number'])) {
+    header('Location: ../auth/login.php');
 } else {
-    $verifySR_number = "SELECT * FROM studentrecord 
+    $sr_number = $_GET['SR_Number'];
+
+    if (!isset($_GET['SR_Number'])) {
+        header('Location: viewStudent.php');
+    } else {
+        $verifySR_number = "SELECT * FROM studentrecord 
                         INNER JOIN guardian_fetcher
                         ON studentrecord.SR_number = guardian_fetcher.G_guardianOfStudent
                         WHERE studentrecord.SR_number = '{$sr_number}'";
-    $runverifySR_number = $mysqli->query($verifySR_number);
-    $getRecord =  $runverifySR_number->fetch_assoc();
+        $runverifySR_number = $mysqli->query($verifySR_number);
+        $getRecord =  $runverifySR_number->fetch_assoc();
+    }
 }
 ?>
 

@@ -1,13 +1,17 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (isset($_GET['F_number'])) {
-  $F_number = $_GET['F_number'];
-  $viewData = "SELECT * FROM faculty WHERE F_number = '{$F_number}'";
-  $runviewData = $mysqli->query($viewData);
-  $getFacultyData = $runviewData->fetch_assoc();
+if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['UD_role'] != "admin") {
+  header('Location: ../auth/login.php');
 } else {
-  header('Location: faculty.php');
+  if (isset($_GET['F_number'])) {
+    $F_number = $_GET['F_number'];
+    $viewData = "SELECT * FROM faculty WHERE F_number = '{$F_number}'";
+    $runviewData = $mysqli->query($viewData);
+    $getFacultyData = $runviewData->fetch_assoc();
+  } else {
+    header('Location: faculty.php');
+  }
 }
 ?>
 
@@ -163,7 +167,7 @@ if (isset($_GET['F_number'])) {
                               <div class="col-12">
                                 <label class="col-sm-12 col-form-label">Department</label>
                                 <div class="col-sm-12">
-                                  <select class="form-select form-control" name="F_department" value="<?php echo $getFacultyData[''] ?>" readonly>
+                                  <select class="form-select" name="F_department" disabled>
                                     <option selected><?php echo $getFacultyData['F_department'] ?></option>
                                     <option value="English">English Department</option>
                                     <option value="Filipino">Filipino Department</option>
@@ -225,7 +229,7 @@ if (isset($_GET['F_number'])) {
                               <div class="col-md-4">
                                 <label class="col-sm-12 col-form-label">Gender</label>
                                 <div class="col-sm-12">
-                                  <select class="form-select form-control" name="F_gender" readonly>
+                                  <select class="form-select" name="F_gender" disabled>
                                     <option selected><?php echo $getFacultyData['F_gender'] ?></option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>

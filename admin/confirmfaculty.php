@@ -1,7 +1,12 @@
 <?php
 require_once("../assets/php/server.php");
-if (!isset($_POST['confirm_faculty'])) {
-  header('Location: addFaculty.php');
+
+if (empty($_SESSION['AD_number'])) {
+  header('Location: ../auth/login.php');
+} else {
+  if (!isset($_POST['confirm_faculty'])) {
+    header('Location: addFaculty.php');
+  }
 }
 ?>
 

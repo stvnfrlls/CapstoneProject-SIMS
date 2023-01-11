@@ -1,19 +1,23 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (!empty($_GET['F_number'])) {
-  header('Location: ../viewFaculty.php?F_number=' . $_GET['F_number']);
-}
-
-$Department = "SELECT F_department FROM faculty";
-$runDepartment = $mysqli->query($Department);
-
-if (!empty($_GET['department'])) {
-  $ListofFaculty = "SELECT * FROM faculty WHERE F_department = '{$_GET['department']}'";
-  $resultListofFaculty = $mysqli->query($ListofFaculty);
+if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['UD_role'] != "admin") {
+  header('Location: ../auth/login.php');
 } else {
-  $ListofFaculty = "SELECT * FROM faculty";
-  $resultListofFaculty = $mysqli->query($ListofFaculty);
+  if (!empty($_GET['F_number'])) {
+    header('Location: ../viewFaculty.php?F_number=' . $_GET['F_number']);
+  }
+
+  $Department = "SELECT DISTINCT(F_department) FROM faculty";
+  $runDepartment = $mysqli->query($Department);
+
+  if (empty($_GET['department'])) {
+    $ListofFaculty = "SELECT * FROM faculty";
+    $resultListofFaculty = $mysqli->query($ListofFaculty);
+  } else {
+    $ListofFaculty = "SELECT * FROM faculty WHERE F_department = '{$_GET['department']}'";
+    $resultListofFaculty = $mysqli->query($ListofFaculty);
+  }
 }
 ?>
 

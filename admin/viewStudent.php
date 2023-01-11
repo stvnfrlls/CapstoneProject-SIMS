@@ -2,27 +2,31 @@
 require_once("../assets/php/server.php");
 include('../assets/phpqrcode/qrlib.php');
 
-$sr_number = $_GET['SR_Number'];
-
-if (!isset($_GET['SR_Number'])) {
-    header('Location: student.php');
+if (empty($_SESSION['AD_number'])) {
+    header('Location: ../auth/login.php');
 } else {
-    $verifySR_number = "SELECT * FROM studentrecord 
+    $sr_number = $_GET['SR_Number'];
+
+    if (!isset($_GET['SR_Number'])) {
+        header('Location: student.php');
+    } else {
+        $verifySR_number = "SELECT * FROM studentrecord 
                         INNER JOIN guardian_fetcher
                         ON studentrecord.SR_number = guardian_fetcher.G_guardianOfStudent
                         WHERE studentrecord.SR_number = '{$sr_number}'";
-    $runverifySR_number = $mysqli->query($verifySR_number);
-    $getRecord =  $runverifySR_number->fetch_assoc();
+        $runverifySR_number = $mysqli->query($verifySR_number);
+        $getRecord =  $runverifySR_number->fetch_assoc();
 
-    if ($getRecord['SR_number'] == $sr_number) {
-        $tempDir = '../assets/temp/';
-        if (!file_exists($tempDir)) {
-            mkdir("../assets/temp/");
+        if ($getRecord['SR_number'] == $sr_number) {
+            $tempDir = '../assets/temp/';
+            if (!file_exists($tempDir)) {
+                mkdir("../assets/temp/");
+            }
+            $qrcode_data = $getRecord['SR_number'];
+            QRcode::png($qrcode_data,  $tempDir . '' . $qrcode_data . '.png', QR_ECLEVEL_L);
+        } else {
+            header('Location: student.php');
         }
-        $qrcode_data = $getRecord['SR_number'];
-        QRcode::png($qrcode_data,  $tempDir . '' . $qrcode_data . '.png', QR_ECLEVEL_L);
-    } else {
-        header('Location: student.php');
     }
 }
 ?>
@@ -166,22 +170,35 @@ if (!isset($_GET['SR_Number'])) {
                                 <div class="tab-content tab-content-basic">
                                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                                         <div class="row">
-                                            <div class="col-lg-4 col-sm-12 grid-margin">
+                                            <div class="col-lg-3 col-sm-12 grid-margin">
                                                 <div class="card">
                                                     <div class="card-body">
                                                         <h4 class="card-title">Profile</h4>
-                                                        <div class="row" style="padding-bottom: 15px;">
-                                                            <div class="col-md-6 col-sm-6" style="text-align: center; margin-bottom: 20px; margin-top: 10px;">
-                                                                <img src="../assets/img/profile.jpg" alt="avatar" class="rounded-circle img-fluidr" style="width: 150px;">
+                                                        <form class="form-sample">
+                                                            <div class="row" style="padding-bottom: 15px;">
+                                                                <div class="col-md-6 col-sm-6 col-lg-12" style="text-align: center; margin-bottom: 20px; margin-top: 10px;">
+                                                                    <img src="../assets/img/profile.jpg" alt="avatar" class="rounded-circle img-fluidr" style="width: 150px;">
+                                                                </div>
                                                             </div>
-                                                            <div class="col-md-6 col-sm-6">
-                                                                <img src='<?php echo "../assets/temp/" . $getRecord['SR_number'] . ".png"; ?>' alt='img' class="rounded-circle img-fluidr" style="width: 150px;">
-                                                            </div>
-                                                        </div>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class=" col-lg-8 col-sm-12 grid-margin">
+                                            <div class="col-lg-3 col-sm-12 grid-margin">
+                                                <div class="card" style="height: 280px;" text-align: center;>
+                                                    <div class="card-body">
+                                                        <h4 class="card-title">QR Code</h4>
+                                                        <form class="form-sample">
+                                                            <div class="row" style="padding-bottom: 15px;">
+                                                                <div class="col-md-6 col-sm-6 col-lg-12" style="text-align: center; margin-top: 10px;">
+                                                                    <img src="<?php echo "../assets/temp/" . $getRecord['SR_number'] . ".png"; ?>" alt="avatar" class="img-fluid" style="width: 150px;">
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-sm-12 grid-margin">
                                                 <div class="card">
                                                     <div class="card-body">
                                                         <h4 class="card-title">Class Information</h4>

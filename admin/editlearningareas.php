@@ -1,49 +1,53 @@
 <?php
 require_once("../assets/php/server.php");
 
-$gradeList = "SELECT DISTINCT S_yearLevel FROM sections";
-$rungradeList = $mysqli->query($gradeList);
+if (empty($_SESSION['AD_number'])) {
+  header('Location: ../auth/login.php');
+} else {
+  $gradeList = "SELECT DISTINCT S_yearLevel FROM sections";
+  $rungradeList = $mysqli->query($gradeList);
 
-if (isset($_GET['GradeLevel'])) {
-  $current_url = $_SERVER["REQUEST_URI"];
-  $sectionList = "SELECT S_name FROM sections WHERE S_yearLevel = '{$_GET['GradeLevel']}'";
-  $runsectionList = $mysqli->query($sectionList);
-}
+  if (isset($_GET['GradeLevel'])) {
+    $current_url = $_SERVER["REQUEST_URI"];
+    $sectionList = "SELECT S_name FROM sections WHERE S_yearLevel = '{$_GET['GradeLevel']}'";
+    $runsectionList = $mysqli->query($sectionList);
+  }
 
-if (isset($_GET['GradeLevel']) && isset($_GET['SectionName'])) {
-  $subjects     = array();
-  array_unshift($subjects, null);
-  $schedule     = array();
-  array_unshift($schedule, null);
-  $FacultyName  = array();
-  array_unshift($FacultyName, null);
-  $AllFacultyName  = array();
-  array_unshift($AllFacultyName, null);
+  if (isset($_GET['GradeLevel']) && isset($_GET['SectionName'])) {
+    $subjects     = array();
+    array_unshift($subjects, null);
+    $schedule     = array();
+    array_unshift($schedule, null);
+    $FacultyName  = array();
+    array_unshift($FacultyName, null);
+    $AllFacultyName  = array();
+    array_unshift($AllFacultyName, null);
 
-  if ($_GET['GradeLevel'] == "KINDER") {
-    $getSubject = "SELECT subjectName FROM subjectperyear
+    if ($_GET['GradeLevel'] == "KINDER") {
+      $getSubject = "SELECT subjectName FROM subjectperyear
                   WHERE
                   subjectperyear.minYearLevel = '0' 
                   AND
                   subjectperyear.maxYearLevel >= '0'";
-  } else {
-    $getSubject = "SELECT subjectName FROM subjectperyear
+    } else {
+      $getSubject = "SELECT subjectName FROM subjectperyear
                   WHERE 
                   subjectperyear.minYearLevel <= '{$_GET['GradeLevel']}' 
                   AND
                   subjectperyear.maxYearLevel >= '{$_GET['GradeLevel']}'";
-  }
-  $rungetSubject = $mysqli->query($getSubject);
-  while ($dataSubject = $rungetSubject->fetch_assoc()) {
-    $subjects[] = $dataSubject;
-  }
+    }
+    $rungetSubject = $mysqli->query($getSubject);
+    while ($dataSubject = $rungetSubject->fetch_assoc()) {
+      $subjects[] = $dataSubject;
+    }
 
-  $getSchedule = "SELECT F_number, S_subject, WS_start_time, WS_end_time FROM workschedule
+    $getSchedule = "SELECT F_number, S_subject, WS_start_time, WS_end_time FROM workschedule
                   WHERE SR_grade = '{$_GET['GradeLevel']}' 
                   AND SR_section = '{$_GET['SectionName']}'";
-  $rungetSchedule = $mysqli->query($getSchedule);
-  while ($dataSchedule = $rungetSchedule->fetch_assoc()) {
-    $schedule[] = $dataSchedule;
+    $rungetSchedule = $mysqli->query($getSchedule);
+    while ($dataSchedule = $rungetSchedule->fetch_assoc()) {
+      $schedule[] = $dataSchedule;
+    }
   }
 }
 ?>
@@ -270,10 +274,7 @@ if (isset($_GET['GradeLevel']) && isset($_GET['SectionName'])) {
                                         <form action="" method="">
                                           <tr>
                                             <td><?php echo $rowCount; ?></td>
-                                            <td>
-                                              <?php echo $subjects[$rowCount]['subjectName'] ?>
-                                              
-                                            </td>
+                                            <td><?php echo $subjects[$rowCount]['subjectName']; ?></td>
                                             <td>
                                               <?php
                                               if (empty($schedule[$rowCount]['F_number'])) {

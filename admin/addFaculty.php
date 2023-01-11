@@ -1,8 +1,12 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (isset($_POST['confirm_faculty'])) {
-  header('Location: confirmfaculty.php');
+if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['UD_role'] != "admin") {
+  header('Location: ../auth/login.php');
+} else {
+  if (isset($_POST['confirm_faculty'])) {
+    header('Location: confirmfaculty.php');
+  }
 }
 ?>
 
@@ -154,7 +158,7 @@ if (isset($_POST['confirm_faculty'])) {
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Department</label>
                                   <div class="col-sm-12">
-                                    <select class="form-select form-control" name="F_department" required>
+                                    <select class="form-select" name="F_department" required>
                                       <option value=""></option>
                                       <option value="English">English Department</option>
                                       <option value="Filipino">Filipino Department</option>
@@ -218,7 +222,7 @@ if (isset($_POST['confirm_faculty'])) {
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Gender</label>
                                   <div class="col-sm-12">
-                                    <select class="form-select form-control" name="F_gender" required>
+                                    <select class="form-select" name="F_gender" required>
                                       <option value=""></option>
                                       <option value="Male">Male</option>
                                       <option value="Female">Female</option>
