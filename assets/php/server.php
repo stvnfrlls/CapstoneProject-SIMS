@@ -15,25 +15,23 @@ if (isset($_POST['login-button'])) {
     if (empty($email) && empty($password)) {
         $errors['NoInputs'] = "Please enter your login credentials.";
     } else {
-        $authAccount = "SELECT * FROM userdetails WHERE SR_email = '$email'";
-        $resultauthAccount = $mysqli->query($authAccount);
+        $authAccount = $mysqli->query("SELECT * FROM userdetails WHERE SR_email = '$email'");
 
-        if ($resultauthAccount->num_rows > 0) {
-            $getResultauthAccount = $resultauthAccount->fetch_assoc();
-            $UD_username = $getResultauthAccount['SR_email'];
-            $UD_password = $getResultauthAccount['SR_password'];
-            $UD_role = $getResultauthAccount['role'];
+        if ($authAccount->num_rows > 0) {
+            $getauthAccount = $authAccount->fetch_assoc();
+            $UD_username = $getauthAccount['SR_email'];
+            $UD_password = $getauthAccount['SR_password'];
+            $UD_role = $getauthAccount['role'];
 
-            $userDetails = "SELECT SR_number, SR_fname, SR_lname FROM studentrecord WHERE SR_email = '$UD_username'";
-            $resultuserDetails = $mysqli->query($userDetails);
+            $userDetails = $mysqli->query("SELECT SR_number, SR_fname, SR_lname FROM studentrecord WHERE SR_email = '$UD_username'");
 
-            if ($resultuserDetails->num_rows > 0) {
-                $getResultuserDetails = $resultuserDetails->fetch_assoc();
-                $SR_fname = $getResultuserDetails['SR_fname'];
-                $SR_lname = $getResultuserDetails['SR_lname'];
+            if ($userDetails->num_rows > 0) {
+                $getuserDetails = $userDetails->fetch_assoc();
+                $SR_fname = $getuserDetails['SR_fname'];
+                $SR_lname = $getuserDetails['SR_lname'];
 
                 $_SESSION['SR_name'] = $SR_lname . ', ' . $SR_fname;
-                $_SESSION['SR_number'] = $getResultuserDetails['SR_number'];
+                $_SESSION['SR_number'] = $getuserDetails['SR_number'];
             }
 
             if ($password != $UD_password) {
@@ -66,26 +64,34 @@ if (isset($_POST['login-button'])) {
         }
     }
 }
-if (isset($_POST['verifyStudentNumber'])) {
-    $studentNumber = $_POST['studentNumber'];
+if (isset($_POST['verifyIDNumber'])) {
+    $IDNumber = $_POST['IDNumber'];
 
     if (empty($studentNumber)) {
-        $errors['NoInputs'] = "Please enter your Student Number.";
+        $errors['NoInputs'] = "Please enter your Identification Number.";
     } else {
-        $check_studentNumber = "SELECT * FROM studentrecord WHERE SR_number = '$studentNumber'";
-        $result = $mysqli->query($check_studentNumber);
+        $check_studentNumber = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '$IDNumber'");
 
-        if ($result->num_rows == 1) {
+        if ($check_studentNumber->num_rows == 1) {
             $data = $result->fetch_assoc();
             if (!empty($data['SR_email'])) {
                 $errors['NoData'] = "Account already linked to an Email. Contact the admin for changing of Email Address";
-            } else {
+            } else if (empty($data['SR_email'])) {
                 $sr_num = $data['SR_number'];
-                $_SESSION['student_num'] = $sr_num;
+                $_SESSION['IDNum'] = $sr_num;
                 header('Location: signup.php');
             }
         } else {
-            $errors['NoData'] = "Account does not exist. Double check your student number.";
+            $check_facultyNumber = $mysqli->query("SELECT * FROM faculty WHERE F_number = '$IDNumber'");
+            if (!empty($data['F_email'])) {
+                $errors['NoData'] = "Account already linked to an Email. Contact the admin for changing of Email Address";
+            } else if (empty($data['F_email'])) {
+                $F_num = $data['F_number'];
+                $_SESSION['IDNum'] = $F_num;
+                header('Location: signup.php');
+            } else {
+                $errors['NoData'] = "Account does not exist. Double check your Identification Number.";
+            }
         }
     }
 }
@@ -93,10 +99,9 @@ if (isset($_POST['register-button'])) {
     $email = $mysqli->real_escape_string($_POST['usersEmail']);
     $password  = $mysqli->real_escape_string($_POST['usersPwd']);
 
-    $check_email = "SELECT * FROM userdetails WHERE SR_email = '$email'";
-    $result = $mysqli->query($check_email);
+    $check_email = $mysqli->query("SELECT * FROM userdetails WHERE SR_email = '$email'");
 
-    if ($result->num_rows == 0) {
+    if ($check_email->num_rows == 0) {
         $studentNumber = $_SESSION['student_num'];
 
         if (strpos($studentNumber, "S")) {
@@ -104,14 +109,14 @@ if (isset($_POST['register-button'])) {
         } else if (strpos($studentNumber, "F")) {
             $role = "faculty";
         }
-        $ADDuserDetails = "INSERT INTO userdetails (SR_email, SR_password, role) 
-                           VALUES ('$email', '$password', '$role')";
-        $runADDuserDetails = $mysqli->query($ADDuserDetails);
 
-        $signup = "UPDATE studentrecord
-                   SET 
-                   SR_email = '$email'
-                   WHERE SR_number = '$studentNumber'";
+        $AddUserDetails = $mysqli->query("INSERT INTO userdetails (SR_email, SR_password, role) VALUES ('$email', '$password', '$role')");
+
+        if ($role == "student") {
+            $signup = "UPDATE studentrecord SET SR_email = '$email' WHERE SR_number = '$studentNumber'";
+        } else if ($role == "faculty") {
+            # code...
+        }
         $runsignup = $mysqli->query($signup);
 
         if ($runsignup) {
@@ -698,26 +703,35 @@ if (isset($_POST['editFaculty'])) {
 if (isset($_POST['UpdateGrade'])) {
     $current_url = $_POST['current_url'];
 
-    $G_id = $mysqli->real_escape_string($_POST['G_id']);
-    $SR_number = $mysqli->real_escape_string($_POST['SR_number']);
-    $SR_section = $mysqli->real_escape_string($_POST['SR_section']);
-    $G_learningArea = $mysqli->real_escape_string($_POST['G_learningArea']);
+    $ids = $_POST['row'];
+    $forms_SR_number = $_POST['SR_number'];
+    $forms_SR_section = $_POST['SR_section'];
+    $forms_G_learningArea = $_POST['G_learningArea'];
 
-    $G_gradesQ1 = $mysqli->real_escape_string($_POST['G_gradesQ1']);
-    $G_gradesQ2 = $mysqli->real_escape_string($_POST['G_gradesQ2']);
-    $G_gradesQ3 = $mysqli->real_escape_string($_POST['G_gradesQ3']);
-    $G_gradesQ4 = $mysqli->real_escape_string($_POST['G_gradesQ4']);
+    $forms_G_gradesQ1 = $_POST['G_gradesQ1'];
+    $forms_G_gradesQ2 = $_POST['G_gradesQ2'];
+    $forms_G_gradesQ3 = $_POST['G_gradesQ3'];
+    $forms_G_gradesQ4 = $_POST['G_gradesQ4'];
 
-    $updateGrade = "UPDATE grades 
-                    SET 
-                    G_gradesQ1 = '$G_gradesQ1',
-                    G_gradesQ2 = '$G_gradesQ2',
-                    G_gradesQ3 = '$G_gradesQ3',
-                    G_gradesQ4 = '$G_gradesQ4'
-                    WHERE G_id = '$G_id'
-                    AND G_learningArea = '$G_learningArea'";
-    $resultupdateGrade = $mysqli->query($updateGrade);
+    foreach ($ids as $i => $id) {
+        $SR_number = $forms_SR_number[$i];
+        $SR_section = $forms_SR_section[$i];
+        $G_learningArea = $forms_G_learningArea[$i];
+        $G_gradesQ1 = $forms_G_gradesQ1[$i];
+        $G_gradesQ2 = $forms_G_gradesQ2[$i];
+        $G_gradesQ3 = $forms_G_gradesQ3[$i];
+        $G_gradesQ4 = $forms_G_gradesQ4[$i];
 
+        $updateGrade = "UPDATE grades 
+                        SET 
+                        G_gradesQ1 = '$G_gradesQ1',
+                        G_gradesQ2 = '$G_gradesQ2',
+                        G_gradesQ3 = '$G_gradesQ3',
+                        G_gradesQ4 = '$G_gradesQ4'
+                        WHERE SR_number = '$SR_number'
+                        AND G_learningArea = '$G_learningArea'";
+        $resultupdateGrade = $mysqli->query($updateGrade);
+    }
     if ($resultupdateGrade) {
         $url_components = parse_url($current_url);
         parse_str($url_components['query'], $params);
@@ -731,7 +745,6 @@ if (isset($_POST['UpdateGrade'])) {
         echo "error" . $mysqli->error;
     }
 }
-
 
 if (isset($_POST['addSchedule'])) {
     # code...
