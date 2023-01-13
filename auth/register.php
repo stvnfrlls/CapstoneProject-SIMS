@@ -108,15 +108,15 @@
                     <?php
                     }
                     ?>
-                    <div class="wrap-input100 validate-input" data-validate="Valid Student Number is required">
-                        <input class="input100" type="text" name="studentNumber">
+                    <div class="wrap-input100">
+                        <input class="input100" type="text" name="IDNumber">
                         <span class="focus-input100"></span>
-                        <span class="label-input100">Student Number</span>
+                        <span class="label-input100">Identification Number</span>
                     </div>
 
                     <div class="container-login100-form-btn">
-                        <button type="submit" class="login100-form-btn" name="verifyStudentNumber">
-                            Verify Student Number
+                        <button type="submit" class="login100-form-btn" name="verifyIDNumber">
+                            Verify Identification Number
                         </button>
                     </div>
 

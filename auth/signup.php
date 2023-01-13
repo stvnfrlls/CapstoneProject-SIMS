@@ -1,7 +1,7 @@
 <?php
 require_once("../assets/php/server.php");
 if (!$_SESSION['student_num']) {
-    header('Location: studentnumber.php');
+    header('Location: register.php');
 }
 ?>
 <!DOCTYPE html>
