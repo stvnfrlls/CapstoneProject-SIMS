@@ -133,8 +133,8 @@
                     </div>
 
                     <div class="text-center p-t-46 p-b-20">
-                        <a href="studentnumber.php" class="txt2">
-                            Connect your Student Number
+                        <a href="register.php" class="txt2">
+                            Connect your Identification Number
                         </a>
                     </div>
 
