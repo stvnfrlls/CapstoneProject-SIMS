@@ -1,6 +1,6 @@
 <?php
 require_once("../assets/php/server.php");
-if (!$_SESSION['student_num']) {
+if (!isset($_SESSION['IDNum'])) {
     header('Location: register.php');
 }
 ?>
