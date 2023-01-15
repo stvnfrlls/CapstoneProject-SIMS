@@ -67,31 +67,35 @@ if (isset($_POST['login-button'])) {
 if (isset($_POST['verifyIDNumber'])) {
     $IDNumber = $_POST['IDNumber'];
 
-    if (empty($studentNumber)) {
+    if (empty($IDNumber)) {
         $errors['NoInputs'] = "Please enter your Identification Number.";
     } else {
-        $check_studentNumber = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '$IDNumber'");
-
-        if ($check_studentNumber->num_rows == 1) {
-            $data = $result->fetch_assoc();
-            if (!empty($data['SR_email'])) {
-                $errors['NoData'] = "Account already linked to an Email. Contact the admin for changing of Email Address";
-            } else if (empty($data['SR_email'])) {
-                $sr_num = $data['SR_number'];
-                $_SESSION['IDNum'] = $sr_num;
-                header('Location: signup.php');
+        if (strpos($IDNumber, "S")) {
+            $check_studentNumber = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '$IDNumber'");
+            if ($check_studentNumber->num_rows == 1) {
+                $data = $check_studentNumber->fetch_assoc();
+                if (!empty($data['SR_email'])) {
+                    $errors['NoData'] = "Account already linked to an Email. Contact the admin for changing of Email Address";
+                } else if (empty($data['SR_email'])) {
+                    $sr_num = $data['SR_number'];
+                    $_SESSION['IDNum'] = $sr_num;
+                    header('Location: signup.php');
+                }
+            }
+        } else if (strpos($IDNumber, "F")) {
+            $check_facultyNumber = $mysqli->query("SELECT * FROM faculty WHERE F_number = '$IDNumber'");
+            if ($check_facultyNumber->num_rows == 1) {
+                $data = $check_facultyNumber->fetch_assoc();
+                if (!empty($data['F_email'])) {
+                    $errors['NoData'] = "Account already linked to an Email. Contact the admin for changing of Email Address";
+                } else if (empty($data['F_email'])) {
+                    $F_num = $data['F_number'];
+                    $_SESSION['IDNum'] = $F_num;
+                    header('Location: signup.php');
+                }
             }
         } else {
-            $check_facultyNumber = $mysqli->query("SELECT * FROM faculty WHERE F_number = '$IDNumber'");
-            if (!empty($data['F_email'])) {
-                $errors['NoData'] = "Account already linked to an Email. Contact the admin for changing of Email Address";
-            } else if (empty($data['F_email'])) {
-                $F_num = $data['F_number'];
-                $_SESSION['IDNum'] = $F_num;
-                header('Location: signup.php');
-            } else {
-                $errors['NoData'] = "Account does not exist. Double check your Identification Number.";
-            }
+            $errors['NoData'] = "Account does not exist. Double check your Identification Number.";
         }
     }
 }
@@ -102,26 +106,25 @@ if (isset($_POST['register-button'])) {
     $check_email = $mysqli->query("SELECT * FROM userdetails WHERE SR_email = '$email'");
 
     if ($check_email->num_rows == 0) {
-        $studentNumber = $_SESSION['student_num'];
+        $IDNum = $_SESSION['IDNum'];
 
-        if (strpos($studentNumber, "S")) {
+        if (strpos($IDNum, "S")) {
             $role = "student";
-        } else if (strpos($studentNumber, "F")) {
+        } else if (strpos($IDNum, "F")) {
             $role = "faculty";
         }
 
         $AddUserDetails = $mysqli->query("INSERT INTO userdetails (SR_email, SR_password, role) VALUES ('$email', '$password', '$role')");
 
         if ($role == "student") {
-            $signup = "UPDATE studentrecord SET SR_email = '$email' WHERE SR_number = '$studentNumber'";
+            $signup = "UPDATE studentrecord SET SR_email = '$email' WHERE SR_number = '$IDNum'";
         } else if ($role == "faculty") {
-            # code...
+            $signup = "UPDATE faculty SET F_email = '$email' WHERE F_number = '$IDNum'";
         }
         $runsignup = $mysqli->query($signup);
 
         if ($runsignup) {
             header('Location: login.php');
-            unset($_SESSION['student_num']);
         }
     } else {
         $errors['email'] = "Email already in use.";
@@ -307,6 +310,43 @@ if (isset($_POST['encode'])) {
             header('Location: ../faculty/grades.php');
         } else {
             echo "error" . $mysqli->error;
+        }
+    }
+}
+if (isset($_POST['saveBehavior'])) {
+    $ids = $_POST['row'];
+    $forms_SR_number = $_GET['viewStudent'];
+    $forms_CV_Area = $_POST['CV_Area'];
+    $forms_core_value_subheading = $_POST['core_value_subheading'];
+
+    $forms_CV_valueQ1 = $_POST['CV_valueQ1'];
+    $forms_CV_valueQ2 = $_POST['CV_valueQ2'];
+    $forms_CV_valueQ3 = $_POST['CV_valueQ3'];
+    $forms_CV_valueQ4 = $_POST['CV_valueQ4'];
+
+    foreach ($ids as $i => $id) {
+        $SR_number = $forms_SR_number[$i];
+        $CV_Area = $forms_CV_Area[$i];
+        $core_value_subheading = $forms_core_value_subheading[$i];
+        $CV_valueQ1 = $forms_CV_valueQ1[$i];
+        $CV_valueQ2 = $forms_CV_valueQ2[$i];
+        $CV_valueQ3 = $forms_CV_valueQ3[$i];
+        $CV_valueQ4 = $forms_CV_valueQ4[$i];
+
+        $check_existing_behaviorData = $mysqli->query("SELECT * FROM behavior WHERE SR_number = '{$SR_number}'");
+        if ($check_existing_behaviorData->num_rows > 0) {
+            $updateBehavior = $mysqli->query("UPDATE behavior 
+                                            SET 
+                                            CV_valueQ1 = '$CV_valueQ1',
+                                            CV_valueQ2 = '$CV_valueQ2',
+                                            CV_valueQ3 = '$CV_valueQ3',
+                                            CV_valueQ4 = '$CV_valueQ4'
+                                            WHERE SR_number = '$SR_number'");
+        } else if ($check_existing_behaviorData->num_rows == 0) {
+            $updateBehavior = $mysqli->query("INSERT INTO behavior 
+                                            (SR_number, CV_Area, CV_valueQ1, CV_valueQ2, CV_valueQ3, CV_valueQ4) 
+                                            VALUES 
+                                            ('$SR_number', '$CV_Area', '$CV_valueQ1', '$CV_valueQ2', '$CV_valueQ3', '$CV_valueQ4')");
         }
     }
 }
