@@ -21,9 +21,19 @@ if (empty($_SESSION['F_number'])) {
   $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '{$_GET['viewStudent']}'";
   $rungetStudentGrades = $mysqli->query($getStudentGrades);
 
-  $getBehaviorData = "SELECT * FROM behavior WHERE SR_number = '{$_GET['viewStudent']}'";
-  $rungetBehaviorData = $mysqli->query($getBehaviorData);
-  $BehaviorData = $rungetBehaviorData->fetch_assoc();
+  $getBehaviorData = $mysqli->query("SELECT 
+                                    behavior_category.B_ID, behavior_category.core_value_area, behavior_category.core_value_subheading,
+                                    behavior.SR_number, behavior.CV_Area, behavior.CV_valueQ1,
+                                    behavior.CV_valueQ2, behavior.CV_valueQ3, behavior.CV_valueQ4
+                                    FROM behavior_category
+                                    INNER JOIN behavior 
+                                    ON behavior_category.core_value_area = behavior.CV_Area
+                                    WHERE behavior.SR_number = '{$_GET['viewStudent']}'");
+  $getBehaviorAreas = $mysqli->query("SELECT * FROM behavior_category");
+  $BehaviorDataArray = array();
+  while ($DataBehaviorCategory = $getBehaviorAreas->fetch_assoc()) {
+    $BehaviorDataArray[] = $DataBehaviorCategory;
+  }
 } else {
   header('Location: advisoryPage.php');
 }
@@ -148,19 +158,19 @@ if (empty($_SESSION['F_number'])) {
         <div class="content-wrapper">
           <div class="row">
             <div class="col-sm-12">
-              <div class="home-tab">
-                <div class="d-sm-flex align-items-center justify-content-between border-bottom">
-                  <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                    <h2 class="fw-bold text-primary text-uppercase">STUDENT REPORT CARD</h2>
+              <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
+                <div class="home-tab">
+                  <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                    <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
+                      <h2 class="fw-bold text-primary text-uppercase">STUDENT REPORT CARD</h2>
+                    </div>
                   </div>
-                </div>
-                <div class="tab-content tab-content-basic">
-                  <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                    <div class="row">
-                      <div class="col-12 grid-margin">
-                        <div class="card">
-                          <div class="card-body">
-                            <form class="form-sample" action="confirmfaculty.php" method="POST">
+                  <div class="tab-content tab-content-basic">
+                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                      <div class="row">
+                        <div class="col-12 grid-margin">
+                          <div class="card">
+                            <div class="card-body">
                               <div class="row" style="--bs-gutter-x: 0px; margin-bottom:20px;">
                                 <table id="head" class="table">
                                   <tr>
@@ -273,17 +283,15 @@ if (empty($_SESSION['F_number'])) {
                                   </div>
                                 </div>
                               </div>
-                            </form>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
 
-                    <div class="row">
-                      <div class="col-12 grid-margin">
-                        <div class="card">
-                          <div class="card-body">
-                            <form class="form-sample" action="confirmfaculty.php" method="POST">
+                      <div class="row">
+                        <div class="col-12 grid-margin">
+                          <div class="card">
+                            <div class="card-body">
                               <h3 style="text-align: center;">CHARACTER BUILDING</h3>
                               <div class="row">
                                 <div class="table-responsive">
@@ -303,164 +311,67 @@ if (empty($_SESSION['F_number'])) {
                                     </thead>
                                     <tbody>
                                       <?php
-                                      if ($rungetBehaviorData->num_rows > 0) { ?>
-                                        <tr>
-                                          <td rowspan="2" class="hatdog">Maka-Diyos</td>
-                                          <td rowspan="1" class="hatdog">Expresses one spiritual beliefs <br> while respecting the spiritual beliefs of others.</td>
-                                          <?php
-                                          $CV_value1_1_Count = 1;
-                                          while ($CV_value1_1_Count != 5) {
-                                            if ($BehaviorData['B_PeriodicRating'] == $CV_value1_1_Count) { ?>
-                                              <td rowspan="1" class="hatdog">
-                                                <input type="text" class="hatdog" value="<?php echo $BehaviorData['CV_value1_1'] ?>" size="2">
+                                      if ($getBehaviorData->num_rows > 0) {
+                                        $i = 0;
+                                        while ($BehaviorData = $getBehaviorData->fetch_assoc()) { ?>
+                                          <tr>
+                                            <input type="hidden" name="row[]" value="<?php echo $i; ?>">
+                                            <input type="hidden" name="CV_Area[]" value="<?php echo $BehaviorData['CV_Area']; ?>">
+                                            <?php if ($i % 2 == 0) { ?>
+                                              <td rowspan="2" class="hatdog">
+                                                <?php echo preg_replace('/[0-9]/', '', $BehaviorData['CV_Area']); ?>
                                               </td>
-                                            <?php } else { ?>
-                                              <td rowspan="1" class="hatdog">
-                                                <input type="text" class="hatdog" size="2" readonly>
-                                              </td>
-                                          <?php }
-                                            $CV_value1_1_Count++;
-                                          } ?>
-                                        </tr>
-                                        <tr>
-                                          <td rowspan="1" class="hatdog">Show adherence to ethical principle by upholding truth.</td>
-                                          <?php
-                                          $CV_value1_2_Count = 1;
-                                          while ($CV_value1_2_Count != 5) {
-                                            if ($BehaviorData['B_PeriodicRating'] == $CV_value1_2_Count) { ?>
-                                              <td rowspan="1" class="hatdog">
-                                                <input type="text" class="hatdog" value="<?php echo $BehaviorData['CV_value1_2'] ?>" size="2">
-                                              </td>
-                                            <?php } else { ?>
-                                              <td rowspan="1" class="hatdog">
-                                                <input type="text" class="hatdog" size="2" readonly>
-                                              </td>
-                                          <?php }
-                                            $CV_value1_2_Count++;
-                                          } ?>
-                                        </tr>
+                                            <?php } ?>
 
-                                        <tr>
-                                          <td rowspan="2" class="hatdog">Makatao</td>
-                                          <td rowspan="1" class="hatdog">Is sensitive to individual, social, and cultural differences.</td>
-                                          <?php
-                                          $CV_value2_1_Count = 1;
-                                          while ($CV_value2_1_Count != 5) {
-                                            if ($BehaviorData['B_PeriodicRating'] == $CV_value2_1_Count) { ?>
-                                              <td rowspan="1" class="hatdog">
-                                                <input type="text" class="hatdog" value="<?php echo $BehaviorData['CV_value2_1'] ?>" size="2">
+                                            <td rowspan="1" class="hatdog">
+                                              <?php echo $BehaviorData['core_value_subheading']; ?>
+                                              <input type="hidden" name="core_value_subheading[]" value="<?php echo $BehaviorData['core_value_subheading']; ?>">
+                                            </td>
+                                            <td rowspan="1" class="hatdog">
+                                              <input type="text" class="hatdog" name="CV_valueQ1[]" value="<?php echo $BehaviorData['CV_valueQ1']; ?>" size="2">
+                                            </td>
+                                            <td rowspan="1" class="hatdog">
+                                              <input type="text" class="hatdog" name="CV_valueQ2[]" value="<?php echo $BehaviorData['CV_valueQ2']; ?>" size="2">
+                                            </td>
+                                            <td rowspan="1" class="hatdog">
+                                              <input type="text" class="hatdog" name="CV_valueQ3[]" value="<?php echo $BehaviorData['CV_valueQ3']; ?>" size="2">
+                                            </td>
+                                            <td rowspan="1" class="hatdog">
+                                              <input type="text" class="hatdog" name="CV_valueQ4[]" value="<?php echo $BehaviorData['CV_valueQ4']; ?>" size="2">
+                                            </td>
+                                          </tr>
+                                        <?php $i++;
+                                        }
+                                      } else {
+                                        $i = 0;
+                                        while ($i != count($BehaviorDataArray)) { ?>
+                                          <tr>
+                                            <input type="hidden" name="CV_Area[]" value="<?php echo $BehaviorDataArray[$i]['core_value_area']; ?>">
+                                            <?php if ($i % 2 == 0) { ?>
+                                              <td rowspan="2" class="hatdog">
+                                                <?php echo preg_replace('/[0-9]/', '', $BehaviorDataArray[$i]['core_value_area']); ?>
                                               </td>
-                                            <?php } else { ?>
-                                              <td rowspan="1" class="hatdog">
-                                                <input type="text" class="hatdog" size="2" readonly>
-                                              </td>
-                                          <?php }
-                                            $CV_value2_1_Count++;
-                                          } ?>
-                                        </tr>
-                                        <tr>
-                                          <td rowspan="1" class="hatdog">Demonstrates contributions toward solidarity.</td>
-                                          <?php
-                                          $CV_value2_2_Count = 1;
-                                          while ($CV_value2_2_Count != 5) {
-                                            if ($BehaviorData['B_PeriodicRating'] == $CV_value2_2_Count) { ?>
-                                              <td rowspan="1" class="hatdog">
-                                                <input type="text" class="hatdog" value="<?php echo $BehaviorData['CV_value2_2'] ?>" size="2">
-                                              </td>
-                                            <?php } else { ?>
-                                              <td rowspan="1" class="hatdog">
-                                                <input type="text" class="hatdog" size="2" readonly>
-                                              </td>
-                                          <?php }
-                                            $CV_value2_2_Count++;
-                                          } ?>
-                                        </tr>
-
-                                        <tr>
-                                          <td rowspan="1" class="hatdog">Makalikasan</td>
-                                          <td rowspan="1" class="hatdog">Cares for the environment and utilizes resources wisely, judiously and economically.</td>
-                                          <?php
-                                          $CV_value3_Count = 1;
-                                          while ($CV_value3_Count != 5) {
-                                            if ($BehaviorData['B_PeriodicRating'] == $CV_value3_Count) { ?>
-                                              <td rowspan="1" class="hatdog">
-                                                <input type="text" class="hatdog" value="<?php echo $BehaviorData['CV_value3'] ?>" size="2">
-                                              </td>
-                                            <?php } else { ?>
-                                              <td rowspan="1" class="hatdog">
-                                                <input type="text" class="hatdog" size="2" readonly>
-                                              </td>
-                                          <?php }
-                                            $CV_value3_Count++;
-                                          } ?>
-                                        </tr>
-
-                                        <tr>
-                                          <td rowspan="2" class="hatdog">Makabansa</td>
-                                          <td rowspan="1" class="hatdog">Demonstrates pride in being a Filipino, exercises the rights and responsibilities of a Filipino citizen.</td>
-                                          <?php
-                                          $CV_value4_1_Count = 1;
-                                          while ($CV_value4_1_Count != 5) {
-                                            if ($BehaviorData['B_PeriodicRating'] == $CV_value4_1_Count) { ?>
-                                              <td rowspan="1" class="hatdog">
-                                                <input type="text" class="hatdog" value="<?php echo $BehaviorData['CV_value4_1'] ?>" size="2">
-                                              </td>
-                                            <?php } else { ?>
-                                              <td rowspan="1" class="hatdog">
-                                                <input type="text" class="hatdog" size="2" readonly>
-                                              </td>
-                                          <?php }
-                                            $CV_value4_1_Count++;
-                                          } ?>
-                                        </tr>
-                                        <tr>
-                                          <td rowspan="1" class="hatdog">Demonstrates appropriate behavior in carrying out activities in the school, community and country.</td>
-                                          <?php
-                                          $CV_value4_2_Count = 1;
-                                          while ($CV_value4_2_Count != 5) {
-                                            if ($BehaviorData['B_PeriodicRating'] == $CV_value4_2_Count) { ?>
-                                              <td rowspan="1" class="hatdog">
-                                                <input type="text" class="hatdog" value="<?php echo $BehaviorData['CV_value4_2'] ?>" size="2">
-                                              </td>
-                                            <?php } else { ?>
-                                              <td rowspan="1" class="hatdog">
-                                                <input type="text" class="hatdog" size="2" readonly>
-                                              </td>
-                                          <?php }
-                                            $CV_value4_2_Count++;
-                                          } ?>
-                                        </tr>
-                                      <?php } else { ?>
-                                        <tr>
-                                          <td rowspan="2" class="hatdog">Maka-Diyos</td>
-                                          <td rowspan="1" class="hatdog">Expresses one spiritual beliefs while respecting the spiritual beliefs of others.</td>
-                                          <td colspan="4" rowspan="7" class="hatdog">NO DATA</td>
-                                        </tr>
-                                        <tr>
-                                          <td rowspan="1" class="hatdog">Show adherence to ethical principle by upholding truth.</td>
-                                        </tr>
-
-                                        <tr>
-                                          <td rowspan="2" class="hatdog">Makatao</td>
-                                          <td rowspan="1" class="hatdog">Is sensitive to individual, social, and cultural differences.</td>
-                                        </tr>
-                                        <tr>
-                                          <td rowspan="1" class="hatdog">Demonstrates contributions toward solidarity.</td>
-                                        </tr>
-
-                                        <tr>
-                                          <td rowspan="1" class="hatdog">Makalikasan</td>
-                                          <td rowspan="1" class="hatdog">Cares for the environment and utilizes resources wisely, judiously and economically.</td>
-                                        </tr>
-
-                                        <tr>
-                                          <td rowspan="2" class="hatdog">Makabansa</td>
-                                          <td rowspan="1" class="hatdog">Demonstrates pride in being a Filipino, exercises the rights and responsibilities of a Filipino citizen.</td>
-                                        </tr>
-                                        <tr>
-                                          <td rowspan="1" class="hatdog">Demonstrates appropriate behavior in carrying out activities in the school, community and country.</td>
-                                        </tr>
-                                      <?php }
+                                            <?php } ?>
+                                            <td rowspan="1" class="hatdog">
+                                              <?php echo $BehaviorDataArray[$i]['core_value_subheading']; ?>
+                                              <input type="hidden" name="core_value_subheading[]" value="##">
+                                            </td>
+                                            <td rowspan="1" class="hatdog">
+                                              <input type="text" class="hatdog" name="CV_valueQ1[]" value="##" size="2">
+                                            </td>
+                                            <td rowspan="1" class="hatdog">
+                                              <input type="text" class="hatdog" name="CV_valueQ2[]" value="##" size="2">
+                                            </td>
+                                            <td rowspan="1" class="hatdog">
+                                              <input type="text" class="hatdog" name="CV_valueQ3[]" value="##" size="2">
+                                            </td>
+                                            <td rowspan="1" class="hatdog">
+                                              <input type="text" class="hatdog" name="CV_valueQ4[]" value="##" size="2">
+                                            </td>
+                                          </tr>
+                                      <?php $i++;
+                                        }
+                                      }
                                       ?>
                                     </tbody>
                                   </table>
@@ -489,22 +400,19 @@ if (empty($_SESSION['F_number'])) {
                                   </div>
                                 </div>
                               </div>
-
-                            </form>
+                            </div>
                           </div>
                         </div>
                       </div>
-
                     </div>
                   </div>
                 </div>
-
-              </div>
+                <div class="text-center">
+                  <button type="submit" class="btn btn-primary me-2" name="saveBehavior">Save</button>
+                  <button class="btn btn-light">Cancel</button>
+                </div>
+              </form>
             </div>
-            <form style="text-align: center;">
-              <button type="submit" class="btn btn-primary me-2">Save</button>
-              <button class="btn btn-light">Cancel</button>
-            </form>
           </div>
         </div>
         <!-- content-wrapper ends -->
