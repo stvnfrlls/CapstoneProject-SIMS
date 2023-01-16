@@ -1,4 +1,13 @@
-<?php require_once("../assets/php/server.php"); ?>
+<?php
+require_once("../assets/php/server.php");
+
+$attendance_array = array();
+$get_present_student = $mysqli->query("SELECT DISTINCT * FROM attendance");
+while ($present_student = $get_present_student->fetch_assoc()) {
+    $attendance_array[] = $present_student;
+}
+$attendance_rowCount = 0;
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -80,69 +89,38 @@
             </div>
             <div class="row d-flex justify-content-center mb-3">
                 <div class="col text-center form-group form">
-                    <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" class="form-horizontal">
+                    <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="qr_form" class="form-horizontal">
                         <label for="qrcode_input" class="form-label">Scan QR Code</label>
                         <input type="text" name="qrcode_input" id="qrcode_input" required>
-                        <div class="">
-                            <input type="submit" value="present" name="present" id="present">
-                        </div>
                     </form>
-                    <!-- This will automatically submit the form when the value of the input field changes and is not an empty string.
-                    <form id="myForm">
-                        <label>Enter a value:</label><br>
-                        <input type="text" id="inputField">
-                    </form>
-
-                    <script>
-                        // Get the input field and the form
-                        var inputField = document.getElementById("inputField");
-                        var form = document.getElementById("myForm");
-
-                        // Add an event listener to the input field that listens for a change in the value
-                        inputField.addEventListener("change", function() {
-                            // If the value is not an empty string, submit the form
-                            if (inputField.value !== "") {
-                                form.submit();
-                            }
-                        });
-                    </script>
-                     -->
-
                 </div>
             </div>
             <div class="row d-flex justify-content-center px-5">
                 <div class="col text-center mb-3 table">
                     <table class="table table-striped table-class" id="table-id">
+                        <tr>
+                            <th style="text-align: center;">Student Number</th>
+                            <th style="text-align: center;">Time In</th>
+                            <th style="text-align: center;">Time Out</th>
+                        </tr>
                         <?php
-                        $get_present_student = "SELECT * FROM attendance";
-                        $result = $mysqli->query($get_present_student);
-
-                        if ($result->num_rows > 0) { ?>
-                            <tr>
-                                <th style="text-align: center;">Student Number</th>
-                                <th style="text-align: center;">Time In</th>
-                                <th style="text-align: center;">Time Out</th>
-                            </tr>
-                            <?php
-                            while ($row = $result->fetch_assoc()) { ?>
+                        if (count($attendance_array) > 0) {
+                            while ($attendance_rowCount != count($attendance_array)) { ?>
                                 <tr>
-                                    <td style="text-align: center;"><?php echo $row['SR_number'] ?></td>
-                                    <td style="text-align: center;"><?php echo $row['A_time_in'] ?></td>
-                                    <td style="text-align: center;"><?php echo $row['A_time_out'] ?></td>
+                                    <td style="text-align: center;"><?php echo $attendance_array[$attendance_rowCount]['SR_number'] ?></td>
+                                    <?php
+                                    if ($attendance_array[$attendance_rowCount]['A_time_IN']) {
+                                        echo '<td style="text-align: center;">' . $attendance_array[$attendance_rowCount]['A_time_IN'] . " - " . $attendance_array[$attendance_rowCount]['A_fetcher_IN'] . '</td>';
+                                    }
+                                    if ($attendance_array[$attendance_rowCount]['A_time_OUT']) {
+                                        echo '<td style="text-align: center;">' . $attendance_array[$attendance_rowCount]['A_time_OUT'] . " - " . $attendance_array[$attendance_rowCount]['A_fetcher_OUT'] . '</td>';
+                                    }
+                                    ?>
                                 </tr>
                             <?php
+                                $attendance_rowCount++;
                             }
                             ?>
-                        <?php
-                        } else { ?>
-                            <tr style="border: 1px solid black;">
-                                <th style="border: 1px solid black;text-align: center;">Student Number</th>
-                                <th style="border: 1px solid black;text-align: center;">Time In</th>
-                                <th style="border: 1px solid black;text-align: center;">Time Out</th>
-                            </tr>
-                            <tr style="border: 1px solid black;">
-                                <td colspan="3" style="text-align: center;">NO DATA</td>
-                            </tr>
                         <?php
                         }
                         ?>
@@ -220,7 +198,7 @@
 
     scanner.addListener('scan', function(c) {
         document.getElementById('qrcode_input').value = c;
-
+        document.forms["qr_form"].submit(); 
     })
 </script>
 <!-- JavaScript Libraries -->
