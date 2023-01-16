@@ -2,10 +2,32 @@
 session_start();
 include('database.php');
 $errors = array();
-$success = array();
 date_default_timezone_set('Asia/Hong_Kong'); //remove mo to kapag nilagay mo na sa hosting sites
 $year = date('Y');
 $month = date('m');
+
+function function_alert($msg)
+{
+    echo "<script type='text/javascript'>alert('$msg');</script>";
+}
+
+function function_prompt($msg)
+{
+    echo "<script type='text/javascript'>prompt('$msg');</script>";
+}
+
+function function_confirm($msg)
+{
+    echo "<script type='text/javascript'>confirm('$msg');</script>";
+}
+
+function validate($data)
+{
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
 
 //Login and Register Process
 if (isset($_POST['login-button'])) {
@@ -185,100 +207,16 @@ if (isset($_POST['updatePassword'])) {
 //END
 
 //Faculty Process
-if (isset($_POST['present'])) {
-
-    //echo '<script>alert("Welcome to Geeks for Geeks")</script>';
-    //add this para sa confirmation or alert para sa duplicate na scan sa qr
-
+if (isset($_POST['qrcode_input'])) {
     $qrCode = $_POST['qrcode_input'];
     $time = date("Y-m-d H:i:s");
 
     if (str_contains($qrCode, 'SRVC')) {
-        $verify_fetcher = "SELECT SRVC_number, SRVC_fullname, SR_number  FROM fetchers WHERE SRVC_number = '$qrCode'";
-        $resultverify_fetcher = $mysqli->query($verify_fetcher);
-        $dataresultverify_fetcher = $resultverify_fetcher->fetch_assoc();
-        $SR_number = $dataresultverify_fetcher['SR_number'];
-        $SRVC_fullname = $dataresultverify_fetcher['SRVC_fullname'];
-
-        if (!empty($SR_number)) {
-            $check_attendance = ("SELECT * FROM attendance WHERE SR_number = '$SR_number'");
-            $resultcheck_attendance = $mysqli->query($check_attendance);
-            if ($resultcheck_attendance->num_rows >= 0) {
-                $dataresultcheck_attendance = $resultcheck_attendance->fetch_assoc();
-                $timeIN = $dataresultcheck_attendance['A_time_in'];
-                $timeOUT = $dataresultcheck_attendance['A_time_out'];
-
-                if ($timeIN == null) {
-                    $insertAttendance = ("INSERT INTO attendance (SR_number, A_time_in, A_fetcher) VALUES ('$SR_number', '$time', '$SRVC_fullname')");
-                    $resultinsertAttendance = $mysqli->query($insertAttendance);
-
-                    if ($resultinsertAttendance->num_rows >= 0) {
-                        header('Location: ../faculty/scanQR.php');
-                        echo "Success " . $SR_number . " " . $time;
-                    } else {
-                        echo $mysqli->error;
-                    }
-                } elseif ($timeIN != null && $timeOUT == null) {
-                    $insertTimeout = ("UPDATE attendance SET A_time_out = '$time' WHERE SR_number = '$SR_number'");
-                    $resultinsertTimeout = $mysqli->query($insertTimeout);
-
-                    if ($resultinsertTimeout) {
-                        header('Location: ../faculty/scanQR.php');
-                        echo "Success " . $SR_number . " " . $time;
-                    } else {
-                        echo $mysqli->error;
-                    }
-                } elseif ($timeIN != null && $timeOUT != null) {
-                    echo "Student already checked out";
-                }
-            }
-        } else {
-            echo "STUDENT DOES NOT EXIST";
-        }
-    } elseif (str_contains($qrCode, 'SP')) {
-        $verify_student = "SELECT SR_number FROM studentrecord WHERE SR_number = '$qrCode'";
-        $resultverify_student = $mysqli->query($verify_student);
-        $dataresultverify_student = $resultverify_student->fetch_assoc();
-        $SR_number = $dataresultverify_student['SR_number'];
-
-        if (!empty($SR_number)) {
-            $check_attendance = ("SELECT * FROM attendance WHERE SR_number = '$SR_number'");
-            $resultcheck_attendance = $mysqli->query($check_attendance);
-
-            if ($resultcheck_attendance->num_rows >= 0) {
-                $dataresultcheck_attendance = $resultcheck_attendance->fetch_assoc();
-                $timeIN = $dataresultcheck_attendance['A_time_in'];
-                $timeOUT = $dataresultcheck_attendance['A_time_out'];
-
-                if ($timeIN == null) {
-                    $insertAttendance = ("INSERT INTO attendance (SR_number, A_time_in) VALUES ('$SR_number', '$time')");
-                    $resultinsertAttendance = $mysqli->query($insertAttendance);
-
-                    if ($resultinsertAttendance->num_rows >= 0) {
-                        header('Location: ../faculty/scanQR.php');
-                        echo "Success " . $SR_number . " " . $time;
-                    } else {
-                        echo $mysqli->error;
-                    }
-                } elseif ($timeIN != null && $timeOUT == null) {
-                    $insertTimeout = ("UPDATE attendance SET A_time_out = '$time' WHERE SR_number = '$SR_number'");
-                    $resultinsertTimeout = $mysqli->query($insertTimeout);
-
-                    if ($resultinsertTimeout) {
-                        header('Location: ../faculty/scanQR.php');
-                        echo "Success " . $SR_number . " " . $time;
-                    } else {
-                        echo $mysqli->error;
-                    }
-                } elseif ($timeIN != null && $timeOUT != null) {
-                    echo "Student already checked out";
-                }
-            }
-        } else {
-            echo "STUDENT DOES NOT EXIST";
-        }
+        function_alert($qrCode.'Service');
+    } elseif (str_contains($qrCode, 'S')) {
+        function_alert($qrCode.'Student');
     } else {
-        echo "INVALID QR CODE";
+        function_alert('Account does not exist');
     }
 }
 if (isset($_POST['encode'])) {
