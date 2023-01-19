@@ -11,8 +11,8 @@ if (empty($_SESSION['AD_number'])) {
         header('Location: student.php');
     } else {
         $verifySR_number = "SELECT * FROM studentrecord 
-                        INNER JOIN guardian_fetcher
-                        ON studentrecord.SR_number = guardian_fetcher.G_guardianOfStudent
+                        INNER JOIN guardian
+                        ON studentrecord.SR_number = guardian.G_guardianOfStudent
                         WHERE studentrecord.SR_number = '{$sr_number}'";
         $runverifySR_number = $mysqli->query($verifySR_number);
         $getRecord =  $runverifySR_number->fetch_assoc();
@@ -20,7 +20,7 @@ if (empty($_SESSION['AD_number'])) {
         if ($getRecord['SR_number'] == $sr_number) {
             $tempDir = '../assets/temp/';
             if (!file_exists($tempDir)) {
-                mkdir("../assets/temp/");
+                mkdir($tempDir);
             }
             $qrcode_data = $getRecord['SR_number'];
             QRcode::png($qrcode_data,  $tempDir . '' . $qrcode_data . '.png', QR_ECLEVEL_L);

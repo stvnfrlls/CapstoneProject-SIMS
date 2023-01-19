@@ -8,8 +8,8 @@ if (empty($_SESSION['AD_number'])) {
 
     if (isset($_GET['SR_Number'])) {
         $verifySR_number = "SELECT * FROM studentrecord 
-                            JOIN guardian_fetcher
-                            ON studentrecord.SR_number = guardian_fetcher.G_guardianOfStudent
+                            JOIN guardian
+                            ON studentrecord.SR_number = guardian.G_guardianOfStudent
                             WHERE studentrecord.SR_number = '{$sr_number}'";
         $runverifySR_number = $mysqli->query($verifySR_number);
         $getRecord =  $runverifySR_number->fetch_assoc();
