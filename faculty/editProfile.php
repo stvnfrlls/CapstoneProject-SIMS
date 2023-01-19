@@ -66,7 +66,7 @@ if (isset($_POST['confirm_faculty'])) {
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item" style="text-align:center; font-size: 20px; color: #b9b9b9; margin-top:20px;">FACULTY</li>
-            <!-- line 1 -->
+          <!-- line 1 -->
           <li class="nav-item nav-category">Profile</li>
           <li class="nav-item">
             <a class="nav-link" href="">
@@ -86,7 +86,7 @@ if (isset($_POST['confirm_faculty'])) {
               <span class="menu-title">Create Reminders</span>
             </a>
           </li>
-            <!-- line 2 -->
+          <!-- line 2 -->
           <li class="nav-item nav-category">Menu</li>
           <li class="nav-item">
             <a class="nav-link" href="../faculty/scanQR.php">
@@ -128,11 +128,11 @@ if (isset($_POST['confirm_faculty'])) {
               <div class="home-tab">
                 <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                   <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                    <h2 class="fw-bold text-primary text-uppercase">Profile  Information</h2>
+                    <h2 class="fw-bold text-primary text-uppercase">Profile Information</h2>
                   </div>
                 </div>
                 <div class="tab-content tab-content-basic">
-                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                  <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                     <div class="row">
                       <div class="col-12 grid-margin">
                         <div class="card">
@@ -144,7 +144,7 @@ if (isset($_POST['confirm_faculty'])) {
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Department</label>
                                   <div class="col-sm-12">
-                                    <select class="form-select form-control" name="F_department" required>
+                                    <select class="form-select" name="F_department" required>
                                       <option value=""></option>
                                       <option value="English">English Department</option>
                                       <option value="Filipino">Filipino Department</option>
@@ -158,13 +158,9 @@ if (isset($_POST['confirm_faculty'])) {
                                 <div class="col-md-8">
                                   <label class="col-sm-12 col-form-label">Profile Picture</label>
                                   <div class="col-sm-12">
-                                    <div class="form-group">                          
-                                      <input type="file" name="img[]" class="file-upload-default">
+                                    <div class="form-group">
                                       <div class="input-group col-xs-12">
                                         <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
-                                        <span class="input-group-append">
-                                          <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
-                                        </span>
                                       </div>
                                     </div>
                                   </div>
@@ -233,21 +229,21 @@ if (isset($_POST['confirm_faculty'])) {
                                 </div>
 
                                 <div class="row" style="padding-bottom: 15px;">
-                                        <div class="col-md-4">
-                                                
-                                            <label class="col-sm-12 col-form-label">Religion</label>
-                                            <div class="col-sm-12">
-                                                <input type="text" class="form-control"/>
-                                            </div>
-                                                
-                                            </div>
-                                            <div class="col-md-4">
-                                                
-                                            <label class="col-sm-12 col-form-label">Citizenship</label>
-                                                <div class="col-sm-12">
-                                                    <input type="text" class="form-control"/>
-                                                </div>
-                                            </div>
+                                  <div class="col-md-4">
+
+                                    <label class="col-sm-12 col-form-label">Religion</label>
+                                    <div class="col-sm-12">
+                                      <input type="text" class="form-control" />
+                                    </div>
+
+                                  </div>
+                                  <div class="col-md-4">
+
+                                    <label class="col-sm-12 col-form-label">Citizenship</label>
+                                    <div class="col-sm-12">
+                                      <input type="text" class="form-control" />
+                                    </div>
+                                  </div>
                                 </div>
 
                                 <h4 class="card-title">Address</h4>
@@ -315,16 +311,16 @@ if (isset($_POST['confirm_faculty'])) {
                           </div>
                         </div>
                       </div>
-                    </div>        
                     </div>
+                  </div>
                 </div>
-                  
+
               </div>
             </div>
-                <form style="text-align: center;">
-                    <button type="submit" class="btn btn-primary me-2">Save</button>
-                    <button class="btn btn-light">Back</button>
-                </form>
+            <form style="text-align: center;">
+              <button type="submit" class="btn btn-primary me-2">Save</button>
+              <button class="btn btn-light">Back</button>
+            </form>
           </div>
         </div>
         <!-- content-wrapper ends -->
