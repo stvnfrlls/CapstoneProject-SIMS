@@ -1,6 +1,16 @@
 <?php
 require_once("../assets/php/server.php");
+
 $ST_number = $_SESSION['SR_number'];
+
+$studentInformation = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$ST_number}'");
+$studentData = $studentInformation->fetch_assoc();
+
+$GradeSection = $mysqli->query("SELECT * FROM sections WHERE S_yearLevel = '{$studentData['SR_grade']}' AND S_name = '{$studentData['SR_section']}'");
+$GradeSectionData = $GradeSection->fetch_assoc();
+
+$Faculty = $mysqli->query("SELECT F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$GradeSectionData['S_adviser']}'");
+$FacultyData = $Faculty->fetch_assoc();
 
 $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '$ST_number'";
 $resultgetStudentGrades = $mysqli->query($getStudentGrades);
@@ -98,12 +108,12 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
             <div class="col m-3">
                 <table id="head" class="table" style="margin-bottom:20px;">
                     <tr>
-                        <td class="hatdog" style="text-align: left;">Name: Camille Anne G. Sabile</td>
-                        <td class="hatdog" style="text-align: left;">Student Number: 2019-00188-SP-0</td>
+                        <td class="hatdog" style="text-align: left;">Name: <?php echo $studentData['SR_lname'] . ", " . $studentData['SR_fname'] . " " . substr($studentData['SR_mname'], 0, 1) ?></td>
+                        <td class="hatdog" style="text-align: left;">Student Number: <?php echo $studentData['SR_number']; ?></td>
                     </tr>
                     <tr>
-                        <td class="hatdog" style="text-align: left;">Grade and Section: 6 - Einstein</td>
-                        <td class="hatdog" style="text-align: left;">Adviser: Ms. Hazel Grace L. Cantuba</td>
+                        <td class="hatdog" style="text-align: left;">Grade and Section: <?php echo $GradeSectionData['S_yearLevel'] . " - " . $GradeSectionData['S_name']; ?></td>
+                        <td class="hatdog" style="text-align: left;">Adviser: <?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1) ?></td>
                     </tr>
                 </table>
                 <div class="">
@@ -124,60 +134,48 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="hatdog">English</td>
-                                    <td class="hatdog">90</td>
-                                    <td class="hatdog">90</td>
-                                    <td class="hatdog">91</td>
-                                    <td class="hatdog">91</td>
-                                    <td class="hatdog">90.5</td>
-                                    <td class="hatdog">Passed</td>
-                                </tr>
-                                <tr>
-                                    <td class="hatdog">Mathemics</td>
-                                    <td class="hatdog">90</td>
-                                    <td class="hatdog">90</td>
-                                    <td class="hatdog">91</td>
-                                    <td class="hatdog">91</td>
-                                    <td class="hatdog">90.5</td>
-                                    <td class="hatdog">Passed</td>
-                                </tr>
-                                <tr>
-                                    <td class="hatdog">Filipino</td>
-                                    <td class="hatdog">90</td>
-                                    <td class="hatdog">90</td>
-                                    <td class="hatdog">91</td>
-                                    <td class="hatdog">91</td>
-                                    <td class="hatdog">90.5</td>
-                                    <td class="hatdog">Passed</td>
-                                </tr>
-                                <tr>
-                                    <td class="hatdog">Science</td>
-                                    <td class="hatdog">90</td>
-                                    <td class="hatdog">90</td>
-                                    <td class="hatdog">91</td>
-                                    <td class="hatdog">91</td>
-                                    <td class="hatdog">90.5</td>
-                                    <td class="hatdog">Passed</td>
-                                </tr>
-                                <tr>
-                                    <td class="hatdog">MAPEH</td>
-                                    <td class="hatdog">90</td>
-                                    <td class="hatdog">90</td>
-                                    <td class="hatdog">91</td>
-                                    <td class="hatdog">91</td>
-                                    <td class="hatdog">90.5</td>
-                                    <td class="hatdog">Passed</td>
-                                </tr>
-                                <tr>
-                                    <td class="hatdog">Araling Panlipunan</td>
-                                    <td class="hatdog">90</td>
-                                    <td class="hatdog">90</td>
-                                    <td class="hatdog">91</td>
-                                    <td class="hatdog">91</td>
-                                    <td class="hatdog">90.5</td>
-                                    <td class="hatdog">Passed</td>
-                                </tr>
+                                <?php
+                                $studentGrades = $mysqli->query("SELECT * FROM grades WHERE SR_number = '{$_SESSION['SR_number']}'");
+                                while ($studentGradesData = $studentGrades->fetch_assoc()) { ?>
+                                    <tr>
+                                        <td class="hatdog"><?php echo $studentGradesData['G_learningArea']; ?></td>
+                                        <?php
+                                        if ($studentGradesData['G_gradesQ1']) { ?>
+                                            <td class="hatdog"><?php echo $studentGradesData['G_gradesQ1']; ?></td>
+                                        <?php
+                                        } else { ?>
+                                            <td class="hatdog"></td>
+                                        <?php } ?>
+
+                                        <?php
+                                        if ($studentGradesData['G_gradesQ2']) { ?>
+                                            <td class="hatdog"><?php echo $studentGradesData['G_gradesQ2']; ?></td>
+                                        <?php
+                                        } else { ?>
+                                            <td class="hatdog"></td>
+                                        <?php } ?>
+
+                                        <?php
+                                        if ($studentGradesData['G_gradesQ3']) { ?>
+                                            <td class="hatdog"><?php echo $studentGradesData['G_gradesQ3']; ?></td>
+                                        <?php
+                                        } else { ?>
+                                            <td class="hatdog"></td>
+                                        <?php } ?>
+
+                                        <?php
+                                        if ($studentGradesData['G_gradesQ4']) { ?>
+                                            <td class="hatdog"><?php echo $studentGradesData['G_gradesQ4']; ?></td>
+                                        <?php
+                                        } else { ?>
+                                            <td class="hatdog"></td>
+                                        <?php } ?>
+
+                                        <td class="hatdog"><?php echo $studentGradesData['G_finalgrade']; ?></td>
+                                        <td class="hatdog">Passed</td>
+                                    </tr>
+                                <?php }
+                                ?>
                             </tbody>
                         </table>
                     </div>
@@ -238,62 +236,47 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td rowspan="2" class="hatdog">Maka-Diyos</td>
-                                    <td rowspan="1" class="hatdog">Expresses one spiritual beliefs while respecting the spiritual beliefs of others.</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                </tr>
-                                <tr>
-                                    <td rowspan="1" class="hatdog">Show adherence to ethical principle by upholding truth.</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                </tr>
+                                <?php
+                                $getBehaviorData = $mysqli->query("SELECT 
+                                                behavior_category.B_ID, behavior_category.core_value_area, behavior_category.core_value_subheading,
+                                                behavior.SR_number, behavior.CV_Area, behavior.CV_valueQ1,
+                                                behavior.CV_valueQ2, behavior.CV_valueQ3, behavior.CV_valueQ4
+                                                FROM behavior_category
+                                                INNER JOIN behavior 
+                                                ON behavior_category.core_value_area = behavior.CV_Area
+                                                WHERE behavior.SR_number = '{$_SESSION['SR_number']}'");
+                                $getBehaviorAreas = $mysqli->query("SELECT * FROM behavior_category");
+                                $BehaviorDataArray = array();
+                                while ($DataBehaviorCategory = $getBehaviorAreas->fetch_assoc()) {
+                                    $BehaviorDataArray[] = $DataBehaviorCategory;
+                                }
+                                ?>
+                                <?php
+                                if ($getBehaviorData->num_rows > 0) {
+                                    $i = 0;
+                                    while ($BehaviorData = $getBehaviorData->fetch_assoc()) { ?>
+                                        <tr>
+                                            <?php if ($i % 2 == 0) { ?>
+                                                <td rowspan="2" class="hatdog">
+                                                    <?php echo preg_replace('/[0-9]/', '', $BehaviorData['CV_Area']); ?>
+                                                </td>
+                                            <?php } ?>
 
-                                <tr>
-                                    <td rowspan="2" class="hatdog">Makatao</td>
-                                    <td rowspan="1" class="hatdog">Is sensitive to individual, social, and cultural differences.</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                </tr>
-                                <tr>
-                                    <td rowspan="1" class="hatdog">Demonstrates contributions toward solidarity.</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                </tr>
-
-                                <tr>
-                                    <td rowspan="1" class="hatdog">Makalikasan</td>
-                                    <td rowspan="1" class="hatdog">Cares for the environment and utilizes resources wisely, judiously and economically.</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                </tr>
-
-                                <tr>
-                                    <td rowspan="2" class="hatdog">Makabansa</td>
-                                    <td rowspan="1" class="hatdog">Demonstrates pride in being a Filipino, exercises the rights and responsibilities of a Filipino citizen.</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                </tr>
-                                <tr>
-                                    <td rowspan="1" class="hatdog">Demonstrates appropriate behavior in carrying out activities in the school, community and country.</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                    <td rowspan="1" class="hatdog">AO</td>
-                                </tr>
+                                            <td rowspan="1" class="hatdog"><?php echo $BehaviorData['core_value_subheading']; ?>
+                                            </td>
+                                            <td rowspan="1" class="hatdog"><?php echo $BehaviorData['CV_valueQ1']; ?>
+                                            </td>
+                                            <td rowspan="1" class="hatdog"><?php echo $BehaviorData['CV_valueQ2']; ?>
+                                            </td>
+                                            <td rowspan="1" class="hatdog"><?php echo $BehaviorData['CV_valueQ3']; ?>
+                                            </td>
+                                            <td rowspan="1" class="hatdog"><?php echo $BehaviorData['CV_valueQ4']; ?>
+                                            </td>
+                                        </tr>
+                                <?php $i++;
+                                    }
+                                }
+                                ?>
                             </tbody>
                         </table>
                     </div>
