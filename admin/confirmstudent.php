@@ -218,8 +218,8 @@ if (empty($_SESSION['AD_number'])) {
                                                                     <div class="col-md-3">
                                                                         <label label class="col-sm-12 col-form-label">Gender</label>
                                                                         <div class="col-sm-12">
-                                                                            <select class="form-select" name="S_gender" disabled>
-                                                                                <option selected><?php echo $_POST['S_gender'] ?></option>
+                                                                            <select class="form-select" name="S_gender" readonly>
+                                                                                <option value="<?php echo $_POST['S_gender'] ?>" selected><?php echo $_POST['S_gender'] ?></option>
                                                                                 <option value="Male">Male</option>
                                                                                 <option value="Female">Female</option>
                                                                                 <option value="NA">Prefer not to say</option>
@@ -401,9 +401,9 @@ if (empty($_SESSION['AD_number'])) {
                                                             <div class="col-md-6">
                                                                 <label class="col-sm-12 col-form-label">Grade Level</label>
                                                                 <div class="col-sm-12">
-                                                                    <select class="form-select" name="S_gradelevel" disabled>
+                                                                    <select class="form-select" name="S_gradelevel">
                                                                         <option selected><?php echo $_POST['S_gradelevel'] ?></option>
-                                                                        <option value="0">Kinder</option>
+                                                                        <option value="KINDER">Kinder</option>
                                                                         <option value="1">Grade - 1</option>
                                                                         <option value="2">Grade - 2</option>
                                                                         <option value="3">Grade - 3</option>
@@ -416,7 +416,7 @@ if (empty($_SESSION['AD_number'])) {
                                                             <div class="col-md-6">
                                                                 <label label class="col-sm-12 col-form-label">Section</label>
                                                                 <div class="col-sm-12">
-                                                                    <select class="form-select" name="S_section" disabled>
+                                                                    <select class="form-select" name="S_section" >
                                                                         <option selected><?php echo $_POST['S_section'] ?></option>
                                                                         <option value="1">1</option>
                                                                         <option value="2">2</option>
