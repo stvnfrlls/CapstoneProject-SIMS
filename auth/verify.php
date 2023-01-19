@@ -1,6 +1,5 @@
 <?php
 require_once("../assets/php/server.php");
-unset($_SESSION['verifyEmailData']);
 ?>
 
 <!DOCTYPE html>
@@ -95,7 +94,7 @@ unset($_SESSION['verifyEmailData']);
     <div class="limiter">
         <div class="container-login100">
             <div class="wrap-login100">
-                <form class="login100-form validate-form" method="post" action="<?php $_SERVER["PHP_SELF"] ?>">
+                <form class="login100-form validate-form" method="POST" action="<?php $_SERVER["PHP_SELF"] ?>">
                     <span class="login100-form-title p-b-43">
                         Enter Email Address
                     </span>

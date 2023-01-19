@@ -1,4 +1,8 @@
-<?php require_once("../assets/php/server.php"); ?>
+<?php
+require_once("../assets/php/server.php");
+
+unset($_SESSION['verifyEmailData']);
+?>
 
 <!DOCTYPE html>
 <html lang="en">
