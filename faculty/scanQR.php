@@ -2,7 +2,10 @@
 require_once("../assets/php/server.php");
 
 $attendance_array = array();
-$get_present_student = $mysqli->query("SELECT DISTINCT * FROM attendance");
+$getStudentRecord = $mysqli->query('SELECT * FROM studentrecord');
+
+$get_present_student = $mysqli->query("SELECT * FROM attendance");
+
 while ($present_student = $get_present_student->fetch_assoc()) {
     $attendance_array[] = $present_student;
 }
@@ -35,6 +38,11 @@ $attendance_rowCount = 0;
     <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
     <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="../assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Sweet Alert Library -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'>
+    </link>
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
@@ -90,8 +98,11 @@ $attendance_rowCount = 0;
             <div class="row d-flex justify-content-center mb-3">
                 <div class="col text-center form-group form">
                     <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="qr_form" class="form-horizontal">
-                        <label for="qrcode_input" class="form-label">Scan QR Code</label>
-                        <input type="text" name="qrcode_input" id="qrcode_input" required>
+                        <label for="qrcode_input" class="form-label">QR CODE</label>
+                        <input type="text" name="student" id="input1" required><br>
+
+                        <label for="qrcode_input" class="form-label" id="labelinput2">Fetcher Code (optional)</label>
+                        <input type="text" name="fetcher" id="input2" required>
                     </form>
                 </div>
             </div>
@@ -196,9 +207,28 @@ $attendance_rowCount = 0;
         console.error(err);
     });
 
+    var studentID = document.getElementById('input1').value;
+    var fetcherID = document.getElementById('input2').value;
     scanner.addListener('scan', function(c) {
-        document.getElementById('qrcode_input').value = c;
-        document.forms["qr_form"].submit(); 
+        let input = c;
+
+        if (input.includes("S")) {
+            document.getElementById('input1').value = input;
+            document.getElementById("qr_form").submit();
+        } else {
+            document.getElementById('input2').value = input;
+        }
+    })
+
+    scanner.addListener('scan', function(d) {
+        let input2 = d;
+
+        if (input.includes("FTC")) {
+            document.getElementById('input2').value = input2;
+            document.getElementById("qr_form").submit();
+        } else {
+            document.getElementById('input1').value = input2;
+        }
     })
 </script>
 <!-- JavaScript Libraries -->
