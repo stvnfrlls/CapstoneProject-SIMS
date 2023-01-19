@@ -16,11 +16,6 @@ function function_prompt($msg)
     echo "<script type='text/javascript'>prompt('$msg');</script>";
 }
 
-function function_confirm($msg)
-{
-    echo "<script type='text/javascript'>confirm('$msg');</script>";
-}
-
 function validate($data)
 {
     $data = trim($data);
@@ -158,20 +153,12 @@ if (isset($_POST['verifyEmail'])) {
     if (empty($email)) {
         $errors['NoInputs'] = "Please enter your login credentials.";
     } else {
-        $authAccount = "SELECT * FROM userdetails WHERE SR_email = '$email'";
-        $resultauthAccount = $mysqli->query($authAccount);
+        $authAccount = $mysqli->query("SELECT * FROM userdetails WHERE SR_email = '$email'");
 
-        if ($resultauthAccount->num_rows > 0) {
-            $getResultauthAccount = $resultauthAccount->fetch_assoc();
-
-            $studentrecord = "SELECT SR_email FROM studentrecord WHERE SR_email = '$email'";
-            $resultstudentrecord = $mysqli->query($studentrecord);
-            $verifyData = $resultstudentrecord->fetch_assoc();
-
-            if ($resultstudentrecord->num_rows == 1) {
-                $_SESSION['verifyEmailData'] = $verifyData['SR_email'];
-                header('Location: ../auth/reset.php');
-            }
+        if ($authAccount->num_rows == 1) {
+            $verifyData = $authAccount->fetch_assoc();
+            $_SESSION['verifyEmailData'] = $verifyData['SR_email'];
+            header('Location: ../auth/reset.php');
         } else {
             $errors['LoginError'] = "Account does not exist!";
         }
@@ -193,13 +180,11 @@ if (isset($_POST['updatePassword'])) {
         if (strcmp($datacOldPassword['SR_password'], $confirmPassword) == 0) {
             $errors['samePassword'] = "Password is the same with the old password.";
         } else {
-            $updatePassword = "UPDATE userdetails SET SR_password = '$confirmPassword'
-                          WHERE SR_email = '{$_SESSION['verifyEmailData']}'";
+            $updatePassword = "UPDATE userdetails SET SR_password = '$confirmPassword' WHERE SR_email = '{$_SESSION['verifyEmailData']}'";
             $ResultupdatePassword = $mysqli->query($updatePassword);
 
             if ($ResultupdatePassword) {
                 header('Location: login.php');
-                unset($_SESSION['verifyEmailData']);
             }
         }
     }
@@ -207,16 +192,42 @@ if (isset($_POST['updatePassword'])) {
 //END
 
 //Faculty Process
-if (isset($_POST['qrcode_input'])) {
-    $qrCode = $_POST['qrcode_input'];
-    $time = date("Y-m-d H:i:s");
+if (isset($_POST['student']) || isset($_POST['fetcher'])) {
+    $current_hour = date('h');
+    $current_minute = date('i');
+    $AM_PM = date('A');
 
-    if (str_contains($qrCode, 'SRVC')) {
-        function_alert($qrCode.'Service');
-    } elseif (str_contains($qrCode, 'S')) {
-        function_alert($qrCode.'Student');
+    $date = date("Y-m-d");
+    $time = $current_hour . ':' . $current_minute . ' ' . $AM_PM;
+
+    $studentID = $_POST['student'];
+    $fetcherID = $_POST['fetcher'];
+
+    if (empty($fetcherID)) {
+        $fetcherID = $studentID;
+    }
+
+    $checkAttendance = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$studentID}' AND A_date = '{$date}'");
+    $attendanceData = $checkAttendance->fetch_assoc();
+
+    if ($checkAttendance->num_rows == 0) {
+        $timeIN = $mysqli->query("INSERT INTO attendance (SR_number, A_date, A_time_IN, A_fetcher_IN) VALUES ('{$studentID}', '{$date}', '{$time}', '{$fetcherID}')");
+        if ($timeIN) {
+            function_alert("PRESENT " . $studentID);
+        }
+    } else if (empty($attendanceData['A_time_OUT']) || empty($attendanceData['A_fetcher_OUT'])) {
+        echo '
+            <script>
+                if(confirm("Are you sure you want to mark as fetched this student?")) {
+                    ' . $timeOUT = $mysqli->query("UPDATE attendance SET A_time_OUT = '{$time}', A_fetcher_OUT = '{$fetcherID}' WHERE SR_number = '{$studentID}'") . '
+                }
+            </script>';
+
+        if ($timeOUT) {
+            function_alert("TIME OUT " . $studentID);
+        }
     } else {
-        function_alert('Account does not exist');
+        function_alert("Student already timed out");
     }
 }
 if (isset($_POST['encode'])) {
@@ -419,8 +430,6 @@ if (isset($_POST['regStudent'])) {
     $S_state    = $mysqli->real_escape_string($_POST['S_state']);
     $S_postal    = $mysqli->real_escape_string($_POST['S_postal']);
 
-    $S_guardian    = $mysqli->real_escape_string($_POST['S_guardian']);
-    $S_contact    = $mysqli->real_escape_string($_POST['S_contact']);
     $S_email    = $mysqli->real_escape_string($_POST['S_email']);
 
     $G_lname = $mysqli->real_escape_string($_POST['G_lname']);
@@ -471,25 +480,26 @@ if (isset($_POST['regStudent'])) {
 
     $regStudent = "INSERT INTO studentrecord(
                     SR_number, SR_year, 
-                    SR_fname, SR_mname, SR_lname, SR_suffix,
+                    SR_lname, SR_fname, SR_mname, SR_suffix,
                     SR_age, SR_birthday, SR_birthplace, SR_gender,
                     SR_religion, SR_citizenship, SR_grade, SR_section,
                     SR_address, SR_barangay, SR_city, SR_state, SR_postal, 
-                    SR_guardian, SR_contact, SR_email)
+                    SR_contactemail)
                     VALUES(
-                    '$SR_number', '$year', '$S_lname', '$S_fname', '$S_mname', '$S_suffix',
+                    '$SR_number', '$year', 
+                    '$S_lname', '$S_fname', '$S_mname', '$S_suffix',
                     '$S_age', '$S_birthday', '$S_birthplace', '$S_gender',
                     '$S_religion','$S_citizenship', '$S_grade', '$S_section',
                     '$S_address', '$S_barangay', '$S_city', '$S_state', '$S_postal',
-                    '$S_guardian', '$S_contact', '$S_email')";
+                    '$S_email')";
     $RunregStudent = $mysqli->query($regStudent);
-    $regGuardian = "INSERT INTO guardian_fetcher(
-                    G_guardianOfStudent, 
-                    G_fname, G_mname, G_lname, G_suffix,
+    $regGuardian = "INSERT INTO guardian(
+                    G_guardianOfStudent,
+                    G_lname, G_fname, G_mname, G_suffix,
                     G_address, G_barangay, G_city, G_state, G_postal, 
                     G_email, G_relationshipStudent, G_telephone, G_contact)
                     VALUES(
-                    '$SR_number', '$G_lname', '$G_fname', '$G_mname', '$G_suffix',
+                    '$G_lname', '$G_fname', '$G_mname', '$G_suffix',
                     '$G_address', '$G_barangay', '$G_city', '$G_state', '$G_postal',
                     '$G_email', '$G_relationshipStudent', '$G_telephone', '$G_contact')";
     $RunregGuardian = $mysqli->query($regGuardian);
