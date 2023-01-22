@@ -3,6 +3,34 @@ require_once("../assets/php/server.php");
 
 if (empty($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
+} else {
+    $quarterArray = array();
+    array_unshift($quarterArray, null);
+    $quarterStatus = $mysqli->query('SELECT quarterTag, quarterStatus FROM quartertable');
+    while ($quarterData = $quarterStatus->fetch_assoc()) {
+        $quarterArray[] = $quarterData;
+    }
+
+    if (isset($_POST['enableFirst'])) {
+        $disableExisting = $mysqli->query('UPDATE quartertable SET quarterStatus = "disabled"');
+        $enableFirst = $mysqli->query('UPDATE quartertable SET quarterStatus = "enabled" WHERE quarterTag = "1"');
+        header("Refresh:0");
+    }
+    if (isset($_POST['enableSecond'])) {
+        $disableExisting = $mysqli->query('UPDATE quartertable SET quarterStatus = "disabled"');
+        $enableSecond = $mysqli->query('UPDATE quartertable SET quarterStatus = "enabled" WHERE quarterTag = "2"');
+        header("Refresh:0");
+    }
+    if (isset($_POST['enableThird'])) {
+        $disableExisting = $mysqli->query('UPDATE quartertable SET quarterStatus = "disabled"');
+        $enableThird = $mysqli->query('UPDATE quartertable SET quarterStatus = "enabled" WHERE quarterTag = "3"');
+        header("Refresh:0");
+    }
+    if (isset($_POST['enableFourth'])) {
+        $disableExisting = $mysqli->query('UPDATE quartertable SET quarterStatus = "disabled"');
+        $enableFourth = $mysqli->query('UPDATE quartertable SET quarterStatus = "enabled" WHERE quarterTag = "4"');
+        header("Refresh:0");
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -42,222 +70,62 @@ if (empty($_SESSION['AD_number'])) {
 </head>
 
 <body>
-    <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status"></div>
-        <img class="position-absolute top-50 start-50 translate-middle" src="../assets/img/icons/icon-1.png" alt="Icon">
-    </div>
-    <!-- Spinner End -->
+    <a href="addFaculty.php" class="m-2">Register Faculty</a>
+    <a href="addStudent.php" class="m-2">Register Student</a>
+    <a href="createAdmin.php" class="m-2">Register Admin</a>
+    <a href="editfaculty.php" class="m-2">Edit Faculty</a>
+    <a href="editstudent.php" class="m-2">Edit Student</a>
+    <a href="viewStudent.php" class="m-2">View Student</a>
+    <a href="viewFaculty.php" class="m-2">View Faculty</a>
+    <br>
 
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-        <img class="m-3" src="../assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">
-        <div class="d-flex align-items-center justify-content-center text-center">
-            <a href="../index.php" class="navbar-brand ms-4 ms-lg-0 text-center">
-                <h1 class="cdsp">Colegio De San Pedro</h1>
-                <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
-            </a>
-        </div>
-    </nav>
-    <!-- Navbar End -->
+    <form id="form-id" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
+        <?php
+        if ($quarterArray[1]['quarterTag'] == 1 && $quarterArray[1]['quarterStatus'] == 'enabled') {
+            echo '<button class="btn btn-primary m-2">1st Quarter (CURRENT)</button>';
+        } else {
+            echo '<button type="submit" name="enableFirst" class="btn btn-secondary m-2">Enable 1st Quarter</button>';
+        }
 
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-dark navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0 ">
-                <a href="dashboard.php" class="nav-item nav-link" style="color: red; font-size: 14px;">Home</a>
-                <a href="addStudent.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Register</a>
-                <a href="editRecords.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Records</a>
-                <a href="manageFaculty.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Faculty</a>
-                <a href="viewReports.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Reports</a>
-                <a href="../auth/logout.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Logout</a>
-            </div>
-        </div>
-    </nav>
-    <!-- Navbar End -->
+        if ($quarterArray[2]['quarterTag'] == 2 && $quarterArray[2]['quarterStatus'] == 'enabled') {
+            echo '<button class="btn btn-primary m-2">2nd Quarter (CURRENT)</button>';
+        } else {
+            echo '<button type="submit" name="enableSecond" class="btn btn-secondary m-2">Enable 2nd Quarter</button>';
+        }
 
-    <!-- Dashboard Start -->
-    <div class="container py-5">
-        <div class="container">
-            <div class="row g-3">
-                <div class="section-title text-center position-relative pb-3 mb-5 mx-auto">
-                    <h2 class="fw-bold text-primary text-uppercase">Dashboard</h2>
-                </div>
-                <div class="col-lg-6 col-md-12 col-sm-12 mb-3">
-                    <div class="text-center">
-                        <h3 class="fw-bold text-uppercase">Announcement</h3>
-                    </div>
-                    <div class="blog-item bg-light rounded overflow-hidden mb-3">
-                        <div class="p-4">
-                            <div class="d-flex mb-3">
-                                <small class="me-3"><i class="far fa-user text-primary me-2"></i>John Doe</small>
-                                <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                            </div>
-                            <h4 class="mb-3">How to build a website</h4>
-                            <p>Dolor et eos labore stet justo sed est sed sed sed dolor stet amet</p>
-                            <a class="text-uppercase" href="">Edit<i class="bi bi-arrow-right"></i></a>
-                        </div>
-                    </div>
-                    <div class="blog-item bg-light rounded overflow-hidden mb-3 ">
-                        <div class="p-4">
-                            <div class="d-flex mb-3">
-                                <small class="me-3"><i class="far fa-user text-primary me-2"></i>John Doe</small>
-                                <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                            </div>
-                            <h4 class="mb-3">How to build a website</h4>
-                            <p>Dolor et eos labore stet justo sed est sed sed sed dolor stet amet</p>
-                            <a class="text-uppercase" href="">Edit<i class="bi bi-arrow-right"></i></a>
-                        </div>
-                    </div>
-                    <div class="blog-item bg-light rounded overflow-hidden mb-3">
-                        <div class="p-4">
-                            <div class="d-flex mb-3">
-                                <small class="me-3"><i class="far fa-user text-primary me-2"></i>John Doe</small>
-                                <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                            </div>
-                            <h4 class="mb-3">How to build a website</h4>
-                            <p>Dolor et eos labore stet justo sed est sed sed sed dolor stet amet</p>
-                            <a class="text-uppercase" href="">Edit<i class="bi bi-arrow-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-12 col-sm-12 mb-3">
-                    <div class="row g-3">
-                        <div class="text-center">
-                            <h3 class="fw-bold text-uppercase">Tools</h3>
-                        </div>
-                        <div class="col-lg-6 col-md-12 col-sm-12 mb-3 d-flex flex-column align-items-center justify-content-center text-center">
-                            <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
-                                <div class="service-icon">
-                                    <i class="fa fa-shield-alt text-white"></i>
-                                </div>
-                                <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="addStudent.php">Registration</a>
-                                <p class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-12 col-sm-12 mb-3 d-flex flex-column align-items-center justify-content-center text-center">
-                            <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
-                                <div class="service-icon">
-                                    <i class="fa fa-chart-pie text-white"></i>
-                                </div>
-                                <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="editRecords.php">Edit Records</a>
-                                <p class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row g-3">
-                        <div class="col-lg-6 col-md-12 col-sm-12 mb-3 d-flex flex-column align-items-center justify-content-center text-center">
-                            <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
-                                <div class="service-icon">
-                                    <i class="fa fa-code text-white"></i>
-                                </div>
-                                <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="manageFaculty.php">Manage Faculty</a>
-                                <p class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-12 col-sm-12 mb-3 d-flex flex-column align-items-center justify-content-center text-center">
-                            <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
-                                <div class="service-icon">
-                                    <i class="fab fa-android text-white"></i>
-                                </div>
-                                <!-- EDIT PROFILE -->
-                                <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="viewReports.php">Reports</a>
-                                <p class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Dashboard End -->
+        if ($quarterArray[3]['quarterTag'] == 3 && $quarterArray[3]['quarterStatus'] == 'enabled') {
+            echo '<button class="btn btn-primary m-2">3rd Quarter (CURRENT)</button>';
+        } else {
+            echo '<button type="submit" name="enableThird" class="btn btn-secondary m-2">Enable 3rd Quarter</button>';
+        }
 
-    <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-body footer mt-5 pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Address</h3>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
-                    <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>di ko alam email</p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Quick Links</h3>
-                    <a class="btn btn-link" href="">Home</a>
-                    <a class="btn btn-link" href="">About Us</a>
-                    <a class="btn btn-link" href="">Academics</a>
-                    <a class="btn btn-link" href="">Admission</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Useful Links</h3>
-                    <a class="btn btn-link" href="">DepEd</a>
-                    <a class="btn btn-link" href="">Pag Asa</a>
-                    <a class="btn btn-link" href="">City of San Pedro</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Newsletter</h3>
-                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                    <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid copyright">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a href="#">Colegio De San Pedro</a>, All Right Reserved.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Footer End -->
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/lib/wow/wow.min.js"></script>
-    <script src="../assets/lib/easing/easing.min.js"></script>
-    <script src="../assets/lib/waypoints/waypoints.min.js"></script>
-    <script src="../assets/lib/counterup/counterup.min.js"></script>
-    <script src="../assets/lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="../assets/lib/tempusdominus/js/moment.min.js"></script>
-    <script src="../assets/lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="../assets/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="../assets/../assets/js/main.js"></script>
-
-    <!-- Javascript -->
-    <script src="../assets/vendor/jquery/jquery.min.js"></script>
-    <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <script src="../assets/js/eduwell/isotope.min.js"></script>
-    <script src="../assets/js/eduwell/owl-carousel.js"></script>
-    <script src="../assets/js/eduwell/lightbox.js"></script>
-    <script src="../assets/js/eduwell/tabs.js"></script>
-    <script src="../assets/js/eduwell/video.js"></script>
-    <script src="../assets/js/eduwell/slick-slider.js"></script>
-    <script src="../assets/js/eduwell/custom.js"></script>
-    <script src="../assets/js/startup/main.js"></script>
-
-
+        if ($quarterArray[4]['quarterTag'] == 4 && $quarterArray[4]['quarterStatus'] == 'enabled') {
+            echo '<button class="btn btn-primary m-2">4th Quarter (CURRENT)</button>';
+        } else {
+            echo '<button type="submit" name="enableFourth" class="btn btn-secondary m-2">Enable 4th Quarter</button>';
+        }
+        ?>
+    </form>
+    <br>
+    <a href="modifyCurriculum.php" class="m-2">Modify Curriculum</a>
+    <a href="editlearningareas.php" class="m-2">Edit Learning Areas</a>
+    <a href="assignAdvisory.php" class="m-2">Assign Advisory Class</a>
+    <a href="movingUp.php" class="m-2">Moving Up</a>
 </body>
+
+
+<script>
+    const form = document.getElementById('form-id');
+
+    form.addEventListener('submit', (event) => {
+        if (confirm('Are you sure you want to change quarter?') == true) {
+            form.submit();
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    });
+</script>
 
 </html>
