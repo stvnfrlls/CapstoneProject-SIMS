@@ -94,36 +94,69 @@ require_once("../assets/php/server.php");
     <div class="limiter">
         <div class="container-login100">
             <div class="wrap-login100">
-                <form class="login100-form validate-form" method="POST" action="<?php $_SERVER["PHP_SELF"] ?>">
-                    <span class="login100-form-title p-b-43">
-                        Enter Email Address
-                    </span>
-                    <?php
-                    if (count($errors) > 0) {
-                    ?>
-                        <div class="alert alert-danger text-center">
-                            <?php
-                            foreach ($errors as $showerror) {
-                                echo $showerror;
-                            }
-                            ?>
+                <?php
+                if (!isset($_POST['verifyEmail'])) { ?>
+                    <form class="login100-form validate-form" method="POST" action="<?php $_SERVER["PHP_SELF"] ?>">
+                        <span class="login100-form-title p-b-43">
+                            Enter Email Address
+                        </span>
+                        <?php
+                        if (count($errors) > 0) {
+                        ?>
+                            <div class="alert alert-danger text-center">
+                                <?php
+                                foreach ($errors as $showerror) {
+                                    echo $showerror;
+                                }
+                                ?>
+                            </div>
+                        <?php
+                        }
+                        ?>
+                        <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+                            <input class="input100" type="text" name="usersEmail">
+                            <span class="focus-input100"></span>
+                            <span class="label-input100">Email Address</span>
                         </div>
-                    <?php
-                    }
-                    ?>
-                    <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-                        <input class="input100" type="text" name="usersEmail">
-                        <span class="focus-input100"></span>
-                        <span class="label-input100">Email Address</span>
-                    </div>
+                        <div class="container-login100-form-btn">
+                            <button type="submit" class="login100-form-btn" name="verifyEmail">
+                                Verify Email Address
+                            </button>
+                        </div>
+                    </form>
+                <?php } else { ?>
+                    <form class="login100-form validate-form" method="POST" action="<?php $_SERVER["PHP_SELF"] ?>">
+                        <span class="login100-form-title p-b-43">
+                            Enter One Time Password Code
+                        </span>
+                        <?php
+                        if (count($errors) > 0) {
+                        ?>
+                            <div class="alert alert-danger text-center">
+                                <?php
+                                foreach ($errors as $showerror) {
+                                    echo $showerror;
+                                }
+                                ?>
+                            </div>
+                        <?php
+                        }
+                        ?>
+                        <div class="wrap-input100 validate-input" data-validate="Valid OTP Code is required">
+                            <input class="input100" type="number" name="OTPCode">
+                            <span class="focus-input100"></span>
+                            <span class="label-input100">OTP Code</span>
+                        </div>
+                        <div class="container-login100-form-btn">
+                            <button type="submit" class="login100-form-btn" name="submitOTP">
+                                Proceed
+                            </button>
+                        </div>
+                    </form>
+                <?php
+                }
+                ?>
 
-                    <div class="container-login100-form-btn">
-                        <button type="submit" class="login100-form-btn" name="verifyEmail">
-                            Verify Email Address
-                        </button>
-                    </div>
-
-                </form>
 
                 <div class="login100-more" style="background-image: url('../assets/img/banner_1.jpg');">
                 </div>
