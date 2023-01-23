@@ -42,6 +42,14 @@ function generatePassword()
     // return the generated password
     return $password;
 }
+function generateOTP()
+{
+    $otp = "";
+    for ($i = 0; $i < 6; $i++) {
+        $otp .= mt_rand(0, 9);
+    }
+    return $otp;
+}
 
 //Login and Register Process
 if (isset($_POST['login-button'])) {
@@ -100,72 +108,6 @@ if (isset($_POST['login-button'])) {
         }
     }
 }
-if (isset($_POST['verifyIDNumber'])) {
-    $IDNumber = $_POST['IDNumber'];
-
-    if (empty($IDNumber)) {
-        $errors['NoInputs'] = "Please enter your Identification Number.";
-    } else {
-        if (strpos($IDNumber, "S")) {
-            $check_studentNumber = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '$IDNumber'");
-            if ($check_studentNumber->num_rows == 1) {
-                $data = $check_studentNumber->fetch_assoc();
-                if (!empty($data['SR_email'])) {
-                    $errors['NoData'] = "Account already linked to an Email. Contact the admin for changing of Email Address";
-                } else if (empty($data['SR_email'])) {
-                    $sr_num = $data['SR_number'];
-                    $_SESSION['IDNum'] = $sr_num;
-                    header('Location: signup.php');
-                }
-            }
-        } else if (strpos($IDNumber, "F")) {
-            $check_facultyNumber = $mysqli->query("SELECT * FROM faculty WHERE F_number = '$IDNumber'");
-            if ($check_facultyNumber->num_rows == 1) {
-                $data = $check_facultyNumber->fetch_assoc();
-                if (!empty($data['F_email'])) {
-                    $errors['NoData'] = "Account already linked to an Email. Contact the admin for changing of Email Address";
-                } else if (empty($data['F_email'])) {
-                    $F_num = $data['F_number'];
-                    $_SESSION['IDNum'] = $F_num;
-                    header('Location: signup.php');
-                }
-            }
-        } else {
-            $errors['NoData'] = "Account does not exist. Double check your Identification Number.";
-        }
-    }
-}
-if (isset($_POST['register-button'])) {
-    $email = $mysqli->real_escape_string($_POST['usersEmail']);
-    $password  = $mysqli->real_escape_string($_POST['usersPwd']);
-
-    $check_email = $mysqli->query("SELECT * FROM userdetails WHERE SR_email = '$email'");
-
-    if ($check_email->num_rows == 0) {
-        $IDNum = $_SESSION['IDNum'];
-
-        if (strpos($IDNum, "S")) {
-            $role = "student";
-        } else if (strpos($IDNum, "F")) {
-            $role = "faculty";
-        }
-
-        $AddUserDetails = $mysqli->query("INSERT INTO userdetails (SR_email, SR_password, role) VALUES ('$email', '$password', '$role')");
-
-        if ($role == "student") {
-            $signup = "UPDATE studentrecord SET SR_email = '$email' WHERE SR_number = '$IDNum'";
-        } else if ($role == "faculty") {
-            $signup = "UPDATE faculty SET F_email = '$email' WHERE F_number = '$IDNum'";
-        }
-        $runsignup = $mysqli->query($signup);
-
-        if ($runsignup) {
-            header('Location: login.php');
-        }
-    } else {
-        $errors['email'] = "Email already in use.";
-    }
-}
 if (isset($_POST['verifyEmail'])) {
     $email = $_POST['usersEmail'];
 
@@ -176,11 +118,53 @@ if (isset($_POST['verifyEmail'])) {
 
         if ($authAccount->num_rows == 1) {
             $verifyData = $authAccount->fetch_assoc();
-            $_SESSION['verifyEmailData'] = $verifyData['SR_email'];
-            header('Location: ../auth/reset.php');
+
+            $check_existingOTP = $mysqli->query("SELECT OTP FROM userdetails WHERE SR_email = '{$email}'");
+            $otpData = $check_existingOTP->fetch_assoc();
+
+            if ($otpData['OTP'] == "") {
+                $otp = generateOTP();
+                $createOTP = $mysqli->query("UPDATE userdetails SET OTP = '$otp' WHERE SR_email = '{$verifyData['SR_email']}'");
+                $_SESSION['verifyEmailData'] = $verifyData['SR_email'];
+
+                $mail->addAddress($verifyData['SR_email']);
+                $mail->Subject = 'Password Change Request';
+
+                $mail->Body = '<p>We have received a request to change the password for your email account. 
+                            Your one-time password (OTP) code is: <strong>' . $otp . '</strong>.</p>
+                            <p>If you did not initiate this request, please ignore this email. 
+                            However, we recommend that you change your password as soon as possible to ensure the security of your account. 
+                            <br>
+                            If you have any questions or concerns, please contact our customer support team. </p>
+                            <br>
+                            <br>
+                            <p>Thank you for using CDSP SIS.</p>
+                            <br>
+                            <strong>Best regards, </strong><br>
+                            <strong>CDSP Admin Office</strong>
+                            <br>';
+
+                if (!$mail->send()) {
+                    echo 'Mailer Error: ';
+                } else {
+                    echo 'The email message was sent!';
+                }
+            } else {
+                $errors['LoginError'] = "Check your email for the OTP Code.";
+            }
         } else {
             $errors['LoginError'] = "Account does not exist!";
         }
+    }
+}
+
+if (isset($_POST['submitOTP'])) {
+    $verifyOTP = $mysqli->query("SELECT OTP FROM userdetails WHERE SR_email = '{$_SESSION['verifyEmailData']}' AND OTP = '{$_POST['OTPCode']}'");
+
+    if ($verifyOTP->num_rows == 1) {
+        header('Location: ../auth/reset.php');
+    } else {
+        $errors['LoginError'] = "Incorrect OTP Code.";
     }
 }
 if (isset($_POST['updatePassword'])) {
@@ -203,7 +187,26 @@ if (isset($_POST['updatePassword'])) {
             $ResultupdatePassword = $mysqli->query($updatePassword);
 
             if ($ResultupdatePassword) {
-                header('Location: login.php');
+                $mail->addAddress($_SESSION['verifyEmailData']);
+                $mail->Subject = 'Password Change Confirmation';
+
+                $mail->Body = '<p>This email is to confirm that your password for your account on CDSP SIS has been successfully changed. 
+                                We strongly advise you to keep your new password in a safe place and not share it with anyone.</p>
+                                <br>
+                                <p>If you did not initiate this password change, please contact the Admin Office immediately. </p>
+                                <br>
+                                <p>Thank you for using CDSP SIS.</p>
+                                <br>
+                                <strong>Best regards, </strong><br>
+                                <strong>CDSP Admin Office</strong>
+                                <br>';
+                if (!$mail->send()) {
+                    echo 'Mailer Error: ';
+                } else {
+                    $removeOTP = $mysqli->query("UPDATE userdetails SET OTP = null WHERE SR_email = '{$verifyData['SR_email']}'");
+                    echo 'The email message was sent!';
+                    header('Location: login.php');
+                }
             }
         }
     }
