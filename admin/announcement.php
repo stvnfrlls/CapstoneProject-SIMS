@@ -1,40 +1,8 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (empty($_SESSION['AD_number'])) {
-    header('Location: ../auth/login.php');
-} else {
-    $gradeList = "SELECT DISTINCT S_yearLevel FROM sections";
-    $rungradeList = $mysqli->query($gradeList);
-
-    if (isset($_GET['GradeLevel'])) {
-        $current_url = $_SERVER["REQUEST_URI"];
-        $sectionList = "SELECT S_name FROM sections WHERE S_yearLevel = '{$_GET['GradeLevel']}'";
-        $runsectionList = $mysqli->query($sectionList);
-    }
-
-    if (isset($_GET['GradeLevel'])) {
-        $subjects     = array();
-        array_unshift($subjects, null);
-
-        if ($_GET['GradeLevel'] == "KINDER") {
-            $getSubject = "SELECT subjectName FROM subjectperyear
-                  WHERE
-                  subjectperyear.minYearLevel = '0' 
-                  AND
-                  subjectperyear.maxYearLevel >= '0'";
-        } else {
-            $getSubject = "SELECT subjectName FROM subjectperyear
-                  WHERE 
-                  subjectperyear.minYearLevel <= '{$_GET['GradeLevel']}' 
-                  AND
-                  subjectperyear.maxYearLevel >= '{$_GET['GradeLevel']}'";
-        }
-        $rungetSubject = $mysqli->query($getSubject);
-        while ($dataSubject = $rungetSubject->fetch_assoc()) {
-            $subjects[] = $dataSubject;
-        }
-    }
+if (isset($_POST['confirm_faculty'])) {
+    header('Location: confirmfaculty.php');
 }
 ?>
 
@@ -43,7 +11,7 @@ if (empty($_SESSION['AD_number'])) {
 
 <head>
     <meta charset="utf-8">
-    <title>Modify Curriculum</title>
+    <title>Announcements</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -59,6 +27,7 @@ if (empty($_SESSION['AD_number'])) {
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
 
     <!-- Libraries Stylesheet -->
     <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
@@ -207,109 +176,172 @@ if (empty($_SESSION['AD_number'])) {
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="home-tab">
-
                                 <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                                     <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                                        <h2 class="fw-bold text-primary text-uppercase">Modify Curriculum</h2>
+                                        <h2 class="fw-bold text-primary text-uppercase">Announcements</h2>
                                     </div>
                                 </div>
+
+                                <form style="text-align: right; margin-top: 50px; margin-right: 20px;">
+                                    <button type="submit" style="color: #ffffff;" class="btn btn-primary me-2">Create <i class="fa fa-plus" style="font-size: 10px;"></i></button>
+
+                                </form>
 
                                 <div class="tab-content tab-content-basic">
                                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                                         <div class="row">
-                                            <div class="btn-group">
-                                                <div class="dropdown">
-                                                    <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                        <?php
-                                                        if (isset($_GET['GradeLevel'])) {
-                                                            if ($_GET['GradeLevel'] == "KINDER") {
-                                                                echo  $_GET['GradeLevel'];
-                                                            } else {
-                                                                echo  "Grade " . $_GET['GradeLevel'];
-                                                            }
-                                                        } else {
-                                                            echo "Grade ";
-                                                        }
-                                                        ?>
-                                                        <i class="fa fa-caret-down"></i>
-                                                    </button>
-                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                        <?php
-                                                        while ($gradeData = $rungradeList->fetch_assoc()) { ?>
-                                                            <a class="dropdown-item" href="modifyCurriculum.php?GradeLevel=<?php echo $gradeData['S_yearLevel'] ?>">
-                                                                <?php
-                                                                echo "Grade - " . $gradeData['S_yearLevel'];
-                                                                ?>
-                                                            </a>
-                                                        <?php } ?>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-12 d-flex flex-column">
-                                                <div class="row flex-grow">
-                                                    <div class="col-md-6 col-lg-12 grid-margin stretch-card">
-                                                        <div class="card bg-primary card-rounded">
-                                                            <div class="table-responsive">
-                                                                <table class="table">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>No.</th>
-                                                                            <th>Subject Name</th>
-                                                                            <th>Minimum Year Level</th>
-                                                                            <th>Maximum Year Level</th>
-                                                                            <th>Action</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <?php
-                                                                        $rowCount = 1;
-                                                                        if (isset($_GET['GradeLevel'])) {
-                                                                            $subjectRowCount = sizeof($subjects);
-                                                                            while ($rowCount != $subjectRowCount) { ?>
-                                                                                <form action="" method="">
-                                                                                    <tr>
-                                                                                        <td><?php echo $rowCount; ?></td>
-                                                                                        <td><?php echo $subjects[$rowCount]['subjectName']; ?></td>
-                                                                                        <td><input type="number"></td>
-                                                                                        <td><input type="number"></td>
-                                                                                        <td>
-                                                                                            <?php
-                                                                                            echo '<input type="submit" style="color: #ffffff;" class="btn btn-primary" value="UPDATE">';
-                                                                                            echo '<input type="submit" class="btn btn-secondary" value="DELETE">';
-                                                                                            ?>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </form>
-                                                                            <?php $rowCount++;
-                                                                            } ?>
-                                                                            <tr class="bg-dark">
-                                                                                <td></td>
-                                                                                <td><input type="text"></td>
-                                                                                <td><input type="number"></td>
-                                                                                <td><input type="number"></td>
-                                                                                <td><?php echo '<input type="submit" style="color: #ffffff;" class="btn btn-primary" value="ADD">'; ?></td>
-                                                                            </tr>
-                                                                        <?php
-                                                                        } else { ?>
-                                                                            <tr>
-                                                                                <td colspan="10">NO GRADE AND SECTION SELECTED</td>
-                                                                            </tr>
-                                                                        <?php }
-                                                                        ?>
-                                                                    </tbody>
-                                                                </table>
+                                            <div class="col-lg-4 col-sm-12 grid-margin">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="single-popular-carusel col-12">
+                                                            <div class="details">
+                                                                <a href="#">
+                                                                    <h4>
+                                                                        No Classes
+                                                                    </h4>
+                                                                </a>
+                                                                <div class="d-flex mb-3">
+                                                                    <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
+                                                                    <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
+                                                                </div>
+                                                                <p>
+                                                                    When television was young, there was a hugely popular show based on the still popular fictional characte
+                                                                </p>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="col-lg-4 col-sm-12 grid-margin">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="single-popular-carusel col-12">
+                                                            <div class="details">
+                                                                <a href="#">
+                                                                    <h4>
+                                                                        No Classes
+                                                                    </h4>
+                                                                </a>
+                                                                <div class="d-flex mb-3">
+                                                                    <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
+                                                                    <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
+                                                                </div>
+                                                                <p>
+                                                                    When television was young, there was a hugely popular show based on the still popular fictional characte
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 col-sm-12 grid-margin">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="single-popular-carusel col-12">
+                                                            <div class="details">
+                                                                <a href="#">
+                                                                    <h4>
+                                                                        No Classes
+                                                                    </h4>
+                                                                </a>
+                                                                <div class="d-flex mb-3">
+                                                                    <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
+                                                                    <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
+                                                                </div>
+                                                                <p>
+                                                                    When television was young, there was a hugely popular show based on the still popular fictional characte
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 col-sm-12 grid-margin">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="single-popular-carusel col-12">
+                                                            <div class="details">
+                                                                <a href="#">
+                                                                    <h4>
+                                                                        No Classes
+                                                                    </h4>
+                                                                </a>
+                                                                <div class="d-flex mb-3">
+                                                                    <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
+                                                                    <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
+                                                                </div>
+                                                                <p>
+                                                                    When television was young, there was a hugely popular show based on the still popular fictional characte
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 col-sm-12 grid-margin">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="single-popular-carusel col-12">
+                                                            <div class="details">
+                                                                <div class="row">
+                                                                    <a href="#" class=" col-sm-3 col-md-9 col-lg-9">
+                                                                        <h4>
+                                                                            No Classes
+                                                                        </h4>
+                                                                    </a>
+                                                                    <div class="btn-wrapper col-sm-3 col-md-9 col-lg-3" style="margin-left: auto;  padding-right: 0px;">
+                                                                        <a href="#" style="margin-right: 2px;"><i class="fa fa-eye"></i></a>
+                                                                        <a href="#" style="margin-right: 2px;"><i class="fa fa-edit"></i></a>
+                                                                        <a href="#" style="margin-right: 2px;"><i class="fa fa-trash"></i></a>
+                                                                    </div>
+
+
+                                                                </div>
+
+                                                                <div class="d-flex mb-3">
+                                                                    <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
+                                                                    <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
+                                                                </div>
+                                                                <p>
+                                                                    When television was young, there was a hugely popular show based on the still popular fictional characte
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 col-sm-12 grid-margin">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="single-popular-carusel col-12">
+                                                            <div class="details">
+                                                                <a href="#">
+                                                                    <h4>
+                                                                        No Classes
+                                                                    </h4>
+                                                                </a>
+                                                                <div class="d-flex mb-3">
+                                                                    <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
+                                                                    <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
+                                                                </div>
+                                                                <p>
+                                                                    When television was young, there was a hugely popular show based on the still popular fictional characte
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
+                        <form style="text-align: center;">
+                            <button type="submit" class="btn btn-primary me-2">Load More ...</button>
+                        </form>
                     </div>
                 </div>
                 <!-- content-wrapper ends -->
@@ -376,10 +408,13 @@ if (empty($_SESSION['AD_number'])) {
 
     <!-- JavaScript Libraries -->
 
+
     <!-- Template Javascript -->
     <script src="../assets/js/main.js"></script>
+
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>
     <script src="../assets/js/admin/off-canvas.js"></script>
+
 </body>
 
 </html>
