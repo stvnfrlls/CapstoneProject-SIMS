@@ -1,7 +1,7 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (!isset($_SESSION['verifyEmailData'])) {
+if (!isset($_SESSION['verifyEmailData']) && !isset($_POST['submitOTP'])) {
     header('Location: verify.php');
 }
 ?>

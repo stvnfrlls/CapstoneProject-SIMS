@@ -57,7 +57,7 @@ if (empty($_SESSION['AD_number'])) {
 
 <head>
   <meta charset="utf-8">
-  <title>Learning Areas</title>
+  <title>Learning Areas and Schedule</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta content="" name="keywords">
   <meta content="" name="description">
@@ -110,69 +110,107 @@ if (empty($_SESSION['AD_number'])) {
     <div class="container-fluid page-body-wrapper">
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
-          <li class="nav-item nav-category" style="text-align:center; font-size: 20px;">ADMIN</li>
-          <!-- item 1 -->
-          <li class="nav-item" style="border-bottom: 1px solid rgba(255, 255, 255, 0.13); margin: 0 30px;">
+          <li class="nav-item" style="text-align:center; font-size: 20px; color: #b9b9b9; margin-top:20px;">ADMIN</li>
+          <!-- line 1 -->
+          <li class="nav-item nav-category" style="color: #b9b9b9;">Menu</li>
+          <li class="nav-item">
             <a class="nav-link" href="../admin/dashboard.php">
-              <i class="menu-icon"></i>
-              <span class="menu-title">Dashboard</span>
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Dashboard</span>
             </a>
           </li>
-          <!-- item 2 -->
-          <li class="nav-item" style="border-bottom: 1px solid rgba(255, 255, 255, 0.13); margin: 0 30px;">
+          <li class="nav-item">
+            <a class="nav-link" href="../admin/createAdmin.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Create Admin</span>
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="../admin/addStudent.php">
-              <i class="menu-icon"></i>
-              <span class="menu-title">Add Student</span>
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Add Student</span>
             </a>
           </li>
-          <!-- item 3 -->
-          <li class="nav-item" style="border-bottom: 1px solid rgba(255, 255, 255, 0.13); margin: 0 30px;">
-            <a class="nav-link" data-bs-toggle="collapse" href="#records" aria-expanded="false" aria-controls="form-elements">
-              <i class="menu-icon"></i>
-              <span class="menu-title">Records</span>
-              <i class="menu-arrow"></i>
+          <li class="nav-item">
+            <a class="nav-link" href="../admin/announcement.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Announcements</span>
             </a>
-            <div class="collapse" id="records">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="../admin/editgrades.php">Grades</a></li>
-                <li class="nav-item"><a class="nav-link" href="../admin/student.php">Student Information</a></li>
-              </ul>
-            </div>
           </li>
-          <!-- item 4 -->
-          <li class="nav-item" style="border-bottom: 1px solid rgba(255, 255, 255, 0.13); margin: 0 30px;">
-            <a class="nav-link" data-bs-toggle="collapse" href="#reports" aria-expanded="false" aria-controls="form-elements">
-              <i class="menu-icon"></i>
-              <span class="menu-title">Reports</span>
-              <i class="menu-arrow"></i>
+          <!-- line 2 -->
+          <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Student</li>
+          <li class="nav-item">
+            <a class="nav-link" href="../admin/student.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Student Records</span>
             </a>
-            <div class="collapse" id="reports">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="../admin/dailyReports.php">Daily Reports</a></li>
-                <li class="nav-item"><a class="nav-link" href="../admin/monthlyReports.php">Monthly Reports</a></li>
-              </ul>
-            </div>
           </li>
-          <!-- item 5 -->
-          <li class="nav-item" style="border-bottom: 1px solid rgba(255, 255, 255, 0.13); margin: 0 30px;">
-            <a class="nav-link" data-bs-toggle="collapse" href="#faculty" aria-expanded="false" aria-controls="form-elements">
-              <i class="menu-icon"></i>
-              <span class="menu-title">Faculty</span>
-              <i class="menu-arrow"></i>
+          <li class="nav-item">
+            <a class="nav-link" href="../admin/editgrades.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Grades</span>
             </a>
-            <div class="collapse" id="faculty">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="../admin/addFaculty.php">Add Faculty</a></li>
-                <li class="nav-item"><a class="nav-link" href="../admin/faculty.php">Faculty</a></li>
-                <li class="nav-item"><a class="nav-link" href="../admin/editlearningareas.php">Assign Faculty</a></li>
-              </ul>
-            </div>
           </li>
-          <!-- item 6 -->
-          <li class="nav-item" style="border-bottom: 1px solid rgba(255, 255, 255, 0.13); margin: 0 30px;">
-            <a class="nav-link" href="index.html">
-              <i class="menu-icon"></i>
-              <span class="menu-title">Logout</span>
+          <li class="nav-item">
+            <a class="nav-link" href="../admin/movingUp.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Status</span>
+            </a>
+          </li>
+          <!-- line 3 -->
+          <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Faculty</li>
+          <li class="nav-item">
+            <a class="nav-link" href="../admin/addFaculty.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Add Faculty</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../admin/faculty.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Faculty Records</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../admin/assignAdvisory.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Assign Advisory</span>
+            </a>
+          </li>
+          <!-- line 4 -->
+          <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Learning Areas</li>
+          <li class="nav-item">
+            <a class="nav-link" href="../admin/editlearningareas.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Scheduling</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../admin/modifyCurriculum.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Curriculum</span>
+            </a>
+          </li>
+          <!-- line 5 -->
+          <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Reports</li>
+          <li class="nav-item">
+            <a class="nav-link" href="../admin/dailyReports.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Daily Reports</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../admin/monthlyReports.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Monthly Reports</span>
+            </a>
+          </li>
+          <!-- line 5 -->
+          <li class="nav-item nav-category" style="padding-top: 10px;"></li>
+          <li class="nav-item">
+            <a class="nav-link" href="">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Logout</span>
             </a>
           </li>
         </ul>
@@ -192,61 +230,61 @@ if (empty($_SESSION['AD_number'])) {
 
                 <div class="tab-content tab-content-basic">
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                    <div class="row">
-                      <div class="col-lg-1 col-sm-6">
-                        <div class="dropdown">
-                          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            <?php
-                            if (isset($_GET['GradeLevel'])) {
-                              if ($_GET['GradeLevel'] == "KINDER") {
-                                echo  $_GET['GradeLevel'];
-                              } else {
-                                echo  "Grade - " . $_GET['GradeLevel'];
-                              }
+                    <div class="btn-group">
+                      <div class="dropdown">
+                        <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          <?php
+                          if (isset($_GET['GradeLevel'])) {
+                            if ($_GET['GradeLevel'] == "KINDER") {
+                              echo  $_GET['GradeLevel'];
                             } else {
-                              echo "Grade ";
+                              echo  "Grade " . $_GET['GradeLevel'];
+                            }
+                          } else {
+                            echo "Grade ";
+                          }
+                          ?>
+                          <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                          <?php
+                          while ($gradeData = $rungradeList->fetch_assoc()) { ?>
+                            <a class="dropdown-item" href="editlearningareas.php?GradeLevel=<?php echo $gradeData['S_yearLevel'] ?>">
+                              <?php
+                              echo "Grade " . $gradeData['S_yearLevel'];
+                              ?>
+                            </a>
+                          <?php } ?>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="btn-group">
+                      <?php
+                      if (isset($_GET['GradeLevel'])) { ?>
+                        <div class="dropdown">
+                          <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <?php if (isset($_GET['SectionName'])) {
+                              echo $_GET['SectionName'];
+                            } else {
+                              echo "Section";
                             }
                             ?>
+                            <i class="fa fa-caret-down"></i>
                           </button>
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                             <?php
-                            while ($gradeData = $rungradeList->fetch_assoc()) { ?>
-                              <a class="dropdown-item" href="editlearningareas.php?GradeLevel=<?php echo $gradeData['S_yearLevel'] ?>">
+                            while ($sectionData = $runsectionList->fetch_assoc()) { ?>
+                              <a class="dropdown-item" href="<?php echo $current_url . "&SectionName=" . $sectionData['S_name']; ?>">
                                 <?php
-                                echo "Grade - " . $gradeData['S_yearLevel'];
+                                echo $sectionData['S_name'];
                                 ?>
                               </a>
                             <?php } ?>
                           </div>
                         </div>
-                      </div>
-
-                      <div class="col-lg-1 col-sm-6">
-                        <?php
-                        if (isset($_GET['GradeLevel'])) { ?>
-                          <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                              <?php if (isset($_GET['SectionName'])) {
-                                echo $_GET['SectionName'];
-                              } else {
-                                echo "Section";
-                              }
-                              ?>
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                              <?php
-                              while ($sectionData = $runsectionList->fetch_assoc()) { ?>
-                                <a class="dropdown-item" href="<?php echo $current_url . "&SectionName=" . $sectionData['S_name']; ?>">
-                                  <?php
-                                  echo $sectionData['S_name'];
-                                  ?>
-                                </a>
-                              <?php } ?>
-                            </div>
-                          </div>
-                        <?php } ?>
-                      </div>
+                      <?php } ?>
                     </div>
+
                     <div class="row">
                       <div class="col-lg-12 d-flex flex-column">
                         <div class="row flex-grow">
@@ -343,7 +381,7 @@ if (empty($_SESSION['AD_number'])) {
 
                                               <?php
                                               if (empty($schedule[$rowCount]['F_number'])) {
-                                                echo '<input type="submit" class="btn btn-primary" value="SET">';
+                                                echo '<input type="submit" style="color: #ffffff;" class="btn btn-primary" value="SET">';
                                               } else {
                                                 echo '<input type="submit" class="btn btn-primary" value="UPDATE">';
                                               }
@@ -382,14 +420,14 @@ if (empty($_SESSION['AD_number'])) {
   <!-- container-scroller -->
 
   <!-- Footer Start -->
-  <div class="container-fluid bg-dark text-body footer mt-5 pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
+  <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
     <div class="container py-5">
       <div class="row g-5">
         <div class="col-lg-3 col-md-6">
           <h3 class="text-light mb-4">Address</h3>
           <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
           <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
-          <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>di ko alam email</p>
+          <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>customerservice@cdsp.edu.ph</p>
           <div class="d-flex pt-2">
             <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
             <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
@@ -440,7 +478,7 @@ if (empty($_SESSION['AD_number'])) {
   <!-- Template Javascript -->
   <script src="../assets/js/main.js"></script>
   <script src="../assets/js/admin/vendor.bundle.base.js"></script>
-  <script src="../assets/js/admin/js/off-canvas.js"></script>
+  <script src="../assets/js/admin/off-canvas.js"></script>
 </body>
 
 </html>

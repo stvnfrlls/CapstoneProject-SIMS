@@ -136,12 +136,6 @@ unset($_SESSION['verifyEmailData']);
                         </button>
                     </div>
 
-                    <div class="text-center p-t-46 p-b-20">
-                        <a href="register.php" class="txt2">
-                            Connect your Identification Number
-                        </a>
-                    </div>
-
                 </form>
 
                 <div class="login100-more" style="background-image: url('../assets/img/banner_1.jpg');">
