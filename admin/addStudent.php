@@ -487,7 +487,7 @@ if (empty($_SESSION['AD_number'])) {
                                     </div>
                                 </div>
                                 <div style="text-align: center;">
-                                    <input type="button" class="btn btn-primary me-2" name="confirm_student" value="Register">
+                                    <input type="submit" class="btn btn-primary me-2" name="confirm_student" value="Register">
                                     <button class="btn btn-light">Back</button>
                                 </div>
                             </form>
