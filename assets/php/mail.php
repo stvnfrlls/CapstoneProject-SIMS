@@ -2,6 +2,7 @@
 
 use PHPMailer\PHPMailer\PHPMailer;
 
+require '../assets/PHPMailer/src/Exception.php';
 require '../assets/PHPMailer/src/PHPMailer.php';
 require '../assets/PHPMailer/src/SMTP.php';
 
@@ -10,7 +11,7 @@ global $mail;
 $mail = new PHPMailer();
 $mail->isSMTP();
 $mail->Host = 'smtp.hostinger.com';
-$mail->SMTPSecure = 'ssl';
+$mail->SMTPSecure = 'tls';
 $mail->Port = 465;
 $mail->SMTPAuth = true;
 $mail->isHTML(true);
