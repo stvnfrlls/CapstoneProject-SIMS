@@ -17,7 +17,7 @@ if (isset($_POST['confirm_faculty'])) {
   <meta content="" name="description">
 
   <!-- Favicon -->
-  <link href="img/favicon.ico" rel="icon">
+  <link href="../assets/img/favicon.png" rel="icon">
 
   <!-- Google Web Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -48,13 +48,7 @@ if (isset($_POST['confirm_faculty'])) {
 <body>
   <!-- Navbar Start -->
   <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-    <img class="m-3" src="../assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">
-    <div class="d-flex align-items-center justify-content-center text-center">
-      <a href="../index.php" class="navbar-brand ms-4 ms-lg-0 text-center">
-        <h1 class="cdsp">Colegio De San Pedro</h1>
-        <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
-      </a>
-    </div>
+    <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
     <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
       <span class="mdi mdi-menu"></span>
     </button>
@@ -66,7 +60,7 @@ if (isset($_POST['confirm_faculty'])) {
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item" style="text-align:center; font-size: 20px; color: #b9b9b9; margin-top:20px;">FACULTY</li>
-            <!-- line 1 -->
+          <!-- line 1 -->
           <li class="nav-item nav-category">Profile</li>
           <li class="nav-item">
             <a class="nav-link" href="">
@@ -86,7 +80,7 @@ if (isset($_POST['confirm_faculty'])) {
               <span class="menu-title">Create Reminders</span>
             </a>
           </li>
-            <!-- line 2 -->
+          <!-- line 2 -->
           <li class="nav-item nav-category">Menu</li>
           <li class="nav-item">
             <a class="nav-link" href="../faculty/scanQR.php">
@@ -113,9 +107,9 @@ if (isset($_POST['confirm_faculty'])) {
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../faculty/viewReminders.php">
+            <a class="nav-link" href="../faculty/reminders.php">
               <i class=""></i>
-              <span class="menu-title">View Reminders</span>
+              <span class="menu-title">Reminders</span>
             </a>
           </li>
         </ul>
@@ -132,64 +126,70 @@ if (isset($_POST['confirm_faculty'])) {
                   </div>
                 </div>
                 <div class="tab-content tab-content-basic">
-                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                        <div class="row">
-                            <div class="col-12 grid-margin">
-                                <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title">Create Reminders</h4>
-                                    <form class="form-sample" action="confirmfaculty.php" method="POST">
+                  <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                    <div class="row">
+                      <div class="col-12 grid-margin">
+                        <div class="card">
+                          <div class="card-body">
+                            <h4 class="card-title">Create Reminders</h4>
+                            <form class="form-sample" action="confirmfaculty.php" method="POST">
 
-                                        <div class="row">
-                                            <div class="row g-3">
-                                                <div class="col-md-6">
-                                                <div class="form-floating">
-                                                    <input type="text" class="form-control" id="name" placeholder="Your Name">
-                                                    <label for="name">Your Name</label>
-                                                </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                <div class="form-floating">
-                                                    <input type="email" class="form-control" id="email" placeholder="Your Email">
-                                                    <label for="email">Deadline</label>
-                                                </div>
-                                                </div>
-                                                <div class="col-6">
-                                                <div class="form-floating">
-                                                    <input type="text" class="form-control" id="subject" placeholder="Subject">
-                                                    <label for="subject">Subject</label>
-                                                </div>
-                                                </div>
-                                                <div class="col-6">
-                                                <div class="form-floating">
-                                                    <input type="text" class="form-control" id="subject" placeholder="Subject">
-                                                    <label for="subject">Title</label>
-                                                </div>
-                                                </div>
-                                                <div class="col-12">
-                                                <div class="form-floating">
-                                                    <textarea class="form-control" placeholder="Leave a message here" id="message" style="height: 250px"></textarea>
-                                                    <label for="message">Description</label>
-                                                </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                    </form>
+                              <div class="row">
+                                <div class="row g-3">
+                                  <div class="col-md-6">
+                                    <div class="form-floating">
+                                      <input type="text" class="form-control" id="name" placeholder="Your Name">
+                                      <label for="name">Your Name</label>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="form-floating">
+                                      <input type="email" class="form-control" id="email" placeholder="Your Email">
+                                      <label for="email">Deadline</label>
+                                    </div>
+                                  </div>
+                                  <div class="col-6">
+                                    <div class="form-floating">
+                                      <input type="text" class="form-control" id="subject" placeholder="Subject">
+                                      <label for="subject">Subject</label>
+                                    </div>
+                                  </div>
+                                  <div class="col-6">
+                                    <div class="form-floating">
+                                      <input type="text" class="form-control" id="subject" placeholder="Subject">
+                                      <label for="subject">Title</label>
+                                    </div>
+                                  </div>
+                                  <div class="col-12">
+                                    <div class="form-floating">
+                                      <textarea class="form-control" placeholder="Leave a message here" id="message" style="height: 100px"></textarea>
+                                      <label for="message">Main Details</label>
+                                    </div>
+                                  </div>
+                                  <div class="col-12">
+                                    <div class="form-floating">
+                                      <textarea class="form-control" placeholder="Leave a message here" id="message" style="height: 250px"></textarea>
+                                      <label for="message">Description</label>
+                                    </div>
+                                  </div>
                                 </div>
-                                </div>
-                            </div>
-                            
+                              </div>
+
+                            </form>
+                          </div>
                         </div>
+                      </div>
+
                     </div>
+                  </div>
                 </div>
-                  
+
               </div>
             </div>
-                <form style="text-align: center;">
-                    <button type="submit" class="btn btn-primary me-2">Submit</button>
-                    <button class="btn btn-light">Cancel</button>
-                </form>
+            <form style="text-align: center;">
+              <button type="submit" class="btn btn-primary me-2">Submit</button>
+              <button class="btn btn-light">Cancel</button>
+            </form>
           </div>
         </div>
         <!-- content-wrapper ends -->
@@ -201,14 +201,14 @@ if (isset($_POST['confirm_faculty'])) {
   <!-- container-scroller -->
 
   <!-- Footer Start -->
-  <div class="container-fluid bg-dark text-body footer mt-5 pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
+  <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
     <div class="container py-5">
       <div class="row g-5">
         <div class="col-lg-3 col-md-6">
           <h3 class="text-light mb-4">Address</h3>
           <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
           <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
-          <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>di ko alam email</p>
+          <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>customerservice@cdsp.edu.ph</p>
           <div class="d-flex pt-2">
             <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
             <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>

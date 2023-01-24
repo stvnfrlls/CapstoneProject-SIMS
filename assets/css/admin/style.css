@@ -12583,7 +12583,7 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
 .nav-link {
   display: block;
   padding: 0.5rem 1rem;
-  color: #0d6efd;
+  color: #b9b9b9;
   text-decoration: none;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
 }
@@ -12595,7 +12595,7 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
 }
 
 .nav-link:hover, .nav-link:focus {
-  color: #0a58ca;
+  color: #b9b9b9;
 }
 
 .nav-link.disabled {
@@ -12649,7 +12649,7 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   color: #fff;
-  background-color: #0d6efd;
+  background-color: #b9b9b9;
 }
 
 .nav-fill > .nav-link,
@@ -28341,7 +28341,7 @@ div.tagsinput span.tag a {
 .sidebar .nav .nav-item.active > .nav-link i,
 .sidebar .nav .nav-item.active > .nav-link .menu-title,
 .sidebar .nav .nav-item.active > .nav-link .menu-arrow {
-  color: #1F3BB3;
+  color: #b9b9b9;
 }
 
 .sidebar .nav .nav-item.active > .nav-link .menu-title {
@@ -28355,7 +28355,7 @@ div.tagsinput span.tag a {
 .sidebar .nav .nav-item:hover > .nav-link i,
 .sidebar .nav .nav-item:hover > .nav-link .menu-title,
 .sidebar .nav .nav-item:hover > .nav-link .menu-arrow {
-  color: #1F3BB3;
+  color: #b9b9b9;
 }
 
 .sidebar .nav .nav-item.nav-category {
