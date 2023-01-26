@@ -5,31 +5,54 @@ if (empty($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 } else {
     $quarterArray = array();
-    array_unshift($quarterArray, null);
     $quarterStatus = $mysqli->query('SELECT quarterTag, quarterStatus FROM quartertable');
     while ($quarterData = $quarterStatus->fetch_assoc()) {
         $quarterArray[] = $quarterData;
     }
 
+    if (isset($_POST['Open'])) {
+        $enableForms = $mysqli->query('UPDATE quartertable SET quarterStatus = "enabled" WHERE quarterTag = "FORMS"');
+        $enableCurrentQuarter = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "enabled" WHERE quarterStatus = "current"');
+        header("Refresh:0");
+    }
+
+    if (isset($_POST['Close'])) {
+        $disableForms = $mysqli->query('UPDATE quartertable SET quarterStatus = "disabled" WHERE quarterTag = "FORMS"');
+        $disableCurrentQuarter = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled" WHERE quarterStatus = "current"');
+        header("Refresh:0");
+    }
+
     if (isset($_POST['enableFirst'])) {
-        $disableExisting = $mysqli->query('UPDATE quartertable SET quarterStatus = "disabled"');
-        $enableFirst = $mysqli->query('UPDATE quartertable SET quarterStatus = "enabled" WHERE quarterTag = "1"');
+        $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+        $enableFirst = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "1"');
         header("Refresh:0");
     }
     if (isset($_POST['enableSecond'])) {
-        $disableExisting = $mysqli->query('UPDATE quartertable SET quarterStatus = "disabled"');
-        $enableSecond = $mysqli->query('UPDATE quartertable SET quarterStatus = "enabled" WHERE quarterTag = "2"');
+        $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+        $enableSecond = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "2"');
         header("Refresh:0");
     }
     if (isset($_POST['enableThird'])) {
-        $disableExisting = $mysqli->query('UPDATE quartertable SET quarterStatus = "disabled"');
-        $enableThird = $mysqli->query('UPDATE quartertable SET quarterStatus = "enabled" WHERE quarterTag = "3"');
+        $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+        $enableThird = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "3"');
         header("Refresh:0");
     }
     if (isset($_POST['enableFourth'])) {
-        $disableExisting = $mysqli->query('UPDATE quartertable SET quarterStatus = "disabled"');
-        $enableFourth = $mysqli->query('UPDATE quartertable SET quarterStatus = "enabled" WHERE quarterTag = "4"');
+        $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+        $enableFourth = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "4"');
         header("Refresh:0");
+    }
+
+    $currentDate = new DateTime();
+    $currentMonth = $currentDate->format('m');
+    $academicYear = '';
+
+    if ($currentMonth >= 9 && $currentMonth <= 12) {
+        // September to December
+        $academicYear = $currentDate->format('Y') . '-' . ($currentDate->format('Y') + 1);
+    } else {
+        // January to August
+        $academicYear = ($currentDate->format('Y') - 1) . '-' . $currentDate->format('Y');
     }
 }
 ?>
@@ -81,25 +104,33 @@ if (empty($_SESSION['AD_number'])) {
 
     <form id="form-id" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
         <?php
-        if ($quarterArray[1]['quarterTag'] == 1 && $quarterArray[1]['quarterStatus'] == 'enabled') {
+        echo '<button type="submit" name="acadyear" class="btn btn-primary m-2">Acad Year: ' . $academicYear . '</button>';
+
+        if ($quarterArray[0]['quarterStatus'] == 'enabled') {
+            echo '<button type="submit" name="Close" class="btn btn-primary m-2">Close Encoding of Grades</button>';
+        } else {
+            echo '<button type="submit" name="Open" class="btn btn-secondary m-2">Open</button>';
+        }
+
+        if ($quarterArray[1]['quarterTag'] == 1 && $quarterArray[1]['quarterStatus'] == 'current') {
             echo '<button class="btn btn-primary m-2">1st Quarter (CURRENT)</button>';
         } else {
             echo '<button type="submit" name="enableFirst" class="btn btn-secondary m-2">Enable 1st Quarter</button>';
         }
 
-        if ($quarterArray[2]['quarterTag'] == 2 && $quarterArray[2]['quarterStatus'] == 'enabled') {
+        if ($quarterArray[2]['quarterTag'] == 2 && $quarterArray[2]['quarterStatus'] == 'current') {
             echo '<button class="btn btn-primary m-2">2nd Quarter (CURRENT)</button>';
         } else {
             echo '<button type="submit" name="enableSecond" class="btn btn-secondary m-2">Enable 2nd Quarter</button>';
         }
 
-        if ($quarterArray[3]['quarterTag'] == 3 && $quarterArray[3]['quarterStatus'] == 'enabled') {
+        if ($quarterArray[3]['quarterTag'] == 3 && $quarterArray[3]['quarterStatus'] == 'current') {
             echo '<button class="btn btn-primary m-2">3rd Quarter (CURRENT)</button>';
         } else {
             echo '<button type="submit" name="enableThird" class="btn btn-secondary m-2">Enable 3rd Quarter</button>';
         }
 
-        if ($quarterArray[4]['quarterTag'] == 4 && $quarterArray[4]['quarterStatus'] == 'enabled') {
+        if ($quarterArray[4]['quarterTag'] == 4 && $quarterArray[4]['quarterStatus'] == 'current') {
             echo '<button class="btn btn-primary m-2">4th Quarter (CURRENT)</button>';
         } else {
             echo '<button type="submit" name="enableFourth" class="btn btn-secondary m-2">Enable 4th Quarter</button>';
