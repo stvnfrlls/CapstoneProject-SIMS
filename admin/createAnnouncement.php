@@ -1,8 +1,9 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (isset($_POST['confirm_faculty'])) {
-    header('Location: confirmfaculty.php');
+if (empty($_SESSION['AD_number'])) {
+    header('Location: ../auth/login.php');
+} else {
 }
 ?>
 
@@ -200,32 +201,15 @@ if (isset($_POST['confirm_faculty'])) {
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <div class="form-floating">
-                                                                            <input type="email" class="form-control" id="email" placeholder="Your Email">
+                                                                            <input type="email" class="form-control" value="<?php echo  date('M/d/Y') ?>">
                                                                             <label for="email">Date of the Event</label>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-6">
-                                                                        <div class="form-floating">
-                                                                            <input type="text" class="form-control" id="subject" placeholder="Subject">
-                                                                            <label for="subject">Title</label>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-3">
-                                                                        <div class="form-floating">
-                                                                            <input type="date" class="form-control" id="subject" placeholder="Subject">
-                                                                            <label for="subject">Date of Posting</label>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-3">
-                                                                        <div class="form-floating">
-                                                                            <input type="date" class="form-control" id="subject" placeholder="Subject">
-                                                                            <label for="subject">End of Posting</label>
-                                                                        </div>
-                                                                    </div>
+
                                                                     <div class="col-12">
                                                                         <div class="form-floating">
-                                                                            <textarea class="form-control" placeholder="Leave a message here" id="message" style="height: 100px"></textarea>
-                                                                            <label for="message">Main Details</label>
+                                                                            <input type="text" class="form-control" id="subject" placeholder="Subject">
+                                                                                <label for="subject">Title</label>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-12">
