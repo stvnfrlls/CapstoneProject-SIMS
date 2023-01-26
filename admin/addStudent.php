@@ -8,6 +8,17 @@ if (empty($_SESSION['AD_number'])) {
 } else {
     if (isset($_POST['confirm_student'])) {
         header('Location: confirmstudent.php');
+    } else {
+        $cityprovreg = $mysqli->query('SELECT * FROM cityprovregion');
+        $array_cityprovreg = array();
+
+        while ($cityprovreg_data = $cityprovreg->fetch_assoc()) {
+            $array_cityprovreg[] = $cityprovreg_data;
+        }
+
+        $json = json_encode($array_cityprovreg);
+
+        echo "<script>var cityprov = " . $json . ";</script>";
     }
 }
 ?>
@@ -299,7 +310,9 @@ if (empty($_SESSION['AD_number'])) {
                                                                     <div class="col-md-3">
                                                                         <label label class="col-sm-12 col-form-label">City <span style="color: red;">*</span></label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="text" class="form-control" name="S_city" required>
+                                                                            <select id="city" class="form-select" name="S_city" required>
+                                                                                <option selected></option>
+                                                                            </select>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -308,7 +321,9 @@ if (empty($_SESSION['AD_number'])) {
                                                                     <div class="col-md-4">
                                                                         <label label class="col-sm-12 col-form-label">State <span style="color: red;">*</span></label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="text" class="form-control" name="S_state" required>
+                                                                            <select id="province" class="form-select" name="S_state" required>
+                                                                                <option selected></option>
+                                                                            </select>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-4">
@@ -380,7 +395,9 @@ if (empty($_SESSION['AD_number'])) {
                                                             <div class="col-md-3">
                                                                 <label label class="col-sm-12 col-form-label">City <span style="color: red;">*</span></label>
                                                                 <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" name="G_city" required>
+                                                                    <select id="city" class="form-select" name="G_city" required>
+                                                                        <option selected></option>
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -389,7 +406,9 @@ if (empty($_SESSION['AD_number'])) {
                                                             <div class="col-md-4">
                                                                 <label label class="col-sm-12 col-form-label">State <span style="color: red;">*</span></label>
                                                                 <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" name="G_state" required>
+                                                                    <select id="province" class="form-select" name="G_state" required>
+                                                                        <option selected></option>
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4">
@@ -557,7 +576,28 @@ if (empty($_SESSION['AD_number'])) {
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
     <!-- JavaScript Libraries -->
+    <script>
+        const city = document.getElementById('city');
+        const province = document.getElementById('province');
 
+        for (let i = 0; i < cityprov.length; i++) {
+            const option = document.createElement('option');
+            option.value = cityprov[i].city;
+            option.text = cityprov[i].city;
+            city.add(option);
+        }
+
+        city.addEventListener("change", function() {
+            const cityValue = this.value;
+            const cityprovValue = cityprov.find(function(element) {
+                return element.city == cityValue;
+            });
+            const option = document.createElement("option");
+            option.value = cityprovValue.province;
+            option.text = cityprovValue.province;
+            province.replaceChildren(option);
+        });
+    </script>
 
     <!-- Template Javascript -->
     <script src="../assets/js/main.js"></script>
