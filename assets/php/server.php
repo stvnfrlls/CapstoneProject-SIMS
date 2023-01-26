@@ -157,7 +157,6 @@ if (isset($_POST['verifyEmail'])) {
         }
     }
 }
-
 if (isset($_POST['submitOTP'])) {
     $verifyOTP = $mysqli->query("SELECT OTP FROM userdetails WHERE SR_email = '{$_SESSION['verifyEmailData']}' AND OTP = '{$_POST['OTPCode']}'");
 
@@ -653,8 +652,6 @@ if (isset($_POST['updateInformation'])) {
         echo "error" . $mysqli->error;
     }
 }
-
-//MAY MALI DITO
 if (isset($_POST['regFaculty'])) {
     $F_department = $mysqli->real_escape_string($_POST['F_department']);
 
@@ -795,7 +792,6 @@ if (isset($_POST['editFaculty'])) {
         echo "error" . $mysqli->error;
     }
 }
-
 if (isset($_POST['UpdateGrade'])) {
     $current_url = $_POST['current_url'];
 
@@ -841,17 +837,52 @@ if (isset($_POST['UpdateGrade'])) {
         echo "error" . $mysqli->error;
     }
 }
+if (isset($_POST['addSubject'])) {
+    $subjectName = $mysqli->real_escape_string($_POST['subjectName']);
+    $minYearLevel = $mysqli->real_escape_string($_POST['minYearLevel']);
+    $maxYearLevel = $mysqli->real_escape_string($_POST['maxYearLevel']);
 
+    $addSubject = $mysqli->query("INSERT INTO subjectperyear('subjectName', 'minYearLevel', 'maxYearLevel') VALUES('{$subjectName}','{$minYearLevel}','{$maxYearLevel}',)");
+}
+if (isset($_POST['updateSubjectName'])) {
+    $subjectName = $mysqli->real_escape_string($_POST['sbjName']);
+    $minYearLevel = $mysqli->real_escape_string($_POST['minYearLevel']);
+    $maxYearLevel = $mysqli->real_escape_string($_POST['maxYearLevel']);
+
+    $updateSubject = $mysqli->query("UPDATE subjectperyear SET minYearLevel = '{$minYearLevel}', maxYearLevel = '{$maxYearLevel}' WHERE subjectName = '{$subjectName}')");
+}
+if (isset($_POST['addAdmin'])) {
+    $adminName = $mysqli->real_escape_string($_POST['adminName']);
+    $adminEmail = $mysqli->real_escape_string($_POST['adminEmail']);
+    $adminPassword    = $mysqli->real_escape_string($_POST['adminPassword']);
+    $confirmPassword = $mysqli->real_escape_string($_POST['confirmPassword']);
+
+    if (empty($adminPassword) && empty($confirmPassword)) {
+        $errors['NoInputs'] = "Please enter your new password.";
+    } elseif (strcmp($adminPassword, $confirmPassword)) {
+        $errors['NoMatch'] = "Password does not match.";
+    } else {
+        $checkAdminEmail = $mysqli->query("SELECT * FROM admin_accounts WHERE AD_email = '{$adminEmail}'");
+        if ($checkAdminEmail->num_rows == 1) {
+            $errors['existing'] = "Email Already exist.";
+        } else {
+            $adData = date('Y');
+            $randNum = rand(1000, 9999);
+            $AD_number = $adData . "-" . $randNum;
+            $addAdminAccount = $mysqli->query("INSERT INTO admin_accounts (AD_number, AD_name, AD_email, AD_password) VALUES ('$AD_number', '$adminName', '$adminEmail', '$confirmPassword')");
+        }
+    }
+}
+
+//TO DO LIST
+if (isset($_POST['editRoles'])) {
+    # code...
+}
 if (isset($_POST['addSchedule'])) {
     # code...
 }
 if (isset($_POST['updateSchedule'])) {
     # code...
 }
-if (isset($_POST['addAccount'])) {
-    # code...
-}
-if (isset($_POST['editRoles'])) {
-    # code...
-}
+
 //End
