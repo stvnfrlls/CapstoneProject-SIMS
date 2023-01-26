@@ -1,8 +1,9 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (isset($_POST['confirm_faculty'])) {
-    header('Location: confirmfaculty.php');
+if (empty($_SESSION['AD_number'])) {
+    header('Location: ../auth/login.php');
+} else {
 }
 ?>
 
@@ -184,159 +185,44 @@ if (isset($_POST['confirm_faculty'])) {
 
                                 <form style="text-align: right; margin-top: 50px; margin-right: 20px;">
                                     <button type="submit" style="color: #ffffff;" class="btn btn-primary me-2">Create <i class="fa fa-plus" style="font-size: 10px;"></i></button>
-
                                 </form>
 
                                 <div class="tab-content tab-content-basic">
                                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                                         <div class="row">
-                                            <div class="col-lg-4 col-sm-12 grid-margin">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <div class="single-popular-carusel col-12">
-                                                            <div class="details">
-                                                                <a href="#">
-                                                                    <h4>
-                                                                        No Classes
-                                                                    </h4>
-                                                                </a>
-                                                                <div class="d-flex mb-3">
-                                                                    <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
-                                                                    <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                                                                </div>
-                                                                <p>
-                                                                    When television was young, there was a hugely popular show based on the still popular fictional characte
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-sm-12 grid-margin">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <div class="single-popular-carusel col-12">
-                                                            <div class="details">
-                                                                <a href="#">
-                                                                    <h4>
-                                                                        No Classes
-                                                                    </h4>
-                                                                </a>
-                                                                <div class="d-flex mb-3">
-                                                                    <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
-                                                                    <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                                                                </div>
-                                                                <p>
-                                                                    When television was young, there was a hugely popular show based on the still popular fictional characte
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-sm-12 grid-margin">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <div class="single-popular-carusel col-12">
-                                                            <div class="details">
-                                                                <a href="#">
-                                                                    <h4>
-                                                                        No Classes
-                                                                    </h4>
-                                                                </a>
-                                                                <div class="d-flex mb-3">
-                                                                    <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
-                                                                    <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                                                                </div>
-                                                                <p>
-                                                                    When television was young, there was a hugely popular show based on the still popular fictional characte
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-sm-12 grid-margin">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <div class="single-popular-carusel col-12">
-                                                            <div class="details">
-                                                                <a href="#">
-                                                                    <h4>
-                                                                        No Classes
-                                                                    </h4>
-                                                                </a>
-                                                                <div class="d-flex mb-3">
-                                                                    <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
-                                                                    <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                                                                </div>
-                                                                <p>
-                                                                    When television was young, there was a hugely popular show based on the still popular fictional characte
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-sm-12 grid-margin">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <div class="single-popular-carusel col-12">
-                                                            <div class="details">
-                                                                <div class="row">
-                                                                    <a href="#" class=" col-sm-3 col-md-9 col-lg-9">
-                                                                        <h4>
-                                                                            No Classes
-                                                                        </h4>
-                                                                    </a>
-                                                                    <div class="btn-wrapper col-sm-3 col-md-9 col-lg-3" style="margin-left: auto;  padding-right: 0px;">
-                                                                        <a href="#" style="margin-right: 2px;"><i class="fa fa-eye"></i></a>
-                                                                        <a href="#" style="margin-right: 2px;"><i class="fa fa-edit"></i></a>
-                                                                        <a href="#" style="margin-right: 2px;"><i class="fa fa-trash"></i></a>
+                                            <?php
+                                            $getAnnouncement = $mysqli->query('SELECT * FROM announcement');
+                                            while ($announcementDATA = $getAnnouncement->fetch_assoc()) { ?>
+                                                <div class="col-lg-4 col-sm-12 grid-margin">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div class="single-popular-carusel col-12">
+                                                                <div class="details">
+                                                                    <div class="row">
+                                                                        <a href="#" class=" col-sm-3 col-md-9 col-lg-9">
+                                                                            <h4><?php echo $announcementDATA['header'] ?></h4>
+                                                                        </a>
+                                                                        <div class="btn-wrapper col-sm-3 col-md-9 col-lg-3" style="margin-left: auto;  padding-right: 0px;">
+                                                                            <a href="#" style="margin-right: 2px;"><i class="fa fa-eye"></i></a>
+                                                                            <a href="#" style="margin-right: 2px;"><i class="fa fa-edit"></i></a>
+                                                                            <a href="#" style="margin-right: 2px;"><i class="fa fa-trash"></i></a>
+                                                                        </div>
                                                                     </div>
-
-
+                                                                    <div class="d-flex mb-3">
+                                                                        <small class="me-3"><i class="far fa-user text-primary me-2"></i><?php echo $announcementDATA['author'] ?></small>
+                                                                        <small><i class="far fa-calendar-alt text-primary me-2"></i><?php echo $announcementDATA['date'] ?></small>
+                                                                    </div>
+                                                                    <p><?php echo $announcementDATA['msg'] ?></p>
                                                                 </div>
-
-                                                                <div class="d-flex mb-3">
-                                                                    <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
-                                                                    <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                                                                </div>
-                                                                <p>
-                                                                    When television was young, there was a hugely popular show based on the still popular fictional characte
-                                                                </p>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-lg-4 col-sm-12 grid-margin">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <div class="single-popular-carusel col-12">
-                                                            <div class="details">
-                                                                <a href="#">
-                                                                    <h4>
-                                                                        No Classes
-                                                                    </h4>
-                                                                </a>
-                                                                <div class="d-flex mb-3">
-                                                                    <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
-                                                                    <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                                                                </div>
-                                                                <p>
-                                                                    When television was young, there was a hugely popular show based on the still popular fictional characte
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
+                                            <?php }
+                                            ?>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                         <form style="text-align: center;">
