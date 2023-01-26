@@ -47,6 +47,42 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
   while ($dataClassList = $rungetClassList->fetch_assoc()) {
     $arrayClassList[] = $dataClassList;
   }
+
+  $getQuarter = $mysqli->query("SELECT * FROM quartertable");
+  $arrayQuarter = array();
+
+  while ($QuarterData = $getQuarter->fetch_assoc()) {
+    $arrayQuarter[] = $QuarterData;
+  }
+
+  $FormQuery = $mysqli->query("SELECT quarterStatus FROM quartertable WHERE quarterTag = 'FORMS'");
+  $FormStatus = $FormQuery->fetch_assoc();
+  if ($FormStatus['quarterStatus'] == "enabled") { ?>
+    <script>
+      var inputElements = document.getElementsByTagName("input");
+      for (var i = 0; i < inputElements.length; i++) {
+        inputElements[i].disabled = false;
+      }
+    </script>
+  <?php } else { ?>
+    <script>
+      var inputElements = document.getElementsByTagName("input");
+      for (var i = 0; i < inputElements.length; i++) {
+        inputElements[i].disabled = true;
+      }
+    </script>
+<?php }
+  $getCurrentQuarter = $mysqli->query("SELECT quarterTag FROM quartertable WHERE quarterStatus = 'enabled'");
+  $currentQuarter = $getCurrentQuarter->fetch_assoc();
+  $g1 = 0.0;
+  $g2 = 0.0;
+  $g3 = 0.0;
+  $g4 = 0.0;
+  if ($currentQuarter == 0) {
+    $FinalGrade = "";
+  } else {
+    $FinalGrade = (int)$g1 + (int)$g2 + (int)$g3 + (int)$g4 / (int)$currentQuarter;
+  }
 }
 
 ?>
@@ -256,7 +292,8 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
                                       $rowCount = 0;
                                       $studentRowCount = sizeof($arrayStudentName);
                                       while ($rowCount != $studentRowCount) { ?>
-                                        <form action="" method="">
+
+                                        <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
                                           <tr>
                                             <td class="hatdog">
                                               <?php
@@ -264,39 +301,53 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
                                               ?>
                                             </td>
                                             <?php
-                                            if (!empty($arrayClassList[$rowCount]['G_gradesQ1'])) { ?>
-                                              <td class="hatdog"><input type="number" value="<?php echo $arrayClassList[$rowCount]['G_gradesQ1']; ?>" name="G_gradesQ1" style="text-align: center; width: 30px;"></td>
+                                            if ($arrayQuarter['1']['quarterStatus'] == "current" && $arrayQuarter['1']['quarterFormStatus'] == "enabled") { ?>
+                                              <td class="hatdog"><input type="number" value="<?php echo $g1 = $arrayClassList[$rowCount]['G_gradesQ1']; ?>" name="G_gradesQ1" style="text-align: center; width: 30px;"></td>
                                             <?php
                                             } else { ?>
-                                              <td class="hatdog"><input type="number" placeholder="##" style="text-align: center; width: 30px;"></td>
+                                              <td class="hatdog"><input type="number" value="<?php echo $g1 = $arrayClassList[$rowCount]['G_gradesQ1']; ?>" name="G_gradesQ1" style="text-align: center; width: 30px;" disabled></td>
                                             <?php } ?>
 
                                             <?php
-                                            if (!empty($arrayClassList[$rowCount]['G_gradesQ2'])) { ?>
-                                              <td class="hatdog"><input type="number" value="<?php echo $arrayClassList[$rowCount]['G_gradesQ2']; ?>" name="G_gradesQ2" style="text-align: center; width: 30px;"></td>
+                                            if ($arrayQuarter['2']['quarterStatus'] == "current" && $arrayQuarter['2']['quarterFormStatus'] == "enabled") { ?>
+                                              <td class="hatdog"><input type="number" value="<?php echo $g2 = $arrayClassList[$rowCount]['G_gradesQ2']; ?>" name="G_gradesQ2" style="text-align: center; width: 30px;"></td>
                                             <?php
                                             } else { ?>
-                                              <td class="hatdog"><input type="number" placeholder="##" style="text-align: center; width: 30px;"></td>
+                                              <td class="hatdog"><input type="number" value="<?php echo $g2 = $arrayClassList[$rowCount]['G_gradesQ2']; ?>" name="G_gradesQ2" style="text-align: center; width: 30px;" disabled></td>
                                             <?php } ?>
 
                                             <?php
-                                            if (!empty($arrayClassList[$rowCount]['G_gradesQ3'])) { ?>
-                                              <td class="hatdog"><input type="number" value="<?php echo $arrayClassList[$rowCount]['G_gradesQ3']; ?>" name="G_gradesQ3" style="text-align: center; width: 30px;"></td>
+                                            if ($arrayQuarter['3']['quarterStatus'] == "current" && $arrayQuarter['3']['quarterFormStatus'] == "enabled") { ?>
+                                              <td class="hatdog"><input type="number" value="<?php echo $g3 = $arrayClassList[$rowCount]['G_gradesQ3']; ?>" name="G_gradesQ3" style="text-align: center; width: 30px;"></td>
                                             <?php
                                             } else { ?>
-                                              <td class="hatdog"><input type="number" placeholder="##" style="text-align: center; width: 30px;"></td>
+                                              <td class="hatdog"><input type="number" value="<?php echo $g3 = $arrayClassList[$rowCount]['G_gradesQ3']; ?>" name="G_gradesQ3" style="text-align: center; width: 30px;" disabled></td>
                                             <?php } ?>
 
                                             <?php
-                                            if (!empty($arrayClassList[$rowCount]['G_gradesQ4'])) { ?>
-                                              <td class="hatdog"><input type="number" value="<?php echo $arrayClassList[$rowCount]['G_gradesQ4']; ?>" name="G_gradesQ4" style="text-align: center; width: 30px;"></td>
+                                            if ($arrayQuarter['4']['quarterStatus'] == "current" && $arrayQuarter['4']['quarterFormStatus'] == "enabled") { ?>
+                                              <td class="hatdog"><input type="number" value="<?php echo $g4 = $arrayClassList[$rowCount]['G_gradesQ4']; ?>" name="G_gradesQ4" style="text-align: center; width: 30px;"></td>
                                             <?php
                                             } else { ?>
-                                              <td class="hatdog"><input type="number" placeholder="##" style="text-align: center; width: 30px;"></td>
+                                              <td class="hatdog"><input type="number" value="<?php echo $g4 = $arrayClassList[$rowCount]['G_gradesQ4']; ?>" name="G_gradesQ4" style="text-align: center; width: 30px;" disabled></td>
                                             <?php } ?>
 
-                                            <td class="hatdog">90.5</td>
-                                            <td class="hatdog">Passed</td>
+                                            <td class="hatdog">
+                                              <?php echo $FinalGrade; ?>
+                                            </td>
+                                            <td class="hatdog">
+                                              <?php
+                                              if ($FinalGrade > 75) {
+                                                echo "Passed";
+                                              } else if ($currentQuarter == 0) {
+                                                echo "Academic year not yet available";
+                                              } else if ($g2 == 0 || $g3 == 0 || $g4 == 0) {
+                                                echo "Grades are incomplete";
+                                              } else {
+                                                echo "Failed";
+                                              }
+                                              ?>
+                                            </td>
                                           </tr>
                                         </form>
                                       <?php $rowCount++;
