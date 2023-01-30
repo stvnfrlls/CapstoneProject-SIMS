@@ -4,6 +4,8 @@ require_once("../assets/php/server.php");
 if (empty($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 } else {
+    $admin = $mysqli->query("SELECT * FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+    $adminData = $admin->fetch_assoc();
 }
 ?>
 
@@ -195,13 +197,13 @@ if (empty($_SESSION['AD_number'])) {
                                                                 <div class="row g-3">
                                                                     <div class="col-md-6">
                                                                         <div class="form-floating">
-                                                                            <input type="text" class="form-control" id="name" placeholder="Your Name">
+                                                                            <input type="text" class="form-control" id="name" value="<?php echo "ADMIN: ".$adminData['AD_name'] ?>" placeholder="Your Name" readonly>
                                                                             <label for="name">Your Name</label>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <div class="form-floating">
-                                                                            <input type="email" class="form-control" value="<?php echo  date('M/d/Y') ?>">
+                                                                            <input type="email" class="form-control" value="<?php echo  date('M/d/Y') ?>" readonly>
                                                                             <label for="email">Date of the Event</label>
                                                                         </div>
                                                                     </div>
