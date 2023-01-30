@@ -9,7 +9,41 @@ if (empty($_SESSION['AD_number'])) {
     while ($quarterData = $quarterStatus->fetch_assoc()) {
         $quarterArray[] = $quarterData;
     }
+    $getAcadYear = $mysqli->query("SELECT * FROM acad_year");
+    $acadYear_Data = $getAcadYear->fetch_assoc();
+    $_SESSION['academicYear'] = $acadYear_Data['currentYear'] . " - " . $acadYear_Data['endYear'];
 
+    if (isset($_POST['acadyear'])) {
+        $currentDate = new DateTime();
+        $currentMonth = $currentDate->format('m');
+        $startYear = "";
+        $endYear = "";
+
+        if ($currentMonth >= 9 && $currentMonth <= 12) {
+            // September to December
+            $startYear = $currentDate->format('Y');
+            $endYear = $currentDate->format('Y') + 1;
+        } else {
+            // January to August
+            $startYear = $currentDate->format('Y') - 1;
+            $endYear = $currentDate->format('Y');
+        }
+
+        if ($getAcadYear->num_rows <= 0) {
+            //insert portion
+            $createAcadYear = $mysqli->query("INSERT INTO acad_year(currentYear, endYear) VALUES ('{$startYear}', '{$endYear}')");
+            $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+            header("Refresh:0");
+        } elseif ($getAcadYear->num_rows == 1) {
+            //update portion
+            $startYear = $acadYear_Data['endYear'];
+            $endYear = (int) $startYear + 1;
+
+            $updateAcadYear = $mysqli->query("UPDATE acad_year SET currentYear = '{$startYear}', endYear = '{$endYear}'");
+            $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+            header("Refresh:0");
+        }
+    }
     if (isset($_POST['Open'])) {
         $enableForms = $mysqli->query('UPDATE quartertable SET quarterStatus = "enabled" WHERE quarterTag = "FORMS"');
         $enableCurrentQuarter = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "enabled" WHERE quarterStatus = "current"');
@@ -41,18 +75,6 @@ if (empty($_SESSION['AD_number'])) {
         $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
         $enableFourth = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "4"');
         header("Refresh:0");
-    }
-
-    $currentDate = new DateTime();
-    $currentMonth = $currentDate->format('m');
-    $academicYear = '';
-
-    if ($currentMonth >= 9 && $currentMonth <= 12) {
-        // September to December
-        $academicYear = $currentDate->format('Y') . '-' . ($currentDate->format('Y') + 1);
-    } else {
-        // January to August
-        $academicYear = ($currentDate->format('Y') - 1) . '-' . $currentDate->format('Y');
     }
 }
 ?>
@@ -104,7 +126,7 @@ if (empty($_SESSION['AD_number'])) {
 
     <form id="form-id" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
         <?php
-        echo '<button type="submit" name="acadyear" class="btn btn-primary m-2">Acad Year: ' . $academicYear . '</button>';
+        echo '<button type="submit" name="acadyear" class="btn btn-primary m-2">Acad Year: ' . $_SESSION['academicYear'] . '</button>';
 
         if ($quarterArray[0]['quarterStatus'] == 'enabled') {
             echo '<button type="submit" name="Close" class="btn btn-primary m-2">Close Encoding of Grades</button>';
@@ -142,6 +164,8 @@ if (empty($_SESSION['AD_number'])) {
     <a href="editlearningareas.php" class="m-2">Edit Learning Areas</a>
     <a href="assignAdvisory.php" class="m-2">Assign Advisory Class</a>
     <a href="movingUp.php" class="m-2">Moving Up</a>
+    <a href="createAnnouncement.php" class="m-2">Create Announcement</a>
+    <a href="viewAnnouncement.php" class="m-2">View Announcement</a>
 </body>
 
 
@@ -149,7 +173,7 @@ if (empty($_SESSION['AD_number'])) {
     const form = document.getElementById('form-id');
 
     form.addEventListener('submit', (event) => {
-        if (confirm('Are you sure you want to change quarter?') == true) {
+        if (confirm('Are you sure you want to do this action?') == true) {
             form.submit();
             return true;
         } else {
