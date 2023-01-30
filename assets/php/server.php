@@ -51,6 +51,40 @@ function generateOTP()
     return $otp;
 }
 
+function timeRoundUp($data)
+{
+    // Create a DateTime object for the input time
+    $data = new DateTime($data);
+
+    // Get the minute of the input time
+    $minute = (int) $data->format("i");
+
+    // Round up the minute to the nearest quarter hour
+    if ($minute > 0 && $minute <= 15) {
+        $minute = 15;
+    } elseif ($minute > 15 && $minute <= 30) {
+        $minute = 30;
+    } elseif ($minute > 30 && $minute <= 45) {
+        $minute = 45;
+    } else {
+        $data->add(new DateInterval('PT1H'));
+        $minute = 0;
+    }
+
+    // Set the rounded minute to the DateTime object
+    $data->setTime((int) $data->format("H"), $minute);
+
+    // Output the rounded time
+    return $data->format("H:i");
+}
+function timeMinusOneMinute($data) //sa endtime lang to ilalagay
+{
+    $convertedTime = strtotime($data);
+    $timeMinusOneMinute = $convertedTime - 60;
+    $data = date("H:i", $timeMinusOneMinute);
+
+    return $data;
+}
 //Login and Register Process
 if (isset($_POST['login-button'])) {
     $email = $_POST['usersEmail'];
@@ -231,15 +265,12 @@ if (isset($_POST['student']) || isset($_POST['fetcher'])) {
     $checkAttendance = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$studentID}' AND A_date = '{$date}'");
     $attendanceData = $checkAttendance->fetch_assoc();
 
-    $studentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$studentID}'");
-    $Fullname = $studentInfo['SR_lname'] . ", " . $studentInfo['SR_fname'] . " " . $studentInfo['SR_mname'] . " " . $studentInfo['SR_suffix'];
-
     if ($checkAttendance->num_rows == 0) {
         $timeIN = $mysqli->query("INSERT INTO attendance (SR_number, A_date, A_time_IN, A_fetcher_IN) VALUES ('{$studentID}', '{$date}', '{$time}', '{$fetcherID}')");
         if ($timeIN) {
             function_alert("PRESENT " . $studentID);
 
-            $mail->addAddress($studentInfo['SR_email'], $Fullname);
+            $mail->addAddress($studentInfo['SR_email']);
             $mail->Subject = 'Attendance: Time In';
 
             $mail->Body = '<h1>Student Timed In</h1>
@@ -265,7 +296,7 @@ if (isset($_POST['student']) || isset($_POST['fetcher'])) {
         if ($timeOUT) {
             function_alert("TIME OUT " . $studentID);
 
-            $mail->addAddress($studentInfo['SR_email'], $Fullname);
+            $mail->addAddress($studentInfo['SR_email']);
             $mail->Subject = 'Attendance: Time Out';
 
             $mail->Body = '<h1>Student Timed Out</h1>
@@ -573,7 +604,7 @@ if (isset($_POST['regStudent'])) {
                                                          VALUES ('$S_email', '$GenPass', 'student')");
         $Fullname = $S_lname . ", " . $S_fname . " " . $S_mname . " " . $S_suffix;
 
-        $mail->addAddress($S_email, $Fullname);
+        $mail->addAddress($S_email);
         $mail->Subject = 'STUDENT REGISTRATION';
 
         $mail->Body = '<h1>Registration Complete</h1>
@@ -718,7 +749,7 @@ if (isset($_POST['regFaculty'])) {
                                                          VALUES ('$F_email', '$GenPass', 'faculty')");
         $Fullname = $F_lname . ", " . $F_fname . " " . $F_mname . " " . $F_suffix;
 
-        $mail->addAddress($F_email, $Fullname);
+        $mail->addAddress($F_email);
         $mail->Subject = 'STUDENT REGISTRATION';
 
         $mail->Body = '<h1>Registration Complete</h1>
@@ -873,16 +904,51 @@ if (isset($_POST['addAdmin'])) {
         }
     }
 }
+if (isset($_POST['setSchedule'])) {
+    $assignedFaculty = $_POST['assignedFaculty'];
+    $subjectname = $_POST['subjectname'];
+    $startime = $_POST['WS_start_time'];
+    $endtime = timeMinusOneMinute($_POST['WS_end_time']);
+
+    $checkSchedule = $mysqli->query("SELECT WS_start_time, WS_end_time FROM workschedule
+                    WHERE F_number = '{$assignedFaculty}' AND
+                    (WS_start_time BETWEEN '{$startime}' AND '{$endtime}') OR 
+                    (WS_end_time BETWEEN '{$startime}' AND '{$endtime}') OR
+                    ('{$startime}' BETWEEN WS_start_time AND WS_end_time)");
+
+    if ($checkSchedule->num_rows == 0) {
+        $setSchedule = $mysqli->query("INSERT INTO workschedule (F_number, S_subject, SR_grade, SR_section, WS_start_time, WS_end_time) 
+                                    VALUES ('{$assignedFaculty}', '{$subjectname}', '{$_GET['GradeLevel']}', '{$_GET['SectionName']}', '{$startime}', '{$endtime}')");
+    } else {
+        echo "ASSIGNING FAIL CONFLICT IN TIME";
+    }
+}
+if (isset($_POST['updateSchedule'])) { //NOT WORKING
+    $assignedFaculty = $_POST['assignedFaculty'];
+    $subjectname = $_POST['subjectname'];
+    $startime = $_POST['WS_start_time'];
+    $endtime = timeMinusOneMinute($_POST['WS_end_time']);
+
+    $checkSchedule = $mysqli->query("SELECT S_subject, WS_start_time, WS_end_time FROM workschedule
+                    WHERE F_number = '{$assignedFaculty}' AND
+                    (WS_start_time BETWEEN '{$startime}' AND '{$endtime}') OR 
+                    (WS_end_time BETWEEN '{$startime}' AND '{$endtime}') OR
+                    ('{$startime}' BETWEEN WS_start_time AND WS_end_time) ");
+    $scheduleData = $checkSchedule->fetch_assoc();
+
+    if ($checkSchedule->num_rows == 0) {
+        $setSchedule = $mysqli->query("UPDATE workschedule SET WS_start_time = '{$startime}', WS_end_time = '{$endtime}' WHERE S_subject = '{$subjectname}' AND F_number = '{$assignedFaculty}' AND SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['SectionName']}'");
+    } elseif ($scheduleData['S_subject'] == $subjectname) {
+        $setSchedule = $mysqli->query("UPDATE workschedule SET WS_start_time = '{$startime}', WS_end_time = '{$endtime}' WHERE S_subject = '{$subjectname}' AND F_number = '{$assignedFaculty}' AND SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['SectionName']}'");
+    } else {
+        echo "UPDATE FAIL CONFLICT IN TIME";
+    }
+}
 
 //TO DO LIST
 if (isset($_POST['editRoles'])) {
     # code...
 }
-if (isset($_POST['addSchedule'])) {
-    # code...
-}
-if (isset($_POST['updateSchedule'])) {
-    # code...
-}
+
 
 //End

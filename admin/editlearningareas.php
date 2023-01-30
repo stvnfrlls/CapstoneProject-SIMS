@@ -309,10 +309,13 @@ if (empty($_SESSION['AD_number'])) {
                                     if (isset($_GET['GradeLevel']) && isset($_GET['SectionName'])) {
                                       $subjectRowCount = sizeof($subjects);
                                       while ($rowCount != $subjectRowCount) { ?>
-                                        <form action="" method="">
+                                        <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
                                           <tr>
                                             <td><?php echo $rowCount; ?></td>
-                                            <td><?php echo $subjects[$rowCount]['subjectName']; ?></td>
+                                            <td>
+                                              <?php echo $subjects[$rowCount]['subjectName']; ?>
+                                              <input type="hidden" name="subjectname" value="<?php echo $subjects[$rowCount]['subjectName']; ?>">
+                                            </td>
                                             <td>
                                               <?php
                                               if (empty($schedule[$rowCount]['F_number'])) {
@@ -323,7 +326,7 @@ if (empty($_SESSION['AD_number'])) {
                                                 }
                                                 $arrayRowCount = 1;
                                                 $arrayCount = count($AllFacultyName); ?>
-                                                <select class="form-select" aria-label="Default select example">
+                                                <select class="form-select" name="assignedFaculty" aria-label="Default select example">
                                                   <option selected></option>
                                                   <?php
                                                   while ($arrayRowCount < $arrayCount) { ?>
@@ -343,7 +346,7 @@ if (empty($_SESSION['AD_number'])) {
                                                 while ($dataFacultyName = $rungetFacultyName->fetch_assoc()) {
                                                   $FacultyName[] = $dataFacultyName;
                                                 } ?>
-                                                <select class="form-select" aria-label="Default select example">
+                                                <select class="form-select" name="assignedFaculty" aria-label="Default select example">
                                                   <option selected><?php echo $FacultyName[$rowCount]['F_lname'] . ", " . $FacultyName[$rowCount]['F_fname'] . " " . substr($FacultyName[$rowCount]['F_mname'], 0, 1); ?></option>
                                                 </select>
                                               <?php
@@ -364,7 +367,7 @@ if (empty($_SESSION['AD_number'])) {
                                               if (empty($schedule[$rowCount]['WS_start_time'])) {
                                                 echo '<input type="time" class="form-control" name="WS_end_time">';
                                               } else {
-                                                echo '<input type="time" class="form-control" name="WS_end_time" value=' . $schedule[$rowCount]['WS_end_time'] . '>';
+                                                echo '<input type="time" class="form-control" name="WS_end_time" value=' . timeRoundUp($schedule[$rowCount]['WS_end_time']) . '>';
                                               }
                                               ?>
                                             </td>
@@ -373,7 +376,7 @@ if (empty($_SESSION['AD_number'])) {
                                               if (empty($schedule[$rowCount]['WS_start_time'])) {
                                                 echo '<input type="text" class="form-control" size="4" name="WS_room">';
                                               } else {
-                                                echo '<input type="time" class="form-control" size="4" name="WS_room">';
+                                                echo '<input type="text" class="form-control" size="4" name="WS_room">';
                                               }
                                               ?>
                                             </td>
@@ -381,9 +384,9 @@ if (empty($_SESSION['AD_number'])) {
 
                                               <?php
                                               if (empty($schedule[$rowCount]['F_number'])) {
-                                                echo '<input type="submit" style="color: #ffffff;" class="btn btn-primary" value="SET">';
+                                                echo '<input type="submit" style="color: #ffffff;" class="btn btn-primary" name="setSchedule" value="SET">';
                                               } else {
-                                                echo '<input type="submit" class="btn btn-primary" value="UPDATE">';
+                                                echo '<input type="submit" class="btn btn-primary" name="updateSchedule" value="UPDATE">';
                                               }
                                               ?>
                                             </td>
