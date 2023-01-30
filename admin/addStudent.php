@@ -329,7 +329,7 @@ if (empty($_SESSION['AD_number'])) {
                                                                     <div class="col-md-4">
                                                                         <label label class="col-sm-12 col-form-label">Postal Code <span style="color: red;">*</span></label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="number" class="form-control" name="S_postal" required>
+                                                                            <input type="number" class="form-control" id="postal" name="S_postal" required readonly>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-4">
@@ -579,6 +579,7 @@ if (empty($_SESSION['AD_number'])) {
     <script>
         const city = document.getElementById('city');
         const province = document.getElementById('province');
+        const postal = document.getElementById('postal');
 
         for (let i = 0; i < cityprov.length; i++) {
             const option = document.createElement('option');
@@ -589,13 +590,15 @@ if (empty($_SESSION['AD_number'])) {
 
         city.addEventListener("change", function() {
             const cityValue = this.value;
-            const cityprovValue = cityprov.find(function(element) {
+            const findCity = cityprov.find(function(element) {
                 return element.city == cityValue;
             });
             const option = document.createElement("option");
-            option.value = cityprovValue.province;
-            option.text = cityprovValue.province;
+            option.value = findCity.province;
+            option.text = findCity.province;
             province.replaceChildren(option);
+
+            postal.value = findCity.zip_code;
         });
     </script>
 
