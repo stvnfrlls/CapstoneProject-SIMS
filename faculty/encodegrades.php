@@ -47,6 +47,42 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
   while ($dataClassList = $rungetClassList->fetch_assoc()) {
     $arrayClassList[] = $dataClassList;
   }
+
+  $getQuarter = $mysqli->query("SELECT * FROM quartertable");
+  $arrayQuarter = array();
+
+  while ($QuarterData = $getQuarter->fetch_assoc()) {
+    $arrayQuarter[] = $QuarterData;
+  }
+
+  $FormQuery = $mysqli->query("SELECT quarterStatus FROM quartertable WHERE quarterTag = 'FORMS'");
+  $FormStatus = $FormQuery->fetch_assoc();
+  if ($FormStatus['quarterStatus'] == "enabled") { ?>
+    <script>
+      var inputElements = document.getElementsByTagName("input");
+      for (var i = 0; i < inputElements.length; i++) {
+        inputElements[i].disabled = false;
+      }
+    </script>
+  <?php } else { ?>
+    <script>
+      var inputElements = document.getElementsByTagName("input");
+      for (var i = 0; i < inputElements.length; i++) {
+        inputElements[i].disabled = true;
+      }
+    </script>
+<?php }
+  $getCurrentQuarter = $mysqli->query("SELECT quarterTag FROM quartertable WHERE quarterStatus = 'enabled'");
+  $currentQuarter = $getCurrentQuarter->fetch_assoc();
+  $g1 = 0.0;
+  $g2 = 0.0;
+  $g3 = 0.0;
+  $g4 = 0.0;
+  if ($currentQuarter == 0) {
+    $FinalGrade = "";
+  } else {
+    $FinalGrade = (int)$g1 + (int)$g2 + (int)$g3 + (int)$g4 / (int)$currentQuarter;
+  }
 }
 
 ?>
@@ -62,7 +98,7 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
   <meta content="" name="description">
 
   <!-- Favicon -->
-  <link href="img/favicon.ico" rel="icon">
+  <link href="../assets/img/favicon.png" rel="icon">
 
   <!-- Google Web Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -93,13 +129,7 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
 <body>
   <!-- Navbar Start -->
   <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-    <img class="m-3" src="../assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">
-    <div class="d-flex align-items-center justify-content-center text-center">
-      <a href="../index.php" class="navbar-brand ms-4 ms-lg-0 text-center">
-        <h1 class="cdsp">Colegio De San Pedro</h1>
-        <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
-      </a>
-    </div>
+    <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
     <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
       <span class="mdi mdi-menu"></span>
     </button>
@@ -158,9 +188,9 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../faculty/viewReminders.php">
+            <a class="nav-link" href="../faculty/reminders.php">
               <i class=""></i>
-              <span class="menu-title">View Reminders</span>
+              <span class="menu-title">Reminders</span>
             </a>
           </li>
         </ul>
@@ -184,7 +214,7 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
                           <div class="card-body">
                             <div class="btn-group">
                               <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                   <?php
                                   if (isset($_GET['Grade']) && isset($_GET['Section'])) {
                                     echo "Grade " . $_GET['Grade'] . " - " . $_GET['Section'];
@@ -192,6 +222,7 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
                                     echo "Grade and Section";
                                   }
                                   ?>
+                                  <i class="fa fa-caret-down"></i>
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                   <?php
@@ -211,7 +242,7 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
                               <?php
                               if (isset($_GET['Grade']) && isset($_GET['Section'])) { ?>
                                 <div class="dropdown">
-                                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                  <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                     <?php
                                     if (isset($_GET['Subject'])) {
                                       echo $_GET['Subject'];
@@ -219,6 +250,7 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
                                       echo "Learning Areas";
                                     }
                                     ?>
+                                    <i class="fa fa-caret-down"></i>
                                   </button>
                                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
                                     <?php
@@ -260,7 +292,8 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
                                       $rowCount = 0;
                                       $studentRowCount = sizeof($arrayStudentName);
                                       while ($rowCount != $studentRowCount) { ?>
-                                        <form action="" method="">
+
+                                        <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
                                           <tr>
                                             <td class="hatdog">
                                               <?php
@@ -268,39 +301,53 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
                                               ?>
                                             </td>
                                             <?php
-                                            if (!empty($arrayClassList[$rowCount]['G_gradesQ1'])) { ?>
-                                              <td class="hatdog"><input type="number" value="<?php echo $arrayClassList[$rowCount]['G_gradesQ1']; ?>" name="G_gradesQ1" style="text-align: center; width: 30px;"></td>
+                                            if ($arrayQuarter['1']['quarterStatus'] == "current" && $arrayQuarter['1']['quarterFormStatus'] == "enabled") { ?>
+                                              <td class="hatdog"><input type="number" value="<?php echo $g1 = $arrayClassList[$rowCount]['G_gradesQ1']; ?>" name="G_gradesQ1" style="text-align: center; width: 30px;"></td>
                                             <?php
                                             } else { ?>
-                                              <td class="hatdog"><input type="number" placeholder="##" style="text-align: center; width: 30px;"></td>
+                                              <td class="hatdog"><input type="number" value="<?php echo $g1 = $arrayClassList[$rowCount]['G_gradesQ1']; ?>" name="G_gradesQ1" style="text-align: center; width: 30px;" disabled></td>
                                             <?php } ?>
 
                                             <?php
-                                            if (!empty($arrayClassList[$rowCount]['G_gradesQ2'])) { ?>
-                                              <td class="hatdog"><input type="number" value="<?php echo $arrayClassList[$rowCount]['G_gradesQ2']; ?>" name="G_gradesQ2" style="text-align: center; width: 30px;"></td>
+                                            if ($arrayQuarter['2']['quarterStatus'] == "current" && $arrayQuarter['2']['quarterFormStatus'] == "enabled") { ?>
+                                              <td class="hatdog"><input type="number" value="<?php echo $g2 = $arrayClassList[$rowCount]['G_gradesQ2']; ?>" name="G_gradesQ2" style="text-align: center; width: 30px;"></td>
                                             <?php
                                             } else { ?>
-                                              <td class="hatdog"><input type="number" placeholder="##" style="text-align: center; width: 30px;"></td>
+                                              <td class="hatdog"><input type="number" value="<?php echo $g2 = $arrayClassList[$rowCount]['G_gradesQ2']; ?>" name="G_gradesQ2" style="text-align: center; width: 30px;" disabled></td>
                                             <?php } ?>
 
                                             <?php
-                                            if (!empty($arrayClassList[$rowCount]['G_gradesQ3'])) { ?>
-                                              <td class="hatdog"><input type="number" value="<?php echo $arrayClassList[$rowCount]['G_gradesQ3']; ?>" name="G_gradesQ3" style="text-align: center; width: 30px;"></td>
+                                            if ($arrayQuarter['3']['quarterStatus'] == "current" && $arrayQuarter['3']['quarterFormStatus'] == "enabled") { ?>
+                                              <td class="hatdog"><input type="number" value="<?php echo $g3 = $arrayClassList[$rowCount]['G_gradesQ3']; ?>" name="G_gradesQ3" style="text-align: center; width: 30px;"></td>
                                             <?php
                                             } else { ?>
-                                              <td class="hatdog"><input type="number" placeholder="##" style="text-align: center; width: 30px;"></td>
+                                              <td class="hatdog"><input type="number" value="<?php echo $g3 = $arrayClassList[$rowCount]['G_gradesQ3']; ?>" name="G_gradesQ3" style="text-align: center; width: 30px;" disabled></td>
                                             <?php } ?>
 
                                             <?php
-                                            if (!empty($arrayClassList[$rowCount]['G_gradesQ4'])) { ?>
-                                              <td class="hatdog"><input type="number" value="<?php echo $arrayClassList[$rowCount]['G_gradesQ4']; ?>" name="G_gradesQ4" style="text-align: center; width: 30px;"></td>
+                                            if ($arrayQuarter['4']['quarterStatus'] == "current" && $arrayQuarter['4']['quarterFormStatus'] == "enabled") { ?>
+                                              <td class="hatdog"><input type="number" value="<?php echo $g4 = $arrayClassList[$rowCount]['G_gradesQ4']; ?>" name="G_gradesQ4" style="text-align: center; width: 30px;"></td>
                                             <?php
                                             } else { ?>
-                                              <td class="hatdog"><input type="number" placeholder="##" style="text-align: center; width: 30px;"></td>
+                                              <td class="hatdog"><input type="number" value="<?php echo $g4 = $arrayClassList[$rowCount]['G_gradesQ4']; ?>" name="G_gradesQ4" style="text-align: center; width: 30px;" disabled></td>
                                             <?php } ?>
 
-                                            <td class="hatdog">90.5</td>
-                                            <td class="hatdog">Passed</td>
+                                            <td class="hatdog">
+                                              <?php echo $FinalGrade; ?>
+                                            </td>
+                                            <td class="hatdog">
+                                              <?php
+                                              if ($FinalGrade > 75) {
+                                                echo "Passed";
+                                              } else if ($currentQuarter == 0) {
+                                                echo "Academic year not yet available";
+                                              } else if ($g2 == 0 || $g3 == 0 || $g4 == 0) {
+                                                echo "Grades are incomplete";
+                                              } else {
+                                                echo "Failed";
+                                              }
+                                              ?>
+                                            </td>
                                           </tr>
                                         </form>
                                       <?php $rowCount++;
@@ -370,14 +417,14 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
   <!-- container-scroller -->
 
   <!-- Footer Start -->
-  <div class="container-fluid bg-dark text-body footer mt-5 pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
+  <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
     <div class="container py-5">
       <div class="row g-5">
         <div class="col-lg-3 col-md-6">
           <h3 class="text-light mb-4">Address</h3>
           <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
           <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
-          <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>di ko alam email</p>
+          <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>customerservice@cdsp.edu.ph</p>
           <div class="d-flex pt-2">
             <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
             <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>

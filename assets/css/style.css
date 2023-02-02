@@ -11,6 +11,12 @@
   font-size: 20px;
 }
 
+.dashboard{
+ font-size: 35px;
+ color: #c02628;
+ text-transform: capitalize;
+ padding-bottom: 10px;
+}
 .cdsp1 {
   color: #ffffff;
   font-family: "Montserrat", sans-serif;
@@ -33,7 +39,7 @@ h4,
 .h4,
 .fw-medium {
   font-weight: 500 !important;
-  font-family: "Lato", sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 h5,

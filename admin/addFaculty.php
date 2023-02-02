@@ -8,6 +8,17 @@ if (empty($_SESSION['AD_number'])) {
 } else {
   if (isset($_POST['confirm_faculty'])) {
     header('Location: confirmfaculty.php');
+  } else {
+    $cityprovreg = $mysqli->query('SELECT * FROM cityprovregion');
+    $array_cityprovreg = array();
+
+    while ($cityprovreg_data = $cityprovreg->fetch_assoc()) {
+      $array_cityprovreg[] = $cityprovreg_data;
+    }
+
+    $json = json_encode($array_cityprovreg);
+
+    echo "<script>var cityprov = " . $json . ";</script>";
   }
 }
 ?>
@@ -302,7 +313,9 @@ if (empty($_SESSION['AD_number'])) {
                                 <div class="col-md-3">
                                   <label label class="col-sm-12 col-form-label">City <span style="color: red;">*</span></label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="F_city" required>
+                                    <select name="city" class="form-select" name="F_city" id="city" required>
+                                      <option selected></option>
+                                    </select>
                                   </div>
                                 </div>
                               </div>
@@ -310,13 +323,15 @@ if (empty($_SESSION['AD_number'])) {
                                 <div class="col-md-4">
                                   <label label class="col-sm-12 col-form-label">State <span style="color: red;">*</span></label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="F_state" required>
+                                    <select class="form-select" name="F_state" id="province" required>
+                                      <option selected></option>
+                                    </select>
                                   </div>
                                 </div>
                                 <div class="col-md-4">
                                   <label label class="col-sm-12 col-form-label">Postal Code <span style="color: red;">*</span></label>
                                   <div class="col-sm-12">
-                                    <input type="number" class="form-control" name="F_postal" required>
+                                    <input type="number" id="postal" class="form-control" name="F_postal" required readonly>
                                   </div>
                                 </div>
                               </div>
@@ -415,10 +430,35 @@ if (empty($_SESSION['AD_number'])) {
 
 
   <!-- Template Javascript -->
-      <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/main.js"></script>
 
-    <script src="../assets/js/admin/vendor.bundle.base.js"></script>
-    <script src="../assets/js/admin/off-canvas.js"></script>
+  <script src="../assets/js/admin/vendor.bundle.base.js"></script>
+  <script src="../assets/js/admin/off-canvas.js"></script>
+  <script>
+    const city = document.getElementById('city');
+    const province = document.getElementById('province');
+    const postal = document.getElementById('postal');
+
+    for (let i = 0; i < cityprov.length; i++) {
+      const option = document.createElement('option');
+      option.value = cityprov[i].city;
+      option.text = cityprov[i].city;
+      city.add(option);
+    }
+
+    city.addEventListener("change", function() {
+      const cityValue = this.value;
+      const findCity = cityprov.find(function(element) {
+        return element.city == cityValue;
+      });
+      const option = document.createElement("option");
+      option.value = findCity.province;
+      option.text = findCity.province;
+      province.replaceChildren(option);
+
+      postal.value = findCity.zip_code;
+    });
+  </script>
 </body>
 
 </html>

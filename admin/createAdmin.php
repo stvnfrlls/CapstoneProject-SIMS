@@ -174,14 +174,14 @@ if (empty($_SESSION['AD_number'])) {
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="row">
-                        <div class="col-sm-12">
-                            <div class="home-tab">
-                                <div class="d-sm-flex align-items-center justify-content-between border-bottom">
-                                    <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                                        <h2 class="fw-bold text-primary text-uppercase">Create Administrator</h2>
+                        <form class="form-sample" action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
+                            <div class="col-sm-12">
+                                <div class="home-tab">
+                                    <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                                        <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
+                                            <h2 class="fw-bold text-primary text-uppercase">Create Administrator</h2>
+                                        </div>
                                     </div>
-                                </div>
-                                <form class="form-sample" action="confirmstudent.php" method="POST">
                                     <div class="tab-content tab-content-basic">
                                         <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                                             <div class="row">
@@ -190,68 +190,55 @@ if (empty($_SESSION['AD_number'])) {
                                                         <div class="card-body">
                                                             <h4 class="card-title">Personal Information</h4>
                                                             <div class="row" style="padding-bottom: 15px;">
-
                                                                 <div class="col-md-12">
                                                                     <label class="col-sm-12 col-form-label">Full Name</label>
                                                                     <div class="col-sm-12">
-                                                                        <input type="text" class="form-control" name="S_lname" required>
+                                                                        <input type="text" class="form-control" name="adminName" required>
                                                                     </div>
                                                                 </div>
-
                                                             </div>
-
                                                             <div class="row" style="padding-bottom: 15px;">
-
                                                                 <div class="col-md-12">
                                                                     <label class="col-sm-12 col-form-label">Email</label>
                                                                     <div class="col-sm-12">
-                                                                        <input type="text" class="form-control" name="S_fname" required>
+                                                                        <input type="text" class="form-control" name="adminEmail" required>
                                                                     </div>
                                                                 </div>
-
-
                                                             </div>
-
                                                             <div class="row" style="padding-bottom: 15px;">
-
                                                                 <div class="col-md-12">
                                                                     <label class="col-sm-12 col-form-label">Enter Password</label>
                                                                     <div class="col-sm-12">
-                                                                        <input type="text" class="form-control" name="S_mname">
+                                                                        <input type="password" class="form-control" name="adminPassword">
                                                                     </div>
                                                                 </div>
-
                                                             </div>
-
                                                             <div class="row" style="padding-bottom: 15px;">
-
                                                                 <div class="col-md-12">
                                                                     <label class="col-sm-12 col-form-label">Confirm Password</label>
                                                                     <div class="col-sm-12">
-                                                                        <input type="text" class="form-control" name="S_mname">
+                                                                        <input type="password" class="form-control" name="confirmPassword">
                                                                     </div>
                                                                 </div>
-
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </form>
-                            </div>
-                            <div style="text-align: center;">
-                                <button type="submit" class="btn btn-primary me-2" name="confirm_student">Create</button>
-                                <button class="btn btn-light">Back</button>
-                            </div>
-                        </div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <button type="submit" class="btn btn-primary me-2" name="addAdmin">Create</button>
+                                    <button class="btn btn-light">Back</button>
+                                </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- main-panel ends -->
+    </div>
+    <!-- main-panel ends -->
     </div>
     <!-- page-body-wrapper ends -->
     </div>

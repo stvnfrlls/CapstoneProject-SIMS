@@ -17,7 +17,7 @@ if (!isset($_SESSION['verifyEmailData']) && !isset($_POST['submitOTP'])) {
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link href="../assets/img/favicon.png" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,29 +38,20 @@ if (!isset($_SESSION['verifyEmailData']) && !isset($_POST['submitOTP'])) {
 
     <!-- Template Stylesheet -->
     <link href="../assets/css/style.css" rel="stylesheet">
-
     <link rel="stylesheet" type="text/css" href="../assets/login/css/main.css">
+    <link href="../assets/css/admin/style.css" rel="stylesheet">
 
 
 </head>
 
 <body>
-    <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status"></div>
-        <img class="position-absolute top-50 start-50 translate-middle" src="../assets/img/icons/icon-1.png" alt="Icon">
-    </div>
-    <!-- Spinner End -->
 
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-        <img class="m-3" src="../assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">
-        <div class="d-flex align-items-center justify-content-center text-center">
-            <a href="../index.php" class="navbar-brand ms-4 ms-lg-0 text-center">
-                <h1 class="cdsp">Colegio De San Pedro</h1>
-                <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
-            </a>
-        </div>
+        <img class="m-3" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+            <span class="mdi mdi-menu"></span>
+        </button>
     </nav>
     <!-- Navbar End -->
 
@@ -75,7 +66,7 @@ if (!isset($_SESSION['verifyEmailData']) && !isset($_POST['submitOTP'])) {
                 <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
                 <a href="about.html" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Academics</a>
+                    <a href="#" class="nav-item nav-link" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Academics <i class="fa fa-caret-down" aria-hidden="true"></i></a>
                     <div class="dropdown-menu bg-dark border-0 m-0">
                         <a href="auth/login.php" class="dropdown-item" style="color: white; font-size: 14px;">Student Information System</a>
                         <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Kindergarten</a>
@@ -114,17 +105,15 @@ if (!isset($_SESSION['verifyEmailData']) && !isset($_POST['submitOTP'])) {
                     <?php
                     }
                     ?>
-                    <div class="wrap-input100 validate-input" data-validate="Password is required">
-                        <input class="input100" type="text" name="newPasssword">
-                        <span class="focus-input100"></span>
-                        <span class="label-input100">New Password</span>
+                    <div class="form-group validate-input" data-validate="Password is required">
+                        <input style="font-size: 13px;" class="form-control form-control-lg" id="exampleInputEmail1" type="password" name="newPasssword" placeholder="Email Address">
+
                     </div>
 
 
-                    <div class="wrap-input100 validate-input" data-validate="Password is required">
-                        <input class="input100" type="password" name="confirmPassword">
-                        <span class="focus-input100"></span>
-                        <span class="label-input100">Confirm Password</span>
+                    <div class="form-group validate-input" data-validate="Password is required">
+                        <input style="font-size: 13px;" class="form-control form-control-lg" id="exampleInputEmail1" type="password" name="confirmPassword" placeholder="Email Address">
+
                     </div>
 
                     <div class="container-login100-form-btn">
@@ -142,16 +131,19 @@ if (!isset($_SESSION['verifyEmailData']) && !isset($_POST['submitOTP'])) {
     </div>
 
     <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-body footer">
+    <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
                     <h3 class="text-light mb-4">Address</h3>
                     <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
                     <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
-                    <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>di ko alam email</p>
+                    <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>customerservice@cdsp.edu.ph</p>
                     <div class="d-flex pt-2">
+                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
                         <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
+                        <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -171,7 +163,7 @@ if (!isset($_SESSION['verifyEmailData']) && !isset($_POST['submitOTP'])) {
                     <h3 class="text-light mb-4">Newsletter</h3>
                     <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
                     <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="fc-footer form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
+                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
                         <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
                     </div>
                 </div>

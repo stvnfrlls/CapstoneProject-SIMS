@@ -18,22 +18,20 @@ if (empty($_SESSION['AD_number'])) {
         array_unshift($subjects, null);
 
         if ($_GET['GradeLevel'] == "KINDER") {
-            $getSubject = "SELECT subjectName FROM subjectperyear
-                  WHERE
-                  subjectperyear.minYearLevel = '0' 
-                  AND
-                  subjectperyear.maxYearLevel >= '0'";
+            $getSubject = "SELECT subjectName, minYearLevel, maxYearLevel FROM subjectperyear
+                  WHERE minYearLevel = '0' 
+                  AND maxYearLevel >= '0'";
         } else {
-            $getSubject = "SELECT subjectName FROM subjectperyear
-                  WHERE 
-                  subjectperyear.minYearLevel <= '{$_GET['GradeLevel']}' 
-                  AND
-                  subjectperyear.maxYearLevel >= '{$_GET['GradeLevel']}'";
+            $getSubject = "SELECT subjectName, minYearLevel, maxYearLevel FROM subjectperyear
+                  WHERE minYearLevel <= '{$_GET['GradeLevel']}' 
+                  AND maxYearLevel >= '{$_GET['GradeLevel']}'";
         }
-        $rungetSubject = $mysqli->query($getSubject);
-        while ($dataSubject = $rungetSubject->fetch_assoc()) {
-            $subjects[] = $dataSubject;
-        }
+    } else {
+        $getSubject = "SELECT subjectName, minYearLevel, maxYearLevel FROM subjectperyear";
+    }
+    $rungetSubject = $mysqli->query($getSubject);
+    while ($dataSubject = $rungetSubject->fetch_assoc()) {
+        $subjects[] = $dataSubject;
     }
 }
 ?>
@@ -257,23 +255,49 @@ if (empty($_SESSION['AD_number'])) {
                                                                         <tr>
                                                                             <th>No.</th>
                                                                             <th>Subject Name</th>
-                                                                            <th>Minimum Year Level</th>
-                                                                            <th>Maximum Year Level</th>
+                                                                            <th>Minimum Grade Level</th>
+                                                                            <th>Maximum Grade Level</th>
                                                                             <th>Action</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
                                                                         <?php
                                                                         $rowCount = 1;
+                                                                        $subjectRowCount = sizeof($subjects);
                                                                         if (isset($_GET['GradeLevel'])) {
-                                                                            $subjectRowCount = sizeof($subjects);
                                                                             while ($rowCount != $subjectRowCount) { ?>
-                                                                                <form action="" method="">
+                                                                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
+                                                                                    <tr>
+                                                                                        <td><?php echo $rowCount; ?></td>
+                                                                                        <td>
+                                                                                            <?php echo $subjects[$rowCount]['subjectName']; ?>
+                                                                                            <input type="hidden" name="sbjName" value="<?php echo $subjects[$rowCount]['subjectName'] ?>">
+                                                                                        </td>
+                                                                                        <td><input type="number" class="form-control text-center" value="<?php echo $subjects[$rowCount]['minYearLevel']; ?>"></td>
+                                                                                        <td><input type="number" class="form-control text-center" value="<?php echo  $subjects[$rowCount]['maxYearLevel']; ?>"></td>
+                                                                                        <td><?php echo '<input type="submit" style="color: #ffffff;" class="btn btn-primary" name="updateSubjectName" value="UPDATE">'; ?></td>
+                                                                                    </tr>
+                                                                                </form>
+                                                                            <?php $rowCount++;
+                                                                            } ?>
+                                                                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
+                                                                                <tr>
+                                                                                    <td>ADD</td>
+                                                                                    <td><input type="text" class="form-control"></td>
+                                                                                    <td><input type="number" class="form-control"></td>
+                                                                                    <td><input type="number" class="form-control"></td>
+                                                                                    <td><?php echo '<input type="submit" style="color: #ffffff;" class="btn btn-primary" value="ADD">'; ?></td>
+                                                                                </tr>
+                                                                            </form>
+                                                                            <?php
+                                                                        } else {
+                                                                            while ($rowCount != $subjectRowCount) { ?>
+                                                                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
                                                                                     <tr>
                                                                                         <td><?php echo $rowCount; ?></td>
                                                                                         <td><?php echo $subjects[$rowCount]['subjectName']; ?></td>
-                                                                                        <td><input type="number"></td>
-                                                                                        <td><input type="number"></td>
+                                                                                        <td><input type="number" class="form-control text-center" value="<?php echo $subjects[$rowCount]['minYearLevel']; ?>"></td>
+                                                                                        <td><input type="number" class="form-control text-center" value="<?php echo  $subjects[$rowCount]['maxYearLevel']; ?>"></td>
                                                                                         <td>
                                                                                             <?php
                                                                                             echo '<input type="submit" style="color: #ffffff;" class="btn btn-primary" value="UPDATE">';
@@ -284,18 +308,15 @@ if (empty($_SESSION['AD_number'])) {
                                                                                 </form>
                                                                             <?php $rowCount++;
                                                                             } ?>
-                                                                            <tr class="bg-dark">
-                                                                                <td></td>
-                                                                                <td><input type="text"></td>
-                                                                                <td><input type="number"></td>
-                                                                                <td><input type="number"></td>
-                                                                                <td><?php echo '<input type="submit" style="color: #ffffff;" class="btn btn-primary" value="ADD">'; ?></td>
-                                                                            </tr>
-                                                                        <?php
-                                                                        } else { ?>
-                                                                            <tr>
-                                                                                <td colspan="10">NO GRADE AND SECTION SELECTED</td>
-                                                                            </tr>
+                                                                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
+                                                                                <tr>
+                                                                                    <td>ADD</td>
+                                                                                    <td><input type="text" class="form-control"></td>
+                                                                                    <td><input type="number" class="form-control"></td>
+                                                                                    <td><input type="number" class="form-control"></td>
+                                                                                    <td><?php echo '<input type="submit" style="color: #ffffff;" class="btn btn-primary" value="ADD">'; ?></td>
+                                                                                </tr>
+                                                                            </form>
                                                                         <?php }
                                                                         ?>
                                                                     </tbody>
