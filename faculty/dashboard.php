@@ -37,8 +37,8 @@ if (empty($_SESSION['F_number'])) {
 
     <!-- Template Stylesheet -->
     <link href="../assets/css/style.css" rel="stylesheet">
+    <link href="../assets/css/admin/style.css" rel="stylesheet">
     <link href="../assets/css/dashboard-user.css" rel="stylesheet">
-
 </head>
 
 <body>
@@ -51,121 +51,327 @@ if (empty($_SESSION['F_number'])) {
     </nav>
     <!-- Navbar End -->
 
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-dark navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
-        <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
-            <div class="navbar-nav">
-                <a href="dashboard.php" class="nav-item nav-link" style="color: red">Home</a>
-                <a href="scanQR.php" class="nav-item nav-link" style="color: white">Scan QR</a>
-                <a href="classList.php" class="nav-item nav-link" style="color: white">Grades</a>
-                <a href="reminders.php" class="nav-item nav-link" style="color: white">Reminders/Assignments</a>
-                <a href="editProfile.php" class="nav-item nav-link" style="color: white">Profile</a>
-                <a href="../auth/logout.php" class="nav-item nav-link" style="color: white">Logout</a>
-            </div>
-        </div>
-    </nav>
-    <!-- Navbar End -->
+    <div class="container-scroller">
+        <div class="container-fluid page-body-wrapper">
+            <nav class="sidebar sidebar-offcanvas" id="sidebar">
+                <ul class="nav">
+                    <li class="nav-item" style="text-align:center; font-size: 20px; color: #b9b9b9; margin-top:20px;">FACULTY</li>
+                    <!-- line 1 -->
+                    <li class="nav-item nav-category">Profile</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="">
+                            <i class=""></i>
+                            <span class="menu-title">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/viewProfile.php">
+                            <i class=""></i>
+                            <span class="menu-title">View Profile</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/createReminder.php">
+                            <i class=""></i>
+                            <span class="menu-title">Create Reminders</span>
+                        </a>
+                    </li>
+                    <!-- line 2 -->
+                    <li class="nav-item nav-category">Menu</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/scanQR.php">
+                            <i class=""></i>
+                            <span class="menu-title">Scan QR</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/advisoryPage.php">
+                            <i class=""></i>
+                            <span class="menu-title">Advisory</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/classList.php">
+                            <i class=""></i>
+                            <span class="menu-title">Class List</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/encodegrades.php">
+                            <i class=""></i>
+                            <span class="menu-title">Encode Grades</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/reminders.php">
+                            <i class=""></i>
+                            <span class="menu-title">Reminders</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- partial -->
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="home-tab">
+                                <div class="tab-content tab-content-basic">
+                                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                                        <div class="row">
+                                            <style>
+                                                h3 {
+                                                    font-family: "Lato", "san serif";
+                                                }
+                                            </style>
+                                            <div class="col-sm-12 col-lg-4 grid-margin">
+                                                <div class="row">
+                                                    <div class="col-12 grid-margin">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="row">
+                                                                    <div class="col-4">
+                                                                        <img src="../assets/img/profile.jpg" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
+                                                                    </div>
+                                                                    <div class="col-8" style="align-self: center;">
+                                                                        <h3 style="text-align: left;">Camille Anne G. Sabile</h3>
+                                                                        <p style="margin-bottom: 8px;">2019-00188-SP-0</p>
+                                                                        <p style="margin-bottom: 8px;">Mathematics Department</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 grid-margin">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <p class="mb-4" style="text-align: center; color:#c02628;">Schedule For Today</p>
+                                                                <p class="mb-1" style="font-size: .90rem;">Grade 1 - Chrysanthemum (Mathematics)</p>
+                                                                <div class="progress rounded" style="height: 25px;">
+                                                                    <p style="font-size: .77rem; margin: 5px 0px 0px 7px">7:00AM - 8:00AM</p>
+                                                                </div>
 
-    <div class="container py-5">
-        <div class="row g-3">
-            <div class="section-title text-center position-relative pb-3 mb-5">
-                <h2 class="fw-bold text-primary text-uppercase">Dashboard</h2>
-            </div>
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 service-name bg-light rounded text-center">
-                    <h5 class="text1 my-3">Camille Anne Sabile</h5>
-                    <p class="text2 mb-1">Faculty</p>
-                    <p class="text2 mb-3">Muntinlupa City</p>
+                                                                <p class="mt-4 mb-1" style="font-size: .90rem;">Grade 1 - Chrysanthemum (Mathematics)</p>
+                                                                <div class="progress rounded" style="height: 25px;">
+                                                                    <p style="font-size: .77rem; margin: 5px 0px 0px 7px">8:00AM - 9:00AM</p>
+                                                                </div>
+
+                                                                <p class="mt-4 mb-1" style="font-size: .90rem;">Grade 1 - Chrysanthemum (Mathematics)</p>
+                                                                <div class="progress rounded" style="height: 25px;">
+                                                                    <p style="font-size: .77rem; margin: 5px 0px 0px 7px">9:30AM - 10:30AM</p>
+                                                                </div>
+
+                                                                <p class="mt-4 mb-1" style="font-size: .90rem;">Grade 1 - Chrysanthemum (Mathematics)</p>
+                                                                <div class="progress rounded" style="height: 25px;">
+                                                                    <p style="font-size: .77rem; margin: 5px 0px 0px 7px">10:30AM - 11:30AM</p>
+                                                                </div>
+
+                                                                <p class="mt-4 mb-1" style="font-size: .90rem;">Grade 1 - Chrysanthemum (Mathematics)</p>
+                                                                <div class="progress rounded" style="height: 25px;">
+                                                                    <p style="font-size: .77rem; margin: 5px 0px 0px 7px">11:30AM - 12:30PM</p>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-lg-8 grid-margin">
+                                                <div class="row">
+                                                    <div class="col-12 grid-margin">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="row">
+
+                                                                    <div class="section-title section-title-sm position-relative pb-3 mb-4">
+                                                                        <h3 class="mb-0" style="text-align:left;">My Class</h3>
+                                                                    </div>
+
+                                                                    <div class="col-6">
+                                                                        <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
+                                                                            <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:40px; color:#c02628;">25</h1>
+                                                                        </div>
+                                                                        <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center" style="font-size: 20px; padding-top: 10px;">No. of Students</h3>
+
+                                                                    </div>
+                                                                    <div class="col-6" style="align-self: center;">
+                                                                        <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
+                                                                            <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:40px; color:#c02628;">25</h1>
+                                                                        </div>
+                                                                        <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center" style="font-size: 20px; padding-top: 10px;">Attendance Taken</h3>
+
+                                                                    </div>
+                                                                    <div class="border-bottom" style="padding-top: 20px;"></div>
+                                                                </div>
+
+                                                                <div class="row" style="padding-top: 20px;">
+                                                                    <div class="col-sm-12 col-lg-3 grid-margin">
+                                                                        <div class="card">
+                                                                            <div class="card-body">
+                                                                                <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
+                                                                                    <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-user"></i></h1>
+                                                                                </div>
+                                                                                <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Profile</h3>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-12 col-lg-3 grid-margin">
+                                                                        <div class="card" >
+                                                                            <div class="card-body">
+                                                                                <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
+                                                                                    <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-edit"></i></h1>
+                                                                                </div>
+                                                                                <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Grades</h3>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-12 col-lg-3 grid-margin">
+                                                                        <div class="card">
+                                                                            <div class="card-body">
+                                                                                <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
+                                                                                    <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-bullhorn"></i></h1>
+                                                                                </div>
+                                                                                <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Announcements</h3>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-12 col-lg-3 grid-margin">
+                                                                        <div class="card" >
+                                                                            <div class="card-body">
+                                                                                <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
+                                                                                    <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-exclamation"></i></h1>
+                                                                                </div>
+                                                                                <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Reminders</h3>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-8 col-sm-12 grid-margin">
+                                                            <div class="card">
+                                                                <div class="card-body">
+                                                                    <div class="row">
+                                                                        <div class="section-title section-title-sm position-relative pb-3 mb-4">
+                                                                            <h3 class="mb-0" style="text-align:left;">Reminders posted by you</h3>
+                                                                        </div>
+                                                                        <div class="col-12" style="padding-bottom: 15px;">
+                                                                            <div class="single-post bg-light">
+                                                                                <div class="col-lg-12  col-md-12 meta-details">
+                                                                                    <div class="user-details row" style="padding: 10px 0px 0px 10px;">
+                                                                                        <p class="user-name col-lg-6 col-md-6"> <span class="far fa-user" style="color: #c02628;"></span><a href="#"> Mark wiens </a> <span class="fa fa-calendar" style="color: #c02628;"></span><a> 12 Dec, 2017</a></p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-12 col-sm-12" style="padding: 0px 10px 10px 10px;">
+                                                                                    <a class="posts-title" href="blog-single.html" style="text-align: left;">
+                                                                                        <h3>Astronomy Binoculars A Great Alternative</h3>
+                                                                                    </a>
+                                                                                    <p>Subject: English</p>
+                                                                                    <p class="excert">
+                                                                                        MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.
+                                                                                    </p>
+                                                                                    <a href="blog-single.html" class="primary-btn">View More</a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-12" style="padding-bottom: 15px;">
+                                                                            <div class="single-post bg-light">
+                                                                                <div class="col-lg-12  col-md-12 meta-details">
+                                                                                    <div class="user-details row" style="padding: 10px 0px 0px 10px;">
+                                                                                        <p class="user-name col-lg-6 col-md-6"> <span class="far fa-user" style="color: #c02628;"></span><a href="#"> Mark wiens </a> <span class="fa fa-calendar" style="color: #c02628;"></span><a> 12 Dec, 2017</a></p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-12 col-sm-12" style="padding: 0px 10px 10px 10px;">
+                                                                                    <a class="posts-title" href="blog-single.html" style="text-align: left;">
+                                                                                        <h3>Astronomy Binoculars A Great Alternative</h3>
+                                                                                    </a>
+                                                                                    <p>Subject: English</p>
+                                                                                    <p class="excert">
+                                                                                        MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.
+                                                                                    </p>
+                                                                                    <a href="blog-single.html" class="primary-btn">View More</a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-12" style="padding-bottom: 15px;">
+                                                                            <div class="single-post bg-light">
+                                                                                <div class="col-lg-12  col-md-12 meta-details">
+                                                                                    <div class="user-details row" style="padding: 10px 0px 0px 10px;">
+                                                                                        <p class="user-name col-lg-6 col-md-6"> <span class="far fa-user" style="color: #c02628;"></span><a href="#"> Mark wiens </a> <span class="fa fa-calendar" style="color: #c02628;"></span><a> 12 Dec, 2017</a></p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-12 col-sm-12" style="padding: 0px 10px 10px 10px;">
+                                                                                    <a class="posts-title" href="blog-single.html" style="text-align: left;">
+                                                                                        <h3>Astronomy Binoculars A Great Alternative</h3>
+                                                                                    </a>
+                                                                                    <p>Subject: English</p>
+                                                                                    <p class="excert">
+                                                                                        MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.
+                                                                                    </p>
+                                                                                    <a href="blog-single.html" class="primary-btn">View More</a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div style="text-align: center;">
+                                                                            <a href="#" class="btn btn-primary text-uppercase" style="width: auto; color:#fff;">View More Announcements</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4 col-sm-12 grid-margin">
+                                                            <div class="card">
+                                                                <div class="card-body">
+                                                                    <div class="row">
+                                                                        <div class="section-title section-title-sm position-relative pb-3 mb-4">
+                                                                            <h3 style="text-align:left;">Notifs</h3>
+                                                                        </div>
+                                                                        <div class="border-bottom">
+                                                                            <p><a href="#"> Steven Frilles </a> <span>has marked your reminder as done.</span></span></p>
+                                                                        </div>
+                                                                        <div class="border-bottom">
+                                                                            <p style="padding-top: 10px;"><a href="#"> Steven Frilles </a> <span>has marked your reminder as done.</span></span></p>
+                                                                        </div>
+                                                                        <div class="border-bottom">
+                                                                            <p style="padding-top: 10px;"><a href="#"> Steven Frilles </a> <span>has marked your reminder as done.</span></span></p>
+                                                                        </div>
+                                                                        <div class="border-bottom">
+                                                                            <p style="padding-top: 10px;"><a href="#"> Steven Frilles </a> <span>has marked your reminder as done.</span></span></p>
+                                                                        </div>
+                                                                        <div class="border-bottom">
+                                                                            <p style="padding-top: 10px;"><a href="#"> Steven Frilles </a> <span>has marked your reminder as done.</span></span></p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-6 col-md-12 col-sm-12 mb-3">
-                    <div class="text-center">
-                        <h3 class="fw-bold text-uppercase">Announcement</h3>
-                    </div>
-                    <div class="blog-item bg-light rounded overflow-hidden mb-3">
-                        <div class="p-4">
-                            <div class="d-flex mb-3">
-                                <small class="me-3"><i class="far fa-user text-primary me-2"></i>John Doe</small>
-                                <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                            </div>
-                            <h4 class="mb-3">How to build a website</h4>
-                            <p>Dolor et eos labore stet justo sed est sed sed sed dolor stet amet</p>
-                            <a class="text-uppercase" href="">Edit<i class="bi bi-arrow-right"></i></a>
-                        </div>
-                    </div>
-                    <div class="blog-item bg-light rounded overflow-hidden mb-3">
-                        <div class="p-4">
-                            <div class="d-flex mb-3">
-                                <small class="me-3"><i class="far fa-user text-primary me-2"></i>John Doe</small>
-                                <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                            </div>
-                            <h4 class="mb-3">How to build a website</h4>
-                            <p>Dolor et eos labore stet justo sed est sed sed sed dolor stet amet</p>
-                            <a class="text-uppercase" href="">Edit<i class="bi bi-arrow-right"></i></a>
-                        </div>
-                    </div>
-                    <div class="blog-item bg-light rounded overflow-hidden mb-3">
-                        <div class="p-4">
-                            <div class="d-flex mb-3">
-                                <small class="me-3"><i class="far fa-user text-primary me-2"></i>John Doe</small>
-                                <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                            </div>
-                            <h4 class="mb-3">How to build a website</h4>
-                            <p>Dolor et eos labore stet justo sed est sed sed sed dolor stet amet</p>
-                            <a class="text-uppercase" href="">Edit<i class="bi bi-arrow-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-12 col-sm-12 mb-3">
-                    <div class="row g-3">
-                        <div class="text-center">
-                            <h3 class="fw-bold text-uppercase">Tools</h3>
-                        </div>
-                        <div class="col-lg-6 col-md-12 col-sm-12 mb-3 d-flex flex-column align-items-center justify-content-center text-center" style="margin-top: 0px;">
-                            <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
-                                <div class="service-icon">
-                                    <i class="fa fa-shield-alt text-white"></i>
-                                </div>
-                                <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="scanQR.php">Scan QR Code</a>
-                                <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</a>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-12 col-sm-12 mb-3 d-flex flex-column align-items-center justify-content-center text-center" style="margin-top: 0px;">
-                            <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
-                                <div class="service-icon">
-                                    <i class="fa fa-chart-pie text-white"></i>
-                                </div>
-                                <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="reminders.php">Reminders</a>
-                                <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row g-3">
-                        <div class="col-lg-6 col-md-12 col-sm-12 mb-3 d-flex flex-column align-items-center justify-content-center text-center" style="margin-top: 10px;">
-                            <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
-                                <div class="service-icon">
-                                    <i class="fa fa-code text-white"></i>
-                                </div>
-                                <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="classList.php">Grades</a>
-                                <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</a>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-12 col-sm-12 mb-3 d-flex flex-column align-items-center justify-content-center text-center" style="margin-top: 10px;">
-                            <div class="service-item bg-light rounded d-flex flex-column align-items-center justify-content-center text-center">
-                                <div class="service-icon">
-                                    <i class="fab fa-android text-white"></i>
-                                </div>
-                                <!-- EDIT PROFILE -->
-                                <a class="mb-3" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #252525; font-size:24px;" href="editProfile.php">Edit Profile</a>
-                                <a class="m-0" style="font-family: 'Lato', sans-serif; font-weight: 500; color: #777777; font-size:16px;" href="">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- content-wrapper ends -->
         </div>
+        <!-- main-panel ends -->
     </div>
+    <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
