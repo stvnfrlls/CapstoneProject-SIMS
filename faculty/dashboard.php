@@ -180,13 +180,13 @@ if (empty($_SESSION['F_number'])) {
                                             </div>
                                             <div class="col-sm-12 col-lg-8 grid-margin">
                                                 <div class="row">
-                                                    <div class="col-12 grid-margin">
+                                                    <div class="col-12">
                                                         <div class="card">
                                                             <div class="card-body">
                                                                 <div class="row">
 
                                                                     <div class="section-title section-title-sm position-relative pb-3 mb-4">
-                                                                        <h3 class="mb-0" style="text-align:left;">My Class</h3>
+                                                                        <h3 class="mb-0" style="text-align:left;">My Class Advisory</h3>
                                                                     </div>
 
                                                                     <div class="col-6">
@@ -200,55 +200,53 @@ if (empty($_SESSION['F_number'])) {
                                                                         <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
                                                                             <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:40px; color:#c02628;">25</h1>
                                                                         </div>
-                                                                        <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center" style="font-size: 20px; padding-top: 10px;">Attendance Taken</h3>
+                                                                        <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center" style="font-size: 20px; padding-top: 10px; text-align:center;">Attendance Taken Today</h3>
 
                                                                     </div>
-                                                                    <div class="border-bottom" style="padding-top: 20px;"></div>
                                                                 </div>
-
-                                                                <div class="row" style="padding-top: 20px;">
-                                                                    <div class="col-sm-12 col-lg-3 grid-margin">
-                                                                        <div class="card">
-                                                                            <div class="card-body">
-                                                                                <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
-                                                                                    <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-user"></i></h1>
-                                                                                </div>
-                                                                                <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Profile</h3>
-                                                                            </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="row" style="padding-top: 20px;">
+                                                            <div class="col-sm-12 col-lg-3 grid-margin">
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
+                                                                            <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-user"></i></h1>
                                                                         </div>
-                                                                    </div>
-                                                                    <div class="col-sm-12 col-lg-3 grid-margin">
-                                                                        <div class="card" >
-                                                                            <div class="card-body">
-                                                                                <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
-                                                                                    <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-edit"></i></h1>
-                                                                                </div>
-                                                                                <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Grades</h3>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-sm-12 col-lg-3 grid-margin">
-                                                                        <div class="card">
-                                                                            <div class="card-body">
-                                                                                <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
-                                                                                    <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-bullhorn"></i></h1>
-                                                                                </div>
-                                                                                <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Announcements</h3>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-sm-12 col-lg-3 grid-margin">
-                                                                        <div class="card" >
-                                                                            <div class="card-body">
-                                                                                <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
-                                                                                    <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-exclamation"></i></h1>
-                                                                                </div>
-                                                                                <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Reminders</h3>
-                                                                            </div>
-                                                                        </div>
+                                                                        <a href="../faculty/viewProfile.php"><h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Profile</h3></a>
                                                                     </div>
                                                                 </div>
-                                                                <div class="row">
+                                                            </div>
+                                                            <div class="col-sm-12 col-lg-3 grid-margin">
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
+                                                                            <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-book"></i></h1>
+                                                                        </div>
+                                                                        <a href="../faculty/viewProfile.php"><h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Subjects</h3></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-12 col-lg-3 grid-margin">
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
+                                                                            <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-bullhorn"></i></h1>
+                                                                        </div>
+                                                                        <a href="../faculty/encodeGrades.php"><h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Grades</h3></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-12 col-lg-3 grid-margin">
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
+                                                                            <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-exclamation"></i></h1>
+                                                                        </div>
+                                                                        <a href="../faculty/reminders.php"><h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Reminders</h3></a>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>

@@ -109,23 +109,17 @@ if (empty($_SESSION['AD_number'])) {
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="../assets/css/style.css" rel="stylesheet">
-    <link href="../assets/css/form-style.css" rel="stylesheet">
+    <link href="../assets/css/dashboard-admin.css" rel="stylesheet">
     <link href="../assets/css/admin/style.css" rel="stylesheet">
-    <link href="../assets/css/admin/materialdesignicons.min.css" rel="stylesheet">
+    <link href="../assets/css/admin/style.css.map" rel="stylesheet">
+
 
 </head>
 
 <body>
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-        <img class="m-3" src="../assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">
-        <div class="d-flex align-items-center justify-content-center text-center">
-            <a href="../index.php" class="navbar-brand ms-4 ms-lg-0 text-center">
-                <h1 class="cdsp">Colegio De San Pedro</h1>
-                <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
-            </a>
-        </div>
+        <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
             <span class="mdi mdi-menu"></span>
         </button>
@@ -257,6 +251,12 @@ if (empty($_SESSION['AD_number'])) {
                                         <div class="row">
                                             <div class="col-12 grid-margin">
                                                 <form id="form-id" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
+                                                <style>
+                                                    #custom{
+                                                        border-radius:50px;
+                                                        
+                                                    }
+                                                </style>
                                                     <?php
                                                     echo '<button type="submit" name="acadyear" class="btn btn-primary m-2">Acad Year: ' . $_SESSION['academicYear'] . '</button>';
 
@@ -267,9 +267,9 @@ if (empty($_SESSION['AD_number'])) {
                                                     }
 
                                                     if ($quarterArray[1]['quarterTag'] == 1 && $quarterArray[1]['quarterStatus'] == 'current') {
-                                                        echo '<button class="btn btn-primary m-2">1st Quarter (CURRENT)</button>';
+                                                        echo '<button class="" ">1st Quarter (CURRENT)</button>';
                                                     } else {
-                                                        echo '<button type="submit" name="enableFirst" class="btn btn-secondary m-2">Enable 1st Quarter</button>';
+                                                        echo '<button type="submit" name="enableFirst" class="btn btn-secondary m-2" id="custom">Enable 1st Quarter</button>';
                                                     }
 
                                                     if ($quarterArray[2]['quarterTag'] == 2 && $quarterArray[2]['quarterStatus'] == 'current') {
@@ -294,126 +294,340 @@ if (empty($_SESSION['AD_number'])) {
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-sm-12 col-lg-5 grid-margin" style="padding-bottom:20px;">
-                                                <div class="card" style="background-image: url('../assets/img/banner_2.png'); background-size:cover; ">
+                                            <style>
+                                                h3 {
+                                                    font-family: "Lato", "san serif";
+                                                }
+                                            </style>
+                                            <div class="col-sm-12 col-lg-6 grid-margin" style="padding-bottom:20px;">
+                                                <div class="card">
                                                     <div class="card-body">
                                                         <div class="row">
+                                                            <h3 style="font-size: 20px; padding-bottom: 20px; text-align:center;">Today's Average Attendance</h3>
+                                                            <canvas class="my-auto" id="doughnutChart" height="100"></canvas>
+                                                            <div id="doughnut-chart-legend" class="mt-5 text-center"></div>
+                                                        </div>
+                                                        <div class="row" style="margin: auto; padding-top:15px;">
+                                                            <style>
+                                                                table,
+                                                                th,
+                                                                td {
+                                                                    border: 1px solid white;
+                                                                    border-collapse: collapse;
+                                                                    margin: auto;
+                                                                }
 
-                                                            <div class="col-12" style="align-self: center; text-align:center;">
+                                                                th,
+                                                                td {
+                                                                    background-color: #f2f2f2;
+                                                                    padding: 10px 10px 10px 10px;
+                                                                    text-align: center;
+                                                                }
+                                                            </style>
+                                                            <div class="col-6">
+                                                                <table>
 
-                                                                <p style="margin-bottom: 8px;">2019-00188-SP-0</p>
-                                                                <p style="margin-bottom: 8px;">Grade 1 - Chrysanthemum</p>
-                                                                <h3 style="font-size:22px;">Welcome to Colegio De San Pedro</h3>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>Kinder 1 </td>
+                                                                            <td>50 out of 100</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Kinder 2 </td>
+                                                                            <td>50 out of 100</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Grade 1 </td>
+                                                                            <td>50 out of 100</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Grade 2 </td>
+                                                                            <td>50 out of 100</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <table>
+
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>Grade 3</td>
+                                                                            <td>50 out of 100</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Grade 4</td>
+                                                                            <td>50 out of 100</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Grade 6</td>
+                                                                            <td>50 out of 100</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Grade 6 </td>
+                                                                            <td>50 out of 100</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-12 col-lg-3 grid-margin" style="padding-bottom:20px;">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <div class="row">
-                                                            <div class="col-4">
-                                                                <img src="../assets/img/profile.jpg" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
+                                            <div class="col-sm-12 col-lg-6 grid-margin" style="padding-bottom:20px;">
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-lg-4 grid-margin" style="padding-bottom:20px;">
+
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="row">
+                                                                    <h3 style="font-size: 20px; padding-bottom: 20px; text-align:left;">No. of Students</h3>
+                                                                    <div class="d-flex flex-shrink-0">
+                                                                        <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628; padding-bottom:15px;">25</h1>
+                                                                    </div>
+                                                                    <div class="percentage">
+                                                                        <div class="progress">
+                                                                            <div class="progress-bar" role="progressbar" style="width: 80%; background-color:#c02628;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            <div class="col-8">
-                                                                <h3 style="margin-left: auto;">Students</h3>
-                                                                <div class="d-flex flex-shrink-0">
-                                                                    <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628; margin-left: auto;">25</h1>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-sm-12 col-lg-4 grid-margin" style="padding-bottom:20px;">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="row">
+                                                                    <h3 style="font-size: 20px; text-align:left; padding-bottom: 20px;">No. of Faculty Teachers</h3>
+                                                                    <div class="d-flex flex-shrink-0">
+                                                                        <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628; padding-bottom:15px;">25</h1>
+                                                                    </div>
+                                                                    <div class="percentage">
+                                                                        <div class="progress">
+                                                                            <div class="progress-bar" role="progressbar" style="width: 80%; background-color:#c02628;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12 col-lg-4 grid-margin" style="padding-bottom:20px;">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="row">
+                                                                    <h3 style="font-size: 20px; text-align:left;">No. of Students Added Today</h3>
+                                                                    <div class="d-flex flex-shrink-0">
+                                                                        <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628; padding-bottom:15px;">25</h1>
+                                                                    </div>
+                                                                    <div class="percentage">
+                                                                        <div class="progress">
+                                                                            <div class="progress-bar" role="progressbar" style="width: 80%; background-color:#c02628;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-sm-12 col-lg-3 grid-margin" style="padding-bottom:20px;">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <div class="row">
-                                                            <div class="col-4">
-                                                                <img src="../assets/img/profile.jpg" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
-                                                            </div>
-                                                            <div class="col-8" style="align-self: center;">
-                                                                <h3>Teachers</h3>
-                                                                <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
-                                                                    <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628;">25</h1>
+                                                <div class="row">
+                                                <div class="col-12 grid-margin" style="padding-bottom:20px;">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="row">
+                                                                    <h3 style="font-size: 20px; text-align:left;">hmmmmm</h3>
+                                                                    
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
+
+
                                             </div>
+
+
                                         </div>
+
                                         <div class="row">
-                                            <h4 class="card-title">Address</h4>
                                             <div class="row">
                                                 <div class="col-lg-12 d-flex flex-column">
                                                     <div class="row flex-grow">
                                                         <div class="col-sm-12 col-lg-8 grid-margin">
-                                                            <div class="">
-                                                                <div class="table-responsive">
-                                                                    <table class="table">
-                                                                        <thead>
-                                                                            <style>
-                                                                                .tablestyle {
-                                                                                    border: 1px solid #ffffff;
-                                                                                    text-align: center;
-                                                                                    vertical-align: middle;
-                                                                                    height: 30px;
-                                                                                    color: #000000;
-                                                                                }
-                                                                            </style>
-                                                                            <tr>
-                                                                                <th class="tablestyle">No.</th>
-                                                                                <th class="tablestyle">Student Number</th>
-                                                                                <th class="tablestyle">Grades and Section</th>
-                                                                                <th class="tablestyle">Student Name</th>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody>
+                                                            <div class="row">
+                                                                <div class="col-lg-12 grid-margin stretch-card">
+                                                                    <div class="card">
+                                                                        <div class="card-body">
+                                                                            <h4 class="card-title">Student Population</h4>
+                                                                            <div class="table-responsive">
+                                                                                <table class="table table-striped">
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th>No.</th>
+                                                                                            <th>Student Number</th>
+                                                                                            <th>Student Name</th>
+                                                                                            <th>Grade and Section</th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <tr>
 
-                                                                            <tr>
-                                                                                <td class="tablestyle">1</td>
-                                                                                <td class="tablestyle">2019-00188-SP-0</td>
-                                                                                <td class="tablestyle">Grade 1 Chrysanthemum</td>
-                                                                                <td class="tablestyle">Camille Anne G. Sabile</a></td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td class="tablestyle">1</td>
-                                                                                <td class="tablestyle">2019-00188-SP-0</td>
-                                                                                <td class="tablestyle">Grade 1 Chrysanthemum</td>
-                                                                                <td class="tablestyle">Camille Anne G. Sabile</a></td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td class="tablestyle">1</td>
-                                                                                <td class="tablestyle">2019-00188-SP-0</td>
-                                                                                <td class="tablestyle">Grade 1 Chrysanthemum</td>
-                                                                                <td class="tablestyle">Camille Anne G. Sabile</a></td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td class="tablestyle">1</td>
-                                                                                <td class="tablestyle">2019-00188-SP-0</td>
-                                                                                <td class="tablestyle">Grade 1 Chrysanthemum</td>
-                                                                                <td class="tablestyle">Camille Anne G. Sabile</a></td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td class="tablestyle">1</td>
-                                                                                <td class="tablestyle">2019-00188-SP-0</td>
-                                                                                <td class="tablestyle">Grade 1 Chrysanthemum</td>
-                                                                                <td class="tablestyle">Camille Anne G. Sabile</a></td>
-                                                                            </tr>
-
-                                                                        </tbody>
-                                                                    </table>
-
-                                                                </div>
-                                                                <section class="popular-courses-area courses-page">
-                                                                    <div style="text-align: center;">
-                                                                        <a href="#" class="primary-btn text-uppercase" style="width: auto;">View More Announcements</a>
+                                                                                            <td>1</td>
+                                                                                            <td>2019-00188</td>
+                                                                                            <td>Sabile, Camile Anne G.</td>
+                                                                                            <td>Grade 1 - Chrysanthemum</td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td>2</td>
+                                                                                            <td>2019-00089</td>
+                                                                                            <td>Cantuba, Hazel Grace L.</td>
+                                                                                            <td>Grade 1 - Chrysanthemum</td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td>3</td>
+                                                                                            <td>2019-00189</td>
+                                                                                            <td>Frilles, Steven</td>
+                                                                                            <td>Grade 1 - Chrysanthemum</td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td>4</td>
+                                                                                            <td>2019-00890</td>
+                                                                                            <td>Dumas, Robert James</td>
+                                                                                            <td>Grade 1 - Chrysanthemum</td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td>5</td>
+                                                                                            <td>2019-00099</td>
+                                                                                            <td>Maling, Roselyn Mae</td>
+                                                                                            <td>Grade 1 - Chrysanthemum</td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                            <div style="padding-top: 10px;">
+                                                                                <a href="#" class="fw-bold text-primary">View all students <i class="fa fa-arrow-right ms-2"></i></a>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
-                                                                </section>
-                                                            </div>
+                                                                </div>
+                                                                <div class="col-lg-12 grid-margin stretch-card">
+                                                                    <div class="card">
+                                                                        <div class="card-body">
+                                                                            <h4 class="card-title">Faculty List</h4>
+                                                                            <div class="table-responsive">
+                                                                                <table class="table table-striped">
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th>No.</th>
+                                                                                            <th>Faculty Number</th>
+                                                                                            <th>Department</th>
+                                                                                            <th>Faculty Name</th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <tr>
 
+                                                                                            <td>1</td>
+                                                                                            <td>2019-00188</td>
+                                                                                            <td>Mathematics</td>
+                                                                                            <td>Sabile, Camile Anne G.</td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td>2</td>
+                                                                                            <td>2019-00089</td>
+                                                                                            <td>English</td>
+                                                                                            <td>Cantuba, Hazel Grace L.</td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td>3</td>
+                                                                                            <td>2019-00189</td>
+                                                                                            <td>Filipino</td>
+                                                                                            <td>Frilles, Steven</td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td>4</td>
+                                                                                            <td>2019-00890</td>
+                                                                                            <td>MAPEH</td>
+                                                                                            <td>Dumas, Robert James</td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td>5</td>
+                                                                                            <td>2019-00099</td>
+                                                                                            <td>Science</td>
+                                                                                            <td>Maling, Roselyn Mae</td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                            <div style="padding-top: 10px;">
+                                                                                <a href="#" class="fw-bold text-primary">View all students <i class="fa fa-arrow-right ms-2"></i></a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-12 col-lg-4">
+                                                            <div class="card">
+                                                                <div class="card-body">
+
+                                                                    <div class="d-flex align-items-center justify-content-between mb-3">
+                                                                        <h4 class="card-title card-title-dash">Activity History</h4>
+                                                                    </div>
+                                                                    <ul class="bullet-line-list">
+                                                                        <li>
+                                                                            <div class="d-flex justify-content-between">
+                                                                                <div><span class="text-light-green" style="color:#c02628;">Camile Sabile</span> assign you a task</div>
+                                                                                <p>01/01/2023</p>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="d-flex justify-content-between">
+                                                                                <div><span class="text-light-green">Hazel Grace</span> assign you a task</div>
+                                                                                <p>01/01/2023</p>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="d-flex justify-content-between">
+                                                                                <div><span class="text-light-green">Steven Frilles</span> assign you a task</div>
+                                                                                <p>01/01/2023</p>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="d-flex justify-content-between">
+                                                                                <div><span class="text-light-green">RJ Dumas</span> assign you a task</div>
+                                                                                <p>01/01/2023</p>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="d-flex justify-content-between">
+                                                                                <div><span class="text-light-green">Roselyn Maling</span> assign you a task</div>
+                                                                                <p>01/01/2023</p>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="d-flex justify-content-between">
+                                                                                <div><span class="text-light-green">Genesis Tecson</span> assign you a task</div>
+                                                                                <p>01/01/2023</p>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="d-flex justify-content-between">
+                                                                                <div><span class="text-light-green">Ryu Munoz</span> assign you a task</div>
+                                                                                <p>01/01/2023</p>
+                                                                            </div>
+                                                                        </li>
+                                                                    </ul>
+                                                                    <div class="list align-items-center pt-3">
+                                                                        <div class="wrapper w-100">
+                                                                            <p class="mb-0">
+                                                                                <a href="#" class="fw-bold text-primary">Show all <i class="fa fa-arrow-right ms-2"></i></a>
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -433,10 +647,65 @@ if (empty($_SESSION['AD_number'])) {
         <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
-
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-light mb-4">Address</h3>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
+                    <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>customerservice@cdsp.edu.ph</p>
+                    <div class="d-flex pt-2">
+                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
+                        <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-light mb-4">Quick Links</h3>
+                    <a class="btn btn-link" href="">Home</a>
+                    <a class="btn btn-link" href="">About Us</a>
+                    <a class="btn btn-link" href="">Academics</a>
+                    <a class="btn btn-link" href="">Admission</a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-light mb-4">Useful Links</h3>
+                    <a class="btn btn-link" href="">DepEd</a>
+                    <a class="btn btn-link" href="">Pag Asa</a>
+                    <a class="btn btn-link" href="">City of San Pedro</a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="text-light mb-4">Newsletter</h3>
+                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
+                    <div class="position-relative mx-auto" style="max-width: 400px;">
+                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
+                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <a href="#">Colegio De San Pedro</a>, All Right Reserved.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
 </body>
 
+<!-- Template Javascript -->
+<script src="../assets/js/main.js"></script>
 
+<script src="../assets/js/admin/vendor.bundle.base.js"></script>
+<script src="../assets/js/admin/off-canvas.js"></script>
+<script src="../assets/js/admin/progressbar.min.js"></script>
+<script src="../assets/js/admin/Chart.min.js"></script>
 <script>
     const form = document.getElementById('form-id');
 
@@ -449,6 +718,104 @@ if (empty($_SESSION['AD_number'])) {
             return false;
         }
     });
+</script>
+<script>
+    if ($("#doughnutChart").length) {
+        var doughnutChartCanvas = $("#doughnutChart").get(0).getContext("2d");
+        var doughnutPieData = {
+            datasets: [{
+                data: [10, 10, 10, 10, 10, 10, 20, 20],
+                backgroundColor: [
+                    "#1F3BB3",
+                    "#FDD0C7",
+                    "#52CDFF",
+                    "#81DADA",
+                    "#F9F871",
+                    "#008F7A",
+                    "#845EC2",
+                    "#C34A36"
+                ],
+                borderColor: [
+                    "#1F3BB3",
+                    "#FDD0C7",
+                    "#52CDFF",
+                    "#81DADA",
+                    "#F9F871",
+                    "#008F7A",
+                    "#845EC2",
+                    "#C34A36"
+                ],
+            }],
+
+            // These labels appear in the legend and in the tooltips when hovering different arcs
+            labels: [
+                'K1',
+                'K2',
+                'G1',
+                'G2',
+                'G3',
+                'G4',
+                'G5',
+                'G6',
+            ]
+        };
+        var doughnutPieOptions = {
+            cutoutPercentage: 50,
+            animationEasing: "easeOutBounce",
+            animateRotate: true,
+            animateScale: false,
+            responsive: true,
+            maintainAspectRatio: true,
+            showScale: true,
+            legend: false,
+            legendCallback: function(chart) {
+                var text = [];
+                text.push('<div class="chartjs-legend"><ul class="justify-content-center" style="margin-right: 0px">');
+                for (var i = 0; i < chart.data.datasets[0].data.length; i++) {
+                    text.push('<li><span style="background-color:' + chart.data.datasets[0].backgroundColor[i] + '">');
+                    text.push('</span>');
+                    if (chart.data.labels[i]) {
+                        text.push(chart.data.labels[i]);
+                    }
+                    text.push('</li>');
+                }
+                text.push('</div></ul>');
+                return text.join("");
+            },
+
+            layout: {
+                padding: {
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0
+                }
+            },
+            tooltips: {
+                callbacks: {
+                    title: function(tooltipItem, data) {
+                        return data['labels'][tooltipItem[0]['index']];
+                    },
+                    label: function(tooltipItem, data) {
+                        return data['datasets'][0]['data'][tooltipItem['index']];
+                    }
+                },
+
+                backgroundColor: '#fff',
+                titleFontSize: 14,
+                titleFontColor: '#0B0F32',
+                bodyFontColor: '#737F8B',
+                bodyFontSize: 11,
+                displayColors: false
+            }
+        };
+        var doughnutChart = new Chart(doughnutChartCanvas, {
+            type: 'doughnut',
+            data: doughnutPieData,
+            options: doughnutPieOptions
+        });
+        document.getElementById('doughnut-chart-legend').innerHTML = doughnutChart.generateLegend();
+    }
 </script>
 
 </html>

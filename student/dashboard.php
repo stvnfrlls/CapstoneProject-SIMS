@@ -187,7 +187,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="row" >
+                  <div class="row">
 
                     <div class="row">
                       <div class="col-lg-6 offset-lg-3" style="margin-top: 30px;">
@@ -195,68 +195,64 @@
                           <h3 class="mb-0">Reminders</h3>
                         </div>
                       </div>
-                      <div class="row" >
-                        <div class="col-lg-6 col-sm-12">
-                          <div class="card" >
+                      <div class="row" style="margin: auto;">
+                        <div class="col-lg-4 col-sm-12">
+                          <div class="card">
                             <div class="card-body">
-                              <p class="mb-4" style="text-align: center; color:#c02628;">Class Schedule</p>
-                              <p class="mb-1" style="font-size: .90rem;">Mathematics</p>
-                              <div class="progress rounded" style="height: 25px;">
-                                <p style="font-size: .77rem; margin: 5px 0px 0px 7px">MONDAY-FRIDAY (10:30-1:30)</p>
+                              <div class="user-details row">
+                                <p class="user-name col-12" style="text-align:center;"><a href="#">Mark wiens</a> <span class="far fa-user" style="color: #c02628;"></span></p>
+                                <p class="date col-12" style="text-align:center;"><a>12 Dec, 2017</a> <span class="fa fa-calendar" style="color: #c02628;"></span></p>
                               </div>
-
-                              <p class="mt-4 mb-1" style="font-size: .90rem;">English</p>
-                              <div class="progress rounded" style="height: 25px;">
-                                <p style="font-size: .77rem; margin: 5px 0px 0px 7px">MONDAY-FRIDAY (10:30-1:30)</p>
+                              <div class="col-12">
+                                <a class="posts-title" href="blog-single.html">
+                                  <h3 style="text-align: justify">Bring a noteboook</h3>
+                                </a>
+                                <p>Subject: English</p>
+                                <p class="excert">
+                                  MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.
+                                </p>
+                                <a href="blog-single.html" class="primary-btn">View More</a>
                               </div>
-
-                              <p class="mt-4 mb-1" style="font-size: .90rem;">Filipino</p>
-                              <div class="progress rounded" style="height: 25px;">
-                                <p style="font-size: .77rem; margin: 5px 0px 0px 7px;">MONDAY-FRIDAY (10:30-1:30)</p>
-                              </div>
-
-                              <p class="mt-4 mb-1" style="font-size: .90rem;">Science</p>
-                              <div class="progress rounded" style="height: 25px;">
-                                <p style="font-size: .77rem; margin: 5px 0px 0px 7px">MONDAY-FRIDAY (10:30-1:30)</p>
-                              </div>
-
-                              <p class="mt-4 mb-1" style="font-size: .90rem;">MAPEH</p>
-                              <div class="progress rounded" style="height: 25px;">
-                                <p style="font-size: .77rem; margin: 5px 0px 0px 7px">MONDAY-FRIDAY (10:30-1:30)</p>
-                              </div>
-
                             </div>
                           </div>
                         </div>
-                        <div class="col-lg-6 col-sm-12">
+                        <div class="col-lg-4 col-sm-12">
                           <div class="card">
                             <div class="card-body">
-                              <p class="mb-4" style="text-align: center; color:#c02628;">Class Schedule</p>
-                              <p class="mb-1" style="font-size: .90rem;">Mathematics</p>
-                              <div class="progress rounded" style="height: 25px;">
-                                <p style="font-size: .77rem; margin: 5px 0px 0px 7px">MONDAY-FRIDAY (10:30-1:30)</p>
+                              <div class="user-details row">
+                                <p class="user-name col-12" style="text-align:center;"><a href="#">Mark wiens</a> <span class="far fa-user" style="color: #c02628;"></span></p>
+                                <p class="date col-12" style="text-align:center;"><a>12 Dec, 2017</a> <span class="fa fa-calendar" style="color: #c02628;"></span></p>
                               </div>
-
-                              <p class="mt-4 mb-1" style="font-size: .90rem;">English</p>
-                              <div class="progress rounded" style="height: 25px;">
-                                <p style="font-size: .77rem; margin: 5px 0px 0px 7px">MONDAY-FRIDAY (10:30-1:30)</p>
+                              <div class="col-12">
+                                <a class="posts-title" href="blog-single.html">
+                                  <h3 style="text-align: justify">Bring a noteboook</h3>
+                                </a>
+                                <p>Subject: English</p>
+                                <p class="excert">
+                                  MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.
+                                </p>
+                                <a href="blog-single.html" class="primary-btn">View More</a>
                               </div>
-
-                              <p class="mt-4 mb-1" style="font-size: .90rem;">Filipino</p>
-                              <div class="progress rounded" style="height: 25px;">
-                                <p style="font-size: .77rem; margin: 5px 0px 0px 7px;">MONDAY-FRIDAY (10:30-1:30)</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-4 col-sm-12">
+                          <div class="card">
+                            <div class="card-body">
+                              <div class="user-details row">
+                                <p class="user-name col-12" style="text-align:center;"><a href="#">Mark wiens</a> <span class="far fa-user" style="color: #c02628;"></span></p>
+                                <p class="date col-12" style="text-align:center;"><a>12 Dec, 2017</a> <span class="fa fa-calendar" style="color: #c02628;"></span></p>
                               </div>
-
-                              <p class="mt-4 mb-1" style="font-size: .90rem;">Science</p>
-                              <div class="progress rounded" style="height: 25px;">
-                                <p style="font-size: .77rem; margin: 5px 0px 0px 7px">MONDAY-FRIDAY (10:30-1:30)</p>
+                              <div class="col-12">
+                                <a class="posts-title" href="blog-single.html">
+                                  <h3 style="text-align: justify">Bring a noteboook</h3>
+                                </a>
+                                <p>Subject: English</p>
+                                <p class="excert">
+                                  MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.
+                                </p>
+                                <a href="blog-single.html" class="primary-btn">View More</a>
                               </div>
-
-                              <p class="mt-4 mb-1" style="font-size: .90rem;">MAPEH</p>
-                              <div class="progress rounded" style="height: 25px;">
-                                <p style="font-size: .77rem; margin: 5px 0px 0px 7px">MONDAY-FRIDAY (10:30-1:30)</p>
-                              </div>
-
                             </div>
                           </div>
                         </div>
@@ -271,7 +267,7 @@
                       <div class="section-title section-title-sm position-relative pb-3 mb-4">
                         <h3 class="mb-0" style="text-align:left;">Announcements</h3>
                       </div>
-                      <div class="col-lg-12 wow "  style="padding-bottom: 5px;">
+                      <div class="col-lg-12 wow " style="padding-bottom: 5px;">
                         <div class="blog-item bg-light rounded overflow-hidden">
                           <div class="p-4">
                             <div class="d-flex mb-3">
@@ -284,7 +280,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-lg-12 wow "  style="padding-bottom: 5px;">
+                      <div class="col-lg-12 wow " style="padding-bottom: 5px;">
                         <div class="blog-item bg-light rounded overflow-hidden">
                           <div class="p-4">
                             <div class="d-flex mb-3">
@@ -297,7 +293,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-lg-12 wow "  style="padding-bottom: 5px;">
+                      <div class="col-lg-12 wow " style="padding-bottom: 5px;">
                         <div class="blog-item bg-light rounded overflow-hidden">
                           <div class="p-4">
                             <div class="d-flex mb-3">
@@ -310,7 +306,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-lg-12 wow"  style="padding-bottom: 5px;">
+                      <div class="col-lg-12 wow" style="padding-bottom: 5px;">
                         <div class="blog-item bg-light rounded overflow-hidden">
                           <div class="p-4">
                             <div class="d-flex mb-3">
