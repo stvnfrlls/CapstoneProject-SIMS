@@ -171,8 +171,33 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                             <td class="hatdog"></td>
                                         <?php } ?>
 
-                                        <td class="hatdog"><?php echo $studentGradesData['G_finalgrade']; ?></td>
-                                        <td class="hatdog">Passed</td>
+                                        <td class="hatdog">
+                                            <?php
+                                            if (empty($studentGradesData['G_finalgrade'])) {
+                                                $sum = $studentGradesData['G_gradesQ1'] + $studentGradesData['G_gradesQ2'] + $studentGradesData['G_gradesQ3'] + $studentGradesData['G_gradesQ4'];
+                                                $average = $sum / 4;
+                                                echo round($average);
+                                            } else {
+                                                echo $studentGradesData['G_finalgrade'];
+                                            }
+                                            ?>
+                                        </td>
+                                        <td class="hatdog">
+                                            <?php
+                                            $average = $studentGradesData['G_finalgrade'];
+                                            if ($average >= 90) {
+                                                echo "Outstanding";
+                                            } else if ($average >= 85 || $average <= 89) {
+                                                echo "Very Satisfactory";
+                                            } else if ($average >= 80 || $average <= 84) {
+                                                echo "Satisfactory";
+                                            } else if ($average >= 75 || $average <= 79) {
+                                                echo "Fairly Satisfactory";
+                                            } else if ($average < 75) {
+                                                echo "Did Not Meet Expectations";
+                                            }
+                                            ?>
+                                        </td>
                                     </tr>
                                 <?php }
                                 ?>
@@ -181,8 +206,14 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                     </div>
                     <table id="ave" class="table text-center" style="margin-top: 20px; margin-bottom: 20px;">
                         <tr>
-                            <td class="hatdog"> General Average</td>
-                            <td class="hatdog">90</td>
+                            <td class="hatdog">General Average</td>
+                            <td class="hatdog">
+                                <?php
+                                $GenAveQuery = $mysqli->query("SELECT round(avg(G_finalgrade)) FROM grades WHERE SR_number = '{$_SESSION['SR_number']}'");
+                                $GetgenAve = $GenAveQuery->fetch_assoc();
+                                echo $GetgenAve['round(avg(G_finalgrade))'];
+                                ?>
+                            </td>
                         </tr>
                     </table>
                     <div class="container">
@@ -237,18 +268,12 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                             </thead>
                             <tbody>
                                 <?php
-                                $getBehaviorData = $mysqli->query("SELECT 
-                                                behavior_category.B_ID, behavior_category.core_value_area, behavior_category.core_value_subheading,
-                                                behavior.SR_number, behavior.CV_Area, behavior.CV_valueQ1,
-                                                behavior.CV_valueQ2, behavior.CV_valueQ3, behavior.CV_valueQ4
-                                                FROM behavior_category
-                                                INNER JOIN behavior 
-                                                ON behavior_category.core_value_area = behavior.CV_Area
-                                                WHERE behavior.SR_number = '{$_SESSION['SR_number']}'");
+                                $getBehaviorData = $mysqli->query("SELECT SR_number, CV_Area, CV_valueQ1, CV_valueQ2, CV_valueQ3, CV_valueQ4
+                                                                  FROM behavior WHERE SR_number = '{$_SESSION['SR_number']}'");
                                 $getBehaviorAreas = $mysqli->query("SELECT * FROM behavior_category");
-                                $BehaviorDataArray = array();
+                                $BehaviorAreasArray = array();
                                 while ($DataBehaviorCategory = $getBehaviorAreas->fetch_assoc()) {
-                                    $BehaviorDataArray[] = $DataBehaviorCategory;
+                                    $BehaviorAreasArray[] = $DataBehaviorCategory;
                                 }
                                 ?>
                                 <?php
@@ -258,11 +283,12 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                         <tr>
                                             <?php if ($i % 2 == 0) { ?>
                                                 <td rowspan="2" class="hatdog">
-                                                    <?php echo preg_replace('/[0-9]/', '', $BehaviorData['CV_Area']); ?>
+                                                    <?php echo $BehaviorAreasArray[$i]['core_value_area']; ?>
                                                 </td>
                                             <?php } ?>
 
-                                            <td rowspan="1" class="hatdog"><?php echo $BehaviorData['core_value_subheading']; ?>
+                                            <td rowspan="1" class="hatdog">
+                                                <?php echo $BehaviorAreasArray[$i]['core_value_subheading']; ?>
                                             </td>
                                             <td rowspan="1" class="hatdog"><?php echo $BehaviorData['CV_valueQ1']; ?>
                                             </td>

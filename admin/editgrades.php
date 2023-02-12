@@ -3,6 +3,17 @@ require_once("../assets/php/server.php");
 
 if (empty($_SESSION['AD_number'])) {
   header('Location: ../auth/login.php');
+} else {
+  $subjects     = array();
+  array_unshift($subjects, null);
+  if ($_GET['Grade'] == "KINDER") {
+    $getListSubject = $mysqli->query("SELECT subjectName FROM subjectperyear WHERE minYearLevel = '0' AND maxYearLevel >= '0'");
+  } else if ($_GET['Grade']) {
+    $getListSubject = $mysqli->query("SELECT subjectName FROM subjectperyear WHERE minYearLevel <= '{$_GET['Grade']}' AND maxYearLevel >= '{$_GET['Grade']}'");
+  }
+  while ($dataSubject = $getListSubject->fetch_assoc()) {
+    $subjects[] = $dataSubject;
+  }
 }
 ?>
 
@@ -186,7 +197,7 @@ if (empty($_SESSION['AD_number'])) {
                       <div class="dropdown">
                         <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
                           <?php if (isset($_GET['Section'])) {
-                            echo "Grade Level: " . $_GET['Grade'] . " - " . $_GET['Section'];
+                            echo "GR." . $_GET['Grade'] . " - " . $_GET['Section'];
                           } else {
                             echo "Grade and Section";
                           }
@@ -237,12 +248,17 @@ if (empty($_SESSION['AD_number'])) {
                             <i class="fa fa-caret-down"></i>
                           </button>
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                            <a class="dropdown-item" href="<?php echo $current_url . "&LearningArea=Math" ?>">Mathematics</a>
-                            <a class="dropdown-item" href="<?php echo $current_url . "&LearningArea=English" ?>">English</a>
-                            <a class="dropdown-item" href="<?php echo $current_url . "&LearningArea=Filipino" ?>">Filipino</a>
-                            <a class="dropdown-item" href="<?php echo $current_url . "&LearningArea=Science" ?>">Science</a>
-                            <a class="dropdown-item" href="<?php echo $current_url . "&LearningArea=History" ?>">History</a>
-                            <a class="dropdown-item" href="<?php echo $current_url . "&LearningArea=Character_Development" ?>">Character Development</a>
+                            <?php
+
+                            $rowCount = 1;
+                            while ($rowCount != count($subjects)) { ?>
+                              <a class="dropdown-item" href="<?php echo $current_url . " &LearningArea=" . $subjects[$rowCount]['subjectName']; ?>">
+                                <?php echo $subjects[$rowCount]['subjectName'] ?>
+                              </a>
+                            <?php
+                              $rowCount++;
+                            }
+                            ?>
                           </div>
                         </div>
                       </div>
@@ -302,7 +318,7 @@ if (empty($_SESSION['AD_number'])) {
                                                     INNER JOIN grades
                                                     ON studentrecord.SR_number = grades.SR_number
                                                     WHERE studentrecord.SR_section = '$byGradeLevel'
-                                                    AND G_learningArea = '$bySubject'";
+                                                    AND G_learningArea LIKE '%$bySubject%'";
                                         $rungetData = $mysqli->query($getData);
                                         $rowNum = 1;
                                         while ($gradeData =  $rungetData->fetch_assoc()) { ?>
@@ -368,7 +384,11 @@ if (empty($_SESSION['AD_number'])) {
                                               </td>
                                             <?php } ?>
                                             <td class="grade_table">
-                                              <input type="number" placeholder="##" title="This is only an estimation of the final grade and will only reflect on the last day of the semester" style="text-align: center;" disabled>
+                                              <?php
+                                              $sum = $gradeData['G_gradesQ1'] + $gradeData['G_gradesQ2'] + $gradeData['G_gradesQ3'] + $gradeData['G_gradesQ4'];
+                                              $average = $sum / 4;
+                                              echo round($average);
+                                              ?>
                                             </td>
                                           </tr>
                                         <?php $rowNum++;
