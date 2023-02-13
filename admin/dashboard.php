@@ -578,43 +578,43 @@ if (empty($_SESSION['AD_number'])) {
                                                                     <ul class="bullet-line-list">
                                                                         <li>
                                                                             <div class="d-flex justify-content-between">
-                                                                                <div><span class="text-light-green" style="color:#c02628;">Camile Sabile</span> assign you a task</div>
+                                                                                <div style="text-align: left;"><span class="text-light-green">Camile Sabile</span> assign you a task</div>
                                                                                 <p>01/01/2023</p>
                                                                             </div>
                                                                         </li>
                                                                         <li>
                                                                             <div class="d-flex justify-content-between">
-                                                                                <div><span class="text-light-green">Hazel Grace</span> assign you a task</div>
+                                                                                <div style="text-align: left;"><span class="text-light-green">Hazel Grace</span> assign you a task</div>
                                                                                 <p>01/01/2023</p>
                                                                             </div>
                                                                         </li>
                                                                         <li>
                                                                             <div class="d-flex justify-content-between">
-                                                                                <div><span class="text-light-green">Steven Frilles</span> assign you a task</div>
+                                                                                <div style="text-align: left;"><span class="text-light-green">Steven Frilles</span> assign you a task</div>
                                                                                 <p>01/01/2023</p>
                                                                             </div>
                                                                         </li>
                                                                         <li>
                                                                             <div class="d-flex justify-content-between">
-                                                                                <div><span class="text-light-green">RJ Dumas</span> assign you a task</div>
+                                                                                <div style="text-align: left;"><span class="text-light-green">RJ Dumas</span> assign you a task</div>
                                                                                 <p>01/01/2023</p>
                                                                             </div>
                                                                         </li>
                                                                         <li>
                                                                             <div class="d-flex justify-content-between">
-                                                                                <div><span class="text-light-green">Roselyn Maling</span> assign you a task</div>
+                                                                                <div style="text-align: left;"><span class="text-light-green">Roselyn Maling</span> assign you a task</div>
                                                                                 <p>01/01/2023</p>
                                                                             </div>
                                                                         </li>
                                                                         <li>
                                                                             <div class="d-flex justify-content-between">
-                                                                                <div><span class="text-light-green">Genesis Tecson</span> assign you a task</div>
+                                                                                <div style="text-align: left;"><span class="text-light-green">Genesis Tecson</span> assign you a task</div>
                                                                                 <p>01/01/2023</p>
                                                                             </div>
                                                                         </li>
                                                                         <li>
                                                                             <div class="d-flex justify-content-between">
-                                                                                <div><span class="text-light-green">Ryu Munoz</span> assign you a task</div>
+                                                                                <div style="text-align: left;"><span class="text-light-green">Ryu Munoz</span> assign you a task</div>
                                                                                 <p>01/01/2023</p>
                                                                             </div>
                                                                         </li>
