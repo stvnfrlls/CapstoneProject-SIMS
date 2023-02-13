@@ -172,33 +172,30 @@ $attendance_rowCount = 0;
                                             <button id="myBtn" class="btn btn-primary me-2" style="width: auto;">Open Modal</button>
 
                                             <!-- The Modal -->
-                                            <div id="myModal" class="modal">
-
-                                                <!-- Modal content -->
-
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h2>Couldn't detect QR Code!</h2>
-                                                        <span class="close">x</span>
-                                                    </div>
-                                                    <div class="modal-body" style="text-align: center;">
-                                                        <img src="https://cdn.onlinewebfonts.com/svg/img_2555.png" alt="cookies-img" height="90" width="400" />
-                                                        <p>Sorry! We couldn't read your QR code. Please input manually the student number below.</p>
-                                                        <div class="row d-flex justify-content-center mb-3">
-                                                            <div class="col text-center form-group form">
-                                                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="qr_form" class="form-horizontal">
-                                                                    <input type="text" name="student" class="form-control" id="input1" required><br>
-                                                                    <button type="submit" class="btn btn-primary me-2">Enter</button>
-
-                                                                </form>
+                                            <div class="modal-container">
+                                                <div id="myModal" class="modal">
+                                                    <!-- Modal content -->
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h2 style="font-family: 'Lato','san-serif';">Couldn't detect QR Code!</h2>
+                                                            <span class="close">x</span>
+                                                        </div>
+                                                        <div class="modal-body" style="text-align: center;">
+                                                            <img src="https://cdn.onlinewebfonts.com/svg/img_2555.png" alt="cookies-img" height="90" width="400" />
+                                                            <p>Sorry! We couldn't read your QR code. Please input manually the student number below.</p>
+                                                            <div class="row d-flex justify-content-center mb-3">
+                                                                <div class="col text-center form-group form">
+                                                                    <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="qr_form" class="form-horizontal">
+                                                                        <input type="text" name="student" class="form-control" id="input1" required><br>
+                                                                        <button type="submit" class="btn btn-primary me-2">Enter</button>
+                                                                    </form>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-
-
-
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
