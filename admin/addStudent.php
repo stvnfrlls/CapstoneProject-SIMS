@@ -31,7 +31,7 @@ if (!isset($_SESSION['AD_number'])) {
 
         echo "<script>var cityprov = " . $student . ";</script>";
         echo "<script>var g_cityprov = " . $guardian . ";</script>";
-        echo "<script>var gradeLevel = " . $gradeLevel . "</script>";
+        echo "<script>var g_Level = " . $gradeLevel . "</script>";
     }
 }
 ?>
@@ -489,6 +489,13 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 <div class="col-sm-12">
                                                                     <select class="form-select" id="SectionName" name="S_section" required>
                                                                         <option selected></option>
+                                                                        <?php
+                                                                        $sectionData = $mysqli->query("SELECT * FROM sections");
+
+                                                                        while ($sections = $sectionData->fetch_assoc()) {
+                                                                            echo '<option value=' . $sections['S_name'] . '>' . $sections['S_yearLevel'] . ' - ' . $sections['S_name'] . '</option>';
+                                                                        }
+                                                                        ?>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -618,26 +625,6 @@ if (!isset($_SESSION['AD_number'])) {
             g_province.replaceChildren(option1);
 
             g_postal.value = g_findCity.zip_code;
-        });
-    </script>
-    <script>
-        console.log($gradeLevel);
-        const gradelevel = document.getElementById('gradelevel');
-        const SectionName = document.getElementById('SectionName');
-
-        gradelevel.addEventListener("change", function() {
-            SectionName.innerHTML = "";
-            const gradelevelValue = this.value;
-            const findGradeLevel = gradeLevel.proto(function(element) {
-                return element.S_yearLevel === gradelevelValue;
-            });
-
-            for (let i = 0; i < 2; i++) {
-                const optionSection = document.createElement("option");
-                optionSection.value = findGradeLevel.S_name;
-                optionSection.text = findGradeLevel.S_name;
-                SectionName.add(optionSection);
-            }
         });
     </script>
 
