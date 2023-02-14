@@ -944,10 +944,19 @@ if (isset($_POST['updateSchedule'])) { //NOT WORKING
         echo "UPDATE FAIL CONFLICT IN TIME";
     }
 }
+if (isset($_POST['postAnnouncement'])) {
+    $author = $_POST['author'];
+    $date = $_POST['date'];
+    $subject = $_POST['subject'];
+    $message = $_POST['message'];
 
-//TO DO LIST
-if (isset($_POST['editRoles'])) {
-    # code...
+    $CreateAnnouncement = $mysqli->query("INSERT INTO announcement(header, author, date, msg) VALUE('{$subject}', '{$author}', '{$date}', '{$message}')");
+}
+if (isset($_POST['assignAdvisor'])) {
+    $section = $_POST['section'];
+    $advisor = $_POST['advisor'];
+
+    $assignAdvisor = $mysqli->query("UPDATE sections SET S_adviser = '{$advisor}' WHERE S_name = '{$section}'");
 }
 
 
