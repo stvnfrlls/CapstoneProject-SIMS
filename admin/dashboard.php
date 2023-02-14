@@ -89,7 +89,7 @@ if (empty($_SESSION['AD_number'])) {
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link href="../assets/img/favicon.png" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -212,7 +212,7 @@ if (empty($_SESSION['AD_number'])) {
                         </a>
                     </li>
                     <!-- line 5 -->
-                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Reports</li>
+                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Attendance Report</li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/dailyReports.php">
                             <i class=""></i>
@@ -436,7 +436,7 @@ if (empty($_SESSION['AD_number'])) {
                                                         <div class="card">
                                                             <div class="card-body">
                                                                 <div class="row">
-                                                                    <h3 style="font-size: 20px; text-align:left;">hmmmmm</h3>
+                                                                    <h3 style="font-size: 20px; text-align:left;"></h3>
                                                                     
                                                                 </div>
                                                             </div>
