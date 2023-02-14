@@ -53,7 +53,7 @@ $attendance_rowCount = 0;
     <link href="../assets/css/style.css" rel="stylesheet">
     <link href="../assets/css/qr.css" rel="stylesheet">
     <link href="../assets/css/admin/style.css" rel="stylesheet">
-
+    <link href="../assets/css/admin/materialdesignicons.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -142,7 +142,7 @@ $attendance_rowCount = 0;
                                             <style>
                                                 .camera-container {
                                                     width: 100vw;
-                                                    height: 100vh;
+                                                    height: 80vh;
                                                     display: flex;
                                                     justify-content: center;
                                                     align-items: center;
@@ -151,45 +151,220 @@ $attendance_rowCount = 0;
                                                 #camera {
                                                     width: 100%;
                                                     height: 100%;
-                                                    object-fit: cover;
+                                                    object-fit: contain;
                                                 }
                                             </style>
+
                                             <div class="camera-container" id="camera">
-                                                <video id="preview" class="video"></video>
+                                                <video id="preview"></video>
                                             </div>
 
+                                            <form style="text-align: center;">
+                                                <style>
+                                                    @media (max-width: 414px) {
+                                                        .custom {
+                                                            width: 100%
+                                                        }
+                                                    }
 
-                                            <div class="row d-flex justify-content-center mb-3">
-                                                <div class="col text-center form-group form">
-                                                    <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="qr_form" class="form-horizontal">
+                                                    @media (max-width: 768px) {
+                                                        .custom {
+                                                            width: 100%;
+                                                        }
+                                                    }
 
+                                                    @media (max-width: 1024px) {
+                                                        .custom {
+                                                            width: 100%;
 
-                                                        <label for="qrcode_input" class="form-label" id="labelinput2">Fetcher Code (optional)</label>
-                                                        <input type="text" name="fetcher" id="input2" required>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                            <button id="myBtn" class="btn btn-primary me-2" style="width: auto;">Open Modal</button>
+                                                        }
+                                                    }
+                                                </style>
+                                                <button class="btn btn-light" id="custom">Back</button>
+                                            </form>
+
+                                            <button id="myBtn" class="btn btn-primary me-2" style="width: auto; color:white;">Modal (if qr code couldn't detect)</button>
 
                                             <!-- The Modal -->
-                                            <div class="modal-container">
-                                                <div id="myModal" class="modal">
-                                                    <!-- Modal content -->
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h2 style="font-family: 'Lato','san-serif';">Couldn't detect QR Code!</h2>
-                                                            <span class="close">x</span>
+
+                                            <div id="myModal" class="modal">
+                                                <style>
+                                                    @media (max-width: 414px) {
+                                                        .modal-content {
+                                                            width: 90% !important;
+                                                        }
+                                                    }
+
+                                                    @media (max-width: 768px) {
+                                                        .modal-content {
+                                                            width: 90% !important;
+                                                        }
+                                                    }
+
+                                                    @media (max-width: 1024px) {
+                                                        .modal-content {
+                                                            width: 70% !important;
+                                                        }
+                                                    }
+
+                                                    .modal-content {
+                                                        width: 30%;
+                                                    }
+                                                </style>
+                                                <!-- Modal content -->
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h2 style="font-family: 'Lato','san-serif'; text-align:center;">Couldn't detect QR Code!</h2>
+                                                        <span class="close"><i class="fa fa-times"></i></span>
+                                                    </div>
+                                                    <div class="modal-body" style="text-align: center;">
+                                                        <img src="https://cdn.onlinewebfonts.com/svg/img_2555.png" alt="cookies-img" height="90" width="400" />
+                                                        <p>Sorry! We couldn't read your QR code. Please input manually the student number below.</p>
+                                                        <div class="row d-flex justify-content-center mb-3">
+                                                            <div class="col text-center form-group form">
+                                                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="qr_form" class="form-horizontal">
+                                                                    <input type="text" name="student" class="form-control" id="input1" required><br>
+                                                                    <button type="submit" class="btn btn-primary me-2" style="color: white;">Enter</button>
+                                                                </form>
+                                                            </div>
                                                         </div>
-                                                        <div class="modal-body" style="text-align: center;">
-                                                            <img src="https://cdn.onlinewebfonts.com/svg/img_2555.png" alt="cookies-img" height="90" width="400" />
-                                                            <p>Sorry! We couldn't read your QR code. Please input manually the student number below.</p>
-                                                            <div class="row d-flex justify-content-center mb-3">
-                                                                <div class="col text-center form-group form">
-                                                                    <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="qr_form" class="form-horizontal">
-                                                                        <input type="text" name="student" class="form-control" id="input1" required><br>
-                                                                        <button type="submit" class="btn btn-primary me-2">Enter</button>
-                                                                    </form>
-                                                                </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <button id="myBtn1" class="btn btn-primary me-2" style="width: auto; color:white;">Modal for Time In (if qr code is detected)</button>
+
+                                            <!-- The Modal -->
+
+                                            <div id="myModal1" class="modal">
+                                                <style>
+                                                    @media (max-width: 414px) {
+                                                        .modal-content {
+                                                            width: 90% !important;
+                                                        }
+                                                    }
+
+                                                    @media (max-width: 768px) {
+                                                        .modal-content {
+                                                            width: 90% !important;
+                                                        }
+                                                    }
+
+                                                    @media (max-width: 1024px) {
+                                                        .modal-content {
+                                                            width: 70% !important;
+                                                        }
+                                                    }
+
+                                                    .modal-content {
+                                                        width: 30%;
+                                                    }
+
+                                                    .close1 {
+                                                        color: black;
+                                                        float: right;
+                                                        font-size: 20px;
+                                                        font-weight: normal;
+                                                    }
+                                                </style>
+                                                <!-- Modal content -->
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h2 style="font-family: 'Lato','san-serif'; text-align:center;">Successful!</h2>
+                                                        <span class="close1"><i class="fa fa-times"></i></span>
+                                                    </div>
+                                                    <div class="modal-body" style="text-align: center;">
+                                                        <img src="https://cdn.onlinewebfonts.com/svg/img_2555.png" alt="cookies-img" height="90" width="400" />
+                                                        <p>Awesome! Camille Anne G. Sabile is already marked as Present</p>
+                                                        <div class="row d-flex justify-content-center mb-3">
+                                                            <div class="col text-center form-group form">
+                                                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="qr_form" class="form-horizontal">
+                                                                    <button type="submit" class="btn btn-primary me-2" style="color: white;">Scan QR again</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <button id="myBtn2" class="btn btn-primary me-2" style="width: auto; color:white;">Modal for Time Out (if qr code is detected)</button>
+
+                                            <!-- The Modal -->
+
+                                            <div id="myModal2" class="modal">
+                                                <style>
+                                                    @media (max-width: 414px) {
+                                                        .modal-content {
+                                                            width: 90% !important;
+                                                        }
+                                                    }
+
+                                                    @media (max-width: 768px) {
+                                                        .modal-content {
+                                                            width: 90% !important;
+                                                        }
+                                                    }
+
+                                                    @media (max-width: 1024px) {
+                                                        .modal-content {
+                                                            width: 70% !important;
+                                                        }
+                                                    }
+
+                                                    .modal-content {
+                                                        width: 30%;
+                                                    }
+
+
+                                                    .close2 {
+                                                        color: black;
+                                                        float: right;
+                                                        font-size: 20px;
+                                                        font-weight: normal;
+                                                    }
+                                                </style>
+                                                <!-- Modal content -->
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h2 style="font-family: 'Lato','san-serif'; text-align:center;">Successful!</h2>
+                                                        <span class="close2"><i class="fa fa-times"></i></span>
+                                                    </div>
+                                                    <div class="modal-body" style="text-align: center;">
+                                                        <img src="https://cdn.onlinewebfonts.com/svg/img_2555.png" alt="cookies-img" height="90" width="400" />
+                                                        <p>Awesome! Camille Anne G. Sabile is now ready to go home.</p>
+                                                        <div class="row d-flex justify-content-center mb-3">
+                                                            <div class="col text-center form-group form">
+                                                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="qr_form" class="form-horizontal">
+                                                                    <div class="row">
+                                                                        <p>Is there a fetcher?</p>
+                                                                        <div class="col-12">
+                                                                            <input type="checkbox" id="vehicle1" name="a" value="">
+                                                                            <label for="a">Yes</label>
+                                                                        </div>
+                                                                        <div class="col-12">
+                                                                            <input type="checkbox" id="vehicle1" name="a" value="">
+                                                                            <label for="a">No</label>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="row">
+                                                                        <p>If no, choose your reason.</p>
+                                                                        <div class="col-12">
+                                                                            <input type="checkbox" id="vehicle1" name="a" value="">
+                                                                            <label for="a">Nakatulog</label>
+                                                                        </div>
+                                                                        <div class="col-12">
+                                                                            <input type="checkbox" id="vehicle1" name="a" value="">
+                                                                            <label for="a">Nag inom</label>
+                                                                        </div>
+                                                                        <div class="col-12">
+                                                                            <input type="checkbox" id="vehicle1" name="a" value="">
+                                                                            <label for="a">Napilayan</label>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <button type="submit" class="btn btn-primary me-2" style="color: white;">Scan QR again</button>
+                                                                </form>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -287,6 +462,60 @@ $attendance_rowCount = 0;
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
+        }
+    }
+</script>
+<script>
+    // Get the modal
+    var modal1 = document.getElementById("myModal1");
+
+    // Get the button that opens the modal
+    var btn1 = document.getElementById("myBtn1");
+
+    // Get the <span> element that closes the modal
+    var span1 = document.getElementsByClassName("close1")[0];
+
+    // When the user clicks the button, open the modal 
+    btn1.onclick = function() {
+        modal1.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span1.onclick = function() {
+        modal1.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal1) {
+            modal1.style.display = "none";
+        }
+    }
+</script>
+<script>
+    // Get the modal
+    var modal2 = document.getElementById("myModal2");
+
+    // Get the button that opens the modal
+    var btn2 = document.getElementById("myBtn2");
+
+    // Get the <span> element that closes the modal
+    var span2 = document.getElementsByClassName("close2")[0];
+
+    // When the user clicks the button, open the modal 
+    btn2.onclick = function() {
+        modal2.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span2.onclick = function() {
+        modal2.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal2) {
+            modal2.style.display = "none";
         }
     }
 </script>
