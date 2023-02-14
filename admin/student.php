@@ -184,6 +184,18 @@ if (empty($_SESSION['AD_number'])) {
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                     <div class="btn-group">
                       <div class="dropdown">
+                        <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">Academic Year 
+                          <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                          <a class="dropdown-item" href="">2022-2023</a>
+                          <a class="dropdown-item" href="">2023-2024</a>
+                          <a class="dropdown-item" href="">2024-2025</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="btn-group">
+                      <div class="dropdown">
                         <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
                           <?php if (isset($_GET['GradeLevel'])) {
                             echo "Grade " . $_GET['GradeLevel'];
@@ -191,7 +203,7 @@ if (empty($_SESSION['AD_number'])) {
                             echo "Grade Level";
                           }
                           ?>
-                        <i class="fa fa-caret-down"></i>
+                          <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                           <?php
@@ -203,7 +215,18 @@ if (empty($_SESSION['AD_number'])) {
                               <?php echo "Grade - " . $sectionData['S_yearLevel']; ?>
                             </a>
                           <?php } ?>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="btn-group">
+                      <div class="dropdown">
+                        <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">Section 
                           <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                          <a class="dropdown-item" href="">Chrysanthemum</a>
+                          <a class="dropdown-item" href="">Peony</a>
+                          <a class="dropdown-item" href="">Narra</a>
                         </div>
                       </div>
                     </div>
