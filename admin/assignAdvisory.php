@@ -184,9 +184,13 @@ if (!isset($_SESSION['AD_number'])) {
                             Grade <i class="fa fa-caret-down"></i>
                           </button>
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                            <a class="dropdown-item" href="#">Grade 1</a>
-                            <a class="dropdown-item" href="#">Grade 2</a>
-                            <a class="dropdown-item" href="#">Grade 3</a>
+                            <?php
+                            $getgradelevel = $mysqli->query("SELECT DISTINCT(S_yearLevel) FROM sections");
+
+                            while ($gradeLevel = $getgradelevel->fetch_assoc()) { ?>
+                              <a class="dropdown-item" href="assignAdvisory.php?grade=<?php echo $gradeLevel['S_yearLevel'] ?>">Grade <?php echo $gradeLevel['S_yearLevel'] ?></a>
+                            <?php }
+                            ?>
                           </div>
                         </div>
                       </div>
@@ -229,34 +233,41 @@ if (!isset($_SESSION['AD_number'])) {
                                     </style>
                                     <?php
                                     $rowCount = 1;
-                                    $getAdvisoryData = $mysqli->query("SELECT * FROM sections");
+
+                                    if (isset($_GET['grade'])) {
+                                      $getAdvisoryData = $mysqli->query("SELECT * FROM sections WHERE S_yearLevel = '{$_GET['grade']}'");
+                                    } else {
+                                      $getAdvisoryData = $mysqli->query("SELECT * FROM sections");
+                                    }
                                     while ($AdvisoryData = $getAdvisoryData->fetch_assoc()) { ?>
-                                      <tr>
-                                        <td class="hatdog"><?php echo $rowCount; ?></td>
-                                        <td class="hatdog">
-                                          <input type="hidden" name="section" value="<?php echo $AdvisoryData['S_name']; ?>">
-                                          <?php echo "Grade " . $AdvisoryData['S_yearLevel'] . " - " . $AdvisoryData['S_name'] ?>
-                                        </td>
-                                        <td class="hatdog">
-                                          <select class="form-select" aria-label="Default select example">
-                                            <?php
-                                            $getAssignedFacultyData = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$AdvisoryData['S_adviser']}'");
-                                            $AssignedFacultyData = $getAssignedFacultyData->fetch_assoc();
-                                            if (empty($AdvisoryData['S_adviser'])) {
-                                              echo "<option selected>assign a teacher</option>";
-                                            } else {
-                                              echo "<option selected>" . $AssignedFacultyData['F_lname'] . ", " . $AssignedFacultyData['F_fname'] . " " . substr($AssignedFacultyData['F_mname'], 0, 1) . "</option>";
-                                            }
-                                            $getFacultyData = $mysqli->query("SELECT * FROM faculty");
-                                            while ($FacultyData = $getFacultyData->fetch_assoc()) { ?>
-                                              <option value="<?php echo $FacultyData['F_number'] ?>"><?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1); ?></option>
-                                            <?php } ?>
-                                          </select>
-                                        </td>
-                                        <td class="hatdog">
-                                          <input type="submit" class="btn btn-primary" value="SET" style="text-align: center; color:#ffffff;">
-                                        </td>
-                                      </tr>
+                                      <form action="" method="post">
+                                        <tr>
+                                          <td class="hatdog"><?php echo $rowCount; ?></td>
+                                          <td class="hatdog">
+                                            <input type="hidden" name="section" value="<?php echo $AdvisoryData['S_name']; ?>">
+                                            <?php echo "Grade " . $AdvisoryData['S_yearLevel'] . " - " . $AdvisoryData['S_name'] ?>
+                                          </td>
+                                          <td class="hatdog">
+                                            <select class="form-select" name="advisor" aria-label="Default select example">
+                                              <?php
+                                              $getAssignedFacultyData = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$AdvisoryData['S_adviser']}'");
+                                              $AssignedFacultyData = $getAssignedFacultyData->fetch_assoc();
+                                              if (empty($AdvisoryData['S_adviser'])) {
+                                                echo "<option selected>assign a teacher</option>";
+                                              } else {
+                                                echo "<option selected>" . $AssignedFacultyData['F_lname'] . ", " . $AssignedFacultyData['F_fname'] . " " . substr($AssignedFacultyData['F_mname'], 0, 1) . "</option>";
+                                              }
+                                              $getFacultyData = $mysqli->query("SELECT faculty.F_number, faculty.F_lname, faculty.F_fname, faculty.F_mname, faculty.F_suffix FROM faculty LEFT JOIN sections ON faculty.F_number = sections.S_adviser WHERE sections.S_adviser IS NULL");
+                                              while ($FacultyData = $getFacultyData->fetch_assoc()) { ?>
+                                                <option value="<?php echo $FacultyData['F_number'] ?>"><?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1); ?></option>
+                                              <?php } ?>
+                                            </select>
+                                          </td>
+                                          <td class="hatdog">
+                                            <input type="submit" class="btn btn-primary" name="assignAdvisor" value="SET" style="text-align: center; color:#ffffff;">
+                                          </td>
+                                        </tr>
+                                      </form>
                                     <?php $rowCount++;
                                     }
                                     ?>
