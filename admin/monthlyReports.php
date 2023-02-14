@@ -1,7 +1,7 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['UD_role'] != "admin") {
+if (!isset($_SESSION['AD_number'])) {
   header('Location: ../auth/login.php');
 }
 ?>
@@ -183,7 +183,7 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
                 <div class="tab-content tab-content-basic">
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
 
-                  <div class="row">
+                    <div class="row">
                       <form class="form-sample">
                         <div class="col-12 grid-margin">
                           <div class="row">

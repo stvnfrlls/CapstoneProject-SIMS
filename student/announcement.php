@@ -1,3 +1,12 @@
+<?php
+require_once("../assets/php/server.php");
+
+if (!isset($_SESSION['SR_number'])) {
+    header('Location: ../auth/login.php');
+} else {
+    # code...
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 

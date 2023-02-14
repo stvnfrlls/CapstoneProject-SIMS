@@ -1,7 +1,9 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (!empty($_SESSION['F_number'])) {
+if (!isset($_SESSION['F_number'])) {
+  header('Location: ../auth/login.php');
+} else {
   $getSectionInfo = "SELECT * FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'";
   $rungetSectionInfo = $mysqli->query($getSectionInfo);
 
@@ -15,8 +17,6 @@ if (!empty($_SESSION['F_number'])) {
   $ClassListRow = 1;
   $getSectionClassList = "SELECT * FROM studentrecord WHERE SR_section = '{$SectionData['S_name']}'";
   $rungetSectionClassList = $mysqli->query($getSectionClassList);
-} else {
-  header('Location: ../auth/login.php');
 }
 ?>
 

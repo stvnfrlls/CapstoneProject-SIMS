@@ -1,7 +1,7 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (empty($_SESSION['AD_number'])) {
+if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 } else {
     if (!isset($_SESSION['fromAddStudent'])) {

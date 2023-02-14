@@ -1,7 +1,7 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['UD_role'] != "admin") {
+if (!isset($_SESSION['AD_number'])) {
   header('Location: ../auth/login.php');
 }
 ?>
@@ -226,25 +226,25 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
                     </div>
 
                     <div class="btn-group">
-                        <div class="dropdown">
-                          <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
-                            Month<i class="fa fa-caret-down"></i>
-                          </button>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                            <a class="dropdown-item" href="">January</a>
-                            <a class="dropdown-item" href="">February</a>
-                            <a class="dropdown-item" href="">March</a>
-                            <a class="dropdown-item" href="">April</a>
-                            <a class="dropdown-item" href="">June</a>
-                            <a class="dropdown-item" href="">July</a>
-                            <a class="dropdown-item" href="">August</a>
-                            <a class="dropdown-item" href="">September</a>
-                            <a class="dropdown-item" href="">October</a>
-                            <a class="dropdown-item" href="">November</a>
-                            <a class="dropdown-item" href="">December</a>
-                          </div>
+                      <div class="dropdown">
+                        <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                          Month<i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                          <a class="dropdown-item" href="">January</a>
+                          <a class="dropdown-item" href="">February</a>
+                          <a class="dropdown-item" href="">March</a>
+                          <a class="dropdown-item" href="">April</a>
+                          <a class="dropdown-item" href="">June</a>
+                          <a class="dropdown-item" href="">July</a>
+                          <a class="dropdown-item" href="">August</a>
+                          <a class="dropdown-item" href="">September</a>
+                          <a class="dropdown-item" href="">October</a>
+                          <a class="dropdown-item" href="">November</a>
+                          <a class="dropdown-item" href="">December</a>
                         </div>
                       </div>
+                    </div>
                     <div class="row">
                       <div class="col-lg-12 d-flex flex-column">
                         <div class="row flex-grow">

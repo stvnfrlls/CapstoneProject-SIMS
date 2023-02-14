@@ -1,7 +1,7 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (empty($_SESSION['AD_number'])) {
+if (!isset($_SESSION['AD_number'])) {
   header('Location: ../auth/login.php');
 }
 ?>
@@ -191,7 +191,7 @@ if (empty($_SESSION['AD_number'])) {
                             echo "Grade Level";
                           }
                           ?>
-                        <i class="fa fa-caret-down"></i>
+                          <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                           <?php
@@ -249,7 +249,7 @@ if (empty($_SESSION['AD_number'])) {
                                           <td class="tablestyle"><?php echo $rowCount ?></td>
                                           <td class="tablestyle"><?php echo $data['SR_number'] ?></td>
                                           <td class="tablestyle"><?php echo "Grade " . $data['SR_grade'] . " - " . $data['SR_section'] ?></td>
-                                          <td class="tablestyle"><a href="viewstudent.php?SR_Number=<?php echo $data['SR_number'] ?>"><?php echo $data['SR_lname'] . ", " . $data['SR_fname'] ?></a></td>
+                                          <td class="tablestyle"><a href="viewStudent.php?SR_Number=<?php echo $data['SR_number'] ?>"><?php echo $data['SR_lname'] . ", " . $data['SR_fname'] ?></a></td>
                                         </tr>
                                       <?php $rowCount++;
                                       }

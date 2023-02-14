@@ -1,15 +1,19 @@
 <?php
 require_once("../assets/php/server.php");
 
-$attendance_array = array();
-$getStudentRecord = $mysqli->query('SELECT * FROM studentrecord');
+if (!isset($_SESSION['F_number'])) {
+    header('Location: ../auth/login.php');
+} else {
+    $attendance_array = array();
+    $getStudentRecord = $mysqli->query('SELECT * FROM studentrecord');
 
-$get_present_student = $mysqli->query("SELECT * FROM attendance");
+    $get_present_student = $mysqli->query("SELECT * FROM attendance");
 
-while ($present_student = $get_present_student->fetch_assoc()) {
-    $attendance_array[] = $present_student;
+    while ($present_student = $get_present_student->fetch_assoc()) {
+        $attendance_array[] = $present_student;
+    }
+    $attendance_rowCount = 0;
 }
-$attendance_rowCount = 0;
 ?>
 
 <!DOCTYPE html>

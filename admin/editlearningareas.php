@@ -1,7 +1,7 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (empty($_SESSION['AD_number'])) {
+if (!isset($_SESSION['AD_number'])) {
   header('Location: ../auth/login.php');
 } else {
   $gradeList = "SELECT DISTINCT S_yearLevel FROM sections";
@@ -319,7 +319,7 @@ if (empty($_SESSION['AD_number'])) {
                                             <td>
                                               <?php
                                               $getAllFacultyName = "SELECT faculty.F_number, faculty.F_lname, faculty.F_fname, faculty.F_mname, faculty.F_suffix
-                                                                  FROM faculty LEFT JOIN workschedule ON faculty.F_number = workschedule.F_number WHERE workschedule.F_number IS NULL";
+                                                                  FROM faculty LEFT JOIN workschedule ON faculty.F_number = workschedule.F_number WHERE workschedule.F_number IS NULL AND workschedule.SR_section IS NULL AND workschedule.SR_grade IS NULL";
                                               $runAllFacultyName = $mysqli->query($getAllFacultyName);
                                               while ($dataAllFacultyName = $runAllFacultyName->fetch_assoc()) {
                                                 $AllFacultyName[] = $dataAllFacultyName;

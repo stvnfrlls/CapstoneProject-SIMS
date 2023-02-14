@@ -1,19 +1,9 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (empty($_SESSION['AD_number'])) {
+if (!isset($_SESSION['AD_number'])) {
   header('Location: ../auth/login.php');
 } else {
-  $subjects     = array();
-  array_unshift($subjects, null);
-  if ($_GET['Grade'] == "KINDER") {
-    $getListSubject = $mysqli->query("SELECT subjectName FROM subjectperyear WHERE minYearLevel = '0' AND maxYearLevel >= '0'");
-  } else if ($_GET['Grade']) {
-    $getListSubject = $mysqli->query("SELECT subjectName FROM subjectperyear WHERE minYearLevel <= '{$_GET['Grade']}' AND maxYearLevel >= '{$_GET['Grade']}'");
-  }
-  while ($dataSubject = $getListSubject->fetch_assoc()) {
-    $subjects[] = $dataSubject;
-  }
 }
 ?>
 
@@ -197,6 +187,16 @@ if (empty($_SESSION['AD_number'])) {
                       <div class="dropdown">
                         <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
                           <?php if (isset($_GET['Section'])) {
+                            $subjects     = array();
+                            array_unshift($subjects, null);
+                            if ($_GET['Grade'] == "KINDER") {
+                              $getListSubject = $mysqli->query("SELECT subjectName FROM subjectperyear WHERE minYearLevel = '0' AND maxYearLevel >= '0'");
+                            } else if ($_GET['Grade']) {
+                              $getListSubject = $mysqli->query("SELECT subjectName FROM subjectperyear WHERE minYearLevel <= '{$_GET['Grade']}' AND maxYearLevel >= '{$_GET['Grade']}'");
+                            }
+                            while ($dataSubject = $getListSubject->fetch_assoc()) {
+                              $subjects[] = $dataSubject;
+                            }
                             echo "GR." . $_GET['Grade'] . " - " . $_GET['Section'];
                           } else {
                             echo "Grade and Section";

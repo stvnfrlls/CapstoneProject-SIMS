@@ -1,19 +1,21 @@
 <?php
 require_once("../assets/php/server.php");
 
-$ST_number = $_SESSION['SR_number'];
+if (!isset($_SESSION['SR_number'])) {
+    header('Location: ../auth/login.php');
+} else {
+    $studentInformation = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$_SESSION['SR_number']}'");
+    $studentData = $studentInformation->fetch_assoc();
 
-$studentInformation = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$ST_number}'");
-$studentData = $studentInformation->fetch_assoc();
+    $GradeSection = $mysqli->query("SELECT * FROM sections WHERE S_yearLevel = '{$studentData['SR_grade']}' AND S_name = '{$studentData['SR_section']}'");
+    $GradeSectionData = $GradeSection->fetch_assoc();
 
-$GradeSection = $mysqli->query("SELECT * FROM sections WHERE S_yearLevel = '{$studentData['SR_grade']}' AND S_name = '{$studentData['SR_section']}'");
-$GradeSectionData = $GradeSection->fetch_assoc();
+    $Faculty = $mysqli->query("SELECT F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$GradeSectionData['S_adviser']}'");
+    $FacultyData = $Faculty->fetch_assoc();
 
-$Faculty = $mysqli->query("SELECT F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$GradeSectionData['S_adviser']}'");
-$FacultyData = $Faculty->fetch_assoc();
-
-$getStudentGrades = "SELECT * FROM grades WHERE SR_number = '$ST_number'";
-$resultgetStudentGrades = $mysqli->query($getStudentGrades);
+    $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '{$_SESSION['SR_number']}'";
+    $resultgetStudentGrades = $mysqli->query($getStudentGrades);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

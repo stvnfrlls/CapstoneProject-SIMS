@@ -1,36 +1,38 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (empty($_SESSION['F_number'])) {
-  header('Location: advisoryPage.php');
-} elseif ($_GET['viewStudent']) {
-  $getStudentRecord = "SELECT * FROM studentrecord WHERE SR_number = '{$_GET['viewStudent']}'";
-  $rungetStudentRecord = $mysqli->query($getStudentRecord);
-  $StudentData = $rungetStudentRecord->fetch_assoc();
-
-  $getSectionInfo = "SELECT * FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'";
-  $rungetSectionInfo = $mysqli->query($getSectionInfo);
-  $SectionData = $rungetSectionInfo->fetch_assoc();
-  
-  $getSectionClassList = "SELECT SR_number FROM studentrecord WHERE SR_section = '{$SectionData['S_name']}'";
-  $rungetSectionClassList = $mysqli->query($getSectionClassList);
-
-  $getFacultyName = "SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'";
-  $rungetFacultyName = $mysqli->query($getFacultyName);
-  $FacultyData = $rungetFacultyName->fetch_assoc();
-
-  $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '{$_GET['viewStudent']}'";
-  $rungetStudentGrades = $mysqli->query($getStudentGrades);
-
-  $getBehaviorData = $mysqli->query("SELECT SR_number, CV_Area, CV_valueQ1, CV_valueQ2, CV_valueQ3, CV_valueQ4
-                                                                  FROM behavior WHERE SR_number = '{$_GET['viewStudent']}'");
-  $getBehaviorAreas = $mysqli->query("SELECT * FROM behavior_category");
-  $BehaviorAreasArray = array();
-  while ($DataBehaviorCategory = $getBehaviorAreas->fetch_assoc()) {
-    $BehaviorAreasArray[] = $DataBehaviorCategory;
-  }
+if (!isset($_SESSION['F_number'])) {
+  header('Location: ../auth/login.php');
 } else {
-  header('Location: advisoryPage.php');
+  if ($_GET['viewStudent']) {
+    $getStudentRecord = "SELECT * FROM studentrecord WHERE SR_number = '{$_GET['viewStudent']}'";
+    $rungetStudentRecord = $mysqli->query($getStudentRecord);
+    $StudentData = $rungetStudentRecord->fetch_assoc();
+
+    $getSectionInfo = "SELECT * FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'";
+    $rungetSectionInfo = $mysqli->query($getSectionInfo);
+    $SectionData = $rungetSectionInfo->fetch_assoc();
+
+    $getSectionClassList = "SELECT SR_number FROM studentrecord WHERE SR_section = '{$SectionData['S_name']}'";
+    $rungetSectionClassList = $mysqli->query($getSectionClassList);
+
+    $getFacultyName = "SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'";
+    $rungetFacultyName = $mysqli->query($getFacultyName);
+    $FacultyData = $rungetFacultyName->fetch_assoc();
+
+    $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '{$_GET['viewStudent']}'";
+    $rungetStudentGrades = $mysqli->query($getStudentGrades);
+
+    $getBehaviorData = $mysqli->query("SELECT SR_number, CV_Area, CV_valueQ1, CV_valueQ2, CV_valueQ3, CV_valueQ4
+                                                                    FROM behavior WHERE SR_number = '{$_GET['viewStudent']}'");
+    $getBehaviorAreas = $mysqli->query("SELECT * FROM behavior_category");
+    $BehaviorAreasArray = array();
+    while ($DataBehaviorCategory = $getBehaviorAreas->fetch_assoc()) {
+      $BehaviorAreasArray[] = $DataBehaviorCategory;
+    }
+  } else {
+    header('Location: advisoryPage.php');
+  }
 }
 ?>
 

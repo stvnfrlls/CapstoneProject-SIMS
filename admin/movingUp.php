@@ -1,7 +1,7 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (empty($_SESSION['AD_number'])) {
+if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 }
 ?>
@@ -191,7 +191,7 @@ if (empty($_SESSION['AD_number'])) {
                                                         echo "Grade Level";
                                                     }
                                                     ?>
-                                                     <i class='fa fa-caret-down'></i>
+                                                    <i class='fa fa-caret-down'></i>
                                                 </button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                                     <?php
@@ -199,7 +199,7 @@ if (empty($_SESSION['AD_number'])) {
                                                     $runsectionList = $mysqli->query($sectionList);
 
                                                     while ($sectionData = $runsectionList->fetch_assoc()) { ?>
-                                                        <a class="dropdown-item" href="student.php?GradeLevel=<?php echo $sectionData['S_yearLevel'] ?>">
+                                                        <a class="dropdown-item" href="movingUp.php?GradeLevel=<?php echo $sectionData['S_yearLevel'] ?>">
                                                             <?php echo "Grade - " . $sectionData['S_yearLevel']; ?>
                                                         </a>
                                                     <?php } ?>
@@ -235,9 +235,9 @@ if (empty($_SESSION['AD_number'])) {
                                                                     <tbody>
                                                                         <?php
                                                                         if (!empty($_GET['GradeLevel'])) {
-                                                                            $ListofStudents = "SELECT * FROM studentrecord WHERE SR_grade = '{$_GET['GradeLevel']}'";
+                                                                            $ListofStudents = "SELECT * FROM studentrecord WHERE SR_grade = '{$_GET['GradeLevel']}' ORDER BY SR_number";
                                                                         } else {
-                                                                            $ListofStudents = "SELECT * FROM studentrecord ORDER BY SR_grade";
+                                                                            $ListofStudents = "SELECT * FROM studentrecord ORDER BY SR_number";
                                                                         }
 
                                                                         $resultListofStudents = $mysqli->query($ListofStudents);
@@ -250,18 +250,44 @@ if (empty($_SESSION['AD_number'])) {
                                                                                     <td class="tablestyle"><?php echo $rowCount ?></td>
                                                                                     <td class="tablestyle"><?php echo $data['SR_number'] . " - " . $data['SR_lname'] . ", " . $data['SR_fname'] ?></td>
                                                                                     <td class="tablestyle"><?php echo "Grade " . $data['SR_grade'] . " - " . $data['SR_section'] ?></td>
-                                                                                    <td class="tablestyle">Passed or Failed</td>
                                                                                     <td class="tablestyle">
-                                                                                        <select class="form-select" aria-label="Default select example">
-                                                                                            <option value=""></option>
-                                                                                            <?php
-                                                                                            $sections = $mysqli->query("SELECT * FROM sections");
+                                                                                        <?php
+                                                                                        $GradeStatus = $mysqli->query("SELECT ROUND(AVG(G_finalgrade)) AS finalgrade FROM grades WHERE SR_number = '{$data['SR_number']}'");
+                                                                                        $getAvgGrade = $GradeStatus->fetch_assoc();
 
-                                                                                            while ($listSections = $sections->fetch_assoc()) {
-                                                                                                echo '<option value="">Grade ' . $listSections['S_yearLevel'] . ' - ' . $listSections['S_name'] . '</option>';
-                                                                                            }
-                                                                                            ?>
-                                                                                        </select>
+                                                                                        if ($getAvgGrade['finalgrade'] >= 75) {
+                                                                                            echo "PASSED";
+                                                                                        } else {
+                                                                                            echo "FAILED";
+                                                                                        }
+                                                                                        ?>
+                                                                                    </td>
+                                                                                    <td class="tablestyle">
+                                                                                        <?php
+                                                                                        if ($getAvgGrade['finalgrade'] >= 75) { ?>
+                                                                                            <select class="form-select" aria-label="Default select example">
+                                                                                                <option value=""></option>
+                                                                                                <?php
+                                                                                                if ($data['SR_grade'] == "KINDER") {
+                                                                                                    $data['SR_grade'] = 0;
+                                                                                                }
+                                                                                                $next = $data['SR_grade'] + 1;
+                                                                                                $sections = $mysqli->query("SELECT S_name, S_yearLevel FROM sections WHERE S_yearLevel = '{$next}'");
+
+                                                                                                if ($data['SR_grade'] == 6) {
+                                                                                                    echo '<option value="">Graduation</option>';
+                                                                                                } else {
+                                                                                                    while ($listSections = $sections->fetch_assoc()) {
+                                                                                                        echo '<option value="">Grade ' . $listSections['S_yearLevel'] . ' - ' . $listSections['S_name'] . '</option>';
+                                                                                                    }
+                                                                                                }
+                                                                                                ?>
+                                                                                            </select>
+                                                                                        <?php
+                                                                                        } else { ?>
+                                                                                            <select class="form-select" aria-label="Default select example" disabled></select>
+                                                                                        <?php }
+                                                                                        ?>
                                                                                     </td>
                                                                                     <td class="tablestyle">
                                                                                         <select class="form-select" aria-label="Default select example">

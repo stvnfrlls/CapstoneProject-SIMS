@@ -1,7 +1,7 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (empty($_SESSION['AD_number'])) {
+if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 } else {
     $admin = $mysqli->query("SELECT * FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
@@ -197,7 +197,7 @@ if (empty($_SESSION['AD_number'])) {
                                                                 <div class="row g-3">
                                                                     <div class="col-md-6">
                                                                         <div class="form-floating">
-                                                                            <input type="text" class="form-control" id="name" value="<?php echo "ADMIN: ".$adminData['AD_name'] ?>" placeholder="Your Name" readonly>
+                                                                            <input type="text" class="form-control" id="name" value="<?php echo "ADMIN: " . $adminData['AD_name'] ?>" placeholder="Your Name" readonly>
                                                                             <label for="name">Your Name</label>
                                                                         </div>
                                                                     </div>
@@ -211,7 +211,7 @@ if (empty($_SESSION['AD_number'])) {
                                                                     <div class="col-12">
                                                                         <div class="form-floating">
                                                                             <input type="text" class="form-control" id="subject" placeholder="Subject">
-                                                                                <label for="subject">Title</label>
+                                                                            <label for="subject">Title</label>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-12">

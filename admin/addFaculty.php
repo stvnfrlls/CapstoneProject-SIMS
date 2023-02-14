@@ -3,7 +3,7 @@ require_once("../assets/php/server.php");
 
 $_SESSION['fromAddFaculty'] = "TRUE";
 
-if (empty($_SESSION['AD_number'])) {
+if (!isset($_SESSION['AD_number'])) {
   header('Location: ../auth/login.php');
 } else {
   if (isset($_POST['confirm_faculty'])) {
@@ -274,7 +274,7 @@ if (empty($_SESSION['AD_number'])) {
                                   <label class="col-sm-12 col-form-label">Gender <span style="color: red;">*</span></label>
                                   <div class="col-sm-12">
                                     <select class="form-select" name="F_gender" required>
-                                      <option value=""></option>
+                                      <option selected></option>
                                       <option value="Male">Male</option>
                                       <option value="Female">Female</option>
                                       <option value="NA">Prefer not to say</option>
@@ -286,13 +286,13 @@ if (empty($_SESSION['AD_number'])) {
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Religion <span style="color: red;">*</span></label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="F_religion">
+                                    <input type="text" class="form-control" name="F_religion" required>
                                   </div>
                                 </div>
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Citizenship <span style="color: red;">*</span></label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="F_citizenship">
+                                    <input type="text" class="form-control" name="F_citizenship" required>
                                   </div>
                                 </div>
                               </div>
