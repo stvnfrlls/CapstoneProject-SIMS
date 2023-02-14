@@ -1,4 +1,35 @@
+<?php
+require_once("../assets/php/server.php");
+include('../assets/phpqrcode/qrlib.php');
 
+if (empty($_SESSION['AD_number'])) {
+    header('Location: ../auth/login.php');
+} else {
+    $sr_number = $_GET['SR_Number'];
+
+    if (!isset($_GET['SR_Number'])) {
+        header('Location: student.php');
+    } else {
+        $verifySR_number = "SELECT * FROM studentrecord 
+                        INNER JOIN guardian
+                        ON studentrecord.SR_number = guardian.G_guardianOfStudent
+                        WHERE studentrecord.SR_number = '{$sr_number}'";
+        $runverifySR_number = $mysqli->query($verifySR_number);
+        $getRecord =  $runverifySR_number->fetch_assoc();
+
+        if ($getRecord['SR_number'] == $sr_number) {
+            $tempDir = '../assets/temp/';
+            if (!file_exists($tempDir)) {
+                mkdir($tempDir);
+            }
+            $qrcode_data = $getRecord['SR_number'];
+            QRcode::png($qrcode_data,  $tempDir . '' . $qrcode_data . '.png', QR_ECLEVEL_L);
+        } else {
+            header('Location: student.php');
+        }
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
