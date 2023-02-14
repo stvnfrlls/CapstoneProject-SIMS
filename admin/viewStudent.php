@@ -2,12 +2,12 @@
 require_once("../assets/php/server.php");
 include('../assets/phpqrcode/qrlib.php');
 
-if (empty($_SESSION['AD_number'])) {
+if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 } else {
     $sr_number = $_GET['SR_Number'];
 
-    if (!isset($_GET['SR_Number'])) {
+    if (empty($sr_number)) {
         header('Location: student.php');
     } else {
         $verifySR_number = "SELECT * FROM studentrecord 
@@ -24,8 +24,6 @@ if (empty($_SESSION['AD_number'])) {
             }
             $qrcode_data = $getRecord['SR_number'];
             QRcode::png($qrcode_data,  $tempDir . '' . $qrcode_data . '.png', QR_ECLEVEL_L);
-        } else {
-            header('Location: student.php');
         }
     }
 }

@@ -2,11 +2,10 @@
 require_once("../assets/php/server.php");
 
 $current_url = $_SERVER["REQUEST_URI"];
-$_SESSION['F_number'] = "2022-12-00001-F";
 
-if (empty($_SESSION['F_number'])) {
+if (!isset($_SESSION['F_number'])) {
   header('Location: ../auth/login.php');
-} else if (isset($_SESSION['F_number'])) {
+} else {
   $getWorkSchedule = "SELECT SR_grade, SR_section, S_subject FROM workschedule WHERE F_number = '{$_SESSION['F_number']}'";
   $rungetWorkSchedule = $mysqli->query($getWorkSchedule);
   $array_GradeSection = array();
@@ -15,10 +14,7 @@ if (empty($_SESSION['F_number'])) {
   while ($dataWorkSchedule = $rungetWorkSchedule->fetch_assoc()) {
     $array_GradeSection[] = $dataWorkSchedule;
   }
-} else {
-  header('Location: ../auth/login.php');
 }
-
 if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject'])) {
   $getStudentName = "SELECT studentrecord.SR_number, studentrecord.SR_fname, studentrecord.SR_lname, studentrecord.SR_mname,
                     studentrecord.SR_grade, studentrecord.SR_section
@@ -72,21 +68,8 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
       }
     </script>
 <?php }
-  $getCurrentQuarter = $mysqli->query("SELECT quarterTag FROM quartertable WHERE quarterStatus = 'enabled'");
-  $currentQuarter = $getCurrentQuarter->fetch_assoc();
-  $g1 = 0.0;
-  $g2 = 0.0;
-  $g3 = 0.0;
-  $g4 = 0.0;
-  if ($currentQuarter == 0) {
-    $FinalGrade = "";
-  } else {
-    $FinalGrade = (int)$g1 + (int)$g2 + (int)$g3 + (int)$g4 / (int)$currentQuarter;
-  }
 }
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -333,14 +316,26 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
                                             <?php } ?>
 
                                             <td class="hatdog">
-                                              <?php echo $FinalGrade; ?>
+                                              <?php
+                                              $sum = $g1 + $g2 + $g3 + $g4;
+                                              $average = $sum / 4;
+                                              echo round($average);
+                                              ?>
                                             </td>
                                             <td class="hatdog">
                                               <?php
-                                              if ($FinalGrade > 75) {
-                                                echo "Passed";
+                                              if ($average >= 90) {
+                                                echo "Outstanding";
+                                              } else if ($average >= 85 || $average <= 89) {
+                                                echo "Very Satisfactory";
+                                              } else if ($average >= 80 || $average <= 84) {
+                                                echo "Satisfactory";
+                                              } else if ($average >= 75 || $average <= 79) {
+                                                echo "Fairly Satisfactory";
+                                              } else if ($average < 75) {
+                                                echo "Did Not Meet Expectations";
                                               } else if ($currentQuarter == 0) {
-                                                echo "Academic year not yet available";
+                                                echo "Academic year not yeilt available";
                                               } else if ($g2 == 0 || $g3 == 0 || $g4 == 0) {
                                                 echo "Grades are incomplete";
                                               } else {

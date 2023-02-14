@@ -1,8 +1,8 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (empty($_SESSION['F_number'])) {
-  header('Location: advisoryPage.php');
+if (!isset($_SESSION['F_number'])) {
+  header('Location: ../auth/login.php');
 } else {
   $facultyInformation = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
   $facultyData = $facultyInformation->fetch_assoc();

@@ -1,7 +1,7 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (empty($_SESSION['AD_number'])) {
+if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 } else {
     $quarterArray = array();
@@ -251,12 +251,12 @@ if (empty($_SESSION['AD_number'])) {
                                         <div class="row">
                                             <div class="col-12 grid-margin">
                                                 <form id="form-id" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
-                                                <style>
-                                                    #custom{
-                                                        border-radius:50px;
-                                                        
-                                                    }
-                                                </style>
+                                                    <style>
+                                                        #custom {
+                                                            border-radius: 50px;
+
+                                                        }
+                                                    </style>
                                                     <?php
                                                     echo '<button type="submit" name="acadyear" class="btn btn-primary m-2">Acad Year: ' . $_SESSION['academicYear'] . '</button>';
 
@@ -432,12 +432,11 @@ if (empty($_SESSION['AD_number'])) {
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                <div class="col-12 grid-margin" style="padding-bottom:20px;">
+                                                    <div class="col-12 grid-margin" style="padding-bottom:20px;">
                                                         <div class="card">
                                                             <div class="card-body">
                                                                 <div class="row">
-                                                                    <h3 style="font-size: 20px; text-align:left;"></h3>
-                                                                    
+                                                                  <h3 style="font-size: 20px; text-align:left;"></h3>
                                                                 </div>
                                                             </div>
                                                         </div>

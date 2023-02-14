@@ -1,8 +1,8 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (isset($_POST['confirm_faculty'])) {
-    header('Location: confirmfaculty.php');
+if (!isset($_SESSION['F_number'])) {
+    header('Location: ../auth/login.php');
 }
 ?>
 
@@ -47,21 +47,21 @@ if (isset($_POST['confirm_faculty'])) {
 <body>
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-    <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
-    <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-      <span class="mdi mdi-menu"></span>
-    </button>
-  </nav>
+        <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+            <span class="mdi mdi-menu"></span>
+        </button>
+    </nav>
     <!-- Navbar End -->
 
     <div class="container-scroller">
         <div class="container-fluid page-body-wrapper">
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
-                <ul class="nav" >
+                <ul class="nav">
                     <li class="nav-item" style="text-align:center; font-size: 20px; color: #b9b9b9; margin-top:20px;">FACULTY</li>
                     <!-- line 1 -->
                     <li class="nav-item nav-category">Profile</li>
-                    <li class="nav-item" >
+                    <li class="nav-item">
                         <a class="nav-link" href="">
                             <i class=""></i>
                             <span class="menu-title" style="color: #b9b9b9;">Dashboard</span>
@@ -80,7 +80,7 @@ if (isset($_POST['confirm_faculty'])) {
                         </a>
                     </li>
                     <!-- line 2 -->
-                    <li class="nav-item nav-category" >Menu</li>
+                    <li class="nav-item nav-category">Menu</li>
                     <li class="nav-item">
                         <a class="nav-link" href="../faculty/scanQR.php">
                             <i class=""></i>
@@ -129,9 +129,9 @@ if (isset($_POST['confirm_faculty'])) {
                                     <div class="container">
                                         <div class="row col-lg-10">
                                             <div class="col-lg-10 posts-list" style="margin-left: auto; padding-top: 50px;">
-                                                <div class="single-post row" >
+                                                <div class="single-post row">
                                                     <div class="col-lg-3  col-md-3 meta-details">
-                                                        <div class="user-details row" >
+                                                        <div class="user-details row">
                                                             <p class="user-name col-lg-12 col-md-12 col-6"><a href="#">Mark wiens</a> <span class="far fa-user" style="color: #c02628;"></span></p>
                                                             <p class="date col-lg-12 col-md-12 col-6"><a>12 Dec, 2017</a> <span class="fa fa-calendar" style="color: #c02628;"></span></p>
                                                         </div>
@@ -177,9 +177,9 @@ if (isset($_POST['confirm_faculty'])) {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="single-post row" >
+                                                <div class="single-post row">
                                                     <div class="col-lg-3  col-md-3 meta-details">
-                                                        <div class="user-details row" >
+                                                        <div class="user-details row">
                                                             <p class="user-name col-lg-12 col-md-12 col-6"><a href="#">Mark wiens</a> <span class="far fa-user" style="color: #c02628;"></span></p>
                                                             <p class="date col-lg-12 col-md-12 col-6"><a>12 Dec, 2017</a> <span class="fa fa-calendar" style="color: #c02628;"></span></p>
                                                         </div>
@@ -201,9 +201,9 @@ if (isset($_POST['confirm_faculty'])) {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="single-post row" >
+                                                <div class="single-post row">
                                                     <div class="col-lg-3  col-md-3 meta-details">
-                                                        <div class="user-details row" >
+                                                        <div class="user-details row">
                                                             <p class="user-name col-lg-12 col-md-12 col-6"><a href="#">Mark wiens</a> <span class="far fa-user" style="color: #c02628;"></span></p>
                                                             <p class="date col-lg-12 col-md-12 col-6"><a>12 Dec, 2017</a> <span class="fa fa-calendar" style="color: #c02628;"></span></p>
                                                         </div>

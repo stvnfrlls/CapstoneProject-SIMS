@@ -1,7 +1,7 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (empty($_SESSION['AD_number'])) {
+if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 } else {
 }
@@ -178,7 +178,7 @@ if (empty($_SESSION['AD_number'])) {
                                 </div>
 
                                 <form style="text-align: right; margin-top: 50px; margin-right: 20px;">
-                                    <button type="submit" style="color: #ffffff;" class="btn btn-primary me-2">Create <i class="fa fa-plus" style="font-size: 10px;"></i></button>
+                                    <a href="createAnnouncement.php" style="color: #ffffff;" class="btn btn-primary me-2">Create <i class="fa fa-plus" style="font-size: 10px;"></i></a>
                                 </form>
 
                                 <div class="tab-content tab-content-basic">
@@ -197,7 +197,7 @@ if (empty($_SESSION['AD_number'])) {
                                                                             <h4><?php echo $announcementDATA['header'] ?></h4>
                                                                         </a>
                                                                         <div class="btn-wrapper col-sm-3 col-md-9 col-lg-3" style="margin-left: auto;  padding-right: 0px;">
-                                                                            <a href="#" style="margin-right: 2px;"><i class="fa fa-eye"></i></a>
+                                                                            <a href="viewAnnouncement.php?postID=<?php echo $announcementDATA['ANC_ID'] ?>" style="margin-right: 2px;"><i class="fa fa-eye"></i></a>
                                                                             <a href="#" style="margin-right: 2px;"><i class="fa fa-edit"></i></a>
                                                                             <a href="#" style="margin-right: 2px;"><i class="fa fa-trash"></i></a>
                                                                         </div>

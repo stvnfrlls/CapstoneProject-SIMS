@@ -3,22 +3,35 @@ require_once("../assets/php/server.php");
 
 $_SESSION['fromAddStudent'] = "TRUE";
 
-if (empty($_SESSION['AD_number'])) {
+if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 } else {
     if (isset($_POST['confirm_student'])) {
         header('Location: confirmstudent.php');
     } else {
-        $cityprovreg = $mysqli->query('SELECT * FROM cityprovregion');
         $array_cityprovreg = array();
+        $array_cityprovreg2 = array();
+        $gradeArray = array();
+
+        $cityprovreg = $mysqli->query('SELECT * FROM cityprovregion');
+        $sections = $mysqli->query("SELECT * FROM sections");
+        $gradeLevels = $mysqli->query("SELECT * FROM sections");
 
         while ($cityprovreg_data = $cityprovreg->fetch_assoc()) {
             $array_cityprovreg[] = $cityprovreg_data;
+            $array_cityprovreg2[] = $cityprovreg_data;
+        }
+        while ($gradeLevelData = $gradeLevels->fetch_assoc()) {
+            $gradeArray[] = $gradeLevelData;
         }
 
-        $json = json_encode($array_cityprovreg);
+        $student = json_encode($array_cityprovreg);
+        $guardian = json_encode($array_cityprovreg);
+        $gradeLevel = json_encode($gradeArray);
 
-        echo "<script>var cityprov = " . $json . ";</script>";
+        echo "<script>var cityprov = " . $student . ";</script>";
+        echo "<script>var g_cityprov = " . $guardian . ";</script>";
+        echo "<script>var gradeLevel = " . $gradeLevel . "</script>";
     }
 }
 ?>
@@ -263,7 +276,7 @@ if (empty($_SESSION['AD_number'])) {
                                                                         <label label class="col-sm-12 col-form-label">Gender <span style="color: red;">*</span></label>
                                                                         <div class="col-sm-12">
                                                                             <select class="form-select" name="S_gender" required>
-                                                                                <option value=""></option>
+                                                                                <option selected></option>
                                                                                 <option value="Male">Male</option>
                                                                                 <option value="Female">Female</option>
                                                                                 <option value="NA">Prefer not to say</option>
@@ -276,13 +289,13 @@ if (empty($_SESSION['AD_number'])) {
                                                                     <div class="col-md-4">
                                                                         <label class="col-sm-12 col-form-label">Religion <span style="color: red;">*</span></label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="text" class="form-control" name="S_religion">
+                                                                            <input type="text" class="form-control" name="S_religion" required>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-4">
                                                                         <label class="col-sm-12 col-form-label">Citizenship <span style="color: red;">*</span></label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="text" class="form-control" name="S_citizenship">
+                                                                            <input type="text" class="form-control" name="S_citizenship" required>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -389,7 +402,7 @@ if (empty($_SESSION['AD_number'])) {
                                                             <div class="col-md-3">
                                                                 <label label class="col-sm-12 col-form-label">City <span style="color: red;">*</span></label>
                                                                 <div class="col-sm-12">
-                                                                    <select id="city" class="form-select" name="G_city" required>
+                                                                    <select id="G_city" class="form-select" name="G_city" required>
                                                                         <option selected></option>
                                                                     </select>
                                                                 </div>
@@ -400,7 +413,7 @@ if (empty($_SESSION['AD_number'])) {
                                                             <div class="col-md-4">
                                                                 <label label class="col-sm-12 col-form-label">State <span style="color: red;">*</span></label>
                                                                 <div class="col-sm-12">
-                                                                    <select id="province" class="form-select" name="G_state" required>
+                                                                    <select id="G_state" class="form-select" name="G_state" required>
                                                                         <option selected></option>
                                                                     </select>
                                                                 </div>
@@ -408,7 +421,7 @@ if (empty($_SESSION['AD_number'])) {
                                                             <div class="col-md-4">
                                                                 <label label class="col-sm-12 col-form-label">Postal Code <span style="color: red;">*</span></label>
                                                                 <div class="col-sm-12">
-                                                                    <input type="number" class="form-control" name="G_postal" required>
+                                                                    <input type="number" id="G_postal" class="form-control" name="G_postal" required readonly>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4">
@@ -429,7 +442,7 @@ if (empty($_SESSION['AD_number'])) {
                                                             <div class="col-md-4">
                                                                 <label label class="col-sm-12 col-form-label">Telephone Number <span style="color: red;">*</span></label>
                                                                 <div class="col-sm-12">
-                                                                    <input type="tel" class="form-control" name="G_telephone" required>
+                                                                    <input type="number" class="form-control" name="G_telephone" required>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4">
@@ -453,42 +466,23 @@ if (empty($_SESSION['AD_number'])) {
                                                             <div class="col-md-6">
                                                                 <label class="col-sm-12 col-form-label">Grade Level <span style="color: red;">*</span></label>
                                                                 <div class="col-sm-12">
-                                                                    <select class="form-select" name="S_gradelevel" required>
-                                                                        <option value="0">Kinder</option>
-                                                                        <option value="1">Grade - 1</option>
-                                                                        <option value="2">Grade - 2</option>
-                                                                        <option value="3">Grade - 3</option>
-                                                                        <option value="4">Grade - 4</option>
-                                                                        <option value="5">Grade - 5</option>
-                                                                        <option value="6">Grade - 6</option>
+                                                                    <select class="form-select" id="gradelevel" name="S_gradelevel" required>
+                                                                        <option selected></option>
+                                                                        <option value="KINDER">KINDER</option>
+                                                                        <option value="1">1</option>
+                                                                        <option value="2">2</option>
+                                                                        <option value="3">3</option>
+                                                                        <option value="4">4</option>
+                                                                        <option value="5">5</option>
+                                                                        <option value="6">6</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <label label class="col-sm-12 col-form-label">Section <span style="color: red;">*</span></label>
                                                                 <div class="col-sm-12">
-                                                                    <select class="form-select" name="S_section" required>
-                                                                        <option value="1">1</option>
-                                                                        <option value="2">2</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="row" style="padding-bottom: 15px;">
-                                                            <div class="col-md-6">
-                                                                <label label class="col-sm-12 col-form-label">Schedule <span style="color: red;">*</span></label>
-                                                                <div class="col-sm-12">
-                                                                    <select class="form-select form-control" disabled>
-                                                                        <option value="NA">UNDER DEVELOPMENT</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <label label class="col-sm-12 col-form-label" style="color:white;"> .</label>
-                                                                <div class="col-sm-12">
-                                                                    <select class="form-select form-control" disabled>
-                                                                        <option value="AM">UNDER DEVELOPMENT</option>
+                                                                    <select class="form-select" id="SectionName" name="S_section" required>
+                                                                        <option selected></option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -593,6 +587,51 @@ if (empty($_SESSION['AD_number'])) {
             province.replaceChildren(option);
 
             postal.value = findCity.zip_code;
+        });
+    </script>
+    <script>
+        const g_city = document.getElementById('G_city');
+        const g_province = document.getElementById('G_state');
+        const g_postal = document.getElementById('G_postal');
+
+        for (let i = 0; i < g_cityprov.length; i++) {
+            const option1 = document.createElement('option');
+            option1.value = g_cityprov[i].city;
+            option1.text = g_cityprov[i].city;
+            g_city.add(option1);
+        }
+
+        g_city.addEventListener("change", function() {
+            const g_cityValue = this.value;
+            const g_findCity = g_cityprov.find(function(element) {
+                return element.city == g_cityValue;
+            });
+            const option1 = document.createElement("option");
+            option1.value = g_findCity.province;
+            option1.text = g_findCity.province;
+            g_province.replaceChildren(option1);
+
+            g_postal.value = g_findCity.zip_code;
+        });
+    </script>
+    <script>
+        console.log($gradeLevel);
+        const gradelevel = document.getElementById('gradelevel');
+        const SectionName = document.getElementById('SectionName');
+
+        gradelevel.addEventListener("change", function() {
+            SectionName.innerHTML = "";
+            const gradelevelValue = this.value;
+            const findGradeLevel = gradeLevel.proto(function(element) {
+                return element.S_yearLevel === gradelevelValue;
+            });
+
+            for (let i = 0; i < 2; i++) {
+                const optionSection = document.createElement("option");
+                optionSection.value = findGradeLevel.S_name;
+                optionSection.text = findGradeLevel.S_name;
+                SectionName.add(optionSection);
+            }
         });
     </script>
 

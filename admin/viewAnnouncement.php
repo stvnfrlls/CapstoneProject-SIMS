@@ -1,8 +1,10 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (isset($_POST['confirm_faculty'])) {
-    header('Location: confirmfaculty.php');
+if (!isset($_SESSION['AD_number'])) {
+    header('Location: ../auth/login.php');
+} else {
+    $anouncementData = $mysqli->query("SELECT * FROM ");
 }
 ?>
 

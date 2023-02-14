@@ -1,7 +1,7 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['UD_role'] != "admin") {
+if (!isset($_SESSION['AD_number'])) {
   header('Location: ../auth/login.php');
 } else {
   if (!empty($_GET['F_number'])) {
