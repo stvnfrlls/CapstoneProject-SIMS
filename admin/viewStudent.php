@@ -1,35 +1,3 @@
-<?php
-require_once("../assets/php/server.php");
-include('../assets/phpqrcode/qrlib.php');
-
-if (empty($_SESSION['AD_number'])) {
-    header('Location: ../auth/login.php');
-} else {
-    $sr_number = $_GET['SR_Number'];
-
-    if (!isset($_GET['SR_Number'])) {
-        header('Location: student.php');
-    } else {
-        $verifySR_number = "SELECT * FROM studentrecord 
-                        INNER JOIN guardian
-                        ON studentrecord.SR_number = guardian.G_guardianOfStudent
-                        WHERE studentrecord.SR_number = '{$sr_number}'";
-        $runverifySR_number = $mysqli->query($verifySR_number);
-        $getRecord =  $runverifySR_number->fetch_assoc();
-
-        if ($getRecord['SR_number'] == $sr_number) {
-            $tempDir = '../assets/temp/';
-            if (!file_exists($tempDir)) {
-                mkdir($tempDir);
-            }
-            $qrcode_data = $getRecord['SR_number'];
-            QRcode::png($qrcode_data,  $tempDir . '' . $qrcode_data . '.png', QR_ECLEVEL_L);
-        } else {
-            header('Location: student.php');
-        }
-    }
-}
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -200,10 +168,17 @@ if (empty($_SESSION['AD_number'])) {
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="home-tab">
-                                <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                                <div class="d-sm-flex align-items-center justify-content-between">
                                     <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
                                         <h2 class="fw-bold text-primary text-uppercase">Student Information</h2>
                                     </div>
+                                </div>
+                                <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
+                                    <nav class="nav">
+                                        <a class="nav-link active ms-0" href="../admin/viewStudent.php" target="__blank" style="color: #c02628;">Profile</a>
+                                        <a class="nav-link" href="../admin/viewGrades.php" target="__blank">Grades</a>
+                                    </nav>
+                                    <div class="border-bottom"></div>
                                 </div>
                                 <div class="tab-content tab-content-basic">
                                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
