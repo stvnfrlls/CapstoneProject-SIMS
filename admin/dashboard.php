@@ -384,7 +384,14 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 <div class="row">
                                                                     <h3 style="font-size: 20px; padding-bottom: 20px; text-align:left;">No. of Students</h3>
                                                                     <div class="d-flex flex-shrink-0">
-                                                                        <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628; padding-bottom:15px;">25</h1>
+                                                                        <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628; padding-bottom:15px;">
+                                                                            <?php
+                                                                            $countNumofStudent = $mysqli->query("SELECT COUNT(*) FROM studentrecord");
+                                                                            $numofStudent = $countNumofStudent->fetch_assoc();
+
+                                                                            echo $numofStudent['COUNT(*)'];
+                                                                            ?>
+                                                                        </h1>
                                                                     </div>
                                                                     <div class="percentage">
                                                                         <div class="progress">
@@ -402,7 +409,14 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 <div class="row">
                                                                     <h3 style="font-size: 20px; text-align:left; padding-bottom: 20px;">No. of Faculty Teachers</h3>
                                                                     <div class="d-flex flex-shrink-0">
-                                                                        <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628; padding-bottom:15px;">25</h1>
+                                                                        <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628; padding-bottom:15px;">
+                                                                            <?php
+                                                                            $countNumofFaculty = $mysqli->query("SELECT COUNT(*) FROM faculty");
+                                                                            $numofFaculty = $countNumofFaculty->fetch_assoc();
+
+                                                                            echo $numofFaculty['COUNT(*)'];
+                                                                            ?>
+                                                                        </h1>
                                                                     </div>
                                                                     <div class="percentage">
                                                                         <div class="progress">
@@ -436,7 +450,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                         <div class="card">
                                                             <div class="card-body">
                                                                 <div class="row">
-                                                                  <h3 style="font-size: 20px; text-align:left;"></h3>
+                                                                    <h3 style="font-size: 20px; text-align:left;"></h3>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -470,37 +484,22 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                         </tr>
                                                                                     </thead>
                                                                                     <tbody>
-                                                                                        <tr>
+                                                                                        <?php
+                                                                                        $rowCount = 1;
+                                                                                        $studentPopulationData = $mysqli->query("SELECT * FROM studentrecord ORDER BY RAND()");
 
-                                                                                            <td>1</td>
-                                                                                            <td>2019-00188</td>
-                                                                                            <td>Sabile, Camile Anne G.</td>
-                                                                                            <td>Grade 1 - Chrysanthemum</td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>2</td>
-                                                                                            <td>2019-00089</td>
-                                                                                            <td>Cantuba, Hazel Grace L.</td>
-                                                                                            <td>Grade 1 - Chrysanthemum</td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>3</td>
-                                                                                            <td>2019-00189</td>
-                                                                                            <td>Frilles, Steven</td>
-                                                                                            <td>Grade 1 - Chrysanthemum</td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>4</td>
-                                                                                            <td>2019-00890</td>
-                                                                                            <td>Dumas, Robert James</td>
-                                                                                            <td>Grade 1 - Chrysanthemum</td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>5</td>
-                                                                                            <td>2019-00099</td>
-                                                                                            <td>Maling, Roselyn Mae</td>
-                                                                                            <td>Grade 1 - Chrysanthemum</td>
-                                                                                        </tr>
+                                                                                        while ($rowCount <= 10) {
+                                                                                            $studentPopulation = $studentPopulationData->fetch_assoc(); ?>
+                                                                                            <tr>
+                                                                                                <td><?php echo $rowCount; ?></td>
+                                                                                                <td><?php echo $studentPopulation['SR_number']; ?></td>
+                                                                                                <td><?php echo $studentPopulation['SR_lname'] .  ", " . $studentPopulation['SR_fname'] . " " . substr($studentPopulation['SR_mname'], 0, 1) ?></td>
+                                                                                                <td><?php echo "Grade " . $studentPopulation['SR_grade'] . " - " . $studentPopulation['SR_section']; ?></td>
+                                                                                            </tr>
+                                                                                        <?php
+                                                                                            $rowCount++;
+                                                                                        }
+                                                                                        ?>
                                                                                     </tbody>
                                                                                 </table>
                                                                             </div>
@@ -525,42 +524,27 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                         </tr>
                                                                                     </thead>
                                                                                     <tbody>
-                                                                                        <tr>
+                                                                                        <?php
+                                                                                        $rowCount = 1;
+                                                                                        $facultyPopulationData = $mysqli->query("SELECT * FROM faculty ORDER BY RAND()");
 
-                                                                                            <td>1</td>
-                                                                                            <td>2019-00188</td>
-                                                                                            <td>Mathematics</td>
-                                                                                            <td>Sabile, Camile Anne G.</td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>2</td>
-                                                                                            <td>2019-00089</td>
-                                                                                            <td>English</td>
-                                                                                            <td>Cantuba, Hazel Grace L.</td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>3</td>
-                                                                                            <td>2019-00189</td>
-                                                                                            <td>Filipino</td>
-                                                                                            <td>Frilles, Steven</td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>4</td>
-                                                                                            <td>2019-00890</td>
-                                                                                            <td>MAPEH</td>
-                                                                                            <td>Dumas, Robert James</td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>5</td>
-                                                                                            <td>2019-00099</td>
-                                                                                            <td>Science</td>
-                                                                                            <td>Maling, Roselyn Mae</td>
-                                                                                        </tr>
+                                                                                        while ($rowCount <= 5) {
+                                                                                            $facultyPopulation = $facultyPopulationData->fetch_assoc(); ?>
+                                                                                            <tr>
+                                                                                                <td><?php echo $rowCount; ?></td>
+                                                                                                <td><?php echo $facultyPopulation['F_number']; ?></td>
+                                                                                                <td><?php echo $facultyPopulation['F_department']; ?></td>
+                                                                                                <td><?php echo $facultyPopulation['F_lname'] .  ", " . $facultyPopulation['F_fname'] . " " . substr($facultyPopulation['F_mname'], 0, 1) ?></td>
+                                                                                            </tr>
+                                                                                        <?php
+                                                                                            $rowCount++;
+                                                                                        }
+                                                                                        ?>
                                                                                     </tbody>
                                                                                 </table>
                                                                             </div>
                                                                             <div style="padding-top: 10px;">
-                                                                                <a href="#" class="fw-bold text-primary">View all students <i class="fa fa-arrow-right ms-2"></i></a>
+                                                                                <a href="#" class="fw-bold text-primary">View all faculty <i class="fa fa-arrow-right ms-2"></i></a>
                                                                             </div>
                                                                         </div>
                                                                     </div>
