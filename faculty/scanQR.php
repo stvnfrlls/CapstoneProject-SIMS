@@ -56,7 +56,8 @@ if (!isset($_SESSION['F_number'])) {
     <!-- Template Stylesheet -->
     <link href="../assets/css/style.css" rel="stylesheet">
     <link href="../assets/css/qr.css" rel="stylesheet">
-
+    <link href="../assets/css/admin/style.css" rel="stylesheet">
+    <link href="../assets/css/admin/materialdesignicons.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -69,75 +70,328 @@ if (!isset($_SESSION['F_number'])) {
     </nav>
     <!-- Navbar End -->
 
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-dark navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0 ">
-                <a href="dashboard.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Home</a>
-                <a href="scanQR.php" class="nav-item nav-link" style="color: red; font-size: 14px;">Scan QR</a>
-                <a href="classList.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Grades</a>
-                <a href="reminders.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Reminders/Assignments</a>
-                <a href="editProfile.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Profile</a>
-                <a href="../auth/logout.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Logout</a>
-            </div>
-        </div>
-    </nav>
-    <!-- Navbar End -->
-    <div class="container">
-        <div class="row p-3">
-            <div class="text-center mb-3">
-                <video id="preview" class="video" height="300" width="300" style="object-fit: fill;"></video>
-            </div>
-            <div class="row d-flex justify-content-center mb-3">
-                <div class="col text-center form-group form">
-                    <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="qr_form" class="form-horizontal">
-                        <label for="qrcode_input" class="form-label">QR CODE</label>
-                        <input type="text" name="student" id="input1" required><br>
+    <div class="container-scroller">
+        <div class="container-fluid page-body-wrapper">
+            <nav class="sidebar sidebar-offcanvas" id="sidebar">
+                <ul class="nav">
+                    <li class="nav-item" style="text-align:center; font-size: 20px; color: #b9b9b9; margin-top:20px;">FACULTY</li>
+                    <!-- line 1 -->
+                    <li class="nav-item nav-category">Profile</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="">
+                            <i class=""></i>
+                            <span class="menu-title">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/viewProfile.php">
+                            <i class=""></i>
+                            <span class="menu-title">View Profile</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/createReminder.php">
+                            <i class=""></i>
+                            <span class="menu-title">Create Reminders</span>
+                        </a>
+                    </li>
+                    <!-- line 2 -->
+                    <li class="nav-item nav-category">Menu</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/scanQR.php">
+                            <i class=""></i>
+                            <span class="menu-title">Scan QR</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/advisoryPage.php">
+                            <i class=""></i>
+                            <span class="menu-title">Advisory</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/classList.php">
+                            <i class=""></i>
+                            <span class="menu-title">Class List</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/encodegrades.php">
+                            <i class=""></i>
+                            <span class="menu-title">Encode Grades</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/reminders.php">
+                            <i class=""></i>
+                            <span class="menu-title">Reminders</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- partial -->
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="home-tab">
+                                <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                                    <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
+                                        <h2 class="fw-bold text-primary text-uppercase">QR Scanner</h2>
+                                    </div>
+                                </div>
+                                <div class="tab-content tab-content-basic">
+                                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                                        <div class="row">
+                                            <style>
+                                                .camera-container {
+                                                    width: 100vw;
+                                                    height: 80vh;
+                                                    display: flex;
+                                                    justify-content: center;
+                                                    align-items: center;
+                                                }
 
-                        <label for="qrcode_input" class="form-label" id="labelinput2">Fetcher Code (optional)</label>
-                        <input type="text" name="fetcher" id="input2" required>
-                    </form>
+                                                #camera {
+                                                    width: 100%;
+                                                    height: 100%;
+                                                    object-fit: contain;
+                                                }
+                                            </style>
+
+                                            <div class="camera-container" id="camera">
+                                                <video id="preview"></video>
+                                            </div>
+
+                                            <form style="text-align: center;">
+                                                <style>
+                                                    @media (max-width: 414px) {
+                                                        .custom {
+                                                            width: 100%
+                                                        }
+                                                    }
+
+                                                    @media (max-width: 768px) {
+                                                        .custom {
+                                                            width: 100%;
+                                                        }
+                                                    }
+
+                                                    @media (max-width: 1024px) {
+                                                        .custom {
+                                                            width: 100%;
+
+                                                        }
+                                                    }
+                                                </style>
+                                                <button class="btn btn-light" id="custom">Back</button>
+                                            </form>
+
+                                            <button id="myBtn" class="btn btn-primary me-2" style="width: auto; color:white;">Modal (if qr code couldn't detect)</button>
+
+                                            <!-- The Modal -->
+
+                                            <div id="myModal" class="modal">
+                                                <style>
+                                                    @media (max-width: 414px) {
+                                                        .modal-content {
+                                                            width: 90% !important;
+                                                        }
+                                                    }
+
+                                                    @media (max-width: 768px) {
+                                                        .modal-content {
+                                                            width: 90% !important;
+                                                        }
+                                                    }
+
+                                                    @media (max-width: 1024px) {
+                                                        .modal-content {
+                                                            width: 70% !important;
+                                                        }
+                                                    }
+
+                                                    .modal-content {
+                                                        width: 30%;
+                                                    }
+                                                </style>
+                                                <!-- Modal content -->
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h2 style="font-family: 'Lato','san-serif'; text-align:center;">Couldn't detect QR Code!</h2>
+                                                        <span class="close"><i class="fa fa-times"></i></span>
+                                                    </div>
+                                                    <div class="modal-body" style="text-align: center;">
+                                                        <img src="https://cdn.onlinewebfonts.com/svg/img_2555.png" alt="cookies-img" height="90" width="400" />
+                                                        <p>Sorry! We couldn't read your QR code. Please input manually the student number below.</p>
+                                                        <div class="row d-flex justify-content-center mb-3">
+                                                            <div class="col text-center form-group form">
+                                                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="qr_form" class="form-horizontal">
+                                                                    <input type="text" name="student" class="form-control" id="input1" required><br>
+                                                                    <button type="submit" class="btn btn-primary me-2" style="color: white;">Enter</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <button id="myBtn1" class="btn btn-primary me-2" style="width: auto; color:white;">Modal for Time In (if qr code is detected)</button>
+
+                                            <!-- The Modal -->
+
+                                            <div id="myModal1" class="modal">
+                                                <style>
+                                                    @media (max-width: 414px) {
+                                                        .modal-content {
+                                                            width: 90% !important;
+                                                        }
+                                                    }
+
+                                                    @media (max-width: 768px) {
+                                                        .modal-content {
+                                                            width: 90% !important;
+                                                        }
+                                                    }
+
+                                                    @media (max-width: 1024px) {
+                                                        .modal-content {
+                                                            width: 70% !important;
+                                                        }
+                                                    }
+
+                                                    .modal-content {
+                                                        width: 30%;
+                                                    }
+
+                                                    .close1 {
+                                                        color: black;
+                                                        float: right;
+                                                        font-size: 20px;
+                                                        font-weight: normal;
+                                                    }
+                                                </style>
+                                                <!-- Modal content -->
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h2 style="font-family: 'Lato','san-serif'; text-align:center;">Successful!</h2>
+                                                        <span class="close1"><i class="fa fa-times"></i></span>
+                                                    </div>
+                                                    <div class="modal-body" style="text-align: center;">
+                                                        <img src="https://cdn.onlinewebfonts.com/svg/img_2555.png" alt="cookies-img" height="90" width="400" />
+                                                        <p>Awesome! Camille Anne G. Sabile is already marked as Present</p>
+                                                        <div class="row d-flex justify-content-center mb-3">
+                                                            <div class="col text-center form-group form">
+                                                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="qr_form" class="form-horizontal">
+                                                                    <button type="submit" class="btn btn-primary me-2" style="color: white;">Scan QR again</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <button id="myBtn2" class="btn btn-primary me-2" style="width: auto; color:white;">Modal for Time Out (if qr code is detected)</button>
+
+                                            <!-- The Modal -->
+
+                                            <div id="myModal2" class="modal">
+                                                <style>
+                                                    @media (max-width: 414px) {
+                                                        .modal-content {
+                                                            width: 90% !important;
+                                                        }
+                                                    }
+
+                                                    @media (max-width: 768px) {
+                                                        .modal-content {
+                                                            width: 90% !important;
+                                                        }
+                                                    }
+
+                                                    @media (max-width: 1024px) {
+                                                        .modal-content {
+                                                            width: 70% !important;
+                                                        }
+                                                    }
+
+                                                    .modal-content {
+                                                        width: 30%;
+                                                    }
+
+
+                                                    .close2 {
+                                                        color: black;
+                                                        float: right;
+                                                        font-size: 20px;
+                                                        font-weight: normal;
+                                                    }
+                                                </style>
+                                                <!-- Modal content -->
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h2 style="font-family: 'Lato','san-serif'; text-align:center;">Successful!</h2>
+                                                        <span class="close2"><i class="fa fa-times"></i></span>
+                                                    </div>
+                                                    <div class="modal-body" style="text-align: center;">
+                                                        <img src="https://cdn.onlinewebfonts.com/svg/img_2555.png" alt="cookies-img" height="90" width="400" />
+                                                        <p>Awesome! Camille Anne G. Sabile is now ready to go home.</p>
+                                                        <div class="row d-flex justify-content-center mb-3">
+                                                            <div class="col text-center form-group form">
+                                                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="qr_form" class="form-horizontal">
+                                                                    <div class="row">
+                                                                        <p>Is there a fetcher?</p>
+                                                                        <div class="col-12">
+                                                                            <input type="checkbox" id="vehicle1" name="a" value="">
+                                                                            <label for="a">Yes</label>
+                                                                        </div>
+                                                                        <div class="col-12">
+                                                                            <input type="checkbox" id="vehicle1" name="a" value="">
+                                                                            <label for="a">No</label>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="row">
+                                                                        <p>If no, choose your reason.</p>
+                                                                        <div class="col-12">
+                                                                            <input type="checkbox" id="vehicle1" name="a" value="">
+                                                                            <label for="a">Nakatulog</label>
+                                                                        </div>
+                                                                        <div class="col-12">
+                                                                            <input type="checkbox" id="vehicle1" name="a" value="">
+                                                                            <label for="a">Nag inom</label>
+                                                                        </div>
+                                                                        <div class="col-12">
+                                                                            <input type="checkbox" id="vehicle1" name="a" value="">
+                                                                            <label for="a">Napilayan</label>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <button type="submit" class="btn btn-primary me-2" style="color: white;">Scan QR again</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- content-wrapper ends -->
+                        </div>
+                        <!-- main-panel ends -->
+                    </div>
+                    <!-- page-body-wrapper ends -->
                 </div>
-            </div>
-            <div class="row d-flex justify-content-center px-5">
-                <div class="col text-center mb-3 table">
-                    <table class="table table-striped table-class" id="table-id">
-                        <tr>
-                            <th style="text-align: center;">Student Number</th>
-                            <th style="text-align: center;">Time In</th>
-                            <th style="text-align: center;">Time Out</th>
-                        </tr>
-                        <?php
-                        if (count($attendance_array) > 0) {
-                            while ($attendance_rowCount != count($attendance_array)) { ?>
-                                <tr>
-                                    <td style="text-align: center;"><?php echo $attendance_array[$attendance_rowCount]['SR_number'] ?></td>
-                                    <?php
-                                    if ($attendance_array[$attendance_rowCount]['A_time_IN']) {
-                                        echo '<td style="text-align: center;">' . $attendance_array[$attendance_rowCount]['A_time_IN'] . " - " . $attendance_array[$attendance_rowCount]['A_fetcher_IN'] . '</td>';
-                                    }
-                                    if ($attendance_array[$attendance_rowCount]['A_time_OUT']) {
-                                        echo '<td style="text-align: center;">' . $attendance_array[$attendance_rowCount]['A_time_OUT'] . " - " . $attendance_array[$attendance_rowCount]['A_fetcher_OUT'] . '</td>';
-                                    }
-                                    ?>
-                                </tr>
-                            <?php
-                                $attendance_rowCount++;
-                            }
-                            ?>
-                        <?php
-                        }
-                        ?>
-                    </table>
-                </div>
+                <!-- container-scroller -->
             </div>
         </div>
     </div>
+
     <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-body footer mt-5 pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
@@ -187,8 +441,88 @@ if (!isset($_SESSION['F_number'])) {
     </div>
     <!-- Footer End -->
 
-
 </body>
+<script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal 
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+<script>
+    // Get the modal
+    var modal1 = document.getElementById("myModal1");
+
+    // Get the button that opens the modal
+    var btn1 = document.getElementById("myBtn1");
+
+    // Get the <span> element that closes the modal
+    var span1 = document.getElementsByClassName("close1")[0];
+
+    // When the user clicks the button, open the modal 
+    btn1.onclick = function() {
+        modal1.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span1.onclick = function() {
+        modal1.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal1) {
+            modal1.style.display = "none";
+        }
+    }
+</script>
+<script>
+    // Get the modal
+    var modal2 = document.getElementById("myModal2");
+
+    // Get the button that opens the modal
+    var btn2 = document.getElementById("myBtn2");
+
+    // Get the <span> element that closes the modal
+    var span2 = document.getElementsByClassName("close2")[0];
+
+    // When the user clicks the button, open the modal 
+    btn2.onclick = function() {
+        modal2.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span2.onclick = function() {
+        modal2.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal2) {
+            modal2.style.display = "none";
+        }
+    }
+</script>
 <script>
     let scanner = new Instascan.Scanner({
         video: document.getElementById('preview')

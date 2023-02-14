@@ -255,7 +255,6 @@ if (!isset($_SESSION['AD_number'])) {
                                   <thead>
                                     <tr>
                                       <th>No.</th>
-                                      <th>Student Name</th>
                                       <th>Date</th>
                                       <th>Time In</th>
                                       <th>Time Out</th>
@@ -285,11 +284,18 @@ if (!isset($_SESSION['AD_number'])) {
                                     </style>
                                     <tr>
                                       <td class="tabledata">1</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">01/01/23</td>
+                                      <td class="tabledata">7:00AM</td>
+                                      <td class="tabledata">1:00PM</td>
+                                      <td class="tabledata" style="width: auto;">
+                                        <select class="form-select" required>
+                                          <option selected>Present</option>
+                                          <option value="Male">Late</option>
+                                          <option value="Female">Excuse</option>
+                                          <option value="NA">Absent</option>
+                                        </select>
+
+                                      </td>
                                     </tr>
                                   </tbody>
                                 </table>

@@ -28,7 +28,6 @@ if (!isset($_SESSION['AD_number'])) {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -198,10 +197,17 @@ if (!isset($_SESSION['AD_number'])) {
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="home-tab">
-                                <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                                <div class="d-sm-flex align-items-center justify-content-between">
                                     <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
                                         <h2 class="fw-bold text-primary text-uppercase">Student Information</h2>
                                     </div>
+                                </div>
+                                <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
+                                    <nav class="nav">
+                                        <a class="nav-link active ms-0" href="../admin/viewStudent.php" target="__blank" style="color: #c02628;">Profile</a>
+                                        <a class="nav-link" href="../admin/viewGrades.php" target="__blank">Grades</a>
+                                    </nav>
+                                    <div class="border-bottom"></div>
                                 </div>
                                 <div class="tab-content tab-content-basic">
                                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
