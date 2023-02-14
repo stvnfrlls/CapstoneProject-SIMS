@@ -92,7 +92,7 @@
                           font-family: "Lato", "san serif";
                         }
                       </style>
-                      <div class="col-sm-12 col-lg-6 grid-margin" style="padding-bottom:20px;">
+                      <div class="col-sm-12 col-lg-6 grid-margin" style="margin: auto; padding-bottom: 20px;" >
                         <div class="card">
                           <div class="card-body">
                             <div class="row">
@@ -100,15 +100,17 @@
                                 <img src="../assets/img/profile.jpg" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
                               </div>
                               <div class="col-8" style="align-self: center;">
-                                <h3>Camille Anne G. Sabile</h3>
-                                <p style="margin-bottom: 8px;">2019-00188-SP-0</p>
-                                <p style="margin-bottom: 8px;">Grade 1 - Chrysanthemum</p>
+                                <h3 style="margin-bottom: 8px;">Camille Anne G. Sabile</h3>
+                                <p style="margin-bottom: 2px;">2019-00188-SP-0</p>
+                                <p style="margin-bottom: 2px;">Grade 1 - Chrysanthemum</p>
+                                <p style="margin-bottom: 2px;">Ms. Hazel Grace L. Cantuba</p>
+                                <p style="margin-bottom: 2px;">S.Y. 2022-2023</p>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div class="col-sm-12 col-lg-2 grid-margin">
+                      <div class="col-sm-12 col-lg-2 grid-margin" style="margin: auto;  padding-bottom: 20px;">
                         <div class="card" style="height: 150px; padding-top: 12px;">
                           <div class="card-body">
                             <p class="d-flex flex-shrink-0 align-items-center justify-content-center text-center">Total Days of Present</p>
@@ -118,7 +120,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-sm-12 col-lg-2 grid-margin">
+                      <div class="col-sm-12 col-lg-2 grid-margin" style="margin: auto;  padding-bottom: 20px;">
                         <div class="card" style="height: 150px; padding-top: 12px;">
                           <div class="card-body">
                             <p class="d-flex flex-shrink-0 align-items-center justify-content-center text-center">Total Days of Absent</p>
@@ -128,7 +130,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-sm-12 col-lg-2 grid-margin">
+                      <div class="col-sm-12 col-lg-2 grid-margin" style="margin: auto;  padding-bottom: 20px;">
                         <div class="card" style="height: 150px; padding-top: 12px;">
                           <div class="card-body">
                             <p class="d-flex flex-shrink-0 align-items-center justify-content-center text-center">Total Days of Late</p>
@@ -148,7 +150,29 @@
                           <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
                             <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-user"></i></h1>
                           </div>
-                          <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Profile</h3>
+                          <a href="../student/profile.php"><h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Profile</h3></a>
+                          <p class="d-flex flex-shrink-0 text-center">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-lg-3 grid-margin">
+                      <div class="card">
+                        <div class="card-body">
+                          <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
+                            <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-qrcode"></i></h1>
+                          </div>
+                          <a href=""><h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">QR Code</h3></a>
+                          <p class="d-flex flex-shrink-0 text-center">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-lg-3 grid-margin">
+                      <div class="card">
+                        <div class="card-body">
+                          <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
+                            <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-book"></i></h1>
+                          </div>
+                          <a href="../student/dailyAttendance.php"><h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Attendance</h3></a>
                           <p class="d-flex flex-shrink-0 text-center">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
                         </div>
                       </div>
@@ -159,29 +183,7 @@
                           <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
                             <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-edit"></i></h1>
                           </div>
-                          <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Grades</h3>
-                          <p class="d-flex flex-shrink-0 text-center">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-lg-3 grid-margin">
-                      <div class="card">
-                        <div class="card-body">
-                          <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
-                            <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-bullhorn"></i></h1>
-                          </div>
-                          <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Announcements</h3>
-                          <p class="d-flex flex-shrink-0 text-center">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-lg-3 grid-margin">
-                      <div class="card">
-                        <div class="card-body">
-                          <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
-                            <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-exclamation"></i></h1>
-                          </div>
-                          <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Reminders</h3>
+                          <a href="../student/grades.php"><h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Grades</h3></a>
                           <p class="d-flex flex-shrink-0 text-center">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
                         </div>
                       </div>
