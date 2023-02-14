@@ -1,12 +1,21 @@
 <?php
 require_once("../assets/php/server.php");
 
+$current_url = $_SERVER["REQUEST_URI"];
+
 if (!isset($_SESSION['F_number'])) {
   header('Location: ../auth/login.php');
 } else {
+  $getWorkSchedule = "SELECT SR_grade, SR_section, S_subject FROM workschedule WHERE F_number = '{$_SESSION['F_number']}'";
+  $rungetWorkSchedule = $mysqli->query($getWorkSchedule);
+  $array_GradeSection = array();
+  array_unshift($array_GradeSection, null);
 
-  $current_url = $_SERVER["REQUEST_URI"];
-
+  while ($dataWorkSchedule = $rungetWorkSchedule->fetch_assoc()) {
+    $array_GradeSection[] = $dataWorkSchedule;
+  }
+}
+if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject'])) {
   $getStudentName = "SELECT studentrecord.SR_number, studentrecord.SR_fname, studentrecord.SR_lname, studentrecord.SR_mname,
                     studentrecord.SR_grade, studentrecord.SR_section
                     FROM studentrecord
@@ -41,6 +50,7 @@ if (!isset($_SESSION['F_number'])) {
   while ($QuarterData = $getQuarter->fetch_assoc()) {
     $arrayQuarter[] = $QuarterData;
   }
+
   $FormQuery = $mysqli->query("SELECT quarterStatus FROM quartertable WHERE quarterTag = 'FORMS'");
   $FormStatus = $FormQuery->fetch_assoc();
   if ($FormStatus['quarterStatus'] == "enabled") { ?>
