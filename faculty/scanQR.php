@@ -380,6 +380,60 @@ if (!isset($_SESSION['F_number'])) {
                                                 </div>
                                             </div>
 
+                                            <button id="myBtn3" class="btn btn-primary me-2" style="width: auto; color:white;">Modal for Time Out (if qr code is detected and without fetcher)</button>
+
+                                            <!-- The Modal -->
+
+                                            <div id="myModal3" class="modal">
+                                                <style>
+                                                    @media (max-width: 414px) {
+                                                        .modal-content {
+                                                            width: 90% !important;
+                                                        }
+                                                    }
+
+                                                    @media (max-width: 768px) {
+                                                        .modal-content {
+                                                            width: 90% !important;
+                                                        }
+                                                    }
+
+                                                    @media (max-width: 1024px) {
+                                                        .modal-content {
+                                                            width: 70% !important;
+                                                        }
+                                                    }
+
+                                                    .modal-content {
+                                                        width: 30%;
+                                                    }
+
+                                                    .close3 {
+                                                        color: black;
+                                                        float: right;
+                                                        font-size: 20px;
+                                                        font-weight: normal;
+                                                    }
+                                                </style>
+                                                <!-- Modal content -->
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h2 style="font-family: 'Lato','san-serif'; text-align:center;">Successful!</h2>
+                                                        <span class="close3"><i class="fa fa-times"></i></span>
+                                                    </div>
+                                                    <div class="modal-body" style="text-align: center;">
+                                                        <img src="https://cdn.onlinewebfonts.com/svg/img_2555.png" alt="cookies-img" height="90" width="400" />
+                                                        <p>Awesome! Camille Anne G. Sabile is now ready to go home.</p>
+                                                        <div class="row d-flex justify-content-center mb-3">
+                                                            <div class="col text-center form-group form">
+                                                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="qr_form" class="form-horizontal">
+                                                                    <button type="submit" class="btn btn-primary me-2" style="color: white;">Scan QR again</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -529,6 +583,33 @@ if (!isset($_SESSION['F_number'])) {
     }
 </script>
 <script>
+    // Get the modal
+    var modal3 = document.getElementById("myModal3");
+
+    // Get the button that opens the modal
+    var btn3 = document.getElementById("myBtn3");
+
+    // Get the <span> element that closes the modal
+    var span3 = document.getElementsByClassName("close3")[0];
+
+    // When the user clicks the button, open the modal 
+    btn3.onclick = function() {
+        modal3.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span3.onclick = function() {
+        modal3.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal2) {
+            modal3.style.display = "none";
+        }
+    }
+</script>
+<script>
     let scanner = new Instascan.Scanner({
         video: document.getElementById('preview')
     });
@@ -566,6 +647,7 @@ if (!isset($_SESSION['F_number'])) {
         }
     })
 </script>
+
 <!-- JavaScript Libraries -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
