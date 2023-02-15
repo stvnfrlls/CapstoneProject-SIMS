@@ -189,7 +189,6 @@ if (!isset($_SESSION['F_number'])) {
                                                         }
                                                     }
                                                 </style>
-                                                <button class="btn btn-light" id="custom">Back</button>
                                             </form>
 
                                             <button id="myBtn" class="btn btn-primary me-2" style="width: auto; color:white;">Modal (if qr code couldn't detect)</button>
@@ -360,19 +359,20 @@ if (!isset($_SESSION['F_number'])) {
                                                                         <p>If no, choose your reason.</p>
                                                                         <div class="col-12">
                                                                             <input type="checkbox" id="vehicle1" name="a" value="">
-                                                                            <label for="a">Nakatulog</label>
+                                                                            <label for="a">The fetcher is sick.</label>
                                                                         </div>
                                                                         <div class="col-12">
                                                                             <input type="checkbox" id="vehicle1" name="a" value="">
-                                                                            <label for="a">Nag inom</label>
+                                                                            <label for="a">The fetcher runs some errand.</label>
                                                                         </div>
                                                                         <div class="col-12">
                                                                             <input type="checkbox" id="vehicle1" name="a" value="">
-                                                                            <label for="a">Napilayan</label>
+                                                                            <label for="a">Others (Please specify)</label>
+                                                                            <input type="text" name="student" class="form-control" id="input1" required><br>
                                                                         </div>
 
                                                                     </div>
-                                                                    <button type="submit" class="btn btn-primary me-2" style="color: white;">Scan QR again</button>
+                                                                    <button type="submit" class="btn btn-primary me-2" style="color: white;">Done!</button>
                                                                 </form>
                                                             </div>
                                                         </div>
