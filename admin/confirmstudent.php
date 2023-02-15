@@ -482,7 +482,7 @@ if (!isset($_SESSION['AD_number'])) {
                                     </div>
                                 </div>
                                 <div style="text-align: center;">
-                                    <input type="button" class="btn btn-primary me-2" name="regStudent" value="Confirm">
+                                    <input type="submit" class="btn btn-primary me-2" name="regStudent" value="Confirm">
                                     <button class="btn btn-light">Back</button>
                                 </div>
                             </form>
