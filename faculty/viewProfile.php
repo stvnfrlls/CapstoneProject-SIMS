@@ -301,7 +301,7 @@ if (!isset($_SESSION['F_number'])) {
               </div>
             </div>
             <form style="text-align: center;">
-              <button type="submit" class="btn btn-primary me-2">Edit</button>
+              <a href="editProfile.php" class="btn btn-primary me-2">Edit</a>
               <button class="btn btn-light">Back</button>
             </form>
           </div>
