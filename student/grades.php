@@ -138,68 +138,75 @@ if (!isset($_SESSION['SR_number'])) {
                             <tbody>
                                 <?php
                                 $studentGrades = $mysqli->query("SELECT * FROM grades WHERE SR_number = '{$_SESSION['SR_number']}'");
-                                while ($studentGradesData = $studentGrades->fetch_assoc()) { ?>
+
+                                if (mysqli_num_rows($studentGrades) > 0) {
+                                    while ($studentGradesData = $studentGrades->fetch_assoc()) { ?>
+                                        <tr>
+                                            <td class="hatdog"><?php echo $studentGradesData['G_learningArea']; ?></td>
+                                            <?php
+                                            if ($studentGradesData['G_gradesQ1']) { ?>
+                                                <td class="hatdog"><?php echo $studentGradesData['G_gradesQ1']; ?></td>
+                                            <?php
+                                            } else { ?>
+                                                <td class="hatdog"></td>
+                                            <?php } ?>
+
+                                            <?php
+                                            if ($studentGradesData['G_gradesQ2']) { ?>
+                                                <td class="hatdog"><?php echo $studentGradesData['G_gradesQ2']; ?></td>
+                                            <?php
+                                            } else { ?>
+                                                <td class="hatdog"></td>
+                                            <?php } ?>
+
+                                            <?php
+                                            if ($studentGradesData['G_gradesQ3']) { ?>
+                                                <td class="hatdog"><?php echo $studentGradesData['G_gradesQ3']; ?></td>
+                                            <?php
+                                            } else { ?>
+                                                <td class="hatdog"></td>
+                                            <?php } ?>
+
+                                            <?php
+                                            if ($studentGradesData['G_gradesQ4']) { ?>
+                                                <td class="hatdog"><?php echo $studentGradesData['G_gradesQ4']; ?></td>
+                                            <?php
+                                            } else { ?>
+                                                <td class="hatdog"></td>
+                                            <?php } ?>
+
+                                            <td class="hatdog">
+                                                <?php
+                                                if (empty($studentGradesData['G_finalgrade'])) {
+                                                    $sum = $studentGradesData['G_gradesQ1'] + $studentGradesData['G_gradesQ2'] + $studentGradesData['G_gradesQ3'] + $studentGradesData['G_gradesQ4'];
+                                                    $average = $sum / 4;
+                                                    echo round($average);
+                                                } else {
+                                                    echo $studentGradesData['G_finalgrade'];
+                                                }
+                                                ?>
+                                            </td>
+                                            <td class="hatdog">
+                                                <?php
+                                                $average = $studentGradesData['G_finalgrade'];
+                                                if ($average >= 90) {
+                                                    echo "Outstanding";
+                                                } else if ($average >= 85 || $average <= 89) {
+                                                    echo "Very Satisfactory";
+                                                } else if ($average >= 80 || $average <= 84) {
+                                                    echo "Satisfactory";
+                                                } else if ($average >= 75 || $average <= 79) {
+                                                    echo "Fairly Satisfactory";
+                                                } else if ($average < 75) {
+                                                    echo "Did Not Meet Expectations";
+                                                }
+                                                ?>
+                                            </td>
+                                        </tr>
+                                    <?php }
+                                } else { ?>
                                     <tr>
-                                        <td class="hatdog"><?php echo $studentGradesData['G_learningArea']; ?></td>
-                                        <?php
-                                        if ($studentGradesData['G_gradesQ1']) { ?>
-                                            <td class="hatdog"><?php echo $studentGradesData['G_gradesQ1']; ?></td>
-                                        <?php
-                                        } else { ?>
-                                            <td class="hatdog"></td>
-                                        <?php } ?>
-
-                                        <?php
-                                        if ($studentGradesData['G_gradesQ2']) { ?>
-                                            <td class="hatdog"><?php echo $studentGradesData['G_gradesQ2']; ?></td>
-                                        <?php
-                                        } else { ?>
-                                            <td class="hatdog"></td>
-                                        <?php } ?>
-
-                                        <?php
-                                        if ($studentGradesData['G_gradesQ3']) { ?>
-                                            <td class="hatdog"><?php echo $studentGradesData['G_gradesQ3']; ?></td>
-                                        <?php
-                                        } else { ?>
-                                            <td class="hatdog"></td>
-                                        <?php } ?>
-
-                                        <?php
-                                        if ($studentGradesData['G_gradesQ4']) { ?>
-                                            <td class="hatdog"><?php echo $studentGradesData['G_gradesQ4']; ?></td>
-                                        <?php
-                                        } else { ?>
-                                            <td class="hatdog"></td>
-                                        <?php } ?>
-
-                                        <td class="hatdog">
-                                            <?php
-                                            if (empty($studentGradesData['G_finalgrade'])) {
-                                                $sum = $studentGradesData['G_gradesQ1'] + $studentGradesData['G_gradesQ2'] + $studentGradesData['G_gradesQ3'] + $studentGradesData['G_gradesQ4'];
-                                                $average = $sum / 4;
-                                                echo round($average);
-                                            } else {
-                                                echo $studentGradesData['G_finalgrade'];
-                                            }
-                                            ?>
-                                        </td>
-                                        <td class="hatdog">
-                                            <?php
-                                            $average = $studentGradesData['G_finalgrade'];
-                                            if ($average >= 90) {
-                                                echo "Outstanding";
-                                            } else if ($average >= 85 || $average <= 89) {
-                                                echo "Very Satisfactory";
-                                            } else if ($average >= 80 || $average <= 84) {
-                                                echo "Satisfactory";
-                                            } else if ($average >= 75 || $average <= 79) {
-                                                echo "Fairly Satisfactory";
-                                            } else if ($average < 75) {
-                                                echo "Did Not Meet Expectations";
-                                            }
-                                            ?>
-                                        </td>
+                                        <td colspan="10">NO DATA AVAILABLE</td>
                                     </tr>
                                 <?php }
                                 ?>
@@ -301,9 +308,13 @@ if (!isset($_SESSION['SR_number'])) {
                                             <td rowspan="1" class="hatdog"><?php echo $BehaviorData['CV_valueQ4']; ?>
                                             </td>
                                         </tr>
-                                <?php $i++;
+                                    <?php $i++;
                                     }
-                                }
+                                } else { ?>
+                                    <tr>
+                                        <td colspan="10">No Data Available</td>
+                                    </tr>
+                                <?php }
                                 ?>
                             </tbody>
                         </table>
