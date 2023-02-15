@@ -163,6 +163,11 @@ if (!isset($_SESSION['F_number'])) {
                                                 <video id="preview"></video>
                                             </div>
 
+                                            <form id="qr_form" action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
+                                                <input type="hidden" name="student" id="input1">
+                                                <input type="hidden" name="fetcher" id="input2">
+                                            </form>
+
                                             <form style="text-align: center;">
                                                 <style>
                                                     @media (max-width: 414px) {
