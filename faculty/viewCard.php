@@ -1,41 +1,38 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (empty($_SESSION['F_number'])) {
-  header('Location: advisoryPage.php');
-} elseif ($_GET['viewStudent']) {
-  $getStudentRecord = "SELECT * FROM studentrecord WHERE SR_number = '{$_GET['viewStudent']}'";
-  $rungetStudentRecord = $mysqli->query($getStudentRecord);
-  $StudentData = $rungetStudentRecord->fetch_assoc();
-
-  $getSectionInfo = "SELECT * FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'";
-  $rungetSectionInfo = $mysqli->query($getSectionInfo);
-  $SectionData = $rungetSectionInfo->fetch_assoc();
-  $getSectionClassList = "SELECT SR_number FROM studentrecord WHERE SR_section = '{$SectionData['S_name']}'";
-  $rungetSectionClassList = $mysqli->query($getSectionClassList);
-
-  $getFacultyName = "SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'";
-  $rungetFacultyName = $mysqli->query($getFacultyName);
-  $FacultyData = $rungetFacultyName->fetch_assoc();
-
-  $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '{$_GET['viewStudent']}'";
-  $rungetStudentGrades = $mysqli->query($getStudentGrades);
-
-  $getBehaviorData = $mysqli->query("SELECT 
-                                    behavior_category.B_ID, behavior_category.core_value_area, behavior_category.core_value_subheading,
-                                    behavior.SR_number, behavior.CV_Area, behavior.CV_valueQ1,
-                                    behavior.CV_valueQ2, behavior.CV_valueQ3, behavior.CV_valueQ4
-                                    FROM behavior_category
-                                    INNER JOIN behavior 
-                                    ON behavior_category.core_value_area = behavior.CV_Area
-                                    WHERE behavior.SR_number = '{$_GET['viewStudent']}'");
-  $getBehaviorAreas = $mysqli->query("SELECT * FROM behavior_category");
-  $BehaviorDataArray = array();
-  while ($DataBehaviorCategory = $getBehaviorAreas->fetch_assoc()) {
-    $BehaviorDataArray[] = $DataBehaviorCategory;
-  }
+if (!isset($_SESSION['F_number'])) {
+  header('Location: ../auth/login.php');
 } else {
-  header('Location: advisoryPage.php');
+  if ($_GET['viewStudent']) {
+    $getStudentRecord = "SELECT * FROM studentrecord WHERE SR_number = '{$_GET['viewStudent']}'";
+    $rungetStudentRecord = $mysqli->query($getStudentRecord);
+    $StudentData = $rungetStudentRecord->fetch_assoc();
+
+    $getSectionInfo = "SELECT * FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'";
+    $rungetSectionInfo = $mysqli->query($getSectionInfo);
+    $SectionData = $rungetSectionInfo->fetch_assoc();
+
+    $getSectionClassList = "SELECT SR_number FROM studentrecord WHERE SR_section = '{$SectionData['S_name']}'";
+    $rungetSectionClassList = $mysqli->query($getSectionClassList);
+
+    $getFacultyName = "SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'";
+    $rungetFacultyName = $mysqli->query($getFacultyName);
+    $FacultyData = $rungetFacultyName->fetch_assoc();
+
+    $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '{$_GET['viewStudent']}'";
+    $rungetStudentGrades = $mysqli->query($getStudentGrades);
+
+    $getBehaviorData = $mysqli->query("SELECT SR_number, CV_Area, CV_valueQ1, CV_valueQ2, CV_valueQ3, CV_valueQ4
+                                                                    FROM behavior WHERE SR_number = '{$_GET['viewStudent']}'");
+    $getBehaviorAreas = $mysqli->query("SELECT * FROM behavior_category");
+    $BehaviorAreasArray = array();
+    while ($DataBehaviorCategory = $getBehaviorAreas->fetch_assoc()) {
+      $BehaviorAreasArray[] = $DataBehaviorCategory;
+    }
+  } else {
+    header('Location: advisoryPage.php');
+  }
 }
 ?>
 
@@ -221,8 +218,28 @@ if (empty($_SESSION['F_number'])) {
                                             <td class="hatdog"><?php echo $StudentGrades['G_gradesQ2']; ?></td>
                                             <td class="hatdog"><?php echo $StudentGrades['G_gradesQ3']; ?></td>
                                             <td class="hatdog"><?php echo $StudentGrades['G_gradesQ4']; ?></td>
-                                            <td class="hatdog"><?php echo $StudentGrades['G_finalgrade']; ?></td>
-                                            <td class="hatdog">Passed</td>
+                                            <td class="hatdog">
+                                              <?php
+                                              $sum = $StudentGrades['G_gradesQ1'] + $StudentGrades['G_gradesQ2'] + $StudentGrades['G_gradesQ3'] + $StudentGrades['G_gradesQ4'];
+                                              $average = $sum / 4;
+                                              echo round($average);
+                                              ?>
+                                            </td>
+                                            <td class="hatdog">
+                                              <?php
+                                              if ($average >= 90) {
+                                                echo "Outstanding";
+                                              } else if ($average >= 85 || $average <= 89) {
+                                                echo "Very Satisfactory";
+                                              } else if ($average >= 80 || $average <= 84) {
+                                                echo "Satisfactory";
+                                              } else if ($average >= 75 || $average <= 79) {
+                                                echo "Fairly Satisfactory";
+                                              } else if ($average < 75) {
+                                                echo "Did Not Meet Expectations";
+                                              }
+                                              ?>
+                                            </td>
                                           </tr>
                                         <?php }
                                       } else { ?>
@@ -310,16 +327,16 @@ if (empty($_SESSION['F_number'])) {
                                         while ($BehaviorData = $getBehaviorData->fetch_assoc()) { ?>
                                           <tr>
                                             <input type="hidden" name="row[]" value="<?php echo $i; ?>">
-                                            <input type="hidden" name="CV_Area[]" value="<?php echo $BehaviorData['CV_Area']; ?>">
+                                            <input type="hidden" name="CV_Area[]" value="<?php echo $BehaviorAreasArray[$i]['core_value_area']; ?>">
                                             <?php if ($i % 2 == 0) { ?>
                                               <td rowspan="2" class="hatdog">
-                                                <?php echo preg_replace('/[0-9]/', '', $BehaviorData['CV_Area']); ?>
+                                                <?php echo preg_replace('/[0-9]/', '', $BehaviorAreasArray[$i]['core_value_area']); ?>
                                               </td>
                                             <?php } ?>
 
                                             <td rowspan="1" class="hatdog">
-                                              <?php echo $BehaviorData['core_value_subheading']; ?>
-                                              <input type="hidden" name="core_value_subheading[]" value="<?php echo $BehaviorData['core_value_subheading']; ?>">
+                                              <?php echo $BehaviorAreasArray[$i]['core_value_subheading']; ?>
+                                              <input type="hidden" name="core_value_subheading[]" value="<?php echo $BehaviorAreasArray[$i]['core_value_subheading']; ?>">
                                             </td>
                                             <td rowspan="1" class="hatdog">
                                               <input type="text" class="hatdog" name="CV_valueQ1[]" value="<?php echo $BehaviorData['CV_valueQ1']; ?>" size="2">
@@ -332,35 +349,6 @@ if (empty($_SESSION['F_number'])) {
                                             </td>
                                             <td rowspan="1" class="hatdog">
                                               <input type="text" class="hatdog" name="CV_valueQ4[]" value="<?php echo $BehaviorData['CV_valueQ4']; ?>" size="2">
-                                            </td>
-                                          </tr>
-                                        <?php $i++;
-                                        }
-                                      } else {
-                                        $i = 0;
-                                        while ($i != count($BehaviorDataArray)) { ?>
-                                          <tr>
-                                            <input type="hidden" name="CV_Area[]" value="<?php echo $BehaviorDataArray[$i]['core_value_area']; ?>">
-                                            <?php if ($i % 2 == 0) { ?>
-                                              <td rowspan="2" class="hatdog">
-                                                <?php echo preg_replace('/[0-9]/', '', $BehaviorDataArray[$i]['core_value_area']); ?>
-                                              </td>
-                                            <?php } ?>
-                                            <td rowspan="1" class="hatdog">
-                                              <?php echo $BehaviorDataArray[$i]['core_value_subheading']; ?>
-                                              <input type="hidden" name="core_value_subheading[]" value="##">
-                                            </td>
-                                            <td rowspan="1" class="hatdog">
-                                              <input type="text" class="hatdog" name="CV_valueQ1[]" value="##" size="2">
-                                            </td>
-                                            <td rowspan="1" class="hatdog">
-                                              <input type="text" class="hatdog" name="CV_valueQ2[]" value="##" size="2">
-                                            </td>
-                                            <td rowspan="1" class="hatdog">
-                                              <input type="text" class="hatdog" name="CV_valueQ3[]" value="##" size="2">
-                                            </td>
-                                            <td rowspan="1" class="hatdog">
-                                              <input type="text" class="hatdog" name="CV_valueQ4[]" value="##" size="2">
                                             </td>
                                           </tr>
                                       <?php $i++;

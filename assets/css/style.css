@@ -130,7 +130,8 @@ h6,
 }
 
 .navbar .navbar-nav .nav-link {
-  margin-right: 90px;
+  margin-right: 70px;
+  margin-left: 70px;
   padding: 10px 0;
   color: var(--dark);
   font-weight: 500;
@@ -158,6 +159,7 @@ h6,
   }
 
   .navbar .navbar-nav {
+    margin-left: auto !important;
     border-top: 1px solid #eeeeee;
   }
 

@@ -2,12 +2,12 @@
 require_once("../assets/php/server.php");
 include('../assets/phpqrcode/qrlib.php');
 
-if (empty($_SESSION['AD_number'])) {
+if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 } else {
     $sr_number = $_GET['SR_Number'];
 
-    if (!isset($_GET['SR_Number'])) {
+    if (empty($sr_number)) {
         header('Location: student.php');
     } else {
         $verifySR_number = "SELECT * FROM studentrecord 
@@ -24,13 +24,10 @@ if (empty($_SESSION['AD_number'])) {
             }
             $qrcode_data = $getRecord['SR_number'];
             QRcode::png($qrcode_data,  $tempDir . '' . $qrcode_data . '.png', QR_ECLEVEL_L);
-        } else {
-            header('Location: student.php');
         }
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,7 +39,7 @@ if (empty($_SESSION['AD_number'])) {
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link href="../assets/img/favicon.png" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -72,13 +69,7 @@ if (empty($_SESSION['AD_number'])) {
 <body>
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-        <img class="m-3" src="../assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">
-        <div class="d-flex align-items-center justify-content-center text-center">
-            <a href="../index.php" class="navbar-brand ms-4 ms-lg-0 text-center">
-                <h1 class="cdsp">Colegio De San Pedro</h1>
-                <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
-            </a>
-        </div>
+        <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
             <span class="mdi mdi-menu"></span>
         </button>
@@ -171,7 +162,7 @@ if (empty($_SESSION['AD_number'])) {
                         </a>
                     </li>
                     <!-- line 5 -->
-                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Reports</li>
+                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Attendance Report</li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/dailyReports.php">
                             <i class=""></i>
@@ -200,10 +191,17 @@ if (empty($_SESSION['AD_number'])) {
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="home-tab">
-                                <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                                <div class="d-sm-flex align-items-center justify-content-between">
                                     <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
                                         <h2 class="fw-bold text-primary text-uppercase">Student Information</h2>
                                     </div>
+                                </div>
+                                <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
+                                    <nav class="nav">
+                                        <a class="nav-link active ms-0" href="../admin/viewStudent.php" target="__blank" style="color: #c02628;">Profile</a>
+                                        <a class="nav-link" href="../admin/viewGrades.php" target="__blank">Grades</a>
+                                    </nav>
+                                    <div class="border-bottom"></div>
                                 </div>
                                 <div class="tab-content tab-content-basic">
                                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">

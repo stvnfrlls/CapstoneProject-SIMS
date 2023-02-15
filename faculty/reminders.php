@@ -1,8 +1,8 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (isset($_POST['confirm_faculty'])) {
-    header('Location: confirmfaculty.php');
+if (!isset($_SESSION['F_number'])) {
+    header('Location: ../auth/login.php');
 }
 ?>
 
@@ -47,21 +47,21 @@ if (isset($_POST['confirm_faculty'])) {
 <body>
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-    <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
-    <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-      <span class="mdi mdi-menu"></span>
-    </button>
-  </nav>
+        <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+            <span class="mdi mdi-menu"></span>
+        </button>
+    </nav>
     <!-- Navbar End -->
 
     <div class="container-scroller">
         <div class="container-fluid page-body-wrapper">
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
-                <ul class="nav" >
+                <ul class="nav">
                     <li class="nav-item" style="text-align:center; font-size: 20px; color: #b9b9b9; margin-top:20px;">FACULTY</li>
                     <!-- line 1 -->
                     <li class="nav-item nav-category">Profile</li>
-                    <li class="nav-item" >
+                    <li class="nav-item">
                         <a class="nav-link" href="">
                             <i class=""></i>
                             <span class="menu-title" style="color: #b9b9b9;">Dashboard</span>
@@ -80,7 +80,7 @@ if (isset($_POST['confirm_faculty'])) {
                         </a>
                     </li>
                     <!-- line 2 -->
-                    <li class="nav-item nav-category" >Menu</li>
+                    <li class="nav-item nav-category">Menu</li>
                     <li class="nav-item">
                         <a class="nav-link" href="../faculty/scanQR.php">
                             <i class=""></i>
@@ -129,102 +129,40 @@ if (isset($_POST['confirm_faculty'])) {
                                     <div class="container">
                                         <div class="row col-lg-10">
                                             <div class="col-lg-10 posts-list" style="margin-left: auto; padding-top: 50px;">
-                                                <div class="single-post row" >
-                                                    <div class="col-lg-3  col-md-3 meta-details">
-                                                        <div class="user-details row" >
-                                                            <p class="user-name col-lg-12 col-md-12 col-6"><a href="#">Mark wiens</a> <span class="far fa-user" style="color: #c02628;"></span></p>
-                                                            <p class="date col-lg-12 col-md-12 col-6"><a>12 Dec, 2017</a> <span class="fa fa-calendar" style="color: #c02628;"></span></p>
+                                                <?php
+                                                $getreminders = $mysqli->query("SELECT * FROM reminders WHERE author = '{$_SESSION['F_number']}'");
+                                                while ($reminder = $getreminders->fetch_assoc()) { ?>
+                                                    <div class="single-post row">
+                                                        <div class="col-lg-3  col-md-3 meta-details">
+                                                            <div class="user-details row">
+                                                                <?php 
+                                                                $getAuthorName = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$reminder['author']}'");
+                                                                $authorName = $getAuthorName->fetch_assoc();
+                                                                ?>
+                                                                <p class="user-name col-lg-12 col-md-12 col-6"><a href="#"><?php echo $authorName['F_lname'] .  ", " . $authorName['F_fname'] . " " . substr($authorName['F_mname'], 0, 1) ?></a> <span class="far fa-user" style="color: #c02628;"></span></p>
+                                                                <p class="date col-lg-12 col-md-12 col-6"><a><?php echo $reminder['date_posted'] ?></a> <span class="fa fa-calendar" style="color: #c02628;"></span></p>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-lg-9">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <div class="col-lg-12 col-md-9 ">
-                                                                    <a class="posts-title" href="blog-single.html">
-                                                                        <h3>Bring Notebook</h3>
-                                                                    </a>
-                                                                    <p>Subject: English</p>
-                                                                    <p class="excert">
-                                                                        MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.
-                                                                    </p>
-                                                                    <a href="blog-single.html" class="primary-btn">View More</a>
+                                                        <div class="col-lg-9">
+                                                            <div class="card">
+                                                                <div class="card-body">
+                                                                    <div class="col-lg-12 col-md-9 ">
+                                                                        <a class="posts-title" href="blog-single.html">
+                                                                            <h3><?php echo $reminder['header'] ?></h3>
+                                                                        </a>
+                                                                        <p>Subject: <?php echo $reminder['subject'] ?></p>
+                                                                        <p class="excert">
+                                                                        <?php echo $reminder['msg'] ?>
+                                                                        </p>
+                                                                        <a href="blog-single.html" class="primary-btn">View More</a>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="single-post row">
-                                                    <div class="col-lg-3  col-md-3 meta-details">
-                                                        <div class="user-details row">
-                                                            <p class="user-name col-lg-12 col-md-12 col-6"><a href="#">Mark wiens</a> <span class="far fa-user" style="color: #c02628;"></span></p>
-                                                            <p class="date col-lg-12 col-md-12 col-6"><a>12 Dec, 2017</a> <span class="fa fa-calendar" style="color: #c02628;"></span></p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-9">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <div class="col-lg-12 col-md-9 ">
-                                                                    <a class="posts-title" href="blog-single.html">
-                                                                        <h3>Assignment in Page 23 (English Book)</h3>
-                                                                    </a>
-                                                                    <p>Subject: English</p>
-                                                                    <p class="excert">
-                                                                        MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.
-                                                                    </p>
-                                                                    <a href="blog-single.html" class="primary-btn">View More</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="single-post row" >
-                                                    <div class="col-lg-3  col-md-3 meta-details">
-                                                        <div class="user-details row" >
-                                                            <p class="user-name col-lg-12 col-md-12 col-6"><a href="#">Mark wiens</a> <span class="far fa-user" style="color: #c02628;"></span></p>
-                                                            <p class="date col-lg-12 col-md-12 col-6"><a>12 Dec, 2017</a> <span class="fa fa-calendar" style="color: #c02628;"></span></p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-9">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <div class="col-lg-12 col-md-9 ">
-                                                                    <a class="posts-title" href="blog-single.html">
-                                                                        <h3>Bring a Coloring Materials</h3>
-                                                                    </a>
-                                                                    <p>Subject: English</p>
-                                                                    <p class="excert">
-                                                                        MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.
-                                                                    </p>
-                                                                    <a href="blog-single.html" class="primary-btn">View More</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="single-post row" >
-                                                    <div class="col-lg-3  col-md-3 meta-details">
-                                                        <div class="user-details row" >
-                                                            <p class="user-name col-lg-12 col-md-12 col-6"><a href="#">Mark wiens</a> <span class="far fa-user" style="color: #c02628;"></span></p>
-                                                            <p class="date col-lg-12 col-md-12 col-6"><a>12 Dec, 2017</a> <span class="fa fa-calendar" style="color: #c02628;"></span></p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-9">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <div class="col-lg-12 col-md-9 ">
-                                                                    <a class="posts-title" href="blog-single.html">
-                                                                        <h3>Astronomy Binoculars A Great Alternative</h3>
-                                                                    </a>
-                                                                    <p>Subject: English</p>
-                                                                    <p class="excert">
-                                                                        MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.
-                                                                    </p>
-                                                                    <a href="blog-single.html" class="primary-btn">View More</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <?php
+                                                }
+                                                ?>
                                             </div>
                                         </div>
                                     </div>

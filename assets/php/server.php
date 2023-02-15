@@ -247,75 +247,6 @@ if (isset($_POST['updatePassword'])) {
 //END
 
 //Faculty Process
-if (isset($_POST['student']) || isset($_POST['fetcher'])) {
-    $current_hour = date('h');
-    $current_minute = date('i');
-    $AM_PM = date('A');
-
-    $date = date("Y-m-d");
-    $time = $current_hour . ':' . $current_minute . ' ' . $AM_PM;
-
-    $studentID = $_POST['student'];
-    $fetcherID = $_POST['fetcher'];
-
-    if (empty($fetcherID)) {
-        $fetcherID = $studentID;
-    }
-
-    $checkAttendance = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$studentID}' AND A_date = '{$date}'");
-    $attendanceData = $checkAttendance->fetch_assoc();
-
-    if ($checkAttendance->num_rows == 0) {
-        $timeIN = $mysqli->query("INSERT INTO attendance (SR_number, A_date, A_time_IN, A_fetcher_IN) VALUES ('{$studentID}', '{$date}', '{$time}', '{$fetcherID}')");
-        if ($timeIN) {
-            function_alert("PRESENT " . $studentID);
-
-            $mail->addAddress($studentInfo['SR_email']);
-            $mail->Subject = 'Attendance: Time In';
-
-            $mail->Body = '<h1>Student Timed In</h1>
-                       <br>
-                       <p>ATTENDANCE DETAILS</p><br>
-                       <b>Time: </b>' . $time . '<br>
-                       <b>Date: </b>' . $date . '<br>';
-
-            if (!$mail->send()) {
-                echo 'Mailer Error: ';
-            } else {
-                echo 'The email message was sent!';
-            }
-        }
-    } else if (empty($attendanceData['A_time_OUT']) || empty($attendanceData['A_fetcher_OUT'])) {
-        echo '
-            <script>
-                if(confirm("Are you sure you want to mark as fetched this student?") == true) {
-                    ' . $timeOUT = $mysqli->query("UPDATE attendance SET A_time_OUT = '{$time}', A_fetcher_OUT = '{$fetcherID}' WHERE SR_number = '{$studentID}'") . '
-                } 
-            </script>';
-
-        if ($timeOUT) {
-            function_alert("TIME OUT " . $studentID);
-
-            $mail->addAddress($studentInfo['SR_email']);
-            $mail->Subject = 'Attendance: Time Out';
-
-            $mail->Body = '<h1>Student Timed Out</h1>
-                       <br>
-                       <p>Attendance Detail</p><br>
-                       <b>Time: </b>' . $time . '<br>
-                       <b>Date: </b>' . $date . '<br>
-                       <b>Fetched By: </b>' . $fetcherID . '<br>';
-
-            if (!$mail->send()) {
-                echo 'Mailer Error: ';
-            } else {
-                echo 'The email message was sent!';
-            }
-        }
-    } else {
-        function_alert("Student already timed out");
-    }
-}
 if (isset($_POST['encode'])) {
     $SR_number = $mysqli->real_escape_string($_POST['SR_number']);
     $Subject = $mysqli->real_escape_string($_POST['Subject']);
@@ -386,6 +317,7 @@ if (isset($_POST['saveBehavior'])) {
     }
 }
 if (isset($_POST['updateProfile'])) {
+    $F_department = $mysqli->real_escape_string($_POST['F_department']);
     $F_fname = $mysqli->real_escape_string($_POST['F_fname']);
     $F_mname    = $mysqli->real_escape_string($_POST['F_mname']);
     $F_lname = $mysqli->real_escape_string($_POST['F_lname']);
@@ -395,14 +327,19 @@ if (isset($_POST['updateProfile'])) {
     $F_birthday = $mysqli->real_escape_string($_POST['F_birthday']);
     $F_gender = $mysqli->real_escape_string($_POST['F_gender']);
 
+    $F_religion = $mysqli->real_escape_string($_POST['F_religion']);
+    $F_citizenship = $mysqli->real_escape_string($_POST['F_citizenship']);
+
     $F_address    = $mysqli->real_escape_string($_POST['F_address']);
+    $F_barangay    = $mysqli->real_escape_string($_POST['F_barangay']);
     $F_city    = $mysqli->real_escape_string($_POST['F_city']);
     $F_postal    = $mysqli->real_escape_string($_POST['F_postal']);
 
-    $F_number = $mysqli->real_escape_string($_POST['F_number']);
+    $F_contactNumber    = $mysqli->real_escape_string($_POST['F_contact']);
 
     $updateFaculty = "UPDATE faculty 
                       SET 
+                        F_department = '$F_department',
                         F_fname = '$F_fname', 
                         F_mname = '$F_mname',
                         F_lname = '$F_lname',
@@ -410,51 +347,30 @@ if (isset($_POST['updateProfile'])) {
                         F_age = '$F_age',
                         F_birthday = '$F_birthday',
                         F_gender = '$F_gender',
+                        F_religion = '$F_religion',
+                        F_citizenship = '$F_citizenship',
                         F_address = '$F_address',
+                        F_barangay = '$F_barangay',
                         F_city = '$F_city',
                         F_postal = '$F_postal',
-                        F_guardian = '$F_guardian',
-                        F_contact = '$F_contact',
-                      WHERE F_number = '$F_number'";
+                        F_contactNumber = '$F_contactNumber'
+                      WHERE F_number = '{$_SESSION['F_number']}'";
     $resultupdateFaculty = $mysqli->query($updateFaculty);
-
-    if ($resultupdateFaculty) {
-        header('Location: ../admin/addFaculty.php');
-    } else {
-        echo "error" . $mysqli->error;
-    }
 }
 if (isset($_POST['addReminders'])) {
     $author = $mysqli->real_escape_string($_POST['author']);
     $header = $mysqli->real_escape_string($_POST['header']);
+    $subject = $mysqli->real_escape_string($_POST['subject']);
     $MSG = $mysqli->real_escape_string($_POST['MSG']);
-    $ANC_type = "REMINDERS";
     $date = $mysqli->real_escape_string($_POST['date']);
+    $dateposted = date("Y/m/d");
 
-    $addReminders = "INSERT INTO announcement(author, header, body, ANC_type, datePosted)
-                     VALUE ('$author', '$header', '$MSG','$ANC_type', '$date')";
+    $addReminders = "INSERT INTO reminders(header, date_posted, author, subject, msg, deadline)
+                     VALUE ('$header', '$dateposted', '$author','$subject', '$MSG', '$date')";
     $resultaddReminders = $mysqli->query($addReminders);
 
     if ($resultaddReminders) {
         header('Location: ../faculty/reminders.php');
-    } else {
-        echo "error" . $mysqli->error;
-    }
-}
-if (isset($_POST['addAssignments'])) {
-    $TeacherName = $mysqli->real_escape_string($_POST['TeacherName']);
-    $header = $mysqli->real_escape_string($_POST['header']);
-    $MSG = $mysqli->real_escape_string($_POST['MSG']);
-    $ANC_type = "ASSIGNMENT";
-    $dateposted = $mysqli->real_escape_string($_POST['dateposted']);
-    $duedate = $mysqli->real_escape_string($_POST['duedate']);
-
-    $addAssignment = "INSERT INTO announcement(author, header, body, ANC_type, datePosted, dueDate)
-                     VALUE ('$TeacherName', '$header', '$MSG','$ANC_type', '$dateposted', '$duedate')";
-    $resultaddAssignment = $mysqli->query($addAssignment);
-
-    if ($resultaddAssignment) {
-        header('Location: ../faculty/assignments.php');
     } else {
         echo "error" . $mysqli->error;
     }
@@ -475,24 +391,7 @@ if (isset($_POST['editReminders'])) {
         echo "error" . $mysqli->error;
     }
 }
-if (isset($_POST['editAssigments'])) {
-    $ANC_ID = $mysqli->real_escape_string($_POST['ANC_ID']);
-    $header = $mysqli->real_escape_string($_POST['header']);
-    $MSG = $mysqli->real_escape_string($_POST['MSG']);
-    $dateposted = $mysqli->real_escape_string($_POST['dateposted']);
-    $duedate = $mysqli->real_escape_string($_POST['duedate']);
 
-    $updateAssignment = "UPDATE reminders 
-                         SET header = '$header', body = '$MSG', datePosted = '$dateposted', dueDate = '$duedate',
-                         WHERE ANC_ID = '$ANC_ID'";
-    $resultupdateAssignment = $mysqli->query($updateAssignment);
-
-    if ($resultupdateAssignment) {
-        header('Location: ../faculty/assignments.php');
-    } else {
-        echo "error" . $mysqli->error;
-    }
-}
 //End
 
 //Admin Process
@@ -563,6 +462,7 @@ if (isset($_POST['regStudent'])) {
     }
 
     $SR_number = $year . "-" . $format_StudentCounter . "-SP";
+    $timeAdded = date("Y/m/d");
 
     $regStudent = "INSERT INTO studentrecord(
                     SR_number, SR_year, 
@@ -570,14 +470,14 @@ if (isset($_POST['regStudent'])) {
                     SR_age, SR_birthday, SR_birthplace, SR_gender,
                     SR_religion, SR_citizenship, SR_grade, SR_section,
                     SR_address, SR_barangay, SR_city, SR_state, SR_postal, 
-                    SR_email)
+                    SR_email, SR_added)
                     VALUES(
                     '$SR_number', '$year', 
                     '$S_lname', '$S_fname', '$S_mname', '$S_suffix',
                     '$S_age', '$S_birthday', '$S_birthplace', '$S_gender',
                     '$S_religion','$S_citizenship', '$S_grade', '$S_section',
                     '$S_address', '$S_barangay', '$S_city', '$S_state', '$S_postal',
-                    '$S_email')";
+                    '$S_email', '$timeAdded')";
     $RunregStudent = $mysqli->query($regStudent);
     $regGuardian = "INSERT INTO guardian(
                     G_guardianOfStudent,
@@ -869,18 +769,25 @@ if (isset($_POST['UpdateGrade'])) {
     }
 }
 if (isset($_POST['addSubject'])) {
-    $subjectName = $mysqli->real_escape_string($_POST['subjectName']);
-    $minYearLevel = $mysqli->real_escape_string($_POST['minYearLevel']);
-    $maxYearLevel = $mysqli->real_escape_string($_POST['maxYearLevel']);
-
-    $addSubject = $mysqli->query("INSERT INTO subjectperyear('subjectName', 'minYearLevel', 'maxYearLevel') VALUES('{$subjectName}','{$minYearLevel}','{$maxYearLevel}',)");
-}
-if (isset($_POST['updateSubjectName'])) {
     $subjectName = $mysqli->real_escape_string($_POST['sbjName']);
     $minYearLevel = $mysqli->real_escape_string($_POST['minYearLevel']);
     $maxYearLevel = $mysqli->real_escape_string($_POST['maxYearLevel']);
 
-    $updateSubject = $mysqli->query("UPDATE subjectperyear SET minYearLevel = '{$minYearLevel}', maxYearLevel = '{$maxYearLevel}' WHERE subjectName = '{$subjectName}')");
+    $addSubject = $mysqli->query("INSERT INTO subjectperyear(subjectName, minYearLevel, maxYearLevel) VALUES('{$subjectName}','{$minYearLevel}','{$maxYearLevel}')");
+}
+if (isset($_POST['updateCurr'])) {
+    $subjectName = $_POST['sbjName'];
+    $minYearLevel = $_POST['minYearLevel'];
+    $maxYearLevel = $_POST['maxYearLevel'];
+
+    $updateSubject = $mysqli->query("UPDATE subjectperyear SET minYearLevel = '$minYearLevel', maxYearLevel = '$maxYearLevel' WHERE subjectName = '$subjectName'");
+}
+if (isset($_POST['deleteCurr'])) {
+    $subjectName = $mysqli->real_escape_string($_POST['sbjName']);
+    $minYearLevel = $mysqli->real_escape_string($_POST['minYearLevel']);
+    $maxYearLevel = $mysqli->real_escape_string($_POST['maxYearLevel']);
+
+    $deleteSubject = $mysqli->query("DELETE from subjectperyear WHERE minYearLevel = '{$minYearLevel}' AND maxYearLevel = '{$maxYearLevel}' AND subjectName = '{$subjectName}'");
 }
 if (isset($_POST['addAdmin'])) {
     $adminName = $mysqli->real_escape_string($_POST['adminName']);
@@ -944,10 +851,19 @@ if (isset($_POST['updateSchedule'])) { //NOT WORKING
         echo "UPDATE FAIL CONFLICT IN TIME";
     }
 }
+if (isset($_POST['postAnnouncement'])) {
+    $author = $_POST['author'];
+    $date = $_POST['date'];
+    $subject = $_POST['subject'];
+    $message = $_POST['message'];
 
-//TO DO LIST
-if (isset($_POST['editRoles'])) {
-    # code...
+    $CreateAnnouncement = $mysqli->query("INSERT INTO announcement(header, author, date, msg) VALUE('{$subject}', '{$author}', '{$date}', '{$message}')");
+}
+if (isset($_POST['assignAdvisor'])) {
+    $section = $_POST['section'];
+    $advisor = $_POST['advisor'];
+
+    $assignAdvisor = $mysqli->query("UPDATE sections SET S_adviser = '{$advisor}' WHERE S_name = '{$section}'");
 }
 
 

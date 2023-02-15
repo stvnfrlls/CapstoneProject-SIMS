@@ -1,7 +1,7 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (empty($_SESSION['AD_number'])) {
+if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 } else {
     $gradeList = "SELECT DISTINCT S_yearLevel FROM sections";
@@ -47,7 +47,7 @@ if (empty($_SESSION['AD_number'])) {
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link href="../assets/img/favicon.png" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -77,13 +77,7 @@ if (empty($_SESSION['AD_number'])) {
 <body>
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-        <img class="m-3" src="../assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">
-        <div class="d-flex align-items-center justify-content-center text-center">
-            <a href="../index.php" class="navbar-brand ms-4 ms-lg-0 text-center">
-                <h1 class="cdsp">Colegio De San Pedro</h1>
-                <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
-            </a>
-        </div>
+        <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
             <span class="mdi mdi-menu"></span>
         </button>
@@ -176,7 +170,7 @@ if (empty($_SESSION['AD_number'])) {
                         </a>
                     </li>
                     <!-- line 5 -->
-                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Reports</li>
+                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Attendance Report</li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/dailyReports.php">
                             <i class=""></i>
@@ -273,9 +267,12 @@ if (empty($_SESSION['AD_number'])) {
                                                                                             <?php echo $subjects[$rowCount]['subjectName']; ?>
                                                                                             <input type="hidden" name="sbjName" value="<?php echo $subjects[$rowCount]['subjectName'] ?>">
                                                                                         </td>
-                                                                                        <td><input type="number" class="form-control text-center" value="<?php echo $subjects[$rowCount]['minYearLevel']; ?>"></td>
-                                                                                        <td><input type="number" class="form-control text-center" value="<?php echo  $subjects[$rowCount]['maxYearLevel']; ?>"></td>
-                                                                                        <td><?php echo '<input type="submit" style="color: #ffffff;" class="btn btn-primary" name="updateSubjectName" value="UPDATE">'; ?></td>
+                                                                                        <td><input type="number" name="minYearLevel" class="form-control text-center" value="<?php echo $subjects[$rowCount]['minYearLevel']; ?>"></td>
+                                                                                        <td><input type="number" name="maxYearLevel" class="form-control text-center" value="<?php echo  $subjects[$rowCount]['maxYearLevel']; ?>"></td>
+                                                                                        <td>
+                                                                                            <input type="submit" style="color: #ffffff;" class="btn btn-primary" value="UPDATE" name="updateCurr">
+                                                                                            <input type="submit" class="btn btn-secondary" value="DELETE" name="deleteCurr">
+                                                                                        </td>
                                                                                     </tr>
                                                                                 </form>
                                                                             <?php $rowCount++;
@@ -295,14 +292,15 @@ if (empty($_SESSION['AD_number'])) {
                                                                                 <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
                                                                                     <tr>
                                                                                         <td><?php echo $rowCount; ?></td>
-                                                                                        <td><?php echo $subjects[$rowCount]['subjectName']; ?></td>
-                                                                                        <td><input type="number" class="form-control text-center" value="<?php echo $subjects[$rowCount]['minYearLevel']; ?>"></td>
-                                                                                        <td><input type="number" class="form-control text-center" value="<?php echo  $subjects[$rowCount]['maxYearLevel']; ?>"></td>
                                                                                         <td>
-                                                                                            <?php
-                                                                                            echo '<input type="submit" style="color: #ffffff;" class="btn btn-primary" value="UPDATE">';
-                                                                                            echo '<input type="submit" class="btn btn-secondary" value="DELETE">';
-                                                                                            ?>
+                                                                                            <?php echo $subjects[$rowCount]['subjectName']; ?>
+                                                                                            <input type="hidden" name="sbjName" value="<?php echo $subjects[$rowCount]['subjectName'] ?>">
+                                                                                        </td>
+                                                                                        <td><input type="number" name="minYearLevel" class="form-control text-center" value="<?php echo $subjects[$rowCount]['minYearLevel']; ?>"></td>
+                                                                                        <td><input type="number" name="maxYearLevel" class="form-control text-center" value="<?php echo  $subjects[$rowCount]['maxYearLevel']; ?>"></td>
+                                                                                        <td>
+                                                                                            <input type="submit" style="color: #ffffff;" class="btn btn-primary" value="UPDATE" name="updateCurr">
+                                                                                            <input type="submit" class="btn btn-secondary" value="DELETE" name="deleteCurr">
                                                                                         </td>
                                                                                     </tr>
                                                                                 </form>
@@ -311,10 +309,10 @@ if (empty($_SESSION['AD_number'])) {
                                                                             <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
                                                                                 <tr>
                                                                                     <td>ADD</td>
-                                                                                    <td><input type="text" class="form-control"></td>
-                                                                                    <td><input type="number" class="form-control"></td>
-                                                                                    <td><input type="number" class="form-control"></td>
-                                                                                    <td><?php echo '<input type="submit" style="color: #ffffff;" class="btn btn-primary" value="ADD">'; ?></td>
+                                                                                    <td><input type="text" name="sbjName" class="form-control"></td>
+                                                                                    <td><input type="number" name="minYearLevel" class="form-control"></td>
+                                                                                    <td><input type="number" name="maxYearLevel" class="form-control"></td>
+                                                                                    <td><input type="submit" style="color: #ffffff;" class="btn btn-primary" value="ADD" name="addSubject"></td>
                                                                                 </tr>
                                                                             </form>
                                                                         <?php }

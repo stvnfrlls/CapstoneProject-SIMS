@@ -1,19 +1,21 @@
 <?php
 require_once("../assets/php/server.php");
 
-$ST_number = $_SESSION['SR_number'];
+if (!isset($_SESSION['SR_number'])) {
+    header('Location: ../auth/login.php');
+} else {
+    $studentInformation = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$_SESSION['SR_number']}'");
+    $studentData = $studentInformation->fetch_assoc();
 
-$studentInformation = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$ST_number}'");
-$studentData = $studentInformation->fetch_assoc();
+    $GradeSection = $mysqli->query("SELECT * FROM sections WHERE S_yearLevel = '{$studentData['SR_grade']}' AND S_name = '{$studentData['SR_section']}'");
+    $GradeSectionData = $GradeSection->fetch_assoc();
 
-$GradeSection = $mysqli->query("SELECT * FROM sections WHERE S_yearLevel = '{$studentData['SR_grade']}' AND S_name = '{$studentData['SR_section']}'");
-$GradeSectionData = $GradeSection->fetch_assoc();
+    $Faculty = $mysqli->query("SELECT F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$GradeSectionData['S_adviser']}'");
+    $FacultyData = $Faculty->fetch_assoc();
 
-$Faculty = $mysqli->query("SELECT F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$GradeSectionData['S_adviser']}'");
-$FacultyData = $Faculty->fetch_assoc();
-
-$getStudentGrades = "SELECT * FROM grades WHERE SR_number = '$ST_number'";
-$resultgetStudentGrades = $mysqli->query($getStudentGrades);
+    $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '{$_SESSION['SR_number']}'";
+    $resultgetStudentGrades = $mysqli->query($getStudentGrades);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -136,43 +138,75 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                             <tbody>
                                 <?php
                                 $studentGrades = $mysqli->query("SELECT * FROM grades WHERE SR_number = '{$_SESSION['SR_number']}'");
-                                while ($studentGradesData = $studentGrades->fetch_assoc()) { ?>
+
+                                if (mysqli_num_rows($studentGrades) > 0) {
+                                    while ($studentGradesData = $studentGrades->fetch_assoc()) { ?>
+                                        <tr>
+                                            <td class="hatdog"><?php echo $studentGradesData['G_learningArea']; ?></td>
+                                            <?php
+                                            if ($studentGradesData['G_gradesQ1']) { ?>
+                                                <td class="hatdog"><?php echo $studentGradesData['G_gradesQ1']; ?></td>
+                                            <?php
+                                            } else { ?>
+                                                <td class="hatdog"></td>
+                                            <?php } ?>
+
+                                            <?php
+                                            if ($studentGradesData['G_gradesQ2']) { ?>
+                                                <td class="hatdog"><?php echo $studentGradesData['G_gradesQ2']; ?></td>
+                                            <?php
+                                            } else { ?>
+                                                <td class="hatdog"></td>
+                                            <?php } ?>
+
+                                            <?php
+                                            if ($studentGradesData['G_gradesQ3']) { ?>
+                                                <td class="hatdog"><?php echo $studentGradesData['G_gradesQ3']; ?></td>
+                                            <?php
+                                            } else { ?>
+                                                <td class="hatdog"></td>
+                                            <?php } ?>
+
+                                            <?php
+                                            if ($studentGradesData['G_gradesQ4']) { ?>
+                                                <td class="hatdog"><?php echo $studentGradesData['G_gradesQ4']; ?></td>
+                                            <?php
+                                            } else { ?>
+                                                <td class="hatdog"></td>
+                                            <?php } ?>
+
+                                            <td class="hatdog">
+                                                <?php
+                                                if (empty($studentGradesData['G_finalgrade'])) {
+                                                    $sum = $studentGradesData['G_gradesQ1'] + $studentGradesData['G_gradesQ2'] + $studentGradesData['G_gradesQ3'] + $studentGradesData['G_gradesQ4'];
+                                                    $average = $sum / 4;
+                                                    echo round($average);
+                                                } else {
+                                                    echo $studentGradesData['G_finalgrade'];
+                                                }
+                                                ?>
+                                            </td>
+                                            <td class="hatdog">
+                                                <?php
+                                                $average = $studentGradesData['G_finalgrade'];
+                                                if ($average >= 90) {
+                                                    echo "Outstanding";
+                                                } else if ($average >= 85 || $average <= 89) {
+                                                    echo "Very Satisfactory";
+                                                } else if ($average >= 80 || $average <= 84) {
+                                                    echo "Satisfactory";
+                                                } else if ($average >= 75 || $average <= 79) {
+                                                    echo "Fairly Satisfactory";
+                                                } else if ($average < 75) {
+                                                    echo "Did Not Meet Expectations";
+                                                }
+                                                ?>
+                                            </td>
+                                        </tr>
+                                    <?php }
+                                } else { ?>
                                     <tr>
-                                        <td class="hatdog"><?php echo $studentGradesData['G_learningArea']; ?></td>
-                                        <?php
-                                        if ($studentGradesData['G_gradesQ1']) { ?>
-                                            <td class="hatdog"><?php echo $studentGradesData['G_gradesQ1']; ?></td>
-                                        <?php
-                                        } else { ?>
-                                            <td class="hatdog"></td>
-                                        <?php } ?>
-
-                                        <?php
-                                        if ($studentGradesData['G_gradesQ2']) { ?>
-                                            <td class="hatdog"><?php echo $studentGradesData['G_gradesQ2']; ?></td>
-                                        <?php
-                                        } else { ?>
-                                            <td class="hatdog"></td>
-                                        <?php } ?>
-
-                                        <?php
-                                        if ($studentGradesData['G_gradesQ3']) { ?>
-                                            <td class="hatdog"><?php echo $studentGradesData['G_gradesQ3']; ?></td>
-                                        <?php
-                                        } else { ?>
-                                            <td class="hatdog"></td>
-                                        <?php } ?>
-
-                                        <?php
-                                        if ($studentGradesData['G_gradesQ4']) { ?>
-                                            <td class="hatdog"><?php echo $studentGradesData['G_gradesQ4']; ?></td>
-                                        <?php
-                                        } else { ?>
-                                            <td class="hatdog"></td>
-                                        <?php } ?>
-
-                                        <td class="hatdog"><?php echo $studentGradesData['G_finalgrade']; ?></td>
-                                        <td class="hatdog">Passed</td>
+                                        <td colspan="10">NO DATA AVAILABLE</td>
                                     </tr>
                                 <?php }
                                 ?>
@@ -181,8 +215,14 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                     </div>
                     <table id="ave" class="table text-center" style="margin-top: 20px; margin-bottom: 20px;">
                         <tr>
-                            <td class="hatdog"> General Average</td>
-                            <td class="hatdog">90</td>
+                            <td class="hatdog">General Average</td>
+                            <td class="hatdog">
+                                <?php
+                                $GenAveQuery = $mysqli->query("SELECT round(avg(G_finalgrade)) FROM grades WHERE SR_number = '{$_SESSION['SR_number']}'");
+                                $GetgenAve = $GenAveQuery->fetch_assoc();
+                                echo $GetgenAve['round(avg(G_finalgrade))'];
+                                ?>
+                            </td>
                         </tr>
                     </table>
                     <div class="container">
@@ -237,18 +277,12 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                             </thead>
                             <tbody>
                                 <?php
-                                $getBehaviorData = $mysqli->query("SELECT 
-                                                behavior_category.B_ID, behavior_category.core_value_area, behavior_category.core_value_subheading,
-                                                behavior.SR_number, behavior.CV_Area, behavior.CV_valueQ1,
-                                                behavior.CV_valueQ2, behavior.CV_valueQ3, behavior.CV_valueQ4
-                                                FROM behavior_category
-                                                INNER JOIN behavior 
-                                                ON behavior_category.core_value_area = behavior.CV_Area
-                                                WHERE behavior.SR_number = '{$_SESSION['SR_number']}'");
+                                $getBehaviorData = $mysqli->query("SELECT SR_number, CV_Area, CV_valueQ1, CV_valueQ2, CV_valueQ3, CV_valueQ4
+                                                                  FROM behavior WHERE SR_number = '{$_SESSION['SR_number']}'");
                                 $getBehaviorAreas = $mysqli->query("SELECT * FROM behavior_category");
-                                $BehaviorDataArray = array();
+                                $BehaviorAreasArray = array();
                                 while ($DataBehaviorCategory = $getBehaviorAreas->fetch_assoc()) {
-                                    $BehaviorDataArray[] = $DataBehaviorCategory;
+                                    $BehaviorAreasArray[] = $DataBehaviorCategory;
                                 }
                                 ?>
                                 <?php
@@ -258,11 +292,12 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                         <tr>
                                             <?php if ($i % 2 == 0) { ?>
                                                 <td rowspan="2" class="hatdog">
-                                                    <?php echo preg_replace('/[0-9]/', '', $BehaviorData['CV_Area']); ?>
+                                                    <?php echo $BehaviorAreasArray[$i]['core_value_area']; ?>
                                                 </td>
                                             <?php } ?>
 
-                                            <td rowspan="1" class="hatdog"><?php echo $BehaviorData['core_value_subheading']; ?>
+                                            <td rowspan="1" class="hatdog">
+                                                <?php echo $BehaviorAreasArray[$i]['core_value_subheading']; ?>
                                             </td>
                                             <td rowspan="1" class="hatdog"><?php echo $BehaviorData['CV_valueQ1']; ?>
                                             </td>
@@ -273,9 +308,13 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                             <td rowspan="1" class="hatdog"><?php echo $BehaviorData['CV_valueQ4']; ?>
                                             </td>
                                         </tr>
-                                <?php $i++;
+                                    <?php $i++;
                                     }
-                                }
+                                } else { ?>
+                                    <tr>
+                                        <td colspan="10">No Data Available</td>
+                                    </tr>
+                                <?php }
                                 ?>
                             </tbody>
                         </table>

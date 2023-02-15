@@ -1,7 +1,7 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (!isset($_SESSION['AD_number'])) {
+if (empty($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 }
 ?>
@@ -17,7 +17,7 @@ if (!isset($_SESSION['AD_number'])) {
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="../assets/img/favicon.png" rel="icon">
+    <link href="img/favicon.ico" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -58,107 +58,57 @@ if (!isset($_SESSION['AD_number'])) {
         <div class="container-fluid page-body-wrapper">
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
                 <ul class="nav">
-                    <li class="nav-item" style="text-align:center; font-size: 20px; color: #b9b9b9; margin-top:20px;">ADMIN</li>
+                    <li class="nav-item" style="text-align:center; font-size: 20px; color: #b9b9b9; margin-top:20px;">FACULTY</li>
                     <!-- line 1 -->
-                    <li class="nav-item nav-category" style="color: #b9b9b9;">Menu</li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/dashboard.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/createAdmin.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Create Admin</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/addStudent.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Add Student</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/announcement.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Announcements</span>
-                        </a>
-                    </li>
-                    <!-- line 2 -->
-                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Student</li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/student.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Student Records</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/editgrades.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Grades</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/movingUp.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Status</span>
-                        </a>
-                    </li>
-                    <!-- line 3 -->
-                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Faculty</li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/addFaculty.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Add Faculty</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/faculty.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Faculty Records</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/assignAdvisory.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Assign Advisory</span>
-                        </a>
-                    </li>
-                    <!-- line 4 -->
-                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Learning Areas</li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/editlearningareas.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Scheduling</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/modifyCurriculum.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Curriculum</span>
-                        </a>
-                    </li>
-                    <!-- line 5 -->
-                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Attendance Report</li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/dailyReports.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Daily Reports</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/monthlyReports.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Monthly Reports</span>
-                        </a>
-                    </li>
-                    <!-- line 5 -->
-                    <li class="nav-item nav-category" style="padding-top: 10px;"></li>
+                    <li class="nav-item nav-category">Profile</li>
                     <li class="nav-item">
                         <a class="nav-link" href="">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Logout</span>
+                            <span class="menu-title">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/viewProfile.php">
+                            <i class=""></i>
+                            <span class="menu-title">View Profile</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/createReminder.php">
+                            <i class=""></i>
+                            <span class="menu-title">Create Reminders</span>
+                        </a>
+                    </li>
+                    <!-- line 2 -->
+                    <li class="nav-item nav-category">Menu</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/scanQR.php">
+                            <i class=""></i>
+                            <span class="menu-title">Scan QR</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/advisoryPage.php">
+                            <i class=""></i>
+                            <span class="menu-title">Advisory</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/classList.php">
+                            <i class=""></i>
+                            <span class="menu-title">Class List</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/encodegrades.php">
+                            <i class=""></i>
+                            <span class="menu-title">Encode Grades</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/reminders.php">
+                            <i class=""></i>
+                            <span class="menu-title">Reminders</span>
                         </a>
                     </li>
                 </ul>
@@ -193,10 +143,22 @@ if (!isset($_SESSION['AD_number'])) {
                                                     $runsectionList = $mysqli->query($sectionList);
 
                                                     while ($sectionData = $runsectionList->fetch_assoc()) { ?>
-                                                        <a class="dropdown-item" href="movingUp.php?GradeLevel=<?php echo $sectionData['S_yearLevel'] ?>">
+                                                        <a class="dropdown-item" href="student.php?GradeLevel=<?php echo $sectionData['S_yearLevel'] ?>">
                                                             <?php echo "Grade - " . $sectionData['S_yearLevel']; ?>
                                                         </a>
                                                     <?php } ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="btn-group">
+                                            <div class="dropdown">
+                                                <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">Section
+                                                    <i class='fa fa-caret-down'></i>
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                <a class="dropdown-item" href="">Chrysanthemum</a>
+                                                <a class="dropdown-item" href="">Einstein</a>
+                                                <a class="dropdown-item" href="">Narra</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -229,9 +191,9 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     <tbody>
                                                                         <?php
                                                                         if (!empty($_GET['GradeLevel'])) {
-                                                                            $ListofStudents = "SELECT * FROM studentrecord WHERE SR_grade = '{$_GET['GradeLevel']}' ORDER BY SR_number";
+                                                                            $ListofStudents = "SELECT * FROM studentrecord WHERE SR_grade = '{$_GET['GradeLevel']}'";
                                                                         } else {
-                                                                            $ListofStudents = "SELECT * FROM studentrecord ORDER BY SR_number";
+                                                                            $ListofStudents = "SELECT * FROM studentrecord ORDER BY SR_grade";
                                                                         }
 
                                                                         $resultListofStudents = $mysqli->query($ListofStudents);
@@ -244,44 +206,18 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                     <td class="tablestyle"><?php echo $rowCount ?></td>
                                                                                     <td class="tablestyle"><?php echo $data['SR_number'] . " - " . $data['SR_lname'] . ", " . $data['SR_fname'] ?></td>
                                                                                     <td class="tablestyle"><?php echo "Grade " . $data['SR_grade'] . " - " . $data['SR_section'] ?></td>
+                                                                                    <td class="tablestyle">Passed or Failed</td>
                                                                                     <td class="tablestyle">
-                                                                                        <?php
-                                                                                        $GradeStatus = $mysqli->query("SELECT ROUND(AVG(G_finalgrade)) AS finalgrade FROM grades WHERE SR_number = '{$data['SR_number']}'");
-                                                                                        $getAvgGrade = $GradeStatus->fetch_assoc();
+                                                                                        <select class="form-select" aria-label="Default select example">
+                                                                                            <option value=""></option>
+                                                                                            <?php
+                                                                                            $sections = $mysqli->query("SELECT * FROM sections");
 
-                                                                                        if ($getAvgGrade['finalgrade'] >= 75) {
-                                                                                            echo "PASSED";
-                                                                                        } else {
-                                                                                            echo "FAILED";
-                                                                                        }
-                                                                                        ?>
-                                                                                    </td>
-                                                                                    <td class="tablestyle">
-                                                                                        <?php
-                                                                                        if ($getAvgGrade['finalgrade'] >= 75) { ?>
-                                                                                            <select class="form-select" aria-label="Default select example">
-                                                                                                <option value=""></option>
-                                                                                                <?php
-                                                                                                if ($data['SR_grade'] == "KINDER") {
-                                                                                                    $data['SR_grade'] = 0;
-                                                                                                }
-                                                                                                $next = $data['SR_grade'] + 1;
-                                                                                                $sections = $mysqli->query("SELECT S_name, S_yearLevel FROM sections WHERE S_yearLevel = '{$next}'");
-
-                                                                                                if ($data['SR_grade'] == 6) {
-                                                                                                    echo '<option value="">Graduation</option>';
-                                                                                                } else {
-                                                                                                    while ($listSections = $sections->fetch_assoc()) {
-                                                                                                        echo '<option value="">Grade ' . $listSections['S_yearLevel'] . ' - ' . $listSections['S_name'] . '</option>';
-                                                                                                    }
-                                                                                                }
-                                                                                                ?>
-                                                                                            </select>
-                                                                                        <?php
-                                                                                        } else { ?>
-                                                                                            <select class="form-select" aria-label="Default select example" disabled></select>
-                                                                                        <?php }
-                                                                                        ?>
+                                                                                            while ($listSections = $sections->fetch_assoc()) {
+                                                                                                echo '<option value="">Grade ' . $listSections['S_yearLevel'] . ' - ' . $listSections['S_name'] . '</option>';
+                                                                                            }
+                                                                                            ?>
+                                                                                        </select>
                                                                                     </td>
                                                                                     <td class="tablestyle">
                                                                                         <select class="form-select" aria-label="Default select example">

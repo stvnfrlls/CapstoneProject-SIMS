@@ -1,8 +1,11 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (isset($_POST['confirm_faculty'])) {
-  header('Location: confirmfaculty.php');
+if (!isset($_SESSION['F_number'])) {
+  header('Location: ../auth/login.php');
+} else {
+  $getfacultyinfo = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
+  $facultyInfo = $getfacultyinfo->fetch_assoc();
 }
 ?>
 
@@ -117,80 +120,73 @@ if (isset($_POST['confirm_faculty'])) {
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="home-tab">
-                <div class="d-sm-flex align-items-center justify-content-between border-bottom">
-                  <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                    <h2 class="fw-bold text-primary text-uppercase">Create Reminders</h2>
+          <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="home-tab">
+                  <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                    <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
+                      <h2 class="fw-bold text-primary text-uppercase">Create Reminders</h2>
+                    </div>
                   </div>
-                </div>
-                <div class="tab-content tab-content-basic">
-                  <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                    <div class="row">
-                      <div class="col-12 grid-margin">
-                        <div class="card">
-                          <div class="card-body">
-                            <h4 class="card-title">Create Reminders</h4>
-                            <form class="form-sample" action="confirmfaculty.php" method="POST">
-
+                  <div class="tab-content tab-content-basic">
+                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                      <div class="row">
+                        <div class="col-12 grid-margin">
+                          <div class="card">
+                            <div class="card-body">
+                              <h4 class="card-title">Create Reminders</h4>
                               <div class="row">
                                 <div class="row g-3">
                                   <div class="col-md-6">
                                     <div class="form-floating">
-                                      <input type="text" class="form-control" id="name" placeholder="Your Name">
+                                      <input type="hidden" name="author" value="<?php echo $facultyInfo['F_number'] ?>">
+                                      <input type="text" class="form-control" id="name" value="<?php echo $facultyInfo['F_lname'] .  ", " . $facultyInfo['F_fname'] . " " . substr($facultyInfo['F_mname'], 0, 1) ?>" readonly>
                                       <label for="name">Your Name</label>
                                     </div>
                                   </div>
                                   <div class="col-md-6">
                                     <div class="form-floating">
-                                      <input type="email" class="form-control" id="email" placeholder="Your Email">
+                                      <input type="date" class="form-control" name="date" placeholder="Your Email">
                                       <label for="email">Deadline</label>
                                     </div>
                                   </div>
                                   <div class="col-6">
                                     <div class="form-floating">
-                                      <input type="text" class="form-control" id="subject" placeholder="Subject">
+                                      <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject">
                                       <label for="subject">Subject</label>
                                     </div>
                                   </div>
                                   <div class="col-6">
                                     <div class="form-floating">
-                                      <input type="text" class="form-control" id="subject" placeholder="Subject">
+                                      <input type="text" class="form-control"  name="header" placeholder="Subject">
                                       <label for="subject">Title</label>
                                     </div>
                                   </div>
                                   <div class="col-12">
                                     <div class="form-floating">
-                                      <textarea class="form-control" placeholder="Leave a message here" id="message" style="height: 100px"></textarea>
-                                      <label for="message">Main Details</label>
-                                    </div>
-                                  </div>
-                                  <div class="col-12">
-                                    <div class="form-floating">
-                                      <textarea class="form-control" placeholder="Leave a message here" id="message" style="height: 250px"></textarea>
-                                      <label for="message">Description</label>
+                                      <textarea class="form-control" placeholder="Leave a message here" id="message" name="MSG" style="height: 200px"></textarea>
+                                      <label for="message">Details</label>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-
-                            </form>
+                            </div>
                           </div>
                         </div>
-                      </div>
 
+                      </div>
                     </div>
                   </div>
-                </div>
 
+                </div>
+              </div>
+              <div style="text-align: center;">
+                <button type="submit" class="btn btn-primary me-2" name="addReminders">Submit</button>
+                <button class="btn btn-light">Cancel</button>
               </div>
             </div>
-            <form style="text-align: center;">
-              <button type="submit" class="btn btn-primary me-2">Submit</button>
-              <button class="btn btn-light">Cancel</button>
-            </form>
-          </div>
+          </form>
         </div>
         <!-- content-wrapper ends -->
       </div>

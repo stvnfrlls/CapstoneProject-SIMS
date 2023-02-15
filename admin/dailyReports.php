@@ -1,7 +1,7 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['UD_role'] != "admin") {
+if (!isset($_SESSION['AD_number'])) {
   header('Location: ../auth/login.php');
 }
 ?>
@@ -17,7 +17,7 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
   <meta content="" name="description">
 
   <!-- Favicon -->
-  <link href="img/favicon.ico" rel="icon">
+  <link href="../assets/img/favicon.png" rel="icon">
 
   <!-- Google Web Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -47,13 +47,7 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
 <body>
   <!-- Navbar Start -->
   <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-    <img class="m-3" src="../assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">
-    <div class="d-flex align-items-center justify-content-center text-center">
-      <a href="../index.php" class="navbar-brand ms-4 ms-lg-0 text-center">
-        <h1 class="cdsp">Colegio De San Pedro</h1>
-        <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
-      </a>
-    </div>
+    <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
     <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
       <span class="mdi mdi-menu"></span>
     </button>
@@ -146,7 +140,7 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
             </a>
           </li>
           <!-- line 5 -->
-          <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Reports</li>
+          <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Attendance Report</li>
           <li class="nav-item">
             <a class="nav-link" href="../admin/dailyReports.php">
               <i class=""></i>
@@ -226,25 +220,25 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
                     </div>
 
                     <div class="btn-group">
-                        <div class="dropdown">
-                          <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
-                            Month<i class="fa fa-caret-down"></i>
-                          </button>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                            <a class="dropdown-item" href="">January</a>
-                            <a class="dropdown-item" href="">February</a>
-                            <a class="dropdown-item" href="">March</a>
-                            <a class="dropdown-item" href="">April</a>
-                            <a class="dropdown-item" href="">June</a>
-                            <a class="dropdown-item" href="">July</a>
-                            <a class="dropdown-item" href="">August</a>
-                            <a class="dropdown-item" href="">September</a>
-                            <a class="dropdown-item" href="">October</a>
-                            <a class="dropdown-item" href="">November</a>
-                            <a class="dropdown-item" href="">December</a>
-                          </div>
+                      <div class="dropdown">
+                        <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                          Month<i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                          <a class="dropdown-item" href="">January</a>
+                          <a class="dropdown-item" href="">February</a>
+                          <a class="dropdown-item" href="">March</a>
+                          <a class="dropdown-item" href="">April</a>
+                          <a class="dropdown-item" href="">June</a>
+                          <a class="dropdown-item" href="">July</a>
+                          <a class="dropdown-item" href="">August</a>
+                          <a class="dropdown-item" href="">September</a>
+                          <a class="dropdown-item" href="">October</a>
+                          <a class="dropdown-item" href="">November</a>
+                          <a class="dropdown-item" href="">December</a>
                         </div>
                       </div>
+                    </div>
                     <div class="row">
                       <div class="col-lg-12 d-flex flex-column">
                         <div class="row flex-grow">
@@ -255,7 +249,6 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
                                   <thead>
                                     <tr>
                                       <th>No.</th>
-                                      <th>Student Name</th>
                                       <th>Date</th>
                                       <th>Time In</th>
                                       <th>Time Out</th>
@@ -285,11 +278,18 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
                                     </style>
                                     <tr>
                                       <td class="tabledata">1</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">01/01/23</td>
+                                      <td class="tabledata">7:00AM</td>
+                                      <td class="tabledata">1:00PM</td>
+                                      <td class="tabledata" style="width: auto;">
+                                        <select class="form-select" required>
+                                          <option selected>Present</option>
+                                          <option value="Male">Late</option>
+                                          <option value="Female">Excuse</option>
+                                          <option value="NA">Absent</option>
+                                        </select>
+
+                                      </td>
                                     </tr>
                                   </tbody>
                                 </table>

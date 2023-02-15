@@ -1,11 +1,8 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (!isset($_SESSION['AD_number'])) {
+if (empty($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
-} else {
-    $admin = $mysqli->query("SELECT * FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
-    $adminData = $admin->fetch_assoc();
 }
 ?>
 
@@ -14,7 +11,7 @@ if (!isset($_SESSION['AD_number'])) {
 
 <head>
     <meta charset="utf-8">
-    <title>Create Announcement</title>
+    <title>Create Fetcher</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -30,7 +27,6 @@ if (!isset($_SESSION['AD_number'])) {
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
 
     <!-- Libraries Stylesheet -->
     <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
@@ -168,50 +164,54 @@ if (!isset($_SESSION['AD_number'])) {
                 </ul>
             </nav>
             <!-- partial -->
+
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="row">
-                        <form action="" method="post">
+                        <form class="form-sample" action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
                             <div class="col-sm-12">
                                 <div class="home-tab">
                                     <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                                         <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                                            <h2 class="fw-bold text-primary text-uppercase">Create Announcement</h2>
+                                            <h2 class="fw-bold text-primary text-uppercase">Create Fetcher</h2>
                                         </div>
                                     </div>
                                     <div class="tab-content tab-content-basic">
                                         <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                                             <div class="row">
                                                 <div class="col-12 grid-margin">
-                                                    <div class="card">
+                                                    <div class="card" style="width:70%; margin:auto;">
                                                         <div class="card-body">
-                                                            <h4 class="card-title">Create Reminders</h4>
-                                                            <div class="row">
-                                                                <div class="row g-3">
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-floating">
-                                                                            <input type="text" class="form-control" id="name" name="author" value="<?php echo "ADMIN: " . $adminData['AD_name'] ?>" placeholder="Your Name" readonly>
-                                                                            <label for="name">Your Name</label>
-                                                                        </div>
+                                                            <h4 class="card-title">Personal Information</h4>
+                                                            <div class="row" style="padding-bottom: 15px;">
+                                                                <div class="col-md-12">
+                                                                    <label class="col-sm-12 col-form-label">Full Name</label>
+                                                                    <div class="col-sm-12">
+                                                                        <input type="text" class="form-control" name="adminName" required>
                                                                     </div>
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-floating">
-                                                                            <input type="email" class="form-control" name="date" value="<?php echo  date('M/d/Y') ?>" readonly>
-                                                                            <label for="email">Date of the Event</label>
-                                                                        </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" style="padding-bottom: 15px;">
+                                                                <div class="col-md-12">
+                                                                    <label class="col-sm-12 col-form-label">Contact Number</label>
+                                                                    <div class="col-sm-12">
+                                                                        <input type="text" class="form-control" name="adminEmail" required>
                                                                     </div>
-
-                                                                    <div class="col-12">
-                                                                        <div class="form-floating">
-                                                                            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject">
-                                                                            <label for="subject">Title</label>
-                                                                        </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" style="padding-bottom: 15px;">
+                                                                <div class="col-md-12">
+                                                                    <label class="col-sm-12 col-form-label">Email Address</label>
+                                                                    <div class="col-sm-12">
+                                                                        <input type="password" class="form-control" name="adminPassword">
                                                                     </div>
-                                                                    <div class="col-12">
-                                                                        <div class="form-floating">
-                                                                            <textarea class="form-control" placeholder="Leave a message here" id="message" name="message" style="height: 250px"></textarea>
-                                                                            <label for="message">Description</label>
-                                                                        </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" style="padding-bottom: 15px;">
+                                                                <div class="col-md-12">
+                                                                    <label class="col-sm-12 col-form-label">Relationship to the Student</label>
+                                                                    <div class="col-sm-12">
+                                                                        <input type="password" class="form-control" name="confirmPassword">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -221,21 +221,20 @@ if (!isset($_SESSION['AD_number'])) {
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
-                            </div>
-                            <div style="text-align: center;">
-                                <button type="submit" name="postAnnouncement" class="btn btn-primary me-2">Post</button>
-                                <button class="btn btn-light">Back</button>
-                            </div>
+                                <div style="text-align: center;">
+                                    <button type="submit" class="btn btn-primary me-2" name="addAdmin">Create</button>
+                                    <button class="btn btn-light">Back</button>
+                                </div>
                         </form>
                     </div>
                 </div>
-                <!-- content-wrapper ends -->
             </div>
-            <!-- main-panel ends -->
         </div>
-        <!-- page-body-wrapper ends -->
+    </div>
+    <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
 
@@ -294,15 +293,14 @@ if (!isset($_SESSION['AD_number'])) {
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
     <!-- JavaScript Libraries -->
-
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
 
     <!-- Template Javascript -->
     <script src="../assets/js/main.js"></script>
 
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>
     <script src="../assets/js/admin/off-canvas.js"></script>
-    <script src="../assets/js/admin/file-upload.js"></script>
-
 </body>
 
 </html>
