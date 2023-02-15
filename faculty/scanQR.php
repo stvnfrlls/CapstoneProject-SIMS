@@ -13,6 +13,68 @@ if (!isset($_SESSION['F_number'])) {
         $attendance_array[] = $present_student;
     }
     $attendance_rowCount = 0;
+
+    if (isset($_POST['student']) || isset($_POST['fetcher'])) {
+
+        $date = date("Y-m-d");
+        $time = date("H:i A");
+
+        $studentID = $_POST['student'];
+        $fetcherID = $_POST['fetcher'];
+
+        if (empty($fetcherID)) {
+            $fetcherID = $studentID;
+        }
+
+        $checkAttendance = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$studentID}' AND A_date = '{$date}'");
+        $attendanceData = $checkAttendance->fetch_assoc();
+
+        $getemail = $mysqli->query("SELECT SR_email FROM studentrecord WHERE SR_number = '{$studentID}'");
+        $emailAd = $getemail->fetch_assoc();
+
+        if ($checkAttendance->num_rows == 0) {
+            $timeIN = $mysqli->query("INSERT INTO attendance (SR_number, A_date, A_time_IN, A_fetcher_IN) VALUES ('{$studentID}', '{$date}', '{$time}', '{$fetcherID}')");
+            if ($timeIN) {
+                $mail->addAddress($emailAd['SR_email']);
+                $mail->Subject = 'Attendance: Time In';
+
+                $mail->Body = '<h1>Student Timed In</h1>
+                           <br>
+                           <p>ATTENDANCE DETAILS</p><br>
+                           <b>Time: </b>' . $time . '<br>
+                           <b>Date: </b>' . $date . '<br>';
+
+                if (!$mail->send()) {
+                    echo 'Mailer Error: ';
+                } else {
+                    echo 'The email message was sent!';
+                }
+            }
+        } else if (empty($attendanceData['A_time_OUT']) || empty($attendanceData['A_fetcher_OUT'])) {
+
+            if (isset($timeOUT)) {
+                function_alert("TIME OUT " . $studentID);
+
+                $mail->addAddress($emailAd['SR_email']);
+                $mail->Subject = 'Attendance: Time Out';
+
+                $mail->Body = '<h1>Student Timed Out</h1>
+                           <br>
+                           <p>Attendance Detail</p><br>
+                           <b>Time: </b>' . $time . '<br>
+                           <b>Date: </b>' . $date . '<br>
+                           <b>Fetched By: </b>' . $fetcherID . '<br>';
+
+                if (!$mail->send()) {
+                    echo 'Mailer Error: ';
+                } else {
+                    echo 'The email message was sent!';
+                }
+            }
+        } else {
+            function_alert("Student already timed out");
+        }
+    }
 }
 ?>
 
@@ -191,59 +253,7 @@ if (!isset($_SESSION['F_number'])) {
                                                 </style>
                                             </form>
 
-                                            <button id="myBtn" class="btn btn-primary me-2" style="width: auto; color:white;">Modal (if qr code couldn't detect)</button>
-
-                                            <!-- The Modal -->
-
-                                            <div id="myModal" class="modal">
-                                                <style>
-                                                    @media (max-width: 414px) {
-                                                        .modal-content {
-                                                            width: 90% !important;
-                                                        }
-                                                    }
-
-                                                    @media (max-width: 768px) {
-                                                        .modal-content {
-                                                            width: 90% !important;
-                                                        }
-                                                    }
-
-                                                    @media (max-width: 1024px) {
-                                                        .modal-content {
-                                                            width: 70% !important;
-                                                        }
-                                                    }
-
-                                                    .modal-content {
-                                                        width: 30%;
-                                                    }
-                                                </style>
-                                                <!-- Modal content -->
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h2 style="font-family: 'Lato','san-serif'; text-align:center;">Couldn't detect QR Code!</h2>
-                                                        <span class="close"><i class="fa fa-times"></i></span>
-                                                    </div>
-                                                    <div class="modal-body" style="text-align: center;">
-                                                        <img src="https://cdn.onlinewebfonts.com/svg/img_2555.png" alt="cookies-img" height="90" width="400" />
-                                                        <p>Sorry! We couldn't read your QR code. Please input manually the student number below.</p>
-                                                        <div class="row d-flex justify-content-center mb-3">
-                                                            <div class="col text-center form-group form">
-                                                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="qr_form" class="form-horizontal">
-                                                                    <input type="text" name="student" class="form-control" id="input1" required><br>
-                                                                    <button type="submit" class="btn btn-primary me-2" style="color: white;">Enter</button>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <button id="myBtn1" class="btn btn-primary me-2" style="width: auto; color:white;">Modal for Time In (if qr code is detected)</button>
-
-                                            <!-- The Modal -->
-
+                                            <!-- present -->
                                             <div id="myModal1" class="modal">
                                                 <style>
                                                     @media (max-width: 414px) {
@@ -295,10 +305,7 @@ if (!isset($_SESSION['F_number'])) {
                                                 </div>
                                             </div>
 
-                                            <button id="myBtn2" class="btn btn-primary me-2" style="width: auto; color:white;">Modal for Time Out (if qr code is detected)</button>
-
-                                            <!-- The Modal -->
-
+                                            <!-- timeout -->
                                             <div id="myModal2" class="modal">
                                                 <style>
                                                     @media (max-width: 414px) {
@@ -541,7 +548,7 @@ if (!isset($_SESSION['F_number'])) {
     }).catch((err) => {
         console.error(err);
     });
-
+    const presentStudent = array();
     var studentID = document.getElementById('input1').value;
     var fetcherID = document.getElementById('input2').value;
     scanner.addListener('scan', function(c) {
@@ -549,6 +556,7 @@ if (!isset($_SESSION['F_number'])) {
 
         if (input.includes("S")) {
             document.getElementById('input1').value = input;
+            myModal1.style.display = "block";
             document.getElementById("qr_form").submit();
         } else {
             document.getElementById('input2').value = input;
