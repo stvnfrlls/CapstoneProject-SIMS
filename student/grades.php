@@ -101,6 +101,12 @@ if (!isset($_SESSION['SR_number'])) {
     <div class="container">
         <div class="row">
             <h2 class="text-uppercase text-center" style="padding-top: 40px;">Report Card</h2>
+            <p style="text-align: center;">School Year: 2022-2023</p>
+            <div class="btn-group m-3">
+                <form style="text-align: right;">
+                    <button type="submit" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3; text-align:center; font-size: 13px">Print <i class="fa fa-print" style="font-size: 12px;"></i></button>
+                </form>
+            </div>
             <div class="col m-3">
                 <table id="head" class="table" style="margin-bottom:20px;">
                     <tr>
@@ -258,9 +264,9 @@ if (!isset($_SESSION['SR_number'])) {
                         <table class="table text-center" style="margin-top: 30px;">
                             <thead>
                                 <tr>
-                                    <th rowspan="2" class="hatdog">Core Values</th>
-                                    <th rowspan="2" class="hatdog">Behavior Statements</th>
-                                    <th colspan="4" class="hatdog">Periodic Rating</th>
+                                    <th rowspan="2" class="hatdog" style="border-color: #FFFFFF;">Core Values</th>
+                                    <th rowspan="2" class="hatdog" style="border-color: #FFFFFF;">Behavior Statements</th>
+                                    <th colspan="4" class="hatdog" style="border-color: #FFFFFF;">Periodic Rating</th>
                                 </tr>
                                 <tr>
                                     <td class="hatdog" style="border-color: #FFFFFF;">1</td>
@@ -336,6 +342,74 @@ if (!isset($_SESSION['SR_number'])) {
                             <div class="col">Not Observed</div>
                         </div>
                     </div>
+                </div>
+
+                <div class="">
+                    <div class="table-responsive">
+                        <table class="table text-center" style="margin-top: 30px;">
+                            <thead>
+                                <tr>
+                                    <th class="hatdog" style="border-color: #FFFFFF;"></th>
+                                    <th class="hatdog" style="border-color: #FFFFFF;">SEP</th>
+                                    <th class="hatdog" style="border-color: #FFFFFF;">OCT</th>
+                                    <th class="hatdog" style="border-color: #FFFFFF;">NOV</th>
+                                    <th class="hatdog" style="border-color: #FFFFFF;">DEC</th>
+                                    <th class="hatdog" style="border-color: #FFFFFF;">JAN</th>
+                                    <th class="hatdog" style="border-color: #FFFFFF;">FEB</th>
+                                    <th class="hatdog" style="border-color: #FFFFFF;">MAR</th>
+                                    <th class="hatdog" style="border-color: #FFFFFF;">APR</th>
+                                    <th class="hatdog" style="border-color: #FFFFFF;">MAY</th>
+                                    <th class="hatdog" style="border-color: #FFFFFF;">JUN</th>
+                                    <th class="hatdog" style="border-color: #FFFFFF;">TOTAL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="hatdog">No. of School Days</td>
+                                    <td class="hatdog">22</td>
+                                    <td class="hatdog">26</td>
+                                    <td class="hatdog">23</td>
+                                    <td class="hatdog">16</td>
+                                    <td class="hatdog">15</td>
+                                    <td class="hatdog">22</td>
+                                    <td class="hatdog">27</td>
+                                    <td class="hatdog">22</td>
+                                    <td class="hatdog">24</td>
+                                    <td class="hatdog">26</td>
+                                    <td class="hatdog">223</td>
+                                </tr>
+                                <tr>
+                                    <td class="hatdog">No. of Days Present</td>
+                                    <td class="hatdog"> </td>
+                                    <td class="hatdog"> </td>
+                                    <td class="hatdog"> </td>
+                                    <td class="hatdog"> </td>
+                                    <td class="hatdog"> </td>
+                                    <td class="hatdog"> </td>
+                                    <td class="hatdog"> </td>
+                                    <td class="hatdog"> </td>
+                                    <td class="hatdog"> </td>
+                                    <td class="hatdog"> </td>
+                                    <td class="hatdog"> </td>
+                                </tr>
+                                <tr>
+                                    <td class="hatdog">No. of Days Absent</td>
+                                    <td class="hatdog"> </td>
+                                    <td class="hatdog"> </td>
+                                    <td class="hatdog"> </td>
+                                    <td class="hatdog"> </td>
+                                    <td class="hatdog"> </td>
+                                    <td class="hatdog"> </td>
+                                    <td class="hatdog"> </td>
+                                    <td class="hatdog"> </td>
+                                    <td class="hatdog"> </td>
+                                    <td class="hatdog"> </td>
+                                    <td class="hatdog"> </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
             </div>
         </div>
