@@ -4,19 +4,21 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['F_number'])) {
   header('Location: ../auth/login.php');
 } else {
-  $getSectionInfo = "SELECT * FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'";
-  $rungetSectionInfo = $mysqli->query($getSectionInfo);
+  $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'");
+  $rowCount = $getSectionInfo->num_rows;
+  if ($rowCount > 0) {
+    $ClassListRow = 1;
 
-  $SectionData = $rungetSectionInfo->fetch_assoc();
+    $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'");
+    $SectionData = $getSectionInfo->fetch_assoc();
 
-  $getFacultyName = "SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'";
-  $rungetFacultyName = $mysqli->query($getFacultyName);
+    $getFacultyName = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
+    $FacultyData = $getFacultyName->fetch_assoc();
 
-  $FacultyData = $rungetFacultyName->fetch_assoc();
-
-  $ClassListRow = 1;
-  $getSectionClassList = "SELECT * FROM studentrecord WHERE SR_section = '{$SectionData['S_name']}'";
-  $rungetSectionClassList = $mysqli->query($getSectionClassList);
+    $getSectionClassList = $mysqli->query("SELECT * FROM studentrecord WHERE SR_section = '{$SectionData['S_name']}'");
+  } else {
+    header('Location: dashboard.php');
+  }
 }
 ?>
 
