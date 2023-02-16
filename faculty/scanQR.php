@@ -13,6 +13,12 @@ if (!isset($_SESSION['F_number'])) {
         $attendance_array[] = $present_student;
     }
     $attendance_rowCount = 0;
+
+    $studentNumberVerificationArray = array();
+    while ($storeStudentNumber = $getStudentRecord->fetch_assoc) {
+        $studentNumberVerificationArray[] = $storeStudentNumber;
+    }
+    
 }
 ?>
 
@@ -163,11 +169,6 @@ if (!isset($_SESSION['F_number'])) {
                                                 <video id="preview"></video>
                                             </div>
 
-                                            <form id="qr_form" action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
-                                                <input type="hidden" name="student" id="input1">
-                                                <input type="hidden" name="fetcher" id="input2">
-                                            </form>
-
                                             <form style="text-align: center;">
                                                 <style>
                                                     @media (max-width: 414px) {
@@ -190,57 +191,6 @@ if (!isset($_SESSION['F_number'])) {
                                                     }
                                                 </style>
                                             </form>
-
-                                            <button id="myBtn" class="btn btn-primary me-2" style="width: auto; color:white;">Modal (if qr code couldn't detect)</button>
-
-                                            <!-- The Modal -->
-
-                                            <div id="myModal" class="modal">
-                                                <style>
-                                                    @media (max-width: 414px) {
-                                                        .modal-content {
-                                                            width: 90% !important;
-                                                        }
-                                                    }
-
-                                                    @media (max-width: 768px) {
-                                                        .modal-content {
-                                                            width: 90% !important;
-                                                        }
-                                                    }
-
-                                                    @media (max-width: 1024px) {
-                                                        .modal-content {
-                                                            width: 70% !important;
-                                                        }
-                                                    }
-
-                                                    .modal-content {
-                                                        width: 30%;
-                                                    }
-                                                </style>
-                                                <!-- Modal content -->
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h2 style="font-family: 'Lato','san-serif'; text-align:center;">Couldn't detect QR Code!</h2>
-                                                        <span class="close"><i class="fa fa-times"></i></span>
-                                                    </div>
-                                                    <div class="modal-body" style="text-align: center;">
-                                                        <img src="https://cdn.onlinewebfonts.com/svg/img_2555.png" alt="cookies-img" height="90" width="400" />
-                                                        <p>Sorry! We couldn't read your QR code. Please input manually the student number below.</p>
-                                                        <div class="row d-flex justify-content-center mb-3">
-                                                            <div class="col text-center form-group form">
-                                                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="qr_form" class="form-horizontal">
-                                                                    <input type="text" name="student" class="form-control" id="input1" required><br>
-                                                                    <button type="submit" class="btn btn-primary me-2" style="color: white;">Enter</button>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <button id="myBtn1" class="btn btn-primary me-2" style="width: auto; color:white;">Modal for Time In (if qr code is detected)</button>
 
                                             <!-- The Modal -->
 
@@ -283,10 +233,12 @@ if (!isset($_SESSION['F_number'])) {
                                                     </div>
                                                     <div class="modal-body" style="text-align: center;">
                                                         <img src="https://cdn.onlinewebfonts.com/svg/img_2555.png" alt="cookies-img" height="90" width="400" />
-                                                        <p>Awesome! Camille Anne G. Sabile is already marked as Present</p>
+                                                        <p id="modal1Ptag"></p>
                                                         <div class="row d-flex justify-content-center mb-3">
                                                             <div class="col text-center form-group form">
                                                                 <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="qr_form" class="form-horizontal">
+                                                                    <input type="hidden" name="student" id="input1">
+                                                                    <input type="hidden" name="fetcher" id="input2">
                                                                     <button type="submit" class="btn btn-primary me-2" style="color: white;">Scan QR again</button>
                                                                 </form>
                                                             </div>
@@ -294,8 +246,6 @@ if (!isset($_SESSION['F_number'])) {
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <button id="myBtn2" class="btn btn-primary me-2" style="width: auto; color:white;">Modal for Time Out (if qr code is detected)</button>
 
                                             <!-- The Modal -->
 
@@ -339,7 +289,7 @@ if (!isset($_SESSION['F_number'])) {
                                                     </div>
                                                     <div class="modal-body" style="text-align: center;">
                                                         <img src="https://cdn.onlinewebfonts.com/svg/img_2555.png" alt="cookies-img" height="90" width="400" />
-                                                        <p>Awesome! Camille Anne G. Sabile is now ready to go home.</p>
+                                                        <p id="modal2Ptag"></p>
                                                         <div class="row d-flex justify-content-center mb-3">
                                                             <div class="col text-center form-group form">
                                                                 <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="qr_form" class="form-horizontal">
@@ -379,8 +329,6 @@ if (!isset($_SESSION['F_number'])) {
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <button id="myBtn3" class="btn btn-primary me-2" style="width: auto; color:white;">Modal for Time Out (if qr code is detected and without fetcher)</button>
 
                                             <!-- The Modal -->
 
@@ -503,33 +451,6 @@ if (!isset($_SESSION['F_number'])) {
 </body>
 <script>
     // Get the modal
-    var modal = document.getElementById("myModal");
-
-    // Get the button that opens the modal
-    var btn = document.getElementById("myBtn");
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
-    // When the user clicks the button, open the modal 
-    btn.onclick = function() {
-        modal.style.display = "block";
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-</script>
-<script>
-    // Get the modal
     var modal1 = document.getElementById("myModal1");
 
     // Get the button that opens the modal
@@ -625,27 +546,49 @@ if (!isset($_SESSION['F_number'])) {
 
     var studentID = document.getElementById('input1').value;
     var fetcherID = document.getElementById('input2').value;
+
     scanner.addListener('scan', function(c) {
         let input = c;
 
-        if (input.includes("S")) {
+        if (input.includes("SP")) {
             document.getElementById('input1').value = input;
-            document.getElementById("qr_form").submit();
+            if (storedStudentNumber.includes(c)) {
+                modal1.style.display = "block";
+                document.getElementById('modal1Ptag').innerHTML = "ready to go home.";
+                storedStudentNumber.splice(input);
+                setTimeout(() => {
+                    document.getElementById("qr_form").submit();
+                }, 3000);
+            } else if (!storedStudentNumber.includes(document.getElementById('input1').value)) {
+                storedStudentNumber.push(c);
+                modal1.style.display = "block";
+                document.getElementById('modal1Ptag').innerHTML = "marked as present.";
+                setTimeout(() => {
+                    document.getElementById("qr_form").submit();
+                }, 3000);
+            } else {
+                alert("Hello! I am an alert box!!");
+            }
         } else {
             document.getElementById('input2').value = input;
         }
     })
 
-    scanner.addListener('scan', function(d) {
-        let input2 = d;
+    // scanner.addListener('scan', function(d) {
+    //     let input2 = d;
 
-        if (input.includes("FTC")) {
-            document.getElementById('input2').value = input2;
-            document.getElementById("qr_form").submit();
-        } else {
-            document.getElementById('input1').value = input2;
-        }
-    })
+    //     if (input.includes("FTC")) {
+    //         document.getElementById('input2').value = input2;
+    //         modal1.style.display = "block";
+    //         if (modal2.style.display = "block") {
+    //             setTimeout(() => {
+    //                 document.getElementById("qr_form").submit();
+    //             }, 3000);;
+    //         }
+    //     } else {
+    //         document.getElementById('input1').value = input2;
+    //     }
+    // })
 </script>
 
 <!-- JavaScript Libraries -->
