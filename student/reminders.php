@@ -97,6 +97,7 @@ if (!isset($_SESSION['SR_number'])) {
             <div class="row col-lg-10">
                 <div class="col-lg-10 posts-list" style="margin-left: auto;">
                     <div class="single-post row">
+
                         <div class="col-lg-3  col-md-3 meta-details">
                             <div class="user-details row">
                                 <p class="user-name col-lg-12 col-md-12 col-6"><span class="far fa-user" style="color: #c02628;"></span><a href="#"> Mark wiens</a> </p>
@@ -111,7 +112,7 @@ if (!isset($_SESSION['SR_number'])) {
                                         <p class="excert">
                                             MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.
                                         </p>
-                                        <a href="blog-single.html" class="primary-btn">View More</a>
+                                        <button type="submit" class="btn btn-primary me-2" name="">View More</button>
                                     </div>
                                 </div>
                             </div>
@@ -132,7 +133,7 @@ if (!isset($_SESSION['SR_number'])) {
                                         <p class="excert">
                                             MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.
                                         </p>
-                                        <a href="blog-single.html" class="primary-btn">View More</a>
+                                        <button type="submit" class="btn btn-primary me-2" name="">View More</button>
                                     </div>
                                 </div>
                             </div>
@@ -153,7 +154,7 @@ if (!isset($_SESSION['SR_number'])) {
                                         <p class="excert">
                                             MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.
                                         </p>
-                                        <a href="blog-single.html" class="primary-btn">View More</a>
+                                        <button type="submit" class="btn btn-primary me-2" name="">View More</button>
                                     </div>
                                 </div>
                             </div>
@@ -174,7 +175,7 @@ if (!isset($_SESSION['SR_number'])) {
                                         <p class="excert">
                                             MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.
                                         </p>
-                                        <a href="blog-single.html" class="primary-btn">View More</a>
+                                        <button type="submit" class="btn btn-primary me-2" name="">View More</button>
                                     </div>
                                 </div>
                             </div>
