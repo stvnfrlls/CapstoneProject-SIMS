@@ -48,13 +48,7 @@ if (!isset($_SESSION['SR_number'])) {
 
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-        <img class="m-3" src="../assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">
-        <div class="d-flex align-items-center justify-content-center text-center">
-            <a href="../index.php" class="navbar-brand ms-4 ms-lg-0 text-center">
-                <h1 class="cdsp">Colegio De San Pedro</h1>
-                <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
-            </a>
-        </div>
+        <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
     </nav>
     <!-- Navbar End -->
 
@@ -65,24 +59,31 @@ if (!isset($_SESSION['SR_number'])) {
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0 ">
+            <style>
+                @media (max-width: 991.98px) {
+                    .navbar-nav {
+                        margin-left: 0px !important;
+                    }
+
+                    .navbar .navbar-nav .nav-link {
+                        margin-left: 0px !important;
+                    }
+                }
+            </style>
+            <div class="navbar-nav m-auto p-4 p-lg-0 ">
                 <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
-                <a href="about.html" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
+                <a href="" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Academics</a>
+                    <a href="#" class="nav-item nav-link" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Dashboard <i class="fa fa-caret-down"></i></a>
                     <div class="dropdown-menu bg-dark border-0 m-0">
-                        <a href="auth/login.php" class="dropdown-item" style="color: white; font-size: 14px;">Student Information System</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Kindergarten</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Pre-Elementary</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Elementary</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Highschool</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Senior Highschool</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">College</a>
+                        <a href="../student/profile.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Profile</a>
+                        <a href="../student/grades.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Grades</a>
+                        <a href="../student/dailyAttendance.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Attendance</a>
+                        <a href="../student/reminders.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Reminders</a>
+                        <a href="../student/announcement.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">School Announcements</a>
                     </div>
                 </div>
-                <a href="service.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Admissions</a>
-                <a href="contact.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Scholarship and Discounts</a>
-                <a href="contact.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Contact Us</a>
+                <a href="" class="nav-item nav-link" style="color: white; font-size: 14px;">Contact Us</a>
             </div>
         </div>
     </nav>
@@ -98,17 +99,14 @@ if (!isset($_SESSION['SR_number'])) {
                     <div class="single-post row">
                         <div class="col-lg-3  col-md-3 meta-details">
                             <div class="user-details row">
-                                <p class="user-name col-lg-12 col-md-12 col-6"><a href="#">Mark wiens</a> <span class="far fa-user" style="color: #c02628;"></span></p>
-                                <p class="date col-lg-12 col-md-12 col-6"><a>12 Dec, 2017</a> <span class="fa fa-calendar" style="color: #c02628;"></span></p>
+                                <p class="user-name col-lg-12 col-md-12 col-6"><span class="far fa-user" style="color: #c02628;"></span><a href="#"> Mark wiens</a> </p>
+                                <p class="date col-lg-12 col-md-12 col-6"><span class="fa fa-calendar" style="color: #c02628;"></span><a> 12 Dec, 2017</a></p>
                             </div>
                         </div>
                         <div class="col-lg-9">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="col-lg-12 col-md-9 ">
-                                        <a class="posts-title" href="blog-single.html">
-                                            <h3>Bring Notebook</h3>
-                                        </a>
                                         <p>Subject: English</p>
                                         <p class="excert">
                                             MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.
@@ -122,17 +120,14 @@ if (!isset($_SESSION['SR_number'])) {
                     <div class="single-post row">
                         <div class="col-lg-3  col-md-3 meta-details">
                             <div class="user-details row">
-                                <p class="user-name col-lg-12 col-md-12 col-6"><a href="#">Mark wiens</a> <span class="far fa-user" style="color: #c02628;"></span></p>
-                                <p class="date col-lg-12 col-md-12 col-6"><a>12 Dec, 2017</a> <span class="fa fa-calendar" style="color: #c02628;"></span></p>
+                                <p class="user-name col-lg-12 col-md-12 col-6"><span class="far fa-user" style="color: #c02628;"></span><a href="#"> Mark wiens</a> </p>
+                                <p class="date col-lg-12 col-md-12 col-6"><span class="fa fa-calendar" style="color: #c02628;"></span><a> 12 Dec, 2017</a></p>
                             </div>
                         </div>
                         <div class="col-lg-9">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="col-lg-12 col-md-9 ">
-                                        <a class="posts-title" href="blog-single.html">
-                                            <h3>Assignment in Page 23 (English Book)</h3>
-                                        </a>
                                         <p>Subject: English</p>
                                         <p class="excert">
                                             MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.
@@ -146,17 +141,14 @@ if (!isset($_SESSION['SR_number'])) {
                     <div class="single-post row">
                         <div class="col-lg-3  col-md-3 meta-details">
                             <div class="user-details row">
-                                <p class="user-name col-lg-12 col-md-12 col-6"><a href="#">Mark wiens</a> <span class="far fa-user" style="color: #c02628;"></span></p>
-                                <p class="date col-lg-12 col-md-12 col-6"><a>12 Dec, 2017</a> <span class="fa fa-calendar" style="color: #c02628;"></span></p>
+                                <p class="user-name col-lg-12 col-md-12 col-6"><span class="far fa-user" style="color: #c02628;"></span><a href="#"> Mark wiens</a> </p>
+                                <p class="date col-lg-12 col-md-12 col-6"><span class="fa fa-calendar" style="color: #c02628;"></span><a> 12 Dec, 2017</a></p>
                             </div>
                         </div>
                         <div class="col-lg-9">
                             <div class="card">
                                 <div class="card-body">
-                                    <div class="col-lg-12 col-md-9 ">
-                                        <a class="posts-title" href="blog-single.html">
-                                            <h3>Bring a Coloring Materials</h3>
-                                        </a>
+                                    <div class="col-lg-12 col-md-9 ">>
                                         <p>Subject: English</p>
                                         <p class="excert">
                                             MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.
@@ -170,17 +162,14 @@ if (!isset($_SESSION['SR_number'])) {
                     <div class="single-post row">
                         <div class="col-lg-3  col-md-3 meta-details">
                             <div class="user-details row">
-                                <p class="user-name col-lg-12 col-md-12 col-6"><a href="#">Mark wiens</a> <span class="far fa-user" style="color: #c02628;"></span></p>
-                                <p class="date col-lg-12 col-md-12 col-6"><a>12 Dec, 2017</a> <span class="fa fa-calendar" style="color: #c02628;"></span></p>
+                                <p class="user-name col-lg-12 col-md-12 col-6"><span class="far fa-user" style="color: #c02628;"></span><a href="#"> Mark wiens</a> </p>
+                                <p class="date col-lg-12 col-md-12 col-6"><span class="fa fa-calendar" style="color: #c02628;"></span><a> 12 Dec, 2017</a></p>
                             </div>
                         </div>
                         <div class="col-lg-9">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="col-lg-12 col-md-9 ">
-                                        <a class="posts-title" href="blog-single.html">
-                                            <h3>Astronomy Binoculars A Great Alternative</h3>
-                                        </a>
                                         <p>Subject: English</p>
                                         <p class="excert">
                                             MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.
