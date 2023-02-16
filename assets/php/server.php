@@ -276,24 +276,11 @@ if (isset($_POST['student']) || isset($_POST['fetcher'])) {
                        <p>ATTENDANCE DETAILS</p><br>
                        <b>Time: </b>' . $time . '<br>
                        <b>Date: </b>' . $date . '<br>';
-
-            if (!$mail->send()) {
-                echo 'Mailer Error: ';
-            } else {
-                echo 'The email message was sent!';
-            }
         }
     } else if (empty($attendanceData['A_time_OUT']) || empty($attendanceData['A_fetcher_OUT'])) {
-        echo '
-            <script>
-                if(confirm("Are you sure you want to mark as fetched this student?") == true) {
-                    ' . $timeOUT = $mysqli->query("UPDATE attendance SET A_time_OUT = '{$time}', A_fetcher_OUT = '{$fetcherID}' WHERE SR_number = '{$studentID}'") . '
-                } 
-            </script>';
 
+        $timeOUT = $mysqli->query("UPDATE attendance SET A_time_OUT = '{$time}', A_fetcher_OUT = '{$fetcherID}' WHERE SR_number = '{$studentID}'");
         if ($timeOUT) {
-            function_alert("TIME OUT " . $studentID);
-
             $mail->addAddress($emailAd['SR_email']);
             $mail->Subject = 'Attendance: Time Out';
 
@@ -303,15 +290,9 @@ if (isset($_POST['student']) || isset($_POST['fetcher'])) {
                        <b>Time: </b>' . $time . '<br>
                        <b>Date: </b>' . $date . '<br>
                        <b>Fetched By: </b>' . $fetcherID . '<br>';
-
-            if (!$mail->send()) {
-                echo 'Mailer Error: ';
-            } else {
-                echo 'The email message was sent!';
-            }
         }
     } else {
-        function_alert("Student already timed out");
+        // function_alert("Student already timed out");
     }
 }
 if (isset($_POST['encode'])) {
