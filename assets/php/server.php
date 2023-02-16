@@ -268,12 +268,14 @@ if (isset($_POST['student']) || isset($_POST['fetcher'])) {
     if ($checkAttendance->num_rows == 0) {
         $timeIN = $mysqli->query("INSERT INTO attendance (SR_number, A_date, A_time_IN, A_fetcher_IN) VALUES ('{$studentID}', '{$date}', '{$time}', '{$fetcherID}')");
         if ($timeIN) {
+            $getstudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$studentID}'");
             $mail->addAddress($emailAd['SR_email']);
             $mail->Subject = 'Attendance: Time In';
 
             $mail->Body = '<h1>Student Timed In</h1>
                        <br>
                        <p>ATTENDANCE DETAILS</p><br>
+                       <b>Time: </b>' . $time . '<br>
                        <b>Time: </b>' . $time . '<br>
                        <b>Date: </b>' . $date . '<br>';
         }
