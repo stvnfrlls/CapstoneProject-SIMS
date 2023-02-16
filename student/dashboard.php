@@ -48,9 +48,6 @@ if (!isset($_SESSION['SR_number'])) {
   <!-- Navbar Start -->
   <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
     <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
-    <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-      <span class="mdi mdi-menu"></span>
-    </button>
   </nav>
   <!-- Navbar End -->
 
@@ -61,24 +58,31 @@ if (!isset($_SESSION['SR_number'])) {
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
-      <div class="navbar-nav ms-auto p-4 p-lg-0 ">
+      <style>
+        @media (max-width: 991.98px) {
+          .navbar-nav {
+            margin-left: 0px !important;
+          }
+
+          .navbar .navbar-nav .nav-link {
+            margin-left: 0px !important;
+          }
+        }
+      </style>
+      <div class="navbar-nav m-auto p-4 p-lg-0 ">
         <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
-        <a href="about.html" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
+        <a href="" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
         <div class="nav-item dropdown">
-          <a href="#" class="nav-item nav-link" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Academics <i class="fa fa-caret-down"></i></a>
+          <a href="#" class="nav-item nav-link" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Dashboard <i class="fa fa-caret-down"></i></a>
           <div class="dropdown-menu bg-dark border-0 m-0">
-            <a href="auth/login.php" class="dropdown-item" style="color: white; font-size: 14px;">Student Information System</a>
-            <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Kindergarten</a>
-            <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Pre-Elementary</a>
-            <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Elementary</a>
-            <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Highschool</a>
-            <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Senior Highschool</a>
-            <a href="" class="dropdown-item" style="color: white; font-size: 14px;">College</a>
+            <a href="../student/profile.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Profile</a>
+            <a href="../student/grades.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Grades</a>
+            <a href="../student/dailyAttendance.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Attendance</a>
+            <a href="../student/reminders.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Reminders</a>
+            <a href="../student/announcement.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">School Announcements</a>
           </div>
         </div>
-        <a href="service.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Admissions</a>
-        <a href="contact.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Scholarship and Discounts</a>
-        <a href="contact.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Contact Us</a>
+        <a href="" class="nav-item nav-link" style="color: white; font-size: 14px;">Contact Us</a>
       </div>
     </div>
   </nav>
@@ -101,7 +105,7 @@ if (!isset($_SESSION['SR_number'])) {
                           font-family: "Lato", "san serif";
                         }
                       </style>
-                      <div class="col-sm-12 col-lg-6 grid-margin" style="margin: auto; padding-bottom: 20px;" >
+                      <div class="col-sm-12 col-lg-6 grid-margin" style="margin: auto; padding-bottom: 20px;">
                         <div class="card">
                           <div class="card-body">
                             <div class="row">
@@ -159,7 +163,9 @@ if (!isset($_SESSION['SR_number'])) {
                           <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
                             <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-user"></i></h1>
                           </div>
-                          <a href="../student/profile.php"><h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Profile</h3></a>
+                          <a href="../student/profile.php">
+                            <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Profile</h3>
+                          </a>
                           <p class="d-flex flex-shrink-0 text-center">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
                         </div>
                       </div>
@@ -170,7 +176,9 @@ if (!isset($_SESSION['SR_number'])) {
                           <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
                             <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-qrcode"></i></h1>
                           </div>
-                          <a href=""><h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">QR Code</h3></a>
+                          <a href="">
+                            <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">QR Code</h3>
+                          </a>
                           <p class="d-flex flex-shrink-0 text-center">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
                         </div>
                       </div>
@@ -181,7 +189,9 @@ if (!isset($_SESSION['SR_number'])) {
                           <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
                             <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-book"></i></h1>
                           </div>
-                          <a href="../student/dailyAttendance.php"><h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Attendance</h3></a>
+                          <a href="../student/dailyAttendance.php">
+                            <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Attendance</h3>
+                          </a>
                           <p class="d-flex flex-shrink-0 text-center">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
                         </div>
                       </div>
@@ -192,7 +202,9 @@ if (!isset($_SESSION['SR_number'])) {
                           <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
                             <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-edit"></i></h1>
                           </div>
-                          <a href="../student/grades.php"><h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Grades</h3></a>
+                          <a href="../student/grades.php">
+                            <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Grades</h3>
+                          </a>
                           <p class="d-flex flex-shrink-0 text-center">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
                         </div>
                       </div>
@@ -276,7 +288,7 @@ if (!isset($_SESSION['SR_number'])) {
                   <div class="card">
                     <div class="card-body">
                       <div class="section-title section-title-sm position-relative pb-3 mb-4">
-                        <h3 class="mb-0" style="text-align:left;">Announcements</h3>
+                        <h3 class="mb-0" style="text-align:left;">School Announcements</h3>
                       </div>
                       <div class="col-lg-12 wow " style="padding-bottom: 5px;">
                         <div class="blog-item bg-light rounded overflow-hidden">
@@ -332,7 +344,7 @@ if (!isset($_SESSION['SR_number'])) {
                       </div>
                       <section class="popular-courses-area courses-page">
                         <div style="text-align: center;">
-                          <a href="#" class="primary-btn text-uppercase" style="width: auto;">View More Announcements</a>
+                          <a href="#" class="primary-btn text-uppercase" style="width: auto;">View More School Announcements</a>
                         </div>
                       </section>
 

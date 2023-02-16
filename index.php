@@ -31,19 +31,16 @@
 
     <!-- Template Stylesheet -->
     <link href="assets/css/style.css" rel="stylesheet">
- 
+
 </head>
 
 
 <body>
-  <!-- Navbar Start -->
-  <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-    <img class="m-3" href="index.php" src="assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
-    <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-      <span class="mdi mdi-menu"></span>
-    </button>
-  </nav>
-  <!-- Navbar End -->
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+        <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
+    </nav>
+    <!-- Navbar End -->
 
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-dark navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
@@ -52,11 +49,31 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav m-auto p-4 p-lg-0">
-                <a href="index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
-                <a href="about.html" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
-                <a href="service.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Dashboard</a>
-                <a href="contact.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Contact Us</a>
+            <style>
+                @media (max-width: 991.98px) {
+                    .navbar-nav {
+                        margin-left: 0px !important;
+                    }
+
+                    .navbar .navbar-nav .nav-link {
+                        margin-left: 0px !important;
+                    }
+                }
+            </style>
+            <div class="navbar-nav m-auto p-4 p-lg-0 ">
+                <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
+                <a href="" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-item nav-link" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Dashboard <i class="fa fa-caret-down"></i></a>
+                    <div class="dropdown-menu bg-dark border-0 m-0">
+                        <a href="../student/profile.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Profile</a>
+                        <a href="../student/grades.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Grades</a>
+                        <a href="../student/dailyAttendance.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Attendance</a>
+                        <a href="../student/reminders.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Reminders</a>
+                        <a href="../student/announcement.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">School Announcements</a>
+                    </div>
+                </div>
+                <a href="" class="nav-item nav-link" style="color: white; font-size: 14px;">Contact Us</a>
             </div>
         </div>
     </nav>
