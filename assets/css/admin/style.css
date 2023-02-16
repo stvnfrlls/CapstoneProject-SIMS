@@ -20811,12 +20811,13 @@ code {
 }
 
 .btn-outline-primary {
-  border: 1px solid #081031;
-  color: #081031;
+  border: 1px solid #c02628;
+  color: #c02628;
 }
 
 .btn-outline-primary:hover {
-  background: #1F3BB3;
+  border-color: #c02628;
+  background: #c02628;
   color: #ffffff;
 }
 
