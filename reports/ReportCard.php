@@ -411,5 +411,4 @@ $TOTAL = $mysqli->query("SELECT COUNT(A_status) FROM attendance WHERE SR_number 
 $TOTALvalue = $TOTAL->fetch_assoc();
 $pdf->Cell(20, 5, $TOTALvalue['COUNT(A_status)'], 1, 1, 'C');
 
-$pdf->Output();
-// $pdf->Output('D', 'report.pdf');
+$pdf->Output('D', $studentInfo['SR_lname'] . ' - ' . $studentInfo['SR_grade'] . " - " . $studentInfo['SR_section'] . '.pdf');
