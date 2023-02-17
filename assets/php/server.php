@@ -2,6 +2,7 @@
 session_start();
 include('database.php');
 include('mail.php');
+global $currentSchoolYear;
 $errors = array();
 $year = date('Y');
 $month = date('m');
@@ -85,6 +86,11 @@ function timeMinusOneMinute($data) //sa endtime lang to ilalagay
 
     return $data;
 }
+
+$getSchoolYearInfo = $mysqli->query("SELECT * FROM acad_year");
+$SchoolYearData = $getSchoolYearInfo->fetch_assoc();
+$currentSchoolYear = $SchoolYearData['currentYear'] . " - " . $SchoolYearData['endYear'];
+
 //Login and Register Process
 if (isset($_POST['login-button'])) {
     $email = $_POST['usersEmail'];
@@ -257,6 +263,8 @@ if (isset($_POST['student']) || isset($_POST['fetcher'])) {
 
     if (empty($fetcherID)) {
         $fetcherID = $studentID;
+    } else {
+        $fetcherID = $fetcherID;
     }
 
     $checkAttendance = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$studentID}' AND A_date = '{$date}'");
@@ -268,6 +276,7 @@ if (isset($_POST['student']) || isset($_POST['fetcher'])) {
     if ($checkAttendance->num_rows == 0) {
         $timeIN = $mysqli->query("INSERT INTO attendance (SR_number, A_date, A_time_IN, A_fetcher_IN) VALUES ('{$studentID}', '{$date}', '{$time}', '{$fetcherID}')");
         if ($timeIN) {
+            $getstudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$studentID}'");
             $mail->addAddress($emailAd['SR_email']);
             $mail->Subject = 'Attendance: Time In';
 
@@ -276,6 +285,7 @@ if (isset($_POST['student']) || isset($_POST['fetcher'])) {
                        <p>ATTENDANCE DETAILS</p><br>
                        <b>Time: </b>' . $time . '<br>
                        <b>Date: </b>' . $date . '<br>';
+            $mail->send();
         }
     } else if (empty($attendanceData['A_time_OUT']) || empty($attendanceData['A_fetcher_OUT'])) {
 
@@ -287,12 +297,13 @@ if (isset($_POST['student']) || isset($_POST['fetcher'])) {
             $mail->Body = '<h1>Student Timed Out</h1>
                        <br>
                        <p>Attendance Detail</p><br>
-                       <b>Time: </b>' . $time . '<br>
+                       <b>Fetched by: </b>' . $time . '<br>
                        <b>Date: </b>' . $date . '<br>
                        <b>Fetched By: </b>' . $fetcherID . '<br>';
+            $mail->send();
         }
     } else {
-        // function_alert("Student already timed out");
+        function_alert("Student already timed out");
     }
 }
 if (isset($_POST['encode'])) {

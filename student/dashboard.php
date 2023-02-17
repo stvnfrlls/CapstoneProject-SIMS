@@ -4,7 +4,14 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['SR_number'])) {
   header('Location: ../auth/login.php');
 } else {
-  # code...
+  $getstudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$_SESSION['SR_number']}'");
+  $studentInfo = $getstudentInfo->fetch_assoc();
+
+  $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_name = '{$studentInfo['SR_section']}'");
+  $SectionInfo = $getSectionInfo->fetch_assoc();
+
+  $getAdvisorInfo = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$SectionInfo['S_adviser']}'");
+  $AdvisorInfo = $getAdvisorInfo->fetch_assoc();
 }
 ?>
 <!DOCTYPE html>
@@ -88,7 +95,6 @@ if (!isset($_SESSION['SR_number'])) {
   </nav>
   <!-- Navbar End -->
 
-
   <div class="content-wrapper">
     <div class="row">
       <div class="col-sm-12 col-lg-12">
@@ -113,11 +119,11 @@ if (!isset($_SESSION['SR_number'])) {
                                 <img src="../assets/img/profile.jpg" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
                               </div>
                               <div class="col-8" style="align-self: center;">
-                                <h3 style="margin-bottom: 8px;">Camille Anne G. Sabile</h3>
-                                <p style="margin-bottom: 2px;">2019-00188-SP-0</p>
-                                <p style="margin-bottom: 2px;">Grade 1 - Chrysanthemum</p>
-                                <p style="margin-bottom: 2px;">Ms. Hazel Grace L. Cantuba</p>
-                                <p style="margin-bottom: 2px;">S.Y. 2022-2023</p>
+                                <h3 style="margin-bottom: 8px;"><?php echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix']; ?></h3>
+                                <p style="margin-bottom: 2px;"><?php echo $studentInfo['SR_number'] ?></p>
+                                <p style="margin-bottom: 2px;"><?php echo "Grade " . $studentInfo['SR_grade'] . " - " . $studentInfo['SR_section'] ?></p>
+                                <p style="margin-bottom: 2px;"><?php echo $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'] . " " . substr($AdvisorInfo['F_mname'], 0, 1) . ". " . $AdvisorInfo['F_suffix']; ?></p>
+                                <p style="margin-bottom: 2px;"><?php echo "S.Y. " . $currentSchoolYear ?></p>
                               </div>
                             </div>
                           </div>
@@ -128,7 +134,18 @@ if (!isset($_SESSION['SR_number'])) {
                           <div class="card-body">
                             <p class="d-flex flex-shrink-0 align-items-center justify-content-center text-center">Total Days of Present</p>
                             <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
-                              <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628;">25</h1>
+                              <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628;">
+                                <?php
+                                $getPresentAttendance = $mysqli->query("SELECT COUNT(*) AS presentDays FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}'");
+                                $CountPresent = $getPresentAttendance->fetch_assoc();
+
+                                if (empty($CountPresent['presentDays'])) {
+                                  echo "NONE";
+                                } else {
+                                  echo $CountPresent['presentDays'];
+                                }
+                                ?>
+                              </h1>
                             </div>
                           </div>
                         </div>
@@ -219,66 +236,60 @@ if (!isset($_SESSION['SR_number'])) {
                         </div>
                       </div>
                       <div class="row" style="margin: auto;">
-                        <div class="col-lg-4 col-sm-12">
-                          <div class="card">
-                            <div class="card-body">
-                              <div class="user-details row">
-                                <p class="user-name col-12" style="text-align:center;"><a href="#">Mark wiens</a> <span class="far fa-user" style="color: #c02628;"></span></p>
-                                <p class="date col-12" style="text-align:center;"><a>12 Dec, 2017</a> <span class="fa fa-calendar" style="color: #c02628;"></span></p>
-                              </div>
-                              <div class="col-12">
-                                <a class="posts-title" href="blog-single.html">
-                                  <h3 style="text-align: justify">Bring a noteboook</h3>
-                                </a>
-                                <p>Subject: English</p>
-                                <p class="excert">
-                                  MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.
-                                </p>
-                                <a href="blog-single.html" class="primary-btn">View More</a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-4 col-sm-12">
-                          <div class="card">
-                            <div class="card-body">
-                              <div class="user-details row">
-                                <p class="user-name col-12" style="text-align:center;"><a href="#">Mark wiens</a> <span class="far fa-user" style="color: #c02628;"></span></p>
-                                <p class="date col-12" style="text-align:center;"><a>12 Dec, 2017</a> <span class="fa fa-calendar" style="color: #c02628;"></span></p>
-                              </div>
-                              <div class="col-12">
-                                <a class="posts-title" href="blog-single.html">
-                                  <h3 style="text-align: justify">Bring a noteboook</h3>
-                                </a>
-                                <p>Subject: English</p>
-                                <p class="excert">
-                                  MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.
-                                </p>
-                                <a href="blog-single.html" class="primary-btn">View More</a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-4 col-sm-12">
-                          <div class="card">
-                            <div class="card-body">
-                              <div class="user-details row">
-                                <p class="user-name col-12" style="text-align:center;"><a href="#">Mark wiens</a> <span class="far fa-user" style="color: #c02628;"></span></p>
-                                <p class="date col-12" style="text-align:center;"><a>12 Dec, 2017</a> <span class="fa fa-calendar" style="color: #c02628;"></span></p>
-                              </div>
-                              <div class="col-12">
-                                <a class="posts-title" href="blog-single.html">
-                                  <h3 style="text-align: justify">Bring a noteboook</h3>
-                                </a>
-                                <p>Subject: English</p>
-                                <p class="excert">
-                                  MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.
-                                </p>
-                                <a href="blog-single.html" class="primary-btn">View More</a>
+                        <?php
+                        $getReminderData = $mysqli->query("SELECT * FROM reminders WHERE forsection = '{$studentInfo['SR_section']}'");
+
+                        if ($getReminderData->num_rows > 0) {
+                          while ($reminders = $getReminderData->fetch_assoc()) { ?>
+                            <div class="col-lg-4 col-sm-12 mb-3">
+                              <div class="card">
+                                <div class="card-body">
+                                  <div class="user-details row">
+                                    <?php
+                                    $getAuthorInfo = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$reminders['author']}'");
+                                    $AuthorInfo = $getAuthorInfo->fetch_assoc();
+                                    ?>
+                                    <p class="user-name col-12" style="text-align:center;">
+                                      <?php echo $AuthorInfo['F_lname'] .  ", " . $AuthorInfo['F_fname'] . " " . substr($AuthorInfo['F_mname'], 0, 1) . ". " . $AuthorInfo['F_suffix']; ?>
+                                      <span class="far fa-user" style="color: #c02628;"></span>
+                                    </p>
+                                    <p class="date col-12" style="text-align:center;">
+                                      <a>
+                                        <?php
+                                        $storedDate = strtotime($reminders['date_posted']);
+                                        echo date("D M/d/Y", $storedDate);
+                                        ?>
+                                      </a>
+                                      <span class="fa fa-calendar" style="color: #c02628;"></span>
+                                    </p>
+                                  </div>
+                                  <div class="col-12">
+                                    <a class="posts-title" href="viewreminders.php?rmdID=<?php echo $reminders['reminderID'] ?>">
+                                      <h3><?php echo $reminders['header'] ?></h3>
+                                    </a>
+                                    <p>Subject: <?php echo $reminders['subject'] ?></p>
+                                    <p class="excert">
+                                      <?php
+                                      if (empty($reminders['msg'])) {
+                                        echo "No description";
+                                      } else {
+                                        echo $reminders['msg'];
+                                      }
+                                      ?>
+                                    </p>
+                                    <div class="text-center">
+                                      <a href="viewreminders.php?rmdID=<?php echo $reminders['reminderID'] ?>" class="primary-btn">View More</a>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </div>
+                        <?php
+                          }
+                        } else {
+                          echo "error";
+                        }
+                        ?>
                       </div>
                     </div>
                   </div>
@@ -290,65 +301,31 @@ if (!isset($_SESSION['SR_number'])) {
                       <div class="section-title section-title-sm position-relative pb-3 mb-4">
                         <h3 class="mb-0" style="text-align:left;">School Announcements</h3>
                       </div>
-                      <div class="col-lg-12 wow " style="padding-bottom: 5px;">
-                        <div class="blog-item bg-light rounded overflow-hidden">
-                          <div class="p-4">
-                            <div class="d-flex mb-3">
-                              <small class="me-3"><i class="far fa-user text-primary me-2"></i>Steven Frilles</small>
-                              <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
+
+                      <?php
+                      $getAnnouncementData = $mysqli->query("SELECT * FROM announcement");
+
+                      while ($announcement = $getAnnouncementData->fetch_assoc()) { ?>
+                        <div class="col-lg-12 wow " style="padding-bottom: 5px;">
+                          <div class="blog-item bg-light rounded overflow-hidden">
+                            <div class="p-4">
+                              <div class="d-flex mb-3">
+                                <small class="me-3"><i class="far fa-user text-primary me-2"></i><?php echo $announcement['author']; ?></small>
+                                <small><i class="far fa-calendar-alt text-primary me-2"></i><?php echo $announcement['date']; ?></small>
+                              </div>
+                              <h4 class="mb-3"><?php echo $announcement['header']; ?></h4>
+                              <p><?php echo $announcement['msg']; ?></p>
+                              <a class="text-uppercase" href="viewannouncement.php?postID=<?php echo $announcement['ANC_ID']; ?>">Read More <i class="bi bi-arrow-right"></i></a>
                             </div>
-                            <h4 class="mb-3">How to build a website</h4>
-                            <p>Dolor et eos labore stet justo sed est sed sed sed dolor stet amet</p>
-                            <a class="text-uppercase" href="../student/announcement.php">Read More <i class="bi bi-arrow-right"></i></a>
                           </div>
                         </div>
-                      </div>
-                      <div class="col-lg-12 wow " style="padding-bottom: 5px;">
-                        <div class="blog-item bg-light rounded overflow-hidden">
-                          <div class="p-4">
-                            <div class="d-flex mb-3">
-                              <small class="me-3"><i class="far fa-user text-primary me-2"></i>Steven Frilles</small>
-                              <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                            </div>
-                            <h4 class="mb-3">How to build a website</h4>
-                            <p>Dolor et eos labore stet justo sed est sed sed sed dolor stet amet</p>
-                            <a class="text-uppercase" href="../student/announcement.php">Read More <i class="bi bi-arrow-right"></i></a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-12 wow " style="padding-bottom: 5px;">
-                        <div class="blog-item bg-light rounded overflow-hidden">
-                          <div class="p-4">
-                            <div class="d-flex mb-3">
-                              <small class="me-3"><i class="far fa-user text-primary me-2"></i>Steven Frilles</small>
-                              <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                            </div>
-                            <h4 class="mb-3">How to build a website</h4>
-                            <p>Dolor et eos labore stet justo sed est sed sed sed dolor stet amet</p>
-                            <a class="text-uppercase" href="../student/announcement.php">Read More <i class="bi bi-arrow-right"></i></a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-12 wow" style="padding-bottom: 5px;">
-                        <div class="blog-item bg-light rounded overflow-hidden">
-                          <div class="p-4">
-                            <div class="d-flex mb-3">
-                              <small class="me-3"><i class="far fa-user text-primary me-2"></i>Steven Frilles</small>
-                              <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                            </div>
-                            <h4 class="mb-3">How to build a website</h4>
-                            <p>Dolor et eos labore stet justo sed est sed sed sed dolor stet amet</p>
-                            <a class="text-uppercase" href="../student/announcement.php">Read More <i class="bi bi-arrow-right"></i></a>
-                          </div>
-                        </div>
-                      </div>
+                      <?php }
+                      ?>
                       <section class="popular-courses-area courses-page">
                         <div style="text-align: center;">
                           <a href="#" class="primary-btn text-uppercase" style="width: auto;">View More School Announcements</a>
                         </div>
                       </section>
-
-
                     </div>
                   </div>
                 </div>

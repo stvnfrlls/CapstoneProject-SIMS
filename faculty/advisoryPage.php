@@ -207,7 +207,7 @@ if (!isset($_SESSION['F_number'])) {
                                   </thead>
                                   <tbody>
                                     <?php
-                                    while ($SectionClassListData = $rungetSectionClassList->fetch_assoc()) { ?>
+                                    while ($SectionClassListData = $getSectionClassList->fetch_assoc()) { ?>
                                       <tr>
                                         <td class="hatdog"><?php echo $ClassListRow; ?></td>
                                         <td class="hatdog"><?php echo $SectionClassListData['SR_number']; ?></td>
