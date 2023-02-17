@@ -80,7 +80,7 @@ if (!isset($_SESSION['F_number'])) {
   <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
     <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
     <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-      <span class="mdi mdi-menu"></span>
+      <span class="fa fa-bars"></span>
     </button>
   </nav>
   <!-- Navbar End -->
@@ -93,7 +93,7 @@ if (!isset($_SESSION['F_number'])) {
           <!-- line 1 -->
           <li class="nav-item nav-category">Profile</li>
           <li class="nav-item">
-            <a class="nav-link" href="">
+            <a class="nav-link" href="../faculty/dashboard.php">
               <i class=""></i>
               <span class="menu-title">Dashboard</span>
             </a>
@@ -108,6 +108,12 @@ if (!isset($_SESSION['F_number'])) {
             <a class="nav-link" href="../faculty/createReminder.php">
               <i class=""></i>
               <span class="menu-title">Create Reminders</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../faculty/reminders.php">
+              <i class=""></i>
+              <span class="menu-title">Reminders</span>
             </a>
           </li>
           <!-- line 2 -->
@@ -137,9 +143,21 @@ if (!isset($_SESSION['F_number'])) {
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../faculty/reminders.php">
+            <a class="nav-link" href="../faculty/studentStatus.php">
               <i class=""></i>
-              <span class="menu-title">Reminders</span>
+              <span class="menu-title">Student Status</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../faculty/dailyReports.php">
+              <i class=""></i>
+              <span class="menu-title">Attendance Report</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../auth/logout.php">
+              <i class=""></i>
+              <span class="menu-title">Logout</span>
             </a>
           </li>
         </ul>
@@ -162,6 +180,11 @@ if (!isset($_SESSION['F_number'])) {
                         <div class="col-12 grid-margin">
                           <div class="card">
                             <div class="card-body">
+                              <div class="btn-group" style="margin-bottom: 10px;">
+                                <form style="text-align: right;">
+                                  <button type="submit" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3; text-align:center; font-size: 13px">Print <i class="fa fa-print" style="font-size: 12px;"></i></button>
+                                </form>
+                              </div>
                               <div class="row" style="--bs-gutter-x: 0px; margin-bottom:20px;">
                                 <table id="head" class="table">
                                   <tr>
@@ -388,6 +411,73 @@ if (!isset($_SESSION['F_number'])) {
                       </div>
                     </div>
                   </div>
+                </div>
+                <div class="">
+                  <div class="table-responsive">
+                    <table class="table text-center" style="margin-top: 30px;">
+                      <thead>
+                        <tr>
+                          <th class="hatdog" style="border-color: #FFFFFF;"></th>
+                          <th class="hatdog" style="border-color: #FFFFFF;">SEP</th>
+                          <th class="hatdog" style="border-color: #FFFFFF;">OCT</th>
+                          <th class="hatdog" style="border-color: #FFFFFF;">NOV</th>
+                          <th class="hatdog" style="border-color: #FFFFFF;">DEC</th>
+                          <th class="hatdog" style="border-color: #FFFFFF;">JAN</th>
+                          <th class="hatdog" style="border-color: #FFFFFF;">FEB</th>
+                          <th class="hatdog" style="border-color: #FFFFFF;">MAR</th>
+                          <th class="hatdog" style="border-color: #FFFFFF;">APR</th>
+                          <th class="hatdog" style="border-color: #FFFFFF;">MAY</th>
+                          <th class="hatdog" style="border-color: #FFFFFF;">JUN</th>
+                          <th class="hatdog" style="border-color: #FFFFFF;">TOTAL</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="hatdog">No. of School Days</td>
+                          <td class="hatdog">22</td>
+                          <td class="hatdog">26</td>
+                          <td class="hatdog">23</td>
+                          <td class="hatdog">16</td>
+                          <td class="hatdog">15</td>
+                          <td class="hatdog">22</td>
+                          <td class="hatdog">27</td>
+                          <td class="hatdog">22</td>
+                          <td class="hatdog">24</td>
+                          <td class="hatdog">26</td>
+                          <td class="hatdog">223</td>
+                        </tr>
+                        <tr>
+                          <td class="hatdog">No. of Days Present</td>
+                          <td class="hatdog"> </td>
+                          <td class="hatdog"> </td>
+                          <td class="hatdog"> </td>
+                          <td class="hatdog"> </td>
+                          <td class="hatdog"> </td>
+                          <td class="hatdog"> </td>
+                          <td class="hatdog"> </td>
+                          <td class="hatdog"> </td>
+                          <td class="hatdog"> </td>
+                          <td class="hatdog"> </td>
+                          <td class="hatdog"> </td>
+                        </tr>
+                        <tr>
+                          <td class="hatdog">No. of Days Absent</td>
+                          <td class="hatdog"> </td>
+                          <td class="hatdog"> </td>
+                          <td class="hatdog"> </td>
+                          <td class="hatdog"> </td>
+                          <td class="hatdog"> </td>
+                          <td class="hatdog"> </td>
+                          <td class="hatdog"> </td>
+                          <td class="hatdog"> </td>
+                          <td class="hatdog"> </td>
+                          <td class="hatdog"> </td>
+                          <td class="hatdog"> </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
                 </div>
                 <div class="text-center">
                   <button type="submit" class="btn btn-primary me-2" name="saveBehavior">Save</button>

@@ -114,7 +114,7 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
   <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
     <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
     <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-      <span class="mdi mdi-menu"></span>
+      <span class="fa fa-bars"></span>
     </button>
   </nav>
   <!-- Navbar End -->
@@ -127,7 +127,7 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
           <!-- line 1 -->
           <li class="nav-item nav-category">Profile</li>
           <li class="nav-item">
-            <a class="nav-link" href="">
+            <a class="nav-link" href="../faculty/dashboard.php">
               <i class=""></i>
               <span class="menu-title">Dashboard</span>
             </a>
@@ -142,6 +142,12 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
             <a class="nav-link" href="../faculty/createReminder.php">
               <i class=""></i>
               <span class="menu-title">Create Reminders</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../faculty/reminders.php">
+              <i class=""></i>
+              <span class="menu-title">Reminders</span>
             </a>
           </li>
           <!-- line 2 -->
@@ -171,9 +177,21 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../faculty/reminders.php">
+            <a class="nav-link" href="../faculty/studentStatus.php">
               <i class=""></i>
-              <span class="menu-title">Reminders</span>
+              <span class="menu-title">Student Status</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../faculty/dailyReports.php">
+              <i class=""></i>
+              <span class="menu-title">Attendance Report</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../auth/logout.php">
+              <i class=""></i>
+              <span class="menu-title">Logout</span>
             </a>
           </li>
         </ul>
@@ -191,6 +209,10 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
                 </div>
                 <div class="tab-content tab-content-basic">
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                    <form style="text-align: right; margin-bottom: 15px">
+                      <button type="submit" class="btn btn-primary me-2">Save</button>
+                      <button class="btn btn-light">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></button>
+                    </form>
                     <div class="row">
                       <div class="col-12 grid-margin">
                         <div class="card">
@@ -249,12 +271,10 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
                                   </div>
                                 </div>
                               <?php } ?>
-
                             </div>
-
                             <div class="row">
                               <div class="table-responsive">
-                                <table class="table text-center">
+                                <table class="table text-center" style="margin-top: 20px;">
                                   <thead>
                                     <tr>
                                       <th rowspan="2" class="hatdog">Student Name</th>
@@ -397,10 +417,6 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
                 </div>
               </div>
             </div>
-            <form style="text-align: center;">
-              <button type="submit" class="btn btn-primary me-2">Save</button>
-              <button class="btn btn-light">Cancel</button>
-            </form>
           </div>
         </div>
         <!-- content-wrapper ends -->

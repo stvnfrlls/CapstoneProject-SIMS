@@ -50,7 +50,6 @@ if (!isset($_SESSION['F_number'])) {
   <link href="../assets/css/style.css" rel="stylesheet">
   <link href="../assets/css/form-style.css" rel="stylesheet">
   <link href="../assets/css/admin/style.css" rel="stylesheet">
-  <link href="../assets/css/admin/materialdesignicons.min.css" rel="stylesheet">
 
 </head>
 
@@ -59,7 +58,7 @@ if (!isset($_SESSION['F_number'])) {
   <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
     <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
     <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-      <span class="mdi mdi-menu"></span>
+      <span class="fa fa-bars"></span>
     </button>
   </nav>
   <!-- Navbar End -->
@@ -72,7 +71,7 @@ if (!isset($_SESSION['F_number'])) {
           <!-- line 1 -->
           <li class="nav-item nav-category">Profile</li>
           <li class="nav-item">
-            <a class="nav-link" href="">
+            <a class="nav-link" href="../faculty/dashboard.php">
               <i class=""></i>
               <span class="menu-title">Dashboard</span>
             </a>
@@ -87,6 +86,12 @@ if (!isset($_SESSION['F_number'])) {
             <a class="nav-link" href="../faculty/createReminder.php">
               <i class=""></i>
               <span class="menu-title">Create Reminders</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../faculty/reminders.php">
+              <i class=""></i>
+              <span class="menu-title">Reminders</span>
             </a>
           </li>
           <!-- line 2 -->
@@ -116,9 +121,21 @@ if (!isset($_SESSION['F_number'])) {
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../faculty/reminders.php">
+            <a class="nav-link" href="../faculty/studentStatus.php">
               <i class=""></i>
-              <span class="menu-title">Reminders</span>
+              <span class="menu-title">Student Status</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../faculty/dailyReports.php">
+              <i class=""></i>
+              <span class="menu-title">Attendance Report</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../auth/logout.php">
+              <i class=""></i>
+              <span class="menu-title">Logout</span>
             </a>
           </li>
         </ul>
@@ -141,6 +158,18 @@ if (!isset($_SESSION['F_number'])) {
                         <div class="card">
                           <div class="card-body">
                             <div class="dropdown" style="margin-bottom: 30px;">
+                              <div class="btn-group">
+                                <div class="dropdown">
+                                  <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">Academic Year
+                                    <i class="fa fa-caret-down"></i>
+                                  </button>
+                                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <a class="dropdown-item" href="">2022-2023</a>
+                                    <a class="dropdown-item" href="">2023-2024</a>
+                                    <a class="dropdown-item" href="">2024-2025</a>
+                                  </div>
+                                </div>
+                              </div>
                               <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                 <?php
                                 if (isset($_GET['Grade']) && isset($_GET['Section'])) {
@@ -187,7 +216,7 @@ if (!isset($_SESSION['F_number'])) {
                                     }
                                     if (!isset($_GET['Grade'])) { ?>
                                       <tr>
-                                        <td colspan="3">NO DATA</td>
+                                        <td colspan="3">NO SELECTED ACADEMIC YEAR AND GRADE AND SECTION</td>
                                       </tr>
                                       <?php
                                     } else {
@@ -285,8 +314,6 @@ if (!isset($_SESSION['F_number'])) {
 
   <!-- Back to Top -->
   <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
-  <!-- JavaScript Libraries -->
 
 
   <!-- Template Javascript -->
