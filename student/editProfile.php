@@ -90,6 +90,9 @@ if (!isset($_SESSION['SR_number'])) {
   <!-- Navbar End -->
 
   <section>
+    <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
+      <h5 class="fw-bold text-primary text-uppercase" style="font-size: 30px; margin-top:50px;">Edit Profile</h5>
+    </div>
     <div class="container py-5">
       <div class="row">
         <div class="col-lg-10" style="margin: auto;">
@@ -125,6 +128,17 @@ if (!isset($_SESSION['SR_number'])) {
           </div>
           <div class="card mb-4">
             <div class="card-body">
+              <div class="row">
+                <div class="col-sm-3" style="padding-top:11px;">
+                  <p class="mb-0">Profile Picture</p>
+                </div>
+                <div class="col-sm-9">
+                  <div class="input-group">
+                    <input type="file" class="form-control file-upload-info" placeholder="Upload Image">
+                  </div>
+                </div>
+              </div>
+              <hr>
               <div class="row">
                 <div class="col-sm-3" style="padding-top:11px;">
                   <p class="mb-0">Full Name</p>
@@ -256,6 +270,10 @@ if (!isset($_SESSION['SR_number'])) {
             </div>
           </div>
         </div>
+      </div>
+      <div style="text-align: center;">
+        <button type="submit" class="btn btn-primary me-2" name="confirm_faculty">Save</button>
+        <button class="btn btn-light" onclick="location.href='../student/profile.php'">Back</button>
       </div>
     </div>
   </section>

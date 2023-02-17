@@ -49,7 +49,7 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
     <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
         <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-            <span class="mdi mdi-menu"></span>
+            <span class="fa fa-bars"></span>
         </button>
     </nav>
     <!-- Navbar End -->
@@ -62,7 +62,7 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
                     <!-- line 1 -->
                     <li class="nav-item nav-category">Profile</li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">
+                        <a class="nav-link" href="../faculty/dashboard.php">
                             <i class=""></i>
                             <span class="menu-title">Dashboard</span>
                         </a>
@@ -77,6 +77,12 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
                         <a class="nav-link" href="../faculty/createReminder.php">
                             <i class=""></i>
                             <span class="menu-title">Create Reminders</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/reminders.php">
+                            <i class=""></i>
+                            <span class="menu-title">Reminders</span>
                         </a>
                     </li>
                     <!-- line 2 -->
@@ -106,9 +112,21 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../faculty/reminders.php">
+                        <a class="nav-link" href="../faculty/studentStatus.php">
                             <i class=""></i>
-                            <span class="menu-title">Reminders</span>
+                            <span class="menu-title">Student Status</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/dailyReports.php">
+                            <i class=""></i>
+                            <span class="menu-title">Attendance Report</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../auth/logout.php">
+                            <i class=""></i>
+                            <span class="menu-title">Logout</span>
                         </a>
                     </li>
                 </ul>

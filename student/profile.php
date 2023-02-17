@@ -40,8 +40,7 @@ if (!isset($_SESSION['SR_number'])) {
   <!-- Template Stylesheet -->
   <link href="../assets/css/style.css" rel="stylesheet">
   <link href="../assets/css/dashboard-user.css" rel="stylesheet">
-  <link href="../assets/css/student.css" rel="stylesheet">
-
+  <link href="../assets/css/admin/style.css" rel="stylesheet">
 </head>
 
 <body>
@@ -91,14 +90,6 @@ if (!isset($_SESSION['SR_number'])) {
   <section>
     <div class="container py-5">
       <div class="row">
-        <div class="col">
-          <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
-            <a href="#" style="margin-left: 10px;">Back</a>
-          </nav>
-        </div>
-      </div>
-
-      <div class="row">
         <div class="col-lg-4">
           <div class="card mb-4">
             <div class="card-body text-center">
@@ -107,9 +98,16 @@ if (!isset($_SESSION['SR_number'])) {
               <p class="text-muted mb-1">2019-00188-SP-0</p>
               <p class="text-muted mb-4">Grade 1 - Einstein</p>
               <div class="d-flex justify-content-center mb-2">
-                <button type="button" class="btn btn-outline-primary ms-1">Edit</button>
-                <button type="button" class="btn btn-outline-primary ms-1">View QR Code</button>
+                <button type="button" class="btn btn-outline-primary ms-1" onclick="location.href='../student/editProfile.php'">Edit</button>
+                <button type="button" class="btn btn-outline-primary ms-1" onclick="openImage()">View QR Code</button>
               </div>
+            </div>
+          </div>
+          <div class="card mb-4">
+            <div class="card-body">
+              <p class="mb-4" style="text-align: center; color:#c02628;">Class Adviser</p>
+              <p class="mb-1" style="font-size: .90rem;">Ms. Hazel Grace L. Cantuba</p>
+              
             </div>
           </div>
           <div class="card mb-4 mb-md-0">
@@ -229,10 +227,10 @@ if (!isset($_SESSION['SR_number'])) {
               <hr>
               <div class="row">
                 <div class="col-sm-3">
-                  <p class="mb-0">Contact Number</p>
+                  <p class="mb-0">Email Address</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">0975 345 2152</p>
+                  <p class="text-muted mb-0">cmlsbl24@gmail.com</p>
                 </div>
               </div>
             </div>
@@ -299,6 +297,7 @@ if (!isset($_SESSION['SR_number'])) {
     </div>
   </section>
 
+
   <!-- Footer Start -->
   <div class="container-fluid bg-dark text-body footer mt-5 pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
     <div class="container py-5">
@@ -349,6 +348,17 @@ if (!isset($_SESSION['SR_number'])) {
     </div>
   </div>
   <!-- Footer End -->
+
+  <script>
+    function openImage() {
+      var width = window.innerWidth * 0.8; // calculate the width of the new window
+      var height = window.innerHeight * 0.8; // calculate the height of the new window
+      var left = (window.innerWidth - width) / 2; // calculate the horizontal position of the new window
+      var top = (window.innerHeight - height) / 2; // calculate the vertical position of the new window
+      var features = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top; // specify the features of the new window
+      var image = window.open("../assets/img/profile.jpg", "Image", features); // open the new window and display the image inside it
+    }
+  </script>
 
   <!-- JavaScript Libraries -->
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
