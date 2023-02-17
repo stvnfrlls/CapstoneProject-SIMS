@@ -2,6 +2,7 @@
 session_start();
 include('database.php');
 include('mail.php');
+global $currentSchoolYear;
 $errors = array();
 $year = date('Y');
 $month = date('m');
@@ -85,6 +86,11 @@ function timeMinusOneMinute($data) //sa endtime lang to ilalagay
 
     return $data;
 }
+
+$getSchoolYearInfo = $mysqli->query("SELECT * FROM acad_year");
+$SchoolYearData = $getSchoolYearInfo->fetch_assoc();
+$currentSchoolYear = $SchoolYearData['currentYear'] . " - " . $SchoolYearData['endYear'];
+
 //Login and Register Process
 if (isset($_POST['login-button'])) {
     $email = $_POST['usersEmail'];
