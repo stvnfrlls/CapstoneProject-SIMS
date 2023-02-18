@@ -104,7 +104,7 @@ if (!isset($_SESSION['SR_number'])) {
             <p style="text-align: center;">School Year: 2022-2023</p>
             <div class="btn-group m-3">
                 <form style="text-align: right;">
-                    <button type="submit" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3; text-align:center; font-size: 13px">Print <i class="fa fa-print" style="font-size: 12px;"></i></button>
+                    <a href="../reports/ReportCard.php?ID=<?php echo  $studentData['SR_number'] ?>" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3; text-align:center; font-size: 13px">Print <i class="fa fa-print" style="font-size: 12px;"></i></a>
                 </form>
             </div>
             <div class="col m-3">

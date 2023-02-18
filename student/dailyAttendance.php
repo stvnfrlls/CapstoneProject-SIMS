@@ -181,9 +181,13 @@ if (!isset($_SESSION['SR_number'])) {
                                         </div>
                                     </div>
                                     <div class="btn-group" style="margin: auto;">
-                                        <form style="text-align: right;">
-                                            <button type="submit" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3;">Print <i class="fa fa-print" style="font-size: 12px;"></i></button>
-                                        </form>
+                                        <?php
+                                        if (isset($_GET['month'])) {
+                                            echo '<a href="../reports/PDFAttendance.php?month=' . $_GET['month'] . '&ID=' . $_SESSION['SR_number'] . '" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3;">Print <i class="fa fa-print" style="font-size: 12px;"></i></a>';
+                                        } else {
+                                            echo '<a href="../reports/PDFAttendance.php?ID=' . $_SESSION['SR_number'] . '" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3;">Print <i class="fa fa-print" style="font-size: 12px;"></i></a>';
+                                        }
+                                        ?>
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-12 d-flex flex-column">

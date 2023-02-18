@@ -2,7 +2,7 @@
 require '../assets/fpdf/fpdf.php';
 require_once("../assets/php/server.php");
 
-if (isset($_GET['ID'])) {
+if (isset($_GET['ID']) || isset($_GET['month'])) {
     class PDF extends FPDF
     {
         function Header()
@@ -86,7 +86,13 @@ if (isset($_GET['ID'])) {
     $pdf->Cell(30, 10, 'Status', 1, 0, 'C');
     $pdf->Cell(60, 10, 'Fetched By', 1, 1, 'C');
 
-    $getAttendance = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$_GET['ID']}' ORDER BY A_date");
+    if (!empty($_GET['month'])) {
+        $getAttendance = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = '{$_GET['month']}' ORDER BY A_date");
+    } else {
+        $getAttendance = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$_GET['ID']}' ORDER BY A_date");
+    }
+
+
     $pdf->SetFont('Arial', '', 9);
     while ($attendance = $getAttendance->fetch_assoc()) {
         $pdf->Cell(40, 10, date("F j, Y", strtotime($attendance['A_date'])), 1, 0, 'C');
