@@ -252,6 +252,77 @@ if (isset($_POST['updatePassword'])) {
 }
 //END
 
+//Student Process
+if (isset($_POST['editStudentProfile'])) {
+    $SR_fname = $_POST['SR_fname'];
+    $SR_mname = $_POST['SR_mname'];
+    $SR_lname = $_POST['SR_lname'];
+    $SR_suffix = $_POST['SR_suffix'];
+    $SR_age = $_POST['SR_age'];
+    $SR_gender = $_POST['SR_gender'];
+    $SR_birthday = $_POST['SR_birthday'];
+    $SR_birthplace = $_POST['SR_birthplace'];
+    $SR_religion = $_POST['SR_religion'];
+    $SR_citizenship = $_POST['SR_citizenship'];
+    $SR_address = $_POST['SR_address'];
+    $SR_barangay = $_POST['SR_barangay'];
+    $SR_city = $_POST['SR_city'];
+    $SR_state = $_POST['SR_state'];
+    $SR_postal = $_POST['SR_postal'];
+    $SR_email = $_POST['SR_email'];
+
+    $updateStudentInfo = $mysqli->query("UPDATE studentrecord 
+                                        SET 
+                                        SR_fname = '{$SR_fname}', 
+                                        SR_mname = '{$SR_mname}', 
+                                        SR_lname = '{$SR_lname}', 
+                                        SR_suffix = '{$SR_suffix}', 
+                                        SR_gender = '{$SR_gender}', 
+                                        SR_age = '{$SR_age}', 
+                                        SR_birthday = '{$SR_birthday}', 
+                                        SR_birthplace = '{$SR_birthplace}', 
+                                        SR_religion = '{$SR_religion}', 
+                                        SR_citizenship = '{$SR_citizenship}', 
+                                        SR_address = '{$SR_address}', 
+                                        SR_barangay = '{$SR_barangay}', 
+                                        SR_city = '{$SR_city}', 
+                                        SR_state = '{$SR_state}', 
+                                        SR_postal = '{$SR_postal}', 
+                                        SR_email = '{$SR_email}' 
+                                        WHERE SR_number = '{$_POST['SR_number']}'");
+
+    $G_lname = $_POST['G_lname'];
+    $G_fname = $_POST['G_fname'];
+    $G_mname = $_POST['G_mname'];
+    $G_suffix = $_POST['G_suffix'];
+    $G_address = $_POST['G_address'];
+    $G_barangay = $_POST['G_barangay'];
+    $G_city = $_POST['G_city'];
+    $G_state = $_POST['G_state'];
+    $G_postal = $_POST['G_postal'];
+    $G_email = $_POST['G_email'];
+    $G_relationshipStudent = $_POST['G_relationshipStudent'];
+    $G_telephone = $_POST['G_telephone'];
+    $G_contact = $_POST['G_contact'];
+
+    $updateGuardianInfo = $mysqli->query("UPDATE guardian 
+                                        SET 
+                                        G_lname= '{$G_lname}', 
+                                        G_fname = '{$G_fname}', 
+                                        G_mname = '{$G_mname}', 
+                                        G_suffix = '{$G_suffix}', 
+                                        G_address = '{$G_address}', 
+                                        G_barangay = '{$G_barangay}', 
+                                        G_city = '{$G_city}', 
+                                        G_state = '{$G_state}', 
+                                        G_postal = '{$G_postal}', 
+                                        G_email = '{$G_email}', 
+                                        G_relationshipStudent = '{$G_relationshipStudent}', 
+                                        G_telephone = '{$G_telephone}', 
+                                        G_contact = '{$G_contact}' 
+                                        WHERE G_guardianOfStudent = '{$_POST['SR_number']}'");
+}
+
 //Faculty Process
 if (isset($_POST['student']) || isset($_POST['fetcher'])) {
 
@@ -450,7 +521,6 @@ if (isset($_POST['editReminders'])) {
         echo "error" . $mysqli->error;
     }
 }
-
 //End
 
 //Admin Process
@@ -924,6 +994,4 @@ if (isset($_POST['assignAdvisor'])) {
 
     $assignAdvisor = $mysqli->query("UPDATE sections SET S_adviser = '{$advisor}' WHERE S_name = '{$section}'");
 }
-
-
 //End
