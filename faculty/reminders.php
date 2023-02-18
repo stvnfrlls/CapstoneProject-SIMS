@@ -159,8 +159,8 @@ if (!isset($_SESSION['F_number'])) {
                                                                 $getAuthorName = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$reminder['author']}'");
                                                                 $authorName = $getAuthorName->fetch_assoc();
                                                                 ?>
-                                                                <p class="user-name col-lg-12 col-md-12 col-6"><span class="far fa-user" style="color: #c02628;"></span><a href="#"><?php echo $authorName['F_lname'] .  ", " . $authorName['F_fname'] . " " . substr($authorName['F_mname'], 0, 1) ?></a> </p>
-                                                                <p class="date col-lg-12 col-md-12 col-6"><span class="fa fa-calendar" style="color: #c02628;"></span><a><?php echo $reminder['date_posted'] ?></a> </p>
+                                                                <p class="user-name col-lg-12 col-md-12 col-6"><span class="far fa-user" style="color: #c02628;"> </span><a href="#"> <?php echo $authorName['F_lname'] .  ", " . $authorName['F_fname'] . " " . substr($authorName['F_mname'], 0, 1) ?></a> </p>
+                                                                <p class="date col-lg-12 col-md-12 col-6"><span class="fa fa-calendar" style="color: #c02628;"> </span><a> <?php echo $reminder['date_posted'] ?></a> </p>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-9">
@@ -174,7 +174,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                         <p class="excert">
                                                                             <?php echo $reminder['msg'] ?>
                                                                         </p>
-                                                                        <a href="blog-single.html" class="primary-btn">View More</a>
+                                                                        <button type="submit" class="btn btn-primary me-2" name="">View More</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
