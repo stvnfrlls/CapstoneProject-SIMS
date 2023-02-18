@@ -4,7 +4,16 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['SR_number'])) {
   header('Location: ../auth/login.php');
 } else {
-  # code...
+  if (isset($_GET['ID'])) {
+    $getstudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$_SESSION['SR_number']}'");
+    $studentInfo = $getstudentInfo->fetch_assoc();
+    $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_name = '{$studentInfo['SR_section']}'");
+    $SectionInfo = $getSectionInfo->fetch_assoc();
+    $getReminderData = $mysqli->query("SELECT * FROM reminders WHERE forsection = '{$studentInfo['SR_section']}' AND reminderID = '{$_GET['ID']}'");
+    $ReminderInfo = $getReminderData->fetch_assoc();
+  } else {
+    header('Location: reminders.php');
+  }
 }
 ?>
 <!DOCTYPE html>
@@ -99,11 +108,10 @@ if (!isset($_SESSION['SR_number'])) {
               <div class="p-4">
                 <div class="right-content">
                   <div class="d-flex mb-3">
-                    <small class="me-3">Subject: English</small>
-                    <small>Deadline: 01 Jan, 2045</small>
+                    <small class="me-3">Subject: <?php echo $ReminderInfo['subject'] ?></small>
+                    <small>Deadline: <?php echo $ReminderInfo['deadline'] ?></small>
                   </div>
-                  <p>When you enter into any new area of science, you almost always find yourself with a baffling new language of technical terms to learn before you can converse with the experts. This is certainly true in astronomy both in terms of terms that refer to the cosmos and terms that describe the tools of the trade, the most prevalent being the telescope.
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodoconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.</p>
+                  <p><?php echo $ReminderInfo['msg'] ?></p>
                   <div class="text-button" style="text-align:right;">
                     <a href="" style="font-weight: 500;">Mark as done</a>
                   </div>
@@ -123,26 +131,16 @@ if (!isset($_SESSION['SR_number'])) {
             <div class="section-title section-title-sm position-relative pb-3 mb-4">
               <h3 class="mb-0" style="text-align:left;">Other Reminders</h3>
             </div>
-            <div class="d-flex rounded overflow-hidden mb-3">
-              <img class="img-fluid" src="img/blog-2.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
-              <a href="" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit</a>
-            </div>
-            <div class="d-flex rounded overflow-hidden mb-3">
-              <img class="img-fluid" src="img/blog-3.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
-              <a href="" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit</a>
-            </div>
-            <div class="d-flex rounded overflow-hidden mb-3">
-              <img class="img-fluid" src="img/blog-1.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
-              <a href="" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit</a>
-            </div>
-            <div class="d-flex rounded overflow-hidden mb-3">
-              <img class="img-fluid" src="img/blog-2.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
-              <a href="" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit</a>
-            </div>
-            <div class="d-flex rounded overflow-hidden mb-3">
-              <img class="img-fluid" src="img/blog-3.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
-              <a href="" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit</a>
-            </div>
+            <?php
+            $getReminderDataExcept = $mysqli->query("SELECT * FROM reminders WHERE forsection = '{$studentInfo['SR_section']}' AND reminderID != '{$_GET['ID']}'");
+            while ($OtherReminderInfo = $getReminderDataExcept->fetch_assoc()) { ?>
+              <div class="d-flex rounded overflow-hidden mb-3">
+                <img class="img-fluid" src="../assets/img/about-1.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
+                <a href="viewreminders.php?ID=<?php echo $OtherReminderInfo['reminderID'] ?>" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0"><?php echo $OtherReminderInfo['header'] ?></a>
+              </div>
+            <?php }
+            ?>
+
           </div>
           <!-- Recent Post End -->
 
