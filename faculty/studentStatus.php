@@ -202,8 +202,8 @@ if (empty($_SESSION['AD_number'])) {
                                                                             <th class="tablestyle">Student Name</th>
                                                                             <th class="tablestyle">Grade and Section<br>(current)</th>
                                                                             <th class="tablestyle">Remarks</th>
-                                                                            <th class="tablestyle">Move up to</th>
                                                                             <th class="tablestyle">Action</th>
+                                                                            <th class="tablestyle">Move up to</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
@@ -228,6 +228,14 @@ if (empty($_SESSION['AD_number'])) {
                                                                                     <td class="tablestyle">
                                                                                         <select class="form-select" aria-label="Default select example">
                                                                                             <option value=""></option>
+                                                                                            <option value="Dropped">Dropped</option>
+                                                                                            <option value="MovingUp">Moving Up</option>
+                                                                                            <option value="Transferring">Transferring</option>
+                                                                                        </select>
+                                                                                    </td>
+                                                                                    <td class="tablestyle">
+                                                                                        <select class="form-select" aria-label="Default select example">
+                                                                                            <option value=""></option>
                                                                                             <?php
                                                                                             $sections = $mysqli->query("SELECT * FROM sections");
 
@@ -237,14 +245,7 @@ if (empty($_SESSION['AD_number'])) {
                                                                                             ?>
                                                                                         </select>
                                                                                     </td>
-                                                                                    <td class="tablestyle">
-                                                                                        <select class="form-select" aria-label="Default select example">
-                                                                                            <option value=""></option>
-                                                                                            <option value="Dropped">Dropped</option>
-                                                                                            <option value="MovingUp">Moving Up</option>
-                                                                                            <option value="Transferring">Transferring</option>
-                                                                                        </select>
-                                                                                    </td>
+
                                                                                 </tr>
                                                                             <?php $rowCount++;
                                                                             }
