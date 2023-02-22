@@ -246,14 +246,7 @@ if (!isset($_SESSION['SR_number'])) {
                                                                                 <td class="tabledata"><?php echo $attendance['A_date'] ?></td>
                                                                                 <td class="tabledata"><?php echo $attendance['A_time_IN']; ?></td>
                                                                                 <td class="tabledata"><?php echo $attendance['A_time_OUT']; ?></td>
-                                                                                <td class="tabledata" style="width: auto;">
-                                                                                    <select class="form-select" required>
-                                                                                        <option selected>Present</option>
-                                                                                        <option value="Male">Late</option>
-                                                                                        <option value="Female">Excuse</option>
-                                                                                        <option value="NA">Absent</option>
-                                                                                    </select>
-                                                                                </td>
+                                                                                <td class="tabledata"><?php echo $attendance['A_status']; ?></td>
                                                                             </tr>
                                                                     <?php $rowCount++;
                                                                         }
