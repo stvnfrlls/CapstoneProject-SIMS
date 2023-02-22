@@ -1,3 +1,44 @@
+<?php
+require_once("../assets/php/server.php");
+include('../assets/phpqrcode/qrlib.php');
+
+if (empty($_SESSION['F_number'])) {
+    header('Location: ../auth/login.php');
+} else {
+    if ($_GET['ID']) {
+        $studentLink = array();
+        $verifySR_number = "SELECT * FROM studentrecord 
+                        INNER JOIN guardian
+                        ON studentrecord.SR_number = guardian.G_guardianOfStudent
+                        WHERE studentrecord.SR_number = '{$_GET['ID']}'";
+        $runverifySR_number = $mysqli->query($verifySR_number);
+        $getRecord =  $runverifySR_number->fetch_assoc();
+
+        $getSectionInfo = "SELECT * FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'";
+        $rungetSectionInfo = $mysqli->query($getSectionInfo);
+        $SectionData = $rungetSectionInfo->fetch_assoc();
+
+        $getSectionClassList = "SELECT * FROM studentrecord WHERE SR_section = '{$SectionData['S_name']}'";
+        $rungetSectionClassList = $mysqli->query($getSectionClassList);
+        while ($ClassListData = $rungetSectionClassList->fetch_assoc()) {
+            $studentLink[] = $ClassListData['SR_number'];
+        }
+
+        $getStudentNumber = $mysqli->query("SELECT SR_number FROM studentrecord WHERE SR_section = '{$getRecord['SR_section']}' AND SR_number != '{$_GET['ID']}'");
+
+        if ($getRecord['SR_number'] == $_GET['ID']) {
+            $tempDir = '../assets/temp/';
+            if (!file_exists($tempDir)) {
+                mkdir($tempDir);
+            }
+            $qrcode_data = $getRecord['SR_number'];
+            QRcode::png($qrcode_data,  $tempDir . '' . $qrcode_data . '.png', QR_ECLEVEL_L);
+        }
+    } else {
+        header('Location: classlist.php');
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -143,8 +184,23 @@
                                     </div>
                                     <div style="text-align:right; margin-top: 15px;">
                                         <div class="col-12">
-                                            <button type="submit" class="btn btn-primary" name="saveBehavior"><i class="fa fa-angle-double-left"></i> Prev</button>
-                                            <button class="btn btn-primary">Next <i class="fa fa-angle-double-right"></i></button>
+                                            <?php
+                                            $value = $_GET['ID'];
+                                            $index = array_search($value, $studentLink);
+                                            $previous = null;
+                                            $next = null;
+
+                                            if ($index !== false) {
+                                                if ($index > 0) {
+                                                    $previous = $studentLink[$index - 1];
+                                                }
+                                                if ($index < count($studentLink) - 1) {
+                                                    $next = $studentLink[$index + 1];
+                                                }
+                                            }
+                                            ?>
+                                            <a href="viewstudent.php?ID=<?php echo $previous ?>" class="btn btn-primary"><i class="fa fa-angle-double-left"></i>Previous </a>
+                                            <a href="viewstudent.php?ID=<?php echo $next ?>" class="btn btn-primary">Next <i class="fa fa-angle-double-right"></i></a>
                                         </div>
                                     </div>
                                     <div class="tab-content tab-content-basic">
@@ -157,7 +213,7 @@
                                                             <form class="form-sample">
                                                                 <div class="row" style="padding-bottom: 15px;">
                                                                     <div class="col-md-6 col-sm-6 col-lg-12" style="text-align: center; margin-bottom: 20px; margin-top: 10px;">
-                                                                        <img src="../assets/img/profile.jpg" alt="avatar" class="rounded-circle img-fluidr" style="width: 150px;">
+                                                                        <img src="../assets/img/profile.jpg" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
                                                                     </div>
                                                                 </div>
                                                             </form>
