@@ -4,12 +4,11 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['F_number'])) {
   header('Location: ../auth/login.php');
 } else {
-  $getWorkSchedule = "SELECT SR_grade, SR_section, S_subject FROM workschedule WHERE F_number = '{$_SESSION['F_number']}'";
-  $rungetWorkSchedule = $mysqli->query($getWorkSchedule);
+  $getWorkSchedule = $mysqli->query("SELECT SR_grade, SR_section, S_subject FROM workschedule WHERE F_number = '{$_SESSION['F_number']}'");
   $array_GradeSection = array();
   array_unshift($array_GradeSection, null);
 
-  while ($dataWorkSchedule = $rungetWorkSchedule->fetch_assoc()) {
+  while ($dataWorkSchedule = $getWorkSchedule->fetch_assoc()) {
     $array_GradeSection[] = $dataWorkSchedule;
   }
   $current_url = $_SERVER["REQUEST_URI"];
@@ -228,8 +227,7 @@ if (!isset($_SESSION['F_number'])) {
                                           <td><?php echo $rowCount ?></td>
                                           <td><?php echo $dataClassList['SR_number'] ?></td>
                                           <td>
-                                            <!-- palitan to ng katulad nung sa advisory page kung may idadagdag na page -->
-                                            <a href="classList.php?SR_Number=<?php echo $dataClassList['SR_number'] ?>">
+                                            <a href="viewstudent.php?ID=<?php echo $dataClassList['SR_number'] ?>">
                                               <?php echo $dataClassList['SR_lname'] . ", " . $dataClassList['SR_fname'] . " " . substr($dataClassList['SR_mname'], 0, 1); ?>
                                             </a>
                                           </td>
