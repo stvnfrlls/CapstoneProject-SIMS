@@ -1,0 +1,51 @@
+.swal2-title {
+    position: relative;
+    max-width: 100%;
+    margin: 0;
+    padding: .8em 1em 0;
+    color: inherit;
+    font-size: 1.875em;
+    font-weight: 450 !important;
+    text-align: center;
+    text-transform: none;
+    word-wrap: break-word;
+    font-size: 20px !important;
+}
+.swal2-modal {
+    min-height: 250px !important;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    border-radius: 20px !important;
+}
+
+
+.swal2-styled.swal2-confirm {
+    border: 0;
+    border-radius: 0.25em;
+    background: initial;
+    background-color: #c02628;
+    color: #fff;
+    font-size: 15px;
+}
+
+.swal2-styled.swal2-deny {
+    border: 0;
+    border-radius: 0.25em;
+    background: initial;
+    background-color: #dc3741;
+    color: #fff;
+    font-size: 1em;
+}
+
+.swal2-styled.swal2-cancel {
+    border: 0;
+    border-radius: 0.25em;
+    background: initial;
+    background-color: #6e7881;
+    color: #fff;
+    font-size: 15px;
+}

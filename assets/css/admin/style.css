@@ -12352,6 +12352,7 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
   white-space: nowrap;
   background-color: transparent;
   border: 0;
+  font-size: 12px !important;
 }
 
 .dropdown-item:hover, .dropdown-item:focus {
@@ -20821,6 +20822,7 @@ code {
 
 .btn-secondary.btn-light, .btn-secondary.btn-secondary {
   color: #1E283D;
+  font-size: 12px;
 }
 
 .btn-secondary:hover, .btn-secondary:focus {
@@ -27639,7 +27641,7 @@ table.dataTable tbody td.select-checkbox:after {
 }
 
 .swal2-modal .swal2-title {
-  font-size: 25px;
+
   line-height: 1;
   font-weight: 600;
   color: #1F1F1F;
@@ -27650,7 +27652,7 @@ table.dataTable tbody td.select-checkbox:after {
 .swal2-modal .swal2-icon,
 .swal2-modal .swal2-success-ring {
   margin-top: 0;
-  margin-bottom: 42px;
+  margin-bottom: 0px;
 }
 
 .swal2-modal .swal2-buttonswrapper {

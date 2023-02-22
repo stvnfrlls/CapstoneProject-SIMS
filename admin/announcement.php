@@ -49,9 +49,9 @@ if (!isset($_SESSION['AD_number'])) {
 <body>
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-        <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
+        <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-            <span class="mdi mdi-menu"></span>
+            <span class="fa fa-bars"></span>
         </button>
     </nav>
     <!-- Navbar End -->
@@ -70,15 +70,15 @@ if (!isset($_SESSION['AD_number'])) {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../admin/createAdmin.php">
+                        <a class="nav-link" href="../admin/auditTrail.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Create Admin</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Activity History</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../admin/addStudent.php">
+                        <a class="nav-link" href="../admin/createAdmin.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Add Student</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Create Admin</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -88,17 +88,23 @@ if (!isset($_SESSION['AD_number'])) {
                         </a>
                     </li>
                     <!-- line 2 -->
-                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Student</li>
+                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Student Records</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/addStudent.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Student Records</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Student Information</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/editgrades.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Grades</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -112,7 +118,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/addFaculty.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Add Faculty</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Register Faculty</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -124,7 +130,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/assignAdvisory.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Assign Advisory</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Advisory Class Assignment</span>
                         </a>
                     </li>
                     <!-- line 4 -->
@@ -132,13 +138,13 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/editlearningareas.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Scheduling</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Work Schedule Assignment</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/modifyCurriculum.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Curriculum</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Edit Curriculum</span>
                         </a>
                     </li>
                     <!-- line 5 -->
@@ -158,7 +164,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <!-- line 5 -->
                     <li class="nav-item nav-category" style="padding-top: 10px;"></li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">
+                        <a class="nav-link" href="../auth/logout.php">
                             <i class=""></i>
                             <span class="menu-title" style="color: #b9b9b9;">Logout</span>
                         </a>
@@ -173,58 +179,80 @@ if (!isset($_SESSION['AD_number'])) {
                             <div class="home-tab">
                                 <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                                     <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                                        <h2 class="fw-bold text-primary text-uppercase">Announcements</h2>
+                                        <h2 class="fw-bold text-primary text-uppercase">School Announcements</h2>
                                     </div>
                                 </div>
-
-                                <form style="text-align: right; margin-top: 50px; margin-right: 20px;">
-                                    <a href="createAnnouncement.php" style="color: #ffffff;" class="btn btn-primary me-2">Create <i class="fa fa-plus" style="font-size: 10px;"></i></a>
+                                <form style="text-align: right; margin-top: 30px; margin-right: 20px;">
+                                    <button type="button" onclick="location.href='../admin/createAnnouncement.php'" style="color: #ffffff;" class="btn btn-primary me-2" >Create <i class="fa fa-plus" style="font-size: 10px;"></i></button>
                                 </form>
+                                <section class="post-content-area" style="background-color: #f4f5f7;">
+                                    <div class="container">
+                                        <div class="row col-lg-10" style="padding-top: 15px;">
+                                            <div class="col-lg-10 posts-list" style="margin-left: auto;">
 
-                                <div class="tab-content tab-content-basic">
-                                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                                        <div class="row">
-                                            <?php
-                                            $getAnnouncement = $mysqli->query('SELECT * FROM announcement');
-                                            while ($announcementDATA = $getAnnouncement->fetch_assoc()) { ?>
-                                                <div class="col-lg-4 col-sm-12 grid-margin">
-                                                    <div class="card">
-                                                        <div class="card-body">
-                                                            <div class="single-popular-carusel col-12">
-                                                                <div class="details">
-                                                                    <div class="row">
-                                                                        <a href="#" class=" col-sm-3 col-md-9 col-lg-9">
-                                                                            <h4><?php echo $announcementDATA['header'] ?></h4>
-                                                                        </a>
-                                                                        <div class="btn-wrapper col-sm-3 col-md-9 col-lg-3" style="margin-left: auto;  padding-right: 0px;">
-                                                                            <a href="viewAnnouncement.php?postID=<?php echo $announcementDATA['ANC_ID'] ?>" style="margin-right: 2px;"><i class="fa fa-eye"></i></a>
-                                                                            <a href="#" style="margin-right: 2px;"><i class="fa fa-edit"></i></a>
-                                                                            <a href="#" style="margin-right: 2px;"><i class="fa fa-trash"></i></a>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="d-flex mb-3">
-                                                                        <small class="me-3"><i class="far fa-user text-primary me-2"></i><?php echo $announcementDATA['author'] ?></small>
-                                                                        <small><i class="far fa-calendar-alt text-primary me-2"></i><?php echo $announcementDATA['date'] ?></small>
-                                                                    </div>
-                                                                    <p><?php echo $announcementDATA['msg'] ?></p>
+                                                <div class="single-post row">
+                                                    <div class="col-lg-3  col-md-3 meta-details">
+                                                        <div class="user-details row" style="margin-top: 40px;">
+                                                            <p class="user-name col-lg-12 col-md-12 col-6"><span class="far fa-user" style="color: #c02628;"> </span><a> Hazel Grace Cantuba</a> </p>
+                                                            <p class="date col-lg-12 col-md-12 col-6"><span class="fa fa-calendar" style="color: #c02628;"> </span><a> Jan 27, 2023</a> </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-9">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="col-lg-12 col-md-9 ">
+                                                                    <a class="posts-title" href="blog-single.html">
+                                                                        <h3>No classes</h3>
+                                                                    </a>
+                                                                    <p class="excert">
+                                                                        test test test test test test test test test test test test test test test
+                                                                    </p>
+                                                                    <button type="submit" class="btn btn-primary me-2" name="">View More</button>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            <?php }
-                                            ?>
+
+                                            </div>
+                                        </div>
+                                        <div class="row col-lg-10" style="padding-top: 15px;">
+                                            <div class="col-lg-10 posts-list" style="margin-left: auto;">
+
+                                                <div class="single-post row">
+                                                    <div class="col-lg-3  col-md-3 meta-details">
+                                                        <div class="user-details row" style="margin-top: 40px;">
+                                                            <p class="user-name col-lg-12 col-md-12 col-6"><span class="far fa-user" style="color: #c02628;"> </span><a> Hazel Grace Cantuba</a> </p>
+                                                            <p class="date col-lg-12 col-md-12 col-6"><span class="fa fa-calendar" style="color: #c02628;"> </span><a> Jan 27, 2023</a> </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-9">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="col-lg-12 col-md-9 ">
+                                                                    <a class="posts-title" href="blog-single.html">
+                                                                        <h3>No classes</h3>
+                                                                    </a>
+                                                                    <p class="excert">
+                                                                        test test test test test test test test test test test test test test test
+                                                                    </p>
+                                                                    <button type="submit" class="btn btn-primary me-2" name="">View More</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </section>
                             </div>
                         </div>
-                        <form style="text-align: center;">
-                            <button type="submit" class="btn btn-primary me-2">Load More ...</button>
-                        </form>
                     </div>
+                    <!-- content-wrapper ends -->
                 </div>
-                <!-- content-wrapper ends -->
+                <!-- main-panel ends -->
             </div>
             <!-- main-panel ends -->
         </div>
@@ -288,10 +316,8 @@ if (!isset($_SESSION['AD_number'])) {
 
     <!-- JavaScript Libraries -->
 
-
     <!-- Template Javascript -->
     <script src="../assets/js/main.js"></script>
-
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>
     <script src="../assets/js/admin/off-canvas.js"></script>
 
