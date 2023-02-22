@@ -413,7 +413,6 @@ if (isset($_POST['saveBehavior'])) {
     $ids = $_POST['row'];
     $forms_SR_number = $_GET['viewStudent'];
     $forms_CV_Area = $_POST['CV_Area'];
-    $forms_core_value_subheading = $_POST['core_value_subheading'];
 
     $forms_CV_valueQ1 = $_POST['CV_valueQ1'];
     $forms_CV_valueQ2 = $_POST['CV_valueQ2'];
@@ -421,9 +420,8 @@ if (isset($_POST['saveBehavior'])) {
     $forms_CV_valueQ4 = $_POST['CV_valueQ4'];
 
     foreach ($ids as $i => $id) {
-        $SR_number = $forms_SR_number[$i];
+        $SR_number = $forms_SR_number;
         $CV_Area = $forms_CV_Area[$i];
-        $core_value_subheading = $forms_core_value_subheading[$i];
         $CV_valueQ1 = $forms_CV_valueQ1[$i];
         $CV_valueQ2 = $forms_CV_valueQ2[$i];
         $CV_valueQ3 = $forms_CV_valueQ3[$i];
@@ -431,18 +429,15 @@ if (isset($_POST['saveBehavior'])) {
 
         $check_existing_behaviorData = $mysqli->query("SELECT * FROM behavior WHERE SR_number = '{$SR_number}'");
         if ($check_existing_behaviorData->num_rows > 0) {
-            $updateBehavior = $mysqli->query("UPDATE behavior 
-                                            SET 
-                                            CV_valueQ1 = '$CV_valueQ1',
-                                            CV_valueQ2 = '$CV_valueQ2',
-                                            CV_valueQ3 = '$CV_valueQ3',
-                                            CV_valueQ4 = '$CV_valueQ4'
-                                            WHERE SR_number = '$SR_number'");
+            $updateBehavior = $mysqli->query("UPDATE behavior SET CV_valueQ1 = '$CV_valueQ1', CV_valueQ2 = '$CV_valueQ2', CV_valueQ3 = '$CV_valueQ3', CV_valueQ4 = '$CV_valueQ4' 
+                                                WHERE SR_number = '$SR_number' AND CV_Area = '$CV_Area'");
         } else if ($check_existing_behaviorData->num_rows == 0) {
             $updateBehavior = $mysqli->query("INSERT INTO behavior 
                                             (SR_number, CV_Area, CV_valueQ1, CV_valueQ2, CV_valueQ3, CV_valueQ4) 
                                             VALUES 
                                             ('$SR_number', '$CV_Area', '$CV_valueQ1', '$CV_valueQ2', '$CV_valueQ3', '$CV_valueQ4')");
+        } else {
+            echo "error";
         }
     }
 }
@@ -489,17 +484,15 @@ if (isset($_POST['updateProfile'])) {
 }
 if (isset($_POST['addReminders'])) {
     $author = $mysqli->real_escape_string($_POST['author']);
-    $header = $mysqli->real_escape_string($_POST['header']);
     $subject = $mysqli->real_escape_string($_POST['subject']);
+    $forsection = $mysqli->real_escape_string($_POST['forsection']);
     $MSG = $mysqli->real_escape_string($_POST['MSG']);
     $date = $mysqli->real_escape_string($_POST['date']);
     $dateposted = date("Y/m/d");
 
-    $addReminders = "INSERT INTO reminders(header, date_posted, author, subject, msg, deadline)
-                     VALUE ('$header', '$dateposted', '$author','$subject', '$MSG', '$date')";
-    $resultaddReminders = $mysqli->query($addReminders);
+    $addReminders = $mysqli->query("INSERT INTO reminders(header, date_posted, author, subject, forsection, msg, deadline) VALUE ('$dateposted', '$author','$subject', '$forsection','$MSG', '$date')");
 
-    if ($resultaddReminders) {
+    if ($addReminders) {
         header('Location: ../faculty/reminders.php');
     } else {
         echo "error" . $mysqli->error;
