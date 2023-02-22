@@ -6,6 +6,8 @@ if (!isset($_SESSION['F_number'])) {
 } else {
   $getfacultyinfo = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
   $facultyInfo = $getfacultyinfo->fetch_assoc();
+  $getSubjects = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$_SESSION['F_number']}'");
+  $getGradeSection = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$_SESSION['F_number']}'");
 }
 ?>
 
@@ -165,7 +167,7 @@ if (!isset($_SESSION['F_number'])) {
                                   </div>
                                   <div class="col-md-6">
                                     <div class="form-floating">
-                                      <input type="date" class="form-control" name="date" placeholder="Your Email">
+                                      <input type="date" class="form-control" name="date">
                                       <label for="email">Deadline</label>
                                     </div>
                                   </div>
@@ -173,25 +175,26 @@ if (!isset($_SESSION['F_number'])) {
                                     <div class="form-floating">
                                       <select class="form-select" name="subject" id="subject" placeholder="Subject" required>
                                         <option value=""></option>
-                                        <option value="English">English</option>
-                                        <option value="Filipino">Filipino</option>
-                                        <option value="Mathematics">Mathematics</option>
-                                        <option value="Science">Science</option>
-                                        <option value="History">History</option>
-                                        <option value="Personality Development">Personality Development</option>
+                                        <?php
+                                        while ($subjectInfo = $getSubjects->fetch_assoc()) {
+                                          echo '<option value=' . $subjectInfo['S_subject'] . '>' . $subjectInfo['S_subject'] . '</option>';
+                                        }
+                                        ?>
                                       </select>
                                       <label for="subject">Subject</label>
                                     </div>
                                   </div>
                                   <div class="col-6">
                                     <div class="form-floating">
-                                      <select class="form-select" name="subject" id="subject" placeholder="Subject" required>
+                                      <select class="form-select" name="forsection" id="forsection" required>
                                         <option value=""></option>
-                                        <option value="English">Grade 1 - Chrysanthemum</option>
-                                        <option value="Filipino">Grade 2 - Narra</option>
-                                        <option value="Mathematics">Grade 1 - Dafodils</option>
+                                        <?php
+                                        while ($gradesection = $getGradeSection->fetch_assoc()) {
+                                          echo '<option value=' . $gradesection['SR_section'] . '>Grade ' . $gradesection['SR_grade'] . ' - ' . $gradesection['SR_section'] . '</option>';
+                                        }
+                                        ?>
                                       </select>
-                                      <label for="subject">Grade and Section</label>
+                                      <label for="forsection">Grade and Section</label>
                                     </div>
                                   </div>
                                   <div class="col-12">
