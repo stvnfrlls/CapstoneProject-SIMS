@@ -252,6 +252,77 @@ if (isset($_POST['updatePassword'])) {
 }
 //END
 
+//Student Process
+if (isset($_POST['editStudentProfile'])) {
+    $SR_fname = $_POST['SR_fname'];
+    $SR_mname = $_POST['SR_mname'];
+    $SR_lname = $_POST['SR_lname'];
+    $SR_suffix = $_POST['SR_suffix'];
+    $SR_age = $_POST['SR_age'];
+    $SR_gender = $_POST['SR_gender'];
+    $SR_birthday = $_POST['SR_birthday'];
+    $SR_birthplace = $_POST['SR_birthplace'];
+    $SR_religion = $_POST['SR_religion'];
+    $SR_citizenship = $_POST['SR_citizenship'];
+    $SR_address = $_POST['SR_address'];
+    $SR_barangay = $_POST['SR_barangay'];
+    $SR_city = $_POST['SR_city'];
+    $SR_state = $_POST['SR_state'];
+    $SR_postal = $_POST['SR_postal'];
+    $SR_email = $_POST['SR_email'];
+
+    $updateStudentInfo = $mysqli->query("UPDATE studentrecord 
+                                        SET 
+                                        SR_fname = '{$SR_fname}', 
+                                        SR_mname = '{$SR_mname}', 
+                                        SR_lname = '{$SR_lname}', 
+                                        SR_suffix = '{$SR_suffix}', 
+                                        SR_gender = '{$SR_gender}', 
+                                        SR_age = '{$SR_age}', 
+                                        SR_birthday = '{$SR_birthday}', 
+                                        SR_birthplace = '{$SR_birthplace}', 
+                                        SR_religion = '{$SR_religion}', 
+                                        SR_citizenship = '{$SR_citizenship}', 
+                                        SR_address = '{$SR_address}', 
+                                        SR_barangay = '{$SR_barangay}', 
+                                        SR_city = '{$SR_city}', 
+                                        SR_state = '{$SR_state}', 
+                                        SR_postal = '{$SR_postal}', 
+                                        SR_email = '{$SR_email}' 
+                                        WHERE SR_number = '{$_POST['SR_number']}'");
+
+    $G_lname = $_POST['G_lname'];
+    $G_fname = $_POST['G_fname'];
+    $G_mname = $_POST['G_mname'];
+    $G_suffix = $_POST['G_suffix'];
+    $G_address = $_POST['G_address'];
+    $G_barangay = $_POST['G_barangay'];
+    $G_city = $_POST['G_city'];
+    $G_state = $_POST['G_state'];
+    $G_postal = $_POST['G_postal'];
+    $G_email = $_POST['G_email'];
+    $G_relationshipStudent = $_POST['G_relationshipStudent'];
+    $G_telephone = $_POST['G_telephone'];
+    $G_contact = $_POST['G_contact'];
+
+    $updateGuardianInfo = $mysqli->query("UPDATE guardian 
+                                        SET 
+                                        G_lname= '{$G_lname}', 
+                                        G_fname = '{$G_fname}', 
+                                        G_mname = '{$G_mname}', 
+                                        G_suffix = '{$G_suffix}', 
+                                        G_address = '{$G_address}', 
+                                        G_barangay = '{$G_barangay}', 
+                                        G_city = '{$G_city}', 
+                                        G_state = '{$G_state}', 
+                                        G_postal = '{$G_postal}', 
+                                        G_email = '{$G_email}', 
+                                        G_relationshipStudent = '{$G_relationshipStudent}', 
+                                        G_telephone = '{$G_telephone}', 
+                                        G_contact = '{$G_contact}' 
+                                        WHERE G_guardianOfStudent = '{$_POST['SR_number']}'");
+}
+
 //Faculty Process
 if (isset($_POST['student']) || isset($_POST['fetcher'])) {
 
@@ -342,7 +413,6 @@ if (isset($_POST['saveBehavior'])) {
     $ids = $_POST['row'];
     $forms_SR_number = $_GET['viewStudent'];
     $forms_CV_Area = $_POST['CV_Area'];
-    $forms_core_value_subheading = $_POST['core_value_subheading'];
 
     $forms_CV_valueQ1 = $_POST['CV_valueQ1'];
     $forms_CV_valueQ2 = $_POST['CV_valueQ2'];
@@ -350,9 +420,8 @@ if (isset($_POST['saveBehavior'])) {
     $forms_CV_valueQ4 = $_POST['CV_valueQ4'];
 
     foreach ($ids as $i => $id) {
-        $SR_number = $forms_SR_number[$i];
+        $SR_number = $forms_SR_number;
         $CV_Area = $forms_CV_Area[$i];
-        $core_value_subheading = $forms_core_value_subheading[$i];
         $CV_valueQ1 = $forms_CV_valueQ1[$i];
         $CV_valueQ2 = $forms_CV_valueQ2[$i];
         $CV_valueQ3 = $forms_CV_valueQ3[$i];
@@ -360,18 +429,15 @@ if (isset($_POST['saveBehavior'])) {
 
         $check_existing_behaviorData = $mysqli->query("SELECT * FROM behavior WHERE SR_number = '{$SR_number}'");
         if ($check_existing_behaviorData->num_rows > 0) {
-            $updateBehavior = $mysqli->query("UPDATE behavior 
-                                            SET 
-                                            CV_valueQ1 = '$CV_valueQ1',
-                                            CV_valueQ2 = '$CV_valueQ2',
-                                            CV_valueQ3 = '$CV_valueQ3',
-                                            CV_valueQ4 = '$CV_valueQ4'
-                                            WHERE SR_number = '$SR_number'");
+            $updateBehavior = $mysqli->query("UPDATE behavior SET CV_valueQ1 = '$CV_valueQ1', CV_valueQ2 = '$CV_valueQ2', CV_valueQ3 = '$CV_valueQ3', CV_valueQ4 = '$CV_valueQ4' 
+                                                WHERE SR_number = '$SR_number' AND CV_Area = '$CV_Area'");
         } else if ($check_existing_behaviorData->num_rows == 0) {
             $updateBehavior = $mysqli->query("INSERT INTO behavior 
                                             (SR_number, CV_Area, CV_valueQ1, CV_valueQ2, CV_valueQ3, CV_valueQ4) 
                                             VALUES 
                                             ('$SR_number', '$CV_Area', '$CV_valueQ1', '$CV_valueQ2', '$CV_valueQ3', '$CV_valueQ4')");
+        } else {
+            echo "error";
         }
     }
 }
@@ -418,17 +484,15 @@ if (isset($_POST['updateProfile'])) {
 }
 if (isset($_POST['addReminders'])) {
     $author = $mysqli->real_escape_string($_POST['author']);
-    $header = $mysqli->real_escape_string($_POST['header']);
     $subject = $mysqli->real_escape_string($_POST['subject']);
+    $forsection = $mysqli->real_escape_string($_POST['forsection']);
     $MSG = $mysqli->real_escape_string($_POST['MSG']);
     $date = $mysqli->real_escape_string($_POST['date']);
     $dateposted = date("Y/m/d");
 
-    $addReminders = "INSERT INTO reminders(header, date_posted, author, subject, msg, deadline)
-                     VALUE ('$header', '$dateposted', '$author','$subject', '$MSG', '$date')";
-    $resultaddReminders = $mysqli->query($addReminders);
+    $addReminders = $mysqli->query("INSERT INTO reminders(header, date_posted, author, subject, forsection, msg, deadline) VALUE ('$dateposted', '$author','$subject', '$forsection','$MSG', '$date')");
 
-    if ($resultaddReminders) {
+    if ($addReminders) {
         header('Location: ../faculty/reminders.php');
     } else {
         echo "error" . $mysqli->error;
@@ -450,7 +514,6 @@ if (isset($_POST['editReminders'])) {
         echo "error" . $mysqli->error;
     }
 }
-
 //End
 
 //Admin Process
@@ -924,6 +987,4 @@ if (isset($_POST['assignAdvisor'])) {
 
     $assignAdvisor = $mysqli->query("UPDATE sections SET S_adviser = '{$advisor}' WHERE S_name = '{$section}'");
 }
-
-
 //End

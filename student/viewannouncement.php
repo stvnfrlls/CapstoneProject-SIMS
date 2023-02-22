@@ -4,7 +4,12 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['SR_number'])) {
     header('Location: ../auth/login.php');
 } else {
-    # code...
+    if (isset($_GET['ID'])) {
+        $getAnnouncementData = $mysqli->query("SELECT * FROM announcement WHERE ANC_ID = '{$_GET['ID']}'");
+        $announcement = $getAnnouncementData->fetch_assoc();
+    }else {
+        header('Location: announcement.php');
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -99,10 +104,13 @@ if (!isset($_SESSION['SR_number'])) {
                         </div>
                         <div class="jq-tab-content-wrapper">
                             <div class="jq-tab-content active" data-tab="1">
-                                When you enter into any new area of science, you almost always find yourself with a baffling new language of technical terms to learn before you can converse with the experts. This is certainly true in astronomy both in terms of terms that refer to the cosmos and terms that describe the tools of the trade, the most prevalent being the telescope.
-                                <br>
-                                <br>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodoconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.
+                                <?php
+                                if (empty($announcement['msg'])) {
+                                    echo $announcement['header'];
+                                } else {
+                                    echo $announcement['msg'];
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -112,23 +120,22 @@ if (!isset($_SESSION['SR_number'])) {
                         <li>
                             <a class="justify-content-between d-flex" href="#">
                                 <p>Title</p>
-                                <span class="or">Quest for Excellence 2023</span>
+                                <span class="or"><?php echo $announcement['header']; ?></span>
                             </a>
                         </li>
                         <li>
                             <a class="justify-content-between d-flex" href="#">
                                 <p>Posted By</p>
-                                <span>Hazel Grace Cantuba</span>
+                                <span><?php echo $announcement['author'] ?></span>
                             </a>
                         </li>
                         <li>
                             <a class="justify-content-between d-flex" href="#">
                                 <p>Date and Time</p>
-                                <span>January 4, 2023 - 7:00 AM</span>
+                                <span><?php echo $announcement['date'] ?></span>
                             </a>
                         </li>
                     </ul>
-                    <a href="#" class="primary-btn text-uppercase mx-auto" style="background: #c02628;">Enroll the course</a>
                 </div>
             </div>
         </div>
@@ -145,71 +152,23 @@ if (!isset($_SESSION['SR_number'])) {
                 </div>
             </div>
             <div class="row">
-                <div class="single-popular-carusel col-lg-3 col-md-6">
-                    <div class="details">
-                        <a href="#">
-                            <h4>
-                                No Classes
-                            </h4>
-                        </a>
-                        <div class="d-flex mb-3">
-                            <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
-                            <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
+                <?php
+                $getOtherAnnouncementData = $mysqli->query("SELECT * FROM announcement WHERE ANC_ID != '{$_GET['ID']}'");
+                while ($OtherAnnouncement = $getOtherAnnouncementData->fetch_assoc()) { ?>
+                    <div class="single-popular-carusel col-lg-3 col-md-6">
+                        <div class="details">
+                            <a href="viewannouncement.php?ID=<?php echo $OtherAnnouncement['ANC_ID'] ?>">
+                                <h4><?php echo $OtherAnnouncement['header'] ?></h4>
+                            </a>
+                            <div class="d-flex mb-3">
+                                <small class="me-3"><i class="far fa-user text-primary me-2"></i><?php echo $OtherAnnouncement['author'] ?></small>
+                                <small><i class="far fa-calendar-alt text-primary me-2"></i><?php echo $OtherAnnouncement['date'] ?></small>
+                            </div>
+                            <p><?php echo $OtherAnnouncement['msg'] ?></p>
                         </div>
-                        <p>
-                            When television was young, there was a hugely popular show based on the still popular fictional characte
-                        </p>
                     </div>
-                </div>
-                <div class="single-popular-carusel col-lg-3 col-md-6">
-                    <div class="details">
-                        <a href="#">
-                            <h4>
-                                Teacher's Day
-                            </h4>
-                        </a>
-                        <div class="d-flex mb-3">
-                            <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
-                            <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                        </div>
-                        <p>
-                            When television was young, there was a hugely popular show based on the still popular fictional characte
-                        </p>
-                    </div>
-                </div>
-                <div class="single-popular-carusel col-lg-3 col-md-6">
-                    <div class="details">
-                        <a href="#">
-                            <h4>
-                                Christmas Party
-                            </h4>
-                        </a>
-                        <div class="d-flex mb-3">
-                            <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
-                            <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                        </div>
-                        <p>
-                            When television was young, there was a hugely popular show based on the still popular fictional characte
-                        </p>
-                    </div>
-                </div>
-                <div class="single-popular-carusel col-lg-3 col-md-6">
-                    <div class="details">
-                        <a href="#">
-                            <h4>
-                                Meeting with Parents
-                            </h4>
-                        </a>
-                        <div class="d-flex mb-3">
-                            <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
-                            <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                        </div>
-                        <p>
-                            When television was young, there was a hugely popular show based on the still popular fictional characte
-                        </p>
-                    </div>
-                </div>
-                <a href="#" class="primary-btn text-uppercase mx-auto" style="width: auto;">Load More Courses</a>
+                <?php }
+                ?>
             </div>
         </div>
     </section>

@@ -4,7 +4,19 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['SR_number'])) {
   header('Location: ../auth/login.php');
 } else {
-  # code...
+  $getstudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$_SESSION['SR_number']}'");
+  $studentInfo = $getstudentInfo->fetch_assoc();
+
+  $Student_Fullname = $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix'];
+
+  $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_name = '{$studentInfo['SR_section']}'");
+  $SectionInfo = $getSectionInfo->fetch_assoc();
+
+  $getAdvisorInfo = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$SectionInfo['S_adviser']}'");
+  $AdvisorInfo = $getAdvisorInfo->fetch_assoc();
+
+  $getguardianInfo = $mysqli->query("SELECT * FROM guardian WHERE G_guardianOfStudent = '{$_SESSION['SR_number']}'");
+  $guardianInfo = $getguardianInfo->fetch_assoc();
 }
 ?>
 <!DOCTYPE html>
@@ -94,187 +106,274 @@ if (!isset($_SESSION['SR_number'])) {
       <h5 class="fw-bold text-primary text-uppercase" style="font-size: 30px; margin-top:50px;">Edit Profile</h5>
     </div>
     <div class="container py-5">
-      <div class="row">
-        <div class="col-lg-10" style="margin: auto;">
-          <div class="card mb-4">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-sm-3" style="padding-top:11px;">
-                  <p class="mb-0">Email Address</p>
+      <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
+        <div class="row">
+          <div class="col-lg-10" style="margin: auto;">
+            <div class="card mb-4">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-sm-3" style="padding-top:11px;">
+                    <p class="mb-0">Email Address</p>
+                  </div>
+                  <div class="col-sm-9">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="SR_email" value="<?php echo $studentInfo['SR_email'] ?>"></p>
+                  </div>
                 </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
-                </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-3" style="padding-top:11px;">
-                  <p class="mb-0">Enter Password</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
-                </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-3" style="padding-top:11px;">
-                  <p class="mb-0">Confirm Password</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="card mb-4">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-sm-3" style="padding-top:11px;">
-                  <p class="mb-0">Profile Picture</p>
-                </div>
-                <div class="col-sm-9">
-                  <div class="input-group">
-                    <input type="file" class="form-control file-upload-info" placeholder="Upload Image">
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3" style="padding-top:11px;">
+                    <p class="mb-0">Enter Password</p>
+                    <input type="hidden" class="form-control" name="SR_number" value="<?php echo $studentInfo['SR_number'] ?>">
+                  </div>
+                  <div class="col-sm-3">
+                    <p class="text-muted mb-0"><input type="password" class="form-control" name="SR_password"></p>
+                  </div>
+                  <div class="col-sm-3" style="padding-top:11px;">
+                    <p class="mb-0">Confirm Password</p>
+                  </div>
+                  <div class="col-sm-3">
+                    <p class="text-muted mb-0"><input type="password" class="form-control" name="Confirm_password"></p>
                   </div>
                 </div>
               </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-3" style="padding-top:11px;">
-                  <p class="mb-0">Full Name</p>
+            </div>
+            <div class="card mb-4">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-sm-3" style="padding-top:11px;">
+                    <p class="mb-0">Profile Picture</p>
+                  </div>
+                  <div class="col-sm-9">
+                    <div class="input-group">
+                      <input type="file" class="form-control file-upload-info" placeholder="Upload Image">
+                    </div>
+                  </div>
                 </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3" style="padding-top:11px;">
+                    <p class="mb-0">First Name</p>
+                  </div>
+                  <div class="col-sm-4">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="SR_fname" value="<?php echo $studentInfo['SR_fname']; ?>"></p>
+                  </div>
+                  <div class="col-sm-2" style="padding-top:11px;">
+                    <p class="mb-0">Middle Name</p>
+                  </div>
+                  <div class="col-sm-3">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="SR_mname" value="<?php echo $studentInfo['SR_mname']; ?>"></p>
+                  </div>
                 </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-3" style="padding-top:11px;">
-                  <p class="mb-0">Age</p>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3" style="padding-top:11px;">
+                    <p class="mb-0">Last Name</p>
+                  </div>
+                  <div class="col-sm-6">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="SR_lname" value="<?php echo $studentInfo['SR_lname']; ?>"></p>
+                  </div>
+                  <div class="col-sm-1" style="padding-top:11px;">
+                    <p class="mb-0">Suffix</p>
+                  </div>
+                  <div class="col-sm-2">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="SR_suffix" value="<?php echo $studentInfo['SR_suffix']; ?>"></p>
+                  </div>
                 </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3" style="padding-top:11px;">
+                    <p class="mb-0">Age</p>
+                  </div>
+                  <div class="col-sm-2">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="SR_age" value="<?php echo $studentInfo['SR_age']; ?>"></p>
+                  </div>
+                  <div class="col-sm-2" style="padding-top:11px;">
+                    <p class="mb-0">Gender</p>
+                  </div>
+                  <div class="col-sm-5">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="SR_gender" value="<?php echo $studentInfo['SR_gender']; ?>"></p>
+                  </div>
                 </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-3" style="padding-top:11px;">
-                  <p class="mb-0">Gender</p>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3" style="padding-top:11px;">
+                    <p class="mb-0">Birthdate</p>
+                  </div>
+                  <div class="col-sm-3">
+                    <p class="text-muted mb-0"><input type="date" class="form-control" name="SR_birthday" value="<?php echo date('Y-m-d', strtotime($studentInfo['SR_birthday'])); ?>"></p>
+                  </div>
+                  <div class="col-sm-2" style="padding-top:11px;">
+                    <p class="mb-0">Birthplace</p>
+                  </div>
+                  <div class="col-sm-4">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="SR_birthplace" value="<?php echo $studentInfo['SR_birthplace']; ?>"></p>
+                  </div>
                 </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3" style="padding-top:11px;">
+                    <p class="mb-0">Religion</p>
+                  </div>
+                  <div class="col-sm-3">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="SR_religion" value="<?php echo $studentInfo['SR_religion']; ?>"></p>
+                  </div>
+                  <div class="col-sm-2" style="padding-top:11px;">
+                    <p class="mb-0">Citizenship</p>
+                  </div>
+                  <div class="col-sm-4">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="SR_citizenship" value="<?php echo $studentInfo['SR_citizenship']; ?>"></p>
+                  </div>
                 </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-3" style="padding-top:11px;">
-                  <p class="mb-0">Birthdate</p>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3" style="padding-top:11px;">
+                    <p class="mb-0">Address</p>
+                  </div>
+                  <div class="col-sm-9">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="SR_address" value="<?php echo $studentInfo['SR_address']; ?>"></p>
+                  </div>
                 </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0"><input type="date" class="form-control" name="F_mname"></p>
+                <hr>
+                <div class=" row">
+                  <div class="col-sm-3" style="padding-top:11px;">
+                    <p class="mb-0">Barangay</p>
+                  </div>
+                  <div class="col-sm-4">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="SR_barangay" value="<?php echo $studentInfo['SR_barangay']; ?>"></p>
+                  </div>
+                  <div class=" col-sm-1" style="padding-top:11px;">
+                    <p class="mb-0">City</p>
+                  </div>
+                  <div class="col-sm-4">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="SR_city" value="<?php echo $studentInfo['SR_city']; ?>"></p>
+                  </div>
                 </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-3" style="padding-top:11px;">
-                  <p class="mb-0">Birthplace</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
-                </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-3" style="padding-top:11px;">
-                  <p class="mb-0">Religion</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
-                </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-3" style="padding-top:11px;">
-                  <p class="mb-0">Citizenship</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
-                </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-3" style="padding-top:11px;">
-                  <p class="mb-0">Address</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
+                <hr>
+                <div class=" row">
+                  <div class="col-sm-3" style="padding-top:11px;">
+                    <p class="mb-0">Province</p>
+                  </div>
+                  <div class="col-sm-5">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="SR_state" value="<?php echo $studentInfo['SR_state']; ?>"></p>
+                  </div>
+                  <div class=" col-sm-2" style="padding-top:11px;">
+                    <p class="mb-0">Postal Code</p>
+                  </div>
+                  <div class="col-sm-2">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="SR_postal" value="<?php echo $studentInfo['SR_postal']; ?>"></p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="card mb-4">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-sm-3" style="padding-top:11px;">
-                  <p class="mb-0">Guardian Name</p>
+            <div class=" card mb-4">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-sm-3" style="padding-top:11px;">
+                    <p class="mb-0">First Name</p>
+                  </div>
+                  <div class="col-sm-4">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="G_fname" value="<?php echo $guardianInfo['G_fname']; ?>"></p>
+                  </div>
+                  <div class="col-sm-2" style="padding-top:11px;">
+                    <p class="mb-0">Middle Name</p>
+                  </div>
+                  <div class="col-sm-3">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="G_mname" value="<?php echo $guardianInfo['G_mname']; ?>"></p>
+                  </div>
                 </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3" style="padding-top:11px;">
+                    <p class="mb-0">Last Name</p>
+                  </div>
+                  <div class="col-sm-6">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="G_lname" value="<?php echo $guardianInfo['G_lname']; ?>"></p>
+                  </div>
+                  <div class="col-sm-1" style="padding-top:11px;">
+                    <p class="mb-0">Suffix</p>
+                  </div>
+                  <div class="col-sm-2">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="G_suffix" value="<?php echo $guardianInfo['G_suffix']; ?>"></p>
+                  </div>
                 </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-3" style="padding-top:11px;">
-                  <p class="mb-0">Relationship to Student</p>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3" style="padding-top:11px;">
+                    <p class="mb-0">Relationship to Student</p>
+                  </div>
+                  <div class="col-sm-3">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="G_relationshipStudent" value="<?php echo $guardianInfo['G_relationshipStudent']; ?>"></p>
+                  </div>
+                  <div class="col-sm-2" style="padding-top:11px;">
+                    <p class="mb-0">Email Address</p>
+                  </div>
+                  <div class="col-sm-4">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="G_email" value="<?php echo $guardianInfo['G_email']; ?>"></p>
+                  </div>
                 </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3" style="padding-top:11px;">
+                    <p class="mb-0">Telephone Number</p>
+                  </div>
+                  <div class="col-sm-3">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="G_telephone" value="<?php echo $guardianInfo['G_telephone']; ?>"></p>
+                  </div>
+                  <div class="col-sm-2" style="padding-top:11px;">
+                    <p class="mb-0">Contact Number</p>
+                  </div>
+                  <div class="col-sm-4">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="G_contact" value="<?php echo $guardianInfo['G_contact']; ?>"></p>
+                  </div>
                 </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-3" style="padding-top:11px;">
-                  <p class="mb-0">Email Address</p>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3" style="padding-top:11px;">
+                    <p class="mb-0">Address</p>
+                  </div>
+                  <div class="col-sm-9">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="G_address" value="<?php echo $guardianInfo['G_address']; ?>"></p>
+                  </div>
                 </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3" style="padding-top:11px;">
+                    <p class="mb-0">Barangay</p>
+                  </div>
+                  <div class="col-sm-4">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="G_barangay" value="<?php echo $guardianInfo['G_barangay']; ?>"></p>
+                  </div>
+                  <div class="col-sm-1" style="padding-top:11px;">
+                    <p class="mb-0">City</p>
+                  </div>
+                  <div class="col-sm-4">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="G_city" value="<?php echo $guardianInfo['G_city']; ?>"></p>
+                  </div>
                 </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-3" style="padding-top:11px;">
-                  <p class="mb-0">Telephone Number</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
-                </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-3" style="padding-top:11px;">
-                  <p class="mb-0">Contact Number</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
-                </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-3" style="padding-top:11px;">
-                  <p class="mb-0">Address</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0"><input type="text" class="form-control" name="F_mname"></p>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3" style="padding-top:11px;">
+                    <p class="mb-0">Province</p>
+                  </div>
+                  <div class="col-sm-5">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="G_state" value="<?php echo $guardianInfo['G_state']; ?>"></p>
+                  </div>
+                  <div class="col-sm-2" style="padding-top:11px;">
+                    <p class="mb-0">Postal Code</p>
+                  </div>
+                  <div class="col-sm-2">
+                    <p class="text-muted mb-0"><input type="text" class="form-control" name="G_postal" value="<?php echo $guardianInfo['G_postal']; ?>"></p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div style="text-align: center;">
-        <button type="submit" class="btn btn-primary me-2" name="confirm_faculty">Save</button>
-        <button class="btn btn-light" onclick="location.href='../student/profile.php'">Back</button>
-      </div>
+        <div style="text-align: center;">
+          <button type="submit" class="btn btn-primary me-2" name="editStudentProfile">Save</button>
+          <button class="btn btn-light" onclick="location.href='../student/profile.php'">Back</button>
+        </div>
+      </form>
     </div>
   </section>
 

@@ -3,6 +3,13 @@ require_once("../assets/php/server.php");
 
 if (!isset($_SESSION['F_number'])) {
   header('Location: ../auth/login.php');
+} else {
+  if (!isset($_GET['ID'])) {
+    header('Location: reminders.php');
+  } else {
+    $getReminderInfo = $mysqli->query("SELECT * FROM reminders WHERE reminderID = '{$_GET['ID']}' AND author = '{$_SESSION['F_number']}'");
+    $reminderInfo = $getReminderInfo->fetch_assoc();
+  }
 }
 ?>
 
@@ -158,8 +165,8 @@ if (!isset($_SESSION['F_number'])) {
                             <form class="form-sample">
                               <div class="row">
                                 <div class="col-12">
-                                  <small class="me-3"><i>Subject: </i>English</small>
-                                  <small><i>Deadline: </i>01 Jan, 2045</small>
+                                  <small class="me-3"><i>Subject: </i><?php echo $reminderInfo['subject'] ?></small>
+                                  <small><i>Deadline: </i><?php echo $reminderInfo['deadline'] ?></small>
                                 </div>
                               </div>
                             </form>
@@ -170,7 +177,7 @@ if (!isset($_SESSION['F_number'])) {
                             <form class="form-sample">
                               <div class="row">
                                 <div class="col-12">
-                                  <p>Dolor et eos labore stet justo sed est sed sed sed dolor stet amet (short description)</p>
+                                  <p><?php echo $reminderInfo['msg'] ?></p>
                                 </div>
                               </div>
                             </form>
@@ -188,26 +195,15 @@ if (!isset($_SESSION['F_number'])) {
                                     <div class="section-title section-title-sm position-relative pb-3 mb-4">
                                       <h3 class="mb-0">Other Reminders</h3>
                                     </div>
-                                    <div class="d-flex rounded overflow-hidden mb-3">
-                                      <img class="img-fluid" src="img/blog-2.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
-                                      <a href="" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit</a>
-                                    </div>
-                                    <div class="d-flex rounded overflow-hidden mb-3">
-                                      <img class="img-fluid" src="img/blog-3.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
-                                      <a href="" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit</a>
-                                    </div>
-                                    <div class="d-flex rounded overflow-hidden mb-3">
-                                      <img class="img-fluid" src="img/blog-1.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
-                                      <a href="" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit</a>
-                                    </div>
-                                    <div class="d-flex rounded overflow-hidden mb-3">
-                                      <img class="img-fluid" src="img/blog-2.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
-                                      <a href="" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit</a>
-                                    </div>
-                                    <div class="d-flex rounded overflow-hidden mb-3">
-                                      <img class="img-fluid" src="img/blog-3.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
-                                      <a href="" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit</a>
-                                    </div>
+                                    <?php
+                                    $getOtherReminder = $mysqli->query("SELECT * FROM reminders WHERE reminderID != '{$_GET['ID']}' AND author = '{$_SESSION['F_number']}'");
+                                    while ($otherReminder = $getOtherReminder->fetch_assoc()) { ?>
+                                      <div class="d-flex rounded overflow-hidden mb-3">
+                                        <img class="img-fluid" src="../assets/img/about-1.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
+                                        <a href="viewReminders.php?ID=<?php echo $otherReminder['reminderID'] ?>" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0"><?php echo $otherReminder['msg'] ?></a>
+                                      </div>
+                                    <?php }
+                                    ?>
                                   </div>
                                   <!-- Recent Post End -->
                                 </div>

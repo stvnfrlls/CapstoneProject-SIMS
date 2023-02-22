@@ -12,7 +12,7 @@ if (!isset($_SESSION['SR_number'])) {
 
 <head>
     <meta charset="utf-8">
-    <title>Student -  School Announcements</title>
+    <title>Student - School Announcements</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -94,135 +94,24 @@ if (!isset($_SESSION['SR_number'])) {
                 <h3 class="mb-0">School Announcement</h3>
             </div>
             <div class="row">
-                <div class="single-popular-carusel col-lg-3 col-md-6">
-                    <div class="details">
-                        <a href="#">
-                            <h4>
-                                No Classes
-                            </h4>
-                        </a>
-                        <div class="d-flex mb-3">
-                            <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
-                            <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
+                <?php
+                $getAnnouncementData = $mysqli->query("SELECT * FROM announcement");
+                while ($announcement = $getAnnouncementData->fetch_assoc()) { ?>
+                    <div class="single-popular-carusel col-lg-3 col-md-6">
+                        <div class="details">
+                            <a href="viewannouncement.php?ID=<?php echo $announcement['ANC_ID'] ?>">
+                                <h4><?php echo $announcement['header'] ?></h4>
+                            </a>
+                            <div class="d-flex mb-3">
+                                <small class="me-3"><i class="far fa-user text-primary me-2"></i><?php echo $announcement['author'] ?></small>
+                                <small><i class="far fa-calendar-alt text-primary me-2"></i><?php echo $announcement['date'] ?></small>
+                            </div>
+                            <p><?php echo $announcement['msg'] ?></p>
                         </div>
-                        <p>
-                            When television was young, there was a hugely popular show based on the still popular fictional characte
-                        </p>
                     </div>
-                </div>
-                <div class="single-popular-carusel col-lg-3 col-md-6">
-                    <div class="details">
-                        <a href="#">
-                            <h4>
-                                No Classes
-                            </h4>
-                        </a>
-                        <div class="d-flex mb-3">
-                            <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
-                            <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                        </div>
-                        <p>
-                            When television was young, there was a hugely popular show based on the still popular fictional characte
-                        </p>
-                    </div>
-                </div>
-                <div class="single-popular-carusel col-lg-3 col-md-6">
-                    <div class="details">
-                        <a href="#">
-                            <h4>
-                                No Classes
-                            </h4>
-                        </a>
-                        <div class="d-flex mb-3">
-                            <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
-                            <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                        </div>
-                        <p>
-                            When television was young, there was a hugely popular show based on the still popular fictional characte
-                        </p>
-                    </div>
-                </div>
-                <div class="single-popular-carusel col-lg-3 col-md-6">
-                    <div class="details">
-                        <a href="#">
-                            <h4>
-                                No Classes
-                            </h4>
-                        </a>
-                        <div class="d-flex mb-3">
-                            <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
-                            <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                        </div>
-                        <p>
-                            When television was young, there was a hugely popular show based on the still popular fictional characte
-                        </p>
-                    </div>
-                </div>
-                <div class="single-popular-carusel col-lg-3 col-md-6">
-                    <div class="details">
-                        <a href="#">
-                            <h4>
-                                No Classes
-                            </h4>
-                        </a>
-                        <div class="d-flex mb-3">
-                            <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
-                            <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                        </div>
-                        <p>
-                            When television was young, there was a hugely popular show based on the still popular fictional characte
-                        </p>
-                    </div>
-                </div>
-                <div class="single-popular-carusel col-lg-3 col-md-6">
-                    <div class="details">
-                        <a href="#">
-                            <h4>
-                                No Classes
-                            </h4>
-                        </a>
-                        <div class="d-flex mb-3">
-                            <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
-                            <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                        </div>
-                        <p>
-                            When television was young, there was a hugely popular show based on the still popular fictional characte
-                        </p>
-                    </div>
-                </div>
-                <div class="single-popular-carusel col-lg-3 col-md-6">
-                    <div class="details">
-                        <a href="#">
-                            <h4>
-                                No Classes
-                            </h4>
-                        </a>
-                        <div class="d-flex mb-3">
-                            <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
-                            <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                        </div>
-                        <p>
-                            When television was young, there was a hugely popular show based on the still popular fictional characte
-                        </p>
-                    </div>
-                </div>
-                <div class="single-popular-carusel col-lg-3 col-md-6">
-                    <div class="details">
-                        <a href="#">
-                            <h4>
-                                No Classes
-                            </h4>
-                        </a>
-                        <div class="d-flex mb-3">
-                            <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
-                            <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                        </div>
-                        <p>
-                            When television was young, there was a hugely popular show based on the still popular fictional characte
-                        </p>
-                    </div>
-                </div>
-                <a href="#" class="primary-btn text-uppercase mx-auto" style="width: auto;">Load More Courses</a>
+                <?php }
+                ?>
+
             </div>
         </div>
     </section>

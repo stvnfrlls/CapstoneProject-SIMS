@@ -142,9 +142,9 @@ if (!isset($_SESSION['F_number'])) {
                                         <h2 class="fw-bold text-primary text-uppercase">Reminders</h2>
                                     </div>
                                 </div>
-                                <form style="text-align: right; margin-top: 30px; margin-right: 20px;">
-                                    <button type="submit" style="color: #ffffff;" class="btn btn-primary me-2">Create <i class="fa fa-plus" style="font-size: 10px;"></i></button>
-                                </form>
+                                <div style="text-align: right; margin-top: 30px; margin-right: 20px;">
+                                    <a href="createReminder.php" type="submit" style="color: #ffffff;" class="btn btn-primary me-2">Create <i class="fa fa-plus" style="font-size: 10px;"></i></a>
+                                </div>
                                 <section class="post-content-area" style="background-color: #f4f5f7;">
                                     <div class="container">
                                         <div class="row col-lg-10">
@@ -167,14 +167,12 @@ if (!isset($_SESSION['F_number'])) {
                                                             <div class="card">
                                                                 <div class="card-body">
                                                                     <div class="col-lg-12 col-md-9 ">
-                                                                        <a class="posts-title" href="blog-single.html">
-                                                                            <h3><?php echo $reminder['header'] ?></h3>
+                                                                        <a class="posts-title" href="viewReminders.php?ID=<?php echo $reminder['reminderID'] ?>">
+                                                                            <h3><?php echo $reminder['msg'] ?></h3>
                                                                         </a>
                                                                         <p>Subject: <?php echo $reminder['subject'] ?></p>
-                                                                        <p class="excert">
-                                                                            <?php echo $reminder['msg'] ?>
-                                                                        </p>
-                                                                        <button type="submit" class="btn btn-primary me-2" name="">View More</button>
+                                                                        <p class="excert"><?php echo $reminder['msg'] ?></p>
+                                                                        <a href="viewReminders.php?ID=<?php echo $reminder['reminderID'] ?>" class="primary-btn">View More</a>
                                                                     </div>
                                                                 </div>
                                                             </div>

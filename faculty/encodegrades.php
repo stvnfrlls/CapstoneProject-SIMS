@@ -234,7 +234,7 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
                                   $rowCount = 1;
                                   $GradeSectionRowCount = sizeof($array_GradeSection);
                                   while ($rowCount != $GradeSectionRowCount) { ?>
-                                    <a class="dropdown-item" href="<?php echo $current_url . "?Grade=" . $array_GradeSection[$rowCount]['SR_grade'] . "&Section=" . $array_GradeSection[$rowCount]['SR_section']; ?>">
+                                    <a class="dropdown-item" href="encodegrades.php?Grade=<?php echo $array_GradeSection[$rowCount]['SR_grade'] ?>&Section=<?php echo $array_GradeSection[$rowCount]['SR_section'] ?>">
                                       <?php echo "Grade " . $array_GradeSection[$rowCount]['SR_grade'] . "-" . $array_GradeSection[$rowCount]['SR_section']; ?>
                                     </a>
                                   <?php $rowCount++;
@@ -262,7 +262,7 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
                                     $rowCount = 1;
                                     $GradeSectionRowCount = sizeof($array_GradeSection);
                                     while ($rowCount != $GradeSectionRowCount) { ?>
-                                      <a class="dropdown-item" href="<?php echo $current_url . "&Subject=" . $array_GradeSection[$rowCount]['S_subject']; ?>">
+                                      <a class=" dropdown-item" href="<?php echo $current_url . "&Subject=" . $array_GradeSection[$rowCount]['S_subject']; ?>">
                                         <?php echo $array_GradeSection[$rowCount]['S_subject']; ?>
                                       </a>
                                     <?php $rowCount++;
