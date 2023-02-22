@@ -212,7 +212,7 @@ if (!isset($_SESSION['F_number'])) {
                                         <td class="hatdog"><?php echo $ClassListRow; ?></td>
                                         <td class="hatdog"><?php echo $SectionClassListData['SR_number']; ?></td>
                                         <td class="hatdog">
-                                          <a href="viewCard.php?viewStudent=<?php echo $SectionClassListData['SR_number']; ?>">
+                                          <a href="viewCard.php?ID=<?php echo $SectionClassListData['SR_number']; ?>">
                                             <?php echo $SectionClassListData['SR_lname'] . ", " . $SectionClassListData['SR_fname'] . " " . substr($SectionClassListData['SR_mname'], 0, 1); ?>
                                           </a>
                                         </td>
