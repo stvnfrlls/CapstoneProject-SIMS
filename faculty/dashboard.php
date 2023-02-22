@@ -310,9 +310,8 @@ if (!isset($_SESSION['F_number'])) {
                                                                                     </div>
                                                                                     <div class="col-lg-12 col-sm-12" style="padding: 0px 10px 10px 10px;">
                                                                                         <a class="posts-title" href="blog-single.html" style="text-align: left;">
-                                                                                            <h3><?php echo $remindersData['header'] ?></h3>
+                                                                                            <h3>Subject: <?php echo $remindersData['subject'] ?></h3>
                                                                                         </a>
-                                                                                        <p>Subject: <?php echo $remindersData['subject'] ?></p>
                                                                                         <p class="excert">
                                                                                             <?php echo $remindersData['msg'] ?>
                                                                                         </p>
