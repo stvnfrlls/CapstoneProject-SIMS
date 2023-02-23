@@ -928,26 +928,30 @@ if (isset($_POST['addAdmin'])) {
 if (isset($_POST['setSchedule'])) {
     $assignedFaculty = $_POST['assignedFaculty'];
     $subjectname = $_POST['subjectname'];
+    $timeID = $_POST['timeslots'];
 
-    $checkDuplicates = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$assignedFaculty}' AND SR_section = '{$_GET['SectionName']}'");
-    if ($checkDuplicates->num_rows == 0) {
-        $insertTimeSlots = $mysqli->query("INSERT INTO workschedule (F_number, S_subject, SR_grade, SR_section) 
-        VALUES ('$assignedFaculty', '$subjectname', '{$_GET['GradeLevel']}', '{$_GET['SectionName']}')");
-    }else {
-        $errors['email'] = "Teacher is already assigned to this section";
-    }
-
-    $checkTimeSlots = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$assignedFaculty}' AND WS_time IS NULL");
-
-    if ($checkTimeSlots->num_rows == 0) {
-    }
+    // $checkTeacherDuplicate = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$assignedFaculty}' AND S_subject = '{$subjectname}' AND SR_section = '{$_GET['SectionName']}'");
+    // if ($checkTeacherDuplicate->num_rows > 0) {
+    //     $errors['dupe'] = "Teacher is already assigned!";
+    // } else if ($checkTeacherDuplicate->num_rows == 0) {
+    //     $setTeacherSchedule = $mysqli->query("INSERT INTO workschedule (F_number, S_subject, SR_grade, SR_section) VALUES ('{$assignedFaculty}', '{$subjectname}', '{$_GET['GradeLevel']}', '{$_GET['SectionName']}')");
+    // } else if (empty($assignedFaculty)) {
+    //     $errors['nocontent'] = "No Teacher was assigned.";
+    // }
 }
 if (isset($_POST['updateSchedule'])) {
     $assignedFaculty = $_POST['assignedFaculty'];
     $subjectname = $_POST['subjectname'];
     $timeID = $_POST['timeslots'];
 
-    $updateTimeSlots = $mysqli->query("UPDATE workschedule SET WS_time = '1' WHERE F_number = '{$assignedFaculty}' AND SR_section = '{$_GET['SectionName']}' AND S_subject = '{$subjectname}'");
+    // $checkTime = $mysqli->query("SELECT * FROM workschedule WHERE WS_time = '{$timeID}'");
+    // if ($checkTime->num_rows > 0) {
+    //     $errors['dupe'] = "Teacher already has a schedule with this time!";
+    // } elseif ($checkTime->num_rows == 0) {
+    //     $setTimeSchedule = $mysqli->query("UPDATE workschedule SET WS_time = '{$timeID}' WHERE SR_section = '{$_GET['SectionName']}' AND F_number = '{$assignedFaculty}'");
+    // } elseif (empty($timeID)) {
+    //     $errors['nocontent'] = "No time assigned.";
+    // }
 }
 if (isset($_POST['postAnnouncement'])) {
     $author = $_POST['author'];
