@@ -220,11 +220,16 @@ if (!isset($_SESSION['AD_number'])) {
                         </div>
                       </div>
                     </div>
-                    <div class="btn-group" style="float: right">
-                      <form>
-                        <button style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></button>
-                      </form>
-                    </div>
+                    <?php
+                    if (isset($_GET['department'])) { ?>
+                      <div class="btn-group" style="float: right;">
+                        <a href="../reports/getFacultyDept.php?department=<?php echo $_GET['department'] ?>" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">
+                          Print
+                          <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i>
+                        </a>
+                      </div>
+                    <?php }
+                    ?>
                     <div class="row" style="margin-top: 15px;">
                       <div class="col-lg-12 d-flex flex-column">
                         <div class="row flex-grow">

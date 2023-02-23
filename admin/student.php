@@ -219,22 +219,35 @@ if (!isset($_SESSION['AD_number'])) {
                     </div>
                     <div class="btn-group">
                       <div>
-                        <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">Section
+                        <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                          <?php
+                          if (!isset($_GET['section'])) {
+                            echo 'Section';
+                          } else {
+                            echo $_GET['section'];
+                          }
+
+                          ?>
                           <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                          <a class="dropdown-item" href="">Chrysanthemum</a>
-                          <a class="dropdown-item" href="">Peony</a>
-                          <a class="dropdown-item" href="">Narra</a>
+                          <?php
+                          $sectionData = $mysqli->query("SELECT * FROM sections WHERE S_yearLevel = '{$_GET['GradeLevel']}'");
+                          while ($section = $sectionData->fetch_assoc()) { ?>
+                            <a class="dropdown-item" href="student.php?GradeLevel=<?php echo $_GET['GradeLevel'] ?>&section=<?php echo $section['S_name'] ?>"><?php echo $section['S_name'] ?></a>
+                          <?php }
+                          ?>
                         </div>
                       </div>
                     </div>
-                    <div class="btn-group" style="float: right;">
-                      <form>
-                        <button style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></button>
-                      </form>
-                    </div>
-                    <div class="row" style="margin-top: 15px;;">
+                    <?php
+                    if (isset($_GET['GradeLevel']) && isset($_GET['section'])) { ?>
+                      <div class="btn-group" style="float: right;">
+                        <a href="../reports/getClasslist.php?GradeLevel=<?php echo $_GET['GradeLevel'] ?>&section=<?php echo $_GET['section'] ?>" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
+                      </div>
+                    <?php }
+                    ?>
+                    <div class="row" style="margin-top: 15px;">
                       <div class="col-lg-12 d-flex flex-column">
                         <div class="row flex-grow">
                           <div class="col-12 grid-margin stretch-card">
@@ -260,8 +273,10 @@ if (!isset($_SESSION['AD_number'])) {
                                   </thead>
                                   <tbody>
                                     <?php
-                                    if (!empty($_GET['GradeLevel'])) {
+                                    if (!empty($_GET['GradeLevel']) && !isset($_GET['section'])) {
                                       $ListofStudents = "SELECT * FROM studentrecord WHERE SR_grade = '{$_GET['GradeLevel']}'";
+                                    } elseif (!empty($_GET['GradeLevel']) && !empty($_GET['section'])) {
+                                      $ListofStudents = "SELECT * FROM studentrecord WHERE SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['section']}'";
                                     } else {
                                       $ListofStudents = "SELECT * FROM studentrecord ORDER BY SR_grade";
                                     }
