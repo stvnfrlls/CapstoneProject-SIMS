@@ -7,14 +7,6 @@ $errors = array();
 $year = date('Y');
 $month = date('m');
 
-function function_alert($msg)
-{
-    echo "<script type='text/javascript'>alert('$msg');</script>";
-}
-function function_prompt($msg)
-{
-    echo "<script type='text/javascript'>prompt('$msg');</script>";
-}
 function validate($data)
 {
     $data = trim($data);
@@ -936,42 +928,26 @@ if (isset($_POST['addAdmin'])) {
 if (isset($_POST['setSchedule'])) {
     $assignedFaculty = $_POST['assignedFaculty'];
     $subjectname = $_POST['subjectname'];
-    $startime = $_POST['WS_start_time'];
-    $endtime = timeMinusOneMinute($_POST['WS_end_time']);
 
-    $checkSchedule = $mysqli->query("SELECT WS_start_time, WS_end_time FROM workschedule
-                    WHERE F_number = '{$assignedFaculty}' AND
-                    (WS_start_time BETWEEN '{$startime}' AND '{$endtime}') OR 
-                    (WS_end_time BETWEEN '{$startime}' AND '{$endtime}') OR
-                    ('{$startime}' BETWEEN WS_start_time AND WS_end_time)");
+    $checkDuplicates = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$assignedFaculty}' AND SR_section = '{$_GET['SectionName']}'");
+    if ($checkDuplicates->num_rows == 0) {
+        $insertTimeSlots = $mysqli->query("INSERT INTO workschedule (F_number, S_subject, SR_grade, SR_section) 
+        VALUES ('$assignedFaculty', '$subjectname', '{$_GET['GradeLevel']}', '{$_GET['SectionName']}')");
+    }else {
+        $errors['email'] = "Teacher is already assigned to this section";
+    }
 
-    if ($checkSchedule->num_rows == 0) {
-        $setSchedule = $mysqli->query("INSERT INTO workschedule (F_number, S_subject, SR_grade, SR_section, WS_start_time, WS_end_time) 
-                                    VALUES ('{$assignedFaculty}', '{$subjectname}', '{$_GET['GradeLevel']}', '{$_GET['SectionName']}', '{$startime}', '{$endtime}')");
-    } else {
-        echo "ASSIGNING FAIL CONFLICT IN TIME";
+    $checkTimeSlots = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$assignedFaculty}' AND WS_time IS NULL");
+
+    if ($checkTimeSlots->num_rows == 0) {
     }
 }
-if (isset($_POST['updateSchedule'])) { //NOT WORKING
+if (isset($_POST['updateSchedule'])) {
     $assignedFaculty = $_POST['assignedFaculty'];
     $subjectname = $_POST['subjectname'];
-    $startime = $_POST['WS_start_time'];
-    $endtime = timeMinusOneMinute($_POST['WS_end_time']);
+    $timeID = $_POST['timeslots'];
 
-    $checkSchedule = $mysqli->query("SELECT S_subject, WS_start_time, WS_end_time FROM workschedule
-                    WHERE F_number = '{$assignedFaculty}' AND
-                    (WS_start_time BETWEEN '{$startime}' AND '{$endtime}') OR 
-                    (WS_end_time BETWEEN '{$startime}' AND '{$endtime}') OR
-                    ('{$startime}' BETWEEN WS_start_time AND WS_end_time) ");
-    $scheduleData = $checkSchedule->fetch_assoc();
-
-    if ($checkSchedule->num_rows == 0) {
-        $setSchedule = $mysqli->query("UPDATE workschedule SET WS_start_time = '{$startime}', WS_end_time = '{$endtime}' WHERE S_subject = '{$subjectname}' AND F_number = '{$assignedFaculty}' AND SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['SectionName']}'");
-    } elseif ($scheduleData['S_subject'] == $subjectname) {
-        $setSchedule = $mysqli->query("UPDATE workschedule SET WS_start_time = '{$startime}', WS_end_time = '{$endtime}' WHERE S_subject = '{$subjectname}' AND F_number = '{$assignedFaculty}' AND SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['SectionName']}'");
-    } else {
-        echo "UPDATE FAIL CONFLICT IN TIME";
-    }
+    $updateTimeSlots = $mysqli->query("UPDATE workschedule SET WS_time = '1' WHERE F_number = '{$assignedFaculty}' AND SR_section = '{$_GET['SectionName']}' AND S_subject = '{$subjectname}'");
 }
 if (isset($_POST['postAnnouncement'])) {
     $author = $_POST['author'];
@@ -985,6 +961,7 @@ if (isset($_POST['assignAdvisor'])) {
     $section = $_POST['section'];
     $advisor = $_POST['advisor'];
 
-    $assignAdvisor = $mysqli->query("UPDATE sections SET S_adviser = '{$advisor}' WHERE S_name = '{$section}'");
+    $assignSectionsAdvisor = $mysqli->query("UPDATE sections SET S_adviser = '{$advisor}' WHERE S_name = '{$section}'");
+    $assignClassListAdvisor = $mysqli->query("UPDATE classlist SET F_number = '{$advisor}' WHERE SR_section = '{$section}'");
 }
 //End
