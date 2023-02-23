@@ -4,6 +4,9 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 } else {
+    $adminData = $mysqli->query("SELECT * FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+    $admin = $adminData->fetch_assoc();
+    $announcementData = $mysqli->query("SELECT * FROM announcement WHERE author = '{$_SESSION['AD_number']}'");
 }
 ?>
 
@@ -182,69 +185,48 @@ if (!isset($_SESSION['AD_number'])) {
                                         <h2 class="fw-bold text-primary text-uppercase">School Announcements</h2>
                                     </div>
                                 </div>
-                                <form style="text-align: right; margin-top: 30px; margin-right: 20px;">
-                                    <button type="button" onclick="location.href='../admin/createAnnouncement.php'" style="color: #ffffff;" class="btn btn-primary me-2" >Create <i class="fa fa-plus" style="font-size: 10px;"></i></button>
-                                </form>
+                                <div style="text-align: right; margin-top: 30px; margin-right: 20px;">
+                                    <button type="button" onclick="location.href='../admin/createAnnouncement.php'" style="color: #ffffff;" class="btn btn-primary me-2">Create <i class="fa fa-plus" style="font-size: 10px;"></i></button>
+                                </div>
                                 <section class="post-content-area" style="background-color: #f4f5f7;">
                                     <div class="container">
-                                        <div class="row col-lg-10" style="padding-top: 15px;">
-                                            <div class="col-lg-10 posts-list" style="margin-left: auto;">
-
-                                                <div class="single-post row">
-                                                    <div class="col-lg-3  col-md-3 meta-details">
-                                                        <div class="user-details row" style="margin-top: 40px;">
-                                                            <p class="user-name col-lg-12 col-md-12 col-6"><span class="far fa-user" style="color: #c02628;"> </span><a> Hazel Grace Cantuba</a> </p>
-                                                            <p class="date col-lg-12 col-md-12 col-6"><span class="fa fa-calendar" style="color: #c02628;"> </span><a> Jan 27, 2023</a> </p>
+                                        <?php
+                                        while ($announcement = $announcementData->fetch_assoc()) { ?>
+                                            <div class="row col-lg-10" style="padding-top: 15px;">
+                                                <div class="col-lg-10 posts-list" style="margin-left: auto;">
+                                                    <div class="single-post row">
+                                                        <div class="col-lg-3  col-md-3 meta-details">
+                                                            <div class="user-details row" style="margin-top: 40px;">
+                                                                <p class="user-name col-lg-12 col-md-12 col-6"><span class="far fa-user" style="color: #c02628;"> </span><a> <?php echo $admin['AD_name'] ?></a> </p>
+                                                                <p class="date col-lg-12 col-md-12 col-6"><span class="fa fa-calendar" style="color: #c02628;"> </span><a> <?php echo $announcement['date'] ?></a> </p>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-lg-9">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <div class="col-lg-12 col-md-9 ">
-                                                                    <a class="posts-title" href="blog-single.html">
-                                                                        <h3>No classes</h3>
-                                                                    </a>
-                                                                    <p class="excert">
-                                                                        test test test test test test test test test test test test test test test
-                                                                    </p>
-                                                                    <button type="submit" class="btn btn-primary me-2" name="">View More</button>
+                                                        <div class="col-lg-9">
+                                                            <div class="card">
+                                                                <div class="card-body">
+                                                                    <div class="col-lg-12 col-md-9 ">
+                                                                        <a class="posts-title" href="../admin/viewAnnouncement.php?postID=<?php echo $announcement['ANC_ID'] ?>">
+                                                                            <h3><?php echo $announcement['header'] ?></h3>
+                                                                        </a>
+                                                                        <p class="excert">
+                                                                            <?php
+                                                                            if (empty($announcement['msg'])) {
+                                                                                echo "No Description";
+                                                                            } else {
+                                                                                echo $announcement['msg'];
+                                                                            }
+                                                                            ?>
+                                                                        </p>
+                                                                        <button type="button" onclick="location.href='../admin/viewAnnouncement.php?postID=<?php echo $announcement['ANC_ID'] ?>'" class=" btn btn-primary me-2" name="">View More</button>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
-                                        </div>
-                                        <div class="row col-lg-10" style="padding-top: 15px;">
-                                            <div class="col-lg-10 posts-list" style="margin-left: auto;">
-
-                                                <div class="single-post row">
-                                                    <div class="col-lg-3  col-md-3 meta-details">
-                                                        <div class="user-details row" style="margin-top: 40px;">
-                                                            <p class="user-name col-lg-12 col-md-12 col-6"><span class="far fa-user" style="color: #c02628;"> </span><a> Hazel Grace Cantuba</a> </p>
-                                                            <p class="date col-lg-12 col-md-12 col-6"><span class="fa fa-calendar" style="color: #c02628;"> </span><a> Jan 27, 2023</a> </p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-9">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <div class="col-lg-12 col-md-9 ">
-                                                                    <a class="posts-title" href="blog-single.html">
-                                                                        <h3>No classes</h3>
-                                                                    </a>
-                                                                    <p class="excert">
-                                                                        test test test test test test test test test test test test test test test
-                                                                    </p>
-                                                                    <button type="submit" class="btn btn-primary me-2" name="">View More</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
+                                        <?php }
+                                        ?>
                                     </div>
                                 </section>
                             </div>
