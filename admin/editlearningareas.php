@@ -231,7 +231,7 @@ if (empty($_SESSION['AD_number'])) {
                 <div class="tab-content tab-content-basic">
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                     <div class="btn-group">
-                      <div class="dropdown">
+                      <div>
                         <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                           <?php
                           if (isset($_GET['GradeLevel'])) {
@@ -261,7 +261,7 @@ if (empty($_SESSION['AD_number'])) {
                     <div class="btn-group">
                       <?php
                       if (isset($_GET['GradeLevel'])) { ?>
-                        <div class="dropdown">
+                        <div>
                           <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                             <?php if (isset($_GET['SectionName'])) {
                               echo $_GET['SectionName'];
@@ -285,7 +285,7 @@ if (empty($_SESSION['AD_number'])) {
                       <?php } ?>
                     </div>
 
-                    <div class="row">
+                    <div class="row" style="margin-top: 15px;">
                       <div class="col-lg-12 d-flex flex-column">
                         <div class="row flex-grow">
                           <div class="col-md-6 col-lg-12 grid-margin stretch-card">
