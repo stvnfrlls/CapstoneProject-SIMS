@@ -55,7 +55,7 @@ if (!isset($_SESSION['F_number'])) {
 <body>
   <!-- Navbar Start -->
   <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-    <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
+    <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
     <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
       <span class="fa fa-bars"></span>
     </button>
@@ -156,9 +156,9 @@ if (!isset($_SESSION['F_number'])) {
                       <div class="col-12 grid-margin">
                         <div class="card">
                           <div class="card-body">
-                            <div class="dropdown" style="margin-bottom: 30px;">
+                            <div style="margin-bottom: 30px;">
                               <div class="btn-group">
-                                <div class="dropdown">
+                                <div>
                                   <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">Academic Year
                                     <i class="fa fa-caret-down"></i>
                                   </button>
@@ -169,7 +169,7 @@ if (!isset($_SESSION['F_number'])) {
                                   </div>
                                 </div>
                               </div>
-                              <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                              <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
                                 <?php
                                 if (isset($_GET['Grade']) && isset($_GET['Section'])) {
                                   echo "Grade " . $_GET['Grade'] . " - " . $_GET['Section'];
@@ -179,7 +179,7 @@ if (!isset($_SESSION['F_number'])) {
                                 ?>
                                 <i class="fa fa-caret-down"></i>
                               </button>
-                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2" >
                                 <?php
                                 $rowCount = 1;
                                 $GradeSectionRowCount = sizeof($array_GradeSection);
@@ -191,7 +191,11 @@ if (!isset($_SESSION['F_number'])) {
                                 }
                                 ?>
                               </div>
+                              <div class="btn-group" style="float: right;">
+                                <a href="" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
+                              </div>
                             </div>
+
 
                             <div class="table-responsive">
                               <table class="table table-striped table-class">

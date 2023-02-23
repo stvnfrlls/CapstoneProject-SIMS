@@ -5,13 +5,13 @@ if (!isset($_SESSION['F_number'])) {
     header('Location: ../auth/login.php');
 } else {
     $SR_numberArray = array();
-    $SR_numberData = $mysqli->query('SELECT SR_number FROM studentrecord');
+    $SR_numberData = $mysqli->query('SELECT SR_lname FROM studentrecord');
 
     while ($SR_number = $SR_numberData->fetch_assoc()) {
         $SR_numberArray[] = $SR_number;
     }
 
-    $array = array_column($SR_numberArray, 'SR_number');
+    $array = array_column($SR_numberArray, 'SR_lname');
     $SR_numberJSON = json_encode($array);
     echo "<script>var sr_numbers = " . $SR_numberJSON . ";</script>";
 }
@@ -58,7 +58,7 @@ if (!isset($_SESSION['F_number'])) {
 <body>
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-        <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
+        <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
             <span class="fa fa-bars"></span>
         </button>
@@ -148,10 +148,17 @@ if (!isset($_SESSION['F_number'])) {
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="home-tab">
-                                <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                                <div class="d-sm-flex align-items-center justify-content-between">
                                     <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
                                         <h2 class="fw-bold text-primary text-uppercase">Daily Reports</h2>
                                     </div>
+                                </div>
+                                <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
+                                    <nav class="nav">
+                                        <a class="nav-link active ms-0" href="../faculty/dailyReports.php" target="__blank" style="color: #c02628;">Daily</a>
+                                        <a class="nav-link" href="../faculty/monthlyReports.php" target="__blank">Monthly</a>
+                                    </nav>
+                                    <div class="border-bottom"></div>
                                 </div>
                                 <div class="tab-content tab-content-basic">
                                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
@@ -254,7 +261,7 @@ if (!isset($_SESSION['F_number'])) {
                                         </div>
 
                                         <div class="btn-group">
-                                            <div class="dropdown">
+                                            <div>
                                                 <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
                                                     Month<i class="fa fa-caret-down"></i>
                                                 </button>
@@ -273,7 +280,10 @@ if (!isset($_SESSION['F_number'])) {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        <div class="btn-group" style="float: right;">
+                                            <a href="" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
+                                        </div>
+                                        <div class="row" style="margin-top: 15px;">
                                             <div class="col-lg-12 d-flex flex-column">
                                                 <div class="row flex-grow">
                                                     <div class="col-md-6 col-lg-12 grid-margin stretch-card">
