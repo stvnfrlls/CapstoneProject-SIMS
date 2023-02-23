@@ -214,36 +214,6 @@ if (!isset($_SESSION['AD_number'])) {
 
                                 <div class="tab-content tab-content-basic">
                                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                                        <div class="row">
-                                            <div class="btn-group">
-                                                <div>
-                                                    <button class="btn btn-secondary" style="background-color: #e4e3e3;" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                        <?php
-                                                        if (isset($_GET['GradeLevel'])) {
-                                                            if ($_GET['GradeLevel'] == "KINDER") {
-                                                                echo  $_GET['GradeLevel'];
-                                                            } else {
-                                                                echo  "Grade " . $_GET['GradeLevel'];
-                                                            }
-                                                        } else {
-                                                            echo "Grade ";
-                                                        }
-                                                        ?>
-                                                        <i class="fa fa-caret-down"></i>
-                                                    </button>
-                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                        <?php
-                                                        while ($gradeData = $rungradeList->fetch_assoc()) { ?>
-                                                            <a class="dropdown-item" href="modifyCurriculum.php?GradeLevel=<?php echo $gradeData['S_yearLevel'] ?>">
-                                                                <?php
-                                                                echo "Grade - " . $gradeData['S_yearLevel'];
-                                                                ?>
-                                                            </a>
-                                                        <?php } ?>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                         <div class="row" style="margin-top: 15px;">
                                             <div class="col-lg-12 d-flex flex-column">
                                                 <div class="row flex-grow">
