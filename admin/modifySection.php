@@ -1,20 +1,9 @@
-<?php
-require_once("../assets/php/server.php");
-
-if (!isset($_SESSION['AD_number'])) {
-    header('Location: ../auth/login.php');
-} else {
-    $anouncementData = $mysqli->query("SELECT * FROM announcement WHERE ANC_ID = '{$_GET['postID']}'");
-    $announcement = $anouncementData->fetch_assoc();
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
-    <title>Announcement</title>
+    <title>Modify Section</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -31,7 +20,6 @@ if (!isset($_SESSION['AD_number'])) {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
-
     <!-- Libraries Stylesheet -->
     <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
     <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
@@ -45,7 +33,6 @@ if (!isset($_SESSION['AD_number'])) {
     <link href="../assets/css/form-style.css" rel="stylesheet">
     <link href="../assets/css/admin/style.css" rel="stylesheet">
     <link href="../assets/css/admin/materialdesignicons.min.css" rel="stylesheet">
-    <link href="../assets/css/educ/main.css" rel="stylesheet">
 
 </head>
 
@@ -192,61 +179,88 @@ if (!isset($_SESSION['AD_number'])) {
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="home-tab">
+
                                 <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                                     <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                                        <h2 class="fw-bold text-primary text-uppercase">Announcement</h2>
+                                        <h2 class="fw-bold text-primary text-uppercase">Modify Section</h2>
                                     </div>
                                 </div>
 
-                                <form style="text-align: right; margin-top: 50px; margin-right: 20px;">
-                                    <button type="submit" style="color: #ffffff;" class="btn btn-primary me-2">Edit</button>
-                                    <button type="submit" style="color: #ffffff;" class="btn btn-primary me-2">Delete</button>
-                                </form>
+                                <div class="tab-content tab-content-basic">
+                                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                                        <div class="row" style="margin-top: 15px;">
+                                            <div class="col-lg-12 d-flex flex-column">
+                                                <div class="row flex-grow">
+                                                    <div class="col-12 grid-margin">
+                                                        <div class="">
+                                                            <div style="text-align: center; margin-bottom: 15px;">
+                                                                <div class="btn-group">
+                                                                    <div>
+                                                                        <button class="btn btn-secondary" style="background-color: #e4e3e3;" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                                            Grade <i class="fa fa-caret-down"></i>
+                                                                        </button>
+                                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                                                            <a class="dropdown-item" href="">Grade 1</a>
+                                                                            <a class="dropdown-item" href="">Grade 2</a>
+                                                                            <a class="dropdown-item" href="">Grade 3</a>
+                                                                            <a class="dropdown-item" href="">Grade 4</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="btn-group">
+                                                                    <div>
+                                                                        <button class="btn btn-secondary" style="background-color: #e4e3e3;" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                                            Section <i class="fa fa-caret-down"></i>
+                                                                        </button>
+                                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                                                            <a class="dropdown-item" href="">Carnation</a>
+                                                                            <a class="dropdown-item" href="">Chrysanthemum</a>
+                                                                            <a class="dropdown-item" href="">Narra</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
 
-                                <section class="course-details-area">
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-lg-8 left-contents">
-                                                <div class="jq-tab-wrapper" id="horizontalTab" style="padding-top: 0px;">
-                                                    <div class="jq-tab-menu">
-                                                        <div class="jq-tab-title active" data-tab="1">Description</div>
+                                                            <div class="table-responsive">
+                                                                <table class="table" style="width:50%; margin-left:auto; margin-right:auto;">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>No.</th>
+                                                                            <th>Section</th>
+                                                                            <th>Action</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
 
-                                                    </div>
-                                                    <div class="jq-tab-content-wrapper">
-                                                        <div class="jq-tab-content active" data-tab="1">
-                                                            When you enter into any new area of science, you almost always find yourself with a baffling new language of technical terms to learn before you can converse with the experts. This is certainly true in astronomy both in terms of terms that refer to the cosmos and terms that describe the tools of the trade, the most prevalent being the telescope.
-                                                            <br>
-                                                            <br>
-                                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodoconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.
+                                                                        <form action="" method="POST">
+                                                                            <tr>
+                                                                                <td>1</td>
+                                                                                <td><input type="text" class="form-control"></td>
+                                                                                <td>
+                                                                                    <input type="submit" style="color: #ffffff;" class="btn btn-primary" value="UPDATE" name="updateCurr">
+                                                                                    <input type="submit" class="btn btn-secondary" value="DELETE" name="deleteCurr">
+                                                                                </td>
+                                                                            </tr>
+                                                                        </form>
+
+                                                                        <form action="" method="post">
+                                                                            <tr>
+                                                                                <td>ADD</td>
+                                                                                <td><input type="text" class="form-control"></td>
+                                                                                <td><input type="submit" style="color: #ffffff;" class="btn btn-primary" value="ADD"></td>
+                                                                            </tr>
+                                                                        </form>
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-4 right-contents">
-                                                <ul>
-                                                    <li>
-                                                        <a class="justify-content-between d-flex" href="#">
-                                                            <p>Title</p>
-                                                            <span class="or"><?php echo $announcement['header'] ?></span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="justify-content-between d-flex" href="#">
-                                                            <p>Posted By</p>
-                                                            <span><?php echo $announcement['author'] ?></span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="justify-content-between d-flex" href="#">
-                                                            <p>Date and Time</p>
-                                                            <span><?php echo $announcement['date'] ?></span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
                                         </div>
                                     </div>
-                                </section>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -315,26 +329,10 @@ if (!isset($_SESSION['AD_number'])) {
 
     <!-- JavaScript Libraries -->
 
-
     <!-- Template Javascript -->
     <script src="../assets/js/main.js"></script>
-
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>
     <script src="../assets/js/admin/off-canvas.js"></script>
-    <script src="../assets/js/admin/file-upload.js"></script>
-
-    <script src="../assets/js/educ/vendor/jquery-2.2.4.min.js"></script>
-    <script src="../assets/js/educ/vendor/bootstrap.min.js"></script>
-    <script src="../assets/js/educ/easing.min.js"></script>
-    <script src="../assets/js/educ/hoverIntent.js"></script>
-    <script src="../assets/js/educ/superfish.min.js"></script>
-    <script src="../assets/js/educ/jquery.ajaxchimp.min.js"></script>
-    <script src="../assets/js/educ/jquery.magnific-popup.min.js"></script>
-    <script src="../assets/js/educ/jquery.tabs.min.js"></script>
-    <script src="../assets/js/educ/jquery.nice-select.min.js"></script>
-    <script src="../assets/js/educ/owl.carousel.min.js"></script>
-    <script src="../assets/js/educ/mail-script.js"></script>
-    <script src="../assets/js/educ/main.js"></script>
 </body>
 
 </html>

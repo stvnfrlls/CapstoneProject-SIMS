@@ -62,11 +62,13 @@ if (!isset($_SESSION['F_number'])) {
 
 <body>
   <!-- Navbar Start -->
-  <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-    <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
-    <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-      <span class="fa fa-bars"></span>
-    </button>
+  <nav class="fixed-top align-items-top">
+    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+      <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
+      <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+        <span class="fa fa-bars"></span>
+      </button>
+    </nav>
   </nav>
   <!-- Navbar End -->
   <div class="container-scroller">
@@ -176,7 +178,7 @@ if (!isset($_SESSION['F_number'])) {
                           <div class="card-body">
                             <form class="form-sample" action="confirmfaculty.php" method="POST">
                               <div class="btn-group" style="margin-bottom: 15px;">
-                                <div class="dropdown">
+                                <div>
                                   <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">Academic Year
                                     <i class="fa fa-caret-down"></i>
                                   </button>
@@ -186,6 +188,9 @@ if (!isset($_SESSION['F_number'])) {
                                     <a class="dropdown-item" href="">2024-2025</a>
                                   </div>
                                 </div>
+                              </div>
+                              <div class="btn-group" style="float: right;">
+                                <a href="" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
                               </div>
                               <div class="table-responsive">
                                 <table class="table">

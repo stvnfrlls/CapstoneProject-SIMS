@@ -117,14 +117,14 @@ if (!isset($_SESSION['AD_number'])) {
 </head>
 
 <body>
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-        <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-            <span class="fa fa-bars"></span>
-        </button>
+    <nav class="fixed-top align-items-top">
+        <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+            <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+                <span class="fa fa-bars"></span>
+            </button>
+        </nav>
     </nav>
-    <!-- Navbar End -->
 
     <div class="container-scroller">
         <div class="container-fluid page-body-wrapper">
@@ -154,7 +154,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/announcement.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Announcements</span>
+                            <span class="menu-title" style="color: #b9b9b9;">School Announcements</span>
                         </a>
                     </li>
                     <!-- line 2 -->
@@ -181,6 +181,12 @@ if (!isset($_SESSION['AD_number'])) {
                         <a class="nav-link" href="../admin/movingUp.php">
                             <i class=""></i>
                             <span class="menu-title" style="color: #b9b9b9;">Status</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/modifySection.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Change Student Section</span>
                         </a>
                     </li>
                     <!-- line 3 -->
@@ -215,6 +221,12 @@ if (!isset($_SESSION['AD_number'])) {
                         <a class="nav-link" href="../admin/modifyCurriculum.php">
                             <i class=""></i>
                             <span class="menu-title" style="color: #b9b9b9;">Edit Curriculum</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/editSection.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Edit Section</span>
                         </a>
                     </li>
                     <!-- line 5 -->
@@ -305,7 +317,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                     <div class="card-body">
                                                         <div class="row">
                                                             <h3 style="font-size: 20px; padding-bottom: 20px; text-align:center;">Today's Average Attendance</h3>
-                                                            <canvas class="my-auto" id="doughnutChart" height="100"></canvas>
+                                                            <canvas class="my-auto" id="doughnutChart" height="200"></canvas>
                                                             <div id="doughnut-chart-legend" class="mt-5 text-center"></div>
                                                         </div>
                                                         <div class="row" style="margin: auto; padding-top:15px;">
@@ -376,14 +388,14 @@ if (!isset($_SESSION['AD_number'])) {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-12 col-lg-6 grid-margin" style="padding-bottom:20px;">
+                                            <div class="col-sm-12 col-lg-6 grid-margin">
                                                 <div class="row">
                                                     <div class="col-sm-12 col-lg-4 grid-margin" style="padding-bottom:20px;">
 
                                                         <div class="card">
                                                             <div class="card-body">
                                                                 <div class="row">
-                                                                    <h3 style="font-size: 20px; padding-bottom: 20px; text-align:left;">No. of Students</h3>
+                                                                    <h3 style="font-size: 20px; padding-bottom: 20px; text-align:left;">Total No. of Students</h3>
                                                                     <div class="d-flex flex-shrink-0">
                                                                         <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628; padding-bottom:15px;">
                                                                             <?php
@@ -408,7 +420,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                         <div class="card">
                                                             <div class="card-body">
                                                                 <div class="row">
-                                                                    <h3 style="font-size: 20px; text-align:left; padding-bottom: 20px;">No. of Faculty Teachers</h3>
+                                                                    <h3 style="font-size: 20px; text-align:left;">Total No. of Faculty Teachers</h3>
                                                                     <div class="d-flex flex-shrink-0">
                                                                         <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628; padding-bottom:15px;">
                                                                             <?php
@@ -432,7 +444,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                         <div class="card">
                                                             <div class="card-body">
                                                                 <div class="row">
-                                                                    <h3 style="font-size: 20px; text-align:left;">No. of Students Added Today</h3>
+                                                                    <h3 style="font-size: 20px; text-align:left;">Total No. of Students Added Today</h3>
                                                                     <div class="d-flex flex-shrink-0">
                                                                         <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628; padding-bottom:15px;">25</h1>
                                                                     </div>
@@ -447,21 +459,52 @@ if (!isset($_SESSION['AD_number'])) {
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-12 grid-margin" style="padding-bottom:20px;">
+                                                    <div class="col-12 grid-margin">
                                                         <div class="card">
                                                             <div class="card-body">
                                                                 <div class="row">
-                                                                    <h3 style="font-size: 20px; text-align:left;"></h3>
+                                                                    <div class="d-flex align-items-center justify-content-between mb-3">
+                                                                        <h4 class="card-title card-title-dash" style="margin-bottom:12px;">Activity History</h4>
+                                                                    </div>
+                                                                    <ul class="bullet-line-list">
+                                                                        <li>
+                                                                            <div class="d-flex justify-content-between">
+                                                                                <div style="text-align: left;"><span class="text-light-green">Camile Sabile</span> assign you a task</div>
+                                                                                <p>01/01/2023</p>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="d-flex justify-content-between">
+                                                                                <div style="text-align: left;"><span class="text-light-green">Hazel Grace</span> assign you a task</div>
+                                                                                <p>01/01/2023</p>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="d-flex justify-content-between">
+                                                                                <div style="text-align: left;"><span class="text-light-green">Steven Frilles</span> assign you a task</div>
+                                                                                <p>01/01/2023</p>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="d-flex justify-content-between">
+                                                                                <div style="text-align: left;"><span class="text-light-green">Steven Frilles</span> assign you a task</div>
+                                                                                <p>01/01/2023</p>
+                                                                            </div>
+                                                                        </li>
+                                                                    </ul>
+                                                                    <div class="list align-items-center pt-3">
+                                                                        <div class="wrapper w-100">
+                                                                            <p class="mb-0">
+                                                                                <a href="#" class="fw-bold text-primary">Show all <i class="fa fa-arrow-right ms-2"></i></a>
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-
-
                                             </div>
-
-
                                         </div>
 
                                         <div class="row">
@@ -556,60 +599,34 @@ if (!isset($_SESSION['AD_number'])) {
                                                             <div class="card">
                                                                 <div class="card-body">
 
-                                                                    <div class="d-flex align-items-center justify-content-between mb-3">
-                                                                        <h4 class="card-title card-title-dash">Activity History</h4>
+                                                                    <div class="section-title section-title-sm position-relative pb-3 mb-4">
+                                                                        <h3 class="mb-0" style="text-align:left;">School Announcements</h3>
                                                                     </div>
-                                                                    <ul class="bullet-line-list">
-                                                                        <li>
-                                                                            <div class="d-flex justify-content-between">
-                                                                                <div style="text-align: left;"><span class="text-light-green">Camile Sabile</span> assign you a task</div>
-                                                                                <p>01/01/2023</p>
+
+                                                                    <?php
+                                                                    $getAnnouncementData = $mysqli->query("SELECT * FROM announcement");
+
+                                                                    while ($announcement = $getAnnouncementData->fetch_assoc()) { ?>
+                                                                        <div class="col-lg-12 wow " style="padding-bottom: 5px;">
+                                                                            <div class="blog-item bg-light rounded overflow-hidden">
+                                                                                <div class="p-4">
+                                                                                    <div class="d-flex mb-3">
+                                                                                        <small class="me-3"><i class="far fa-user text-primary me-2"></i><?php echo $announcement['author']; ?></small>
+                                                                                        <small><i class="far fa-calendar-alt text-primary me-2"></i><?php echo $announcement['date']; ?></small>
+                                                                                    </div>
+                                                                                    <h4 class="mb-3"><?php echo $announcement['header']; ?></h4>
+                                                                                    <p><?php echo $announcement['msg']; ?></p>
+                                                                                    <a class="text-uppercase" href="viewannouncement.php?postID=<?php echo $announcement['ANC_ID']; ?>">Read More <i class="bi bi-arrow-right"></i></a>
+                                                                                </div>
                                                                             </div>
-                                                                        </li>
-                                                                        <li>
-                                                                            <div class="d-flex justify-content-between">
-                                                                                <div style="text-align: left;"><span class="text-light-green">Hazel Grace</span> assign you a task</div>
-                                                                                <p>01/01/2023</p>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li>
-                                                                            <div class="d-flex justify-content-between">
-                                                                                <div style="text-align: left;"><span class="text-light-green">Steven Frilles</span> assign you a task</div>
-                                                                                <p>01/01/2023</p>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li>
-                                                                            <div class="d-flex justify-content-between">
-                                                                                <div style="text-align: left;"><span class="text-light-green">RJ Dumas</span> assign you a task</div>
-                                                                                <p>01/01/2023</p>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li>
-                                                                            <div class="d-flex justify-content-between">
-                                                                                <div style="text-align: left;"><span class="text-light-green">Roselyn Maling</span> assign you a task</div>
-                                                                                <p>01/01/2023</p>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li>
-                                                                            <div class="d-flex justify-content-between">
-                                                                                <div style="text-align: left;"><span class="text-light-green">Genesis Tecson</span> assign you a task</div>
-                                                                                <p>01/01/2023</p>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li>
-                                                                            <div class="d-flex justify-content-between">
-                                                                                <div style="text-align: left;"><span class="text-light-green">Ryu Munoz</span> assign you a task</div>
-                                                                                <p>01/01/2023</p>
-                                                                            </div>
-                                                                        </li>
-                                                                    </ul>
-                                                                    <div class="list align-items-center pt-3">
-                                                                        <div class="wrapper w-100">
-                                                                            <p class="mb-0">
-                                                                                <a href="#" class="fw-bold text-primary">Show all <i class="fa fa-arrow-right ms-2"></i></a>
-                                                                            </p>
                                                                         </div>
-                                                                    </div>
+                                                                    <?php }
+                                                                    ?>
+                                                                    <section class="popular-courses-area courses-page">
+                                                                        <div style="padding-top: 10px;">
+                                                                            <a href="#" class="fw-bold text-primary">View all announcements <i class="fa fa-arrow-right ms-2"></i></a>
+                                                                        </div>
+                                                                    </section>
                                                                 </div>
                                                             </div>
                                                         </div>

@@ -31,6 +31,8 @@ if (!isset($_SESSION['F_number'])) {
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <link href="../assets/css/sweetAlert.css" rel="stylesheet">
 
   <!-- Libraries Stylesheet -->
   <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
@@ -50,11 +52,13 @@ if (!isset($_SESSION['F_number'])) {
 
 <body>
   <!-- Navbar Start -->
-  <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-    <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
-    <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-      <span class="fa fa-bars"></span>
-    </button>
+  <nav class="fixed-top align-items-top">
+    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+      <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
+      <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+        <span class="fa fa-bars"></span>
+      </button>
+    </nav>
   </nav>
   <!-- Navbar End -->
 
@@ -368,7 +372,7 @@ if (!isset($_SESSION['F_number'])) {
     <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
-
+  <button id="hatdog"> click hatdog </button>
   <!-- Footer Start -->
   <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
     <div class="container py-5">
@@ -433,6 +437,32 @@ if (!isset($_SESSION['F_number'])) {
   <script src="../assets/js/admin/off-canvas.js"></script>
   <script src="../assets/js/admin/file-upload.js"></script>
 
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+  <script>
+    const myButton = document.getElementById('hatdog');
+    hatdog.addEventListener('click', function() {
+      Swal.fire({
+        title: 'Are you sure you want to save your changes?',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: `No`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: 'Successfully changed!',
+            icon: 'success',
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              window.location.href = '../faculty/viewProfile.php';
+            }
+          })
+        }
+      })
+
+    })
+  </script>
 </body>
 
 </html>

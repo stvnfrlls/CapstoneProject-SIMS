@@ -77,11 +77,13 @@ if (!isset($_SESSION['F_number'])) {
 
 <body>
   <!-- Navbar Start -->
-  <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-    <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
-    <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-      <span class="fa fa-bars"></span>
-    </button>
+  <nav class="fixed-top align-items-top">
+    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+      <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
+      <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+        <span class="fa fa-bars"></span>
+      </button>
+    </nav>
   </nav>
   <!-- Navbar End -->
 
@@ -178,11 +180,23 @@ if (!isset($_SESSION['F_number'])) {
                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                       <div class="row">
                         <div class="col-12 grid-margin">
+                          <div class="btn-group" style="margin-bottom: 10px;">
+                            <div>
+                              <a href="../reports/ReportCard.php?ID=<?php echo  $_GET['ID'] ?>" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3; text-align:center; font-size: 13px">Print <i class="fa fa-print" style="font-size: 12px;"></i></a>
+
+                            </div>
+
+                          </div>
+                          <div class="btn-group" style="float: right;">
+                            <div>
+                              <a href="viewCard.php?ID=<?php echo $previous ?>" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3; text-align:center; font-size: 13px"><i class="fa fa-angle-double-left"></i> Previous</a>
+                              <a href="viewCard.php?ID=<?php echo $previous ?>" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3; text-align:center; font-size: 13px; float: right;">Next <i class="fa fa-angle-double-right"></i></a>
+                            </div>
+                          </div>
+
                           <div class="card">
                             <div class="card-body">
-                              <div class="btn-group" style="margin-bottom: 10px;">
-                                <a href="../reports/ReportCard.php?ID=<?php echo  $_GET['ID'] ?>" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3; text-align:center; font-size: 13px">Print <i class="fa fa-print" style="font-size: 12px;"></i></a>
-                              </div>
+
                               <div class="row" style="--bs-gutter-x: 0px; margin-bottom:20px;">
                                 <table id="head" class="table">
                                   <tr>
@@ -211,8 +225,6 @@ if (!isset($_SESSION['F_number'])) {
                                     }
                                   }
                                   ?>
-                                  <a href="viewCard.php?ID=<?php echo $previous ?>" class="btn btn-primary"><i class="fa fa-angle-double-left"></i>Previous </a>
-                                  <a href="viewCard.php?ID=<?php echo $next ?>" class="btn btn-primary">Next <i class="fa fa-angle-double-right"></i></a>
                                 </div>
                               </div>
                               <div class="row">
@@ -408,128 +420,137 @@ if (!isset($_SESSION['F_number'])) {
                           </div>
                         </div>
                       </div>
+
+                      <div class="row">
+                        <div class="col-12 grid-margin">
+                          <div class="card">
+                            <div class="card-body">
+                              <h3 style="text-align: center;">ATTENDANCE RECORD</h3>
+                              <div class="row">
+                                <div class="">
+                                  <div class="table-responsive">
+                                    <table class="table text-center" style="margin-top: 30px;">
+                                      <thead>
+                                        <tr>
+                                          <th class="hatdog" style="border-color: #FFFFFF;"></th>
+                                          <th class="hatdog" style="border-color: #FFFFFF;">SEP</th>
+                                          <th class="hatdog" style="border-color: #FFFFFF;">OCT</th>
+                                          <th class="hatdog" style="border-color: #FFFFFF;">NOV</th>
+                                          <th class="hatdog" style="border-color: #FFFFFF;">DEC</th>
+                                          <th class="hatdog" style="border-color: #FFFFFF;">JAN</th>
+                                          <th class="hatdog" style="border-color: #FFFFFF;">FEB</th>
+                                          <th class="hatdog" style="border-color: #FFFFFF;">MAR</th>
+                                          <th class="hatdog" style="border-color: #FFFFFF;">APR</th>
+                                          <th class="hatdog" style="border-color: #FFFFFF;">MAY</th>
+                                          <th class="hatdog" style="border-color: #FFFFFF;">JUN</th>
+                                          <th class="hatdog" style="border-color: #FFFFFF;">TOTAL</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr>
+                                          <td class="hatdog">No. of School Days</td>
+                                          <td class="hatdog">22</td>
+                                          <td class="hatdog">26</td>
+                                          <td class="hatdog">23</td>
+                                          <td class="hatdog">16</td>
+                                          <td class="hatdog">15</td>
+                                          <td class="hatdog">22</td>
+                                          <td class="hatdog">27</td>
+                                          <td class="hatdog">22</td>
+                                          <td class="hatdog">24</td>
+                                          <td class="hatdog">26</td>
+                                          <td class="hatdog">223</td>
+                                        </tr>
+                                        <tr>
+                                          <td class="hatdog">No. of Days Present</td>
+                                          <?php
+                                          $SEP = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'September'");
+                                          $SEPvalue = $SEP->fetch_assoc();
+                                          echo '<td class="hatdog">' . $SEPvalue['COUNT(A_time_IN)'] . '</td>';
+                                          $OCT = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'October'");
+                                          $OCTvalue = $OCT->fetch_assoc();
+                                          echo '<td class="hatdog">' . $OCTvalue['COUNT(A_time_IN)'] . '</td>';
+                                          $NOV = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'November'");
+                                          $NOVvalue = $NOV->fetch_assoc();
+                                          echo '<td class="hatdog">' . $NOVvalue['COUNT(A_time_IN)'] . '</td>';
+                                          $DEC = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'December'");
+                                          $DECvalue = $DEC->fetch_assoc();
+                                          echo '<td class="hatdog">' . $DECvalue['COUNT(A_time_IN)'] . '</td>';
+                                          $JAN = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'January'");
+                                          $JANvalue = $JAN->fetch_assoc();
+                                          echo '<td class="hatdog">' . $JANvalue['COUNT(A_time_IN)'] . '</td>';
+                                          $FEB = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'February'");
+                                          $FEBvalue = $FEB->fetch_assoc();
+                                          echo '<td class="hatdog">' . $FEBvalue['COUNT(A_time_IN)'] . '</td>';
+                                          $MAR = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'March'");
+                                          $MARvalue = $MAR->fetch_assoc();
+                                          echo '<td class="hatdog">' . $MARvalue['COUNT(A_time_IN)'] . '</td>';
+                                          $APR = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'April'");
+                                          $APRvalue = $APR->fetch_assoc();
+                                          echo '<td class="hatdog">' . $APRvalue['COUNT(A_time_IN)'] . '</td>';
+                                          $MAY = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'May'");
+                                          $MAYvalue = $MAY->fetch_assoc();
+                                          echo '<td class="hatdog">' . $MAYvalue['COUNT(A_time_IN)'] . '</td>';
+                                          $JUN = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'June'");
+                                          $JUNvalue = $JUN->fetch_assoc();
+                                          echo '<td class="hatdog">' . $JUNvalue['COUNT(A_time_IN)'] . '</td>';
+                                          $TOTAL = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}'");
+                                          $TOTALvalue = $TOTAL->fetch_assoc();
+                                          echo '<td class="hatdog">' . $TOTALvalue['COUNT(A_time_IN)'] . '</td>';
+                                          ?>
+                                        </tr>
+                                        <tr>
+                                          <td class="hatdog">No. of Days Absent</td>
+                                          <?php
+                                          $SEP = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'September' AND A_status = 'ABSENT'");
+                                          $SEPvalue = $SEP->fetch_assoc();
+                                          echo '<td class="hatdog">' . $SEPvalue['COUNT(A_time_IN)'] . '</td>';
+                                          $OCT = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'October' AND A_status = 'ABSENT'");
+                                          $OCTvalue = $OCT->fetch_assoc();
+                                          echo '<td class="hatdog">' . $OCTvalue['COUNT(A_time_IN)'] . '</td>';
+                                          $NOV = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'November' AND A_status = 'ABSENT'");
+                                          $NOVvalue = $NOV->fetch_assoc();
+                                          echo '<td class="hatdog">' . $NOVvalue['COUNT(A_time_IN)'] . '</td>';
+                                          $DEC = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'December' AND A_status = 'ABSENT'");
+                                          $DECvalue = $DEC->fetch_assoc();
+                                          echo '<td class="hatdog">' . $DECvalue['COUNT(A_time_IN)'] . '</td>';
+                                          $JAN = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'January' AND A_status = 'ABSENT'");
+                                          $JANvalue = $JAN->fetch_assoc();
+                                          echo '<td class="hatdog">' . $JANvalue['COUNT(A_time_IN)'] . '</td>';
+                                          $FEB = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'February' AND A_status = 'ABSENT'");
+                                          $FEBvalue = $FEB->fetch_assoc();
+                                          echo '<td class="hatdog">' . $FEBvalue['COUNT(A_time_IN)'] . '</td>';
+                                          $MAR = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'March' AND A_status = 'ABSENT'");
+                                          $MARvalue = $MAR->fetch_assoc();
+                                          echo '<td class="hatdog">' . $MARvalue['COUNT(A_time_IN)'] . '</td>';
+                                          $APR = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'April' AND A_status = 'ABSENT'");
+                                          $APRvalue = $APR->fetch_assoc();
+                                          echo '<td class="hatdog">' . $APRvalue['COUNT(A_time_IN)'] . '</td>';
+                                          $MAY = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'May' AND A_status = 'ABSENT'");
+                                          $MAYvalue = $MAY->fetch_assoc();
+                                          echo '<td class="hatdog">' . $MAYvalue['COUNT(A_time_IN)'] . '</td>';
+                                          $JUN = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'June' AND A_status = 'ABSENT'");
+                                          $JUNvalue = $JUN->fetch_assoc();
+                                          echo '<td class="hatdog">' . $JUNvalue['COUNT(A_time_IN)'] . '</td>';
+                                          $TOTALLATE = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND A_status = 'ABSENT' ");
+                                          $TOTALLATEvalue = $TOTALLATE->fetch_assoc();
+                                          echo '<td class="hatdog">' . $TOTALLATEvalue['COUNT(A_time_IN)'] . '</td>';
+                                          ?>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="">
-                  <div class="table-responsive">
-                    <table class="table text-center" style="margin-top: 30px;">
-                      <thead>
-                        <tr>
-                          <th class="hatdog" style="border-color: #FFFFFF;"></th>
-                          <th class="hatdog" style="border-color: #FFFFFF;">SEP</th>
-                          <th class="hatdog" style="border-color: #FFFFFF;">OCT</th>
-                          <th class="hatdog" style="border-color: #FFFFFF;">NOV</th>
-                          <th class="hatdog" style="border-color: #FFFFFF;">DEC</th>
-                          <th class="hatdog" style="border-color: #FFFFFF;">JAN</th>
-                          <th class="hatdog" style="border-color: #FFFFFF;">FEB</th>
-                          <th class="hatdog" style="border-color: #FFFFFF;">MAR</th>
-                          <th class="hatdog" style="border-color: #FFFFFF;">APR</th>
-                          <th class="hatdog" style="border-color: #FFFFFF;">MAY</th>
-                          <th class="hatdog" style="border-color: #FFFFFF;">JUN</th>
-                          <th class="hatdog" style="border-color: #FFFFFF;">TOTAL</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td class="hatdog">No. of School Days</td>
-                          <td class="hatdog">22</td>
-                          <td class="hatdog">26</td>
-                          <td class="hatdog">23</td>
-                          <td class="hatdog">16</td>
-                          <td class="hatdog">15</td>
-                          <td class="hatdog">22</td>
-                          <td class="hatdog">27</td>
-                          <td class="hatdog">22</td>
-                          <td class="hatdog">24</td>
-                          <td class="hatdog">26</td>
-                          <td class="hatdog">223</td>
-                        </tr>
-                        <tr>
-                          <td class="hatdog">No. of Days Present</td>
-                          <?php
-                          $SEP = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'September'");
-                          $SEPvalue = $SEP->fetch_assoc();
-                          echo '<td class="hatdog">' . $SEPvalue['COUNT(A_time_IN)'] . '</td>';
-                          $OCT = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'October'");
-                          $OCTvalue = $OCT->fetch_assoc();
-                          echo '<td class="hatdog">' . $OCTvalue['COUNT(A_time_IN)'] . '</td>';
-                          $NOV = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'November'");
-                          $NOVvalue = $NOV->fetch_assoc();
-                          echo '<td class="hatdog">' . $NOVvalue['COUNT(A_time_IN)'] . '</td>';
-                          $DEC = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'December'");
-                          $DECvalue = $DEC->fetch_assoc();
-                          echo '<td class="hatdog">' . $DECvalue['COUNT(A_time_IN)'] . '</td>';
-                          $JAN = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'January'");
-                          $JANvalue = $JAN->fetch_assoc();
-                          echo '<td class="hatdog">' . $JANvalue['COUNT(A_time_IN)'] . '</td>';
-                          $FEB = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'February'");
-                          $FEBvalue = $FEB->fetch_assoc();
-                          echo '<td class="hatdog">' . $FEBvalue['COUNT(A_time_IN)'] . '</td>';
-                          $MAR = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'March'");
-                          $MARvalue = $MAR->fetch_assoc();
-                          echo '<td class="hatdog">' . $MARvalue['COUNT(A_time_IN)'] . '</td>';
-                          $APR = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'April'");
-                          $APRvalue = $APR->fetch_assoc();
-                          echo '<td class="hatdog">' . $APRvalue['COUNT(A_time_IN)'] . '</td>';
-                          $MAY = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'May'");
-                          $MAYvalue = $MAY->fetch_assoc();
-                          echo '<td class="hatdog">' . $MAYvalue['COUNT(A_time_IN)'] . '</td>';
-                          $JUN = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'June'");
-                          $JUNvalue = $JUN->fetch_assoc();
-                          echo '<td class="hatdog">' . $JUNvalue['COUNT(A_time_IN)'] . '</td>';
-                          $TOTAL = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}'");
-                          $TOTALvalue = $TOTAL->fetch_assoc();
-                          echo '<td class="hatdog">' . $TOTALvalue['COUNT(A_time_IN)'] . '</td>';
-                          ?>
-                        </tr>
-                        <tr>
-                          <td class="hatdog">No. of Days Absent</td>
-                          <?php
-                          $SEP = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'September' AND A_status = 'ABSENT'");
-                          $SEPvalue = $SEP->fetch_assoc();
-                          echo '<td class="hatdog">' . $SEPvalue['COUNT(A_time_IN)'] . '</td>';
-                          $OCT = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'October' AND A_status = 'ABSENT'");
-                          $OCTvalue = $OCT->fetch_assoc();
-                          echo '<td class="hatdog">' . $OCTvalue['COUNT(A_time_IN)'] . '</td>';
-                          $NOV = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'November' AND A_status = 'ABSENT'");
-                          $NOVvalue = $NOV->fetch_assoc();
-                          echo '<td class="hatdog">' . $NOVvalue['COUNT(A_time_IN)'] . '</td>';
-                          $DEC = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'December' AND A_status = 'ABSENT'");
-                          $DECvalue = $DEC->fetch_assoc();
-                          echo '<td class="hatdog">' . $DECvalue['COUNT(A_time_IN)'] . '</td>';
-                          $JAN = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'January' AND A_status = 'ABSENT'");
-                          $JANvalue = $JAN->fetch_assoc();
-                          echo '<td class="hatdog">' . $JANvalue['COUNT(A_time_IN)'] . '</td>';
-                          $FEB = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'February' AND A_status = 'ABSENT'");
-                          $FEBvalue = $FEB->fetch_assoc();
-                          echo '<td class="hatdog">' . $FEBvalue['COUNT(A_time_IN)'] . '</td>';
-                          $MAR = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'March' AND A_status = 'ABSENT'");
-                          $MARvalue = $MAR->fetch_assoc();
-                          echo '<td class="hatdog">' . $MARvalue['COUNT(A_time_IN)'] . '</td>';
-                          $APR = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'April' AND A_status = 'ABSENT'");
-                          $APRvalue = $APR->fetch_assoc();
-                          echo '<td class="hatdog">' . $APRvalue['COUNT(A_time_IN)'] . '</td>';
-                          $MAY = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'May' AND A_status = 'ABSENT'");
-                          $MAYvalue = $MAY->fetch_assoc();
-                          echo '<td class="hatdog">' . $MAYvalue['COUNT(A_time_IN)'] . '</td>';
-                          $JUN = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'June' AND A_status = 'ABSENT'");
-                          $JUNvalue = $JUN->fetch_assoc();
-                          echo '<td class="hatdog">' . $JUNvalue['COUNT(A_time_IN)'] . '</td>';
-                          $TOTALLATE = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND A_status = 'ABSENT' ");
-                          $TOTALLATEvalue = $TOTALLATE->fetch_assoc();
-                          echo '<td class="hatdog">' . $TOTALLATEvalue['COUNT(A_time_IN)'] . '</td>';
-                          ?>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
 
-                </div>
-                <div class="text-center">
-                  <button type="submit" class="btn btn-primary me-2" name="saveBehavior">Save</button>
-                  <button class="btn btn-light">Cancel</button>
-                </div>
               </form>
             </div>
           </div>
