@@ -144,7 +144,7 @@ if (!isset($_SESSION['F_number'])) {
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-          <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
+          <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="reminderForm">
             <div class="row">
               <div class="col-sm-12">
                 <div class="home-tab">
@@ -220,8 +220,9 @@ if (!isset($_SESSION['F_number'])) {
                 </div>
               </div>
               <div style="text-align: center;">
-                <button type="submit" class="btn btn-primary me-2" name="addReminders">Submit</button>
-                <button class="btn btn-light">Cancel</button>
+                <input type="hidden" name="addReminders" value="submit">
+                <button type="button" id="addReminders" class="btn btn-primary me-2">Submit</button>
+                <button type="button" class="btn btn-light">Cancel</button>
               </div>
             </div>
           </form>
@@ -233,7 +234,7 @@ if (!isset($_SESSION['F_number'])) {
     <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
-  <button id="hatdog"> click hatdog </button>
+
   <!-- Footer Start -->
   <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
     <div class="container py-5">
@@ -294,8 +295,10 @@ if (!isset($_SESSION['F_number'])) {
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
   <script>
-    const myButton = document.getElementById('hatdog');
-    hatdog.addEventListener('click', function() {
+    const addReminders = document.getElementById('addReminders');
+    const reminderForm = document.getElementById('reminderForm');
+
+    addReminders.addEventListener('click', function() {
       Swal.fire({
         title: 'Are you sure you want to create this reminder?',
         showCancelButton: true,
@@ -310,6 +313,7 @@ if (!isset($_SESSION['F_number'])) {
           }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
+              reminderForm.submit();
               window.location.href = '../faculty/reminders.php';
             }
           })
