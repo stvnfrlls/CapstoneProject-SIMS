@@ -1,8 +1,13 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (empty($_SESSION['F_number'])) {
+if (!isset($_SESSION['F_number'])) {
     header('Location: ../auth/login.php');
+} else {
+    $facultyData = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
+    $getFacultyData = $facultyData->fetch_assoc();
+
+    $facultySchedule = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$_SESSION['F_number']}'");
 }
 ?>
 <!DOCTYPE html>
@@ -43,11 +48,13 @@ if (empty($_SESSION['F_number'])) {
 
 <body>
     <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-        <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-            <span class="mdi mdi-menu"></span>
-        </button>
+    <nav class="fixed-top align-items-top">
+        <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+            <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+                <span class="fa fa-bars"></span>
+            </button>
+        </nav>
     </nav>
     <!-- Navbar End -->
 
@@ -59,7 +66,7 @@ if (empty($_SESSION['F_number'])) {
                     <!-- line 1 -->
                     <li class="nav-item nav-category">Profile</li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">
+                        <a class="nav-link" href="../faculty/dashboard.php">
                             <i class=""></i>
                             <span class="menu-title">Dashboard</span>
                         </a>
@@ -74,6 +81,12 @@ if (empty($_SESSION['F_number'])) {
                         <a class="nav-link" href="../faculty/createReminder.php">
                             <i class=""></i>
                             <span class="menu-title">Create Reminders</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/reminders.php">
+                            <i class=""></i>
+                            <span class="menu-title">Reminders</span>
                         </a>
                     </li>
                     <!-- line 2 -->
@@ -103,9 +116,21 @@ if (empty($_SESSION['F_number'])) {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../faculty/reminders.php">
+                        <a class="nav-link" href="../faculty/studentStatus.php">
                             <i class=""></i>
-                            <span class="menu-title">Reminders</span>
+                            <span class="menu-title">Student Status</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/dailyReports.php">
+                            <i class=""></i>
+                            <span class="menu-title">Attendance Report</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../auth/logout.php">
+                            <i class=""></i>
+                            <span class="menu-title">Logout</span>
                         </a>
                     </li>
                 </ul>
@@ -134,9 +159,9 @@ if (empty($_SESSION['F_number'])) {
                                                                         <img src="../assets/img/profile.jpg" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
                                                                     </div>
                                                                     <div class="col-8" style="align-self: center;">
-                                                                        <h3 style="text-align: left;">Camille Anne G. Sabile</h3>
-                                                                        <p style="margin-bottom: 8px;">2019-00188-SP-0</p>
-                                                                        <p style="margin-bottom: 8px;">Mathematics Department</p>
+                                                                        <h3 style="text-align: left;"><?php echo $getFacultyData['F_lname'] . ", " . $getFacultyData['F_fname'] . " " . substr($getFacultyData['F_mname'], 0, 1) . ". " . $getFacultyData['F_suffix'] . "." ?></h3>
+                                                                        <p style="margin-bottom: 8px;"><?php echo $getFacultyData['F_number'] ?></p>
+                                                                        <p style="margin-bottom: 8px;"><?php echo $getFacultyData['F_department'] . " Department" ?></p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -148,31 +173,24 @@ if (empty($_SESSION['F_number'])) {
                                                         <div class="card">
                                                             <div class="card-body">
                                                                 <p class="mb-4" style="text-align: center; color:#c02628;">Schedule For Today</p>
-                                                                <p class="mb-1" style="font-size: .90rem;">Grade 1 - Chrysanthemum (Mathematics)</p>
-                                                                <div class="progress rounded" style="height: 25px;">
-                                                                    <p style="font-size: .77rem; margin: 5px 0px 0px 7px">7:00AM - 8:00AM</p>
-                                                                </div>
+                                                                <?php
 
-                                                                <p class="mt-4 mb-1" style="font-size: .90rem;">Grade 1 - Chrysanthemum (Mathematics)</p>
-                                                                <div class="progress rounded" style="height: 25px;">
-                                                                    <p style="font-size: .77rem; margin: 5px 0px 0px 7px">8:00AM - 9:00AM</p>
-                                                                </div>
-
-                                                                <p class="mt-4 mb-1" style="font-size: .90rem;">Grade 1 - Chrysanthemum (Mathematics)</p>
-                                                                <div class="progress rounded" style="height: 25px;">
-                                                                    <p style="font-size: .77rem; margin: 5px 0px 0px 7px">9:30AM - 10:30AM</p>
-                                                                </div>
-
-                                                                <p class="mt-4 mb-1" style="font-size: .90rem;">Grade 1 - Chrysanthemum (Mathematics)</p>
-                                                                <div class="progress rounded" style="height: 25px;">
-                                                                    <p style="font-size: .77rem; margin: 5px 0px 0px 7px">10:30AM - 11:30AM</p>
-                                                                </div>
-
-                                                                <p class="mt-4 mb-1" style="font-size: .90rem;">Grade 1 - Chrysanthemum (Mathematics)</p>
-                                                                <div class="progress rounded" style="height: 25px;">
-                                                                    <p style="font-size: .77rem; margin: 5px 0px 0px 7px">11:30AM - 12:30PM</p>
-                                                                </div>
-
+                                                                while ($getFacultySchedule = $facultySchedule->fetch_assoc()) { ?>
+                                                                    <p class="mb-1" style="font-size: .90rem;">
+                                                                        <?php echo "Grade " . $getFacultySchedule['SR_grade'] . "-" . $getFacultySchedule['SR_section'] . "(" . $getFacultySchedule['S_subject'] . ")" ?>
+                                                                    </p>
+                                                                    <div class="progress rounded" style="height: 25px;">
+                                                                        <p style="font-size: .77rem; margin: 5px 0px 0px 7px">
+                                                                            <?php
+                                                                            $start = date('H:i A', strtotime($getFacultySchedule['WS_start_time']));
+                                                                            $end = date('H:i A', strtotime(timeRoundUp($getFacultySchedule['WS_end_time'])));
+                                                                            echo $start . " - " . $end;
+                                                                            ?>
+                                                                        </p>
+                                                                    </div>
+                                                                <?php
+                                                                }
+                                                                ?>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -191,14 +209,23 @@ if (empty($_SESSION['F_number'])) {
 
                                                                     <div class="col-6">
                                                                         <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
-                                                                            <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:40px; color:#c02628;">25</h1>
+                                                                            <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:40px; color:#c02628;">
+                                                                                <?php
+                                                                                $countStudent = $mysqli->query("SELECT COUNT(SR_number) AS numStudent FROM classlist WHERE F_number = '{$_SESSION['F_number']}'");
+                                                                                $getNumStudent = $countStudent->fetch_assoc();
+
+                                                                                echo $getNumStudent['numStudent'];
+                                                                                ?>
+                                                                            </h1>
                                                                         </div>
                                                                         <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center" style="font-size: 20px; padding-top: 10px;">No. of Students</h3>
 
                                                                     </div>
                                                                     <div class="col-6" style="align-self: center;">
                                                                         <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
-                                                                            <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:40px; color:#c02628;">25</h1>
+                                                                            <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:40px; color:#c02628;">
+
+                                                                            </h1>
                                                                         </div>
                                                                         <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center" style="font-size: 20px; padding-top: 10px; text-align:center;">Attendance Taken Today</h3>
 
@@ -215,7 +242,9 @@ if (empty($_SESSION['F_number'])) {
                                                                         <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
                                                                             <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-user"></i></h1>
                                                                         </div>
-                                                                        <a href="../faculty/viewProfile.php"><h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Profile</h3></a>
+                                                                        <a href="../faculty/viewProfile.php">
+                                                                            <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Profile</h3>
+                                                                        </a>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -225,7 +254,9 @@ if (empty($_SESSION['F_number'])) {
                                                                         <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
                                                                             <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-book"></i></h1>
                                                                         </div>
-                                                                        <a href="../faculty/viewProfile.php"><h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Subjects</h3></a>
+                                                                        <a href="../faculty/viewProfile.php">
+                                                                            <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Subjects</h3>
+                                                                        </a>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -235,7 +266,9 @@ if (empty($_SESSION['F_number'])) {
                                                                         <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
                                                                             <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-bullhorn"></i></h1>
                                                                         </div>
-                                                                        <a href="../faculty/encodeGrades.php"><h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Grades</h3></a>
+                                                                        <a href="../faculty/encodeGrades.php">
+                                                                            <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Grades</h3>
+                                                                        </a>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -245,7 +278,9 @@ if (empty($_SESSION['F_number'])) {
                                                                         <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
                                                                             <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-exclamation"></i></h1>
                                                                         </div>
-                                                                        <a href="../faculty/reminders.php"><h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Reminders</h3></a>
+                                                                        <a href="../faculty/reminders.php">
+                                                                            <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Reminders</h3>
+                                                                        </a>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -259,64 +294,38 @@ if (empty($_SESSION['F_number'])) {
                                                                         <div class="section-title section-title-sm position-relative pb-3 mb-4">
                                                                             <h3 class="mb-0" style="text-align:left;">Reminders posted by you</h3>
                                                                         </div>
-                                                                        <div class="col-12" style="padding-bottom: 15px;">
-                                                                            <div class="single-post bg-light">
-                                                                                <div class="col-lg-12  col-md-12 meta-details">
-                                                                                    <div class="user-details row" style="padding: 10px 0px 0px 10px;">
-                                                                                        <p class="user-name col-lg-6 col-md-6"> <span class="far fa-user" style="color: #c02628;"></span><a href="#"> Mark wiens </a> <span class="fa fa-calendar" style="color: #c02628;"></span><a> 12 Dec, 2017</a></p>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-lg-12 col-sm-12" style="padding: 0px 10px 10px 10px;">
-                                                                                    <a class="posts-title" href="blog-single.html" style="text-align: left;">
-                                                                                        <h3>Astronomy Binoculars A Great Alternative</h3>
-                                                                                    </a>
-                                                                                    <p>Subject: English</p>
-                                                                                    <p class="excert">
-                                                                                        MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.
-                                                                                    </p>
-                                                                                    <a href="blog-single.html" class="primary-btn">View More</a>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-12" style="padding-bottom: 15px;">
-                                                                            <div class="single-post bg-light">
-                                                                                <div class="col-lg-12  col-md-12 meta-details">
-                                                                                    <div class="user-details row" style="padding: 10px 0px 0px 10px;">
-                                                                                        <p class="user-name col-lg-6 col-md-6"> <span class="far fa-user" style="color: #c02628;"></span><a href="#"> Mark wiens </a> <span class="fa fa-calendar" style="color: #c02628;"></span><a> 12 Dec, 2017</a></p>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-lg-12 col-sm-12" style="padding: 0px 10px 10px 10px;">
-                                                                                    <a class="posts-title" href="blog-single.html" style="text-align: left;">
-                                                                                        <h3>Astronomy Binoculars A Great Alternative</h3>
-                                                                                    </a>
-                                                                                    <p>Subject: English</p>
-                                                                                    <p class="excert">
-                                                                                        MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.
-                                                                                    </p>
-                                                                                    <a href="blog-single.html" class="primary-btn">View More</a>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-12" style="padding-bottom: 15px;">
-                                                                            <div class="single-post bg-light">
-                                                                                <div class="col-lg-12  col-md-12 meta-details">
-                                                                                    <div class="user-details row" style="padding: 10px 0px 0px 10px;">
-                                                                                        <p class="user-name col-lg-6 col-md-6"> <span class="far fa-user" style="color: #c02628;"></span><a href="#"> Mark wiens </a> <span class="fa fa-calendar" style="color: #c02628;"></span><a> 12 Dec, 2017</a></p>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-lg-12 col-sm-12" style="padding: 0px 10px 10px 10px;">
-                                                                                    <a class="posts-title" href="blog-single.html" style="text-align: left;">
-                                                                                        <h3>Astronomy Binoculars A Great Alternative</h3>
-                                                                                    </a>
-                                                                                    <p>Subject: English</p>
-                                                                                    <p class="excert">
-                                                                                        MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.
-                                                                                    </p>
-                                                                                    <a href="blog-single.html" class="primary-btn">View More</a>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
+                                                                        <?php
+                                                                        $getPostedReminders = $mysqli->query("SELECT * FROM reminders WHERE author = '{$_SESSION['F_number']}'");
 
+                                                                        while ($remindersData = $getPostedReminders->fetch_assoc()) { ?>
+                                                                            <div class="col-12" style="padding-bottom: 15px;">
+                                                                                <div class="single-post bg-light">
+                                                                                    <div class="col-lg-12  col-md-12 meta-details">
+                                                                                        <div class="user-details row" style="padding: 10px 0px 0px 10px;">
+                                                                                            <p class="user-name col-lg-6 col-md-6">
+                                                                                                <span class="far fa-user" style="color: #c02628;"></span>
+                                                                                                <?php echo $getFacultyData['F_lname'] . ", " . $getFacultyData['F_fname'] . " " . substr($getFacultyData['F_mname'], 0, 1) . ". " . $getFacultyData['F_suffix'] . "." ?>
+                                                                                            </p>
+                                                                                            <p class="user-name col-lg-6 col-md-6">
+                                                                                                <span class="fa fa-calendar" style="color: #c02628;"></span>
+                                                                                                <?php echo $remindersData['date_posted'] ?>
+                                                                                            </p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-lg-12 col-sm-12" style="padding: 0px 10px 10px 10px;">
+                                                                                        <a class="posts-title" href="blog-single.html" style="text-align: left;">
+                                                                                            <h3>Subject: <?php echo $remindersData['subject'] ?></h3>
+                                                                                        </a>
+                                                                                        <p class="excert">
+                                                                                            <?php echo $remindersData['msg'] ?>
+                                                                                        </p>
+                                                                                        <a href="blog-single.html" class="primary-btn">View More</a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        <?php
+                                                                        }
+                                                                        ?>
                                                                         <div style="text-align: center;">
                                                                             <a href="#" class="btn btn-primary text-uppercase" style="width: auto; color:#fff;">View More Announcements</a>
                                                                         </div>
@@ -434,7 +443,6 @@ if (empty($_SESSION['F_number'])) {
     <script src="../assets/lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="../assets/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
-    <!-- Template Javascript -->
     <script src="../assets/js/main.js"></script>
 
     <!-- Javascript -->
@@ -449,6 +457,11 @@ if (empty($_SESSION['F_number'])) {
     <script src="../assets/js/eduwell/slick-slider.js"></script>
     <script src="../assets/js/eduwell/custom.js"></script>
     <script src="../assets/js/startup/main.js"></script>
+
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/admin/vendor.bundle.base.js"></script>
+    <script src="../assets/js/admin/off-canvas.js"></script>
+    <script src="../assets/js/admin/file-upload.js"></script>
 
 </body>
 

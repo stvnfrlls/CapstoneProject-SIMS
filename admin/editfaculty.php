@@ -1,7 +1,7 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['UD_role'] != "admin") {
+if (!isset($_SESSION['AD_number'])) {
   header('Location: ../auth/login.php');
 } else {
   if (isset($_GET['F_number'])) {
@@ -26,7 +26,7 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
   <meta content="" name="description">
 
   <!-- Favicon -->
-  <link href="img/favicon.ico" rel="icon">
+  <link href="../assets/img/favicon.png" rel="icon">
 
   <!-- Google Web Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,6 +36,9 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
   <!-- Icon Font Stylesheet -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <link href="../assets/css/sweetAlert.css" rel="stylesheet">
 
   <!-- Libraries Stylesheet -->
   <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
@@ -54,20 +57,14 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
 </head>
 
 <body>
-  <!-- Navbar Start -->
-  <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-    <img class="m-3" src="../assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">
-    <div class="d-flex align-items-center justify-content-center text-center">
-      <a href="../index.php" class="navbar-brand ms-4 ms-lg-0 text-center">
-        <h1 class="cdsp">Colegio De San Pedro</h1>
-        <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
-      </a>
-    </div>
-    <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-      <span class="mdi mdi-menu"></span>
-    </button>
+  <nav class="fixed-top align-items-top">
+    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+      <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
+      <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+        <span class="fa fa-bars"></span>
+      </button>
+    </nav>
   </nav>
-  <!-- Navbar End -->
 
   <div class="container-scroller">
     <div class="container-fluid page-body-wrapper">
@@ -83,35 +80,41 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
             </a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="../admin/auditTrail.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Activity History</span>
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="../admin/createAdmin.php">
               <i class=""></i>
               <span class="menu-title" style="color: #b9b9b9;">Create Admin</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../admin/addStudent.php">
-              <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Add Student</span>
-            </a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="../admin/announcement.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Announcements</span>
+              <span class="menu-title" style="color: #b9b9b9;">School Announcements</span>
             </a>
           </li>
           <!-- line 2 -->
-          <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Student</li>
+          <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Student Records</li>
+          <li class="nav-item">
+            <a class="nav-link" href="../admin/addStudent.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
+            </a>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="../admin/student.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Student Records</span>
+              <span class="menu-title" style="color: #b9b9b9;">Student Information</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="../admin/editgrades.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Grades</span>
+              <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
             </a>
           </li>
           <li class="nav-item">
@@ -120,12 +123,18 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
               <span class="menu-title" style="color: #b9b9b9;">Status</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../admin/modifySection.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Change Student Section</span>
+            </a>
+          </li>
           <!-- line 3 -->
           <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Faculty</li>
           <li class="nav-item">
             <a class="nav-link" href="../admin/addFaculty.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Add Faculty</span>
+              <span class="menu-title" style="color: #b9b9b9;">Register Faculty</span>
             </a>
           </li>
           <li class="nav-item">
@@ -137,7 +146,7 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
           <li class="nav-item">
             <a class="nav-link" href="../admin/assignAdvisory.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Assign Advisory</span>
+              <span class="menu-title" style="color: #b9b9b9;">Advisory Class Assignment</span>
             </a>
           </li>
           <!-- line 4 -->
@@ -145,17 +154,23 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
           <li class="nav-item">
             <a class="nav-link" href="../admin/editlearningareas.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Scheduling</span>
+              <span class="menu-title" style="color: #b9b9b9;">Work Schedule Assignment</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="../admin/modifyCurriculum.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Curriculum</span>
+              <span class="menu-title" style="color: #b9b9b9;">Edit Curriculum</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../admin/editSection.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Edit Section</span>
             </a>
           </li>
           <!-- line 5 -->
-          <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Reports</li>
+          <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Attendance Report</li>
           <li class="nav-item">
             <a class="nav-link" href="../admin/dailyReports.php">
               <i class=""></i>
@@ -171,7 +186,7 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
           <!-- line 5 -->
           <li class="nav-item nav-category" style="padding-top: 10px;"></li>
           <li class="nav-item">
-            <a class="nav-link" href="">
+            <a class="nav-link" href="../auth/logout.php">
               <i class=""></i>
               <span class="menu-title" style="color: #b9b9b9;">Logout</span>
             </a>
@@ -182,7 +197,7 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
-            <form class="form-sample" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST">
+            <form class="form-sample" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST" id="editfacultyform">
               <div class="col-sm-12">
                 <div class="home-tab">
                   <div class="d-sm-flex align-items-center justify-content-between border-bottom">
@@ -354,8 +369,9 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
                 </div>
               </div>
               <div style="text-align: center;">
-                <button type="submit" class="btn btn-primary me-2" name="editFaculty">Save</button>
-                <button class="btn btn-light">Back</button>
+                <input type="hidden" name="editFaculty" value="submit">
+                <button type="button" id="editFaculty" class="btn btn-primary me-2">Save</button>
+                <button type="button" class="btn btn-light">Back</button>
               </div>
             </form>
           </div>
@@ -367,7 +383,6 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
     <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
-
   <!-- Footer Start -->
   <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
     <div class="container py-5">
@@ -430,6 +445,31 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
 
   <script src="../assets/js/admin/vendor.bundle.base.js"></script>
   <script src="../assets/js/admin/off-canvas.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+  <script>
+    const editfacultyform = document.getElementById('editfacultyform');
+    const editFaculty = document.getElementById('editFaculty');
+    editFaculty.addEventListener('click', function() {
+      Swal.fire({
+        title: 'Are you sure you want to save your changes?',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: `No`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: 'Successfully changed!',
+            icon: 'success',
+          })
+          editfacultyform.submit();
+          window.location.href = '../admin/faculty.php';
+        }
+      })
+
+    })
+  </script>
 </body>
 
 </html>

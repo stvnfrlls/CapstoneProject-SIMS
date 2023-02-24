@@ -12352,6 +12352,7 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
   white-space: nowrap;
   background-color: transparent;
   border: 0;
+  font-size: 12px !important;
 }
 
 .dropdown-item:hover, .dropdown-item:focus {
@@ -15106,13 +15107,39 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
 }
 
 .fixed-top {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  z-index: 1030;
+  position: unset;
 }
 
+@media (max-width: 576px) {
+  .fixed-top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+  }
+}
+
+@media (max-width: 768px) {
+  .fixed-top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+  }
+
+}
+
+@media (max-width: 992px) {
+  .fixed-top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+  }
+}
 .fixed-bottom {
   position: fixed;
   right: 0;
@@ -19976,14 +20003,8 @@ code {
 
 .home-tab .btn, .home-tab .ajax-upload-dragdrop .ajax-file-upload, .ajax-upload-dragdrop .home-tab .ajax-file-upload, .home-tab .swal2-modal .swal2-buttonswrapper .swal2-styled, .swal2-modal .swal2-buttonswrapper .home-tab .swal2-styled {
   padding: 8px 15px;
-  border: 1px solid #CADDFF;
   box-sizing: border-box;
   border-radius: 6px;
-  color: #000000;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 12px;
-  margin-bottom: 12px;
   margin-right: 12px;
   align-items: center;
 }
@@ -19998,7 +20019,6 @@ code {
   font-size: 1rem;
   margin-right: .25rem;
   line-height: 1;
-  vertical-align: bottom;
 }
 
 .home-tab, .home-tab .btn-group-lg > .btn, .home-tab .ajax-upload-dragdrop .btn-group-lg > .ajax-file-upload, .ajax-upload-dragdrop .home-tab .btn-group-lg > .ajax-file-upload, .home-tab .swal2-modal .swal2-buttonswrapper .btn-group-lg > .swal2-styled, .swal2-modal .swal2-buttonswrapper .home-tab .btn-group-lg > .swal2-styled, .home-tab .ajax-upload-dragdrop .btn-lg.ajax-file-upload, .ajax-upload-dragdrop .home-tab .btn-lg.ajax-file-upload, .home-tab .swal2-modal .swal2-buttonswrapper .btn-lg.swal2-styled, .swal2-modal .swal2-buttonswrapper .home-tab .btn-lg.swal2-styled {
@@ -20811,12 +20831,13 @@ code {
 }
 
 .btn-outline-primary {
-  border: 1px solid #081031;
-  color: #081031;
+  border: 1px solid #c02628;
+  color: #c02628;
 }
 
 .btn-outline-primary:hover {
-  background: #1F3BB3;
+  border-color: #c02628;
+  background: #c02628;
   color: #ffffff;
 }
 
@@ -20827,6 +20848,7 @@ code {
 
 .btn-secondary.btn-light, .btn-secondary.btn-secondary {
   color: #1E283D;
+  font-size: 12px;
 }
 
 .btn-secondary:hover, .btn-secondary:focus {
@@ -27645,7 +27667,7 @@ table.dataTable tbody td.select-checkbox:after {
 }
 
 .swal2-modal .swal2-title {
-  font-size: 25px;
+
   line-height: 1;
   font-weight: 600;
   color: #1F1F1F;
@@ -27656,7 +27678,7 @@ table.dataTable tbody td.select-checkbox:after {
 .swal2-modal .swal2-icon,
 .swal2-modal .swal2-success-ring {
   margin-top: 0;
-  margin-bottom: 42px;
+  margin-bottom: 0px;
 }
 
 .swal2-modal .swal2-buttonswrapper {

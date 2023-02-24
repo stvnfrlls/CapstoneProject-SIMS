@@ -1,7 +1,7 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (empty($_SESSION['AD_number'])) {
+if (!isset($_SESSION['AD_number'])) {
   header('Location: ../auth/login.php');
 }
 ?>
@@ -17,7 +17,7 @@ if (empty($_SESSION['AD_number'])) {
   <meta content="" name="description">
 
   <!-- Favicon -->
-  <link href="img/favicon.ico" rel="icon">
+  <link href="../assets/img/favicon.png" rel="icon">
 
   <!-- Google Web Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,20 +45,14 @@ if (empty($_SESSION['AD_number'])) {
 </head>
 
 <body>
-  <!-- Navbar Start -->
-  <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-    <img class="m-3" src="../assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">
-    <div class="d-flex align-items-center justify-content-center text-center">
-      <a href="../index.php" class="navbar-brand ms-4 ms-lg-0 text-center">
-        <h1 class="cdsp">Colegio De San Pedro</h1>
-        <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
-      </a>
-    </div>
-    <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-      <span class="mdi mdi-menu"></span>
-    </button>
+  <nav class="fixed-top align-items-top">
+    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+      <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
+      <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+        <span class="fa fa-bars"></span>
+      </button>
+    </nav>
   </nav>
-  <!-- Navbar End -->
 
   <div class="container-scroller">
     <div class="container-fluid page-body-wrapper">
@@ -74,35 +68,41 @@ if (empty($_SESSION['AD_number'])) {
             </a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="../admin/auditTrail.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Activity History</span>
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="../admin/createAdmin.php">
               <i class=""></i>
               <span class="menu-title" style="color: #b9b9b9;">Create Admin</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../admin/addStudent.php">
-              <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Add Student</span>
-            </a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="../admin/announcement.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Announcements</span>
+              <span class="menu-title" style="color: #b9b9b9;">School Announcements</span>
             </a>
           </li>
           <!-- line 2 -->
-          <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Student</li>
+          <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Student Records</li>
+          <li class="nav-item">
+            <a class="nav-link" href="../admin/addStudent.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
+            </a>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="../admin/student.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Student Records</span>
+              <span class="menu-title" style="color: #b9b9b9;">Student Information</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="../admin/editgrades.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Grades</span>
+              <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
             </a>
           </li>
           <li class="nav-item">
@@ -111,12 +111,18 @@ if (empty($_SESSION['AD_number'])) {
               <span class="menu-title" style="color: #b9b9b9;">Status</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../admin/modifySection.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Change Student Section</span>
+            </a>
+          </li>
           <!-- line 3 -->
           <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Faculty</li>
           <li class="nav-item">
             <a class="nav-link" href="../admin/addFaculty.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Add Faculty</span>
+              <span class="menu-title" style="color: #b9b9b9;">Register Faculty</span>
             </a>
           </li>
           <li class="nav-item">
@@ -128,7 +134,7 @@ if (empty($_SESSION['AD_number'])) {
           <li class="nav-item">
             <a class="nav-link" href="../admin/assignAdvisory.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Assign Advisory</span>
+              <span class="menu-title" style="color: #b9b9b9;">Advisory Class Assignment</span>
             </a>
           </li>
           <!-- line 4 -->
@@ -136,17 +142,23 @@ if (empty($_SESSION['AD_number'])) {
           <li class="nav-item">
             <a class="nav-link" href="../admin/editlearningareas.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Scheduling</span>
+              <span class="menu-title" style="color: #b9b9b9;">Work Schedule Assignment</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="../admin/modifyCurriculum.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Curriculum</span>
+              <span class="menu-title" style="color: #b9b9b9;">Edit Curriculum</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../admin/editSection.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Edit Section</span>
             </a>
           </li>
           <!-- line 5 -->
-          <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Reports</li>
+          <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Attendance Report</li>
           <li class="nav-item">
             <a class="nav-link" href="../admin/dailyReports.php">
               <i class=""></i>
@@ -162,7 +174,7 @@ if (empty($_SESSION['AD_number'])) {
           <!-- line 5 -->
           <li class="nav-item nav-category" style="padding-top: 10px;"></li>
           <li class="nav-item">
-            <a class="nav-link" href="">
+            <a class="nav-link" href="../auth/logout.php">
               <i class=""></i>
               <span class="menu-title" style="color: #b9b9b9;">Logout</span>
             </a>
@@ -177,7 +189,7 @@ if (empty($_SESSION['AD_number'])) {
               <div class="home-tab">
                 <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                   <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                    <h2 class="fw-bold text-primary text-uppercase">Advisory Class</h2>
+                    <h2 class="fw-bold text-primary text-uppercase">Advisory Class Assignment</h2>
                   </div>
                 </div>
                 <div class="tab-content tab-content-basic">
@@ -185,19 +197,23 @@ if (empty($_SESSION['AD_number'])) {
 
                     <div class="row">
                       <div class="col-lg-2 col-sm-6">
-                        <div class="dropdown">
-                          <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <div>
+                          <button class="btn btn-secondary" style="background-color: #e4e3e3;" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                             Grade <i class="fa fa-caret-down"></i>
                           </button>
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                            <a class="dropdown-item" href="#">Grade 1</a>
-                            <a class="dropdown-item" href="#">Grade 2</a>
-                            <a class="dropdown-item" href="#">Grade 3</a>
+                            <?php
+                            $getgradelevel = $mysqli->query("SELECT DISTINCT(S_yearLevel) FROM sections");
+
+                            while ($gradeLevel = $getgradelevel->fetch_assoc()) { ?>
+                              <a class="dropdown-item" href="assignAdvisory.php?grade=<?php echo $gradeLevel['S_yearLevel'] ?>">Grade <?php echo $gradeLevel['S_yearLevel'] ?></a>
+                            <?php }
+                            ?>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="row" style="margin-top: 15px;">
                       <div class="col-lg-12 d-flex flex-column">
                         <div class="row flex-grow">
                           <div class="col-md-6 col-lg-12 grid-margin stretch-card">
@@ -235,34 +251,41 @@ if (empty($_SESSION['AD_number'])) {
                                     </style>
                                     <?php
                                     $rowCount = 1;
-                                    $getAdvisoryData = $mysqli->query("SELECT * FROM sections");
+
+                                    if (isset($_GET['grade'])) {
+                                      $getAdvisoryData = $mysqli->query("SELECT * FROM sections WHERE S_yearLevel = '{$_GET['grade']}'");
+                                    } else {
+                                      $getAdvisoryData = $mysqli->query("SELECT * FROM sections");
+                                    }
                                     while ($AdvisoryData = $getAdvisoryData->fetch_assoc()) { ?>
-                                      <tr>
-                                        <td class="hatdog"><?php echo $rowCount; ?></td>
-                                        <td class="hatdog">
-                                          <input type="hidden" name="section" value="<?php echo $AdvisoryData['S_name']; ?>">
-                                          <?php echo "Grade " . $AdvisoryData['S_yearLevel'] . " - " . $AdvisoryData['S_name'] ?>
-                                        </td>
-                                        <td class="hatdog">
-                                          <select class="form-select" aria-label="Default select example">
-                                            <?php
-                                            $getAssignedFacultyData = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$AdvisoryData['S_adviser']}'");
-                                            $AssignedFacultyData = $getAssignedFacultyData->fetch_assoc();
-                                            if (empty($AdvisoryData['S_adviser'])) {
-                                              echo "<option selected>assign a teacher</option>";
-                                            } else {
-                                              echo "<option selected>" . $AssignedFacultyData['F_lname'] . ", " . $AssignedFacultyData['F_fname'] . " " . substr($AssignedFacultyData['F_mname'], 0, 1) . "</option>";
-                                            }
-                                            $getFacultyData = $mysqli->query("SELECT * FROM faculty");
-                                            while ($FacultyData = $getFacultyData->fetch_assoc()) { ?>
-                                              <option value="<?php echo $FacultyData['F_number'] ?>"><?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1); ?></option>
-                                            <?php } ?>
-                                          </select>
-                                        </td>
-                                        <td class="hatdog">
-                                          <input type="submit" class="btn btn-primary" value="SET" style="text-align: center; color:#ffffff;">
-                                        </td>
-                                      </tr>
+                                      <form action="" method="post">
+                                        <tr>
+                                          <td class="hatdog"><?php echo $rowCount; ?></td>
+                                          <td class="hatdog">
+                                            <input type="hidden" name="section" value="<?php echo $AdvisoryData['S_name']; ?>">
+                                            <?php echo "Grade " . $AdvisoryData['S_yearLevel'] . " - " . $AdvisoryData['S_name'] ?>
+                                          </td>
+                                          <td class="hatdog">
+                                            <select class="form-select" name="advisor" aria-label="Default select example">
+                                              <?php
+                                              $getAssignedFacultyData = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$AdvisoryData['S_adviser']}'");
+                                              $AssignedFacultyData = $getAssignedFacultyData->fetch_assoc();
+                                              if (empty($AdvisoryData['S_adviser'])) {
+                                                echo "<option selected>assign a teacher</option>";
+                                              } else {
+                                                echo "<option selected>" . $AssignedFacultyData['F_lname'] . ", " . $AssignedFacultyData['F_fname'] . " " . substr($AssignedFacultyData['F_mname'], 0, 1) . "</option>";
+                                              }
+                                              $getFacultyData = $mysqli->query("SELECT faculty.F_number, faculty.F_lname, faculty.F_fname, faculty.F_mname, faculty.F_suffix FROM faculty LEFT JOIN sections ON faculty.F_number = sections.S_adviser WHERE sections.S_adviser IS NULL");
+                                              while ($FacultyData = $getFacultyData->fetch_assoc()) { ?>
+                                                <option value="<?php echo $FacultyData['F_number'] ?>"><?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1); ?></option>
+                                              <?php } ?>
+                                            </select>
+                                          </td>
+                                          <td class="hatdog">
+                                            <input type="submit" class="btn btn-primary" name="assignAdvisor" value="SET" style="text-align: center; color:#ffffff;">
+                                          </td>
+                                        </tr>
+                                      </form>
                                     <?php $rowCount++;
                                     }
                                     ?>

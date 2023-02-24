@@ -1,25 +1,18 @@
 <?php
 require_once("../assets/php/server.php");
 
-$current_url = $_SERVER["REQUEST_URI"];
-
-$_SESSION['F_number'] = "2022-12-00001-F";
-
-if (empty($_SESSION['F_number'])) {
+if (!isset($_SESSION['F_number'])) {
   header('Location: ../auth/login.php');
-} else if (isset($_SESSION['F_number'])) {
-  $getWorkSchedule = "SELECT SR_grade, SR_section, S_subject FROM workschedule WHERE F_number = '{$_SESSION['F_number']}'";
-  $rungetWorkSchedule = $mysqli->query($getWorkSchedule);
+} else {
+  $getWorkSchedule = $mysqli->query("SELECT SR_grade, SR_section, S_subject FROM workschedule WHERE F_number = '{$_SESSION['F_number']}'");
   $array_GradeSection = array();
   array_unshift($array_GradeSection, null);
 
-  while ($dataWorkSchedule = $rungetWorkSchedule->fetch_assoc()) {
+  while ($dataWorkSchedule = $getWorkSchedule->fetch_assoc()) {
     $array_GradeSection[] = $dataWorkSchedule;
   }
-} else {
-  header('Location: ../auth/login.php');
+  $current_url = $_SERVER["REQUEST_URI"];
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -56,17 +49,18 @@ if (empty($_SESSION['F_number'])) {
   <link href="../assets/css/style.css" rel="stylesheet">
   <link href="../assets/css/form-style.css" rel="stylesheet">
   <link href="../assets/css/admin/style.css" rel="stylesheet">
-  <link href="../assets/css/admin/materialdesignicons.min.css" rel="stylesheet">
 
 </head>
 
 <body>
   <!-- Navbar Start -->
-  <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-    <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
-    <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-      <span class="mdi mdi-menu"></span>
-    </button>
+  <nav class="fixed-top align-items-top">
+    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+      <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
+      <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+        <span class="fa fa-bars"></span>
+      </button>
+    </nav>
   </nav>
   <!-- Navbar End -->
 
@@ -78,7 +72,7 @@ if (empty($_SESSION['F_number'])) {
           <!-- line 1 -->
           <li class="nav-item nav-category">Profile</li>
           <li class="nav-item">
-            <a class="nav-link" href="">
+            <a class="nav-link" href="../faculty/dashboard.php">
               <i class=""></i>
               <span class="menu-title">Dashboard</span>
             </a>
@@ -93,6 +87,12 @@ if (empty($_SESSION['F_number'])) {
             <a class="nav-link" href="../faculty/createReminder.php">
               <i class=""></i>
               <span class="menu-title">Create Reminders</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../faculty/reminders.php">
+              <i class=""></i>
+              <span class="menu-title">Reminders</span>
             </a>
           </li>
           <!-- line 2 -->
@@ -122,9 +122,21 @@ if (empty($_SESSION['F_number'])) {
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../faculty/reminders.php">
+            <a class="nav-link" href="../faculty/studentStatus.php">
               <i class=""></i>
-              <span class="menu-title">Reminders</span>
+              <span class="menu-title">Student Status</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../faculty/dailyReports.php">
+              <i class=""></i>
+              <span class="menu-title">Attendance Report</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../auth/logout.php">
+              <i class=""></i>
+              <span class="menu-title">Logout</span>
             </a>
           </li>
         </ul>
@@ -146,8 +158,20 @@ if (empty($_SESSION['F_number'])) {
                       <div class="col-12 grid-margin">
                         <div class="card">
                           <div class="card-body">
-                            <div class="dropdown" style="margin-bottom: 30px;">
-                              <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <div style="margin-bottom: 30px;">
+                              <div class="btn-group">
+                                <div>
+                                  <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">Academic Year
+                                    <i class="fa fa-caret-down"></i>
+                                  </button>
+                                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <a class="dropdown-item" href="">2022-2023</a>
+                                    <a class="dropdown-item" href="">2023-2024</a>
+                                    <a class="dropdown-item" href="">2024-2025</a>
+                                  </div>
+                                </div>
+                              </div>
+                              <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
                                 <?php
                                 if (isset($_GET['Grade']) && isset($_GET['Section'])) {
                                   echo "Grade " . $_GET['Grade'] . " - " . $_GET['Section'];
@@ -169,15 +193,17 @@ if (empty($_SESSION['F_number'])) {
                                 }
                                 ?>
                               </div>
-                              <div class="tb_search">
-                                <input class="search" type="text" id="search_input_all" onkeyup="FilterkeyWord_all_table()" placeholder="  Search...." class="form-control">
+                              <div class="btn-group" style="float: right;">
+                                <a href="" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
                               </div>
                             </div>
 
+
                             <div class="table-responsive">
-                              <table class="table table-striped table-class" id="table-id">
+                              <table class="table table-striped table-class">
                                 <thead>
                                   <tr>
+                                    <th scope="col">No.</th>
                                     <th scope="col">Student Number</th>
                                     <th scope="col">Student Name</th>
                                   </tr>
@@ -185,6 +211,7 @@ if (empty($_SESSION['F_number'])) {
                                 <tbody>
                                   <form action="<?php $_SERVER["PHP_SELF"] ?>" method="GET">
                                     <?php
+                                    $array_values = array();
                                     $value = array();
                                     $rowCount = 1;
                                     $GradeSectionRowCount = sizeof($array_GradeSection);
@@ -192,33 +219,28 @@ if (empty($_SESSION['F_number'])) {
                                       $value[] = $array_GradeSection[$rowCount]['SR_grade'];
                                       $rowCount++;
                                     }
-                                    if (!isset($_GET['Grade']) && !isset($_GET['Section'])) {
-                                      $getAllClassList = "SELECT * FROM studentrecord WHERE SR_grade IN (" . implode(", ", $value) . ")";
-                                      $rungetAllClassList = $mysqli->query($getAllClassList);
-                                      while ($dataAllClassList = $rungetAllClassList->fetch_assoc()) { ?>
-                                        <tr>
-                                          <td><?php echo $dataAllClassList['SR_number'] . " - " . $dataAllClassList['SR_section'] ?></td>
-                                          <td>
-                                            <a href="classList.php?SR_Number=<?php echo $dataCladataAllClassListssList['SR_number'] ?>">
-                                              <?php echo $dataAllClassList['SR_lname'] . ", " . $dataAllClassList['SR_fname'] . " " . substr($dataAllClassList['SR_mname'], 0, 1); ?>
-                                            </a>
-                                          </td>
-                                        </tr>
-                                      <?php }
+                                    if (!isset($_GET['Grade'])) { ?>
+                                      <tr>
+                                        <td colspan="3">NO SELECTED ACADEMIC YEAR AND GRADE AND SECTION</td>
+                                      </tr>
+                                      <?php
                                     } else {
                                       $getClassList = "SELECT * FROM studentrecord WHERE SR_grade = '{$_GET['Grade']}'";
                                       $rungetClassList = $mysqli->query($getClassList);
+                                      $rowCount = 1;
                                       while ($dataClassList = $rungetClassList->fetch_assoc()) { ?>
                                         <tr>
+                                          <td><?php echo $rowCount ?></td>
                                           <td><?php echo $dataClassList['SR_number'] ?></td>
                                           <td>
-                                            <!-- palitan to ng katulad nung sa advisory page kung may idadagdag na page -->
-                                            <a href="classList.php?SR_Number=<?php echo $dataClassList['SR_number'] ?>">
+                                            <a href="viewstudent.php?ID=<?php echo $dataClassList['SR_number'] ?>">
                                               <?php echo $dataClassList['SR_lname'] . ", " . $dataClassList['SR_fname'] . " " . substr($dataClassList['SR_mname'], 0, 1); ?>
                                             </a>
                                           </td>
                                         </tr>
-                                    <?php }
+                                    <?php
+                                        $rowCount++;
+                                      }
                                     }
                                     ?>
                                   </form>
@@ -297,8 +319,6 @@ if (empty($_SESSION['F_number'])) {
   <!-- Back to Top -->
   <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
-  <!-- JavaScript Libraries -->
-
 
   <!-- Template Javascript -->
   <script src="../assets/js/main.js"></script>
@@ -306,155 +326,6 @@ if (empty($_SESSION['F_number'])) {
   <script src="../assets/js/admin/vendor.bundle.base.js"></script>
   <script src="../assets/js/admin/off-canvas.js"></script>
   <script src="../assets/js/admin/file-upload.js"></script>
-  <script>
-    getPagination('#table-id');
-    $('#maxRows').trigger('change');
-
-    function getPagination(table) {
-
-      $('#maxRows').on('change', function() {
-        $('.pagination').html(''); // reset pagination div
-        var trnum = 0; // reset tr counter 
-        var maxRows = parseInt($(this).val()); // get Max Rows from select option
-
-        var totalRows = $(table + ' tbody tr').length; // numbers of rows 
-        $(table + ' tr:gt(0)').each(function() { // each TR in  table and not the header
-          trnum++; // Start Counter 
-          if (trnum > maxRows) { // if tr number gt maxRows
-
-            $(this).hide(); // fade it out 
-          }
-          if (trnum <= maxRows) {
-            $(this).show();
-          } // else fade in Important in case if it ..
-        }); //  was fade out to fade it in 
-        if (totalRows > maxRows) { // if tr total rows gt max rows option
-          var pagenum = Math.ceil(totalRows / maxRows); // ceil total(rows/maxrows) to get ..  
-          //	numbers of pages 
-          for (var i = 1; i <= pagenum;) { // for each page append pagination li 
-            $('.pagination').append('<li data-page="' + i + '">\
-								      <span>' + i++ + '<span class="sr-only">(current)</span></span>\
-								    </li>').show();
-          } // end for i 
-
-
-        } // end if row count > max rows
-        $('.pagination li:first-child').addClass('active'); // add active class to the first li 
-
-
-        //SHOWING ROWS NUMBER OUT OF TOTAL DEFAULT
-        showig_rows_count(maxRows, 1, totalRows);
-        //SHOWING ROWS NUMBER OUT OF TOTAL DEFAULT
-
-        $('.pagination li').on('click', function(e) { // on click each page
-          e.preventDefault();
-          var pageNum = $(this).attr('data-page'); // get it's number
-          var trIndex = 0; // reset tr counter
-          $('.pagination li').removeClass('active'); // remove active class from all li 
-          $(this).addClass('active'); // add active class to the clicked 
-
-
-          //SHOWING ROWS NUMBER OUT OF TOTAL
-          showig_rows_count(maxRows, pageNum, totalRows);
-          //SHOWING ROWS NUMBER OUT OF TOTAL
-
-
-
-          $(table + ' tr:gt(0)').each(function() { // each tr in table not the header
-            trIndex++; // tr index counter 
-            // if tr index gt maxRows*pageNum or lt maxRows*pageNum-maxRows fade if out
-            if (trIndex > (maxRows * pageNum) || trIndex <= ((maxRows * pageNum) - maxRows)) {
-              $(this).hide();
-            } else {
-              $(this).show();
-            } //else fade in 
-          }); // end of for each tr in table
-        }); // end of on click pagination list
-      });
-      // end of on select change 
-
-      // END OF PAGINATION 
-
-    }
-
-
-
-
-    // SI SETTING
-    $(function() {
-      // Just to append id number for each row  
-      default_index();
-
-    });
-
-    //ROWS SHOWING FUNCTION
-    function showig_rows_count(maxRows, pageNum, totalRows) {
-      //Default rows showing
-      var end_index = maxRows * pageNum;
-      var start_index = ((maxRows * pageNum) - maxRows) + parseFloat(1);
-      var string = 'Showing ' + start_index + ' to ' + end_index + ' of ' + totalRows + ' entries';
-      $('.rows_count').html(string);
-    }
-
-    // CREATING INDEX
-    function default_index() {
-      $('table tr:eq(0)').prepend('<th style="border-color: #e4e3e3;"> No. </th>')
-
-      var id = 0;
-
-      $('table tr:gt(0)').each(function() {
-        id++
-        $(this).prepend('<td>' + id + '</td>');
-      });
-    }
-
-    // All Table search script
-    function FilterkeyWord_all_table() {
-
-      // Count td if you want to search on all table instead of specific column
-
-      var count = $('.table').children('tbody').children('tr:first-child').children('td').length;
-
-      // Declare variables
-      var input, filter, table, tr, td, i;
-      input = document.getElementById("search_input_all");
-      var input_value = document.getElementById("search_input_all").value;
-      filter = input.value.toLowerCase();
-      if (input_value != '') {
-        table = document.getElementById("table-id");
-        tr = table.getElementsByTagName("tr");
-
-        // Loop through all table rows, and hide those who don't match the search query
-        for (i = 1; i < tr.length; i++) {
-
-          var flag = 0;
-
-          for (j = 0; j < count; j++) {
-            td = tr[i].getElementsByTagName("td")[j];
-            if (td) {
-
-              var td_text = td.innerHTML;
-              if (td.innerHTML.toLowerCase().indexOf(filter) > -1) {
-                //var td_text = td.innerHTML;  
-                //td.innerHTML = 'shaban';
-                flag = 1;
-              } else {
-                //DO NOTHING
-              }
-            }
-          }
-          if (flag == 1) {
-            tr[i].style.display = "";
-          } else {
-            tr[i].style.display = "none";
-          }
-        }
-      } else {
-        //RESET TABLE
-        $('#maxRows').trigger('change');
-      }
-    }
-  </script>
 
 </body>
 

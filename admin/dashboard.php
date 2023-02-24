@@ -1,7 +1,7 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (empty($_SESSION['AD_number'])) {
+if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 } else {
     $quarterArray = array();
@@ -89,7 +89,7 @@ if (empty($_SESSION['AD_number'])) {
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link href="../assets/img/favicon.png" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -117,14 +117,14 @@ if (empty($_SESSION['AD_number'])) {
 </head>
 
 <body>
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-        <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-            <span class="mdi mdi-menu"></span>
-        </button>
+    <nav class="fixed-top align-items-top">
+        <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+            <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+                <span class="fa fa-bars"></span>
+            </button>
+        </nav>
     </nav>
-    <!-- Navbar End -->
 
     <div class="container-scroller">
         <div class="container-fluid page-body-wrapper">
@@ -140,35 +140,41 @@ if (empty($_SESSION['AD_number'])) {
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="../admin/auditTrail.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Activity History</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="../admin/createAdmin.php">
                             <i class=""></i>
                             <span class="menu-title" style="color: #b9b9b9;">Create Admin</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../admin/addStudent.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Add Student</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="../admin/announcement.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Announcements</span>
+                            <span class="menu-title" style="color: #b9b9b9;">School Announcements</span>
                         </a>
                     </li>
                     <!-- line 2 -->
-                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Student</li>
+                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Student Records</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/addStudent.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Student Records</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Student Information</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/editgrades.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Grades</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -177,12 +183,18 @@ if (empty($_SESSION['AD_number'])) {
                             <span class="menu-title" style="color: #b9b9b9;">Status</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/modifySection.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Change Student Section</span>
+                        </a>
+                    </li>
                     <!-- line 3 -->
                     <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Faculty</li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/addFaculty.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Add Faculty</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Register Faculty</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -194,7 +206,7 @@ if (empty($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/assignAdvisory.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Assign Advisory</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Advisory Class Assignment</span>
                         </a>
                     </li>
                     <!-- line 4 -->
@@ -202,17 +214,23 @@ if (empty($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/editlearningareas.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Scheduling</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Work Schedule Assignment</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/modifyCurriculum.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Curriculum</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Edit Curriculum</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/editSection.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Edit Section</span>
                         </a>
                     </li>
                     <!-- line 5 -->
-                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Reports</li>
+                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Attendance Report</li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/dailyReports.php">
                             <i class=""></i>
@@ -228,7 +246,7 @@ if (empty($_SESSION['AD_number'])) {
                     <!-- line 5 -->
                     <li class="nav-item nav-category" style="padding-top: 10px;"></li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">
+                        <a class="nav-link" href="../auth/logout.php">
                             <i class=""></i>
                             <span class="menu-title" style="color: #b9b9b9;">Logout</span>
                         </a>
@@ -251,12 +269,7 @@ if (empty($_SESSION['AD_number'])) {
                                         <div class="row">
                                             <div class="col-12 grid-margin">
                                                 <form id="form-id" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
-                                                <style>
-                                                    #custom{
-                                                        border-radius:50px;
-                                                        
-                                                    }
-                                                </style>
+
                                                     <?php
                                                     echo '<button type="submit" name="acadyear" class="btn btn-primary m-2">Acad Year: ' . $_SESSION['academicYear'] . '</button>';
 
@@ -269,7 +282,7 @@ if (empty($_SESSION['AD_number'])) {
                                                     if ($quarterArray[1]['quarterTag'] == 1 && $quarterArray[1]['quarterStatus'] == 'current') {
                                                         echo '<button class="" ">1st Quarter (CURRENT)</button>';
                                                     } else {
-                                                        echo '<button type="submit" name="enableFirst" class="btn btn-secondary m-2" id="custom">Enable 1st Quarter</button>';
+                                                        echo '<button type="submit" name="enableFirst" class="btn btn-secondary m-2">Enable 1st Quarter</button>';
                                                     }
 
                                                     if ($quarterArray[2]['quarterTag'] == 2 && $quarterArray[2]['quarterStatus'] == 'current') {
@@ -304,7 +317,7 @@ if (empty($_SESSION['AD_number'])) {
                                                     <div class="card-body">
                                                         <div class="row">
                                                             <h3 style="font-size: 20px; padding-bottom: 20px; text-align:center;">Today's Average Attendance</h3>
-                                                            <canvas class="my-auto" id="doughnutChart" height="100"></canvas>
+                                                            <canvas class="my-auto" id="doughnutChart" height="200"></canvas>
                                                             <div id="doughnut-chart-legend" class="mt-5 text-center"></div>
                                                         </div>
                                                         <div class="row" style="margin: auto; padding-top:15px;">
@@ -375,16 +388,23 @@ if (empty($_SESSION['AD_number'])) {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-12 col-lg-6 grid-margin" style="padding-bottom:20px;">
+                                            <div class="col-sm-12 col-lg-6 grid-margin">
                                                 <div class="row">
                                                     <div class="col-sm-12 col-lg-4 grid-margin" style="padding-bottom:20px;">
 
                                                         <div class="card">
                                                             <div class="card-body">
                                                                 <div class="row">
-                                                                    <h3 style="font-size: 20px; padding-bottom: 20px; text-align:left;">No. of Students</h3>
+                                                                    <h3 style="font-size: 20px; padding-bottom: 20px; text-align:left;">Total No. of Students</h3>
                                                                     <div class="d-flex flex-shrink-0">
-                                                                        <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628; padding-bottom:15px;">25</h1>
+                                                                        <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628; padding-bottom:15px;">
+                                                                            <?php
+                                                                            $countNumofStudent = $mysqli->query("SELECT COUNT(*) FROM studentrecord");
+                                                                            $numofStudent = $countNumofStudent->fetch_assoc();
+
+                                                                            echo $numofStudent['COUNT(*)'];
+                                                                            ?>
+                                                                        </h1>
                                                                     </div>
                                                                     <div class="percentage">
                                                                         <div class="progress">
@@ -400,9 +420,16 @@ if (empty($_SESSION['AD_number'])) {
                                                         <div class="card">
                                                             <div class="card-body">
                                                                 <div class="row">
-                                                                    <h3 style="font-size: 20px; text-align:left; padding-bottom: 20px;">No. of Faculty Teachers</h3>
+                                                                    <h3 style="font-size: 20px; text-align:left;">Total No. of Faculty Teachers</h3>
                                                                     <div class="d-flex flex-shrink-0">
-                                                                        <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628; padding-bottom:15px;">25</h1>
+                                                                        <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628; padding-bottom:15px;">
+                                                                            <?php
+                                                                            $countNumofFaculty = $mysqli->query("SELECT COUNT(*) FROM faculty");
+                                                                            $numofFaculty = $countNumofFaculty->fetch_assoc();
+
+                                                                            echo $numofFaculty['COUNT(*)'];
+                                                                            ?>
+                                                                        </h1>
                                                                     </div>
                                                                     <div class="percentage">
                                                                         <div class="progress">
@@ -417,7 +444,7 @@ if (empty($_SESSION['AD_number'])) {
                                                         <div class="card">
                                                             <div class="card-body">
                                                                 <div class="row">
-                                                                    <h3 style="font-size: 20px; text-align:left;">No. of Students Added Today</h3>
+                                                                    <h3 style="font-size: 20px; text-align:left;">Total No. of Students Added Today</h3>
                                                                     <div class="d-flex flex-shrink-0">
                                                                         <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628; padding-bottom:15px;">25</h1>
                                                                     </div>
@@ -432,22 +459,52 @@ if (empty($_SESSION['AD_number'])) {
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                <div class="col-12 grid-margin" style="padding-bottom:20px;">
+                                                    <div class="col-12 grid-margin">
                                                         <div class="card">
                                                             <div class="card-body">
                                                                 <div class="row">
-                                                                    <h3 style="font-size: 20px; text-align:left;">hmmmmm</h3>
-                                                                    
+                                                                    <div class="d-flex align-items-center justify-content-between mb-3">
+                                                                        <h4 class="card-title card-title-dash" style="margin-bottom:12px;">Activity History</h4>
+                                                                    </div>
+                                                                    <ul class="bullet-line-list">
+                                                                        <li>
+                                                                            <div class="d-flex justify-content-between">
+                                                                                <div style="text-align: left;"><span class="text-light-green">Camile Sabile</span> assign you a task</div>
+                                                                                <p>01/01/2023</p>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="d-flex justify-content-between">
+                                                                                <div style="text-align: left;"><span class="text-light-green">Hazel Grace</span> assign you a task</div>
+                                                                                <p>01/01/2023</p>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="d-flex justify-content-between">
+                                                                                <div style="text-align: left;"><span class="text-light-green">Steven Frilles</span> assign you a task</div>
+                                                                                <p>01/01/2023</p>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="d-flex justify-content-between">
+                                                                                <div style="text-align: left;"><span class="text-light-green">Steven Frilles</span> assign you a task</div>
+                                                                                <p>01/01/2023</p>
+                                                                            </div>
+                                                                        </li>
+                                                                    </ul>
+                                                                    <div class="list align-items-center pt-3">
+                                                                        <div class="wrapper w-100">
+                                                                            <p class="mb-0">
+                                                                                <a href="#" class="fw-bold text-primary">Show all <i class="fa fa-arrow-right ms-2"></i></a>
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-
-
                                             </div>
-
-
                                         </div>
 
                                         <div class="row">
@@ -471,37 +528,22 @@ if (empty($_SESSION['AD_number'])) {
                                                                                         </tr>
                                                                                     </thead>
                                                                                     <tbody>
-                                                                                        <tr>
+                                                                                        <?php
+                                                                                        $rowCount = 1;
+                                                                                        $studentPopulationData = $mysqli->query("SELECT * FROM studentrecord ORDER BY RAND()");
 
-                                                                                            <td>1</td>
-                                                                                            <td>2019-00188</td>
-                                                                                            <td>Sabile, Camile Anne G.</td>
-                                                                                            <td>Grade 1 - Chrysanthemum</td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>2</td>
-                                                                                            <td>2019-00089</td>
-                                                                                            <td>Cantuba, Hazel Grace L.</td>
-                                                                                            <td>Grade 1 - Chrysanthemum</td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>3</td>
-                                                                                            <td>2019-00189</td>
-                                                                                            <td>Frilles, Steven</td>
-                                                                                            <td>Grade 1 - Chrysanthemum</td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>4</td>
-                                                                                            <td>2019-00890</td>
-                                                                                            <td>Dumas, Robert James</td>
-                                                                                            <td>Grade 1 - Chrysanthemum</td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>5</td>
-                                                                                            <td>2019-00099</td>
-                                                                                            <td>Maling, Roselyn Mae</td>
-                                                                                            <td>Grade 1 - Chrysanthemum</td>
-                                                                                        </tr>
+                                                                                        while ($rowCount <= 10) {
+                                                                                            $studentPopulation = $studentPopulationData->fetch_assoc(); ?>
+                                                                                            <tr>
+                                                                                                <td><?php echo $rowCount; ?></td>
+                                                                                                <td><?php echo $studentPopulation['SR_number']; ?></td>
+                                                                                                <td><?php echo $studentPopulation['SR_lname'] .  ", " . $studentPopulation['SR_fname'] . " " . substr($studentPopulation['SR_mname'], 0, 1) ?></td>
+                                                                                                <td><?php echo "Grade " . $studentPopulation['SR_grade'] . " - " . $studentPopulation['SR_section']; ?></td>
+                                                                                            </tr>
+                                                                                        <?php
+                                                                                            $rowCount++;
+                                                                                        }
+                                                                                        ?>
                                                                                     </tbody>
                                                                                 </table>
                                                                             </div>
@@ -526,42 +568,27 @@ if (empty($_SESSION['AD_number'])) {
                                                                                         </tr>
                                                                                     </thead>
                                                                                     <tbody>
-                                                                                        <tr>
+                                                                                        <?php
+                                                                                        $rowCount = 1;
+                                                                                        $facultyPopulationData = $mysqli->query("SELECT * FROM faculty ORDER BY RAND()");
 
-                                                                                            <td>1</td>
-                                                                                            <td>2019-00188</td>
-                                                                                            <td>Mathematics</td>
-                                                                                            <td>Sabile, Camile Anne G.</td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>2</td>
-                                                                                            <td>2019-00089</td>
-                                                                                            <td>English</td>
-                                                                                            <td>Cantuba, Hazel Grace L.</td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>3</td>
-                                                                                            <td>2019-00189</td>
-                                                                                            <td>Filipino</td>
-                                                                                            <td>Frilles, Steven</td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>4</td>
-                                                                                            <td>2019-00890</td>
-                                                                                            <td>MAPEH</td>
-                                                                                            <td>Dumas, Robert James</td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>5</td>
-                                                                                            <td>2019-00099</td>
-                                                                                            <td>Science</td>
-                                                                                            <td>Maling, Roselyn Mae</td>
-                                                                                        </tr>
+                                                                                        while ($rowCount <= 5) {
+                                                                                            $facultyPopulation = $facultyPopulationData->fetch_assoc(); ?>
+                                                                                            <tr>
+                                                                                                <td><?php echo $rowCount; ?></td>
+                                                                                                <td><?php echo $facultyPopulation['F_number']; ?></td>
+                                                                                                <td><?php echo $facultyPopulation['F_department']; ?></td>
+                                                                                                <td><?php echo $facultyPopulation['F_lname'] .  ", " . $facultyPopulation['F_fname'] . " " . substr($facultyPopulation['F_mname'], 0, 1) ?></td>
+                                                                                            </tr>
+                                                                                        <?php
+                                                                                            $rowCount++;
+                                                                                        }
+                                                                                        ?>
                                                                                     </tbody>
                                                                                 </table>
                                                                             </div>
                                                                             <div style="padding-top: 10px;">
-                                                                                <a href="#" class="fw-bold text-primary">View all students <i class="fa fa-arrow-right ms-2"></i></a>
+                                                                                <a href="#" class="fw-bold text-primary">View all faculty <i class="fa fa-arrow-right ms-2"></i></a>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -572,60 +599,34 @@ if (empty($_SESSION['AD_number'])) {
                                                             <div class="card">
                                                                 <div class="card-body">
 
-                                                                    <div class="d-flex align-items-center justify-content-between mb-3">
-                                                                        <h4 class="card-title card-title-dash">Activity History</h4>
+                                                                    <div class="section-title section-title-sm position-relative pb-3 mb-4">
+                                                                        <h3 class="mb-0" style="text-align:left;">School Announcements</h3>
                                                                     </div>
-                                                                    <ul class="bullet-line-list">
-                                                                        <li>
-                                                                            <div class="d-flex justify-content-between">
-                                                                                <div><span class="text-light-green" style="color:#c02628;">Camile Sabile</span> assign you a task</div>
-                                                                                <p>01/01/2023</p>
+
+                                                                    <?php
+                                                                    $getAnnouncementData = $mysqli->query("SELECT * FROM announcement");
+
+                                                                    while ($announcement = $getAnnouncementData->fetch_assoc()) { ?>
+                                                                        <div class="col-lg-12 wow " style="padding-bottom: 5px;">
+                                                                            <div class="blog-item bg-light rounded overflow-hidden">
+                                                                                <div class="p-4">
+                                                                                    <div class="d-flex mb-3">
+                                                                                        <small class="me-3"><i class="far fa-user text-primary me-2"></i><?php echo $announcement['author']; ?></small>
+                                                                                        <small><i class="far fa-calendar-alt text-primary me-2"></i><?php echo $announcement['date']; ?></small>
+                                                                                    </div>
+                                                                                    <h4 class="mb-3"><?php echo $announcement['header']; ?></h4>
+                                                                                    <p><?php echo $announcement['msg']; ?></p>
+                                                                                    <a class="text-uppercase" href="viewannouncement.php?postID=<?php echo $announcement['ANC_ID']; ?>">Read More <i class="bi bi-arrow-right"></i></a>
+                                                                                </div>
                                                                             </div>
-                                                                        </li>
-                                                                        <li>
-                                                                            <div class="d-flex justify-content-between">
-                                                                                <div><span class="text-light-green">Hazel Grace</span> assign you a task</div>
-                                                                                <p>01/01/2023</p>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li>
-                                                                            <div class="d-flex justify-content-between">
-                                                                                <div><span class="text-light-green">Steven Frilles</span> assign you a task</div>
-                                                                                <p>01/01/2023</p>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li>
-                                                                            <div class="d-flex justify-content-between">
-                                                                                <div><span class="text-light-green">RJ Dumas</span> assign you a task</div>
-                                                                                <p>01/01/2023</p>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li>
-                                                                            <div class="d-flex justify-content-between">
-                                                                                <div><span class="text-light-green">Roselyn Maling</span> assign you a task</div>
-                                                                                <p>01/01/2023</p>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li>
-                                                                            <div class="d-flex justify-content-between">
-                                                                                <div><span class="text-light-green">Genesis Tecson</span> assign you a task</div>
-                                                                                <p>01/01/2023</p>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li>
-                                                                            <div class="d-flex justify-content-between">
-                                                                                <div><span class="text-light-green">Ryu Munoz</span> assign you a task</div>
-                                                                                <p>01/01/2023</p>
-                                                                            </div>
-                                                                        </li>
-                                                                    </ul>
-                                                                    <div class="list align-items-center pt-3">
-                                                                        <div class="wrapper w-100">
-                                                                            <p class="mb-0">
-                                                                                <a href="#" class="fw-bold text-primary">Show all <i class="fa fa-arrow-right ms-2"></i></a>
-                                                                            </p>
                                                                         </div>
-                                                                    </div>
+                                                                    <?php }
+                                                                    ?>
+                                                                    <section class="popular-courses-area courses-page">
+                                                                        <div style="padding-top: 10px;">
+                                                                            <a href="#" class="fw-bold text-primary">View all announcements <i class="fa fa-arrow-right ms-2"></i></a>
+                                                                        </div>
+                                                                    </section>
                                                                 </div>
                                                             </div>
                                                         </div>

@@ -1,22 +1,24 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (!empty($_SESSION['F_number'])) {
-  $getSectionInfo = "SELECT * FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'";
-  $rungetSectionInfo = $mysqli->query($getSectionInfo);
-
-  $SectionData = $rungetSectionInfo->fetch_assoc();
-
-  $getFacultyName = "SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'";
-  $rungetFacultyName = $mysqli->query($getFacultyName);
-
-  $FacultyData = $rungetFacultyName->fetch_assoc();
-
-  $ClassListRow = 1;
-  $getSectionClassList = "SELECT * FROM studentrecord WHERE SR_section = '{$SectionData['S_name']}'";
-  $rungetSectionClassList = $mysqli->query($getSectionClassList);
-} else {
+if (!isset($_SESSION['F_number'])) {
   header('Location: ../auth/login.php');
+} else {
+  $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'");
+  $rowCount = $getSectionInfo->num_rows;
+  if ($rowCount > 0) {
+    $ClassListRow = 1;
+
+    $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'");
+    $SectionData = $getSectionInfo->fetch_assoc();
+
+    $getFacultyName = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
+    $FacultyData = $getFacultyName->fetch_assoc();
+
+    $getSectionClassList = $mysqli->query("SELECT * FROM studentrecord WHERE SR_section = '{$SectionData['S_name']}'");
+  } else {
+    header('Location: dashboard.php');
+  }
 }
 ?>
 
@@ -55,20 +57,20 @@ if (!empty($_SESSION['F_number'])) {
   <link href="../assets/css/style.css" rel="stylesheet">
   <link href="../assets/css/form-style.css" rel="stylesheet">
   <link href="../assets/css/admin/style.css" rel="stylesheet">
-  <link href="../assets/css/admin/materialdesignicons.min.css" rel="stylesheet">
 
 </head>
 
 <body>
   <!-- Navbar Start -->
-  <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-    <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
-    <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-      <span class="mdi mdi-menu"></span>
-    </button>
+  <nav class="fixed-top align-items-top">
+    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+      <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
+      <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+        <span class="fa fa-bars"></span>
+      </button>
+    </nav>
   </nav>
   <!-- Navbar End -->
-
   <div class="container-scroller">
     <div class="container-fluid page-body-wrapper">
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
@@ -77,7 +79,7 @@ if (!empty($_SESSION['F_number'])) {
           <!-- line 1 -->
           <li class="nav-item nav-category">Profile</li>
           <li class="nav-item">
-            <a class="nav-link" href="">
+            <a class="nav-link" href="../faculty/dashboard.php">
               <i class=""></i>
               <span class="menu-title">Dashboard</span>
             </a>
@@ -92,6 +94,12 @@ if (!empty($_SESSION['F_number'])) {
             <a class="nav-link" href="../faculty/createReminder.php">
               <i class=""></i>
               <span class="menu-title">Create Reminders</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../faculty/reminders.php">
+              <i class=""></i>
+              <span class="menu-title">Reminders</span>
             </a>
           </li>
           <!-- line 2 -->
@@ -121,9 +129,21 @@ if (!empty($_SESSION['F_number'])) {
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../faculty/reminders.php">
+            <a class="nav-link" href="../faculty/studentStatus.php">
               <i class=""></i>
-              <span class="menu-title">Reminders</span>
+              <span class="menu-title">Student Status</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../faculty/dailyReports.php">
+              <i class=""></i>
+              <span class="menu-title">Attendance Report</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../auth/logout.php">
+              <i class=""></i>
+              <span class="menu-title">Logout</span>
             </a>
           </li>
         </ul>
@@ -146,17 +166,32 @@ if (!empty($_SESSION['F_number'])) {
                         <div class="card">
                           <div class="card-body">
                             <h3><?php echo "Grade " . $SectionData['S_yearLevel'] . " - " . $SectionData['S_name']; ?></h3>
-                            <p><?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1); ?></p>
+                            <p style="margin-bottom: 5px;"><?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1); ?></p>
+                            <p style="margin-bottom: 5px;">School Year: 2022-2023</p>
                           </div>
                         </div>
                       </div>
-
                     </div>
                     <div class="row">
                       <div class="col-12 grid-margin">
                         <div class="card">
                           <div class="card-body">
                             <form class="form-sample" action="confirmfaculty.php" method="POST">
+                              <div class="btn-group" style="margin-bottom: 15px;">
+                                <div>
+                                  <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">Academic Year
+                                    <i class="fa fa-caret-down"></i>
+                                  </button>
+                                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <a class="dropdown-item" href="">2022-2023</a>
+                                    <a class="dropdown-item" href="">2023-2024</a>
+                                    <a class="dropdown-item" href="">2024-2025</a>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="btn-group" style="float: right;">
+                                <a href="" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
+                              </div>
                               <div class="table-responsive">
                                 <table class="table">
                                   <thead>
@@ -177,12 +212,12 @@ if (!empty($_SESSION['F_number'])) {
                                   </thead>
                                   <tbody>
                                     <?php
-                                    while ($SectionClassListData = $rungetSectionClassList->fetch_assoc()) { ?>
+                                    while ($SectionClassListData = $getSectionClassList->fetch_assoc()) { ?>
                                       <tr>
                                         <td class="hatdog"><?php echo $ClassListRow; ?></td>
                                         <td class="hatdog"><?php echo $SectionClassListData['SR_number']; ?></td>
                                         <td class="hatdog">
-                                          <a href="viewCard.php?viewStudent=<?php echo $SectionClassListData['SR_number']; ?>">
+                                          <a href="viewCard.php?ID=<?php echo $SectionClassListData['SR_number']; ?>">
                                             <?php echo $SectionClassListData['SR_lname'] . ", " . $SectionClassListData['SR_fname'] . " " . substr($SectionClassListData['SR_mname'], 0, 1); ?>
                                           </a>
                                         </td>
@@ -264,11 +299,6 @@ if (!empty($_SESSION['F_number'])) {
   </div>
   <!-- Footer End -->
 
-  <!-- Back to Top -->
-  <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
-  <!-- JavaScript Libraries -->
-
 
   <!-- Template Javascript -->
   <script src="../assets/js/main.js"></script>
@@ -276,7 +306,7 @@ if (!empty($_SESSION['F_number'])) {
   <script src="../assets/js/admin/vendor.bundle.base.js"></script>
   <script src="../assets/js/admin/off-canvas.js"></script>
   <script src="../assets/js/admin/file-upload.js"></script>
-
 </body>
+
 
 </html>

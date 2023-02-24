@@ -1,8 +1,11 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (isset($_POST['confirm_faculty'])) {
-  header('Location: confirmfaculty.php');
+if (!isset($_SESSION['F_number'])) {
+  header('Location: ../auth/login.php');
+} else {
+  $facultyInformation = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
+  $faculty = $facultyInformation->fetch_assoc();
 }
 ?>
 
@@ -28,6 +31,8 @@ if (isset($_POST['confirm_faculty'])) {
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <link href="../assets/css/sweetAlert.css" rel="stylesheet">
 
   <!-- Libraries Stylesheet -->
   <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
@@ -47,11 +52,13 @@ if (isset($_POST['confirm_faculty'])) {
 
 <body>
   <!-- Navbar Start -->
-  <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-    <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
-    <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-      <span class="mdi mdi-menu"></span>
-    </button>
+  <nav class="fixed-top align-items-top">
+    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+      <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
+      <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+        <span class="fa fa-bars"></span>
+      </button>
+    </nav>
   </nav>
   <!-- Navbar End -->
 
@@ -63,7 +70,7 @@ if (isset($_POST['confirm_faculty'])) {
           <!-- line 1 -->
           <li class="nav-item nav-category">Profile</li>
           <li class="nav-item">
-            <a class="nav-link" href="">
+            <a class="nav-link" href="../faculty/dashboard.php">
               <i class=""></i>
               <span class="menu-title">Dashboard</span>
             </a>
@@ -78,6 +85,12 @@ if (isset($_POST['confirm_faculty'])) {
             <a class="nav-link" href="../faculty/createReminder.php">
               <i class=""></i>
               <span class="menu-title">Create Reminders</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../faculty/reminders.php">
+              <i class=""></i>
+              <span class="menu-title">Reminders</span>
             </a>
           </li>
           <!-- line 2 -->
@@ -107,9 +120,21 @@ if (isset($_POST['confirm_faculty'])) {
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../faculty/reminders.php">
+            <a class="nav-link" href="../faculty/studentStatus.php">
               <i class=""></i>
-              <span class="menu-title">Reminders</span>
+              <span class="menu-title">Student Status</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../faculty/dailyReports.php">
+              <i class=""></i>
+              <span class="menu-title">Attendance Report</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../auth/logout.php">
+              <i class=""></i>
+              <span class="menu-title">Logout</span>
             </a>
           </li>
         </ul>
@@ -117,29 +142,61 @@ if (isset($_POST['confirm_faculty'])) {
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="home-tab">
-                <div class="d-sm-flex align-items-center justify-content-between border-bottom">
-                  <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                    <h2 class="fw-bold text-primary text-uppercase">Profile Information</h2>
+          <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="home-tab">
+                  <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                    <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
+                      <h2 class="fw-bold text-primary text-uppercase">Profile Information</h2>
+                    </div>
                   </div>
-                </div>
-                <div class="tab-content tab-content-basic">
-                  <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                    <div class="row">
-                      <div class="col-12 grid-margin">
-                        <div class="card">
-                          <div class="card-body">
-                            <h4 class="card-title">Personal Information</h4>
-                            <form class="form-sample" action="confirmfaculty.php" method="POST">
-
+                  <div style="text-align: right; margin-top: 15px">
+                    <button type="submit" class="btn btn-primary me-2" name="updateProfile">Save</button>
+                    <button class="btn btn-light">Back</button>
+                  </div>
+                  <div class="tab-content tab-content-basic">
+                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                      <div class="row">
+                        <div class="col-12 grid-margin">
+                          <div class="card">
+                            <div class="card-body">
+                              <h4 class="card-title">Personal Information</h4>
+                              <div class="row">
+                                <div class="col-md-4">
+                                  <label label class="col-sm-12 col-form-label">Email Address</label>
+                                  <div class="col-sm-12">
+                                    <input type="email" class="form-control" name="F_email" value="<?php echo $faculty['F_email'] ?>" required>
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <label label class="col-sm-12 col-form-label">Change Password</label>
+                                  <div class="col-sm-12">
+                                    <input type="email" class="form-control" name="F_email" value="" required>
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <label label class="col-sm-12 col-form-label">Confirm Password</label>
+                                  <div class="col-sm-12">
+                                    <input type="email" class="form-control" name="F_email" value="" required>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12 grid-margin">
+                          <div class="card">
+                            <div class="card-body">
+                              <h4 class="card-title">Personal Information</h4>
                               <div class="row" style="padding-bottom: 15px;">
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Department</label>
                                   <div class="col-sm-12">
                                     <select class="form-select" name="F_department" required>
-                                      <option value=""></option>
+                                      <option selected><?php echo $faculty['F_department'] ?></option>
                                       <option value="English">English Department</option>
                                       <option value="Filipino">Filipino Department</option>
                                       <option value="Mathematics">Mathematics Department</option>
@@ -154,7 +211,9 @@ if (isset($_POST['confirm_faculty'])) {
                                   <div class="col-sm-12">
                                     <div class="form-group">
                                       <div class="input-group col-xs-12">
-                                        <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
+                                        <div class="input-group">
+                                          <input type="file" class="form-control file-upload-info" placeholder="Upload Image">
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
@@ -162,32 +221,31 @@ if (isset($_POST['confirm_faculty'])) {
                               </div>
 
                               <div class="row" style="padding-bottom: 15px;">
-
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Last Name</label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="F_lname" required>
+                                    <input type="text" class="form-control" name="F_lname" value="<?php echo $faculty['F_lname'] ?>" required>
                                   </div>
                                 </div>
 
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">First Name</label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="F_fname" required>
+                                    <input type="text" class="form-control" name="F_fname" value="<?php echo $faculty['F_fname'] ?>" required>
                                   </div>
                                 </div>
 
                                 <div class="col-md-3">
                                   <label class="col-sm-12 col-form-label">Middle Name</label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="F_mname">
+                                    <input type="text" class="form-control" name="F_mname" value="<?php echo $faculty['F_mname'] ?>">
                                   </div>
                                 </div>
 
                                 <div class="col-md-1">
                                   <label class="col-sm-12 col-form-label">Suffix</label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="F_suffix">
+                                    <input type="text" class="form-control" name="F_suffix" value="<?php echo $faculty['F_suffix'] ?>">
                                   </div>
 
                                 </div>
@@ -197,22 +255,22 @@ if (isset($_POST['confirm_faculty'])) {
                                   <div class="col-md-4">
                                     <label class="col-sm-12 col-form-label">Age</label>
                                     <div class="col-sm-12">
-                                      <input type="number" class="form-control" name="F_age" required>
+                                      <input type="number" class="form-control" name="F_age" value="<?php echo $faculty['F_age'] ?>" required>
                                     </div>
                                   </div>
 
                                   <div class="col-md-4">
                                     <label class="col-sm-12 col-form-label">Birthdate</label>
                                     <div class="col-sm-12">
-                                      <input type="date" class="form-control" name="F_birthday" required>
+                                      <input type="date" class="form-control" name="F_birthday" value="<?php echo $faculty['F_birthday'] ?>" required>
                                     </div>
                                   </div>
 
                                   <div class="col-md-4">
                                     <label class="col-sm-12 col-form-label">Gender</label>
                                     <div class="col-sm-12">
-                                      <select class="form-select form-control" name="F_gender" required>
-                                        <option value=""></option>
+                                      <select class="form-select" name="F_gender" required>
+                                        <option selected><?php echo $faculty['F_gender'] ?></option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
                                         <option value="NA">Prefer not to say</option>
@@ -227,7 +285,7 @@ if (isset($_POST['confirm_faculty'])) {
 
                                     <label class="col-sm-12 col-form-label">Religion</label>
                                     <div class="col-sm-12">
-                                      <input type="text" class="form-control" />
+                                      <input type="text" class="form-control" name="F_religion" value="<?php echo $faculty['F_religion'] ?>">
                                     </div>
 
                                   </div>
@@ -235,7 +293,7 @@ if (isset($_POST['confirm_faculty'])) {
 
                                     <label class="col-sm-12 col-form-label">Citizenship</label>
                                     <div class="col-sm-12">
-                                      <input type="text" class="form-control" />
+                                      <input type="text" class="form-control" name="F_citizenship" value="<?php echo $faculty['F_citizenship'] ?>">
                                     </div>
                                   </div>
                                 </div>
@@ -246,21 +304,21 @@ if (isset($_POST['confirm_faculty'])) {
                                   <div class="col-md-6">
                                     <label label class="col-sm-12 col-form-label">Address</label>
                                     <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="F_address" required>
+                                      <input type="text" class="form-control" name="F_address" value="<?php echo $faculty['F_address'] ?>" required>
                                     </div>
                                   </div>
 
                                   <div class="col-md-3">
                                     <label label class="col-sm-12 col-form-label">Barangay</label>
                                     <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="F_barangay" required>
+                                      <input type="text" class="form-control" name="F_barangay" value="<?php echo $faculty['F_barangay'] ?>" required>
                                     </div>
                                   </div>
 
                                   <div class="col-md-3">
                                     <label label class="col-sm-12 col-form-label">City</label>
                                     <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="F_city" required>
+                                      <input type="text" class="form-control" name="F_city" value="<?php echo $faculty['F_city'] ?>" required>
                                     </div>
                                   </div>
 
@@ -271,14 +329,14 @@ if (isset($_POST['confirm_faculty'])) {
                                   <div class="col-md-4">
                                     <label label class="col-sm-12 col-form-label">State</label>
                                     <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="F_state" required>
+                                      <input type="text" class="form-control" name="F_state" value="<?php echo $faculty['F_state'] ?>" required>
                                     </div>
                                   </div>
 
                                   <div class="col-md-4">
                                     <label label class="col-sm-12 col-form-label">Postal Code</label>
                                     <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="F_postal" required>
+                                      <input type="text" class="form-control" name="F_postal" value="<?php echo $faculty['F_postal'] ?>" required>
                                     </div>
                                   </div>
 
@@ -289,33 +347,23 @@ if (isset($_POST['confirm_faculty'])) {
                                   <div class="col-md-6">
                                     <label label class="col-sm-12 col-form-label">Contact Number</label>
                                     <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="F_contact" required>
+                                      <input type="text" class="form-control" name="F_contact" value="<?php echo $faculty['F_contactNumber'] ?>" required>
                                     </div>
                                   </div>
-
-                                  <div class="col-md-6">
-                                    <label label class="col-sm-12 col-form-label">Email Address</label>
-                                    <div class="col-sm-12">
-                                      <input type="email" class="form-control" name="F_email" required>
-                                    </div>
-                                  </div>
-
                                 </div>
-                            </form>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
+                </div>
               </div>
+
             </div>
-            <form style="text-align: center;">
-              <button type="submit" class="btn btn-primary me-2">Save</button>
-              <button class="btn btn-light">Back</button>
-            </form>
-          </div>
+          </form>
         </div>
         <!-- content-wrapper ends -->
       </div>
@@ -324,7 +372,7 @@ if (isset($_POST['confirm_faculty'])) {
     <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
-
+  <button id="hatdog"> click hatdog </button>
   <!-- Footer Start -->
   <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
     <div class="container py-5">
@@ -389,6 +437,32 @@ if (isset($_POST['confirm_faculty'])) {
   <script src="../assets/js/admin/off-canvas.js"></script>
   <script src="../assets/js/admin/file-upload.js"></script>
 
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+  <script>
+    const myButton = document.getElementById('hatdog');
+    hatdog.addEventListener('click', function() {
+      Swal.fire({
+        title: 'Are you sure you want to save your changes?',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: `No`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: 'Successfully changed!',
+            icon: 'success',
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              window.location.href = '../faculty/viewProfile.php';
+            }
+          })
+        }
+      })
+
+    })
+  </script>
 </body>
 
 </html>

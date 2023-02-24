@@ -1,7 +1,7 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (empty($_SESSION['AD_number'])) {
+if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 }
 ?>
@@ -17,7 +17,7 @@ if (empty($_SESSION['AD_number'])) {
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link href="../assets/img/favicon.png" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,6 +27,9 @@ if (empty($_SESSION['AD_number'])) {
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="../assets/css/sweetAlert.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
     <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
@@ -45,20 +48,14 @@ if (empty($_SESSION['AD_number'])) {
 </head>
 
 <body>
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-        <img class="m-3" src="../assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">
-        <div class="d-flex align-items-center justify-content-center text-center">
-            <a href="../index.php" class="navbar-brand ms-4 ms-lg-0 text-center">
-                <h1 class="cdsp">Colegio De San Pedro</h1>
-                <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
-            </a>
-        </div>
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-            <span class="mdi mdi-menu"></span>
-        </button>
+    <nav class="fixed-top align-items-top">
+        <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+            <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+                <span class="fa fa-bars"></span>
+            </button>
+        </nav>
     </nav>
-    <!-- Navbar End -->
 
     <div class="container-scroller">
         <div class="container-fluid page-body-wrapper">
@@ -74,35 +71,41 @@ if (empty($_SESSION['AD_number'])) {
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="../admin/auditTrail.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Activity History</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="../admin/createAdmin.php">
                             <i class=""></i>
                             <span class="menu-title" style="color: #b9b9b9;">Create Admin</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../admin/addStudent.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Add Student</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="../admin/announcement.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Announcements</span>
+                            <span class="menu-title" style="color: #b9b9b9;">School Announcements</span>
                         </a>
                     </li>
                     <!-- line 2 -->
-                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Student</li>
+                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Student Records</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/addStudent.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Student Records</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Student Information</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/editgrades.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Grades</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -111,12 +114,18 @@ if (empty($_SESSION['AD_number'])) {
                             <span class="menu-title" style="color: #b9b9b9;">Status</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/modifySection.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Change Student Section</span>
+                        </a>
+                    </li>
                     <!-- line 3 -->
                     <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Faculty</li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/addFaculty.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Add Faculty</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Register Faculty</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -128,7 +137,7 @@ if (empty($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/assignAdvisory.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Assign Advisory</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Advisory Class Assignment</span>
                         </a>
                     </li>
                     <!-- line 4 -->
@@ -136,17 +145,23 @@ if (empty($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/editlearningareas.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Scheduling</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Work Schedule Assignment</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/modifyCurriculum.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Curriculum</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Edit Curriculum</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/editSection.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Edit Section</span>
                         </a>
                     </li>
                     <!-- line 5 -->
-                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Reports</li>
+                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Attendance Report</li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/dailyReports.php">
                             <i class=""></i>
@@ -162,7 +177,7 @@ if (empty($_SESSION['AD_number'])) {
                     <!-- line 5 -->
                     <li class="nav-item nav-category" style="padding-top: 10px;"></li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">
+                        <a class="nav-link" href="../auth/logout.php">
                             <i class=""></i>
                             <span class="menu-title" style="color: #b9b9b9;">Logout</span>
                         </a>
@@ -181,119 +196,173 @@ if (empty($_SESSION['AD_number'])) {
                                     </div>
                                 </div>
                                 <div class="tab-content tab-content-basic">
-                                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                                        <div class="btn-group">
-                                            <div class="dropdown">
-                                                <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
-                                                    <?php if (isset($_GET['GradeLevel'])) {
-                                                        echo "Grade " . $_GET['GradeLevel'];
-                                                    } else {
-                                                        echo "Grade Level";
-                                                    }
-                                                    ?>
-                                                     <i class='fa fa-caret-down'></i>
-                                                </button>
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                    <?php
-                                                    $sectionList = "SELECT DISTINCT(S_yearLevel) FROM sections";
-                                                    $runsectionList = $mysqli->query($sectionList);
+                                    <form action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST" id="updateStatusForm">
+                                        <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                                            <div class="btn-group">
+                                                <div>
+                                                    <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                                                        <?php if (isset($_GET['GradeLevel'])) {
+                                                            echo "Grade " . $_GET['GradeLevel'];
+                                                        } else {
+                                                            echo "Grade Level";
+                                                        }
+                                                        ?>
+                                                        <i class='fa fa-caret-down'></i>
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                        <?php
+                                                        $gradelevelList = $mysqli->query("SELECT DISTINCT(S_yearLevel) FROM sections");
 
-                                                    while ($sectionData = $runsectionList->fetch_assoc()) { ?>
-                                                        <a class="dropdown-item" href="student.php?GradeLevel=<?php echo $sectionData['S_yearLevel'] ?>">
-                                                            <?php echo "Grade - " . $sectionData['S_yearLevel']; ?>
-                                                        </a>
-                                                    <?php } ?>
+                                                        while ($gradelevel = $gradelevelList->fetch_assoc()) { ?>
+                                                            <a class="dropdown-item" href="movingUp.php?GradeLevel=<?php echo $gradelevel['S_yearLevel'] ?>">
+                                                                <?php echo "Grade - " . $gradelevel['S_yearLevel']; ?>
+                                                            </a>
+                                                        <?php } ?>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-12 d-flex flex-column">
-                                                <div class="row flex-grow">
-                                                    <div class="col-md-6 col-lg-12 grid-margin stretch-card">
-                                                        <div class="card bg-primary card-rounded">
-                                                            <div class="table-responsive">
-                                                                <table class="table">
-                                                                    <thead>
-                                                                        <style>
-                                                                            .tablestyle {
-                                                                                border: 1px solid #ffffff;
-                                                                                text-align: center;
-                                                                                vertical-align: middle;
-                                                                                height: 30px;
-                                                                                color: #000000;
+                                            <div class="btn-group">
+                                                <div>
+                                                    <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                                                        <?php if (isset($_GET['section'])) {
+                                                            echo "Grade " . $_GET['section'];
+                                                        } else {
+                                                            echo "Section";
+                                                        }
+                                                        ?>
+                                                        <i class='fa fa-caret-down'></i>
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                        <?php
+                                                        $sectionList = $mysqli->query("SELECT S_name FROM sections WHERE S_yearLevel = '{$_GET['GradeLevel']}'");
+
+                                                        while ($section = $sectionList->fetch_assoc()) { ?>
+                                                            <a class="dropdown-item" href="movingUp.php?GradeLevel=<?php echo $_GET['GradeLevel'] ?>&section=<?php echo $section['S_name'] ?>">
+                                                                <?php echo "Grade - " . $section['S_name']; ?>
+                                                            </a>
+                                                        <?php } ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="btn-group" style="float: right;">
+                                                <div class="">
+                                                    <button type="button" id="updateStatus" class="btn btn-primary">Update</button>
+                                                    <button type="button" style="margin-right: 0px;" class="btn btn-light">Back</button>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-top: 15px;;">
+                                                <div class="col-lg-12 d-flex flex-column">
+                                                    <div class="row flex-grow">
+                                                        <div class="col-md-6 col-lg-12 grid-margin stretch-card">
+                                                            <div class="card bg-primary card-rounded">
+                                                                <div class="table-responsive">
+                                                                    <table class="table">
+                                                                        <thead>
+                                                                            <style>
+                                                                                .tablestyle {
+                                                                                    border: 1px solid #ffffff;
+                                                                                    text-align: center;
+                                                                                    vertical-align: middle;
+                                                                                    height: 30px;
+                                                                                    color: #000000;
+                                                                                }
+                                                                            </style>
+                                                                            <tr>
+                                                                                <th class="tablestyle">No.</th>
+                                                                                <th class="tablestyle">Student Name</th>
+                                                                                <th class="tablestyle">Grade and Section<br>(current)</th>
+                                                                                <th class="tablestyle">Remarks</th>
+                                                                                <th class="tablestyle">Action</th>
+                                                                                <th class="tablestyle">Move up to</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <?php
+                                                                            if (!empty($_GET['GradeLevel']) && empty($_GET['section'])) {
+                                                                                $ListofStudents = "SELECT * FROM studentrecord WHERE SR_grade = '{$_GET['GradeLevel']}' ORDER BY SR_number";
+                                                                            } else if (!empty($_GET['GradeLevel']) && !empty($_GET['section'])) {
+                                                                                $ListofStudents = "SELECT * FROM studentrecord WHERE SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['section']}' ORDER BY SR_number";
+                                                                            } else {
+                                                                                $ListofStudents = "SELECT * FROM studentrecord ORDER BY SR_number";
                                                                             }
-                                                                        </style>
-                                                                        <tr>
-                                                                            <th class="tablestyle">No.</th>
-                                                                            <th class="tablestyle">Student Name</th>
-                                                                            <th class="tablestyle">Grade and Section<br>(current)</th>
-                                                                            <th class="tablestyle">Remarks</th>
-                                                                            <th class="tablestyle">Move up to</th>
-                                                                            <th class="tablestyle">Action</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <?php
-                                                                        if (!empty($_GET['GradeLevel'])) {
-                                                                            $ListofStudents = "SELECT * FROM studentrecord WHERE SR_grade = '{$_GET['GradeLevel']}'";
-                                                                        } else {
-                                                                            $ListofStudents = "SELECT * FROM studentrecord ORDER BY SR_grade";
-                                                                        }
 
-                                                                        $resultListofStudents = $mysqli->query($ListofStudents);
-                                                                        $rowCount = 1;
+                                                                            $resultListofStudents = $mysqli->query($ListofStudents);
+                                                                            $rowCount = 1;
 
-                                                                        $numrows = mysqli_num_rows($resultListofStudents);
-                                                                        if ($numrows >= 1) {
-                                                                            while ($data = $resultListofStudents->fetch_assoc()) { ?>
-                                                                                <tr>
-                                                                                    <td class="tablestyle"><?php echo $rowCount ?></td>
-                                                                                    <td class="tablestyle"><?php echo $data['SR_number'] . " - " . $data['SR_lname'] . ", " . $data['SR_fname'] ?></td>
-                                                                                    <td class="tablestyle"><?php echo "Grade " . $data['SR_grade'] . " - " . $data['SR_section'] ?></td>
-                                                                                    <td class="tablestyle">Passed or Failed</td>
-                                                                                    <td class="tablestyle">
-                                                                                        <select class="form-select" aria-label="Default select example">
-                                                                                            <option value=""></option>
+                                                                            $numrows = mysqli_num_rows($resultListofStudents);
+                                                                            if ($numrows >= 1) {
+                                                                                while ($data = $resultListofStudents->fetch_assoc()) { ?>
+                                                                                    <tr>
+                                                                                        <td class="tablestyle"><?php echo $rowCount ?></td>
+                                                                                        <td class="tablestyle"><?php echo $data['SR_number'] . " - " . $data['SR_lname'] . ", " . $data['SR_fname'] ?></td>
+                                                                                        <td class="tablestyle"><?php echo "Grade " . $data['SR_grade'] . " - " . $data['SR_section'] ?></td>
+                                                                                        <td class="tablestyle">
                                                                                             <?php
-                                                                                            $sections = $mysqli->query("SELECT * FROM sections");
+                                                                                            $GradeStatus = $mysqli->query("SELECT ROUND(AVG(G_finalgrade)) AS finalgrade FROM grades WHERE SR_number = '{$data['SR_number']}'");
+                                                                                            $getAvgGrade = $GradeStatus->fetch_assoc();
 
-                                                                                            while ($listSections = $sections->fetch_assoc()) {
-                                                                                                echo '<option value="">Grade ' . $listSections['S_yearLevel'] . ' - ' . $listSections['S_name'] . '</option>';
+                                                                                            if ($getAvgGrade['finalgrade'] >= 75) {
+                                                                                                echo "PASSED";
+                                                                                            } else {
+                                                                                                echo "FAILED";
                                                                                             }
                                                                                             ?>
-                                                                                        </select>
-                                                                                    </td>
-                                                                                    <td class="tablestyle">
-                                                                                        <select class="form-select" aria-label="Default select example">
-                                                                                            <option value=""></option>
-                                                                                            <option value="Dropped">Dropped</option>
-                                                                                            <option value="MovingUp">Moving Up</option>
-                                                                                            <option value="Transferring">Transferring</option>
-                                                                                        </select>
-                                                                                    </td>
+                                                                                        </td>
+                                                                                        <td class="tablestyle">
+                                                                                            <select class="form-select" aria-label="Default select example">
+                                                                                                <option value=""></option>
+                                                                                                <option value="Dropped">Dropped</option>
+                                                                                                <option value="MovingUp">Moving Up</option>
+                                                                                                <option value="Transferring">Transferring</option>
+                                                                                            </select>
+                                                                                        </td>
+                                                                                        <td class="tablestyle">
+                                                                                            <?php
+                                                                                            if ($getAvgGrade['finalgrade'] >= 75) { ?>
+                                                                                                <select class="form-select" aria-label="Default select example">
+                                                                                                    <option value=""></option>
+                                                                                                    <?php
+                                                                                                    if ($data['SR_grade'] == "KINDER") {
+                                                                                                        $data['SR_grade'] = 0;
+                                                                                                    }
+                                                                                                    $next = $data['SR_grade'] + 1;
+                                                                                                    $sections = $mysqli->query("SELECT S_name, S_yearLevel FROM sections WHERE S_yearLevel = '{$next}'");
+
+                                                                                                    if ($data['SR_grade'] == 6) {
+                                                                                                        echo '<option value="">Graduation</option>';
+                                                                                                    } else {
+                                                                                                        while ($listSections = $sections->fetch_assoc()) {
+                                                                                                            echo '<option value="">Grade ' . $listSections['S_yearLevel'] . ' - ' . $listSections['S_name'] . '</option>';
+                                                                                                        }
+                                                                                                    }
+                                                                                                    ?>
+                                                                                                </select>
+                                                                                            <?php
+                                                                                            } else { ?>
+                                                                                                <select class="form-select" aria-label="Default select example" disabled></select>
+                                                                                            <?php }
+                                                                                            ?>
+                                                                                        </td>
+
+                                                                                    </tr>
+                                                                                <?php $rowCount++;
+                                                                                }
+                                                                            } else if ($numrows == 0) { ?>
+                                                                                <tr>
+                                                                                    <td colspan="10">No Data.</td>
                                                                                 </tr>
-                                                                            <?php $rowCount++;
-                                                                            }
-                                                                        } else if ($numrows == 0) { ?>
-                                                                            <tr>
-                                                                                <td colspan="10">No Data.</td>
-                                                                            </tr>
-                                                                        <?php } ?>
-                                                                    </tbody>
-                                                                </table>
+                                                                            <?php } ?>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                         </div>
-                                    </div>
+                                    </form>
                                 </div>
-                            </div>
-                            <div style="text-align: center;">
-                                <button type="submit" class="btn btn-primary">Update</button>
-                                <button class="btn btn-light">Back</button>
                             </div>
                         </div>
                     </div>
@@ -368,6 +437,30 @@ if (empty($_SESSION['AD_number'])) {
 
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>
     <script src="../assets/js/admin/off-canvas.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+    <script>
+        const updateStatusForm = document.getElementById('updateStatusForm');
+        const updateStatus = document.getElementById('updateStatus');
+        updateStatus.addEventListener('click', function() {
+            Swal.fire({
+                title: 'Are you sure you want to save your changes?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: `No`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Successfully changed!',
+                        icon: 'success',
+                    })
+                    updateStatusForm.submit();
+                }
+            })
+
+        })
+    </script>
 </body>
 
 </html>
