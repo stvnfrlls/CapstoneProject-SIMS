@@ -14,7 +14,7 @@ if (!isset($_SESSION['AD_number'])) {
 
 <head>
     <meta charset="utf-8">
-    <title>Create Announcement</title>
+    <title>Create School Announcement</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -89,7 +89,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/announcement.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Announcements</span>
+                            <span class="menu-title" style="color: #b9b9b9;">School Announcements</span>
                         </a>
                     </li>
                     <!-- line 2 -->
@@ -218,14 +218,20 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     <div class="col-md-6">
                                                                         <div class="form-floating">
                                                                             <input type="email" class="form-control" name="date" value="<?php echo  date('M/d/Y') ?>" readonly>
-                                                                            <label for="email">Date of the Event</label>
+                                                                            <label for="email">Date Posted</label>
                                                                         </div>
                                                                     </div>
 
-                                                                    <div class="col-12">
+                                                                    <div class="col-6">
                                                                         <div class="form-floating">
                                                                             <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject">
                                                                             <label for="subject">Title</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <div class="form-floating">
+                                                                        <input type="date" class="form-control" name="date" value="<?php echo  date('M/d/Y') ?>">
+                                                                            <label for="email">Date of the Event</label>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-12">
