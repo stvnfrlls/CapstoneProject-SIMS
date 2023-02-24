@@ -180,7 +180,7 @@ if (!isset($_SESSION['AD_number'])) {
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="row">
-                        <form action="" method="post">
+                        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" id="announcementFORM">
                             <div class="col-sm-12">
                                 <div class="home-tab">
                                     <div class="d-sm-flex align-items-center justify-content-between border-bottom">
@@ -199,20 +199,22 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 <div class="row g-3">
                                                                     <div class="col-md-6">
                                                                         <div class="form-floating">
-                                                                            <input type="text" class="form-control" id="name" name="author" value="<?php echo "ADMIN: " . $adminData['AD_name'] ?>" placeholder="Your Name" readonly>
+                                                                            <input type="hidden" name="postAnnouncement" value="true">
+                                                                            <input type="hidden" name="author" value="<?php echo $adminData['AD_number'] ?>">
+                                                                            <input type="text" class="form-control" id="name" value="<?php echo $adminData['AD_name'] ?>" placeholder="Your Name" readonly>
                                                                             <label for="name">Your Name</label>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <div class="form-floating">
-                                                                            <input type="email" class="form-control" name="date" value="<?php echo  date('M/d/Y') ?>" readonly>
+                                                                            <input type="email" class="form-control" name="date" value="<?php echo  date('m/d/Y') ?>" readonly>
                                                                             <label for="email">Date of the Event</label>
                                                                         </div>
                                                                     </div>
 
                                                                     <div class="col-12">
                                                                         <div class="form-floating">
-                                                                            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject">
+                                                                            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
                                                                             <label for="subject">Title</label>
                                                                         </div>
                                                                     </div>
@@ -234,8 +236,8 @@ if (!isset($_SESSION['AD_number'])) {
                                 </div>
                             </div>
                             <div style="text-align: center;">
-                                <button type="submit" name="postAnnouncement" class="btn btn-primary me-2">Post</button>
-                                <button class="btn btn-light">Back</button>
+                                <button type="button" id="post_confirmation_modal_button" name="postAnnouncement" class="btn btn-primary me-2">Post</button>
+                                <button type="button" class="btn btn-light">Back</button>
                             </div>
                         </form>
                     </div>
@@ -247,7 +249,6 @@ if (!isset($_SESSION['AD_number'])) {
         <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
-    <button id="hatdog"> click hatdog </button>
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
@@ -315,8 +316,10 @@ if (!isset($_SESSION['AD_number'])) {
     <script src="../assets/js/admin/file-upload.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
     <script>
-        const myButton = document.getElementById('hatdog');
-        hatdog.addEventListener('click', function() {
+        const postButton = document.getElementById('post_confirmation_modal_button');
+        const form = document.getElementById('announcementFORM');
+
+        postButton.addEventListener('click', function(event) {
             Swal.fire({
                 title: 'Are you sure you want to create this announcement?',
                 showCancelButton: true,
@@ -325,13 +328,11 @@ if (!isset($_SESSION['AD_number'])) {
             }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                    window.location.href = '../admin/announcement.php';
+                    form.submit();
                 }
             })
-
         })
     </script>
-
 </body>
 
 </html>

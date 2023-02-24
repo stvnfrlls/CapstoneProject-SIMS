@@ -177,7 +177,7 @@ if (!isset($_SESSION['AD_number'])) {
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="row">
-                        <form class="form-sample" action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
+                        <form class="form-sample" action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="adminForm">
                             <div class="col-sm-12">
                                 <div class="home-tab">
                                     <div class="d-sm-flex align-items-center justify-content-between border-bottom">
@@ -196,6 +196,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 <div class="col-md-12">
                                                                     <label class="col-sm-12 col-form-label">Full Name</label>
                                                                     <div class="col-sm-12">
+                                                                        <input type="hidden" name="addAdmin" value="submit">
                                                                         <input type="text" class="form-control" name="adminName" required>
                                                                     </div>
                                                                 </div>
@@ -212,7 +213,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 <div class="col-md-12">
                                                                     <label class="col-sm-12 col-form-label">Enter Password</label>
                                                                     <div class="col-sm-12">
-                                                                        <input type="password" class="form-control" name="adminPassword">
+                                                                        <input type="password" class="form-control" name="adminPassword" required>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -220,7 +221,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 <div class="col-md-12">
                                                                     <label class="col-sm-12 col-form-label">Confirm Password</label>
                                                                     <div class="col-sm-12">
-                                                                        <input type="password" class="form-control" name="confirmPassword">
+                                                                        <input type="password" class="form-control" name="confirmPassword" required>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -232,9 +233,10 @@ if (!isset($_SESSION['AD_number'])) {
                                     </div>
                                 </div>
                                 <div style="text-align: center;">
-                                    <button type="submit" class="btn btn-primary me-2" name="addAdmin">Create</button>
-                                    <button class="btn btn-light">Back</button>
+                                    <button type="button" id="createAdmin" class="btn btn-primary me-2">Create</button>
+                                    <button type="button" class="btn btn-light">Back</button>
                                 </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -246,7 +248,7 @@ if (!isset($_SESSION['AD_number'])) {
     <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
-    <button id="hatdog"> click hatdog </button>
+
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
@@ -313,8 +315,9 @@ if (!isset($_SESSION['AD_number'])) {
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
     <script>
-        const myButton = document.getElementById('hatdog');
-        hatdog.addEventListener('click', function() {
+        const createAdmin = document.getElementById('createAdmin');
+        const adminForm = document.getElementById('adminForm')
+        createAdmin.addEventListener('click', function() {
             Swal.fire({
                 title: 'Are you sure you want to create this account?',
                 showCancelButton: true,
@@ -323,13 +326,15 @@ if (!isset($_SESSION['AD_number'])) {
             }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                    Swal.fire('', 'Your changes have been saved successfully.', 'success').then(() => {
-                    // Add your function here
-                    window.location.href = '../admin/createAdmin.php';
-                });
+                    setTimeout(() => {
+                        adminForm.submit();
+                    }, 3000);
+                    Swal.fire({
+                        title: 'Successfully Created!',
+                        icon: 'success',
+                    })
                 }
             })
-
         })
     </script>
 </body>

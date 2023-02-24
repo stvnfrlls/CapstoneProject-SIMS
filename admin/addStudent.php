@@ -524,7 +524,7 @@ if (!isset($_SESSION['AD_number'])) {
     <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
-    <button id="hatdog"> click hatdog </button>
+
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
@@ -636,32 +636,6 @@ if (!isset($_SESSION['AD_number'])) {
 
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>
     <script src="../assets/js/admin/off-canvas.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
-    <script>
-        const myButton = document.getElementById('hatdog');
-        hatdog.addEventListener('click', function() {
-            Swal.fire({
-                title: 'Are you sure you want to register this student?',
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: `No`,
-            }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        title: 'The student has been registered successfully!',
-                        icon: 'success',
-                    }).then(() => {
-                        // Add your function here
-                        window.location.href = '../admin/viewStudent.php';
-                    });
-                }
-            })
-
-        })
-    </script>
- 
 </body>
 
 </html>
