@@ -365,8 +365,6 @@ if (isset($_POST['student']) || isset($_POST['fetcher'])) {
                        <b>Fetched By: </b>' . $fetcherID . '<br>';
             $mail->send();
         }
-    } else {
-        function_alert("Student already timed out");
     }
 }
 if (isset($_POST['encode'])) {
@@ -579,14 +577,14 @@ if (isset($_POST['regStudent'])) {
     $timeAdded = date("Y/m/d");
 
     $regStudent = "INSERT INTO studentrecord(
-                    SR_number, SR_year, 
+                    SR_number, 
                     SR_lname, SR_fname, SR_mname, SR_suffix,
                     SR_age, SR_birthday, SR_birthplace, SR_gender,
                     SR_religion, SR_citizenship, SR_grade, SR_section,
                     SR_address, SR_barangay, SR_city, SR_state, SR_postal, 
                     SR_email, SR_added)
                     VALUES(
-                    '$SR_number', '$year', 
+                    '$SR_number', 
                     '$S_lname', '$S_fname', '$S_mname', '$S_suffix',
                     '$S_age', '$S_birthday', '$S_birthplace', '$S_gender',
                     '$S_religion','$S_citizenship', '$S_grade', '$S_section',
@@ -605,7 +603,6 @@ if (isset($_POST['regStudent'])) {
                     '$G_email', '$G_relationshipStudent', '$G_telephone', '$G_contact')";
     $RunregGuardian = $mysqli->query($regGuardian);
 
-    // How to Validate Password Strength in PHP
     // Password must be at least 8 characters in length.
     // Password must include at least one upper case letter.
     // Password must include at least one number.
@@ -616,7 +613,6 @@ if (isset($_POST['regStudent'])) {
         $GenPass = generatePassword();
         $createStudentLoginCredentials = $mysqli->query("INSERT INTO userdetails(SR_email, SR_password, role)
                                                          VALUES ('$S_email', '$GenPass', 'student')");
-        $Fullname = $S_lname . ", " . $S_fname . " " . $S_mname . " " . $S_suffix;
 
         $mail->addAddress($S_email);
         $mail->Subject = 'STUDENT REGISTRATION';
@@ -928,7 +924,41 @@ if (isset($_POST['addAdmin'])) {
 if (isset($_POST['setSchedule'])) {
     $assignedFaculty = $_POST['assignedFaculty'];
     $subjectname = $_POST['subjectname'];
-    $timeID = $_POST['timeslots'];
+    $startime = $_POST['WS_start_time'];
+    $endtime = timeMinusOneMinute($_POST['WS_end_time']);
+
+    $checktime = $mysqli->query("SELECT * FROM workschedule 
+                                WHERE F_number = '{$assignedFaculty}' 
+                                AND SR_section = '{$_GET['GradeLevel']}' 
+                                AND (WS_start_time BETWEEN '{$startime}' 
+                                AND '{$endtime}') 
+                                OR (WS_end_time BETWEEN '{$startime}' AND '{$endtime}')");
+    if (mysqli_num_rows($checktime) == 0) {
+        $AddSchedule = $mysqli->query("INSERT INTO workschedule(F_number, S_subject, SR_grade, SR_section, WS_start_time, WS_end_time) VALUES('{$assignedFaculty}', '{$subjectname}', '{$_GET['GradeLevel']}', '{$_GET['SectionName']}', '{$startime}', '{$endtime}')");
+    } else {
+        $getdata = $checktime->fetch_assoc();
+        $errors['nocontent'] = "Conflict with Schedule on Grade " . $getdata['SR_grade'] . " - " . $getdata['SR_section'] . ". Scheduled " . $getdata['WS_start_time'] . " to " . $getdata['WS_end_time'];
+    }
+
+    // $checkfacultytime = $myDqli->query("SELECT * FROM workschedule 
+    //                                 WHERE F_number = '{$assignedFaculty}' AND 
+    //                                 SR_section = '{$_GET['SectionName']}' AND
+    //                                 (WS_start_time BETWEEN '{$startime}' AND '{$endtime}') OR 
+    //                                 (WS_end_time BETWEEN '{$startime}' AND '{$endtime}') OR
+    //                                 ('{$startime}' BETWEEN WS_start_time AND WS_end_time)
+    //                                 ");
+    // $checkSchedule = $mysqli->query("SELECT WS_start_time, WS_end_time FROM workschedule
+    //                 WHERE F_number = '{$assignedFaculty}' AND
+    //                 (WS_start_time BETWEEN '{$startime}' AND '{$endtime}') OR 
+    //                 (WS_end_time BETWEEN '{$startime}' AND '{$endtime}') OR
+    //                 ('{$startime}' BETWEEN WS_start_time AND WS_end_time)");
+
+    // if ($checkSchedule->num_rows == 0) {
+    //     $setSchedule = $mysqli->query("INSERT INTO workschedule (F_number, S_subject, SR_grade, SR_section, WS_start_time, WS_end_time) 
+    //                                 VALUES ('{$assignedFaculty}', '{$subjectname}', '{$_GET['GradeLevel']}', '{$_GET['SectionName']}', '{$startime}', '{$endtime}')");
+    // } else {
+    //     echo "ASSIGNING FAIL CONFLICT IN TIME";
+    // }
 
     // $checkTeacherDuplicate = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$assignedFaculty}' AND S_subject = '{$subjectname}' AND SR_section = '{$_GET['SectionName']}'");
     // if ($checkTeacherDuplicate->num_rows > 0) {
@@ -942,7 +972,23 @@ if (isset($_POST['setSchedule'])) {
 if (isset($_POST['updateSchedule'])) {
     $assignedFaculty = $_POST['assignedFaculty'];
     $subjectname = $_POST['subjectname'];
-    $timeID = $_POST['timeslots'];
+    $startime = $_POST['WS_start_time'];
+    $endtime = timeMinusOneMinute($_POST['WS_end_time']);
+
+    // $checkSchedule = $mysqli->query("SELECT S_subject, WS_start_time, WS_end_time FROM workschedule
+    //                 WHERE F_number = '{$assignedFaculty}' AND
+    //                 (WS_start_time BETWEEN '{$startime}' AND '{$endtime}') OR 
+    //                 (WS_end_time BETWEEN '{$startime}' AND '{$endtime}') OR
+    //                 ('{$startime}' BETWEEN WS_start_time AND WS_end_time) ");
+    // $scheduleData = $checkSchedule->fetch_assoc();
+
+    // if ($checkSchedule->num_rows == 0) {
+    //     $setSchedule = $mysqli->query("UPDATE workschedule SET WS_start_time = '{$startime}', WS_end_time = '{$endtime}' WHERE S_subject = '{$subjectname}' AND F_number = '{$assignedFaculty}' AND SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['SectionName']}'");
+    // } elseif ($scheduleData['S_subject'] == $subjectname) {
+    //     $setSchedule = $mysqli->query("UPDATE workschedule SET WS_start_time = '{$startime}', WS_end_time = '{$endtime}' WHERE S_subject = '{$subjectname}' AND F_number = '{$assignedFaculty}' AND SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['SectionName']}'");
+    // } else {
+    //     echo "UPDATE FAIL CONFLICT IN TIME";
+    // }
 
     // $checkTime = $mysqli->query("SELECT * FROM workschedule WHERE WS_time = '{$timeID}'");
     // if ($checkTime->num_rows > 0) {

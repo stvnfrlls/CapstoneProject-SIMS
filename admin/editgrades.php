@@ -280,7 +280,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <?php } ?>
                     <div class="row" style="margin-top: 15px;;">
                       <div class="col-lg-12 d-flex flex-column">
-                        <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
+                        <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="gradeForm">
                           <input type="hidden" value="<?php echo $_SERVER['REQUEST_URI'] ?>" name="current_url">
                           <div class="row flex-grow">
                             <div class="col-md-6 col-lg-12 grid-margin stretch-card">
@@ -323,6 +323,7 @@ if (!isset($_SESSION['AD_number'])) {
                                       </tr>
                                     </thead>
                                     <tbody>
+                                      <input type="hidden" name="UpdateGrade" value="submit">
                                       <?php if (!empty(isset($_GET['Section'])) && !empty(isset($_GET['LearningArea']))) {
                                         $byGradeLevel = $_GET['Section'];
                                         $bySubject = $_GET['LearningArea'];
@@ -428,8 +429,8 @@ if (!isset($_SESSION['AD_number'])) {
             </div>
           </div>
           <div style="text-align: center;">
-            <button type="submit" class="btn btn-primary" name="UpdateGrade">Update</button>
-            <button class="btn btn-light">Back</button>
+            <button type="button" class="btn btn-primary" id="confirmChanges">Update</button>
+            <button type="button" class="btn btn-light">Back</button>
           </div>
         </div>
         <!-- content-wrapper ends -->
@@ -439,7 +440,7 @@ if (!isset($_SESSION['AD_number'])) {
     <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
-  <button id="hatdog"> click hatdog </button>
+
   <!-- Footer Start -->
   <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
     <div class="container py-5">
@@ -506,8 +507,10 @@ if (!isset($_SESSION['AD_number'])) {
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
   <script>
-    const myButton = document.getElementById('hatdog');
-    hatdog.addEventListener('click', function() {
+    const confirmChanges = document.getElementById('confirmChanges');
+    const gradeForm = document.getElementById('gradeForm');
+
+    confirmChanges.addEventListener('click', function() {
       Swal.fire({
         title: 'Are you sure you want save your changes?',
         showCancelButton: true,
@@ -516,10 +519,14 @@ if (!isset($_SESSION['AD_number'])) {
       }).then((result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
+          setTimeout(() => {
+            gradeForm.submit();
+          }, 3000);
           Swal.fire({
             title: 'Successfully changed!',
             icon: 'success',
           })
+
         }
       })
 
