@@ -1,9 +1,7 @@
 <?php
 require_once("../assets/php/server.php");
 
-$ST_number = $_SESSION['SR_number'];
-
-$studentInformation = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$ST_number}'");
+$studentInformation = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$_GET['SR_Number']}'");
 $studentData = $studentInformation->fetch_assoc();
 
 $GradeSection = $mysqli->query("SELECT * FROM sections WHERE S_yearLevel = '{$studentData['SR_grade']}' AND S_name = '{$studentData['SR_section']}'");
@@ -12,7 +10,7 @@ $GradeSectionData = $GradeSection->fetch_assoc();
 $Faculty = $mysqli->query("SELECT F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$GradeSectionData['S_adviser']}'");
 $FacultyData = $Faculty->fetch_assoc();
 
-$getStudentGrades = "SELECT * FROM grades WHERE SR_number = '$ST_number'";
+$getStudentGrades = "SELECT * FROM grades WHERE SR_number = '{$_GET['SR_Number']}'";
 $resultgetStudentGrades = $mysqli->query($getStudentGrades);
 ?>
 <!DOCTYPE html>
@@ -202,8 +200,8 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                 </div>
                                 <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
                                     <nav class="nav">
-                                        <a class="nav-link " href="../admin/viewStudent.php" target="__blank">Profile</a>
-                                        <a class="nav-link active ms-0" href="../admin/viewGrades.php" target="__blank" style="color: #c02628;">Grades</a>
+                                        <a class="nav-link " href="../admin/viewStudent.php?SR_Number=<?php echo $_GET['SR_Number'] ?>">Profile</a>
+                                        <a class="nav-link active ms-0" href="../admin/viewGrades.php?SR_Number=<?php echo $_GET['SR_Number'] ?>" style="color: #c02628;">Grades</a>
                                     </nav>
                                     <div class="border-bottom"></div>
                                 </div>
@@ -242,7 +240,7 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                                                 </thead>
                                                                 <tbody>
                                                                     <?php
-                                                                    $studentGrades = $mysqli->query("SELECT * FROM grades WHERE SR_number = '{$_SESSION['SR_number']}'");
+                                                                    $studentGrades = $mysqli->query("SELECT * FROM grades WHERE SR_number = '{$_GET['SR_Number']}'");
                                                                     while ($studentGradesData = $studentGrades->fetch_assoc()) { ?>
                                                                         <tr>
                                                                             <td class="hatdog"><?php echo $studentGradesData['G_learningArea']; ?></td>
@@ -345,13 +343,13 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                                                 <tbody>
                                                                     <?php
                                                                     $getBehaviorData = $mysqli->query("SELECT 
-                                                behavior_category.B_ID, behavior_category.core_value_area, behavior_category.core_value_subheading,
-                                                behavior.SR_number, behavior.CV_Area, behavior.CV_valueQ1,
-                                                behavior.CV_valueQ2, behavior.CV_valueQ3, behavior.CV_valueQ4
-                                                FROM behavior_category
-                                                INNER JOIN behavior 
-                                                ON behavior_category.core_value_area = behavior.CV_Area
-                                                WHERE behavior.SR_number = '{$_SESSION['SR_number']}'");
+                                                                                                    behavior_category.B_ID, behavior_category.core_value_area, behavior_category.core_value_subheading,
+                                                                                                    behavior.SR_number, behavior.CV_Area, behavior.CV_valueQ1,
+                                                                                                    behavior.CV_valueQ2, behavior.CV_valueQ3, behavior.CV_valueQ4
+                                                                                                    FROM behavior_category
+                                                                                                    INNER JOIN behavior 
+                                                                                                    ON behavior_category.core_value_area = behavior.CV_Area
+                                                                                                    WHERE behavior.SR_number = '{$_GET['SR_Number']}'");
                                                                     $getBehaviorAreas = $mysqli->query("SELECT * FROM behavior_category");
                                                                     $BehaviorDataArray = array();
                                                                     while ($DataBehaviorCategory = $getBehaviorAreas->fetch_assoc()) {
@@ -418,7 +416,7 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                 </div>
                             </div>
                             <div style="text-align: center;">
-                                <a href="editstudent.php?SR_Number=<?php echo $_GET['SR_Number'] ?>" class="btn btn-primary me-2">Print</a>
+                                <a href="../reports/ReportCard.php?ID=<?php echo $_GET['SR_Number'] ?>" class="btn btn-primary me-2">Print</a>
                                 <button class="btn btn-light">Back</button>
                             </div>
                         </div>

@@ -216,8 +216,8 @@ if (!isset($_SESSION['AD_number'])) {
                                 </div>
                                 <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
                                     <nav class="nav">
-                                        <a class="nav-link active ms-0" href="../admin/viewStudent.php" target="__blank" style="color: #c02628;">Profile</a>
-                                        <a class="nav-link" href="../admin/viewGrades.php" target="__blank">Grades</a>
+                                        <a class="nav-link " href="../admin/viewStudent.php?SR_Number=<?php echo $_GET['SR_Number'] ?>" style="color: #c02628;">Profile</a>
+                                        <a class="nav-link active ms-0" href="../admin/viewGrades.php?SR_Number=<?php echo $_GET['SR_Number'] ?>">Grades</a>
                                     </nav>
                                     <div class="border-bottom"></div>
                                 </div>
