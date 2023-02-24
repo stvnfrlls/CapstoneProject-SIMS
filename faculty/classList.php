@@ -54,11 +54,13 @@ if (!isset($_SESSION['F_number'])) {
 
 <body>
   <!-- Navbar Start -->
-  <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-    <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
-    <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-      <span class="fa fa-bars"></span>
-    </button>
+  <nav class="fixed-top align-items-top">
+    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+      <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
+      <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+        <span class="fa fa-bars"></span>
+      </button>
+    </nav>
   </nav>
   <!-- Navbar End -->
 
@@ -179,7 +181,7 @@ if (!isset($_SESSION['F_number'])) {
                                 ?>
                                 <i class="fa fa-caret-down"></i>
                               </button>
-                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2" >
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
                                 <?php
                                 $rowCount = 1;
                                 $GradeSectionRowCount = sizeof($array_GradeSection);
