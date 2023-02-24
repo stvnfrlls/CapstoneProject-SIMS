@@ -3,10 +3,15 @@ require '../assets/fpdf/fpdf.php';
 require_once("../assets/php/server.php");
 
 if (isset($_GET['GradeLevel']) && isset($_GET['section'])) {
+
     class PDF extends FPDF
     {
+
         function Header()
         {
+            $mysqli = new mysqli("localhost", "root", "", "sis_cdsp");
+            $getAcadYear = $mysqli->query("SELECT * FROM acad_year");
+            $acadYear_Data = $getAcadYear->fetch_assoc();
             //Logo Image
             $this->Image('../assets/img/favicon.png', 50, 15, 20, 20);
             // Select Arial bold 15
@@ -35,7 +40,8 @@ if (isset($_GET['GradeLevel']) && isset($_GET['section'])) {
             $this->Cell(45, 3, 'PROGRESS REPORT CARD', 0, 2, 'C');
 
             $this->SetFont('Arial', '', 7);
-            $this->Cell(45, 3, 'School Year: ####-####', 0, 2, 'C');
+
+            $this->Cell(45, 3, 'School Year: ' . $acadYear_Data['currentYear'] . " - " . $acadYear_Data['endYear'], 0, 2, 'C');
             // Line break
             $this->Ln(5);
             $this->SetFont('Arial', 'B', 12);
