@@ -198,7 +198,7 @@ if (!isset($_SESSION['AD_number'])) {
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="row">
-                        <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
+                        <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="editstudentform">
                             <div class="col-sm-12">
                                 <div class="home-tab">
                                     <div class="d-sm-flex align-items-center justify-content-between border-bottom">
@@ -465,24 +465,6 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="row" style="padding-bottom: 15px;">
-                                                                <div class="col-md-6">
-                                                                    <label label class="col-sm-12 col-form-label">Schedule <span style="color: red;">*</span></label>
-                                                                    <div class="col-sm-12">
-                                                                        <select class="form-select" disabled>
-                                                                            <option>UNDER DEVELOPMENT</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <label label class="col-sm-12 col-form-label" style="color:white;"> .</label>
-                                                                    <div class="col-sm-12">
-                                                                        <select class="form-select" disabled>
-                                                                            <option>UNDER DEVELOPMENT</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -492,8 +474,9 @@ if (!isset($_SESSION['AD_number'])) {
 
                                 </div>
                                 <div style="text-align: center;">
-                                    <button type="submit" class="btn btn-primary me-2" name="updateInformation">Save</button>
-                                    <button class="btn btn-light">Back</button>
+                                    <input type="hidden" name="updateInformation" value="submit">
+                                    <button type="button" id="updateInformation" class="btn btn-primary me-2">Save</button>
+                                    <button type="button" class="btn btn-light">Back</button>
                                 </div>
                             </div>
                         </form>
@@ -507,7 +490,7 @@ if (!isset($_SESSION['AD_number'])) {
     <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
-    <button id="hatdog"> click hatdog </button>
+
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
@@ -574,8 +557,9 @@ if (!isset($_SESSION['AD_number'])) {
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
     <script>
-        const myButton = document.getElementById('hatdog');
-        hatdog.addEventListener('click', function() {
+        const editstudentform = document.getElementById('editstudentform');
+        const updateInformation = document.getElementById('updateInformation');
+        updateInformation.addEventListener('click', function() {
             Swal.fire({
                 title: 'Are you sure you want to save your changes?',
                 showCancelButton: true,
@@ -588,6 +572,8 @@ if (!isset($_SESSION['AD_number'])) {
                         title: 'Successfully changed!',
                         icon: 'success',
                     })
+                    editstudentform.submit();
+                    window.location.href = '../admin/student.php';
                 }
             })
 

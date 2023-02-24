@@ -286,7 +286,7 @@ if (empty($_SESSION['AD_number'])) {
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                             <?php
                             while ($sectionData = $runsectionList->fetch_assoc()) { ?>
-                              <a class="dropdown-item" href="<?php echo $current_url . "&SectionName=" . $sectionData['S_name']; ?>">
+                              <a class="dropdown-item" href="editlearningareas.php?GradeLevel=<?php echo $_GET['GradeLevel'] . "&SectionName=" . $sectionData['S_name']; ?>">
                                 <?php
                                 echo $sectionData['S_name'];
                                 ?>
@@ -296,8 +296,20 @@ if (empty($_SESSION['AD_number'])) {
                         </div>
                       <?php } ?>
                     </div>
-
-                    <div class="row" style="margin-top: 15px;">
+                    <?php
+                    if (count($errors) > 0) {
+                    ?>
+                      <div class="alert alert-danger text-center">
+                        <?php
+                        foreach ($errors as $showerror) {
+                          echo $showerror;
+                        }
+                        ?>
+                      </div>
+                    <?php
+                    }
+                    ?>
+                    <div class="row">
                       <div class="col-lg-12 d-flex flex-column">
                         <div class="row flex-grow">
                           <div class="col-md-6 col-lg-12 grid-margin stretch-card">
@@ -331,7 +343,7 @@ if (empty($_SESSION['AD_number'])) {
                                             <td>
                                               <?php
                                               $getAllFacultyName = "SELECT faculty.F_number, faculty.F_lname, faculty.F_fname, faculty.F_mname, faculty.F_suffix
-                                                                  FROM faculty LEFT JOIN workschedule ON faculty.F_number = workschedule.F_number WHERE workschedule.F_number IS NULL";
+                                                                  FROM faculty LEFT JOIN workschedule ON faculty.F_number = workschedule.F_number";
                                               $runAllFacultyName = $mysqli->query($getAllFacultyName);
                                               while ($dataAllFacultyName = $runAllFacultyName->fetch_assoc()) {
                                                 $AllFacultyName[] = $dataAllFacultyName;
