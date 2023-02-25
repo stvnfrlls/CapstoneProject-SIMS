@@ -4,12 +4,11 @@ require_once("../assets/php/server.php");
 if (empty($_SESSION['AD_number'])) {
   header('Location: ../auth/login.php');
 } else {
-  $gradeList = "SELECT DISTINCT S_yearLevel FROM sections";
+  $gradeList = "SELECT DISTINCT S_yearLevel FROM sections WHERE acadYear = '{$currentSchoolYear}'";
   $rungradeList = $mysqli->query($gradeList);
 
   if (isset($_GET['GradeLevel'])) {
-    $current_url = $_SERVER["REQUEST_URI"];
-    $sectionList = "SELECT S_name FROM sections WHERE S_yearLevel = '{$_GET['GradeLevel']}'";
+    $sectionList = "SELECT DISTINCT(S_name) FROM sections WHERE S_yearLevel = '{$_GET['GradeLevel']}' AND acadYear = '{$currentSchoolYear}'";
     $runsectionList = $mysqli->query($sectionList);
   }
 
@@ -43,7 +42,8 @@ if (empty($_SESSION['AD_number'])) {
 
     $getSchedule = "SELECT F_number, S_subject, WS_start_time, WS_end_time FROM workschedule
                   WHERE SR_grade = '{$_GET['GradeLevel']}' 
-                  AND SR_section = '{$_GET['SectionName']}'";
+                  AND SR_section = '{$_GET['SectionName']}'
+                  AND acadYear = '{$currentSchoolYear}'";
     $rungetSchedule = $mysqli->query($getSchedule);
     while ($dataSchedule = $rungetSchedule->fetch_assoc()) {
       $schedule[] = $dataSchedule;
@@ -350,7 +350,7 @@ if (empty($_SESSION['AD_number'])) {
                                               }
                                               $arrayRowCount = 1;
                                               $arrayCount = count($AllFacultyName); ?>
-                                              <select class="form-select" name="assignedFaculty" aria-label="Default select example">
+                                              <select class="form-select" name="assignedFaculty" aria-label="Default select example" required>
                                                 <?php
                                                 $getFacultyName = $mysqli->query("SELECT F_number, F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$schedule[$rowCount]['F_number']}'");
                                                 while ($dataFacultyName = $getFacultyName->fetch_assoc()) {
@@ -359,7 +359,7 @@ if (empty($_SESSION['AD_number'])) {
                                                 if (empty($schedule[$rowCount]['F_number'])) {
                                                   echo "<option selected></option>";
                                                 } else {
-                                                  echo "<option>" . $FacultyName[$rowCount]['F_lname'] .  ", " . $FacultyName[$rowCount]['F_fname'] . " " . substr($FacultyName[$rowCount]['F_mname'], 0, 1);
+                                                  echo "<option selected value=" . $FacultyName[$rowCount]['F_number'] . ">" . $FacultyName[$rowCount]['F_lname'] .  ", " . $FacultyName[$rowCount]['F_fname'] . " " . substr($FacultyName[$rowCount]['F_mname'], 0, 1);
                                                   "</option";
                                                 }
                                                 ?>
@@ -392,7 +392,7 @@ if (empty($_SESSION['AD_number'])) {
                                               if (empty($schedule[$rowCount]['WS_start_time'])) {
                                                 echo '<input type="time" class="form-control" name="WS_end_time">';
                                               } else {
-                                                echo '<input type="time" class="form-control" name="WS_end_time" value=' . timeRoundUp($schedule[$rowCount]['WS_end_time']) . '>';
+                                                echo '<input type="time" class="form-control" name="WS_end_time" value=' . $schedule[$rowCount]['WS_end_time'] . '>';
                                               }
                                               ?>
                                             </td>
@@ -409,9 +409,11 @@ if (empty($_SESSION['AD_number'])) {
 
                                               <?php
                                               if (empty($schedule[$rowCount]['F_number'])) {
-                                                echo '<input type="submit" style="color: #ffffff;" class="btn btn-primary" name="setSchedule" value="SET">';
+                                                echo '<input type="submit" class="btn btn-primary" name="setSchedule" value="SET">';
+                                                echo '<input type="submit" class="btn btn-primary" name="deleteSchedule" value="DEL">';
                                               } else {
-                                                echo '<input type="submit" class="btn btn-primary" name="updateSchedule" value="UPDATE">';
+                                                echo '<input type="submit" class="btn btn-primary" name="updateSchedule" value="UPD">';
+                                                echo '<input type="submit" class="btn btn-primary" name="deleteSchedule" value="DEL">';
                                               }
                                               ?>
                                             </td>
