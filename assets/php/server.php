@@ -81,7 +81,7 @@ function timeMinusOneMinute($data) //sa endtime lang to ilalagay
 
 $getSchoolYearInfo = $mysqli->query("SELECT * FROM acad_year");
 $SchoolYearData = $getSchoolYearInfo->fetch_assoc();
-$currentSchoolYear = $SchoolYearData['currentYear'] . " - " . $SchoolYearData['endYear'];
+$currentSchoolYear = $SchoolYearData['currentYear'] . "-" . $SchoolYearData['endYear'];
 
 //Login and Register Process
 if (isset($_POST['login-button'])) {
@@ -1015,3 +1015,67 @@ if (isset($_POST['assignAdvisor'])) {
     $assignClassListAdvisor = $mysqli->query("UPDATE classlist SET F_number = '{$advisor}' WHERE SR_section = '{$section}'");
 }
 //End
+
+// Admin Buttons
+if (isset($_POST['acadyear'])) {
+    $currentDate = new DateTime();
+    $currentMonth = $currentDate->format('m');
+    $startYear = "";
+    $endYear = "";
+
+    if ($currentMonth >= 9 && $currentMonth <= 12) {
+        // September to December
+        $startYear = $currentDate->format('Y');
+        $endYear = $currentDate->format('Y') + 1;
+    } else {
+        // January to August
+        $startYear = $currentDate->format('Y') - 1;
+        $endYear = $currentDate->format('Y');
+    }
+
+    if ($getAcadYear->num_rows <= 0) {
+        //insert portion
+        $createAcadYear = $mysqli->query("INSERT INTO acad_year(currentYear, endYear) VALUES ('{$startYear}', '{$endYear}')");
+        $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+        header("Refresh:0");
+    } elseif ($getAcadYear->num_rows == 1) {
+        //update portion
+        $startYear = $acadYear_Data['endYear'];
+        $endYear = (int) $startYear + 1;
+
+        $updateAcadYear = $mysqli->query("UPDATE acad_year SET currentYear = '{$startYear}', endYear = '{$endYear}'");
+        $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+        header("Refresh:0");
+    }
+}
+if (isset($_POST['Open'])) {
+    $enableForms = $mysqli->query('UPDATE quartertable SET quarterStatus = "enabled" WHERE quarterTag = "FORMS"');
+    $enableCurrentQuarter = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "enabled" WHERE quarterStatus = "current"');
+    header("Refresh:0");
+}
+if (isset($_POST['Close'])) {
+    $disableForms = $mysqli->query('UPDATE quartertable SET quarterStatus = "disabled" WHERE quarterTag = "FORMS"');
+    $disableCurrentQuarter = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled" WHERE quarterStatus = "current"');
+    header("Refresh:0");
+}
+if (isset($_POST['enableFirst'])) {
+    $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+    $enableFirst = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "1"');
+    header("Refresh:0");
+}
+if (isset($_POST['enableSecond'])) {
+    $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+    $enableSecond = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "2"');
+    header("Refresh:0");
+}
+if (isset($_POST['enableThird'])) {
+    $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+    $enableThird = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "3"');
+    header("Refresh:0");
+}
+if (isset($_POST['enableFourth'])) {
+    $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+    $enableFourth = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "4"');
+    header("Refresh:0");
+}
+// 

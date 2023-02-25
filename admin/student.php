@@ -207,7 +207,7 @@ if (!isset($_SESSION['AD_number'])) {
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                           <?php
-                          $getstudentbyAcadYear = $mysqli->query("SELECT DISTINCT(acadYear) FROM studentrecord");
+                          $getstudentbyAcadYear = $mysqli->query("SELECT DISTINCT(acadYear) FROM classlist");
                           while ($byacadYear = $getstudentbyAcadYear->fetch_assoc()) {
                             echo '<a class="dropdown-item" href="student.php?SY=' . $byacadYear['acadYear'] . '">' . $byacadYear['acadYear'] . '</a>';
                           }
@@ -262,12 +262,18 @@ if (!isset($_SESSION['AD_number'])) {
                           </button>
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                             <?php
-                            $sectionData = $mysqli->query("SELECT * FROM sections WHERE S_yearLevel = '{$_GET['GradeLevel']}'");
-                            while ($section = $sectionData->fetch_assoc()) { ?>
-                              <a class="dropdown-item" href="student.php?GradeLevel=<?php echo $_GET['GradeLevel'] ?>&section=<?php echo $section['S_name'] ?>">
-                                <?php echo $section['S_name'] ?>
-                              </a>
+                            $sectionData = $mysqli->query("SELECT DISTINCT(S_name) FROM sections WHERE S_yearLevel = '{$_GET['GradeLevel']}'");
+                            while ($section = $sectionData->fetch_assoc()) {
+                              if (isset($_GET['SY'])) { ?>
+                                <a class="dropdown-item" href="student.php?SY=<?php echo $_GET['SY'] ?>&GradeLevel=<?php echo $_GET['GradeLevel'] ?>&section=<?php echo $section['S_name'] ?>">
+                                  <?php echo $section['S_name'] ?>
+                                </a>
+                              <?php } else { ?>
+                                <a class="dropdown-item" href="student.php?GradeLevel=<?php echo $_GET['GradeLevel'] ?>&section=<?php echo $section['S_name'] ?>">
+                                  <?php echo $section['S_name'] ?>
+                                </a>
                             <?php }
+                            }
                             ?>
                           </div>
                         </div>
@@ -307,14 +313,16 @@ if (!isset($_SESSION['AD_number'])) {
                                   </thead>
                                   <tbody>
                                     <?php
-                                    if (!empty($_GET['GradeLevel']) && !isset($_GET['section'])) {
-                                      $ListofStudents = "SELECT * FROM studentrecord WHERE SR_grade = '{$_GET['GradeLevel']}'";
-                                    } elseif (!empty($_GET['GradeLevel']) && !empty($_GET['section'])) {
-                                      $ListofStudents = "SELECT * FROM studentrecord WHERE SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['section']}'";
-                                    } elseif (!empty($_GET['SY']) && !empty($_GET['GradeLevel']) && !empty($_GET['section'])) {
-                                      $ListofStudents = "SELECT * FROM studentrecord WHERE SR_section = '{$_GET['section']}' AND acadYear = '{$_GET['SY']}'";
+                                    if (isset($_GET['SY']) && !empty($_GET['SY'])) {
+                                      $ListofStudents = "SELECT * FROM classlist WHERE acadYear = '{$_GET['SY']}'";
+                                    } else if (isset($_GET['GradeLevel']) && !empty($_GET['GradeLevel']) && !isset($_GET['section']) && empty($_GET['section'])) {
+                                      $ListofStudents = "SELECT * FROM classlist WHERE SR_grade = '{$_GET['GradeLevel']}' AND acadYear = '{$currentSchoolYear}'";
+                                    } else if (isset($_GET['GradeLevel']) && !empty($_GET['GradeLevel']) && isset($_GET['section']) && !empty($_GET['section'])) {
+                                      $ListofStudents = "SELECT * FROM classlist WHERE SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['section']}' AND acadYear = '{$currentSchoolYear}'";
+                                    } else if (isset($_GET['SY']) && !empty($_GET['SY']) && isset($_GET['GradeLevel']) && !empty($_GET['GradeLevel']) && isset($_GET['section']) && !empty($_GET['section'])) {
+                                      $ListofStudents = "SELECT * FROM classlist WHERE SR_section = '{$_GET['section']}' AND acadYear = '{$_GET['SY']}'";
                                     } else {
-                                      $ListofStudents = "SELECT * FROM studentrecord ORDER BY SR_grade";
+                                      $ListofStudents = "SELECT * FROM classlist WHERE acadYear = '{$currentSchoolYear}'";
                                     }
 
                                     $resultListofStudents = $mysqli->query($ListofStudents);
@@ -326,8 +334,17 @@ if (!isset($_SESSION['AD_number'])) {
                                         <tr>
                                           <td class="tablestyle"><?php echo $rowCount ?></td>
                                           <td class="tablestyle"><?php echo $data['SR_number'] ?></td>
-                                          <td class="tablestyle"><?php echo "Grade " . $data['SR_grade'] . " - " . $data['SR_section'] ?></td>
-                                          <td class="tablestyle"><a href="viewStudent.php?SR_Number=<?php echo $data['SR_number'] ?>"><?php echo $data['SR_lname'] . ", " . $data['SR_fname'] ?></a></td>
+                                          <td class="tablestyle"><?php echo "Grade " . $data['SR_grade'] . " - " . $data['SR_section'] . " (" . $data['acadYear'] . ")" ?></td>
+                                          <td class="tablestyle">
+                                            <a href="viewStudent.php?SR_Number=<?php echo $data['SR_number'] ?>">
+                                              <?php
+                                              $getstudentname = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$data['SR_number']}'");
+                                              $studentname = $getstudentname->fetch_assoc();
+
+                                              echo $studentname['SR_lname'] .  ", " . $studentname['SR_fname'] . " " . substr($studentname['SR_mname'], 0, 1) . ". " . $studentname['SR_suffix'];
+                                              ?>
+                                            </a>
+                                          </td>
                                         </tr>
                                       <?php $rowCount++;
                                       }

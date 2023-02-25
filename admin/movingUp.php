@@ -221,29 +221,33 @@ if (!isset($_SESSION['AD_number'])) {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="btn-group">
-                                                <div>
-                                                    <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
-                                                        <?php if (isset($_GET['section'])) {
-                                                            echo "Grade " . $_GET['section'];
-                                                        } else {
-                                                            echo "Section";
-                                                        }
-                                                        ?>
-                                                        <i class='fa fa-caret-down'></i>
-                                                    </button>
-                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                        <?php
-                                                        $sectionList = $mysqli->query("SELECT S_name FROM sections WHERE S_yearLevel = '{$_GET['GradeLevel']}'");
+                                            <?php
+                                            if (isset($_GET['GradeLevel'])) { ?>
+                                                <div class="btn-group">
+                                                    <div>
+                                                        <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                                                            <?php if (isset($_GET['section'])) {
+                                                                echo "Grade " . $_GET['section'];
+                                                            } else {
+                                                                echo "Section";
+                                                            }
+                                                            ?>
+                                                            <i class='fa fa-caret-down'></i>
+                                                        </button>
+                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                            <?php
+                                                            $sectionList = $mysqli->query("SELECT DISTINCT(S_name) FROM sections WHERE S_yearLevel = '{$_GET['GradeLevel']}'");
 
-                                                        while ($section = $sectionList->fetch_assoc()) { ?>
-                                                            <a class="dropdown-item" href="movingUp.php?GradeLevel=<?php echo $_GET['GradeLevel'] ?>&section=<?php echo $section['S_name'] ?>">
-                                                                <?php echo "Grade - " . $section['S_name']; ?>
-                                                            </a>
-                                                        <?php } ?>
+                                                            while ($section = $sectionList->fetch_assoc()) { ?>
+                                                                <a class="dropdown-item" href="movingUp.php?GradeLevel=<?php echo $_GET['GradeLevel'] ?>&section=<?php echo $section['S_name'] ?>">
+                                                                    <?php echo $section['S_name']; ?>
+                                                                </a>
+                                                            <?php } ?>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            <?php }
+                                            ?>
                                             <div class="btn-group" style="float: right;">
                                                 <div class="">
                                                     <button type="button" id="updateStatus" class="btn btn-primary">Update</button>
@@ -279,11 +283,11 @@ if (!isset($_SESSION['AD_number'])) {
                                                                         <tbody>
                                                                             <?php
                                                                             if (!empty($_GET['GradeLevel']) && empty($_GET['section'])) {
-                                                                                $ListofStudents = "SELECT * FROM studentrecord WHERE SR_grade = '{$_GET['GradeLevel']}' ORDER BY SR_number";
+                                                                                $ListofStudents = "SELECT * FROM classlist WHERE SR_grade = '{$_GET['GradeLevel']}' AND acadYear = '{$currentSchoolYear}' ORDER BY SR_number";
                                                                             } else if (!empty($_GET['GradeLevel']) && !empty($_GET['section'])) {
-                                                                                $ListofStudents = "SELECT * FROM studentrecord WHERE SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['section']}' ORDER BY SR_number";
+                                                                                $ListofStudents = "SELECT * FROM classlist WHERE SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['section']}' AND acadYear = '{$currentSchoolYear}' ORDER BY SR_number";
                                                                             } else {
-                                                                                $ListofStudents = "SELECT * FROM studentrecord ORDER BY SR_number";
+                                                                                $ListofStudents = "SELECT * FROM classlist ORDER BY SR_number";
                                                                             }
 
                                                                             $resultListofStudents = $mysqli->query($ListofStudents);
@@ -294,7 +298,14 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                 while ($data = $resultListofStudents->fetch_assoc()) { ?>
                                                                                     <tr>
                                                                                         <td class="tablestyle"><?php echo $rowCount ?></td>
-                                                                                        <td class="tablestyle"><?php echo $data['SR_number'] . " - " . $data['SR_lname'] . ", " . $data['SR_fname'] ?></td>
+                                                                                        <td class="tablestyle">
+                                                                                            <?php
+                                                                                            $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$data['SR_number']}'");
+                                                                                            $studentInfo = $getStudentInfo->fetch_assoc();
+
+                                                                                            echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix']
+                                                                                            ?>
+                                                                                        </td>
                                                                                         <td class="tablestyle"><?php echo "Grade " . $data['SR_grade'] . " - " . $data['SR_section'] ?></td>
                                                                                         <td class="tablestyle">
                                                                                             <?php
@@ -303,6 +314,8 @@ if (!isset($_SESSION['AD_number'])) {
 
                                                                                             if ($getAvgGrade['finalgrade'] >= 75) {
                                                                                                 echo "PASSED";
+                                                                                            } elseif ($getAvgGrade['finalgrade'] == 0) {
+                                                                                                echo "No Grades yet";
                                                                                             } else {
                                                                                                 echo "FAILED";
                                                                                             }

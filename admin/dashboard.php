@@ -9,73 +9,70 @@ if (!isset($_SESSION['AD_number'])) {
     while ($quarterData = $quarterStatus->fetch_assoc()) {
         $quarterArray[] = $quarterData;
     }
-    $getAcadYear = $mysqli->query("SELECT * FROM acad_year");
-    $acadYear_Data = $getAcadYear->fetch_assoc();
-    $_SESSION['academicYear'] = $acadYear_Data['currentYear'] . " - " . $acadYear_Data['endYear'];
 
-    if (isset($_POST['acadyear'])) {
-        $currentDate = new DateTime();
-        $currentMonth = $currentDate->format('m');
-        $startYear = "";
-        $endYear = "";
+    $CountKinderPresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
+                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
+                            WHERE studentrecord.SR_grade = 'KINDER' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
+    $KinderPresentNow = $CountKinderPresentNow->fetch_assoc();
+    $OverallCountofKinder = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = 'KINDER' AND acadYear = '$currentSchoolYear'");
+    $AllKinder = $OverallCountofKinder->fetch_assoc();
 
-        if ($currentMonth >= 9 && $currentMonth <= 12) {
-            // September to December
-            $startYear = $currentDate->format('Y');
-            $endYear = $currentDate->format('Y') + 1;
-        } else {
-            // January to August
-            $startYear = $currentDate->format('Y') - 1;
-            $endYear = $currentDate->format('Y');
-        }
+    $CountGrade1PresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
+                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
+                            WHERE studentrecord.SR_grade = '1' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
+    $Grade1PresentNow = $CountGrade1PresentNow->fetch_assoc();
+    $OverallCountofGrade1 = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = '1' AND acadYear = '$currentSchoolYear'");
+    $AllGrade1 = $OverallCountofGrade1->fetch_assoc();
 
-        if ($getAcadYear->num_rows <= 0) {
-            //insert portion
-            $createAcadYear = $mysqli->query("INSERT INTO acad_year(currentYear, endYear) VALUES ('{$startYear}', '{$endYear}')");
-            $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
-            header("Refresh:0");
-        } elseif ($getAcadYear->num_rows == 1) {
-            //update portion
-            $startYear = $acadYear_Data['endYear'];
-            $endYear = (int) $startYear + 1;
+    $CountGrade2PresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
+                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
+                            WHERE studentrecord.SR_grade = '2' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
+    $Grade2PresentNow = $CountGrade2PresentNow->fetch_assoc();
+    $OverallCountofGrade2 = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = '2' AND acadYear = '$currentSchoolYear'");
+    $AllGrade2 = $OverallCountofGrade2->fetch_assoc();
 
-            $updateAcadYear = $mysqli->query("UPDATE acad_year SET currentYear = '{$startYear}', endYear = '{$endYear}'");
-            $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
-            header("Refresh:0");
-        }
-    }
-    if (isset($_POST['Open'])) {
-        $enableForms = $mysqli->query('UPDATE quartertable SET quarterStatus = "enabled" WHERE quarterTag = "FORMS"');
-        $enableCurrentQuarter = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "enabled" WHERE quarterStatus = "current"');
-        header("Refresh:0");
-    }
+    $CountGrade3PresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
+                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
+                            WHERE studentrecord.SR_grade = '3' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
+    $Grade3PresentNow = $CountGrade3PresentNow->fetch_assoc();
+    $OverallCountofGrade3 = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = '3' AND acadYear = '$currentSchoolYear'");
+    $AllGrade3 = $OverallCountofGrade3->fetch_assoc();
 
-    if (isset($_POST['Close'])) {
-        $disableForms = $mysqli->query('UPDATE quartertable SET quarterStatus = "disabled" WHERE quarterTag = "FORMS"');
-        $disableCurrentQuarter = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled" WHERE quarterStatus = "current"');
-        header("Refresh:0");
-    }
+    $CountGrade4PresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
+                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
+                            WHERE studentrecord.SR_grade = '4' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
+    $Grade4PresentNow = $CountGrade4PresentNow->fetch_assoc();
+    $OverallCountofGrade4 = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = '4' AND acadYear = '$currentSchoolYear'");
+    $AllGrade4 = $OverallCountofGrade4->fetch_assoc();
 
-    if (isset($_POST['enableFirst'])) {
-        $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
-        $enableFirst = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "1"');
-        header("Refresh:0");
-    }
-    if (isset($_POST['enableSecond'])) {
-        $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
-        $enableSecond = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "2"');
-        header("Refresh:0");
-    }
-    if (isset($_POST['enableThird'])) {
-        $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
-        $enableThird = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "3"');
-        header("Refresh:0");
-    }
-    if (isset($_POST['enableFourth'])) {
-        $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
-        $enableFourth = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "4"');
-        header("Refresh:0");
-    }
+    $CountGrade5PresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
+                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
+                            WHERE studentrecord.SR_grade = '5' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
+    $Grade5PresentNow = $CountGrade5PresentNow->fetch_assoc();
+    $OverallCountofGrade5 = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = '5' AND acadYear = '$currentSchoolYear'");
+    $AllGrade5 = $OverallCountofGrade5->fetch_assoc();
+
+    $CountGrade6PresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
+                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
+                            WHERE studentrecord.SR_grade = '6' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
+    $Grade6PresentNow = $CountGrade6PresentNow->fetch_assoc();
+    $OverallCountofGrade6 = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = '6' AND acadYear = '$currentSchoolYear'");
+    $AllGrade6 = $OverallCountofGrade6->fetch_assoc();
+
+    $AttendancePerGrade[] = $KinderPresentNow['COUNT(studentrecord.SR_number)'];
+    $AttendancePerGrade[] = $Grade1PresentNow['COUNT(studentrecord.SR_number)'];
+    $AttendancePerGrade[] = $Grade2PresentNow['COUNT(studentrecord.SR_number)'];
+    $AttendancePerGrade[] = $Grade3PresentNow['COUNT(studentrecord.SR_number)'];
+    $AttendancePerGrade[] = $Grade4PresentNow['COUNT(studentrecord.SR_number)'];
+    $AttendancePerGrade[] = $Grade5PresentNow['COUNT(studentrecord.SR_number)'];
+    $AttendancePerGrade[] = $Grade6PresentNow['COUNT(studentrecord.SR_number)'];
+
+    var_dump($AttendancePerGrade);
+    $arrayAttendancePerGrade = json_encode($AttendancePerGrade);
+    echo "<script>var arrayAttendance = " . $arrayAttendancePerGrade . ";</script>";
+
+    $getAdminData = $mysqli->query("SELECT * FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+    $AdminData = $getAdminData->fetch_assoc();
 }
 ?>
 <!DOCTYPE html>
@@ -261,7 +258,7 @@ if (!isset($_SESSION['AD_number'])) {
                             <div class="home-tab">
                                 <div class="d-sm-flex border-bottom">
                                     <div class="section-title position-relative">
-                                        <h2 class="dashboard">Hi, Camile!</h2>
+                                        <h2 class="dashboard">Hi, <?php echo $AdminData['AD_name'] ?>!</h2>
                                     </div>
                                 </div>
                                 <div class="tab-content tab-content-basic">
@@ -269,9 +266,8 @@ if (!isset($_SESSION['AD_number'])) {
                                         <div class="row">
                                             <div class="col-12 grid-margin">
                                                 <form id="form-id" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
-
                                                     <?php
-                                                    echo '<button type="submit" name="acadyear" class="btn btn-primary m-2">Acad Year: ' . $_SESSION['academicYear'] . '</button>';
+                                                    echo '<button type="submit" name="acadyear" class="btn btn-primary m-2">Acad Year: ' . $currentSchoolYear . '</button>';
 
                                                     if ($quarterArray[0]['quarterStatus'] == 'enabled') {
                                                         echo '<button type="submit" name="Close" class="btn btn-primary m-2">Close Encoding of Grades</button>';
@@ -342,20 +338,20 @@ if (!isset($_SESSION['AD_number'])) {
 
                                                                     <tbody>
                                                                         <tr>
-                                                                            <td>Kinder 1 </td>
-                                                                            <td>50 out of 100</td>
+                                                                            <td>Kinder</td>
+                                                                            <td><?php echo $KinderPresentNow['COUNT(studentrecord.SR_number)'] . " out of " . $AllKinder['COUNT(SR_number)'] ?></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td>Kinder 2 </td>
-                                                                            <td>50 out of 100</td>
+                                                                            <td>Grade 1</td>
+                                                                            <td><?php echo $Grade1PresentNow['COUNT(studentrecord.SR_number)'] . " out of " . $AllGrade1['COUNT(SR_number)'] ?></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td>Grade 1 </td>
-                                                                            <td>50 out of 100</td>
+                                                                            <td>Grade 2</td>
+                                                                            <td><?php echo $Grade2PresentNow['COUNT(studentrecord.SR_number)'] . " out of " . $AllGrade2['COUNT(SR_number)'] ?></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td>Grade 2 </td>
-                                                                            <td>50 out of 100</td>
+                                                                            <td>Grade 3</td>
+                                                                            <td><?php echo $Grade3PresentNow['COUNT(studentrecord.SR_number)'] . " out of " . $AllGrade3['COUNT(SR_number)'] ?></td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
@@ -366,20 +362,20 @@ if (!isset($_SESSION['AD_number'])) {
 
                                                                     <tbody>
                                                                         <tr>
-                                                                            <td>Grade 3</td>
-                                                                            <td>50 out of 100</td>
+                                                                            <td>Grade 4</td>
+                                                                            <td><?php echo $Grade4PresentNow['COUNT(studentrecord.SR_number)'] . " out of " . $AllGrade4['COUNT(SR_number)'] ?></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td>Grade 4</td>
-                                                                            <td>50 out of 100</td>
+                                                                            <td>Grade 5</td>
+                                                                            <td><?php echo $Grade5PresentNow['COUNT(studentrecord.SR_number)'] . " out of " . $AllGrade5['COUNT(SR_number)'] ?></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td>Grade 6</td>
-                                                                            <td>50 out of 100</td>
+                                                                            <td><?php echo $Grade6PresentNow['COUNT(studentrecord.SR_number)'] . " out of " . $AllGrade6['COUNT(SR_number)'] ?></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td>Grade 6 </td>
-                                                                            <td>50 out of 100</td>
+                                                                            <td>BLANK</td>
+                                                                            <td>BLANK</td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
@@ -725,10 +721,9 @@ if (!isset($_SESSION['AD_number'])) {
         var doughnutChartCanvas = $("#doughnutChart").get(0).getContext("2d");
         var doughnutPieData = {
             datasets: [{
-                data: [10, 10, 10, 10, 10, 10, 20, 20],
+                data: arrayAttendance,
                 backgroundColor: [
                     "#1F3BB3",
-                    "#FDD0C7",
                     "#52CDFF",
                     "#81DADA",
                     "#F9F871",
@@ -738,7 +733,6 @@ if (!isset($_SESSION['AD_number'])) {
                 ],
                 borderColor: [
                     "#1F3BB3",
-                    "#FDD0C7",
                     "#52CDFF",
                     "#81DADA",
                     "#F9F871",
@@ -750,14 +744,13 @@ if (!isset($_SESSION['AD_number'])) {
 
             // These labels appear in the legend and in the tooltips when hovering different arcs
             labels: [
-                'K1',
-                'K2',
-                'G1',
-                'G2',
-                'G3',
-                'G4',
-                'G5',
-                'G6',
+                'KINDER',
+                'GR1',
+                'GR2',
+                'GR3',
+                'GR4',
+                'GR5',
+                'GR6',
             ]
         };
         var doughnutPieOptions = {

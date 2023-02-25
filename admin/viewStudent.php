@@ -5,19 +5,17 @@ include('../assets/phpqrcode/qrlib.php');
 if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 } else {
-    $sr_number = $_GET['SR_Number'];
-
-    if (empty($sr_number)) {
+    if (empty($_GET['SR_Number'])) {
         header('Location: student.php');
     } else {
         $verifySR_number = "SELECT * FROM studentrecord 
                         INNER JOIN guardian
                         ON studentrecord.SR_number = guardian.G_guardianOfStudent
-                        WHERE studentrecord.SR_number = '{$sr_number}'";
+                        WHERE studentrecord.SR_number = '{$_GET['SR_Number']}'";
         $runverifySR_number = $mysqli->query($verifySR_number);
         $getRecord =  $runverifySR_number->fetch_assoc();
 
-        if ($getRecord['SR_number'] == $sr_number) {
+        if ($getRecord['SR_number'] == $_GET['SR_Number']) {
             $tempDir = '../assets/temp/';
             if (!file_exists($tempDir)) {
                 mkdir($tempDir);

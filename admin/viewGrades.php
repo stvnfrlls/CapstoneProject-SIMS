@@ -240,46 +240,53 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                                                 </thead>
                                                                 <tbody>
                                                                     <?php
-                                                                    $studentGrades = $mysqli->query("SELECT * FROM grades WHERE SR_number = '{$_GET['SR_Number']}'");
-                                                                    while ($studentGradesData = $studentGrades->fetch_assoc()) { ?>
+                                                                    $studentGrades = $mysqli->query("SELECT * FROM grades WHERE SR_number = '{$_GET['SR_Number']}' AND acadYear = '{$currentSchoolYear}'");
+                                                                    if (mysqli_num_rows($studentGrades) > 0) {
+                                                                        while ($studentGradesData = $studentGrades->fetch_assoc()) { ?>
+                                                                            <tr>
+                                                                                <td class="hatdog"><?php echo $studentGradesData['G_learningArea']; ?></td>
+                                                                                <?php
+                                                                                if ($studentGradesData['G_gradesQ1']) { ?>
+                                                                                    <td class="hatdog"><?php echo $studentGradesData['G_gradesQ1']; ?></td>
+                                                                                <?php
+                                                                                } else { ?>
+                                                                                    <td class="hatdog"></td>
+                                                                                <?php } ?>
+
+                                                                                <?php
+                                                                                if ($studentGradesData['G_gradesQ2']) { ?>
+                                                                                    <td class="hatdog"><?php echo $studentGradesData['G_gradesQ2']; ?></td>
+                                                                                <?php
+                                                                                } else { ?>
+                                                                                    <td class="hatdog"></td>
+                                                                                <?php } ?>
+
+                                                                                <?php
+                                                                                if ($studentGradesData['G_gradesQ3']) { ?>
+                                                                                    <td class="hatdog"><?php echo $studentGradesData['G_gradesQ3']; ?></td>
+                                                                                <?php
+                                                                                } else { ?>
+                                                                                    <td class="hatdog"></td>
+                                                                                <?php } ?>
+
+                                                                                <?php
+                                                                                if ($studentGradesData['G_gradesQ4']) { ?>
+                                                                                    <td class="hatdog"><?php echo $studentGradesData['G_gradesQ4']; ?></td>
+                                                                                <?php
+                                                                                } else { ?>
+                                                                                    <td class="hatdog"></td>
+                                                                                <?php } ?>
+
+                                                                                <td class="hatdog"><?php echo $studentGradesData['G_finalgrade']; ?></td>
+                                                                                <td class="hatdog">Passed</td>
+                                                                            </tr>
+                                                                        <?php }
+                                                                    } else { ?>
                                                                         <tr>
-                                                                            <td class="hatdog"><?php echo $studentGradesData['G_learningArea']; ?></td>
-                                                                            <?php
-                                                                            if ($studentGradesData['G_gradesQ1']) { ?>
-                                                                                <td class="hatdog"><?php echo $studentGradesData['G_gradesQ1']; ?></td>
-                                                                            <?php
-                                                                            } else { ?>
-                                                                                <td class="hatdog"></td>
-                                                                            <?php } ?>
-
-                                                                            <?php
-                                                                            if ($studentGradesData['G_gradesQ2']) { ?>
-                                                                                <td class="hatdog"><?php echo $studentGradesData['G_gradesQ2']; ?></td>
-                                                                            <?php
-                                                                            } else { ?>
-                                                                                <td class="hatdog"></td>
-                                                                            <?php } ?>
-
-                                                                            <?php
-                                                                            if ($studentGradesData['G_gradesQ3']) { ?>
-                                                                                <td class="hatdog"><?php echo $studentGradesData['G_gradesQ3']; ?></td>
-                                                                            <?php
-                                                                            } else { ?>
-                                                                                <td class="hatdog"></td>
-                                                                            <?php } ?>
-
-                                                                            <?php
-                                                                            if ($studentGradesData['G_gradesQ4']) { ?>
-                                                                                <td class="hatdog"><?php echo $studentGradesData['G_gradesQ4']; ?></td>
-                                                                            <?php
-                                                                            } else { ?>
-                                                                                <td class="hatdog"></td>
-                                                                            <?php } ?>
-
-                                                                            <td class="hatdog"><?php echo $studentGradesData['G_finalgrade']; ?></td>
-                                                                            <td class="hatdog">Passed</td>
+                                                                            <td colspan="10">No Grades Encoded yet for School Year <?php echo $currentSchoolYear ?></td>
                                                                         </tr>
                                                                     <?php }
+
                                                                     ?>
                                                                 </tbody>
                                                             </table>
@@ -287,7 +294,14 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                                         <table id="ave" class="table text-center" style="margin-top: 20px; margin-bottom: 20px;">
                                                             <tr>
                                                                 <td class="hatdog"> General Average</td>
-                                                                <td class="hatdog">90</td>
+                                                                <td class="hatdog">
+                                                                    <?php
+                                                                    $getGradeAve = $mysqli->query("SELECT ROUND(AVG(G_finalgrade)) AS average FROM grades WHERE SR_number = '{$_GET['SR_Number']}' AND acadYear = '{$currentSchoolYear}'");
+                                                                    $GradeAve = $getGradeAve->fetch_assoc();
+
+                                                                    echo $GradeAve['average'];
+                                                                    ?>
+                                                                </td>
                                                             </tr>
                                                         </table>
                                                         <div class="container">
@@ -349,7 +363,8 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                                                                                     FROM behavior_category
                                                                                                     INNER JOIN behavior 
                                                                                                     ON behavior_category.core_value_area = behavior.CV_Area
-                                                                                                    WHERE behavior.SR_number = '{$_GET['SR_Number']}'");
+                                                                                                    WHERE behavior.SR_number = '{$_GET['SR_Number']}'
+                                                                                                    AND behavior.acadYear = '{$currentSchoolYear}'");
                                                                     $getBehaviorAreas = $mysqli->query("SELECT * FROM behavior_category");
                                                                     $BehaviorDataArray = array();
                                                                     while ($DataBehaviorCategory = $getBehaviorAreas->fetch_assoc()) {
@@ -416,7 +431,11 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                 </div>
                             </div>
                             <div style="text-align: center;">
-                                <a href="../reports/ReportCard.php?ID=<?php echo $_GET['SR_Number'] ?>" class="btn btn-primary me-2">Print</a>
+                                <?php
+                                if (mysqli_num_rows($studentGrades) > 0) { ?>
+                                    <a href="../reports/ReportCard.php?ID=<?php echo $_GET['SR_Number'] ?>" class="btn btn-primary me-2">Print</a>
+                                <?php }
+                                ?>
                                 <button class="btn btn-light">Back</button>
                             </div>
                         </div>
