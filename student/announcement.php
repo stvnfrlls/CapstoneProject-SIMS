@@ -95,7 +95,7 @@ if (!isset($_SESSION['SR_number'])) {
             </div>
             <div class="row">
                 <?php
-                $getAnnouncementData = $mysqli->query("SELECT * FROM announcement");
+                $getAnnouncementData = $mysqli->query("SELECT * FROM announcement ORDER BY date");
                 while ($announcement = $getAnnouncementData->fetch_assoc()) { ?>
                     <div class="single-popular-carusel col-lg-3 col-md-6">
                         <div class="details">

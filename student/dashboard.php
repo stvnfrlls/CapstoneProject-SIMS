@@ -316,11 +316,17 @@ if (!isset($_SESSION['SR_number'])) {
                                 </div>
                               </div>
                             </div>
-                        <?php
+                          <?php
                           }
-                        } else {
-                          echo "no data available";
-                        }
+                        } else { ?>
+                          <div class="col mb-3">
+                            <div class="card">
+                              <div class="card-body text-center">
+                                <p>No Reminder Yet</p>
+                              </div>
+                            </div>
+                          </div>
+                        <?php }
                         ?>
                       </div>
                     </div>
@@ -364,7 +370,6 @@ if (!isset($_SESSION['SR_number'])) {
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
