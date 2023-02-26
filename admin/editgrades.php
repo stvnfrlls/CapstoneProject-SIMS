@@ -200,9 +200,10 @@ if (!isset($_SESSION['AD_number'])) {
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                     <div class="btn-group">
                       <div>
-                        <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
-                          <?php if (isset($_GET['Section'])) {
-                            $subjects     = array();
+                        <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                          <?php
+                          if (isset($_GET['Section'])) {
+                            $subjects = array();
                             array_unshift($subjects, null);
                             if ($_GET['Grade'] == "KINDER") {
                               $getListSubject = $mysqli->query("SELECT subjectName FROM subjectperyear WHERE minYearLevel = '0' AND maxYearLevel >= '0'");
@@ -219,9 +220,9 @@ if (!isset($_SESSION['AD_number'])) {
                           ?>
                           <i class="fa fa-caret-down"></i>
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
                           <?php
-                          $sectionList = "SELECT S_name, S_yearLevel FROM sections";
+                          $sectionList = "SELECT S_name, S_yearLevel FROM sections WHERE acadYear = '{$currentSchoolYear}'";
                           $runsectionList = $mysqli->query($sectionList);
 
                           while ($sectionData = $runsectionList->fetch_assoc()) { ?>
@@ -241,33 +242,22 @@ if (!isset($_SESSION['AD_number'])) {
                     <?php if (isset($_GET['Section'])) { ?>
                       <div class="btn-group">
                         <div>
-                          <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                          <button class="btn btn-secondary" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
                             <?php
-                            $current_url = $_SERVER["REQUEST_URI"];
-                            if (isset($_GET['LearningArea'])) {
-                              echo $_GET['LearningArea'];
-
-                              $find = "&LearningArea=" . $_GET['LearningArea'];
-                              if (strpos($current_url, $find)) {
-                                $current_url = str_replace($find, "", $current_url);
-                              }
+                            if (!isset($_GET['LearningArea'])) {
+                              echo 'LearningArea';
                             } else {
-                              echo "Learning Areas";
-
-                              $find = "LearningArea=";
-                              if (strpos($current_url, $find)) {
-                                $current_url = str_replace($find, "", $current_url);
-                              }
+                              echo $_GET['LearningArea'];
                             }
                             ?>
                             <i class="fa fa-caret-down"></i>
                           </button>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
                             <?php
 
                             $rowCount = 1;
                             while ($rowCount != count($subjects)) { ?>
-                              <a class="dropdown-item" href="<?php echo $current_url . " &LearningArea=" . $subjects[$rowCount]['subjectName']; ?>">
+                              <a class="dropdown-item" href="editgrades.php?Grade=<?php echo $_GET['Grade'] . "&Section=" . $_GET['Section'] . "&LearningArea=" . $subjects[$rowCount]['subjectName']; ?>">
                                 <?php echo $subjects[$rowCount]['subjectName'] ?>
                               </a>
                             <?php

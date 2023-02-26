@@ -6,12 +6,13 @@ if (!isset($_SESSION['SR_number'])) {
 } else {
     $getStudentInformation = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$_SESSION['SR_number']}'");
     $student = $getStudentInformation->fetch_assoc();
-
-    $getSectionInformation = $mysqli->query("SELECT * FROM sections WHERE S_name = '{$student['SR_section']}'");
+    $getSectionInformation = $mysqli->query("SELECT * FROM sections WHERE S_name = '{$student['SR_section']}' AND acadYear = '{$currentSchoolYear}'");
     $section = $getSectionInformation->fetch_assoc();
 
-    $getfacultyInformation = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$section['S_adviser']}'");
-    $faculty = $getfacultyInformation->fetch_assoc();
+    if (!empty($section['S_adviser'])) {
+        $getfacultyInformation = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$section['S_adviser']}'");
+        $faculty = $getfacultyInformation->fetch_assoc();
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -143,7 +144,13 @@ if (!isset($_SESSION['SR_number'])) {
                                                     <div class="col-md-4">
                                                         <label class="col-sm-12 col-form-label">Adviser</label>
                                                         <div class="col-sm-12">
-                                                            <input type="text" class="form-control" value="<?php echo $faculty['F_lname'] .  ", " . $faculty['F_fname'] . " " . substr($faculty['F_mname'], 0, 1) . ". " . $faculty['F_suffix']; ?>" readonly />
+                                                            <?php
+                                                            if (!empty($section['S_adviser'])) { ?>
+                                                                <input type="text" class="form-control" value="<?php echo $faculty['F_lname'] .  ", " . $faculty['F_fname'] . " " . substr($faculty['F_mname'], 0, 1) . ". " . $faculty['F_suffix']; ?>" readonly />
+                                                            <?php } else { ?>
+                                                                <input type="text" class="form-control" value="Teacher not yet Assigned" readonly />
+                                                            <?php }
+                                                            ?>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -189,7 +196,7 @@ if (!isset($_SESSION['SR_number'])) {
                                         }
                                         ?>
                                     </div>
-                                    <div class="row">
+                                    <div class="row mt-3">
                                         <div class="col-lg-12 d-flex flex-column">
                                             <div class="row flex-grow">
                                                 <div class="col-md-6 col-lg-12 grid-margin stretch-card">
@@ -229,7 +236,7 @@ if (!isset($_SESSION['SR_number'])) {
                                                                     <?php
                                                                     $rowCount = 1;
                                                                     if (isset($_GET['month'])) {
-                                                                        $getAttendanceInformation = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}'");
+                                                                        $getAttendanceInformation = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}'");
                                                                     } else {
                                                                         $getAttendanceInformation = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}'");
                                                                     }

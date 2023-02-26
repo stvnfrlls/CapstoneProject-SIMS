@@ -81,7 +81,7 @@ function timeMinusOneMinute($data) //sa endtime lang to ilalagay
 
 $getSchoolYearInfo = $mysqli->query("SELECT * FROM acad_year");
 $SchoolYearData = $getSchoolYearInfo->fetch_assoc();
-$currentSchoolYear = $SchoolYearData['currentYear'] . " - " . $SchoolYearData['endYear'];
+$currentSchoolYear = $SchoolYearData['currentYear'] . "-" . $SchoolYearData['endYear'];
 
 //Login and Register Process
 if (isset($_POST['login-button'])) {
@@ -924,80 +924,71 @@ if (isset($_POST['addAdmin'])) {
 if (isset($_POST['setSchedule'])) {
     $assignedFaculty = $_POST['assignedFaculty'];
     $subjectname = $_POST['subjectname'];
-    $startime = $_POST['WS_start_time'];
-    $endtime = timeMinusOneMinute($_POST['WS_end_time']);
+    $input_start = $_POST['WS_start_time'];
+    $input_end = $_POST['WS_end_time'];
 
-    $checktime = $mysqli->query("SELECT * FROM workschedule 
-                                WHERE F_number = '{$assignedFaculty}' 
-                                AND SR_section = '{$_GET['GradeLevel']}' 
-                                AND (WS_start_time BETWEEN '{$startime}' 
-                                AND '{$endtime}') 
-                                OR (WS_end_time BETWEEN '{$startime}' AND '{$endtime}')");
-    if (mysqli_num_rows($checktime) == 0) {
-        $AddSchedule = $mysqli->query("INSERT INTO workschedule(F_number, S_subject, SR_grade, SR_section, WS_start_time, WS_end_time) VALUES('{$assignedFaculty}', '{$subjectname}', '{$_GET['GradeLevel']}', '{$_GET['SectionName']}', '{$startime}', '{$endtime}')");
-    } else {
-        $getdata = $checktime->fetch_assoc();
-        $errors['nocontent'] = "Conflict with Schedule on Grade " . $getdata['SR_grade'] . " - " . $getdata['SR_section'] . ". Scheduled " . $getdata['WS_start_time'] . " to " . $getdata['WS_end_time'];
+    $time_intervals  = array();
+
+    $checkTeacherSchedule = $mysqli->query("SELECT WS_start_time, WS_end_time FROM workschedule WHERE F_number = '{$assignedFaculty}'");
+    while ($TeacherSchedule = $checkTeacherSchedule->fetch_assoc()) {
+        $time_intervals[] = $TeacherSchedule;
     }
 
-    // $checkfacultytime = $myDqli->query("SELECT * FROM workschedule 
-    //                                 WHERE F_number = '{$assignedFaculty}' AND 
-    //                                 SR_section = '{$_GET['SectionName']}' AND
-    //                                 (WS_start_time BETWEEN '{$startime}' AND '{$endtime}') OR 
-    //                                 (WS_end_time BETWEEN '{$startime}' AND '{$endtime}') OR
-    //                                 ('{$startime}' BETWEEN WS_start_time AND WS_end_time)
-    //                                 ");
-    // $checkSchedule = $mysqli->query("SELECT WS_start_time, WS_end_time FROM workschedule
-    //                 WHERE F_number = '{$assignedFaculty}' AND
-    //                 (WS_start_time BETWEEN '{$startime}' AND '{$endtime}') OR 
-    //                 (WS_end_time BETWEEN '{$startime}' AND '{$endtime}') OR
-    //                 ('{$startime}' BETWEEN WS_start_time AND WS_end_time)");
-
-    // if ($checkSchedule->num_rows == 0) {
-    //     $setSchedule = $mysqli->query("INSERT INTO workschedule (F_number, S_subject, SR_grade, SR_section, WS_start_time, WS_end_time) 
-    //                                 VALUES ('{$assignedFaculty}', '{$subjectname}', '{$_GET['GradeLevel']}', '{$_GET['SectionName']}', '{$startime}', '{$endtime}')");
-    // } else {
-    //     echo "ASSIGNING FAIL CONFLICT IN TIME";
-    // }
-
-    // $checkTeacherDuplicate = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$assignedFaculty}' AND S_subject = '{$subjectname}' AND SR_section = '{$_GET['SectionName']}'");
-    // if ($checkTeacherDuplicate->num_rows > 0) {
-    //     $errors['dupe'] = "Teacher is already assigned!";
-    // } else if ($checkTeacherDuplicate->num_rows == 0) {
-    //     $setTeacherSchedule = $mysqli->query("INSERT INTO workschedule (F_number, S_subject, SR_grade, SR_section) VALUES ('{$assignedFaculty}', '{$subjectname}', '{$_GET['GradeLevel']}', '{$_GET['SectionName']}')");
-    // } else if (empty($assignedFaculty)) {
-    //     $errors['nocontent'] = "No Teacher was assigned.";
-    // }
+    $overlapping_interval = null;
+    foreach ($time_intervals as $interval) {
+        $interval_start = strtotime($interval['WS_start_time']);
+        $interval_end = strtotime($interval['WS_end_time']);
+        $input_start_time = strtotime($input_start);
+        $input_end_time = strtotime($input_end);
+        if (($input_start_time >= $interval_start && $input_start_time <= $interval_end) || ($input_end_time >= $interval_start && $input_end_time <= $interval_end)) {
+            $overlapping_interval = $interval;
+            break;
+        }
+    }
+    if ($overlapping_interval) {
+        $errors['nocontent'] = "The input time overlaps with the following interval: Start Time: " . $overlapping_interval['WS_start_time'] . ", End Time: " . $overlapping_interval['WS_end_time'] . ".";
+    } else {
+        $AddSchedule = $mysqli->query("INSERT INTO workschedule(acadYear, F_number, S_subject, SR_grade, SR_section, WS_start_time, WS_end_time) VALUES('{$currentSchoolYear}', '{$assignedFaculty}', '{$subjectname}', '{$_GET['GradeLevel']}', '{$_GET['SectionName']}', '{$input_start}', '{$input_end}')");
+    }
 }
 if (isset($_POST['updateSchedule'])) {
     $assignedFaculty = $_POST['assignedFaculty'];
     $subjectname = $_POST['subjectname'];
-    $startime = $_POST['WS_start_time'];
-    $endtime = timeMinusOneMinute($_POST['WS_end_time']);
+    $input_start = $_POST['WS_start_time'];
+    $input_end = $_POST['WS_end_time'];
 
-    // $checkSchedule = $mysqli->query("SELECT S_subject, WS_start_time, WS_end_time FROM workschedule
-    //                 WHERE F_number = '{$assignedFaculty}' AND
-    //                 (WS_start_time BETWEEN '{$startime}' AND '{$endtime}') OR 
-    //                 (WS_end_time BETWEEN '{$startime}' AND '{$endtime}') OR
-    //                 ('{$startime}' BETWEEN WS_start_time AND WS_end_time) ");
-    // $scheduleData = $checkSchedule->fetch_assoc();
+    $time_intervals  = array();
 
-    // if ($checkSchedule->num_rows == 0) {
-    //     $setSchedule = $mysqli->query("UPDATE workschedule SET WS_start_time = '{$startime}', WS_end_time = '{$endtime}' WHERE S_subject = '{$subjectname}' AND F_number = '{$assignedFaculty}' AND SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['SectionName']}'");
-    // } elseif ($scheduleData['S_subject'] == $subjectname) {
-    //     $setSchedule = $mysqli->query("UPDATE workschedule SET WS_start_time = '{$startime}', WS_end_time = '{$endtime}' WHERE S_subject = '{$subjectname}' AND F_number = '{$assignedFaculty}' AND SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['SectionName']}'");
-    // } else {
-    //     echo "UPDATE FAIL CONFLICT IN TIME";
-    // }
+    $checkTeacherSchedule = $mysqli->query("SELECT WS_start_time, WS_end_time FROM workschedule WHERE F_number = '{$assignedFaculty}'");
+    while ($TeacherSchedule = $checkTeacherSchedule->fetch_assoc()) {
+        $time_intervals[] = $TeacherSchedule;
+    }
 
-    // $checkTime = $mysqli->query("SELECT * FROM workschedule WHERE WS_time = '{$timeID}'");
-    // if ($checkTime->num_rows > 0) {
-    //     $errors['dupe'] = "Teacher already has a schedule with this time!";
-    // } elseif ($checkTime->num_rows == 0) {
-    //     $setTimeSchedule = $mysqli->query("UPDATE workschedule SET WS_time = '{$timeID}' WHERE SR_section = '{$_GET['SectionName']}' AND F_number = '{$assignedFaculty}'");
-    // } elseif (empty($timeID)) {
-    //     $errors['nocontent'] = "No time assigned.";
-    // }
+    $overlapping_interval = null;
+    foreach ($time_intervals as $interval) {
+        $interval_start = strtotime($interval['WS_start_time']);
+        $interval_end = strtotime($interval['WS_end_time']);
+        $input_start_time = strtotime($input_start);
+        $input_end_time = strtotime($input_end);
+        if (($input_start_time >= $interval_start && $input_start_time <= $interval_end) || ($input_end_time >= $interval_start && $input_end_time <= $interval_end)) {
+            $overlapping_interval = $interval;
+            break;
+        }
+    }
+    if ($overlapping_interval) {
+        $errors['nocontent'] = "The input time overlaps with the following interval: Start Time: " . $overlapping_interval['WS_start_time'] . ", End Time: " . $overlapping_interval['WS_end_time'] . ".";
+    } else {
+        $UpdateSchedule = $mysqli->query("UPDATE workschedule SET F_number = '{$assignedFaculty}', WS_start_time = '{$input_start}', WS_end_time = '{$input_end}' 
+                                    WHERE S_subject = '{$subjectname}' AND SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['SectionName']}' AND acadYear = '{$currentSchoolYear}'");
+    }
+}
+if (isset($_POST['deleteSchedule'])) {
+    $assignedFaculty = $_POST['assignedFaculty'];
+    $subjectname = $_POST['subjectname'];
+    $input_start = $_POST['WS_start_time'];
+    $input_end = $_POST['WS_end_time'];
+
+    $deleteSchedule = $mysqli->query("DELETE FROM workschedule WHERE acadYear = '{$currentSchoolYear}' AND F_number = '{$assignedFaculty}' AND S_subject = '{$subjectname}' AND SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['SectionName']}' AND WS_start_time = '{$input_start}' AND WS_end_time = '{$input_end}'");
 }
 if (isset($_POST['postAnnouncement'])) {
     $author = $_POST['author'];
@@ -1015,3 +1006,67 @@ if (isset($_POST['assignAdvisor'])) {
     $assignClassListAdvisor = $mysqli->query("UPDATE classlist SET F_number = '{$advisor}' WHERE SR_section = '{$section}'");
 }
 //End
+
+// Admin Buttons
+if (isset($_POST['acadyear'])) {
+    $currentDate = new DateTime();
+    $currentMonth = $currentDate->format('m');
+    $startYear = "";
+    $endYear = "";
+
+    if ($currentMonth >= 9 && $currentMonth <= 12) {
+        // September to December
+        $startYear = $currentDate->format('Y');
+        $endYear = $currentDate->format('Y') + 1;
+    } else {
+        // January to August
+        $startYear = $currentDate->format('Y') - 1;
+        $endYear = $currentDate->format('Y');
+    }
+
+    if ($getAcadYear->num_rows <= 0) {
+        //insert portion
+        $createAcadYear = $mysqli->query("INSERT INTO acad_year(currentYear, endYear) VALUES ('{$startYear}', '{$endYear}')");
+        $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+        header("Refresh:0");
+    } elseif ($getAcadYear->num_rows == 1) {
+        //update portion
+        $startYear = $acadYear_Data['endYear'];
+        $endYear = (int) $startYear + 1;
+
+        $updateAcadYear = $mysqli->query("UPDATE acad_year SET currentYear = '{$startYear}', endYear = '{$endYear}'");
+        $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+        header("Refresh:0");
+    }
+}
+if (isset($_POST['Open'])) {
+    $enableForms = $mysqli->query('UPDATE quartertable SET quarterStatus = "enabled" WHERE quarterTag = "FORMS"');
+    $enableCurrentQuarter = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "enabled" WHERE quarterStatus = "current"');
+    header("Refresh:0");
+}
+if (isset($_POST['Close'])) {
+    $disableForms = $mysqli->query('UPDATE quartertable SET quarterStatus = "disabled" WHERE quarterTag = "FORMS"');
+    $disableCurrentQuarter = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled" WHERE quarterStatus = "current"');
+    header("Refresh:0");
+}
+if (isset($_POST['enableFirst'])) {
+    $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+    $enableFirst = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "1"');
+    header("Refresh:0");
+}
+if (isset($_POST['enableSecond'])) {
+    $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+    $enableSecond = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "2"');
+    header("Refresh:0");
+}
+if (isset($_POST['enableThird'])) {
+    $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+    $enableThird = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "3"');
+    header("Refresh:0");
+}
+if (isset($_POST['enableFourth'])) {
+    $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+    $enableFourth = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "4"');
+    header("Refresh:0");
+}
+// 

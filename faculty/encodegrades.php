@@ -28,6 +28,7 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
     $arrayStudentName[] = $dataStudentName;
   }
 
+
   $getClassList = "SELECT studentrecord.SR_number, studentrecord.SR_fname, studentrecord.SR_lname, studentrecord.SR_mname,
                     studentrecord.SR_grade, studentrecord.SR_section, grades.G_learningArea, 
                     grades.G_id, grades.G_gradesQ1, grades.G_gradesQ2, grades.G_gradesQ3, grades.G_gradesQ4
@@ -213,38 +214,36 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
                 </div>
                 <div class="tab-content tab-content-basic">
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                    <form style="text-align: right; margin-bottom: 15px">
-                      <button type="submit" class="btn btn-primary me-2">Save</button>
-                      <button class="btn btn-light">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></button>
-                    </form>
+                    <div style="text-align: right; margin-bottom: 15px">
+                      <button type="button" id="saveGrades" class="btn btn-primary me-2">Save</button>
+                      <a href="" type="button" class="btn btn-light">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
+                    </div>
                     <div class="row">
                       <div class="col-12 grid-margin">
                         <div class="card">
                           <div class="card-body">
                             <div class="btn-group">
-                              <div>
-                                <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                  <?php
-                                  if (isset($_GET['Grade']) && isset($_GET['Section'])) {
-                                    echo "Grade " . $_GET['Grade'] . " - " . $_GET['Section'];
-                                  } else {
-                                    echo "Grade and Section";
-                                  }
-                                  ?>
-                                  <i class="fa fa-caret-down"></i>
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                  <?php
-                                  $rowCount = 1;
-                                  $GradeSectionRowCount = sizeof($array_GradeSection);
-                                  while ($rowCount != $GradeSectionRowCount) { ?>
-                                    <a class="dropdown-item" href="encodegrades.php?Grade=<?php echo $array_GradeSection[$rowCount]['SR_grade'] ?>&Section=<?php echo $array_GradeSection[$rowCount]['SR_section'] ?>">
-                                      <?php echo "Grade " . $array_GradeSection[$rowCount]['SR_grade'] . "-" . $array_GradeSection[$rowCount]['SR_section']; ?>
-                                    </a>
-                                  <?php $rowCount++;
-                                  }
-                                  ?>
-                                </div>
+                              <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <?php
+                                if (isset($_GET['Grade']) && isset($_GET['Section'])) {
+                                  echo "Grade " . $_GET['Grade'] . " - " . $_GET['Section'];
+                                } else {
+                                  echo "Grade and Section";
+                                }
+                                ?>
+                                <i class="fa fa-caret-down"></i>
+                              </button>
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <?php
+                                $rowCount = 1;
+                                $GradeSectionRowCount = sizeof($array_GradeSection);
+                                while ($rowCount != $GradeSectionRowCount) { ?>
+                                  <a class="dropdown-item" href="encodegrades.php?Grade=<?php echo $array_GradeSection[$rowCount]['SR_grade'] ?>&Section=<?php echo $array_GradeSection[$rowCount]['SR_section'] ?>">
+                                    <?php echo "Grade " . $array_GradeSection[$rowCount]['SR_grade'] . "-" . $array_GradeSection[$rowCount]['SR_section']; ?>
+                                  </a>
+                                <?php $rowCount++;
+                                }
+                                ?>
                               </div>
                             </div>
                             <div class="btn-group">

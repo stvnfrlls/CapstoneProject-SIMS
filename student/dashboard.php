@@ -7,11 +7,13 @@ if (!isset($_SESSION['SR_number'])) {
   $getstudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$_SESSION['SR_number']}'");
   $studentInfo = $getstudentInfo->fetch_assoc();
 
-  $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_name = '{$studentInfo['SR_section']}'");
+  $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_name = '{$studentInfo['SR_section']}' AND acadYear = '{$currentSchoolYear}'");
   $SectionInfo = $getSectionInfo->fetch_assoc();
 
-  $getAdvisorInfo = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$SectionInfo['S_adviser']}'");
-  $AdvisorInfo = $getAdvisorInfo->fetch_assoc();
+  if (!empty($SectionInfo['S_adviser'])) {
+    $getAdvisorInfo = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$SectionInfo['S_adviser']}'");
+    $AdvisorInfo = $getAdvisorInfo->fetch_assoc();
+  }
 }
 ?>
 <!DOCTYPE html>
@@ -122,7 +124,15 @@ if (!isset($_SESSION['SR_number'])) {
                                 <h3 style="margin-bottom: 8px;"><?php echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix']; ?></h3>
                                 <p style="margin-bottom: 2px;"><?php echo $studentInfo['SR_number'] ?></p>
                                 <p style="margin-bottom: 2px;"><?php echo "Grade " . $studentInfo['SR_grade'] . " - " . $studentInfo['SR_section'] ?></p>
-                                <p style="margin-bottom: 2px;"><?php echo $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'] . " " . substr($AdvisorInfo['F_mname'], 0, 1) . ". " . $AdvisorInfo['F_suffix']; ?></p>
+                                <p style="margin-bottom: 2px;">
+                                  <?php
+                                  if (!empty($SectionInfo['S_adviser'])) {
+                                    echo $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'] . " " . substr($AdvisorInfo['F_mname'], 0, 1) . ". " . $AdvisorInfo['F_suffix'];
+                                  } else {
+                                    echo "Advisor not yet Assigned";
+                                  }
+                                  ?>
+                                </p>
                                 <p style="margin-bottom: 2px;"><?php echo "S.Y. " . $currentSchoolYear ?></p>
                               </div>
                             </div>
@@ -136,7 +146,7 @@ if (!isset($_SESSION['SR_number'])) {
                             <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
                               <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628;">
                                 <?php
-                                $getPresentAttendance = $mysqli->query("SELECT COUNT(*) AS presentDays FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}'");
+                                $getPresentAttendance = $mysqli->query("SELECT COUNT(*) AS presentDays FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND acadYear = '{$currentSchoolYear}'");
                                 $CountPresent = $getPresentAttendance->fetch_assoc();
 
                                 if (empty($CountPresent['presentDays'])) {
@@ -155,7 +165,18 @@ if (!isset($_SESSION['SR_number'])) {
                           <div class="card-body">
                             <p class="d-flex flex-shrink-0 align-items-center justify-content-center text-center">Total Days of Absent</p>
                             <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
-                              <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628;">25</h1>
+                              <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628;">
+                                <?php
+                                $getAbsentAttendance = $mysqli->query("SELECT COUNT(*) AS absentDays FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND A_status = 'ABSENT' AND acadYear = '{$currentSchoolYear}'");
+                                $CountAbsent = $getAbsentAttendance->fetch_assoc();
+
+                                if (empty($CountAbsent['absentDays'])) {
+                                  echo "NONE";
+                                } else {
+                                  echo $CountAbsent['absentDays'];
+                                }
+                                ?>
+                              </h1>
                             </div>
                           </div>
                         </div>
@@ -165,7 +186,18 @@ if (!isset($_SESSION['SR_number'])) {
                           <div class="card-body">
                             <p class="d-flex flex-shrink-0 align-items-center justify-content-center text-center">Total Days of Late</p>
                             <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
-                              <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628;">25</h1>
+                              <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628;">
+                                <?php
+                                $getLateAttendance = $mysqli->query("SELECT COUNT(*) AS lateDays FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND A_status = 'LATE' AND acadYear = '{$currentSchoolYear}'");
+                                $CountLate = $getLateAttendance->fetch_assoc();
+
+                                if (empty($CountLate['lateDays'])) {
+                                  echo "NONE";
+                                } else {
+                                  echo $CountLate['lateDays'];
+                                }
+                                ?>
+                              </h1>
                             </div>
                           </div>
                         </div>
@@ -237,7 +269,7 @@ if (!isset($_SESSION['SR_number'])) {
                       </div>
                       <div class="row" style="margin: auto;">
                         <?php
-                        $getReminderData = $mysqli->query("SELECT * FROM reminders WHERE forsection = '{$studentInfo['SR_section']}'");
+                        $getReminderData = $mysqli->query("SELECT * FROM reminders WHERE forsection = '{$studentInfo['SR_section']}' AND acadYear = '{$currentSchoolYear}'");
 
                         if ($getReminderData->num_rows > 0) {
                           while ($reminders = $getReminderData->fetch_assoc()) { ?>
@@ -287,7 +319,7 @@ if (!isset($_SESSION['SR_number'])) {
                         <?php
                           }
                         } else {
-                          echo "error";
+                          echo "no data available";
                         }
                         ?>
                       </div>

@@ -142,7 +142,7 @@ if (!isset($_SESSION['F_number'])) {
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-          <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
+          <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="editfacultyProfile">
             <div class="row">
               <div class="col-sm-12">
                 <div class="home-tab">
@@ -152,8 +152,9 @@ if (!isset($_SESSION['F_number'])) {
                     </div>
                   </div>
                   <div style="text-align: right; margin-top: 15px">
-                    <button type="submit" class="btn btn-primary me-2" name="updateProfile">Save</button>
-                    <button class="btn btn-light">Back</button>
+                    <input type="hidden" name="updateProfile" value="submit">
+                    <button type="button" id="updateProfile" class="btn btn-primary me-2">Save</button>
+                    <button type="button" class="btn btn-light">Back</button>
                   </div>
                   <div class="tab-content tab-content-basic">
                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
@@ -439,8 +440,9 @@ if (!isset($_SESSION['F_number'])) {
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
   <script>
-    const myButton = document.getElementById('hatdog');
-    hatdog.addEventListener('click', function() {
+    const editfacultyProfile = document.getElementById('editfacultyProfile');
+    const updateProfile = document.getElementById('updateProfile');
+    updateProfile.addEventListener('click', function() {
       Swal.fire({
         title: 'Are you sure you want to save your changes?',
         showCancelButton: true,
@@ -455,6 +457,7 @@ if (!isset($_SESSION['F_number'])) {
           }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
+              editfacultyProfile.submit();
               window.location.href = '../faculty/viewProfile.php';
             }
           })

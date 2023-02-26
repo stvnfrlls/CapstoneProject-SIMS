@@ -253,9 +253,9 @@ if (!isset($_SESSION['AD_number'])) {
                                     $rowCount = 1;
 
                                     if (isset($_GET['grade'])) {
-                                      $getAdvisoryData = $mysqli->query("SELECT * FROM sections WHERE S_yearLevel = '{$_GET['grade']}'");
+                                      $getAdvisoryData = $mysqli->query("SELECT * FROM sections WHERE S_yearLevel = '{$_GET['grade']}' AND acadYear = '{$currentSchoolYear}'");
                                     } else {
-                                      $getAdvisoryData = $mysqli->query("SELECT * FROM sections");
+                                      $getAdvisoryData = $mysqli->query("SELECT * FROM sections WHERE acadYear = '{$currentSchoolYear}'");
                                     }
                                     while ($AdvisoryData = $getAdvisoryData->fetch_assoc()) { ?>
                                       <form action="" method="post">
@@ -275,7 +275,11 @@ if (!isset($_SESSION['AD_number'])) {
                                               } else {
                                                 echo "<option selected>" . $AssignedFacultyData['F_lname'] . ", " . $AssignedFacultyData['F_fname'] . " " . substr($AssignedFacultyData['F_mname'], 0, 1) . "</option>";
                                               }
-                                              $getFacultyData = $mysqli->query("SELECT faculty.F_number, faculty.F_lname, faculty.F_fname, faculty.F_mname, faculty.F_suffix FROM faculty LEFT JOIN sections ON faculty.F_number = sections.S_adviser WHERE sections.S_adviser IS NULL");
+                                              $getFacultyData = $mysqli->query("SELECT faculty.F_number, faculty.F_lname, faculty.F_fname, faculty.F_mname, faculty.F_suffix FROM faculty 
+                                              LEFT JOIN sections ON faculty.F_number = sections.S_adviser
+                                              WHERE sections.S_adviser 
+                                              NOT IN (SELECT S_adviser FROM sections WHERE acadYear = '{$currentSchoolYear}' AND S_adviser IS NOT NULL)
+                                              ORDER BY faculty.F_lname");
                                               while ($FacultyData = $getFacultyData->fetch_assoc()) { ?>
                                                 <option value="<?php echo $FacultyData['F_number'] ?>"><?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1); ?></option>
                                               <?php } ?>

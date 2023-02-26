@@ -220,7 +220,7 @@ if (!isset($_SESSION['AD_number'])) {
                 <div class="content-wrapper">
                     <div class="row">
                         <div class="col-sm-12">
-                            <form action="confirmstudent.php" method="POST">
+                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="confirmStudent">
                                 <div class="home-tab">
                                     <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                                         <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
@@ -522,8 +522,9 @@ if (!isset($_SESSION['AD_number'])) {
                                     </div>
                                 </div>
                                 <div style="text-align: center;">
-                                    <input type="submit" class="btn btn-primary me-2" name="confirm_student" value="Register">
-                                    <button class="btn btn-light">Back</button>
+                                    <input type="hidden" name="regStudent" value="submit">
+                                    <button type="button" id="regStudent" class="btn btn-primary me-2">Confirm</button>
+                                    <button type="button" class="btn btn-light">Back</button>
                                 </div>
                             </form>
                         </div>
@@ -648,6 +649,31 @@ if (!isset($_SESSION['AD_number'])) {
 
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>
     <script src="../assets/js/admin/off-canvas.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+    <script>
+        const confirmStudent = document.getElementById('confirmStudent');
+        const regStudent = document.getElementById('regStudent');
+        regStudent.addEventListener('click', function() {
+            Swal.fire({
+                title: 'Are you sure you want to register this student?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: `No`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'The student has been registered successfully!',
+                        icon: 'success',
+                    }).then(() => {
+                        // Add your function here
+                        confirmStudent.submit();
+                    });
+                }
+            })
+
+        })
+    </script>
 </body>
 
 </html>

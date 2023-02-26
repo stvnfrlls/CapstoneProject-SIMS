@@ -207,7 +207,7 @@ if (!isset($_SESSION['AD_number'])) {
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
-            <form action="confirmfaculty.php" method="POST">
+            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="confirmFaculty">
               <div class="col-sm-12">
                 <div class="home-tab">
                   <div class="d-sm-flex align-items-center justify-content-between border-bottom">
@@ -375,8 +375,9 @@ if (!isset($_SESSION['AD_number'])) {
                 </div>
               </div>
               <div style="text-align: center;">
-                <button type="submit" class="btn btn-primary me-2" name="confirm_faculty">Register</button>
-                <button class="btn btn-light">Back</button>
+                <input type="hidden" name="regFaculty" value="submit">
+                <button type="button" id="regFaculty" class="btn btn-primary me-2">Confirm</button>
+                <button type="button" class="btn btn-light">Back</button>
               </div>
             </form>
           </div>
@@ -475,6 +476,31 @@ if (!isset($_SESSION['AD_number'])) {
 
       postal.value = findCity.zip_code;
     });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+  <script>
+    const regFaculty = document.getElementById('regFaculty');
+    const confirmFaculty = document.getElementById('confirmFaculty');
+    regFaculty.addEventListener('click', function() {
+      Swal.fire({
+        title: 'Are you sure you want to register this faculty teacher?',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: `No`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: 'The teacher has been registered successfully!',
+            icon: 'success',
+          }).then(() => {
+            // Add your function here
+            confirmFaculty.submit();
+          });
+        }
+      })
+
+    })
   </script>
 </body>
 

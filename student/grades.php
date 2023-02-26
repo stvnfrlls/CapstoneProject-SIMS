@@ -101,7 +101,7 @@ if (!isset($_SESSION['SR_number'])) {
     <div class="container">
         <div class="row">
             <h2 class="text-uppercase text-center" style="padding-top: 40px;">Report Card</h2>
-            <p style="text-align: center;">School Year: 2022-2023</p>
+            <p style="text-align: center;">School Year: <?php echo $currentSchoolYear ?></p>
             <div class="btn-group m-3">
                 <form style="text-align: right;">
                     <a href="../reports/ReportCard.php?ID=<?php echo  $studentData['SR_number'] ?>" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3; text-align:center; font-size: 13px">Print <i class="fa fa-print" style="font-size: 12px;"></i></a>
