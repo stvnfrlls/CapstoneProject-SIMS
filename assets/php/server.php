@@ -367,35 +367,45 @@ if (isset($_POST['student']) || isset($_POST['fetcher'])) {
         }
     }
 }
-if (isset($_POST['encode'])) {
-    $SR_number = $mysqli->real_escape_string($_POST['SR_number']);
-    $Subject = $mysqli->real_escape_string($_POST['Subject']);
-    $G_Grade = $mysqli->real_escape_string($_POST['Grade']);
-    $Quarter = $mysqli->real_escape_string($_POST['Quarter']);
+if (isset($_POST['encodeGrade'])) {
+    $ids = $_POST['row'];
+    $forms_SR_number = $_POST['SR_number'];
+    $forms_Grade = $_POST['Grade'];
+    $forms_Section = $_POST['Section'];
+    $forms_Subject = $_POST['Subject'];
 
-    $getQuarter = "SELECT * FROM grades WHERE G_quarter = '$Quarter' AND SR_number = '$SR_number'";
-    $resultgetQuarter = $mysqli->query($getQuarter);
-    $dataresultgetQuarter = $resultgetQuarter->fetch_assoc();
-    $G_grading = $dataresultverify_fetcher['G_grading'];
+    $forms_G_gradesQ1 = $_POST['G_gradesQ1'];
+    $forms_G_gradesQ2 = $_POST['G_gradesQ2'];
+    $forms_G_gradesQ3 = $_POST['G_gradesQ3'];
+    $forms_G_gradesQ4 = $_POST['G_gradesQ4'];
+    $forms_FinalGrade = $_POST['FinalGrade'];
 
-    if ($resultgetQuarter->num_rows == 0) {
-        $insertGrade = "INSERT INTO grades(SR_number, SR_section, G_quarter, G_learningArea, G_grade) 
-                        VALUES ('$SR_number', '$SR_section', '$Quarter', '$Subject', '$G_grade')";
-        $resultinsertGrade = $mysqli->query($insertGrade);
-        if ($resultinsertGrade) {
-            header('Location: ../faculty/grades.php');
-        } else {
-            echo "error" . $mysqli->error;
+    if (isset($_POST['G_gradesQ1'])) {
+        foreach ($ids as $i => $id) {
+            $SR_number = $forms_SR_number[$i];
+            $Grade = $forms_Grade[$i];
+            $Section = $forms_Section[$i];
+            $Subject = $forms_Subject[$i];
+
+            $G_gradesQ1 = $forms_G_gradesQ1[$i];
+
+            $mysqli->query("INSERT INTO grades(SR_number, acadYear, SR_gradeLevel, SR_section, G_learningArea, G_gradesQ1)
+                            VALUES ('{$SR_number}', '{$currentSchoolYear}', '{$Grade}', '{$Section}', '{$Subject}', '{$G_gradesQ1}')");
         }
-    } elseif ($resultgetQuarter->num_rows == 1) {
-        $insertGrade = "UPDATE grades 
-                        SET SR_section = '$SR_section', G_quarter = '$Quarter', G_learningArea = '$Subject', G_grade = '$G_grade',
-                        WHERE SR_number = '$SR_number'";
-        $resultinsertGrade = $mysqli->query($insertGrade);
-        if ($result) {
-            header('Location: ../faculty/grades.php');
-        } else {
-            echo "error" . $mysqli->error;
+    } elseif (isset($_POST['G_gradesQ2']) || isset($_POST['G_gradesQ3']) || isset($_POST['G_gradesQ4'])) {
+        foreach ($ids as $i => $id) {
+            $SR_number = $forms_SR_number[$i];
+            $Grade = $forms_Grade[$i];
+            $Section = $forms_Section[$i];
+            $Subject = $forms_Subject[$i];
+
+            $G_gradesQ2 = $forms_G_gradesQ2[$i];
+            $G_gradesQ3 = $forms_G_gradesQ3[$i];
+            $G_gradesQ4 = $forms_G_gradesQ4[$i];
+            $FinalGrade = $forms_FinalGrade[$i];
+
+            $mysqli->query("UPDATE grades SET G_gradesQ2 = '{$G_gradesQ1}', G_gradesQ3 = '{$G_gradesQ1}', G_gradesQ4 = '{$G_gradesQ1}', G_finalgrade = '{$FinalGrade}'
+                            WHERE SR_number = '{$SR_number}' AND acadYear = '{$currentSchoolYear}'");
         }
     }
 }
@@ -610,7 +620,7 @@ if (isset($_POST['regStudent'])) {
     // Password must include at least one upper case letter.
     // Password must include at least one number.
     // Password must include at least one special character..
-    
+
     if (isset($WithFetcher) && isset($_POST['FTH_option1'])) {
         $linkFetcher1 = $mysqli->query("INSERT INTO fetcher_list (FTH_number, FTH_linkedTo) VALUES ('{$_POST['FTH_option1']}', '{$SR_number}')");
     }

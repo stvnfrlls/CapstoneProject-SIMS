@@ -180,8 +180,8 @@ if (empty($_SESSION['F_number'])) {
                                     </div>
                                     <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
                                         <nav class="nav">
-                                            <a class="nav-link active ms-0" href="../admin/viewStudent.php" target="__blank" style="color: #c02628;">Profile</a>
-                                            <a class="nav-link" href="../faculty/viewCard.php" target="__blank">Grades</a>
+                                            <a class="nav-link active ms-0" href="viewStudent.php?ID=<?php echo $_GET['ID'] ?>" style="color: #c02628;">Profile</a>
+                                            <a class="nav-link" href="viewCard.php?ID=<?php echo $_GET['ID'] ?>">Grades</a>
                                         </nav>
                                         <div class="border-bottom"></div>
                                     </div>
@@ -265,18 +265,18 @@ if (empty($_SESSION['F_number'])) {
                                                             </div>
                                                             <div class="row" style="padding-bottom: 15px;">
                                                                 <div class="col-md-6">
-                                                                    <label label class="col-sm-12 col-form-label">Schedule</label>
+                                                                    <label label class="col-sm-12 col-form-label" style="color:white;"> .</label>
                                                                     <div class="col-sm-12">
-                                                                        <select class="form-select form-control" required readonly>
-                                                                            <option value="NA">Monday - Friday</option>
+                                                                        <select class="form-select form-control" readonly>
+                                                                            <option></option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <label label class="col-sm-12 col-form-label" style="color:white;"> .</label>
                                                                     <div class="col-sm-12">
-                                                                        <select class="form-select form-control" required readonly>
-                                                                            <option value="AM">7:00AM-2:00PM</option>
+                                                                        <select class="form-select form-control" readonly>
+                                                                            <option></option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
