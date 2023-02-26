@@ -11,7 +11,7 @@ if (!isset($_SESSION['AD_number'])) {
 
 <head>
   <meta charset="utf-8">
-  <title>Monthly Reports</title>
+  <title>Monthly Attendance Reports</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta content="" name="keywords">
   <meta content="" name="description">
@@ -94,6 +94,12 @@ if (!isset($_SESSION['AD_number'])) {
             </a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="../admin/createFetcher.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="../admin/student.php">
               <i class=""></i>
               <span class="menu-title" style="color: #b9b9b9;">Student Information</span>
@@ -106,15 +112,15 @@ if (!isset($_SESSION['AD_number'])) {
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../admin/movingUp.php">
+            <a class="nav-link" href="../admin/editSection.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Status</span>
+              <span class="menu-title" style="color: #b9b9b9;">Change Student Section</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../admin/modifySection.php">
+            <a class="nav-link" href="../admin/movingUp.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Change Student Section</span>
+              <span class="menu-title" style="color: #b9b9b9;">Status</span>
             </a>
           </li>
           <!-- line 3 -->
@@ -152,7 +158,7 @@ if (!isset($_SESSION['AD_number'])) {
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../admin/editSection.php">
+            <a class="nav-link" href="../admin/modifySection.php">
               <i class=""></i>
               <span class="menu-title" style="color: #b9b9b9;">Edit Section</span>
             </a>
@@ -189,11 +195,13 @@ if (!isset($_SESSION['AD_number'])) {
               <div class="home-tab">
                 <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                   <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                    <h2 class="fw-bold text-primary text-uppercase">Monthly Reports</h2>
+                    <h2 class="fw-bold text-primary text-uppercase">Monthly Attendance Reports</h2>
                   </div>
                 </div>
                 <div class="tab-content tab-content-basic">
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+
+
 
                     <div class="row">
                       <form class="form-sample">
@@ -216,44 +224,72 @@ if (!isset($_SESSION['AD_number'])) {
                     <div class="row">
                       <div class="col-12 grid-margin">
                         <form class="form-sample">
-                          <div class="row" style="padding-bottom: 15px;">
-                            <div class="col-md-4">
-                              <label class="col-sm-12 col-form-label">Name</label>
-                              <div class="col-sm-12">
-                                <input type="text" class="form-control" readonly />
+                          <div class="btn-group">
+                            <div>
+                              <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                                Month<i class="fa fa-caret-down"></i>
+                              </button>
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                <a class="dropdown-item" href="">January</a>
+                                <a class="dropdown-item" href="">February</a>
+                                <a class="dropdown-item" href="">March</a>
+                                <a class="dropdown-item" href="">April</a>
+                                <a class="dropdown-item" href="">Maay</a>
+                                <a class="dropdown-item" href="">June</a>
+                                <a class="dropdown-item" href="">July</a>
+                                <a class="dropdown-item" href="">August</a>
+                                <a class="dropdown-item" href="">September</a>
+                                <a class="dropdown-item" href="">Ocotber</a>
+                                <a class="dropdown-item" href="">November</a>
+                                <a class="dropdown-item" href="">December</a>
                               </div>
                             </div>
-                            <div class="col-md-4">
-                              <label class="col-sm-12 col-form-label">Grade and Section</label>
-                              <div class="col-sm-12">
-                                <input type="text" class="form-control" readonly />
+                          </div>
+                          <div class="btn-group">
+                            <div>
+                              <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                                Grade<i class="fa fa-caret-down"></i>
+                              </button>
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                <a class="dropdown-item" href="">Grade 1</a>
+                                <a class="dropdown-item" href="">grade 2</a>
+                                <a class="dropdown-item" href="">Grade 3</a>
                               </div>
                             </div>
+                          </div>
+                          <div class="btn-group">
+                            <div>
+                              <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                                Section<i class="fa fa-caret-down"></i>
+                              </button>
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                <a class="dropdown-item" href="">Carnation</a>
+                                <a class="dropdown-item" href="">Chrysanthemum</a>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="btn-group" style="float: right;">
+                            <a href="" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
                           </div>
                         </form>
                       </div>
                     </div>
 
+
                     <div class="row">
-                      <div style="text-align:right;">
-                        <form>
-                          <button style="background-color: #e4e3e3;  margin-right: 0px;" class="btn btn-secondary">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></button>
-                        </form>
-                      </div>
                       <div class="col-lg-12 d-flex flex-column">
-                        <div class="row flex-grow" style="margin-top: 15px;">
-
-                          <div class="col-md-6 col-lg-12 grid-margin stretch-card">
-                            <div class="card bg-primary card-rounded">
-
+                        <div class="row flex-grow">
+                          <div class="col-12 grid-margind">
+                            <div class="">
                               <div class="table-responsive">
                                 <table class="table">
                                   <thead>
                                     <tr>
-                                      <th>Month</th>
-                                      <th>Total of Days Present</th>
-                                      <th>Total of Days Late</th>
-                                      <th>Total of Days Absent</th>
+                                      <th>Student Name</th>
+                                      <th>No. of School Days</th>
+                                      <th>No. of Days Present</th>
+                                      <th>No. of Days Absent</th>
+                                      <th>No. of Days Tardy</th>
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -278,87 +314,27 @@ if (!isset($_SESSION['AD_number'])) {
                                       }
                                     </style>
                                     <tr>
-                                      <td class="tabledata">January</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Camille Anne G. Sabile</td>
+                                      <td class="tabledata">20</td>
+                                      <td class="tabledata">18</td>
+                                      <td class="tabledata">2</td>
+                                      <td class="tabledata">0</td>
                                     </tr>
 
                                     <tr>
-                                      <td class="tabledata">February</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Hazel Grace Cantuba</td>
+                                      <td class="tabledata">20</td>
+                                      <td class="tabledata">19</td>
+                                      <td class="tabledata">1</td>
+                                      <td class="tabledata">10</td>
                                     </tr>
 
                                     <tr>
-                                      <td class="tabledata">March</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
-                                    </tr>
-
-                                    <tr>
-                                      <td class="tabledata">April</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
-                                    </tr>
-
-                                    <tr>
-                                      <td class="tabledata">May</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
-                                    </tr>
-
-                                    <tr>
-                                      <td class="tabledata">June</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
-                                    </tr>
-
-                                    <tr>
-                                      <td class="tabledata">July</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
-                                    </tr>
-
-                                    <tr>
-                                      <td class="tabledata">August</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
-                                    </tr>
-
-                                    <tr>
-                                      <td class="tabledata">September</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
-                                    </tr>
-
-                                    <tr>
-                                      <td class="tabledata">October</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
-                                    </tr>
-
-                                    <tr>
-                                      <td class="tabledata">November</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
-                                    </tr>
-
-                                    <tr>
-                                      <td class="tabledata">December</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
-                                      <td class="tabledata">Student 1</td>
+                                      <td class="tabledata">Cleint Steven Frilles</td>
+                                      <td class="tabledata">20</td>
+                                      <td class="tabledata">15</td>
+                                      <td class="tabledata">5</td>
+                                      <td class="tabledata">5</td>
                                     </tr>
                                   </tbody>
                                 </table>
@@ -368,6 +344,8 @@ if (!isset($_SESSION['AD_number'])) {
                         </div>
                       </div>
                     </div>
+
+
                   </div>
                 </div>
               </div>
@@ -384,44 +362,7 @@ if (!isset($_SESSION['AD_number'])) {
 
   <!-- Footer Start -->
   <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
-    <div class="container py-5">
-      <div class="row g-5">
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Address</h3>
-          <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
-          <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
-          <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>customerservice@cdsp.edu.ph</p>
-          <div class="d-flex pt-2">
-            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
-            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
-            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
-            <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Quick Links</h3>
-          <a class="btn btn-link" href="">Home</a>
-          <a class="btn btn-link" href="">About Us</a>
-          <a class="btn btn-link" href="">Academics</a>
-          <a class="btn btn-link" href="">Admission</a>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Useful Links</h3>
-          <a class="btn btn-link" href="">DepEd</a>
-          <a class="btn btn-link" href="">Pag Asa</a>
-          <a class="btn btn-link" href="">City of San Pedro</a>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Newsletter</h3>
-          <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-          <div class="position-relative mx-auto" style="max-width: 400px;">
-            <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-            <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="container-fluid copyright">
+    <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
       <div class="container">
         <div class="row">
           <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">

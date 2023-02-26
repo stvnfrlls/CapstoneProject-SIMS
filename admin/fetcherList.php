@@ -1,9 +1,17 @@
+<?php
+require_once("../assets/php/server.php");
+
+if (!isset($_SESSION['AD_number'])) {
+    header('Location: ../auth/login.php');
+} else {
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
-    <title>Edit Section</title>
+    <title>List of Fetchers</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -29,10 +37,10 @@
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="../assets/css/style.css" rel="stylesheet">
-    <link href="../assets/css/form-style.css" rel="stylesheet">
+    <link href="../assets/css/dashboard-admin.css" rel="stylesheet">
     <link href="../assets/css/admin/style.css" rel="stylesheet">
-    <link href="../assets/css/admin/materialdesignicons.min.css" rel="stylesheet">
+    <link href="../assets/css/admin/style.css.map" rel="stylesheet">
+
 
 </head>
 
@@ -185,82 +193,50 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="home-tab">
-
                                 <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                                     <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                                        <h2 class="fw-bold text-primary text-uppercase">Edit Section</h2>
+                                        <h2 class="fw-bold text-primary text-uppercase">List of Fetchers</h2>
                                     </div>
                                 </div>
-
                                 <div class="tab-content tab-content-basic">
-                                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                                        <div class="row" style="margin-top: 15px;">
-                                            <div class="col-lg-12 d-flex flex-column">
-                                                <div class="row flex-grow">
-                                                    <div class="col-12 grid-margin">
-                                                        <div class="">
-                                                            <div style="text-align: center; margin-bottom: 15px;">
-                                                                <div class="btn-group">
-                                                                    <div>
-                                                                        <button class="btn btn-secondary" style="background-color: #e4e3e3;" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                                            Grade <i class="fa fa-caret-down"></i>
-                                                                        </button>
-                                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                                                            <a class="dropdown-item" href="">Grade 1</a>
-                                                                            <a class="dropdown-item" href="">Grade 2</a>
-                                                                            <a class="dropdown-item" href="">Grade 3</a>
-                                                                            <a class="dropdown-item" href="">Grade 4</a>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="btn-group">
-                                                                    <div>
-                                                                        <button class="btn btn-secondary" style="background-color: #e4e3e3;" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                                            Section <i class="fa fa-caret-down"></i>
-                                                                        </button>
-                                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                                                            <a class="dropdown-item" href="">Carnation</a>
-                                                                            <a class="dropdown-item" href="">Chrysanthemum</a>
-                                                                            <a class="dropdown-item" href="">Narra</a>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                    <div class="row" style="margin-top: 15px;">
+                                        <div class="col-12 grid-margin">
+                                            <div class="card" style="width:80%; margin-left:auto; margin-right:auto;">
+                                                <div class="card-body">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-striped">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>No.</th>
+                                                                    <th>Name</th>
+                                                                    <th>Contact No.</th>
+                                                                    <th>Email Address</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
 
-                                                            <div class="table-responsive">
-                                                                <table class="table" style="width:50%; margin-left:auto; margin-right:auto;">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>No.</th>
-                                                                            <th>Section</th>
-                                                                            <th>Action</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
+                                                                <tr>
+                                                                    <td>1</td>
+                                                                    <td>Camille Anne Sabile</td>
+                                                                    <td>09123456789</td>
+                                                                    <td>camile@gmail.com</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>2</td>
+                                                                    <td>Hazel grace Cantuba</td>
+                                                                    <td>09756438907</td>
+                                                                    <td>hazel@gmail.com</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>3</td>
+                                                                    <td>Client Steven Frilles</td>
+                                                                    <td>09680935678</td>
+                                                                    <td>steven@gmail.com</td>
+                                                                </tr>
 
-                                                                        <form action="" method="POST">
-                                                                            <tr>
-                                                                                <td>1</td>
-                                                                                <td><input type="text" class="form-control"></td>
-                                                                                <td>
-                                                                                    <input type="submit" style="color: #ffffff;" class="btn btn-primary" value="UPDATE" name="updateCurr">
-                                                                                    <input type="submit" class="btn btn-secondary" value="DELETE" name="deleteCurr">
-                                                                                </td>
-                                                                            </tr>
-                                                                        </form>
 
-                                                                        <form action="" method="post">
-                                                                            <tr>
-                                                                                <td>ADD</td>
-                                                                                <td><input type="text" class="form-control"></td>
-                                                                                <td><input type="submit" style="color: #ffffff;" class="btn btn-primary" value="ADD"></td>
-                                                                            </tr>
-                                                                        </form>
-
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
+                                                            </tbody>
+                                                        </table>
                                                     </div>
                                                 </div>
                                             </div>
@@ -270,15 +246,16 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
-                <!-- content-wrapper ends -->
             </div>
-            <!-- main-panel ends -->
+            <!-- content-wrapper ends -->
         </div>
-        <!-- page-body-wrapper ends -->
+        <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
-
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
         <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
@@ -292,16 +269,15 @@
         </div>
     </div>
     <!-- Footer End -->
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
-    <!-- JavaScript Libraries -->
-
-    <!-- Template Javascript -->
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/admin/vendor.bundle.base.js"></script>
-    <script src="../assets/js/admin/off-canvas.js"></script>
 </body>
+
+<!-- Template Javascript -->
+<script src="../assets/js/main.js"></script>
+
+<script src="../assets/js/admin/vendor.bundle.base.js"></script>
+<script src="../assets/js/admin/off-canvas.js"></script>
+<script src="../assets/js/admin/progressbar.min.js"></script>
+<script src="../assets/js/admin/Chart.min.js"></script>
+
 
 </html>
