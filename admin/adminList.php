@@ -202,7 +202,7 @@ if (!isset($_SESSION['AD_number'])) {
                                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                                         <div class="row" style="margin-top: 15px;">
                                             <div class="col-12 grid-margin">
-                                                <div class="card"  style="width:70%; margin-left:auto; margin-right:auto;">
+                                                <div class="card" style="width:70%; margin-left:auto; margin-right:auto;">
                                                     <div class="card-body">
                                                         <div class="table-responsive">
                                                             <table class="table table-striped">
@@ -214,24 +214,25 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-
-                                                                    <tr>
-                                                                        <td>1</td>
-                                                                        <td>Camille Anne Sabile</td>
-                                                                        <td>cmlsbl24@gmail.com</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>2</td>
-                                                                        <td>Hazel Grace Cantuba</td>
-                                                                        <td>hazelgrace@gmail.com</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>3</td>
-                                                                        <td>Client Steven Frilles</td>
-                                                                        <td>stevenfrilles@gmail.com</td>
-                                                                    </tr>
-
-
+                                                                    <?php
+                                                                    $rowCount = 1;
+                                                                    $getAdminAccountsList = $mysqli->query("SELECT * FROM admin_accounts");
+                                                                    if (mysqli_num_rows($getAdminAccountsList) > 0) {
+                                                                        while ($AdminAccounts = $getAdminAccountsList->fetch_assoc()) { ?>
+                                                                            <tr>
+                                                                                <td><?php echo $rowCount; ?></td>
+                                                                                <td><?php echo $AdminAccounts['AD_name']; ?></td>
+                                                                                <td><?php echo $AdminAccounts['AD_email']; ?></td>
+                                                                            </tr>
+                                                                        <?php
+                                                                            $rowCount++;
+                                                                        }
+                                                                    } else { ?>
+                                                                        <tr>
+                                                                            <td colspan="3" class="text-center">No Admin account registered yet</td>
+                                                                        </tr>
+                                                                    <?php }
+                                                                    ?>
                                                                 </tbody>
                                                             </table>
                                                         </div>

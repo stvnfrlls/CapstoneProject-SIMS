@@ -208,33 +208,34 @@ if (!isset($_SESSION['AD_number'])) {
                                                             <thead>
                                                                 <tr>
                                                                     <th>No.</th>
+                                                                    <th>ID no.</th>
                                                                     <th>Name</th>
                                                                     <th>Contact No.</th>
                                                                     <th>Email Address</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-
-                                                                <tr>
-                                                                    <td>1</td>
-                                                                    <td>Camille Anne Sabile</td>
-                                                                    <td>09123456789</td>
-                                                                    <td>camile@gmail.com</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>2</td>
-                                                                    <td>Hazel grace Cantuba</td>
-                                                                    <td>09756438907</td>
-                                                                    <td>hazel@gmail.com</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>3</td>
-                                                                    <td>Client Steven Frilles</td>
-                                                                    <td>09680935678</td>
-                                                                    <td>steven@gmail.com</td>
-                                                                </tr>
-
-
+                                                                <?php
+                                                                $rowCount = 1;
+                                                                $getFetcherAccountsList = $mysqli->query("SELECT * FROM fetcher");
+                                                                if (mysqli_num_rows($getFetcherAccountsList) > 0) {
+                                                                    while ($FetcherAccounts = $getFetcherAccountsList->fetch_assoc()) { ?>
+                                                                        <tr>
+                                                                            <td><?php echo $rowCount; ?></td>
+                                                                            <td><?php echo $FetcherAccounts['FTH_number']; ?></td>
+                                                                            <td><?php echo $FetcherAccounts['FTH_name']; ?></td>
+                                                                            <td><?php echo $FetcherAccounts['FTH_contactNo']; ?></td>
+                                                                            <td><?php echo $FetcherAccounts['FTH_email']; ?></td>
+                                                                        </tr>
+                                                                    <?php
+                                                                        $rowCount++;
+                                                                    }
+                                                                } else { ?>
+                                                                    <tr>
+                                                                        <td colspan="5" class="text-center">No Fetcher account registered yet</td>
+                                                                    </tr>
+                                                                <?php }
+                                                                ?>
                                                             </tbody>
                                                         </table>
                                                     </div>

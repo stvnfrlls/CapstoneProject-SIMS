@@ -484,46 +484,91 @@ if (!isset($_SESSION['AD_number'])) {
                                                         <div class="row" style="padding-bottom: 15px;">
                                                             <div class="col-md-2">
                                                                 <div class="col-sm-12">
-                                                                    <label class="form-check-label" for="option1"> <input type="checkbox" class="form-check-input" id="option1" name="option1" value="option1" onclick="handleCheckboxClick(this)"> With Fetcher</label>
+                                                                    <label class="form-check-label" for="option1">
+                                                                        <input type="checkbox" class="form-check-input" id="option1" name="Fetcher" onclick="handleCheckboxClick(this)">
+                                                                        With Fetcher
+                                                                    </label>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="col-sm-12">
-                                                                    <label class="form-check-label" for="option2"> <input type="checkbox" class="form-check-input" id="option2" name="option2" value="option2" onclick="handleCheckboxClick(this)"> Without Fetcher</label>
+                                                                    <label class="form-check-label" for="option2">
+                                                                        <input type="checkbox" class="form-check-input" id="option2" name="NoFetcher" onclick="handleCheckboxClick(this)">
+                                                                        Without Fetcher
+                                                                    </label>
                                                                 </div>
                                                             </div>
                                                         </div>
 
                                                         <div id="additionalInputs" style="display: none;">
+                                                            <?php
+                                                            $FetcherData_Array = array();
+                                                            $getFetcherList = $mysqli->query("SELECT * FROM fetcher_data");
+                                                            while ($FetcherData = $getFetcherList->fetch_assoc()) {
+                                                                $FetcherData_Array[] = $FetcherData;
+                                                            }
+                                                            $i = 0;
+                                                            ?>
                                                             <div class="row" style="padding-bottom: 15px;">
                                                                 <div class="col-md-4">
                                                                     <label label class="col-sm-12 col-form-label">Fetcher Name </span></label>
                                                                     <div class="col-sm-12">
-                                                                        <select id="" class="form-select" name="" required>
+                                                                        <select id="" class="form-select" name="FTH_option1" required>
                                                                             <option selected></option>
+                                                                            <?php
+                                                                            $FTH_option1 = 0;
+                                                                            if (sizeof($FetcherData_Array) > 0) {
+                                                                                while ($FTH_option1 != sizeof($FetcherData_Array)) { ?>
+                                                                                    <option value="<?php echo $FetcherData_Array[$FTH_option1]['FTH_number'] ?>"><?php echo $FetcherData_Array[$FTH_option1]['FTH_name'] ?></option>
+                                                                                <?php $FTH_option1++;
+                                                                                }
+                                                                            } else { ?>
+                                                                                <option>No available fetchers yet</option>
+                                                                            <?php }
+                                                                            ?>
                                                                         </select>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-4">
                                                                     <label label class="col-sm-12 col-form-label">Fetcher Name</span></label>
                                                                     <div class="col-sm-12">
-                                                                        <select id="" class="form-select" name="" required>
+                                                                        <select id="" class="form-select" name="FTH_option2" required>
                                                                             <option selected></option>
+                                                                            <?php
+                                                                            $FTH_option2 = 0;
+                                                                            if (sizeof($FetcherData_Array) > 0) {
+                                                                                while ($FTH_option2 != sizeof($FetcherData_Array)) { ?>
+                                                                                    <option value="<?php echo $FetcherData_Array[$FTH_option2]['FTH_number'] ?>"><?php echo $FetcherData_Array[$FTH_option2]['FTH_name'] ?></option>
+                                                                                <?php $FTH_option2++;
+                                                                                }
+                                                                            } else { ?>
+                                                                                <option>No available fetchers yet</option>
+                                                                            <?php }
+                                                                            ?>
                                                                         </select>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-4">
                                                                     <label label class="col-sm-12 col-form-label">Fetcher Name</span></label>
                                                                     <div class="col-sm-12">
-                                                                        <select id="" class="form-select" name="" required>
+                                                                        <select id="" class="form-select" name="FTH_option3" required>
                                                                             <option selected></option>
+                                                                            <?php
+                                                                            $FTH_option3 = 0;
+                                                                            if (sizeof($FetcherData_Array) > 0) {
+                                                                                while ($FTH_option3 != sizeof($FetcherData_Array)) { ?>
+                                                                                    <option value="<?php echo $FetcherData_Array[$FTH_option3]['FTH_number'] ?>"><?php echo $FetcherData_Array[$FTH_option3]['FTH_name'] ?></option>
+                                                                                <?php $FTH_option3++;
+                                                                                }
+                                                                            } else { ?>
+                                                                                <option>No available fetchers yet</option>
+                                                                            <?php }
+                                                                            ?>
                                                                         </select>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-
-
                                                     </div>
                                                 </div>
                                             </div>
