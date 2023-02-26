@@ -3,6 +3,14 @@ require_once("../assets/php/server.php");
 
 if (!isset($_SESSION['AD_number'])) {
   header('Location: ../auth/login.php');
+} else {
+  $gradeList = "SELECT DISTINCT S_yearLevel FROM sections WHERE acadYear = '{$currentSchoolYear}'";
+  $rungradeList = $mysqli->query($gradeList);
+
+  if (isset($_GET['Grade'])) {
+    $sectionList = "SELECT DISTINCT(S_name) FROM sections WHERE S_yearLevel = '{$_GET['Grade']}' AND acadYear = '{$currentSchoolYear}'";
+    $runsectionList = $mysqli->query($sectionList);
+  }
 }
 ?>
 
@@ -200,9 +208,6 @@ if (!isset($_SESSION['AD_number'])) {
                 </div>
                 <div class="tab-content tab-content-basic">
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-
-
-
                     <div class="row">
                       <form class="form-sample">
                         <div class="col-12 grid-margin">
@@ -230,43 +235,74 @@ if (!isset($_SESSION['AD_number'])) {
                                 Month<i class="fa fa-caret-down"></i>
                               </button>
                               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                <a class="dropdown-item" href="">January</a>
-                                <a class="dropdown-item" href="">February</a>
-                                <a class="dropdown-item" href="">March</a>
-                                <a class="dropdown-item" href="">April</a>
-                                <a class="dropdown-item" href="">Maay</a>
-                                <a class="dropdown-item" href="">June</a>
-                                <a class="dropdown-item" href="">July</a>
-                                <a class="dropdown-item" href="">August</a>
-                                <a class="dropdown-item" href="">September</a>
-                                <a class="dropdown-item" href="">Ocotber</a>
-                                <a class="dropdown-item" href="">November</a>
-                                <a class="dropdown-item" href="">December</a>
+                                <a class="dropdown-item" href="monthlyReports.php?month=January">January</a>
+                                <a class="dropdown-item" href="monthlyReports.php?month=February">February</a>
+                                <a class="dropdown-item" href="monthlyReports.php?month=March">March</a>
+                                <a class="dropdown-item" href="monthlyReports.php?month=April">April</a>
+                                <a class="dropdown-item" href="monthlyReports.php?month=Maay">May</a>
+                                <a class="dropdown-item" href="monthlyReports.php?month=June">June</a>
+                                <a class="dropdown-item" href="monthlyReports.php?month=July">July</a>
+                                <a class="dropdown-item" href="monthlyReports.php?month=August">August</a>
+                                <a class="dropdown-item" href="monthlyReports.php?month=September">September</a>
+                                <a class="dropdown-item" href="monthlyReports.php?month=October">October</a>
+                                <a class="dropdown-item" href="monthlyReports.php?month=November">November</a>
+                                <a class="dropdown-item" href="monthlyReports.php?month=December">December</a>
                               </div>
                             </div>
                           </div>
                           <div class="btn-group">
                             <div>
-                              <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
-                                Grade<i class="fa fa-caret-down"></i>
+                              <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <?php
+                                if (isset($_GET['Grade'])) {
+                                  if ($_GET['Grade'] == "KINDER") {
+                                    echo  $_GET['Grade'];
+                                  } else {
+                                    echo  "Grade " . $_GET['Grade'];
+                                  }
+                                } else {
+                                  echo "Grade ";
+                                }
+                                ?>
+                                <i class="fa fa-caret-down"></i>
                               </button>
-                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                <a class="dropdown-item" href="">Grade 1</a>
-                                <a class="dropdown-item" href="">grade 2</a>
-                                <a class="dropdown-item" href="">Grade 3</a>
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <?php
+                                while ($gradeData = $rungradeList->fetch_assoc()) { ?>
+                                  <a class="dropdown-item" href="monthlyReports.php?month=<?php echo $_GET['month'] ?>&Grade=<?php echo $gradeData['S_yearLevel'] ?>">
+                                    <?php
+                                    echo "Grade " . $gradeData['S_yearLevel'];
+                                    ?>
+                                  </a>
+                                <?php } ?>
                               </div>
                             </div>
                           </div>
                           <div class="btn-group">
-                            <div>
-                              <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
-                                Section<i class="fa fa-caret-down"></i>
-                              </button>
-                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                <a class="dropdown-item" href="">Carnation</a>
-                                <a class="dropdown-item" href="">Chrysanthemum</a>
+                            <?php
+                            if (isset($_GET['Grade'])) { ?>
+                              <div>
+                                <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                  <?php if (isset($_GET['Section'])) {
+                                    echo $_GET['Section'];
+                                  } else {
+                                    echo "Section";
+                                  }
+                                  ?>
+                                  <i class="fa fa-caret-down"></i>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                  <?php
+                                  while ($sectionData = $runsectionList->fetch_assoc()) { ?>
+                                    <a class="dropdown-item" href="monthlyReports.php?month=<?php echo $_GET['month'] ?>&Grade=<?php echo $_GET['Grade'] . "&Section=" . $sectionData['S_name']; ?>">
+                                      <?php
+                                      echo $sectionData['S_name'];
+                                      ?>
+                                    </a>
+                                  <?php } ?>
+                                </div>
                               </div>
-                            </div>
+                            <?php } ?>
                           </div>
                           <div class="btn-group" style="float: right;">
                             <a href="" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
