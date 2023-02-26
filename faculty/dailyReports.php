@@ -165,7 +165,7 @@ if (!isset($_SESSION['F_number'])) {
                                 <div class="tab-content tab-content-basic">
                                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
 
-                                        <div class="row">
+                                        <!--    <div class="row">
                                             <form action="" method="post">
                                                 <div class="col-12 grid-margin autocomplete">
                                                     <div class="row">
@@ -238,48 +238,35 @@ if (!isset($_SESSION['F_number'])) {
                                             </form>
                                         </div>
 
-                                        <div class="row">
-                                            <div class="col-12 grid-margin">
-                                                <form class="form-sample">
-                                                    <div class="col-12 grid-margin">
-
-                                                        <div class="row">
-                                                            <div class="col-md-4">
-                                                                <label class="col-sm-12 col-form-label">Name</label>
-                                                                <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" readonly />
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label class="col-sm-12 col-form-label">Grade and Section</label>
-                                                                <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" readonly />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
+                                                            -->
 
                                         <div class="btn-group">
                                             <div>
                                                 <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
-                                                    Month<i class="fa fa-caret-down"></i>
+                                                    Grade<i class="fa fa-caret-down"></i>
                                                 </button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
                                                     <a class="dropdown-item" href="">January</a>
                                                     <a class="dropdown-item" href="">February</a>
                                                     <a class="dropdown-item" href="">March</a>
-                                                    <a class="dropdown-item" href="">April</a>
-                                                    <a class="dropdown-item" href="">June</a>
-                                                    <a class="dropdown-item" href="">July</a>
-                                                    <a class="dropdown-item" href="">August</a>
-                                                    <a class="dropdown-item" href="">September</a>
-                                                    <a class="dropdown-item" href="">October</a>
-                                                    <a class="dropdown-item" href="">November</a>
-                                                    <a class="dropdown-item" href="">December</a>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="btn-group">
+                                            <div>
+                                                <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                                                    Section<i class="fa fa-caret-down"></i>
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                                    <a class="dropdown-item" href="">January</a>
+                                                    <a class="dropdown-item" href="">February</a>
+                                                    <a class="dropdown-item" href="">March</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="btn-group">
+                                            <div>
+                                                <input type="date" class="form-control" name="date" value="">
                                             </div>
                                         </div>
                                         <div class="btn-group" style="float: right;">
@@ -288,17 +275,18 @@ if (!isset($_SESSION['F_number'])) {
                                         <div class="row" style="margin-top: 15px;">
                                             <div class="col-lg-12 d-flex flex-column">
                                                 <div class="row flex-grow">
-                                                    <div class="col-md-6 col-lg-12 grid-margin stretch-card">
-                                                        <div class="card bg-primary card-rounded">
+                                                    <div class="col-12">
+                                                        <div class="">
                                                             <div class="table-responsive">
                                                                 <table class="table">
                                                                     <thead>
                                                                         <tr>
                                                                             <th>No.</th>
-                                                                            <th>Date</th>
+                                                                            <th>Name</th>
                                                                             <th>Time In</th>
                                                                             <th>Time Out</th>
-                                                                            <th>Status</th>
+                                                                            <th>Fetched by</th>
+                                                                            <th>Remarks</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
@@ -324,17 +312,11 @@ if (!isset($_SESSION['F_number'])) {
                                                                         </style>
                                                                         <tr>
                                                                             <td class="tabledata">1</td>
-                                                                            <td class="tabledata">01/01/23</td>
+                                                                            <td class="tabledata">Camille Anne G. Sabile</td>
                                                                             <td class="tabledata">7:00AM</td>
                                                                             <td class="tabledata">1:00PM</td>
-                                                                            <td class="tabledata" style="width: auto;">
-                                                                                <select class="form-select" required>
-                                                                                    <option selected>Present</option>
-                                                                                    <option value="Male">Late</option>
-                                                                                    <option value="Female">Excuse</option>
-                                                                                    <option value="NA">Absent</option>
-                                                                                </select>
-                                                                            </td>
+                                                                            <td class="tabledata">Hazel Grace Cantuba</td>
+                                                                            <td class="tabledata">Present/Tardy/Absent</td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>

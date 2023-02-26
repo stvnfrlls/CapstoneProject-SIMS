@@ -11,7 +11,7 @@ if (!isset($_SESSION['AD_number'])) {
 
 <head>
   <meta charset="utf-8">
-  <title>Assign Advisory</title>
+  <title>Advisory Class Assignment</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta content="" name="keywords">
   <meta content="" name="description">
@@ -94,6 +94,12 @@ if (!isset($_SESSION['AD_number'])) {
             </a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="../admin/createFetcher.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="../admin/student.php">
               <i class=""></i>
               <span class="menu-title" style="color: #b9b9b9;">Student Information</span>
@@ -106,15 +112,15 @@ if (!isset($_SESSION['AD_number'])) {
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../admin/movingUp.php">
-              <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Status</span>
-            </a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="../admin/editSection.php">
               <i class=""></i>
               <span class="menu-title" style="color: #b9b9b9;">Change Student Section</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../admin/movingUp.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Status</span>
             </a>
           </li>
           <!-- line 3 -->
@@ -199,15 +205,7 @@ if (!isset($_SESSION['AD_number'])) {
                       <div class="col-lg-2 col-sm-6">
                         <div>
                           <button class="btn btn-secondary" style="background-color: #e4e3e3;" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            <?php
-                            if (isset($_GET['grade'])) {
-                              echo $_GET['grade'];
-                            } else {
-                              echo "Grade";
-                            }
-
-                            ?>
-                            <i class="fa fa-caret-down"></i>
+                            Grade <i class="fa fa-caret-down"></i>
                           </button>
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
                             <?php
@@ -290,7 +288,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                 WHERE F_number 
                                                                                 NOT IN (SELECT S_adviser FROM sections WHERE S_adviser IS NOT NULL AND acadYear = '{$currentSchoolYear}')");
                                               } else {
-                                                $getFacultyData = $mysqli->query("SELECT faculty.F_number, faculty.F_lname, faculty.F_fname, faculty.F_mname, faculty.F_suffix FROM faculty 
+                                              $getFacultyData = $mysqli->query("SELECT faculty.F_number, faculty.F_lname, faculty.F_fname, faculty.F_mname, faculty.F_suffix FROM faculty 
                                                                   LEFT JOIN sections ON faculty.F_number = sections.S_adviser");
                                               }
 
@@ -331,44 +329,7 @@ if (!isset($_SESSION['AD_number'])) {
 
   <!-- Footer Start -->
   <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
-    <div class="container py-5">
-      <div class="row g-5">
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Address</h3>
-          <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
-          <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
-          <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>customerservice@cdsp.edu.ph</p>
-          <div class="d-flex pt-2">
-            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
-            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
-            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
-            <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Quick Links</h3>
-          <a class="btn btn-link" href="">Home</a>
-          <a class="btn btn-link" href="">About Us</a>
-          <a class="btn btn-link" href="">Academics</a>
-          <a class="btn btn-link" href="">Admission</a>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Useful Links</h3>
-          <a class="btn btn-link" href="">DepEd</a>
-          <a class="btn btn-link" href="">Pag Asa</a>
-          <a class="btn btn-link" href="">City of San Pedro</a>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Newsletter</h3>
-          <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-          <div class="position-relative mx-auto" style="max-width: 400px;">
-            <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-            <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="container-fluid copyright">
+    <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
       <div class="container">
         <div class="row">
           <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">

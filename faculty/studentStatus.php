@@ -267,7 +267,7 @@ if (!isset($_SESSION['F_number'])) {
         <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
-
+    
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">

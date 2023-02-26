@@ -127,6 +127,12 @@ if (!isset($_SESSION['AD_number'])) {
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="../admin/createFetcher.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
                             <span class="menu-title" style="color: #b9b9b9;">Student Information</span>
@@ -139,15 +145,15 @@ if (!isset($_SESSION['AD_number'])) {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../admin/movingUp.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Status</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="../admin/editSection.php">
                             <i class=""></i>
                             <span class="menu-title" style="color: #b9b9b9;">Change Student Section</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/movingUp.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Status</span>
                         </a>
                     </li>
                     <!-- line 3 -->
@@ -473,6 +479,51 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 </div>
                                                             </div>
                                                         </div>
+
+
+                                                        <div class="row" style="padding-bottom: 15px;">
+                                                            <div class="col-md-2">
+                                                                <div class="col-sm-12">
+                                                                    <label class="form-check-label" for="option1"> <input type="checkbox" class="form-check-input" id="option1" name="option1" value="option1" onclick="handleCheckboxClick(this)"> With Fetcher</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="col-sm-12">
+                                                                    <label class="form-check-label" for="option2"> <input type="checkbox" class="form-check-input" id="option2" name="option2" value="option2" onclick="handleCheckboxClick(this)"> Without Fetcher</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div id="additionalInputs" style="display: none;">
+                                                            <div class="row" style="padding-bottom: 15px;">
+                                                                <div class="col-md-4">
+                                                                    <label label class="col-sm-12 col-form-label">Fetcher Name </span></label>
+                                                                    <div class="col-sm-12">
+                                                                        <select id="" class="form-select" name="" required>
+                                                                            <option selected></option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <label label class="col-sm-12 col-form-label">Fetcher Name</span></label>
+                                                                    <div class="col-sm-12">
+                                                                        <select id="" class="form-select" name="" required>
+                                                                            <option selected></option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <label label class="col-sm-12 col-form-label">Fetcher Name</span></label>
+                                                                    <div class="col-sm-12">
+                                                                        <select id="" class="form-select" name="" required>
+                                                                            <option selected></option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -523,7 +574,7 @@ if (!isset($_SESSION['AD_number'])) {
                                 </div>
                                 <div style="text-align: center;">
                                     <input type="hidden" name="regStudent" value="submit">
-                                    <button type="button" id="regStudent" class="btn btn-primary me-2">Confirm</button>
+                                    <button type="button" id="regStudent" class="btn btn-primary me-2">Register</button>
                                     <button type="button" class="btn btn-light">Back</button>
                                 </div>
                             </form>
@@ -540,44 +591,7 @@ if (!isset($_SESSION['AD_number'])) {
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Address</h3>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
-                    <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>customerservice@cdsp.edu.ph</p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Quick Links</h3>
-                    <a class="btn btn-link" href="">Home</a>
-                    <a class="btn btn-link" href="">About Us</a>
-                    <a class="btn btn-link" href="">Academics</a>
-                    <a class="btn btn-link" href="">Admission</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Useful Links</h3>
-                    <a class="btn btn-link" href="">DepEd</a>
-                    <a class="btn btn-link" href="">Pag Asa</a>
-                    <a class="btn btn-link" href="">City of San Pedro</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Newsletter</h3>
-                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                    <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid copyright">
+        <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
             <div class="container">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
@@ -673,6 +687,28 @@ if (!isset($_SESSION['AD_number'])) {
             })
 
         })
+    </script>
+
+    <script>
+        function handleCheckboxClick(clickedCheckbox) {
+            const option1Checkbox = document.getElementById('option1');
+            const option2Checkbox = document.getElementById('option2');
+            const additionalInputs = document.getElementById('additionalInputs');
+
+            if (clickedCheckbox === option1Checkbox) {
+                if (clickedCheckbox.checked) {
+                    additionalInputs.style.display = 'block';
+                    option2Checkbox.checked = false;
+                } else {
+                    additionalInputs.style.display = 'none';
+                }
+            } else if (clickedCheckbox === option2Checkbox) {
+                if (clickedCheckbox.checked) {
+                    option1Checkbox.checked = false;
+                    additionalInputs.style.display = 'none';
+                }
+            }
+        }
     </script>
 </body>
 

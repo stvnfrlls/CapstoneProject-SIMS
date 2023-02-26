@@ -175,17 +175,47 @@ if (!isset($_SESSION['F_number'])) {
                                         <div class="row">
                                             <div class="col-12 grid-margin">
                                                 <form class="form-sample">
-                                                    <div class="row" style="padding-bottom: 15px;">
-                                                        <div class="col-md-4">
-                                                            <label class="col-sm-12 col-form-label">Name</label>
-                                                            <div class="col-sm-12">
-                                                                <input type="text" class="form-control" readonly />
+                                                    <div class="btn-group">
+                                                        <div>
+                                                            <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                                                                Month<i class="fa fa-caret-down"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                                                <a class="dropdown-item" href="">January</a>
+                                                                <a class="dropdown-item" href="">February</a>
+                                                                <a class="dropdown-item" href="">March</a>
+                                                                <a class="dropdown-item" href="">April</a>
+                                                                <a class="dropdown-item" href="">Maay</a>
+                                                                <a class="dropdown-item" href="">June</a>
+                                                                <a class="dropdown-item" href="">July</a>
+                                                                <a class="dropdown-item" href="">August</a>
+                                                                <a class="dropdown-item" href="">September</a>
+                                                                <a class="dropdown-item" href="">Ocotber</a>
+                                                                <a class="dropdown-item" href="">November</a>
+                                                                <a class="dropdown-item" href="">December</a>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-4">
-                                                            <label class="col-sm-12 col-form-label">Grade and Section</label>
-                                                            <div class="col-sm-12">
-                                                                <input type="text" class="form-control" readonly />
+                                                    </div>
+                                                    <div class="btn-group">
+                                                        <div>
+                                                            <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                                                                Grade<i class="fa fa-caret-down"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                                                <a class="dropdown-item" href="">Grade 1</a>
+                                                                <a class="dropdown-item" href="">grade 2</a>
+                                                                <a class="dropdown-item" href="">Grade 3</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-group">
+                                                        <div>
+                                                            <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                                                                Section<i class="fa fa-caret-down"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                                                <a class="dropdown-item" href="">Carnation</a>
+                                                                <a class="dropdown-item" href="">Chrysanthemum</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -200,16 +230,17 @@ if (!isset($_SESSION['F_number'])) {
                                         <div class="row">
                                             <div class="col-lg-12 d-flex flex-column">
                                                 <div class="row flex-grow">
-                                                    <div class="col-md-6 col-lg-12 grid-margin stretch-card">
-                                                        <div class="card bg-primary card-rounded">
+                                                    <div class="col-12 grid-margind">
+                                                        <div class="">
                                                             <div class="table-responsive">
                                                                 <table class="table">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th>Month</th>
-                                                                            <th>Total of Days Present</th>
-                                                                            <th>Total of Days Late</th>
-                                                                            <th>Total of Days Absent</th>
+                                                                            <th>Student Name</th>
+                                                                            <th>No. of School Days</th>
+                                                                            <th>No. of Days Present</th>
+                                                                            <th>No. of Days Absent</th>
+                                                                            <th>No. of Days Tardy</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
@@ -234,87 +265,27 @@ if (!isset($_SESSION['F_number'])) {
                                                                             }
                                                                         </style>
                                                                         <tr>
-                                                                            <td class="tabledata">January</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
+                                                                            <td class="tabledata">Camille Anne G. Sabile</td>
+                                                                            <td class="tabledata">20</td>
+                                                                            <td class="tabledata">18</td>
+                                                                            <td class="tabledata">2</td>
+                                                                            <td class="tabledata">0</td>
                                                                         </tr>
 
                                                                         <tr>
-                                                                            <td class="tabledata">February</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
+                                                                            <td class="tabledata">Hazel Grace Cantuba</td>
+                                                                            <td class="tabledata">20</td>
+                                                                            <td class="tabledata">19</td>
+                                                                            <td class="tabledata">1</td>
+                                                                            <td class="tabledata">10</td>
                                                                         </tr>
 
                                                                         <tr>
-                                                                            <td class="tabledata">March</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                        </tr>
-
-                                                                        <tr>
-                                                                            <td class="tabledata">April</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                        </tr>
-
-                                                                        <tr>
-                                                                            <td class="tabledata">May</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                        </tr>
-
-                                                                        <tr>
-                                                                            <td class="tabledata">June</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                        </tr>
-
-                                                                        <tr>
-                                                                            <td class="tabledata">July</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                        </tr>
-
-                                                                        <tr>
-                                                                            <td class="tabledata">August</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                        </tr>
-
-                                                                        <tr>
-                                                                            <td class="tabledata">September</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                        </tr>
-
-                                                                        <tr>
-                                                                            <td class="tabledata">October</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                        </tr>
-
-                                                                        <tr>
-                                                                            <td class="tabledata">November</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                        </tr>
-
-                                                                        <tr>
-                                                                            <td class="tabledata">December</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
+                                                                            <td class="tabledata">Cleint Steven Frilles</td>
+                                                                            <td class="tabledata">20</td>
+                                                                            <td class="tabledata">15</td>
+                                                                            <td class="tabledata">5</td>
+                                                                            <td class="tabledata">5</td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>

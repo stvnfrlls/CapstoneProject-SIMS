@@ -4,17 +4,14 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 } else {
-    $anouncementData = $mysqli->query("SELECT * FROM announcement WHERE ANC_ID = '{$_GET['postID']}'");
-    $announcement = $anouncementData->fetch_assoc();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
-    <title>School Announcements</title>
+    <title>List of Administrators</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -31,7 +28,6 @@ if (!isset($_SESSION['AD_number'])) {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
-
     <!-- Libraries Stylesheet -->
     <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
     <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
@@ -41,11 +37,10 @@ if (!isset($_SESSION['AD_number'])) {
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="../assets/css/style.css" rel="stylesheet">
-    <link href="../assets/css/form-style.css" rel="stylesheet">
+    <link href="../assets/css/dashboard-admin.css" rel="stylesheet">
     <link href="../assets/css/admin/style.css" rel="stylesheet">
-    <link href="../assets/css/admin/materialdesignicons.min.css" rel="stylesheet">
-    <link href="../assets/css/educ/main.css" rel="stylesheet">
+    <link href="../assets/css/admin/style.css.map" rel="stylesheet">
+
 
 </head>
 
@@ -200,61 +195,55 @@ if (!isset($_SESSION['AD_number'])) {
                             <div class="home-tab">
                                 <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                                     <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                                        <h2 class="fw-bold text-primary text-uppercase">School Announcements</h2>
+                                        <h2 class="fw-bold text-primary text-uppercase">List of Administrators</h2>
                                     </div>
                                 </div>
+                                <div class="tab-content tab-content-basic">
+                                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                                        <div class="row" style="margin-top: 15px;">
+                                            <div class="col-12 grid-margin">
+                                                <div class="card"  style="width:70%; margin-left:auto; margin-right:auto;">
+                                                    <div class="card-body">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-striped">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>No.</th>
+                                                                        <th>Name</th>
+                                                                        <th>Email Address</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
 
-                                <form style="text-align: right; margin-top: 50px; margin-right: 20px;">
-                                    <button type="submit" style="color: #ffffff;" class="btn btn-primary me-2">Edit</button>
-                                    <button type="submit" style="color: #ffffff;" class="btn btn-primary me-2">Delete</button>
-                                </form>
+                                                                    <tr>
+                                                                        <td>1</td>
+                                                                        <td>Camille Anne Sabile</td>
+                                                                        <td>cmlsbl24@gmail.com</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>2</td>
+                                                                        <td>Hazel Grace Cantuba</td>
+                                                                        <td>hazelgrace@gmail.com</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>3</td>
+                                                                        <td>Client Steven Frilles</td>
+                                                                        <td>stevenfrilles@gmail.com</td>
+                                                                    </tr>
 
-                                <section class="course-details-area">
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-lg-8 left-contents">
-                                                <div class="jq-tab-wrapper" id="horizontalTab" style="padding-top: 0px;">
-                                                    <div class="jq-tab-menu">
-                                                        <div class="jq-tab-title active" data-tab="1">Description</div>
 
-                                                    </div>
-                                                    <div class="jq-tab-content-wrapper">
-                                                        <div class="jq-tab-content active" data-tab="1">
-                                                            When you enter into any new area of science, you almost always find yourself with a baffling new language of technical terms to learn before you can converse with the experts. This is certainly true in astronomy both in terms of terms that refer to the cosmos and terms that describe the tools of the trade, the most prevalent being the telescope.
-                                                            <br>
-                                                            <br>
-                                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodoconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.
+                                                                </tbody>
+                                                            </table>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-4 right-contents">
-                                                <ul>
-                                                    <li>
-                                                        <a class="justify-content-between d-flex" href="#">
-                                                            <p>Title</p>
-                                                            <span class="or"><?php echo $announcement['header'] ?></span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="justify-content-between d-flex" href="#">
-                                                            <p>Posted By</p>
-                                                            <span><?php echo $announcement['author'] ?></span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="justify-content-between d-flex" href="#">
-                                                            <p>Date and Time</p>
-                                                            <span><?php echo $announcement['date'] ?></span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
                                         </div>
                                     </div>
-                                </section>
+                                </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
                 <!-- content-wrapper ends -->
@@ -264,7 +253,6 @@ if (!isset($_SESSION['AD_number'])) {
         <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
-
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
         <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
@@ -278,32 +266,15 @@ if (!isset($_SESSION['AD_number'])) {
         </div>
     </div>
     <!-- Footer End -->
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
-    <!-- JavaScript Libraries -->
-
-
-    <!-- Template Javascript -->
-    <script src="../assets/js/main.js"></script>
-
-    <script src="../assets/js/admin/vendor.bundle.base.js"></script>
-    <script src="../assets/js/admin/off-canvas.js"></script>
-    <script src="../assets/js/admin/file-upload.js"></script>
-
-    <script src="../assets/js/educ/vendor/jquery-2.2.4.min.js"></script>
-    <script src="../assets/js/educ/vendor/bootstrap.min.js"></script>
-    <script src="../assets/js/educ/easing.min.js"></script>
-    <script src="../assets/js/educ/hoverIntent.js"></script>
-    <script src="../assets/js/educ/superfish.min.js"></script>
-    <script src="../assets/js/educ/jquery.ajaxchimp.min.js"></script>
-    <script src="../assets/js/educ/jquery.magnific-popup.min.js"></script>
-    <script src="../assets/js/educ/jquery.tabs.min.js"></script>
-    <script src="../assets/js/educ/jquery.nice-select.min.js"></script>
-    <script src="../assets/js/educ/owl.carousel.min.js"></script>
-    <script src="../assets/js/educ/mail-script.js"></script>
-    <script src="../assets/js/educ/main.js"></script>
 </body>
+
+<!-- Template Javascript -->
+<script src="../assets/js/main.js"></script>
+
+<script src="../assets/js/admin/vendor.bundle.base.js"></script>
+<script src="../assets/js/admin/off-canvas.js"></script>
+<script src="../assets/js/admin/progressbar.min.js"></script>
+<script src="../assets/js/admin/Chart.min.js"></script>
+
 
 </html>

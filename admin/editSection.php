@@ -11,7 +11,7 @@ if (!isset($_SESSION['AD_number'])) {
 
 <head>
     <meta charset="utf-8">
-    <title>Edit Section</title>
+    <title>Change Student Section</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -97,6 +97,12 @@ if (!isset($_SESSION['AD_number'])) {
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="../admin/createFetcher.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
                             <span class="menu-title" style="color: #b9b9b9;">Student Information</span>
@@ -109,15 +115,15 @@ if (!isset($_SESSION['AD_number'])) {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../admin/movingUp.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Status</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="../admin/editSection.php">
                             <i class=""></i>
                             <span class="menu-title" style="color: #b9b9b9;">Change Student Section</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/movingUp.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Status</span>
                         </a>
                     </li>
                     <!-- line 3 -->
@@ -192,7 +198,7 @@ if (!isset($_SESSION['AD_number'])) {
                             <div class="home-tab">
                                 <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                                     <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                                        <h2 class="fw-bold text-primary text-uppercase">Edit Section</h2>
+                                        <h2 class="fw-bold text-primary text-uppercase">Change Student Section</h2>
                                     </div>
                                 </div>
                                 <div class="tab-content tab-content-basic">
@@ -295,25 +301,25 @@ if (!isset($_SESSION['AD_number'])) {
                                                                             if (mysqli_num_rows($getClasslistData) > 0) {
                                                                                 while ($ClasslistData = $getClasslistData->fetch_assoc()) { ?>
                                                                                     <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="changeSectionForm">
-                                                                                        <tr>
-                                                                                            <td class="hatdog"><?php echo $rowCount; ?></td>
-                                                                                            <td class="hatdog">
+                                                                                <tr>
+                                                                                    <td class="hatdog"><?php echo $rowCount; ?></td>
+                                                                                    <td class="hatdog">
                                                                                                 <?php echo $ClasslistData['SR_number'] ?>
                                                                                                 <input type="hidden" name="SR_number" value="<?php echo $ClasslistData['SR_number'] ?>">
-                                                                                            </td>
-                                                                                            <td class="hatdog">
+                                                                                    </td>
+                                                                                    <td class="hatdog">
                                                                                                 <?php
                                                                                                 $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$ClasslistData['SR_number']}'");
                                                                                                 $studentInfo = $getStudentInfo->fetch_assoc();
                                                                                                 echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix'];
                                                                                                 ?>
 
-                                                                                            </td>
-                                                                                            <td class="hatdog">
+                                                                                    </td>
+                                                                                    <td class="hatdog">
                                                                                                 <?php echo "Grade " . $ClasslistData['SR_grade'] . " - " . $ClasslistData['SR_section'] ?>
-                                                                                            </td>
-                                                                                            <td class="hatdog">
-                                                                                                <?php
+                                                                                    </td>
+                                                                                    <td class="hatdog">
+                                                                                            <?php
                                                                                                 $getSection = $mysqli->query("SELECT S_name FROM sections 
                                                                                                 WHERE S_name != '{$_GET['section']}' 
                                                                                                 AND S_yearLevel = '{$_GET['grade']}'
@@ -328,9 +334,9 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                                         <?php
                                                                                                         while ($Section = $getSection->fetch_assoc()) {
                                                                                                             echo "<option value=" . $Section['S_name'] . ">" . $Section['S_name'] .  "</option>";
-                                                                                                        }
+                                                                                            }
                                                                                                         ?>
-                                                                                                    </select>
+                                                                                        </select>
                                                                                                 <?php }
                                                                                                 ?>
                                                                                             </td>
@@ -344,11 +350,11 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                                     <?php }
                                                                                                     ?>
                                                                                                 </div>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    </form>
-                                                                                <?php $rowCount++;
-                                                                                }
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </form>
+                                                                        <?php $rowCount++;
+                                                                        }
                                                                             } else { ?>
                                                                                 <tr>
                                                                                     <td colspan="6">No Student Found</td>
@@ -384,44 +390,7 @@ if (!isset($_SESSION['AD_number'])) {
     <button id="hatdog"> click hatdog </button>
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Address</h3>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
-                    <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>customerservice@cdsp.edu.ph</p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Quick Links</h3>
-                    <a class="btn btn-link" href="">Home</a>
-                    <a class="btn btn-link" href="">About Us</a>
-                    <a class="btn btn-link" href="">Academics</a>
-                    <a class="btn btn-link" href="">Admission</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Useful Links</h3>
-                    <a class="btn btn-link" href="">DepEd</a>
-                    <a class="btn btn-link" href="">Pag Asa</a>
-                    <a class="btn btn-link" href="">City of San Pedro</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Newsletter</h3>
-                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                    <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid copyright">
+        <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
             <div class="container">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
@@ -447,9 +416,8 @@ if (!isset($_SESSION['AD_number'])) {
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
     <script>
-        const changeSectionForm = document.getElementById('changeSectionForm');
-        const changeSection = document.getElementById('changeSection');
-        changeSection.addEventListener('click', function() {
+        const myButton = document.getElementById('hatdog');
+        hatdog.addEventListener('click', function() {
             Swal.fire({
                 title: 'Are you sure you want save your changes?',
                 showCancelButton: true,
@@ -462,7 +430,6 @@ if (!isset($_SESSION['AD_number'])) {
                         title: 'Successfully changed!',
                         icon: 'success',
                     })
-                    changeSectionForm.submit();
                 }
             })
 
