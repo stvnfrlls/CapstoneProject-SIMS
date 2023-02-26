@@ -255,34 +255,38 @@ if (!isset($_SESSION['AD_number'])) {
                             </div>
                           </div>
                         </div>
-                        <div class="btn-group">
-                          <div>
-                            <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                              <?php
-                              if (isset($_GET['Grade'])) {
-                                if ($_GET['Grade'] == "KINDER") {
-                                  echo  $_GET['Grade'];
+                        <?php
+                        if (isset($_GET['month'])) { ?>
+                          <div class="btn-group">
+                            <div>
+                              <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <?php
+                                if (isset($_GET['Grade'])) {
+                                  if ($_GET['Grade'] == "KINDER") {
+                                    echo  $_GET['Grade'];
+                                  } else {
+                                    echo  "Grade " . $_GET['Grade'];
+                                  }
                                 } else {
-                                  echo  "Grade " . $_GET['Grade'];
+                                  echo "Grade ";
                                 }
-                              } else {
-                                echo "Grade ";
-                              }
-                              ?>
-                              <i class="fa fa-caret-down"></i>
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                              <?php
-                              while ($gradeData = $rungradeList->fetch_assoc()) { ?>
-                                <a class="dropdown-item" href="monthlyReports.php?month=<?php echo $_GET['month'] ?>&Grade=<?php echo $gradeData['S_yearLevel'] ?>">
-                                  <?php
-                                  echo "Grade " . $gradeData['S_yearLevel'];
-                                  ?>
-                                </a>
-                              <?php } ?>
+                                ?>
+                                <i class="fa fa-caret-down"></i>
+                              </button>
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <?php
+                                while ($gradeData = $rungradeList->fetch_assoc()) { ?>
+                                  <a class="dropdown-item" href="monthlyReports.php?month=<?php echo $_GET['month'] ?>&Grade=<?php echo $gradeData['S_yearLevel'] ?>">
+                                    <?php
+                                    echo "Grade " . $gradeData['S_yearLevel'];
+                                    ?>
+                                  </a>
+                                <?php } ?>
+                              </div>
                             </div>
                           </div>
-                        </div>
+                        <?php }
+                        ?>
                         <div class="btn-group">
                           <?php
                           if (isset($_GET['Grade'])) { ?>
@@ -357,7 +361,6 @@ if (!isset($_SESSION['AD_number'])) {
                                         color: #000000;
                                       }
                                     </style>
-
                                     <?php
                                     $rowCount = 1;
                                     $dateNow = date("Y-m-d");

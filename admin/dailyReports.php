@@ -322,7 +322,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                             WHERE acadYear = '{$currentSchoolYear}' 
                                                                             AND SR_section = '{$_GET['Section']}' 
                                                                             AND SR_grade = '{$_GET['Grade']}'
-                                                                            AND A_date = '2022-03-17'");
+                                                                            AND A_date = '{$dateNow}'");
                                       if (mysqli_num_rows($getDailyAttendanceData) > 0) {
                                         while ($AttendanceData = $getDailyAttendanceData->fetch_assoc()) { ?>
                                           <tr>
