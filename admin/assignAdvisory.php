@@ -112,7 +112,7 @@ if (!isset($_SESSION['AD_number'])) {
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../admin/modifySection.php">
+            <a class="nav-link" href="../admin/editSection.php">
               <i class=""></i>
               <span class="menu-title" style="color: #b9b9b9;">Change Student Section</span>
             </a>
@@ -152,7 +152,7 @@ if (!isset($_SESSION['AD_number'])) {
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../admin/editSection.php">
+            <a class="nav-link" href="../admin/modifySection.php">
               <i class=""></i>
               <span class="menu-title" style="color: #b9b9b9;">Edit Section</span>
             </a>
@@ -199,7 +199,15 @@ if (!isset($_SESSION['AD_number'])) {
                       <div class="col-lg-2 col-sm-6">
                         <div>
                           <button class="btn btn-secondary" style="background-color: #e4e3e3;" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            Grade <i class="fa fa-caret-down"></i>
+                            <?php
+                            if (isset($_GET['grade'])) {
+                              echo $_GET['grade'];
+                            } else {
+                              echo "Grade";
+                            }
+
+                            ?>
+                            <i class="fa fa-caret-down"></i>
                           </button>
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
                             <?php
@@ -273,13 +281,19 @@ if (!isset($_SESSION['AD_number'])) {
                                               if (empty($AdvisoryData['S_adviser'])) {
                                                 echo "<option selected>assign a teacher</option>";
                                               } else {
-                                                echo "<option selected>" . $AssignedFacultyData['F_lname'] . ", " . $AssignedFacultyData['F_fname'] . " " . substr($AssignedFacultyData['F_mname'], 0, 1) . "</option>";
+                                                echo "<option selected value=" . $AdvisoryData['S_adviser'] . ">" . $AssignedFacultyData['F_lname'] . ", " . $AssignedFacultyData['F_fname'] . " " . substr($AssignedFacultyData['F_mname'], 0, 1) . "</option>";
                                               }
-                                              $getFacultyData = $mysqli->query("SELECT faculty.F_number, faculty.F_lname, faculty.F_fname, faculty.F_mname, faculty.F_suffix FROM faculty 
-                                              LEFT JOIN sections ON faculty.F_number = sections.S_adviser
-                                              WHERE sections.S_adviser 
-                                              NOT IN (SELECT S_adviser FROM sections WHERE acadYear = '{$currentSchoolYear}' AND S_adviser IS NOT NULL)
-                                              ORDER BY faculty.F_lname");
+
+                                              $checkadvisory = $mysqli->query("SELECT S_adviser FROM sections WHERE acadYear = '{$currentSchoolYear}' AND S_adviser IS NOT NULL");
+                                              if (mysqli_num_rows($checkadvisory) > 0) {
+                                                $getFacultyData = $mysqli->query("SELECT F_number, F_lname, F_fname, F_mname, F_suffix FROM faculty 
+                                                                                WHERE F_number 
+                                                                                NOT IN (SELECT S_adviser FROM sections WHERE S_adviser IS NOT NULL AND acadYear = '{$currentSchoolYear}')");
+                                              } else {
+                                                $getFacultyData = $mysqli->query("SELECT faculty.F_number, faculty.F_lname, faculty.F_fname, faculty.F_mname, faculty.F_suffix FROM faculty 
+                                                                  LEFT JOIN sections ON faculty.F_number = sections.S_adviser");
+                                              }
+
                                               while ($FacultyData = $getFacultyData->fetch_assoc()) { ?>
                                                 <option value="<?php echo $FacultyData['F_number'] ?>"><?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1); ?></option>
                                               <?php } ?>

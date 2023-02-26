@@ -112,7 +112,7 @@ if (!isset($_SESSION['AD_number'])) {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../admin/modifySection.php">
+                        <a class="nav-link" href="../admin/editSection.php">
                             <i class=""></i>
                             <span class="menu-title" style="color: #b9b9b9;">Change Student Section</span>
                         </a>
@@ -152,7 +152,7 @@ if (!isset($_SESSION['AD_number'])) {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../admin/editSection.php">
+                        <a class="nav-link" href="../admin/modifySection.php">
                             <i class=""></i>
                             <span class="menu-title" style="color: #b9b9b9;">Edit Section</span>
                         </a>
@@ -196,14 +196,28 @@ if (!isset($_SESSION['AD_number'])) {
                                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                                         <div class="btn-group">
                                             <div>
-                                                <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">Full Name
+                                                <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                                                    <?php
+                                                    if (isset($_GET['ID'])) {
+                                                        echo $_GET['ID'];
+                                                    } else {
+                                                        echo "Name";
+                                                    }
+                                                    ?>
                                                     <i class="fa fa-caret-down"></i>
                                                 </button>
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                    <a class="dropdown-item" href="">Camille Sabile</a>
-                                                    <a class="dropdown-item" href="">Steven Frilles</a>
-                                                    <a class="dropdown-item" href="">Hazel Cantuba</a>
-                                                </div>
+                                                <?php
+                                                $getLoggedNames = $mysqli->query("SELECT DISTINCT AD_number, AD_name FROM admin_logs WHERE acadYear = '{$currentSchoolYear}'");
+                                                if (mysqli_num_rows($getLoggedNames) > 0) { ?>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                        <?php
+                                                        while ($LoggedNames = $getLoggedNames->fetch_assoc()) { ?>
+                                                            <a class="dropdown-item" href="auditTrail.php?ID=<?php echo $LoggedNames['AD_number'] ?>"><?php echo $LoggedNames['AD_name'] ?></a>
+                                                        <?php }
+                                                        ?>
+                                                    </div>
+                                                <?php }
+                                                ?>
                                             </div>
                                         </div>
                                         <div class="btn-group">
@@ -231,24 +245,30 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
+                                                                    <?php
+                                                                    if (isset($_GET['ID'])) {
+                                                                        $GetLogs = $mysqli->query("SELECT * FROM admin_logs WHERE AD_number = '{$_GET['ID']}' AND acadYear = '{$currentSchoolYear}'");
+                                                                    } else {
+                                                                        $GetLogs = $mysqli->query("SELECT * FROM admin_logs WHERE acadYear = '{$currentSchoolYear}'");
+                                                                    }
+                                                                    ?>
+                                                                    <?php
+                                                                    if (mysqli_num_rows($GetLogs) > 0) {
+                                                                        while ($LogData = $GetLogs->fetch_assoc()) { ?>
+                                                                            <tr>
+                                                                                <td><?php echo $LogData['AD_name'] ?></td>
+                                                                                <td><?php echo $LogData['logDate'] ?></td>
+                                                                                <td><?php echo $LogData['AD_action'] ?></td>
+                                                                            </tr>
+                                                                        <?php  } ?>
+                                                                    <?php
+                                                                    } else { ?>
+                                                                        <tr>
+                                                                            <td colspan="3" class="text-center">No Logged Action</td>
+                                                                        </tr>
+                                                                    <?php }
 
-                                                                    <tr>
-                                                                        <td>Camille Anne Sabile</td>
-                                                                        <td>02/20/23 7:00AM</td>
-                                                                        <td>Added a new announcement</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Camille Anne Sabile</td>
-                                                                        <td>02/20/23 7:00AM</td>
-                                                                        <td>Added a new announcement</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Camille Anne Sabile</td>
-                                                                        <td>02/20/23 7:00AM</td>
-                                                                        <td>Added a new announcement</td>
-                                                                    </tr>
-
-
+                                                                    ?>
                                                                 </tbody>
                                                             </table>
                                                         </div>

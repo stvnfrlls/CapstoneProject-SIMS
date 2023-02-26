@@ -111,7 +111,7 @@ if (!isset($_SESSION['AD_number'])) {
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../admin/modifySection.php">
+            <a class="nav-link" href="../admin/editSection.php">
               <i class=""></i>
               <span class="menu-title" style="color: #b9b9b9;">Change Student Section</span>
             </a>
@@ -151,7 +151,7 @@ if (!isset($_SESSION['AD_number'])) {
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../admin/editSection.php">
+            <a class="nav-link" href="../admin/modifySection.php">
               <i class=""></i>
               <span class="menu-title" style="color: #b9b9b9;">Edit Section</span>
             </a>

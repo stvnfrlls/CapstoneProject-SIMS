@@ -834,8 +834,6 @@ if (isset($_POST['editFaculty'])) {
     }
 }
 if (isset($_POST['UpdateGrade'])) {
-    $current_url = $_POST['current_url'];
-
     $ids = $_POST['row'];
     $forms_SR_number = $_POST['SR_number'];
     $forms_SR_section = $_POST['SR_section'];
@@ -1002,8 +1000,59 @@ if (isset($_POST['assignAdvisor'])) {
     $section = $_POST['section'];
     $advisor = $_POST['advisor'];
 
-    $assignSectionsAdvisor = $mysqli->query("UPDATE sections SET S_adviser = '{$advisor}' WHERE S_name = '{$section}'");
-    $assignClassListAdvisor = $mysqli->query("UPDATE classlist SET F_number = '{$advisor}' WHERE SR_section = '{$section}'");
+    $assignSectionsAdvisor = $mysqli->query("UPDATE sections SET S_adviser = '{$advisor}' WHERE S_name = '{$section}' AND acadYear = '{$currentSchoolYear}'");
+    $assignClassListAdvisor = $mysqli->query("UPDATE classlist SET F_number = '{$advisor}' WHERE SR_section = '{$section}' AND acadYear = '{$currentSchoolYear}'");
+}
+if (isset($_POST['moveUpStatus'])) {
+    $FormsSR_number = $_POST['SR_number'];
+    $FormsGrade = $_POST['Grade'];
+    $FormsSection = $_POST['Section'];
+    $FormsstudentStatus = $_POST['studentStatus'];
+    $FormsmoveUpTo = $_POST['moveUpTo'];
+
+    foreach ($ids as $i => $id) {
+        $SR_number = $FormsSR_number[$i];
+        $Grade = $FormsGrade[$i];
+        $Section = $FormsSection[$i];
+        $studentStatus = $FormsstudentStatus[$i];
+        $moveUpTo = $FormsmoveUpTo[$i];
+
+        //update student record => grade amd section
+        $updateCurrentGradeSection = $mysqli->query("UPDATE studentrecord SET SR_grade = '$Grade', SR_section = '$Section' WHERE SR_number = '$SR_number'");
+
+        //insert into classlist
+        $insertIntoClassList = $mysqli->query("INSERT INTO classlist (acadYear, SR_number, SR_grade, SR_section) VALUES ('$currentSchoolYear', '$SR_number', '$Grade', '$Section')");
+    }
+}
+if (isset($_POST['changeto'])) {
+    $SR_number = $_POST['SR_number'];
+    $changeto = $_POST['changeto'];
+
+    $movetoSection = $mysqli->query("UPDATE classlist SET SR_section = '{$changeto}' 
+    WHERE acadYear = '{$currentSchoolYear}' AND SR_number = '{$SR_number}'");
+    $updateRecords = $mysqli->query("UPDATE studentrecord SET SR_section = '{$changeto}' 
+    WHERE SR_number = '{$SR_number}'");
+}
+if (isset($_POST['addSection'])) {
+    $sectionName = $_POST['sectionName'];
+
+    $addSectionName = $mysqli->query("INSERT INTO sections (acadYear, S_name, S_yearLevel) VALUES ('{$currentSchoolYear}}', '{$sectionName}', '{$_GET['Grade']}')");
+}
+if (isset($_POST['updateSection'])) {
+    $currentName = $_POST['currentName'];
+    $sectionName = $_POST['sectionName'];
+
+    $updateSectionName = $mysqli->query("UPDATE sections SET S_name = '{$sectionName}' WHERE acadYear = '{$currentSchoolYear}' AND S_name = '{$currentName}'");
+}
+if (isset($_POST['deleteSection'])) {
+    $currentName = $_POST['currentName'];
+
+    $checkSectionInClasslist = $mysqli->query("SELECT * FROM classlist WHERE acadYear = '{$currentSchoolYear}' AND SR_section = '{$currentName}'");
+    if (mysqli_num_rows($checkSectionInClasslist) == 0) {
+        $deleteSectionName = $mysqli->query("DELETE FROM sections WHERE S_name = '{$currentName}' AND acadYear = '{$currentSchoolYear}'");
+    } else {
+        echo "CANNOT DELETE SECTION. IT IS CURRENTLY USED THIS SCHOOL YEAR";
+    }
 }
 //End
 

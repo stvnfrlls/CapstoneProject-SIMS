@@ -4,14 +4,13 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['F_number'])) {
   header('Location: ../auth/login.php');
 } else {
-  $getWorkSchedule = $mysqli->query("SELECT SR_grade, SR_section, S_subject FROM workschedule WHERE F_number = '{$_SESSION['F_number']}'");
+  $getWorkSchedule = $mysqli->query("SELECT SR_grade, SR_section, S_subject FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
   $array_GradeSection = array();
   array_unshift($array_GradeSection, null);
 
   while ($dataWorkSchedule = $getWorkSchedule->fetch_assoc()) {
     $array_GradeSection[] = $dataWorkSchedule;
   }
-  $current_url = $_SERVER["REQUEST_URI"];
 }
 ?>
 
@@ -165,9 +164,12 @@ if (!isset($_SESSION['F_number'])) {
                                     <i class="fa fa-caret-down"></i>
                                   </button>
                                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <a class="dropdown-item" href="">2022-2023</a>
-                                    <a class="dropdown-item" href="">2023-2024</a>
-                                    <a class="dropdown-item" href="">2024-2025</a>
+                                    <?php
+                                    $getAcadYears = $mysqli->query("SELECT DISTINCT(acadYear) FROM classlist WHERE F_number = '{$_SESSION['F_number']}'");
+                                    while ($acadYears = $getAcadYears->fetch_assoc()) { ?>
+                                      <a class="dropdown-item" href="classlist.php?SY=<?php echo $acadYears['acadYear'] ?>"><?php echo $acadYears['acadYear'] ?></a>
+                                    <?php }
+                                    ?>
                                   </div>
                                 </div>
                               </div>
