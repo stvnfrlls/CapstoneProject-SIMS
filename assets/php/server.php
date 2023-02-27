@@ -518,6 +518,10 @@ if (isset($_POST['editReminders'])) {
 
 //Admin Process
 if (isset($_POST['regStudent'])) {
+    $SR_LRN = $mysqli->real_escape_string($_POST['LRN']);
+
+    $SR_profile_img = $_FILES['image']['tmp_name'];
+
     $S_lname = $mysqli->real_escape_string($_POST['S_lname']);
     $S_fname = $mysqli->real_escape_string($_POST['S_fname']);
     $S_mname    = $mysqli->real_escape_string($_POST['S_mname']);
@@ -559,47 +563,20 @@ if (isset($_POST['regStudent'])) {
     $S_grade = $mysqli->real_escape_string($_POST['S_gradelevel']);
     $S_section    = $mysqli->real_escape_string($_POST['S_section']);
 
-    $WithFetcher = $mysqli->real_escape_string($_POST['Fetcher']);
-    $NoFetcher = $mysqli->real_escape_string($_POST['NoFetcher']);
-
-    if (isset($WithFetcher)) {
+    if (isset($_POST['Fetcher'])) {
         $SR_servicetype = "WITHFETCHER";
-    } elseif (isset($NoFetcher)) {
+    }
+    if (isset($_POST['NoFetcher'])) {
         $SR_servicetype = "NOFETCHER";
     }
-    $Lastrow = 'SELECT SR_year FROM studentrecord ORDER BY SR_ID DESC LIMIT 1';
-    $resultLastrow = $mysqli->query($Lastrow);
-    $getLastrow = $resultLastrow->fetch_assoc();
-
-    if (empty($getLastrow["SR_year"])) {
-        $StudentCount = "SELECT COUNT(SR_number) FROM studentrecord";
-        $resultStudentCount = $mysqli->query($StudentCount);
-        $getStudentCount = $resultStudentCount->fetch_assoc();
-
-        $format_StudentCounter = sprintf("%05d", ($getStudentCount["COUNT(SR_number)"] + 1));
-    } else if ($getLastrow["SR_year"] == $year) {
-        $StudentCount = "SELECT COUNT(SR_number) FROM studentrecord";
-        $resultStudentCount = $mysqli->query($StudentCount);
-        $getStudentCount = $resultStudentCount->fetch_assoc();
-
-        $format_StudentCounter = sprintf("%05d", ($getStudentCount["COUNT(SR_number)"] + 1));
-    } else {
-        $StudentCount = "SELECT COUNT(SR_year) FROM studentrecord WHERE SR_year = '$year'";
-        $resultStudentCount = $mysqli->query($StudentCount);
-        $getStudentCount = $resultStudentCount->fetch_assoc();
-
-        $format_StudentCounter = sprintf("%05d", ($getStudentCount["COUNT(SR_year)"] + 1));
-    }
-
-    $SR_number = $year . "-" . $format_StudentCounter . "-SP";
 
     $regStudent = "INSERT INTO studentrecord(
-                    SR_number, SR_fname, SR_mname, SR_lname, SR_suffix, 
+                    SR_profile_img, SR_number, SR_fname, SR_mname, SR_lname, SR_suffix, 
                     SR_gender, SR_age, SR_birthday, SR_birthplace, SR_religion, 
                     SR_citizenship, SR_grade, SR_section, SR_servicetype, SR_address, 
                     SR_barangay, SR_city, SR_state, SR_postal, SR_email)
                     VALUES(
-                    '$SR_number', '$S_lname', '$S_fname', '$S_mname', '$S_suffix',
+                    '$SR_profile_img', '$SR_LRN', '$S_lname', '$S_fname', '$S_mname', '$S_suffix',
                     '$S_age', '$S_birthday', '$S_birthplace', '$S_gender', '$S_religion',
                     '$S_citizenship', '$S_grade', '$S_section', '$SR_servicetype', '$S_address', 
                     '$S_barangay', '$S_city', '$S_state', '$S_postal', '$S_email')";
@@ -610,26 +587,19 @@ if (isset($_POST['regStudent'])) {
                     G_address, G_barangay, G_city, G_state, G_postal, 
                     G_email, G_relationshipStudent, G_telephone, G_contact)
                     VALUES(
-                    '$SR_number',
+                    '$SR_LRN',
                     '$G_lname', '$G_fname', '$G_mname', '$G_suffix',
                     '$G_address', '$G_barangay', '$G_city', '$G_state', '$G_postal',
                     '$G_email', '$G_relationshipStudent', '$G_telephone', '$G_contact')";
     $RunregGuardian = $mysqli->query($regGuardian);
 
+    $addtoClasslist = $mysqli->query("INSERT INTO classlist(acadYear, SR_number, SR_grade, SR_section)
+    VALUES('{$currentSchoolYear}', '{$SR_LRN}', '{$S_grade}', '{$S_section}')");
+
     // Password must be at least 8 characters in length.
     // Password must include at least one upper case letter.
     // Password must include at least one number.
     // Password must include at least one special character..
-
-    if (isset($WithFetcher) && isset($_POST['FTH_option1'])) {
-        $linkFetcher1 = $mysqli->query("INSERT INTO fetcher_list (FTH_number, FTH_linkedTo) VALUES ('{$_POST['FTH_option1']}', '{$SR_number}')");
-    }
-    if (isset($WithFetcher) && isset($_POST['FTH_option2'])) {
-        $linkFetcher2 = $mysqli->query("INSERT INTO fetcher_list (FTH_number, FTH_linkedTo) VALUES ('{$_POST['FTH_option2']}', '{$SR_number}')");
-    }
-    if (isset($WithFetcher) && isset($_POST['FTH_option3'])) {
-        $linkFetcher3 = $mysqli->query("INSERT INTO fetcher_list (FTH_number, FTH_linkedTo) VALUES ('{$_POST['FTH_option3']}', '{$SR_number}')");
-    }
 
     unset($_SESSION['fromAddStudent']);
     if ($RunregGuardian) {
@@ -647,18 +617,15 @@ if (isset($_POST['regStudent'])) {
                        <br>
                        <strong>IT IS RECOMMENDED TO RESET YOUR PASSWORD</strong><br>
                        <a href="siscdsp.online/auth/login.php">Login now</a>';
-
-        if ($mail->send()) {
-            header('Location: student.php');
-        }
+        $mail->send();
     }
 }
 if (isset($_POST['createFetcher'])) {
     $FTH_name = $_POST['FTH_name'];
-    $FTH_contact = $_POST['FTH_contact'];
+    $FTH_contactNo = $_POST['FTH_contact'];
     $FTH_email = $_POST['FTH_email'];
 
-    $getLastFTH = $mysqli->query("SELECT G_ID FROM fetcher ORDER BY G_ID LIMIT 1");
+    $getLastFTH = $mysqli->query("SELECT G_ID FROM fetcher_data ORDER BY G_ID LIMIT 1");
     $FTHData = $getLastFTH->fetch_assoc();
     $Plus1 = $FTHData['G_ID'] + 1;
     $padding_length = 5;
@@ -667,17 +634,17 @@ if (isset($_POST['createFetcher'])) {
 
     $FTH_number = date("Y") . "-" . $formatted_number . "-FTH";
 
-    if ($_POST['FTH_linkedTo']) {
+    if (isset($_POST['FTH_linkedTo'])) {
         $FTH_linkedTo = $_POST['FTH_linkedTo'];
-        $checkFetcherLimit = $mysqli->query("SELECT COUNT(FTH_number) FROM fetcher WHERE FTH_linkedTo = '{$FTH_linkedTo}'");
+        $checkFetcherLimit = $mysqli->query("SELECT COUNT(FTH_number) FROM fetcher_data WHERE FTH_linkedTo = '{$FTH_linkedTo}'");
         $countFetcher = $checkFetcherLimit->fetch_assoc();
         if ($countFetcher['COUNT(FTH_number)'] < 4) {
-            $addFetcher = $mysqli->query("INSERT INTO fetcher (FTH_number, FTH_name, FTH_contactNo, FTH_email, FTH_linkedTo) 
-                                VALUES ('{$FTH_number}', '{$FTH_name}', '{$FTH_contactNo}', '{$FTH_email}', '{$FTH_linkedTo}')");
+            $addFetcher = $mysqli->query("INSERT INTO fetcher_data (FTH_number, FTH_name, FTH_contactNo, FTH_email) 
+                                VALUES ('{$FTH_number}', '{$FTH_name}', '{$FTH_contactNo}', '{$FTH_email}')");
         }
     } else {
-        $addFetcher = $mysqli->query("INSERT INTO fetcher (FTH_number, FTH_name, FTH_contactNo, FTH_email, FTH_linkedTo) 
-                            VALUES ('{$FTH_number}', '{$FTH_name}', '{$FTH_contactNo}', '{$FTH_email}', '{$FTH_linkedTo}')");
+        $addFetcher = $mysqli->query("INSERT INTO fetcher_data (FTH_number, FTH_name, FTH_contactNo, FTH_email) 
+                            VALUES ('{$FTH_number}', '{$FTH_name}', '{$FTH_contactNo}', '{$FTH_email}')");
     }
 }
 if (isset($_POST['updateInfoFetcher']) && isset($_POST['FTH_linkedTo'])) {
@@ -687,12 +654,12 @@ if (isset($_POST['updateInfoFetcher']) && isset($_POST['FTH_linkedTo'])) {
     $FTH_linkedTo = $_POST['FTH_linkedTo'];
     $FTH_number = $_POST['FTH_number'];
 
-    $updateFetcher = $mysqli->query("UPDATE fetcher FTH_name = '{$FTH_name}', FTH_contactNo = '{$FTH_contactNo}', FTH_email = '{$FTH_email}') WHERE FTH_number = '{$FTH_number}'");
+    $updateFetcher = $mysqli->query("UPDATE fetcher_data SET FTH_name = '{$FTH_name}', FTH_contactNo = '{$FTH_contactNo}', FTH_email = '{$FTH_email}') WHERE FTH_number = '{$FTH_number}'");
 }
 if (isset($_POST['deleteFetcher']) && isset($_POST['FTH_number'])) {
     $FTH_number = $_POST['FTH_number'];
 
-    $deleteFetcher = $mysqli->query("DELETE FROM fetcher WHERE FTH_number = '{$FTH_number}'");
+    $deleteFetcher = $mysqli->query("DELETE FROM fetcher_data WHERE FTH_number = '{$FTH_number}'");
 }
 if (isset($_POST['linkFetcher']) && isset($_POST['FTH_linkedTo'])) {
     $FTH_name = $_POST['FTH_name'];
@@ -701,10 +668,10 @@ if (isset($_POST['linkFetcher']) && isset($_POST['FTH_linkedTo'])) {
     $FTH_linkedTo = $_POST['FTH_linkedTo'];
     $FTH_number = $_POST['FTH_number'];
 
-    $checkFetcherLimit = $mysqli->query("SELECT COUNT(FTH_number) FROM fetcher WHERE FTH_linkedTo = '{$FTH_linkedTo}'");
+    $checkFetcherLimit = $mysqli->query("SELECT COUNT(FTH_number) FROM fetcher_data WHERE FTH_linkedTo = '{$FTH_linkedTo}'");
     $countFetcher = $checkFetcherLimit->fetch_assoc();
     if ($countFetcher['COUNT(FTH_number)'] < 4) {
-        $linkFetcher = $mysqli->query("INSERT INTO fetcher (FTH_number, FTH_name, FTH_contactNo, FTH_email, FTH_linkedTo) 
+        $linkFetcher = $mysqli->query("INSERT INTO fetcher_data (FTH_number, FTH_name, FTH_contactNo, FTH_email, FTH_linkedTo) 
                                 VALUES ('{$FTH_number}', '{$FTH_name}', '{$FTH_contactNo}', '{$FTH_email}', '{$FTH_linkedTo}')");
     }
 }
@@ -712,7 +679,7 @@ if (isset($_POST['unlinkFetcher']) && isset($_POST['FTH_linkedTo'])) {
     $FTH_linkedTo = $_POST['FTH_linkedTo'];
     $FTH_number = $_POST['FTH_number'];
 
-    $unlinkFetcher = $mysqli->query("DELETE FROM fetcher WHERE FTH_number = '{$FTH_number}' WHERE FTH_linkedTo = '{$FTH_linkedTo}'");
+    $unlinkFetcher = $mysqli->query("DELETE FROM fetcher_list WHERE FTH_number = '{$FTH_number}' WHERE FTH_linkedTo = '{$FTH_linkedTo}'");
 }
 if (isset($_POST['updateInformation'])) {
     $S_lname = $mysqli->real_escape_string($_POST['SR_lname']);
@@ -1114,7 +1081,7 @@ if (isset($_POST['changeto'])) {
 if (isset($_POST['addSection'])) {
     $sectionName = $_POST['sectionName'];
 
-    $addSectionName = $mysqli->query("INSERT INTO sections (acadYear, S_name, S_yearLevel) VALUES ('{$currentSchoolYear}}', '{$sectionName}', '{$_GET['Grade']}')");
+    $addSectionName = $mysqli->query("INSERT INTO sections (acadYear, S_yearLevel, S_name) VALUES ('{$currentSchoolYear}', '{$_GET['Grade']}', '{$sectionName}')");
 }
 if (isset($_POST['updateSection'])) {
     $currentName = $_POST['currentName'];
