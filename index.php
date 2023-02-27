@@ -88,7 +88,7 @@
                     <div class="container">
                         <div class="row justify-content-start">
                             <div class="col-10 col-lg-8">
-                                <h1 class="display-1 text-white animated slideInDown">Colgeio De San Pedro, Inc.</h1>
+                                <h1 class="display-1 text-white animated slideInDown">Colegio De San Pedro, Inc.</h1>
                                 <p class="fs-5 fw-medium text-white mb-4 pb-3">"Honing Minds, Transforming Lives"</p>
                                 <a href="" class="btn btn-primary py-3 px-5 animated slideInLeft">Login</a>
                             </div>
@@ -102,7 +102,7 @@
                     <div class="container">
                         <div class="row justify-content-start">
                             <div class="col-10 col-lg-8">
-                                <h1 class="display-1 text-white animated slideInDown">Colgio De San Pedro, Inc.</h1>
+                                <h1 class="display-1 text-white animated slideInDown">Colegio De San Pedro, Inc.</h1>
                                 <p class="fs-5 fw-medium text-white mb-4 pb-3">"Honing Minds, Transforming Lives"</p>
                                 <a href="" class="btn btn-primary py-3 px-5 animated slideInLeft">Login</a>
                             </div>
