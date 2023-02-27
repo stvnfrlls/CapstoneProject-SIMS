@@ -67,7 +67,6 @@ if (!isset($_SESSION['AD_number'])) {
     $AttendancePerGrade[] = $Grade5PresentNow['COUNT(studentrecord.SR_number)'];
     $AttendancePerGrade[] = $Grade6PresentNow['COUNT(studentrecord.SR_number)'];
 
-    var_dump($AttendancePerGrade);
     $arrayAttendancePerGrade = json_encode($AttendancePerGrade);
     echo "<script>var arrayAttendance = " . $arrayAttendancePerGrade . ";</script>";
 
