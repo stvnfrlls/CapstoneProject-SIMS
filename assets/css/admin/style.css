@@ -19463,12 +19463,12 @@ address p {
   font-weight: 500;
 }
 
-/* Miscellanoeous */
+/* Miscellanoeous
 body,
 html {
   overflow-x: hidden;
   padding-right: 0 !important;
-}
+} */
 
 *:-moz-full-screen,
 *:-webkit-full-screen,
