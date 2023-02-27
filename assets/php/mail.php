@@ -15,6 +15,6 @@ $mail->SMTPAuth = true;
 $mail->isHTML(true);
 
 $mail->Username = 'testmail@siscdsp.online';
-$mail->Password = 'Frilles03.';
+$mail->Password = 'Eleven.11';
 
 $mail->setFrom('testmail@siscdsp.online', 'testmail');
