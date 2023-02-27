@@ -22,7 +22,7 @@ if (!isset($_SESSION['F_number'])) {
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link href="../assets/img/favicon.png" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,9 +32,6 @@ if (!isset($_SESSION['F_number'])) {
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
-    <link href="../assets/css/sweetAlert.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
     <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
@@ -48,7 +45,6 @@ if (!isset($_SESSION['F_number'])) {
     <link href="../assets/css/style.css" rel="stylesheet">
     <link href="../assets/css/form-style.css" rel="stylesheet">
     <link href="../assets/css/admin/style.css" rel="stylesheet">
-    <link href="../assets/css/admin/materialdesignicons.min.css" rel="stylesheet">
 
 </head>
 
@@ -149,103 +145,95 @@ if (!isset($_SESSION['F_number'])) {
                             <div class="home-tab">
                                 <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                                     <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                                        <h2 class="fw-bold text-primary text-uppercase">Student Status</h2>
+                                        <h2 class="fw-bold text-primary text-uppercase">Class List</h2>
                                     </div>
                                 </div>
                                 <div class="tab-content tab-content-basic">
-                                    <form action="<?php $_SERVER["PHP_SELF"] ?>" id="StudentStatusForm" method="post">
-                                        <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                                        <form action="<?php $_SERVER["PHP_SELF"] ?>" id="StudentStatusForm" method="post">
                                             <div style="text-align: right;">
                                                 <button type="button" id="setStudentStatus" class="btn btn-primary">Save</button>
                                             </div>
-                                            <div class="row" style="margin-top: 15px;">
-                                                <div class="col-lg-12 d-flex flex-column">
-                                                    <div class="row flex-grow">
-                                                        <div class="col-md-6 col-lg-12 grid-margin stretch-card">
-                                                            <div class="card bg-primary card-rounded">
-                                                                <div class="table-responsive">
-                                                                    <table class="table">
-                                                                        <thead>
-                                                                            <style>
-                                                                                .tablestyle {
-                                                                                    border: 1px solid #ffffff;
-                                                                                    text-align: center;
-                                                                                    vertical-align: middle;
-                                                                                    height: 30px;
-                                                                                    color: #000000;
+                                            <div class="row">
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <style>
+                                                                .tablestyle {
+                                                                    border: 1px solid #ffffff;
+                                                                    text-align: center;
+                                                                    vertical-align: middle;
+                                                                    height: 30px;
+                                                                    color: #000000;
+                                                                }
+                                                            </style>
+                                                            <tr>
+                                                                <th class="tablestyle">No.</th>
+                                                                <th class="tablestyle">Student Name</th>
+                                                                <th class="tablestyle">Grade and Section<br>(current)</th>
+                                                                <th class="tablestyle">Remarks</th>
+                                                                <th class="tablestyle">Action</th>
+                                                                <th class="tablestyle">Move up to</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php
+                                                            $rowCount = 1;
+                                                            if ($ListofStudents->num_rows >= 1) {
+                                                                while ($data = $ListofStudents->fetch_assoc()) { ?>
+                                                                    <tr>
+                                                                        <td class="tablestyle"><?php echo $rowCount ?></td>
+                                                                        <td class="tablestyle"><?php echo $data['SR_number'] . " - " . $data['SR_lname'] . ", " . $data['SR_fname'] ?></td>
+                                                                        <td class="tablestyle"><?php echo "Grade " . $data['SR_grade'] . " - " . $data['SR_section'] ?></td>
+                                                                        <?php
+                                                                        $getGradeStatus = $mysqli->query("SELECT round(AVG(G_finalgrade)) AS finalgrade FROM grades where SR_number = '{$data['SR_number']}'");
+                                                                        $gradeStatus = $getGradeStatus->fetch_assoc();
+
+                                                                        if ($gradeStatus >= 75) { ?>
+                                                                            <td class="tablestyle">Passed</td>
+                                                                        <?php } else { ?>
+                                                                            <td class="tablestyle">Fail</td>
+                                                                        <?php }
+                                                                        ?>
+
+                                                                        <td class="tablestyle">
+                                                                            <select class="form-select" aria-label="Default select example">
+                                                                                <option value=""></option>
+                                                                                <option value="Dropped">Dropped</option>
+                                                                                <option value="MovingUp">Moving Up</option>
+                                                                                <option value="Transferring">Transferring</option>
+                                                                            </select>
+                                                                        </td>
+                                                                        <td class="tablestyle">
+                                                                            <select class="form-select" aria-label="Default select example">
+                                                                                <option value=""></option>
+                                                                                <?php
+                                                                                $getSectionID = $mysqli->query("SELECT sectionID FROM sections WHERE S_yearLevel = '{$data['SR_grade']}'");
+                                                                                $sectionID = $getSectionID->fetch_assoc();
+                                                                                $sections = $mysqli->query("SELECT * FROM sections WHERE sectionID > '{$sectionID['sectionID']}' LIMIT 2");
+
+                                                                                while ($listSections = $sections->fetch_assoc()) {
+                                                                                    echo '<option value="">Grade ' . $listSections['S_yearLevel'] . ' - ' . $listSections['S_name'] . '</option>';
                                                                                 }
-                                                                            </style>
-                                                                            <tr>
-                                                                                <th class="tablestyle">No.</th>
-                                                                                <th class="tablestyle">Student Name</th>
-                                                                                <th class="tablestyle">Grade and Section<br>(current)</th>
-                                                                                <th class="tablestyle">Remarks</th>
-                                                                                <th class="tablestyle">Action</th>
-                                                                                <th class="tablestyle">Move up to</th>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody>
-                                                                            <?php
-                                                                            $rowCount = 1;
-                                                                            if ($ListofStudents->num_rows >= 1) {
-                                                                                while ($data = $ListofStudents->fetch_assoc()) { ?>
-                                                                                    <tr>
-                                                                                        <td class="tablestyle"><?php echo $rowCount ?></td>
-                                                                                        <td class="tablestyle"><?php echo $data['SR_number'] . " - " . $data['SR_lname'] . ", " . $data['SR_fname'] ?></td>
-                                                                                        <td class="tablestyle"><?php echo "Grade " . $data['SR_grade'] . " - " . $data['SR_section'] ?></td>
-                                                                                        <?php
-                                                                                        $getGradeStatus = $mysqli->query("SELECT round(AVG(G_finalgrade)) AS finalgrade FROM grades where SR_number = '{$data['SR_number']}'");
-                                                                                        $gradeStatus = $getGradeStatus->fetch_assoc();
+                                                                                ?>
+                                                                            </select>
+                                                                        </td>
 
-                                                                                        if ($gradeStatus >= 75) { ?>
-                                                                                            <td class="tablestyle">Passed</td>
-                                                                                        <?php } else { ?>
-                                                                                            <td class="tablestyle">Fail</td>
-                                                                                        <?php }
-                                                                                        ?>
-
-                                                                                        <td class="tablestyle">
-                                                                                            <select class="form-select" aria-label="Default select example">
-                                                                                                <option value=""></option>
-                                                                                                <option value="Dropped">Dropped</option>
-                                                                                                <option value="MovingUp">Moving Up</option>
-                                                                                                <option value="Transferring">Transferring</option>
-                                                                                            </select>
-                                                                                        </td>
-                                                                                        <td class="tablestyle">
-                                                                                            <select class="form-select" aria-label="Default select example">
-                                                                                                <option value=""></option>
-                                                                                                <?php
-                                                                                                $getSectionID = $mysqli->query("SELECT sectionID FROM sections WHERE S_yearLevel = '{$data['SR_grade']}'");
-                                                                                                $sectionID = $getSectionID->fetch_assoc();
-                                                                                                $sections = $mysqli->query("SELECT * FROM sections WHERE sectionID > '{$sectionID['sectionID']}' LIMIT 2");
-
-                                                                                                while ($listSections = $sections->fetch_assoc()) {
-                                                                                                    echo '<option value="">Grade ' . $listSections['S_yearLevel'] . ' - ' . $listSections['S_name'] . '</option>';
-                                                                                                }
-                                                                                                ?>
-                                                                                            </select>
-                                                                                        </td>
-
-                                                                                    </tr>
-                                                                                <?php $rowCount++;
-                                                                                }
-                                                                            } else if ($numrows == 0) { ?>
-                                                                                <tr>
-                                                                                    <td colspan="10">No Data.</td>
-                                                                                </tr>
-                                                                            <?php } ?>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
+                                                                    </tr>
+                                                                <?php $rowCount++;
+                                                                }
+                                                            } else if ($numrows == 0) { ?>
+                                                                <tr>
+                                                                    <td colspan="10">No Data.</td>
+                                                                </tr>
+                                                            <?php } ?>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </form>
+                                        </form>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -258,7 +246,7 @@ if (!isset($_SESSION['F_number'])) {
         <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
-    
+
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">

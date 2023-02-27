@@ -50,7 +50,6 @@ if (!isset($_SESSION['SR_number'])) {
   <link href="../assets/css/style.css" rel="stylesheet">
   <link href="../assets/css/dashboard-user.css" rel="stylesheet">
   <link href="../assets/css/admin/style.css" rel="stylesheet">
-  <link href="../assets/css/educ/main.css" rel="stylesheet">
 </head>
 
 <body>
@@ -61,7 +60,7 @@ if (!isset($_SESSION['SR_number'])) {
   <!-- Navbar End -->
 
   <!-- Navbar Start -->
-  <nav class="navbar navbar-expand-lg bg-dark navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
+  <nav class="navbar navbar-expand-lg bg-dark sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
 
     <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
       <span class="navbar-toggler-icon"></span>
@@ -441,14 +440,7 @@ if (!isset($_SESSION['SR_number'])) {
   <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/js/admin/dashboard.js"></script>
 
-  <script src="../assets/js/eduwell/isotope.min.js"></script>
-  <script src="../assets/js/eduwell/owl-carousel.js"></script>
-  <script src="../assets/js/eduwell/lightbox.js"></script>
-  <script src="../assets/js/eduwell/tabs.js"></script>
-  <script src="../assets/js/eduwell/video.js"></script>
-  <script src="../assets/js/eduwell/slick-slider.js"></script>
-  <script src="../assets/js/eduwell/custom.js"></script>
-  <script src="../assets/js/startup/main.js"></script>
+
 
 </body>
 
