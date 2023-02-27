@@ -235,7 +235,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                         <form class="form-sample">
                                                             <div class="row" style="padding-bottom: 15px;">
                                                                 <div class="col-md-6 col-sm-6 col-lg-12" style="text-align: center; margin-bottom: 20px; margin-top: 10px;">
-                                                                    <img src="../assets/img/profile.jpg" alt="avatar" class="rounded-circle img-fluidr" style="width: 150px;">
+                                                                    <img src="data:image/jpeg/jpg/gif/jfif;base64, <?php echo base64_encode($getRecord['SR_profile_img']); ?>" class="rounded-circle img-fluid" style="width: 150px;">
                                                                 </div>
                                                             </div>
                                                         </form>
@@ -249,7 +249,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                         <form class="form-sample">
                                                             <div class="row" style="padding-bottom: 15px;">
                                                                 <div class="col-md-6 col-sm-6 col-lg-12" style="text-align: center; margin-top: 10px;">
-                                                                    <img src="<?php echo "../assets/temp/" . $getRecord['SR_number'] . ".png"; ?>" alt="avatar" class="img-fluid" style="width: 150px;">
+                                                                    <img src="<?php echo "../assets/temp/" . $getRecord['SR_number'] . ".png"; ?>" alt="avatar" class="img-fluid" style="width: 180px;">
                                                                 </div>
                                                             </div>
                                                         </form>
@@ -266,12 +266,6 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 <div class="col-sm-12">
                                                                     <select class="form-select form-control" required disabled>
                                                                         <option selected><?php echo $getRecord['SR_grade'] ?></option>
-                                                                        <option value="1">1</option>
-                                                                        <option value="2">2</option>
-                                                                        <option value="3">3</option>
-                                                                        <option value="4">4</option>
-                                                                        <option value="5">5</option>
-                                                                        <option value="6">6</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -284,10 +278,10 @@ if (!isset($_SESSION['AD_number'])) {
                                                         </div>
                                                         <div class="row" style="padding-bottom: 15px;">
                                                             <div class="col-md-6">
-                                                                <label label class="col-sm-12 col-form-label">Schedule</label>
+                                                                <label label class="col-sm-12 col-form-label" style="color:white;">. </label>
                                                                 <div class="col-sm-12">
                                                                     <select class="form-select form-control" required readonly>
-                                                                        <option value="NA">Monday - Friday</option>
+                                                                        <option></option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -295,7 +289,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 <label label class="col-sm-12 col-form-label" style="color:white;"> .</label>
                                                                 <div class="col-sm-12">
                                                                     <select class="form-select form-control" required readonly>
-                                                                        <option value="AM">7:00AM-2:00PM</option>
+                                                                        <option></option>
                                                                     </select>
                                                                 </div>
                                                             </div>

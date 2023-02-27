@@ -300,7 +300,6 @@ if (!isset($_SESSION['AD_number'])) {
                                       <option selected></option>
                                       <option value="Male">Male</option>
                                       <option value="Female">Female</option>
-                                      <option value="NA">Prefer not to say</option>
                                     </select>
                                   </div>
                                 </div>

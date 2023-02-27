@@ -265,15 +265,22 @@ if (!isset($_SESSION['AD_number'])) {
                                   </thead>
                                   <tbody>
                                     <?php $rowCount = 1;
-                                    while ($data = $resultListofFaculty->fetch_assoc()) { ?>
+                                    if (mysqli_num_rows($resultListofFaculty) > 0) {
+                                      while ($data = $resultListofFaculty->fetch_assoc()) { ?>
+                                        <tr>
+                                          <td class="hatdog"><?php echo $rowCount ?></td>
+                                          <td class="hatdog"><?php echo $data['F_number'] ?></td>
+                                          <td class="hatdog"><?php echo $data['F_department'] ?></td>
+                                          <td class="hatdog"><a href="faculty.php/get?F_number=<?php echo $data['F_number'] ?>"><?php echo $data['F_lname'] . ", " . $data['F_fname'] ?></a></td>
+                                        </tr>
+                                      <?php $rowCount++;
+                                      }
+                                    } else { ?>
                                       <tr>
-                                        <td class="hatdog"><?php echo $rowCount ?></td>
-                                        <td class="hatdog"><?php echo $data['F_number'] ?></td>
-                                        <td class="hatdog"><?php echo $data['F_department'] ?></td>
-                                        <td class="hatdog"><a href="faculty.php/get?F_number=<?php echo $data['F_number'] ?>"><?php echo $data['F_lname'] . ", " . $data['F_fname'] ?></a></td>
+                                        <td class="hatdog" colspan="4">NO FACULTY RECORDS YET</td>
                                       </tr>
-                                    <?php $rowCount++;
-                                    } ?>
+                                    <?php }
+                                    ?>
                                   </tbody>
                                 </table>
                               </div>

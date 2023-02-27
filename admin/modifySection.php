@@ -210,9 +210,14 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     <div>
                                                                         <button class="btn btn-secondary" style="background-color: #e4e3e3;" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                                             <?php
-                                                                            if (isset($_GET['Grade'])) {
+                                                                            if (isset($_GET['Grade']) && $_GET['Grade'] == 'KINDER') {
+                                                                                echo $_GET['Grade'];
+                                                                            }
+
+                                                                            if (isset($_GET['Grade']) && $_GET['Grade'] != 'KINDER') {
                                                                                 echo "Grade " . $_GET['Grade'];
-                                                                            } else {
+                                                                            }
+                                                                            if (!isset($_GET['Grade'])) {
                                                                                 echo "Grade";
                                                                             }
                                                                             ?>
@@ -220,9 +225,17 @@ if (!isset($_SESSION['AD_number'])) {
                                                                         </button>
                                                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
                                                                             <?php
-                                                                            $getGradeLevelList = $mysqli->query("SELECT DISTINCT(S_yearLevel) FROM sections");
+                                                                            $getGradeLevelList = $mysqli->query("SELECT gradeLevel FROM grade_level ORDER BY gradeID");
                                                                             while ($gradeLevel = $getGradeLevelList->fetch_assoc()) { ?>
-                                                                                <a class="dropdown-item" href="modifySection.php?Grade=<?php echo $gradeLevel['S_yearLevel'] ?>">Grade <?php echo $gradeLevel['S_yearLevel'] ?></a>
+                                                                                <a class="dropdown-item" href="modifySection.php?Grade=<?php echo $gradeLevel['gradeLevel'] ?>">
+                                                                                    <?php
+                                                                                    if ($gradeLevel['gradeLevel'] == 'KINDER') {
+                                                                                        echo $gradeLevel['gradeLevel'];
+                                                                                    } else {
+                                                                                        echo "Grade " . $gradeLevel['gradeLevel'];
+                                                                                    }
+                                                                                    ?>
+                                                                                </a>
                                                                             <?php }
                                                                             ?>
                                                                         </div>
@@ -246,30 +259,30 @@ if (!isset($_SESSION['AD_number'])) {
                                                                             $rowCount = 1;
                                                                             while ($sectionData = $getSectionData->fetch_assoc()) { ?>
                                                                                 <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
-                                                                            <tr>
+                                                                                    <tr>
                                                                                         <td><?php echo $rowCount ?></td>
-                                                                                <td>
+                                                                                        <td>
                                                                                             <input type="hidden" class="form-control" name="currentName" value="<?php echo $sectionData['S_name'] ?>">
                                                                                             <input type="text" class="form-control" name="sectionName" value="<?php echo $sectionData['S_name'] ?>">
                                                                                         </td>
                                                                                         <td>
                                                                                             <input type="submit" style="color: #ffffff;" class="btn btn-primary" value="Change Name" name="updateSection">
                                                                                             <input type="submit" class="btn btn-secondary" value="DELETE" name="deleteSection">
-                                                                                </td>
-                                                                            </tr>
-                                                                        </form>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </form>
                                                                             <?php $rowCount++;
                                                                             } ?>
                                                                             <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
-                                                                            <tr>
-                                                                                <td>ADD</td>
+                                                                                <tr>
+                                                                                    <td>ADD</td>
                                                                                     <td><input type="text" class="form-control" name="sectionName"></td>
                                                                                     <td><input type="submit" style="color: #ffffff;" class="btn btn-primary" value="ADD" name="addSection"></td>
-                                                                            </tr>
-                                                                        </form>
+                                                                                </tr>
+                                                                            </form>
                                                                         <?php } else { ?>
                                                                             <tr>
-                                                                                <td colspan="3">Select a Grade level first</td>
+                                                                                <td colspan="4">Select a Grade level first</td>
                                                                             </tr>
                                                                         <?php }
                                                                         ?>
