@@ -4,15 +4,13 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['F_number'])) {
   header('Location: ../auth/login.php');
 } else {
-  $getWorkSchedule = "SELECT SR_grade, SR_section, S_subject FROM workschedule WHERE F_number = '{$_SESSION['F_number']}'";
-  $rungetWorkSchedule = $mysqli->query($getWorkSchedule);
+  $getWorkSchedule = $mysqli->query("SELECT acadYear, SR_grade, SR_section, S_subject FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
   $array_GradeSection = array();
   array_unshift($array_GradeSection, null);
 
-  while ($dataWorkSchedule = $rungetWorkSchedule->fetch_assoc()) {
+  while ($dataWorkSchedule = $getWorkSchedule->fetch_assoc()) {
     $array_GradeSection[] = $dataWorkSchedule;
   }
-  $current_url = $_SERVER["REQUEST_URI"];
 }
 ?>
 
@@ -50,17 +48,18 @@ if (!isset($_SESSION['F_number'])) {
   <link href="../assets/css/style.css" rel="stylesheet">
   <link href="../assets/css/form-style.css" rel="stylesheet">
   <link href="../assets/css/admin/style.css" rel="stylesheet">
-  <link href="../assets/css/admin/materialdesignicons.min.css" rel="stylesheet">
 
 </head>
 
 <body>
   <!-- Navbar Start -->
-  <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-    <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
-    <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-      <span class="mdi mdi-menu"></span>
-    </button>
+  <nav class="fixed-top align-items-top">
+    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+      <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
+      <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+        <span class="fa fa-bars"></span>
+      </button>
+    </nav>
   </nav>
   <!-- Navbar End -->
 
@@ -72,7 +71,7 @@ if (!isset($_SESSION['F_number'])) {
           <!-- line 1 -->
           <li class="nav-item nav-category">Profile</li>
           <li class="nav-item">
-            <a class="nav-link" href="">
+            <a class="nav-link" href="../faculty/dashboard.php">
               <i class=""></i>
               <span class="menu-title">Dashboard</span>
             </a>
@@ -87,6 +86,12 @@ if (!isset($_SESSION['F_number'])) {
             <a class="nav-link" href="../faculty/createReminder.php">
               <i class=""></i>
               <span class="menu-title">Create Reminders</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../faculty/reminders.php">
+              <i class=""></i>
+              <span class="menu-title">Reminders</span>
             </a>
           </li>
           <!-- line 2 -->
@@ -116,9 +121,21 @@ if (!isset($_SESSION['F_number'])) {
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../faculty/reminders.php">
+            <a class="nav-link" href="../faculty/studentStatus.php">
               <i class=""></i>
-              <span class="menu-title">Reminders</span>
+              <span class="menu-title">Student Status</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../faculty/dailyReports.php">
+              <i class=""></i>
+              <span class="menu-title">Attendance Report</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../auth/logout.php">
+              <i class=""></i>
+              <span class="menu-title">Logout</span>
             </a>
           </li>
         </ul>
@@ -140,8 +157,23 @@ if (!isset($_SESSION['F_number'])) {
                       <div class="col-12 grid-margin">
                         <div class="card">
                           <div class="card-body">
-                            <div class="dropdown" style="margin-bottom: 30px;">
-                              <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <div style="margin-bottom: 30px;">
+                              <div class="btn-group">
+                                <div>
+                                  <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">Academic Year
+                                    <i class="fa fa-caret-down"></i>
+                                  </button>
+                                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <?php
+                                    $getAcadYears = $mysqli->query("SELECT DISTINCT acadYear FROM classlist WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
+                                    while ($acadYears = $getAcadYears->fetch_assoc()) { ?>
+                                      <a class="dropdown-item" href="classlist.php?SY=<?php echo $acadYears['acadYear'] ?>"><?php echo $acadYears['acadYear'] ?></a>
+                                    <?php }
+                                    ?>
+                                  </div>
+                                </div>
+                              </div>
+                              <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
                                 <?php
                                 if (isset($_GET['Grade']) && isset($_GET['Section'])) {
                                   echo "Grade " . $_GET['Grade'] . " - " . $_GET['Section'];
@@ -157,13 +189,17 @@ if (!isset($_SESSION['F_number'])) {
                                 $GradeSectionRowCount = sizeof($array_GradeSection);
                                 while ($rowCount != $GradeSectionRowCount) { ?>
                                   <a class="dropdown-item" href="<?php echo "classList.php?Grade=" . $array_GradeSection[$rowCount]['SR_grade'] . "&Section=" . $array_GradeSection[$rowCount]['SR_section']; ?>">
-                                    <?php echo "Grade " . $array_GradeSection[$rowCount]['SR_grade'] . "-" . $array_GradeSection[$rowCount]['SR_section']; ?>
+                                    <?php echo "Grade " . $array_GradeSection[$rowCount]['SR_grade'] . "-" . $array_GradeSection[$rowCount]['SR_section'] . " (" . $array_GradeSection[$rowCount]['acadYear'] . ")"; ?>
                                   </a>
                                 <?php $rowCount++;
                                 }
                                 ?>
                               </div>
+                              <div class="btn-group" style="float: right;">
+                                <a href="" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
+                              </div>
                             </div>
+
 
                             <div class="table-responsive">
                               <table class="table table-striped table-class">
@@ -187,27 +223,40 @@ if (!isset($_SESSION['F_number'])) {
                                     }
                                     if (!isset($_GET['Grade'])) { ?>
                                       <tr>
-                                        <td colspan="3">NO DATA</td>
+                                        <td colspan="3">NO SELECTED ACADEMIC YEAR AND GRADE AND SECTION</td>
                                       </tr>
                                       <?php
                                     } else {
-                                      $getClassList = "SELECT * FROM studentrecord WHERE SR_grade = '{$_GET['Grade']}'";
-                                      $rungetClassList = $mysqli->query($getClassList);
-                                      $rowCount = 1;
-                                      while ($dataClassList = $rungetClassList->fetch_assoc()) { ?>
-                                        <tr>
-                                          <td><?php echo $rowCount ?></td>
-                                          <td><?php echo $dataClassList['SR_number'] ?></td>
-                                          <td>
-                                            <!-- palitan to ng katulad nung sa advisory page kung may idadagdag na page -->
-                                            <a href="classList.php?SR_Number=<?php echo $dataClassList['SR_number'] ?>">
-                                              <?php echo $dataClassList['SR_lname'] . ", " . $dataClassList['SR_fname'] . " " . substr($dataClassList['SR_mname'], 0, 1); ?>
-                                            </a>
-                                          </td>
-                                        </tr>
-                                    <?php
-                                        $rowCount++;
+                                      if (isset($_GET['SY'])) {
+                                        $getClassList = $mysqli->query("SELECT * FROM classlist WHERE SR_grade = '{$_GET['Grade']}' AND acadYear = '{$_GET['SY']}'");
+                                      } else {
+                                        $getClassList = $mysqli->query("SELECT * FROM classlist WHERE SR_grade = '{$_GET['Grade']}' AND acadYear = '{$currentSchoolYear}'");
                                       }
+
+                                      if (mysqli_num_rows($getClassList) > 0) {
+                                        $rowCount = 1;
+                                        while ($dataClassList = $getClassList->fetch_assoc()) { ?>
+                                          <tr>
+                                            <td><?php echo $rowCount ?></td>
+                                            <td><?php echo $dataClassList['SR_number'] ?></td>
+                                            <td>
+                                              <?php
+                                              $getstudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$dataClassList['SR_number']}'");
+                                              $studentInfo = $getstudentInfo->fetch_assoc();
+                                              ?>
+                                              <a href="viewstudent.php?ID=<?php echo $studentInfo['SR_number'] ?>">
+                                                <?php echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix']; ?>
+                                              </a>
+                                            </td>
+                                          </tr>
+                                        <?php
+                                          $rowCount++;
+                                        }
+                                      } else { ?>
+                                        <tr>
+                                          <td colspan="3">NO AVAILABLE DATA</td>
+                                        </tr>
+                                    <?php }
                                     }
                                     ?>
                                   </form>
@@ -285,8 +334,6 @@ if (!isset($_SESSION['F_number'])) {
 
   <!-- Back to Top -->
   <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
-  <!-- JavaScript Libraries -->
 
 
   <!-- Template Javascript -->

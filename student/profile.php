@@ -4,7 +4,19 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['SR_number'])) {
   header('Location: ../auth/login.php');
 } else {
-  # code...
+  $getstudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$_SESSION['SR_number']}'");
+  $studentInfo = $getstudentInfo->fetch_assoc();
+
+  $Student_Fullname = $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix'];
+
+  $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_name = '{$studentInfo['SR_section']}' AND acadYear = '{$currentSchoolYear}'");
+  $SectionInfo = $getSectionInfo->fetch_assoc();
+
+  $getAdvisorInfo = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$SectionInfo['S_adviser']}'");
+  $AdvisorInfo = $getAdvisorInfo->fetch_assoc();
+
+  $getguardianInfo = $mysqli->query("SELECT * FROM guardian WHERE G_guardianOfStudent = '{$_SESSION['SR_number']}'");
+  $guardianInfo = $getguardianInfo->fetch_assoc();
 }
 ?>
 <!DOCTYPE html>
@@ -41,20 +53,12 @@ if (!isset($_SESSION['SR_number'])) {
   <link href="../assets/css/style.css" rel="stylesheet">
   <link href="../assets/css/dashboard-user.css" rel="stylesheet">
   <link href="../assets/css/admin/style.css" rel="stylesheet">
-
 </head>
 
 <body>
-
   <!-- Navbar Start -->
   <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-    <img class="m-3" src="../assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">
-    <div class="d-flex align-items-center justify-content-center text-center">
-      <a href="../index.php" class="navbar-brand ms-4 ms-lg-0 text-center">
-        <h1 class="cdsp">Colegio De San Pedro</h1>
-        <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
-      </a>
-    </div>
+    <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
   </nav>
   <!-- Navbar End -->
 
@@ -65,24 +69,31 @@ if (!isset($_SESSION['SR_number'])) {
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
-      <div class="navbar-nav ms-auto p-4 p-lg-0 ">
+      <style>
+        @media (max-width: 991.98px) {
+          .navbar-nav {
+            margin-left: 0px !important;
+          }
+
+          .navbar .navbar-nav .nav-link {
+            margin-left: 0px !important;
+          }
+        }
+      </style>
+      <div class="navbar-nav m-auto p-4 p-lg-0 ">
         <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
-        <a href="about.html" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
+        <a href="" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
         <div class="nav-item dropdown">
-          <a href="#" class="nav-item nav-link" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Academics <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+          <a href="#" class="nav-item nav-link" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Dashboard <i class="fa fa-caret-down"></i></a>
           <div class="dropdown-menu bg-dark border-0 m-0">
-            <a href="auth/login.php" class="dropdown-item" style="color: white; font-size: 14px;">Student Information System</a>
-            <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Kindergarten</a>
-            <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Pre-Elementary</a>
-            <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Elementary</a>
-            <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Highschool</a>
-            <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Senior Highschool</a>
-            <a href="" class="dropdown-item" style="color: white; font-size: 14px;">College</a>
+            <a href="../student/profile.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Profile</a>
+            <a href="../student/grades.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Grades</a>
+            <a href="../student/dailyAttendance.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Attendance</a>
+            <a href="../student/reminders.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Reminders</a>
+            <a href="../student/announcement.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">School Announcements</a>
           </div>
         </div>
-        <a href="service.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Admissions</a>
-        <a href="contact.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Scholarship and Discounts</a>
-        <a href="contact.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Contact Us</a>
+        <a href="" class="nav-item nav-link" style="color: white; font-size: 14px;">Contact Us</a>
       </div>
     </div>
   </nav>
@@ -91,55 +102,38 @@ if (!isset($_SESSION['SR_number'])) {
   <section>
     <div class="container py-5">
       <div class="row">
-        <div class="col">
-          <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
-            <a href="#" style="margin-left: 10px;">Back</a>
-          </nav>
-        </div>
-      </div>
-
-      <div class="row">
         <div class="col-lg-4">
           <div class="card mb-4">
             <div class="card-body text-center">
               <img src="../assets/img/profile.jpg" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
-              <h5 class="my-3">Camile Anne G. Sabile</h5>
-              <p class="text-muted mb-1">2019-00188-SP-0</p>
-              <p class="text-muted mb-4">Grade 1 - Einstein</p>
+              <h5 class="my-3"><?php echo $Student_Fullname ?></h5>
+              <p class="text-muted mb-1"><?php echo $studentInfo['SR_number'] ?></p>
+              <p class="text-muted mb-4"><?php echo $studentInfo['SR_grade'] . " - " . $studentInfo['SR_section'] ?></p>
               <div class="d-flex justify-content-center mb-2">
-                <button type="button" class="btn btn-outline-primary ms-1">Edit</button>
-                <button type="button" class="btn btn-outline-primary ms-1">View QR Code</button>
+                <button type="button" class="btn btn-outline-primary ms-1" onclick="location.href='../student/editProfile.php'">Edit</button>
+                <button type="button" class="btn btn-outline-primary ms-1" onclick="openImage()">View QR Code</button>
               </div>
+            </div>
+          </div>
+          <div class="card mb-4">
+            <div class="card-body">
+              <p class="mb-4" style="text-align: center; color:#c02628;">Class Adviser</p>
+              <p class="mb-1" style="font-size: .90rem;"><?php echo $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'] . " " . substr($AdvisorInfo['F_mname'], 0, 1) . ". " . $AdvisorInfo['F_suffix'] ?></p>
+
             </div>
           </div>
           <div class="card mb-4 mb-md-0">
             <div class="card-body">
               <p class="mb-4" style="text-align: center; color:#c02628;">Class Schedule</p>
-              <p class="mb-1" style="font-size: .90rem;">Mathematics</p>
-              <div class="progress rounded" style="height: 25px;">
-                <p style="font-size: .77rem; margin: 5px 0px 0px 7px">MONDAY-FRIDAY (10:30-1:30)</p>
-              </div>
-
-              <p class="mt-4 mb-1" style="font-size: .90rem;">English</p>
-              <div class="progress rounded" style="height: 25px;">
-                <p style="font-size: .77rem; margin: 5px 0px 0px 7px">MONDAY-FRIDAY (10:30-1:30)</p>
-              </div>
-
-              <p class="mt-4 mb-1" style="font-size: .90rem;">Filipino</p>
-              <div class="progress rounded" style="height: 25px;">
-                <p style="font-size: .77rem; margin: 5px 0px 0px 7px;">MONDAY-FRIDAY (10:30-1:30)</p>
-              </div>
-
-              <p class="mt-4 mb-1" style="font-size: .90rem;">Science</p>
-              <div class="progress rounded" style="height: 25px;">
-                <p style="font-size: .77rem; margin: 5px 0px 0px 7px">MONDAY-FRIDAY (10:30-1:30)</p>
-              </div>
-
-              <p class="mt-4 mb-1" style="font-size: .90rem;">MAPEH</p>
-              <div class="progress rounded" style="height: 25px;">
-                <p style="font-size: .77rem; margin: 5px 0px 0px 7px">MONDAY-FRIDAY (10:30-1:30)</p>
-              </div>
-
+              <?php
+              $getSchedule = $mysqli->query("SELECT * FROM workschedule WHERE SR_section = '{$studentInfo['SR_section']}'");
+              while ($Schedule = $getSchedule->fetch_assoc()) { ?>
+                <p class="mb-1" style="font-size: .90rem;"><?php echo $Schedule['S_subject'] ?></p>
+                <div class="progress rounded" style="height: 25px;">
+                  <p style="font-size: .77rem; margin: 5px 0px 0px 7px">MONDAY-FRIDAY (<?php echo $Schedule['WS_start_time'] . " - " . $Schedule['WS_end_time'] ?>)</p>
+                </div>
+              <?php }
+              ?>
             </div>
           </div>
         </div>
@@ -151,7 +145,7 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Full Name</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">Camille Anne G. Sabile</p>
+                  <p class="text-muted mb-0"><?php echo $Student_Fullname ?></p>
                 </div>
               </div>
               <hr>
@@ -160,7 +154,7 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Age</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">22 years Old</p>
+                  <p class="text-muted mb-0"><?php echo $studentInfo['SR_age'] ?></p>
                 </div>
               </div>
               <hr>
@@ -169,7 +163,7 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Gender</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">Female</p>
+                  <p class="text-muted mb-0"><?php echo $studentInfo['SR_gender'] ?></p>
                 </div>
               </div>
               <hr>
@@ -178,7 +172,7 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Birthdate</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">October 24, 2000</p>
+                  <p class="text-muted mb-0"><?php echo $studentInfo['SR_birthday'] ?></p>
                 </div>
               </div>
               <hr>
@@ -187,7 +181,7 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Birthplace</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">Muntinlupa City</p>
+                  <p class="text-muted mb-0"><?php echo $studentInfo['SR_birthplace'] ?></p>
                 </div>
               </div>
               <hr>
@@ -196,7 +190,7 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Religion</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">Roman Catholic</p>
+                  <p class="text-muted mb-0"><?php echo $studentInfo['SR_religion'] ?></p>
                 </div>
               </div>
               <hr>
@@ -205,7 +199,7 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Citizenship</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">Filipino</p>
+                  <p class="text-muted mb-0"><?php echo $studentInfo['SR_citizenship'] ?></p>
                 </div>
               </div>
               <hr>
@@ -214,7 +208,7 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Address</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">Blk 4e Lot 32 Claret St. Sapphire Hills Victoria Homes Victoria Homes Tunasan Muntinlupa City Metro Manila, 1773</p>
+                  <p class="text-muted mb-0"><?php echo  $studentInfo['SR_address'] .  ", " . $studentInfo['SR_barangay'] . " " . $studentInfo['SR_city'] . ". " . $studentInfo['SR_state'] . " (" . $studentInfo['SR_postal'] . ")" ?></p>
                 </div>
               </div>
               <hr>
@@ -223,16 +217,16 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Guardian</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">Analiza G. Sabile</p>
+                  <p class="text-muted mb-0"><?php echo $guardianInfo['G_lname'] .  ", " . $guardianInfo['G_fname'] . " " . substr($guardianInfo['G_mname'], 0, 1) . ". " . $guardianInfo['G_suffix']; ?></p>
                 </div>
               </div>
               <hr>
               <div class="row">
                 <div class="col-sm-3">
-                  <p class="mb-0">Contact Number</p>
+                  <p class="mb-0">Email Address</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">0975 345 2152</p>
+                  <p class="text-muted mb-0"><?php echo $studentInfo['SR_email'] ?></p>
                 </div>
               </div>
             </div>
@@ -244,7 +238,7 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Guardian Name</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">Analiza G. Sabile</p>
+                  <p class="text-muted mb-0"><?php echo $guardianInfo['G_lname'] .  ", " . $guardianInfo['G_fname'] . " " . substr($guardianInfo['G_mname'], 0, 1) . ". " . $guardianInfo['G_suffix']; ?></p>
                 </div>
               </div>
               <hr>
@@ -253,7 +247,7 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Relationship to Student</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">Mother</p>
+                  <p class="text-muted mb-0"><?php echo $guardianInfo['G_relationshipStudent'] ?></p>
                 </div>
               </div>
               <hr>
@@ -262,7 +256,7 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Email Address</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">analizasabile@gmail.com</p>
+                  <p class="text-muted mb-0"><?php echo $guardianInfo['G_email'] ?></p>
                 </div>
               </div>
               <hr>
@@ -271,7 +265,7 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Telephone Number</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">088456457</p>
+                  <p class="text-muted mb-0"><?php echo $guardianInfo['G_telephone'] ?></p>
                 </div>
               </div>
               <hr>
@@ -280,7 +274,7 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Phone Number</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">093536236426</p>
+                  <p class="text-muted mb-0"><?php echo $guardianInfo['G_contact'] ?></p>
                 </div>
               </div>
               <hr>
@@ -289,7 +283,7 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Address</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0">Blk 4e Lot 32 Claret St. Sapphire Hills Victoria Homes Victoria Homes Tunasan Muntinlupa City Metro Manila, 1773</p>
+                  <p class="text-muted mb-0"><?php echo  $guardianInfo['G_address'] .  ", " . $guardianInfo['G_barangay'] . " " . $guardianInfo['G_city'] . ". " . $guardianInfo['G_state'] . " (" . $guardianInfo['G_postal'] . ")" ?></p>
                 </div>
               </div>
             </div>
@@ -298,6 +292,7 @@ if (!isset($_SESSION['SR_number'])) {
       </div>
     </div>
   </section>
+
 
   <!-- Footer Start -->
   <div class="container-fluid bg-dark text-body footer mt-5 pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
@@ -349,6 +344,17 @@ if (!isset($_SESSION['SR_number'])) {
     </div>
   </div>
   <!-- Footer End -->
+
+  <script>
+    function openImage() {
+      var width = window.innerWidth * 0.8; // calculate the width of the new window
+      var height = window.innerHeight * 0.8; // calculate the height of the new window
+      var left = (window.innerWidth - width) / 2; // calculate the horizontal position of the new window
+      var top = (window.innerHeight - height) / 2; // calculate the vertical position of the new window
+      var features = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top; // specify the features of the new window
+      var image = window.open("../assets/img/profile.jpg", "Image", features); // open the new window and display the image inside it
+    }
+  </script>
 
   <!-- JavaScript Libraries -->
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

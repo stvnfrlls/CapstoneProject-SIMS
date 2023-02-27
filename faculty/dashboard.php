@@ -48,11 +48,13 @@ if (!isset($_SESSION['F_number'])) {
 
 <body>
     <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-        <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-            <span class="mdi mdi-menu"></span>
-        </button>
+    <nav class="fixed-top align-items-top">
+        <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+            <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+                <span class="fa fa-bars"></span>
+            </button>
+        </nav>
     </nav>
     <!-- Navbar End -->
 
@@ -64,7 +66,7 @@ if (!isset($_SESSION['F_number'])) {
                     <!-- line 1 -->
                     <li class="nav-item nav-category">Profile</li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">
+                        <a class="nav-link" href="../faculty/dashboard.php">
                             <i class=""></i>
                             <span class="menu-title">Dashboard</span>
                         </a>
@@ -79,6 +81,12 @@ if (!isset($_SESSION['F_number'])) {
                         <a class="nav-link" href="../faculty/createReminder.php">
                             <i class=""></i>
                             <span class="menu-title">Create Reminders</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/reminders.php">
+                            <i class=""></i>
+                            <span class="menu-title">Reminders</span>
                         </a>
                     </li>
                     <!-- line 2 -->
@@ -108,9 +116,21 @@ if (!isset($_SESSION['F_number'])) {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../faculty/reminders.php">
+                        <a class="nav-link" href="../faculty/studentStatus.php">
                             <i class=""></i>
-                            <span class="menu-title">Reminders</span>
+                            <span class="menu-title">Student Status</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/dailyReports.php">
+                            <i class=""></i>
+                            <span class="menu-title">Attendance Report</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../auth/logout.php">
+                            <i class=""></i>
+                            <span class="menu-title">Logout</span>
                         </a>
                     </li>
                 </ul>
@@ -285,6 +305,8 @@ if (!isset($_SESSION['F_number'])) {
                                                                                             <p class="user-name col-lg-6 col-md-6">
                                                                                                 <span class="far fa-user" style="color: #c02628;"></span>
                                                                                                 <?php echo $getFacultyData['F_lname'] . ", " . $getFacultyData['F_fname'] . " " . substr($getFacultyData['F_mname'], 0, 1) . ". " . $getFacultyData['F_suffix'] . "." ?>
+                                                                                            </p>
+                                                                                            <p class="user-name col-lg-6 col-md-6">
                                                                                                 <span class="fa fa-calendar" style="color: #c02628;"></span>
                                                                                                 <?php echo $remindersData['date_posted'] ?>
                                                                                             </p>
@@ -292,9 +314,8 @@ if (!isset($_SESSION['F_number'])) {
                                                                                     </div>
                                                                                     <div class="col-lg-12 col-sm-12" style="padding: 0px 10px 10px 10px;">
                                                                                         <a class="posts-title" href="blog-single.html" style="text-align: left;">
-                                                                                            <h3><?php echo $remindersData['header'] ?></h3>
+                                                                                            <h3>Subject: <?php echo $remindersData['subject'] ?></h3>
                                                                                         </a>
-                                                                                        <p>Subject: <?php echo $remindersData['subject'] ?></p>
                                                                                         <p class="excert">
                                                                                             <?php echo $remindersData['msg'] ?>
                                                                                         </p>
@@ -422,7 +443,6 @@ if (!isset($_SESSION['F_number'])) {
     <script src="../assets/lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="../assets/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
-    <!-- Template Javascript -->
     <script src="../assets/js/main.js"></script>
 
     <!-- Javascript -->
@@ -437,6 +457,11 @@ if (!isset($_SESSION['F_number'])) {
     <script src="../assets/js/eduwell/slick-slider.js"></script>
     <script src="../assets/js/eduwell/custom.js"></script>
     <script src="../assets/js/startup/main.js"></script>
+
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/admin/vendor.bundle.base.js"></script>
+    <script src="../assets/js/admin/off-canvas.js"></script>
+    <script src="../assets/js/admin/file-upload.js"></script>
 
 </body>
 

@@ -154,12 +154,12 @@ h6,
 
 @media (max-width: 991.98px) {
   .navbar .navbar-nav .nav-link {
+    margin-left: 0px;
     margin-right: 0;
     padding: 10px 0;
   }
 
   .navbar .navbar-nav {
-    margin-left: auto !important;
     border-top: 1px solid #eeeeee;
   }
 

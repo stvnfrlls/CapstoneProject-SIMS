@@ -4,76 +4,27 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['F_number'])) {
     header('Location: ../auth/login.php');
 } else {
-    $attendance_array = array();
-    $getStudentRecord = $mysqli->query('SELECT * FROM studentrecord');
+    if (isset($_SESSION['F_number'])) {
+        $getSectionLabel = $mysqli->query("SELECT S_name FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'");
+        $SectionLabel = $getSectionLabel->fetch_assoc();
 
-    $get_present_student = $mysqli->query("SELECT * FROM attendance");
-
-    while ($present_student = $get_present_student->fetch_assoc()) {
-        $attendance_array[] = $present_student;
-    }
-    $attendance_rowCount = 0;
-
-    if (isset($_POST['student']) || isset($_POST['fetcher'])) {
-
-        $date = date("Y-m-d");
-        $time = date("H:i A");
-
-        $studentID = $_POST['student'];
-        $fetcherID = $_POST['fetcher'];
-
-        if (empty($fetcherID)) {
-            $fetcherID = $studentID;
+        $NOTtimedIN = array();
+        $getNOTtimedIN = $mysqli->query("SELECT studentrecord.SR_number FROM studentrecord LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number WHERE attendance.A_time_IN IS NULL");
+        while ($studentNumber_NOTtimedIN = $getNOTtimedIN->fetch_assoc()) {
+            $NOTtimedIN[] = $studentNumber_NOTtimedIN;
         }
 
-        $checkAttendance = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$studentID}' AND A_date = '{$date}'");
-        $attendanceData = $checkAttendance->fetch_assoc();
-
-        $getemail = $mysqli->query("SELECT SR_email FROM studentrecord WHERE SR_number = '{$studentID}'");
-        $emailAd = $getemail->fetch_assoc();
-
-        if ($checkAttendance->num_rows == 0) {
-            $timeIN = $mysqli->query("INSERT INTO attendance (SR_number, A_date, A_time_IN, A_fetcher_IN) VALUES ('{$studentID}', '{$date}', '{$time}', '{$fetcherID}')");
-            if ($timeIN) {
-                $mail->addAddress($emailAd['SR_email']);
-                $mail->Subject = 'Attendance: Time In';
-
-                $mail->Body = '<h1>Student Timed In</h1>
-                           <br>
-                           <p>ATTENDANCE DETAILS</p><br>
-                           <b>Time: </b>' . $time . '<br>
-                           <b>Date: </b>' . $date . '<br>';
-
-                if (!$mail->send()) {
-                    echo 'Mailer Error: ';
-                } else {
-                    echo 'The email message was sent!';
-                }
-            }
-        } else if (empty($attendanceData['A_time_OUT']) || empty($attendanceData['A_fetcher_OUT'])) {
-
-            if (isset($timeOUT)) {
-                function_alert("TIME OUT " . $studentID);
-
-                $mail->addAddress($emailAd['SR_email']);
-                $mail->Subject = 'Attendance: Time Out';
-
-                $mail->Body = '<h1>Student Timed Out</h1>
-                           <br>
-                           <p>Attendance Detail</p><br>
-                           <b>Time: </b>' . $time . '<br>
-                           <b>Date: </b>' . $date . '<br>
-                           <b>Fetched By: </b>' . $fetcherID . '<br>';
-
-                if (!$mail->send()) {
-                    echo 'Mailer Error: ';
-                } else {
-                    echo 'The email message was sent!';
-                }
-            }
-        } else {
-            function_alert("Student already timed out");
+        $NOTtimedOUT = array();
+        $getNOTtimedOUT = $mysqli->query("SELECT studentrecord.SR_number FROM studentrecord LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number WHERE attendance.A_time_OUT IS NULL");
+        while ($studentNumber_NOTtimedOUT = $getNOTtimedOUT->fetch_assoc()) {
+            $NOTtimedOUT[] = $studentNumber_NOTtimedOUT;
         }
+
+        $NOTtimedIN_js = json_encode($NOTtimedIN);
+        $NOTtimedOUT_js = json_encode($NOTtimedOUT);
+
+        echo "<script>var NOTtimedIN = " . $NOTtimedIN_js . ";</script>";
+        echo "<script>var NOTtimedOUT = " . $NOTtimedOUT_js . ";</script>";
     }
 }
 ?>
@@ -124,11 +75,13 @@ if (!isset($_SESSION['F_number'])) {
 
 <body>
     <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-        <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-            <span class="mdi mdi-menu"></span>
-        </button>
+    <nav class="fixed-top align-items-top">
+        <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+            <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+                <span class="fa fa-bars"></span>
+            </button>
+        </nav>
     </nav>
     <!-- Navbar End -->
 
@@ -140,7 +93,7 @@ if (!isset($_SESSION['F_number'])) {
                     <!-- line 1 -->
                     <li class="nav-item nav-category">Profile</li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">
+                        <a class="nav-link" href="../faculty/dashboard.php">
                             <i class=""></i>
                             <span class="menu-title">Dashboard</span>
                         </a>
@@ -155,6 +108,12 @@ if (!isset($_SESSION['F_number'])) {
                         <a class="nav-link" href="../faculty/createReminder.php">
                             <i class=""></i>
                             <span class="menu-title">Create Reminders</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/reminders.php">
+                            <i class=""></i>
+                            <span class="menu-title">Reminders</span>
                         </a>
                     </li>
                     <!-- line 2 -->
@@ -184,9 +143,21 @@ if (!isset($_SESSION['F_number'])) {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../faculty/reminders.php">
+                        <a class="nav-link" href="../faculty/studentStatus.php">
                             <i class=""></i>
-                            <span class="menu-title">Reminders</span>
+                            <span class="menu-title">Student Status</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/dailyReports.php">
+                            <i class=""></i>
+                            <span class="menu-title">Attendance Report</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../auth/logout.php">
+                            <i class=""></i>
+                            <span class="menu-title">Logout</span>
                         </a>
                     </li>
                 </ul>
@@ -225,11 +196,6 @@ if (!isset($_SESSION['F_number'])) {
                                                 <video id="preview"></video>
                                             </div>
 
-                                            <form id="qr_form" action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
-                                                <input type="hidden" name="student" id="input1">
-                                                <input type="hidden" name="fetcher" id="input2">
-                                            </form>
-
                                             <form style="text-align: center;">
                                                 <style>
                                                     @media (max-width: 414px) {
@@ -253,7 +219,7 @@ if (!isset($_SESSION['F_number'])) {
                                                 </style>
                                             </form>
 
-                                            <!-- present -->
+                                            <!-- modal para sa timein and out -->
                                             <div id="myModal1" class="modal">
                                                 <style>
                                                     @media (max-width: 414px) {
@@ -293,11 +259,12 @@ if (!isset($_SESSION['F_number'])) {
                                                     </div>
                                                     <div class="modal-body" style="text-align: center;">
                                                         <img src="https://cdn.onlinewebfonts.com/svg/img_2555.png" alt="cookies-img" height="90" width="400" />
-                                                        <p>Awesome! Camille Anne G. Sabile is already marked as Present</p>
+                                                        <p id="modal1Ptag"></p>
                                                         <div class="row d-flex justify-content-center mb-3">
                                                             <div class="col text-center form-group form">
                                                                 <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="qr_form" class="form-horizontal">
-                                                                    <button type="submit" class="btn btn-primary me-2" style="color: white;">Scan QR again</button>
+                                                                    <input type="hidden" name="student" id="input1">
+                                                                    <input type="hidden" name="fetcher" id="input2">
                                                                 </form>
                                                             </div>
                                                         </div>
@@ -305,8 +272,9 @@ if (!isset($_SESSION['F_number'])) {
                                                 </div>
                                             </div>
 
-                                            <!-- timeout -->
-                                            <div id="myModal2" class="modal">
+                                            <!-- modal para sa pang verify ng fetcher -->
+
+                                            <div id="myModal2" class="modal" style="display: none;">
                                                 <style>
                                                     @media (max-width: 414px) {
                                                         .modal-content {
@@ -341,52 +309,51 @@ if (!isset($_SESSION['F_number'])) {
                                                 <!-- Modal content -->
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h2 style="font-family: 'Lato','san-serif'; text-align:center;">Successful!</h2>
+                                                        <h2 style="font-family: 'Lato','san-serif'; text-align:center;">Alert!</h2>
                                                         <span class="close2"><i class="fa fa-times"></i></span>
                                                     </div>
                                                     <div class="modal-body" style="text-align: center;">
                                                         <img src="https://cdn.onlinewebfonts.com/svg/img_2555.png" alt="cookies-img" height="90" width="400" />
-                                                        <p>Awesome! Camille Anne G. Sabile is now ready to go home.</p>
+                                                        <p id="modal2Ptag"></p>
                                                         <div class="row d-flex justify-content-center mb-3">
                                                             <div class="col text-center form-group form">
                                                                 <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="qr_form" class="form-horizontal">
+                                                                    <input type="hidden" name="student" id="input1">
+                                                                    <input type="hidden" name="fetcher" id="input2">
                                                                     <div class="row">
                                                                         <p>Is there a fetcher?</p>
                                                                         <div class="col-12">
-                                                                            <input type="checkbox" id="vehicle1" name="a" value="">
+                                                                            <input type="checkbox" id="withFetcher">
                                                                             <label for="a">Yes</label>
                                                                         </div>
                                                                         <div class="col-12">
-                                                                            <input type="checkbox" id="vehicle1" name="a" value="">
+                                                                            <input type="checkbox" id="noFetcher" onclick="showreasons()">
                                                                             <label for="a">No</label>
                                                                         </div>
                                                                     </div>
 
-                                                                    <div class="row">
+                                                                    <div class="row" id="reason" style="display: none;">
                                                                         <p>If no, choose your reason.</p>
                                                                         <div class="col-12">
-                                                                            <input type="checkbox" id="vehicle1" name="a" value="">
+                                                                            <input type="checkbox" id="reason1" value="fetcher is sick">
                                                                             <label for="a">The fetcher is sick.</label>
                                                                         </div>
                                                                         <div class="col-12">
-                                                                            <input type="checkbox" id="vehicle1" name="a" value="">
+                                                                            <input type="checkbox" id="reason2" value="busy">
                                                                             <label for="a">The fetcher runs some errand.</label>
                                                                         </div>
                                                                         <div class="col-12">
-                                                                            <input type="checkbox" id="vehicle1" name="a" value="">
+                                                                            <input type="checkbox" id="reason3" name="a" value="">
                                                                             <label for="a">Others (Please specify)</label>
-                                                                            <input type="text" name="student" class="form-control" id="input1" required><br>
+                                                                            <input type="text" name="student" class="form-control" id="reason3Text" required disabled><br>
                                                                         </div>
-
                                                                     </div>
-                                                                    <button type="submit" class="btn btn-primary me-2" style="color: white;">Done!</button>
                                                                 </form>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -455,83 +422,14 @@ if (!isset($_SESSION['F_number'])) {
 
 </body>
 <script>
-    // Get the modal
-    var modal = document.getElementById("myModal");
+    function showreasons() {
+        var checkBox = document.getElementById("noFetcher");
+        var reason = document.getElementById("reason");
 
-    // Get the button that opens the modal
-    var btn = document.getElementById("myBtn");
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
-    // When the user clicks the button, open the modal 
-    btn.onclick = function() {
-        modal.style.display = "block";
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-</script>
-<script>
-    // Get the modal
-    var modal1 = document.getElementById("myModal1");
-
-    // Get the button that opens the modal
-    var btn1 = document.getElementById("myBtn1");
-
-    // Get the <span> element that closes the modal
-    var span1 = document.getElementsByClassName("close1")[0];
-
-    // When the user clicks the button, open the modal 
-    btn1.onclick = function() {
-        modal1.style.display = "block";
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span1.onclick = function() {
-        modal1.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal1) {
-            modal1.style.display = "none";
-        }
-    }
-</script>
-<script>
-    // Get the modal
-    var modal2 = document.getElementById("myModal2");
-
-    // Get the button that opens the modal
-    var btn2 = document.getElementById("myBtn2");
-
-    // Get the <span> element that closes the modal
-    var span2 = document.getElementsByClassName("close2")[0];
-
-    // When the user clicks the button, open the modal 
-    btn2.onclick = function() {
-        modal2.style.display = "block";
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span2.onclick = function() {
-        modal2.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal2) {
-            modal2.style.display = "none";
+        if (checkBox.checked == true) {
+            reason.style.display = "block";
+        } else {
+            reason.style.display = "none";
         }
     }
 </script>
@@ -548,32 +446,110 @@ if (!isset($_SESSION['F_number'])) {
     }).catch((err) => {
         console.error(err);
     });
-    const presentStudent = array();
+    // Get the modal
+    var modal1 = document.getElementById("myModal1");
+
+    // Get the <span> element that closes the modal
+    var span1 = document.getElementsByClassName("close1")[0];
+
+    // When the user clicks on <span> (x), close the modal
+    span1.onclick = function() {
+        modal1.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal1) {
+            modal1.style.display = "none";
+        }
+    }
+    // Get the modal
+    var modal2 = document.getElementById("myModal2");
+
+    // Get the <span> element that closes the modal
+    var span2 = document.getElementsByClassName("close2")[0];
+
+    // When the user clicks on <span> (x), close the modal
+    span2.onclick = function() {
+        modal2.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal2) {
+            modal2.style.display = "none";
+        }
+    }
     var studentID = document.getElementById('input1').value;
     var fetcherID = document.getElementById('input2').value;
+
     scanner.addListener('scan', function(c) {
         let input = c;
 
-        if (input.includes("S")) {
+        if (input.includes("SP")) {
             document.getElementById('input1').value = input;
-            myModal1.style.display = "block";
-            document.getElementById("qr_form").submit();
-        } else {
-            document.getElementById('input2').value = input;
-        }
-    })
 
-    scanner.addListener('scan', function(d) {
-        let input2 = d;
+            if (NOTtimedIN.some(e => e.SR_number === input)) {
+                document.getElementById('modal1Ptag').innerHTML = "marked as present.";
+                modal1.style.display = "block";
+                setTimeout(() => {
+                    document.getElementById("qr_form").submit();
+                }, 3000);
+            } else if (NOTtimedOUT.some(e => e.SR_number === input)) {
+                modal2.style.display = "block";
 
-        if (input.includes("FTC")) {
-            document.getElementById('input2').value = input2;
-            document.getElementById("qr_form").submit();
-        } else {
-            document.getElementById('input1').value = input2;
+                if (document.getElementById('withFetcher').checked) {
+                    modal2.style.display = "none";
+                    document.getElementById('modal1Ptag').innerHTML = "Scan Fetcher QR Code";
+                    modal1.style.display = "block";
+                    setTimeout(() => {
+                        modal1.style.display = "none";
+                    }, 3000);;
+                    scanner.addListener('scan', function(d) {
+                        let input2 = d;
+
+                        document.getElementById('input2').value = input2;
+                        document.getElementById('modal1Ptag').innerHTML = "ready to go home.";
+                        modal1.style.display = "block";
+                        setTimeout(() => {
+                            document.getElementById("qr_form").submit();
+                        }, 3000);;
+                    })
+                } else if (document.getElementById('noFetcher').checked) {
+                    if (document.getElementById('reason1').checked) {
+                        modal2.style.display = "none";
+                        document.getElementById('modal1Ptag').innerHTML = "ready to go home.";
+                        modal1.style.display = "block";
+                        setTimeout(() => {
+                            document.getElementById("qr_form").submit();
+                        }, 3000);
+                    } else if (document.getElementById('reason2').checked) {
+                        modal2.style.display = "none";
+                        modal1.style.display = "block";
+                        setTimeout(() => {
+                            document.getElementById("qr_form").submit();
+                        }, 3000);
+                        document.getElementById('modal1Ptag').innerHTML = "ready to go home.";
+                    } else if (document.getElementById('reason3').checked) {
+                        modal2.style.display = "none";
+                        document.getElementById('modal1Ptag').innerHTML = "ready to go home.";
+                        modal1.style.display = "block";
+                        setTimeout(() => {
+                            document.getElementById("qr_form").submit();
+                        }, 3000);
+                    }
+                }
+            } else if (!NOTtimedOUT.some(e => e.SR_number === input)) {
+                document.getElementById('modal1Ptag').innerHTML = "student is already out.";
+                modal1.style.display = "block";
+                setTimeout(() => {
+                    modal1.style.display = "none";
+                }, 3000);
+            }
         }
     })
 </script>
+
 <!-- JavaScript Libraries -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>

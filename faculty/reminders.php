@@ -46,11 +46,13 @@ if (!isset($_SESSION['F_number'])) {
 
 <body>
     <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-        <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-            <span class="mdi mdi-menu"></span>
-        </button>
+    <nav class="fixed-top align-items-top">
+        <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+            <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+                <span class="fa fa-bars"></span>
+            </button>
+        </nav>
     </nav>
     <!-- Navbar End -->
 
@@ -62,21 +64,27 @@ if (!isset($_SESSION['F_number'])) {
                     <!-- line 1 -->
                     <li class="nav-item nav-category">Profile</li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">
+                        <a class="nav-link" href="../faculty/dashboard.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Dashboard</span>
+                            <span class="menu-title">Dashboard</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../faculty/viewProfile.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">View Profile</span>
+                            <span class="menu-title">View Profile</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../faculty/createReminder.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Create Reminders</span>
+                            <span class="menu-title">Create Reminders</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/reminders.php">
+                            <i class=""></i>
+                            <span class="menu-title">Reminders</span>
                         </a>
                     </li>
                     <!-- line 2 -->
@@ -84,31 +92,43 @@ if (!isset($_SESSION['F_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../faculty/scanQR.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Scan QR</span>
+                            <span class="menu-title">Scan QR</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../faculty/advisoryPage.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Advisory</span>
+                            <span class="menu-title">Advisory</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../faculty/classList.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Class List</span>
+                            <span class="menu-title">Class List</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../faculty/encodegrades.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
+                            <span class="menu-title">Encode Grades</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../faculty/reminders.php">
+                        <a class="nav-link" href="../faculty/studentStatus.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Reminders</span>
+                            <span class="menu-title">Student Status</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/dailyReports.php">
+                            <i class=""></i>
+                            <span class="menu-title">Attendance Report</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../auth/logout.php">
+                            <i class=""></i>
+                            <span class="menu-title">Logout</span>
                         </a>
                     </li>
                 </ul>
@@ -124,44 +144,58 @@ if (!isset($_SESSION['F_number'])) {
                                         <h2 class="fw-bold text-primary text-uppercase">Reminders</h2>
                                     </div>
                                 </div>
-
+                                <div style="text-align: right; margin-top: 30px; margin-right: 20px;">
+                                    <a href="createReminder.php" type="submit" style="color: #ffffff;" class="btn btn-primary me-2">Create <i class="fa fa-plus" style="font-size: 10px;"></i></a>
+                                </div>
                                 <section class="post-content-area" style="background-color: #f4f5f7;">
                                     <div class="container">
                                         <div class="row col-lg-10">
                                             <div class="col-lg-10 posts-list" style="margin-left: auto; padding-top: 50px;">
                                                 <?php
-                                                $getreminders = $mysqli->query("SELECT * FROM reminders WHERE author = '{$_SESSION['F_number']}'");
-                                                while ($reminder = $getreminders->fetch_assoc()) { ?>
-                                                    <div class="single-post row">
-                                                        <div class="col-lg-3  col-md-3 meta-details">
-                                                            <div class="user-details row">
-                                                                <?php 
-                                                                $getAuthorName = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$reminder['author']}'");
-                                                                $authorName = $getAuthorName->fetch_assoc();
-                                                                ?>
-                                                                <p class="user-name col-lg-12 col-md-12 col-6"><a href="#"><?php echo $authorName['F_lname'] .  ", " . $authorName['F_fname'] . " " . substr($authorName['F_mname'], 0, 1) ?></a> <span class="far fa-user" style="color: #c02628;"></span></p>
-                                                                <p class="date col-lg-12 col-md-12 col-6"><a><?php echo $reminder['date_posted'] ?></a> <span class="fa fa-calendar" style="color: #c02628;"></span></p>
+                                                $getreminders = $mysqli->query("SELECT * FROM reminders WHERE author = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
+                                                if (mysqli_num_rows($getreminders) > 0) {
+                                                    while ($reminder = $getreminders->fetch_assoc()) { ?>
+                                                        <div class="single-post row">
+                                                            <div class="col-lg-3  col-md-3 meta-details">
+                                                                <div class="user-details row">
+                                                                    <?php
+                                                                    $getAuthorName = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$reminder['author']}'");
+                                                                    $authorName = $getAuthorName->fetch_assoc();
+                                                                    ?>
+                                                                    <p class="user-name col-lg-12 col-md-12 col-6"><span class="far fa-user" style="color: #c02628;"> </span><a href="#"> <?php echo $authorName['F_lname'] .  ", " . $authorName['F_fname'] . " " . substr($authorName['F_mname'], 0, 1) ?></a> </p>
+                                                                    <p class="date col-lg-12 col-md-12 col-6"><span class="fa fa-calendar" style="color: #c02628;"> </span><a> <?php echo $reminder['date_posted'] ?></a> </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-9">
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <div class="col-lg-12 col-md-9 ">
+                                                                            <a class="posts-title" href="viewReminders.php?ID=<?php echo $reminder['reminderID'] ?>">
+                                                                                <h3><?php echo $reminder['msg'] ?></h3>
+                                                                            </a>
+                                                                            <p>Subject: <?php echo $reminder['subject'] ?></p>
+                                                                            <p class="excert"><?php echo $reminder['msg'] ?></p>
+                                                                            <a href="viewReminders.php?ID=<?php echo $reminder['reminderID'] ?>" class="primary-btn">View More</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-9">
+                                                    <?php
+                                                    }
+                                                } else { ?>
+                                                    <div class="single-post row">
+                                                        <div class="col">
                                                             <div class="card">
                                                                 <div class="card-body">
-                                                                    <div class="col-lg-12 col-md-9 ">
-                                                                        <a class="posts-title" href="blog-single.html">
-                                                                            <h3><?php echo $reminder['header'] ?></h3>
-                                                                        </a>
-                                                                        <p>Subject: <?php echo $reminder['subject'] ?></p>
-                                                                        <p class="excert">
-                                                                        <?php echo $reminder['msg'] ?>
-                                                                        </p>
-                                                                        <a href="blog-single.html" class="primary-btn">View More</a>
+                                                                    <div class="text-center">
+                                                                        <h3>No reminders yet</h3>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                <?php
-                                                }
+                                                <?php }
                                                 ?>
                                             </div>
                                         </div>

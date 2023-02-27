@@ -14,7 +14,7 @@ if (!isset($_SESSION['AD_number'])) {
 
 <head>
     <meta charset="utf-8">
-    <title>Create Announcement</title>
+    <title>Create School Announcement</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -30,6 +30,9 @@ if (!isset($_SESSION['AD_number'])) {
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="../assets/css/sweetAlert.css" rel="stylesheet">
 
 
     <!-- Libraries Stylesheet -->
@@ -49,14 +52,14 @@ if (!isset($_SESSION['AD_number'])) {
 </head>
 
 <body>
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-        <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-            <span class="mdi mdi-menu"></span>
-        </button>
+    <nav class="fixed-top align-items-top">
+        <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+            <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+                <span class="fa fa-bars"></span>
+            </button>
+        </nav>
     </nav>
-    <!-- Navbar End -->
 
     <div class="container-scroller">
         <div class="container-fluid page-body-wrapper">
@@ -72,35 +75,53 @@ if (!isset($_SESSION['AD_number'])) {
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="../admin/auditTrail.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Activity History</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="../admin/createAdmin.php">
                             <i class=""></i>
                             <span class="menu-title" style="color: #b9b9b9;">Create Admin</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../admin/addStudent.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Add Student</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="../admin/announcement.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Announcements</span>
+                            <span class="menu-title" style="color: #b9b9b9;">School Announcements</span>
                         </a>
                     </li>
                     <!-- line 2 -->
-                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Student</li>
+                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Student Records</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/addStudent.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/createFetcher.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Student Records</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Student Information</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/editgrades.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Grades</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/editSection.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Change Student Section</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -114,7 +135,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/addFaculty.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Add Faculty</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Register Faculty</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -126,7 +147,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/assignAdvisory.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Assign Advisory</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Advisory Class Assignment</span>
                         </a>
                     </li>
                     <!-- line 4 -->
@@ -134,13 +155,19 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/editlearningareas.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Scheduling</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Work Schedule Assignment</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/modifyCurriculum.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Curriculum</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Edit Curriculum</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/modifySection.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Edit Section</span>
                         </a>
                     </li>
                     <!-- line 5 -->
@@ -160,7 +187,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <!-- line 5 -->
                     <li class="nav-item nav-category" style="padding-top: 10px;"></li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">
+                        <a class="nav-link" href="../auth/logout.php">
                             <i class=""></i>
                             <span class="menu-title" style="color: #b9b9b9;">Logout</span>
                         </a>
@@ -171,7 +198,7 @@ if (!isset($_SESSION['AD_number'])) {
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="row">
-                        <form action="" method="post">
+                        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" id="announcementFORM">
                             <div class="col-sm-12">
                                 <div class="home-tab">
                                     <div class="d-sm-flex align-items-center justify-content-between border-bottom">
@@ -190,21 +217,29 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 <div class="row g-3">
                                                                     <div class="col-md-6">
                                                                         <div class="form-floating">
-                                                                            <input type="text" class="form-control" id="name" name="author" value="<?php echo "ADMIN: " . $adminData['AD_name'] ?>" placeholder="Your Name" readonly>
+                                                                            <input type="hidden" name="postAnnouncement" value="true">
+                                                                            <input type="hidden" name="author" value="<?php echo $adminData['AD_number'] ?>">
+                                                                            <input type="text" class="form-control" id="name" value="<?php echo $adminData['AD_name'] ?>" placeholder="Your Name" readonly>
                                                                             <label for="name">Your Name</label>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <div class="form-floating">
-                                                                            <input type="email" class="form-control" name="date" value="<?php echo  date('M/d/Y') ?>" readonly>
+                                                                            <input type="email" class="form-control" name="date" value="<?php echo  date('m/d/Y') ?>" readonly>
                                                                             <label for="email">Date of the Event</label>
                                                                         </div>
                                                                     </div>
 
-                                                                    <div class="col-12">
+                                                                    <div class="col-6">
                                                                         <div class="form-floating">
-                                                                            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject">
+                                                                            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
                                                                             <label for="subject">Title</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <div class="form-floating">
+                                                                            <input type="date" class="form-control" name="date" value="<?php echo  date('M/d/Y') ?>">
+                                                                            <label for="email">Date of the Event</label>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-12">
@@ -225,8 +260,8 @@ if (!isset($_SESSION['AD_number'])) {
                                 </div>
                             </div>
                             <div style="text-align: center;">
-                                <button type="submit" name="postAnnouncement" class="btn btn-primary me-2">Post</button>
-                                <button class="btn btn-light">Back</button>
+                                <button type="button" id="post_confirmation_modal_button" name="postAnnouncement" class="btn btn-primary me-2">Post</button>
+                                <button type="button" class="btn btn-light">Back</button>
                             </div>
                         </form>
                     </div>
@@ -238,47 +273,9 @@ if (!isset($_SESSION['AD_number'])) {
         <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
-
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Address</h3>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
-                    <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>customerservice@cdsp.edu.ph</p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Quick Links</h3>
-                    <a class="btn btn-link" href="">Home</a>
-                    <a class="btn btn-link" href="">About Us</a>
-                    <a class="btn btn-link" href="">Academics</a>
-                    <a class="btn btn-link" href="">Admission</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Useful Links</h3>
-                    <a class="btn btn-link" href="">DepEd</a>
-                    <a class="btn btn-link" href="">Pag Asa</a>
-                    <a class="btn btn-link" href="">City of San Pedro</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Newsletter</h3>
-                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                    <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid copyright">
+        <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
             <div class="container">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
@@ -296,13 +293,33 @@ if (!isset($_SESSION['AD_number'])) {
     <!-- JavaScript Libraries -->
 
 
+
+
     <!-- Template Javascript -->
     <script src="../assets/js/main.js"></script>
 
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>
     <script src="../assets/js/admin/off-canvas.js"></script>
     <script src="../assets/js/admin/file-upload.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+    <script>
+        const postButton = document.getElementById('post_confirmation_modal_button');
+        const form = document.getElementById('announcementFORM');
 
+        postButton.addEventListener('click', function(event) {
+            Swal.fire({
+                title: 'Are you sure you want to create this announcement?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: `No`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            })
+        })
+    </script>
 </body>
 
 </html>

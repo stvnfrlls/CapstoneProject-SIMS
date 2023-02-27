@@ -12,7 +12,7 @@ if (!isset($_SESSION['SR_number'])) {
 
 <head>
     <meta charset="utf-8">
-    <title>Student - Announcements</title>
+    <title>Student - School Announcements</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -45,22 +45,9 @@ if (!isset($_SESSION['SR_number'])) {
 </head>
 
 <body>
-    <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status"></div>
-        <img class="position-absolute top-50 start-50 translate-middle" src="../assets/img/icons/icon-1.png" alt="Icon">
-    </div>
-    <!-- Spinner End -->
-
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-        <img class="m-3" src="../assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">
-        <div class="d-flex align-items-center justify-content-center text-center">
-            <a href="../index.php" class="navbar-brand ms-4 ms-lg-0 text-center">
-                <h1 class="cdsp">Colegio De San Pedro</h1>
-                <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
-            </a>
-        </div>
+        <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
     </nav>
     <!-- Navbar End -->
 
@@ -71,24 +58,31 @@ if (!isset($_SESSION['SR_number'])) {
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0 ">
+            <style>
+                @media (max-width: 991.98px) {
+                    .navbar-nav {
+                        margin-left: 0px !important;
+                    }
+
+                    .navbar .navbar-nav .nav-link {
+                        margin-left: 0px !important;
+                    }
+                }
+            </style>
+            <div class="navbar-nav m-auto p-4 p-lg-0 ">
                 <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
-                <a href="about.html" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
+                <a href="" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Academics</a>
+                    <a href="#" class="nav-item nav-link" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Dashboard <i class="fa fa-caret-down"></i></a>
                     <div class="dropdown-menu bg-dark border-0 m-0">
-                        <a href="auth/login.php" class="dropdown-item" style="color: white; font-size: 14px;">Student Information System</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Kindergarten</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Pre-Elementary</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Elementary</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Highschool</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Senior Highschool</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">College</a>
+                        <a href="../student/profile.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Profile</a>
+                        <a href="../student/grades.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Grades</a>
+                        <a href="../student/dailyAttendance.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Attendance</a>
+                        <a href="../student/reminders.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Reminders</a>
+                        <a href="../student/announcement.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">School Announcements</a>
                     </div>
                 </div>
-                <a href="service.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Admissions</a>
-                <a href="contact.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Scholarship and Discounts</a>
-                <a href="contact.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Contact Us</a>
+                <a href="" class="nav-item nav-link" style="color: white; font-size: 14px;">Contact Us</a>
             </div>
         </div>
     </nav>
@@ -96,143 +90,28 @@ if (!isset($_SESSION['SR_number'])) {
 
     <section class="popular-courses-area section-gap courses-page">
         <div class="container">
-            <div class="row d-flex justify-content-center">
-                <div class="menu-content pb-70 col-lg-8">
-                    <div class="title text-center">
-                        <h1 class="mb-10">ANNOUNCEMENTS</h1>
-                    </div>
-                </div>
+            <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
+                <h3 class="mb-0">School Announcement</h3>
             </div>
             <div class="row">
-                <div class="single-popular-carusel col-lg-3 col-md-6">
-                    <div class="details">
-                        <a href="#">
-                            <h4>
-                                No Classes
-                            </h4>
-                        </a>
-                        <div class="d-flex mb-3">
-                            <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
-                            <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
+                <?php
+                $getAnnouncementData = $mysqli->query("SELECT * FROM announcement ORDER BY date");
+                while ($announcement = $getAnnouncementData->fetch_assoc()) { ?>
+                    <div class="single-popular-carusel col-lg-3 col-md-6">
+                        <div class="details">
+                            <a href="viewannouncement.php?ID=<?php echo $announcement['ANC_ID'] ?>">
+                                <h4><?php echo $announcement['header'] ?></h4>
+                            </a>
+                            <div class="d-flex mb-3">
+                                <small class="me-3"><i class="far fa-user text-primary me-2"></i><?php echo $announcement['author'] ?></small>
+                                <small><i class="far fa-calendar-alt text-primary me-2"></i><?php echo $announcement['date'] ?></small>
+                            </div>
+                            <p><?php echo $announcement['msg'] ?></p>
                         </div>
-                        <p>
-                            When television was young, there was a hugely popular show based on the still popular fictional characte
-                        </p>
                     </div>
-                </div>
-                <div class="single-popular-carusel col-lg-3 col-md-6">
-                    <div class="details">
-                        <a href="#">
-                            <h4>
-                                No Classes
-                            </h4>
-                        </a>
-                        <div class="d-flex mb-3">
-                            <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
-                            <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                        </div>
-                        <p>
-                            When television was young, there was a hugely popular show based on the still popular fictional characte
-                        </p>
-                    </div>
-                </div>
-                <div class="single-popular-carusel col-lg-3 col-md-6">
-                    <div class="details">
-                        <a href="#">
-                            <h4>
-                                No Classes
-                            </h4>
-                        </a>
-                        <div class="d-flex mb-3">
-                            <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
-                            <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                        </div>
-                        <p>
-                            When television was young, there was a hugely popular show based on the still popular fictional characte
-                        </p>
-                    </div>
-                </div>
-                <div class="single-popular-carusel col-lg-3 col-md-6">
-                    <div class="details">
-                        <a href="#">
-                            <h4>
-                                No Classes
-                            </h4>
-                        </a>
-                        <div class="d-flex mb-3">
-                            <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
-                            <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                        </div>
-                        <p>
-                            When television was young, there was a hugely popular show based on the still popular fictional characte
-                        </p>
-                    </div>
-                </div>
-                <div class="single-popular-carusel col-lg-3 col-md-6">
-                    <div class="details">
-                        <a href="#">
-                            <h4>
-                                No Classes
-                            </h4>
-                        </a>
-                        <div class="d-flex mb-3">
-                            <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
-                            <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                        </div>
-                        <p>
-                            When television was young, there was a hugely popular show based on the still popular fictional characte
-                        </p>
-                    </div>
-                </div>
-                <div class="single-popular-carusel col-lg-3 col-md-6">
-                    <div class="details">
-                        <a href="#">
-                            <h4>
-                                No Classes
-                            </h4>
-                        </a>
-                        <div class="d-flex mb-3">
-                            <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
-                            <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                        </div>
-                        <p>
-                            When television was young, there was a hugely popular show based on the still popular fictional characte
-                        </p>
-                    </div>
-                </div>
-                <div class="single-popular-carusel col-lg-3 col-md-6">
-                    <div class="details">
-                        <a href="#">
-                            <h4>
-                                No Classes
-                            </h4>
-                        </a>
-                        <div class="d-flex mb-3">
-                            <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
-                            <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                        </div>
-                        <p>
-                            When television was young, there was a hugely popular show based on the still popular fictional characte
-                        </p>
-                    </div>
-                </div>
-                <div class="single-popular-carusel col-lg-3 col-md-6">
-                    <div class="details">
-                        <a href="#">
-                            <h4>
-                                No Classes
-                            </h4>
-                        </a>
-                        <div class="d-flex mb-3">
-                            <small class="me-3"><i class="far fa-user text-primary me-2"></i>Hazel Grace Cantuba</small>
-                            <small><i class="far fa-calendar-alt text-primary me-2"></i>01 Jan, 2045</small>
-                        </div>
-                        <p>
-                            When television was young, there was a hugely popular show based on the still popular fictional characte
-                        </p>
-                    </div>
-                </div>
-                <a href="#" class="primary-btn text-uppercase mx-auto" style="width: auto;">Load More Courses</a>
+                <?php }
+                ?>
+
             </div>
         </div>
     </section>

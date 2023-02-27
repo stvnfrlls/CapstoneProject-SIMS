@@ -3,6 +3,14 @@ require_once("../assets/php/server.php");
 
 if (!isset($_SESSION['AD_number'])) {
   header('Location: ../auth/login.php');
+} else {
+  $gradeList = "SELECT DISTINCT S_yearLevel FROM sections WHERE acadYear = '{$currentSchoolYear}'";
+  $rungradeList = $mysqli->query($gradeList);
+
+  if (isset($_GET['Grade'])) {
+    $sectionList = "SELECT DISTINCT(S_name) FROM sections WHERE S_yearLevel = '{$_GET['Grade']}' AND acadYear = '{$currentSchoolYear}'";
+    $runsectionList = $mysqli->query($sectionList);
+  }
 }
 ?>
 
@@ -11,7 +19,7 @@ if (!isset($_SESSION['AD_number'])) {
 
 <head>
   <meta charset="utf-8">
-  <title>Daily Reports</title>
+  <title>Daily Attendance Reports</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta content="" name="keywords">
   <meta content="" name="description">
@@ -45,14 +53,14 @@ if (!isset($_SESSION['AD_number'])) {
 </head>
 
 <body>
-  <!-- Navbar Start -->
-  <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-    <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
-    <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-      <span class="mdi mdi-menu"></span>
-    </button>
+  <nav class="fixed-top align-items-top">
+    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+      <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
+      <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+        <span class="fa fa-bars"></span>
+      </button>
+    </nav>
   </nav>
-  <!-- Navbar End -->
 
   <div class="container-scroller">
     <div class="container-fluid page-body-wrapper">
@@ -68,35 +76,53 @@ if (!isset($_SESSION['AD_number'])) {
             </a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="../admin/auditTrail.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Activity History</span>
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="../admin/createAdmin.php">
               <i class=""></i>
               <span class="menu-title" style="color: #b9b9b9;">Create Admin</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../admin/addStudent.php">
-              <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Add Student</span>
-            </a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="../admin/announcement.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Announcements</span>
+              <span class="menu-title" style="color: #b9b9b9;">School Announcements</span>
             </a>
           </li>
           <!-- line 2 -->
-          <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Student</li>
+          <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Student Records</li>
+          <li class="nav-item">
+            <a class="nav-link" href="../admin/addStudent.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../admin/createFetcher.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
+            </a>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="../admin/student.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Student Records</span>
+              <span class="menu-title" style="color: #b9b9b9;">Student Information</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="../admin/editgrades.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Grades</span>
+              <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../admin/editSection.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Change Student Section</span>
             </a>
           </li>
           <li class="nav-item">
@@ -110,7 +136,7 @@ if (!isset($_SESSION['AD_number'])) {
           <li class="nav-item">
             <a class="nav-link" href="../admin/addFaculty.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Add Faculty</span>
+              <span class="menu-title" style="color: #b9b9b9;">Register Faculty</span>
             </a>
           </li>
           <li class="nav-item">
@@ -122,7 +148,7 @@ if (!isset($_SESSION['AD_number'])) {
           <li class="nav-item">
             <a class="nav-link" href="../admin/assignAdvisory.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Assign Advisory</span>
+              <span class="menu-title" style="color: #b9b9b9;">Advisory Class Assignment</span>
             </a>
           </li>
           <!-- line 4 -->
@@ -130,13 +156,19 @@ if (!isset($_SESSION['AD_number'])) {
           <li class="nav-item">
             <a class="nav-link" href="../admin/editlearningareas.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Scheduling</span>
+              <span class="menu-title" style="color: #b9b9b9;">Work Schedule Assignment</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="../admin/modifyCurriculum.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Curriculum</span>
+              <span class="menu-title" style="color: #b9b9b9;">Edit Curriculum</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../admin/modifySection.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Edit Section</span>
             </a>
           </li>
           <!-- line 5 -->
@@ -156,7 +188,7 @@ if (!isset($_SESSION['AD_number'])) {
           <!-- line 5 -->
           <li class="nav-item nav-category" style="padding-top: 10px;"></li>
           <li class="nav-item">
-            <a class="nav-link" href="">
+            <a class="nav-link" href="../auth/logout.php">
               <i class=""></i>
               <span class="menu-title" style="color: #b9b9b9;">Logout</span>
             </a>
@@ -171,88 +203,92 @@ if (!isset($_SESSION['AD_number'])) {
               <div class="home-tab">
                 <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                   <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                    <h2 class="fw-bold text-primary text-uppercase">Daily Reports</h2>
+                    <h2 class="fw-bold text-primary text-uppercase">Daily Attendance Reports</h2>
                   </div>
                 </div>
                 <div class="tab-content tab-content-basic">
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-
-                    <div class="row">
-                      <form class="form-sample">
-                        <div class="col-12 grid-margin">
-                          <div class="row">
-                            <div class="col-lg-4" style="margin: auto; text-align:center;">
-                              <label class="col-sm-12 col-form-label">Student Number</label>
-                              <div class="col-sm-12">
-                                <input type="text" class="form-control" />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div style="text-align: center; padding-top: 0px;">
-                          <input type="button" style="color:#ffffff;" class="btn btn-primary me-2" name="confirm_student" value="Enter">
-                        </div>
-                      </form>
-                    </div>
-
-                    <div class="row">
-                      <div class="col-12 grid-margin">
-                        <form class="form-sample">
-                          <div class="col-12 grid-margin">
-
-                            <div class="row">
-                              <div class="col-md-4">
-                                <label class="col-sm-12 col-form-label">Name</label>
-                                <div class="col-sm-12">
-                                  <input type="text" class="form-control" readonly />
-                                </div>
-                              </div>
-                              <div class="col-md-4">
-                                <label class="col-sm-12 col-form-label">Grade and Section</label>
-                                <div class="col-sm-12">
-                                  <input type="text" class="form-control" readonly />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </form>
-                      </div>
-                    </div>
-
                     <div class="btn-group">
-                      <div class="dropdown">
-                        <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
-                          Month<i class="fa fa-caret-down"></i>
+                      <div>
+                        <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          <?php
+                          if (isset($_GET['Grade'])) {
+                            if ($_GET['Grade'] == "KINDER") {
+                              echo  $_GET['Grade'];
+                            } else {
+                              echo  "Grade " . $_GET['Grade'];
+                            }
+                          } else {
+                            echo "Grade ";
+                          }
+                          ?>
+                          <i class="fa fa-caret-down"></i>
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                          <a class="dropdown-item" href="">January</a>
-                          <a class="dropdown-item" href="">February</a>
-                          <a class="dropdown-item" href="">March</a>
-                          <a class="dropdown-item" href="">April</a>
-                          <a class="dropdown-item" href="">June</a>
-                          <a class="dropdown-item" href="">July</a>
-                          <a class="dropdown-item" href="">August</a>
-                          <a class="dropdown-item" href="">September</a>
-                          <a class="dropdown-item" href="">October</a>
-                          <a class="dropdown-item" href="">November</a>
-                          <a class="dropdown-item" href="">December</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                          <?php
+                          while ($gradeData = $rungradeList->fetch_assoc()) { ?>
+                            <a class="dropdown-item" href="dailyReports.php?Grade=<?php echo $gradeData['S_yearLevel'] ?>">
+                              <?php
+                              echo "Grade " . $gradeData['S_yearLevel'];
+                              ?>
+                            </a>
+                          <?php } ?>
                         </div>
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="btn-group">
+                      <?php
+                      if (isset($_GET['Grade'])) { ?>
+                        <div>
+                          <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <?php if (isset($_GET['Section'])) {
+                              echo $_GET['Section'];
+                            } else {
+                              echo "Section";
+                            }
+                            ?>
+                            <i class="fa fa-caret-down"></i>
+                          </button>
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <?php
+                            while ($sectionData = $runsectionList->fetch_assoc()) { ?>
+                              <a class="dropdown-item" href="dailyReports.php?Grade=<?php echo $_GET['Grade'] . "&Section=" . $sectionData['S_name']; ?>">
+                                <?php
+                                echo $sectionData['S_name'];
+                                ?>
+                              </a>
+                            <?php } ?>
+                          </div>
+                        </div>
+                      <?php } ?>
+                    </div>
+                    <div class="btn-group">
+                      <div>
+                        <input type="date" class="form-control" name="date" value="">
+                      </div>
+                    </div>
+                    <?php
+                    if (isset($_GET['Grade']) && isset($_GET['Section'])) { ?>
+                      <div class="btn-group" style="float: right;">
+                        <a href="../reports/DailyAttendancebyClass.php?Grade=<?php echo $_GET['Grade'] . "&Section=" . $_GET['Section']; ?>" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
+                      </div>
+                    <?php }
+                    ?>
+                    <div class="row" style="margin-top: 15px;">
                       <div class="col-lg-12 d-flex flex-column">
                         <div class="row flex-grow">
-                          <div class="col-md-6 col-lg-12 grid-margin stretch-card">
-                            <div class="card bg-primary card-rounded">
+                          <div class="col-12">
+                            <div class="">
                               <div class="table-responsive">
                                 <table class="table">
                                   <thead>
                                     <tr>
                                       <th>No.</th>
-                                      <th>Date</th>
+                                      <th>Name</th>
                                       <th>Time In</th>
                                       <th>Time Out</th>
-                                      <th>Status</th>
+                                      <th>Fetched by</th>
+                                      <th>Remarks</th>
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -276,21 +312,40 @@ if (!isset($_SESSION['AD_number'])) {
                                         color: #000000;
                                       }
                                     </style>
-                                    <tr>
-                                      <td class="tabledata">1</td>
-                                      <td class="tabledata">01/01/23</td>
-                                      <td class="tabledata">7:00AM</td>
-                                      <td class="tabledata">1:00PM</td>
-                                      <td class="tabledata" style="width: auto;">
-                                        <select class="form-select" required>
-                                          <option selected>Present</option>
-                                          <option value="Male">Late</option>
-                                          <option value="Female">Excuse</option>
-                                          <option value="NA">Absent</option>
-                                        </select>
-
-                                      </td>
-                                    </tr>
+                                    <?php
+                                    $rowCount = 1;
+                                    $dateNow = date("Y-m-d");
+                                    if (isset($_GET['Grade']) && isset($_GET['Section'])) {
+                                      $getDailyAttendanceData = $mysqli->query("SELECT DISTINCT SR_lname, SR_fname, SR_mname, SR_suffix, attendance.SR_number, attendance.A_time_IN, attendance.A_time_OUT, attendance.A_fetcher_OUT, attendance.A_status 
+                                                                            FROM attendance 
+                                                                            LEFT JOIN studentrecord ON attendance.SR_number = studentrecord.SR_number 
+                                                                            WHERE acadYear = '{$currentSchoolYear}' 
+                                                                            AND SR_section = '{$_GET['Section']}' 
+                                                                            AND SR_grade = '{$_GET['Grade']}'
+                                                                            AND A_date = '{$dateNow}'");
+                                      if (mysqli_num_rows($getDailyAttendanceData) > 0) {
+                                        while ($AttendanceData = $getDailyAttendanceData->fetch_assoc()) { ?>
+                                          <tr>
+                                            <td class="tabledata"><?php echo $rowCount; ?></td>
+                                            <td class="tabledata"><?php echo $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'] . " " . substr($AttendanceData['SR_mname'], 0, 1) . ". " . $AttendanceData['SR_suffix']; ?></td>
+                                            <td class="tabledata"><?php echo $AttendanceData['A_time_IN']; ?></td>
+                                            <td class="tabledata"><?php echo $AttendanceData['A_time_OUT']; ?></td>
+                                            <td class="tabledata"><?php echo $AttendanceData['A_fetcher_OUT']; ?></td>
+                                            <td class="tabledata"><?php echo $AttendanceData['A_status']; ?></td>
+                                          </tr>
+                                        <?php $rowCount++;
+                                        }
+                                      } else { ?>
+                                        <tr>
+                                          <td colspan="6" class="tabledata">NO ATTENDANCE TODAY <?php echo $dateNow ?></td>
+                                        </tr>
+                                      <?php }
+                                    } else { ?>
+                                      <tr>
+                                        <td colspan="6" class="tabledata">Select grade level and section first</td>
+                                      </tr>
+                                    <?php }
+                                    ?>
                                   </tbody>
                                 </table>
                               </div>
@@ -315,44 +370,7 @@ if (!isset($_SESSION['AD_number'])) {
 
   <!-- Footer Start -->
   <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
-    <div class="container py-5">
-      <div class="row g-5">
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Address</h3>
-          <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
-          <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
-          <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>customerservice@cdsp.edu.ph</p>
-          <div class="d-flex pt-2">
-            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
-            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
-            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
-            <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Quick Links</h3>
-          <a class="btn btn-link" href="">Home</a>
-          <a class="btn btn-link" href="">About Us</a>
-          <a class="btn btn-link" href="">Academics</a>
-          <a class="btn btn-link" href="">Admission</a>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Useful Links</h3>
-          <a class="btn btn-link" href="">DepEd</a>
-          <a class="btn btn-link" href="">Pag Asa</a>
-          <a class="btn btn-link" href="">City of San Pedro</a>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Newsletter</h3>
-          <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-          <div class="position-relative mx-auto" style="max-width: 400px;">
-            <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-            <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="container-fluid copyright">
+    <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
       <div class="container">
         <div class="row">
           <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">

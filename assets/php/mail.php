@@ -14,7 +14,7 @@ $mail->Port = 465;
 $mail->SMTPAuth = true;
 $mail->isHTML(true);
 
-$mail->Username = 'officeregistrar@siscdsp.online';
-$mail->Password = 'Frilles03?';
+$mail->Username = 'testmail@siscdsp.online';
+$mail->Password = 'Frilles03.';
 
-$mail->setFrom('officeregistrar@siscdsp.online', 'testmail');
+$mail->setFrom('testmail@siscdsp.online', 'testmail');

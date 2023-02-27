@@ -7,13 +7,13 @@ if (!isset($_SESSION['SR_number'])) {
     $studentInformation = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$_SESSION['SR_number']}'");
     $studentData = $studentInformation->fetch_assoc();
 
-    $GradeSection = $mysqli->query("SELECT * FROM sections WHERE S_yearLevel = '{$studentData['SR_grade']}' AND S_name = '{$studentData['SR_section']}'");
+    $GradeSection = $mysqli->query("SELECT * FROM sections WHERE S_yearLevel = '{$studentData['SR_grade']}' AND S_name = '{$studentData['SR_section']}' AND acadYear = '{$currentSchoolYear}'");
     $GradeSectionData = $GradeSection->fetch_assoc();
 
     $Faculty = $mysqli->query("SELECT F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$GradeSectionData['S_adviser']}'");
     $FacultyData = $Faculty->fetch_assoc();
 
-    $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '{$_SESSION['SR_number']}'";
+    $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '{$_SESSION['SR_number']}' AND acadYear = '{$currentSchoolYear}'";
     $resultgetStudentGrades = $mysqli->query($getStudentGrades);
 }
 ?>
@@ -55,22 +55,9 @@ if (!isset($_SESSION['SR_number'])) {
 </head>
 
 <body>
-    <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status"></div>
-        <img class="position-absolute top-50 start-50 translate-middle" src="../assets/img/icons/icon-1.png" alt="Icon">
-    </div>
-    <!-- Spinner End -->
-
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-        <img class="m-3" src="../assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">
-        <div class="d-flex align-items-center justify-content-center text-center">
-            <a href="../index.php" class="navbar-brand ms-4 ms-lg-0 text-center">
-                <h1 class="cdsp">Colegio De San Pedro</h1>
-                <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
-            </a>
-        </div>
+        <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
     </nav>
     <!-- Navbar End -->
 
@@ -81,24 +68,31 @@ if (!isset($_SESSION['SR_number'])) {
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0 ">
-                <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px; margin-top: 5px;">Home</a>
-                <a href="about.html" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
+            <style>
+                @media (max-width: 991.98px) {
+                    .navbar-nav {
+                        margin-left: 0px !important;
+                    }
+
+                    .navbar .navbar-nav .nav-link {
+                        margin-left: 0px !important;
+                    }
+                }
+            </style>
+            <div class="navbar-nav m-auto p-4 p-lg-0 ">
+                <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
+                <a href="" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-item nav-link" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Academics <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                    <a href="#" class="nav-item nav-link" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Dashboard <i class="fa fa-caret-down"></i></a>
                     <div class="dropdown-menu bg-dark border-0 m-0">
-                        <a href="auth/login.php" class="dropdown-item" style="color: white; font-size: 14px;">Student Information System</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Kindergarten</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Pre-Elementary</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Elementary</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Highschool</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Senior Highschool</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">College</a>
+                        <a href="../student/profile.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Profile</a>
+                        <a href="../student/grades.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Grades</a>
+                        <a href="../student/dailyAttendance.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Attendance</a>
+                        <a href="../student/reminders.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Reminders</a>
+                        <a href="../student/announcement.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">School Announcements</a>
                     </div>
                 </div>
-                <a href="service.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Admissions</a>
-                <a href="contact.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Scholarship and Discounts</a>
-                <a href="contact.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Contact Us</a>
+                <a href="" class="nav-item nav-link" style="color: white; font-size: 14px;">Contact Us</a>
             </div>
         </div>
     </nav>
@@ -107,6 +101,17 @@ if (!isset($_SESSION['SR_number'])) {
     <div class="container">
         <div class="row">
             <h2 class="text-uppercase text-center" style="padding-top: 40px;">Report Card</h2>
+            <p style="text-align: center;">School Year: <?php echo $currentSchoolYear ?></p>
+            <?php
+            if (mysqli_num_rows($resultgetStudentGrades) > 0) { ?>
+                <div class="btn-group m-3">
+                    <div style="text-align: right;">
+                        <a href="../reports/ReportCard.php?ID=<?php echo  $studentData['SR_number'] ?>" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3; text-align:center; font-size: 13px">Print <i class="fa fa-print" style="font-size: 12px;"></i></a>
+                    </div>
+                </div>
+            <?php }
+            ?>
+
             <div class="col m-3">
                 <table id="head" class="table" style="margin-bottom:20px;">
                     <tr>
@@ -137,7 +142,7 @@ if (!isset($_SESSION['SR_number'])) {
                             </thead>
                             <tbody>
                                 <?php
-                                $studentGrades = $mysqli->query("SELECT * FROM grades WHERE SR_number = '{$_SESSION['SR_number']}'");
+                                $studentGrades = $mysqli->query("SELECT * FROM grades WHERE SR_number = '{$_SESSION['SR_number']}' AND acadYear = '{$currentSchoolYear}'");
 
                                 if (mysqli_num_rows($studentGrades) > 0) {
                                     while ($studentGradesData = $studentGrades->fetch_assoc()) { ?>
@@ -218,7 +223,7 @@ if (!isset($_SESSION['SR_number'])) {
                             <td class="hatdog">General Average</td>
                             <td class="hatdog">
                                 <?php
-                                $GenAveQuery = $mysqli->query("SELECT round(avg(G_finalgrade)) FROM grades WHERE SR_number = '{$_SESSION['SR_number']}'");
+                                $GenAveQuery = $mysqli->query("SELECT round(avg(G_finalgrade)) FROM grades WHERE SR_number = '{$_SESSION['SR_number']}' AND acadYear = '{$currentSchoolYear}'");
                                 $GetgenAve = $GenAveQuery->fetch_assoc();
                                 echo $GetgenAve['round(avg(G_finalgrade))'];
                                 ?>
@@ -264,9 +269,9 @@ if (!isset($_SESSION['SR_number'])) {
                         <table class="table text-center" style="margin-top: 30px;">
                             <thead>
                                 <tr>
-                                    <th rowspan="2" class="hatdog">Core Values</th>
-                                    <th rowspan="2" class="hatdog">Behavior Statements</th>
-                                    <th colspan="4" class="hatdog">Periodic Rating</th>
+                                    <th rowspan="2" class="hatdog" style="border-color: #FFFFFF;">Core Values</th>
+                                    <th rowspan="2" class="hatdog" style="border-color: #FFFFFF;">Behavior Statements</th>
+                                    <th colspan="4" class="hatdog" style="border-color: #FFFFFF;">Periodic Rating</th>
                                 </tr>
                                 <tr>
                                     <td class="hatdog" style="border-color: #FFFFFF;">1</td>
@@ -278,7 +283,7 @@ if (!isset($_SESSION['SR_number'])) {
                             <tbody>
                                 <?php
                                 $getBehaviorData = $mysqli->query("SELECT SR_number, CV_Area, CV_valueQ1, CV_valueQ2, CV_valueQ3, CV_valueQ4
-                                                                  FROM behavior WHERE SR_number = '{$_SESSION['SR_number']}'");
+                                                                  FROM behavior WHERE SR_number = '{$_SESSION['SR_number']}' AND acadYear = '{$currentSchoolYear}'");
                                 $getBehaviorAreas = $mysqli->query("SELECT * FROM behavior_category");
                                 $BehaviorAreasArray = array();
                                 while ($DataBehaviorCategory = $getBehaviorAreas->fetch_assoc()) {
@@ -292,7 +297,7 @@ if (!isset($_SESSION['SR_number'])) {
                                         <tr>
                                             <?php if ($i % 2 == 0) { ?>
                                                 <td rowspan="2" class="hatdog">
-                                                    <?php echo $BehaviorAreasArray[$i]['core_value_area']; ?>
+                                                    <?php echo preg_replace('/[0-9]/', '', $BehaviorAreasArray[$i]['core_value_area']); ?>
                                                 </td>
                                             <?php } ?>
 
@@ -342,6 +347,122 @@ if (!isset($_SESSION['SR_number'])) {
                             <div class="col">Not Observed</div>
                         </div>
                     </div>
+                </div>
+
+                <div class="">
+                    <div class="table-responsive">
+                        <table class="table text-center" style="margin-top: 30px;">
+                            <thead>
+                                <tr>
+                                    <th class="hatdog" style="border-color: #FFFFFF;"></th>
+                                    <th class="hatdog" style="border-color: #FFFFFF;">SEP</th>
+                                    <th class="hatdog" style="border-color: #FFFFFF;">OCT</th>
+                                    <th class="hatdog" style="border-color: #FFFFFF;">NOV</th>
+                                    <th class="hatdog" style="border-color: #FFFFFF;">DEC</th>
+                                    <th class="hatdog" style="border-color: #FFFFFF;">JAN</th>
+                                    <th class="hatdog" style="border-color: #FFFFFF;">FEB</th>
+                                    <th class="hatdog" style="border-color: #FFFFFF;">MAR</th>
+                                    <th class="hatdog" style="border-color: #FFFFFF;">APR</th>
+                                    <th class="hatdog" style="border-color: #FFFFFF;">MAY</th>
+                                    <th class="hatdog" style="border-color: #FFFFFF;">JUN</th>
+                                    <th class="hatdog" style="border-color: #FFFFFF;">TOTAL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="hatdog">No. of School Days</td>
+                                    <td class="hatdog">22</td>
+                                    <td class="hatdog">26</td>
+                                    <td class="hatdog">23</td>
+                                    <td class="hatdog">16</td>
+                                    <td class="hatdog">15</td>
+                                    <td class="hatdog">22</td>
+                                    <td class="hatdog">27</td>
+                                    <td class="hatdog">22</td>
+                                    <td class="hatdog">24</td>
+                                    <td class="hatdog">26</td>
+                                    <td class="hatdog">223</td>
+                                </tr>
+                                <tr>
+                                    <td class="hatdog">No. of Days Present</td>
+                                    <?php
+                                    $SEP = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'September' AND acadYear = '{$currentSchoolYear}'");
+                                    $SEPvalue = $SEP->fetch_assoc();
+                                    echo '<td class="hatdog">' . $SEPvalue['COUNT(A_time_IN)'] . '</td>';
+                                    $OCT = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'October' AND acadYear = '{$currentSchoolYear}'");
+                                    $OCTvalue = $OCT->fetch_assoc();
+                                    echo '<td class="hatdog">' . $OCTvalue['COUNT(A_time_IN)'] . '</td>';
+                                    $NOV = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'November' AND acadYear = '{$currentSchoolYear}'");
+                                    $NOVvalue = $NOV->fetch_assoc();
+                                    echo '<td class="hatdog">' . $NOVvalue['COUNT(A_time_IN)'] . '</td>';
+                                    $DEC = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'December' AND acadYear = '{$currentSchoolYear}'");
+                                    $DECvalue = $DEC->fetch_assoc();
+                                    echo '<td class="hatdog">' . $DECvalue['COUNT(A_time_IN)'] . '</td>';
+                                    $JAN = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'January' AND acadYear = '{$currentSchoolYear}'");
+                                    $JANvalue = $JAN->fetch_assoc();
+                                    echo '<td class="hatdog">' . $JANvalue['COUNT(A_time_IN)'] . '</td>';
+                                    $FEB = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'February' AND acadYear = '{$currentSchoolYear}'");
+                                    $FEBvalue = $FEB->fetch_assoc();
+                                    echo '<td class="hatdog">' . $FEBvalue['COUNT(A_time_IN)'] . '</td>';
+                                    $MAR = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'March' AND acadYear = '{$currentSchoolYear}'");
+                                    $MARvalue = $MAR->fetch_assoc();
+                                    echo '<td class="hatdog">' . $MARvalue['COUNT(A_time_IN)'] . '</td>';
+                                    $APR = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'April' AND acadYear = '{$currentSchoolYear}'");
+                                    $APRvalue = $APR->fetch_assoc();
+                                    echo '<td class="hatdog">' . $APRvalue['COUNT(A_time_IN)'] . '</td>';
+                                    $MAY = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'May' AND acadYear = '{$currentSchoolYear}'");
+                                    $MAYvalue = $MAY->fetch_assoc();
+                                    echo '<td class="hatdog">' . $MAYvalue['COUNT(A_time_IN)'] . '</td>';
+                                    $JUN = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'June' AND acadYear = '{$currentSchoolYear}'");
+                                    $JUNvalue = $JUN->fetch_assoc();
+                                    echo '<td class="hatdog">' . $JUNvalue['COUNT(A_time_IN)'] . '</td>';
+                                    $TOTAL = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND acadYear = '{$currentSchoolYear}'");
+                                    $TOTALvalue = $TOTAL->fetch_assoc();
+                                    echo '<td class="hatdog">' . $TOTALvalue['COUNT(A_time_IN)'] . '</td>';
+                                    ?>
+                                </tr>
+                                <tr>
+                                    <td class="hatdog">No. of Days Absent</td>
+                                    <?php
+                                    $SEP = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'September' AND A_status = 'ABSENT'");
+                                    $SEPvalue = $SEP->fetch_assoc();
+                                    echo '<td class="hatdog">' . $SEPvalue['COUNT(A_time_IN)'] . '</td>';
+                                    $OCT = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'October' AND A_status = 'ABSENT'");
+                                    $OCTvalue = $OCT->fetch_assoc();
+                                    echo '<td class="hatdog">' . $OCTvalue['COUNT(A_time_IN)'] . '</td>';
+                                    $NOV = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'November' AND A_status = 'ABSENT'");
+                                    $NOVvalue = $NOV->fetch_assoc();
+                                    echo '<td class="hatdog">' . $NOVvalue['COUNT(A_time_IN)'] . '</td>';
+                                    $DEC = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'December' AND A_status = 'ABSENT'");
+                                    $DECvalue = $DEC->fetch_assoc();
+                                    echo '<td class="hatdog">' . $DECvalue['COUNT(A_time_IN)'] . '</td>';
+                                    $JAN = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'January' AND A_status = 'ABSENT'");
+                                    $JANvalue = $JAN->fetch_assoc();
+                                    echo '<td class="hatdog">' . $JANvalue['COUNT(A_time_IN)'] . '</td>';
+                                    $FEB = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'February' AND A_status = 'ABSENT'");
+                                    $FEBvalue = $FEB->fetch_assoc();
+                                    echo '<td class="hatdog">' . $FEBvalue['COUNT(A_time_IN)'] . '</td>';
+                                    $MAR = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'March' AND A_status = 'ABSENT'");
+                                    $MARvalue = $MAR->fetch_assoc();
+                                    echo '<td class="hatdog">' . $MARvalue['COUNT(A_time_IN)'] . '</td>';
+                                    $APR = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'April' AND A_status = 'ABSENT'");
+                                    $APRvalue = $APR->fetch_assoc();
+                                    echo '<td class="hatdog">' . $APRvalue['COUNT(A_time_IN)'] . '</td>';
+                                    $MAY = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'May' AND A_status = 'ABSENT'");
+                                    $MAYvalue = $MAY->fetch_assoc();
+                                    echo '<td class="hatdog">' . $MAYvalue['COUNT(A_time_IN)'] . '</td>';
+                                    $JUN = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'June' AND A_status = 'ABSENT'");
+                                    $JUNvalue = $JUN->fetch_assoc();
+                                    echo '<td class="hatdog">' . $JUNvalue['COUNT(A_time_IN)'] . '</td>';
+                                    $TOTALLATE = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND A_status = 'ABSENT' ");
+                                    $TOTALLATEvalue = $TOTALLATE->fetch_assoc();
+                                    echo '<td class="hatdog">' . $TOTALLATEvalue['COUNT(A_time_IN)'] . '</td>';
+                                    ?>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
             </div>
         </div>

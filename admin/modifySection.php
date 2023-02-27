@@ -1,17 +1,15 @@
 <?php
 require_once("../assets/php/server.php");
-
-if (empty($_SESSION['AD_number'])) {
+if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
-    <title>Create Fetcher</title>
+    <title>Edit Section</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -188,50 +186,95 @@ if (empty($_SESSION['AD_number'])) {
                 </ul>
             </nav>
             <!-- partial -->
-
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="row">
-                        <form class="form-sample" action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
-                            <div class="col-sm-12">
-                                <div class="home-tab">
-                                    <div class="d-sm-flex align-items-center justify-content-between border-bottom">
-                                        <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                                            <h2 class="fw-bold text-primary text-uppercase">Create Fetcher</h2>
-                                        </div>
+                        <div class="col-sm-12">
+                            <div class="home-tab">
+
+                                <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                                    <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
+                                        <h2 class="fw-bold text-primary text-uppercase">Edit Section</h2>
                                     </div>
-                                    <div class="tab-content tab-content-basic">
-                                        <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                                            <div style="text-align: center; padding-bottom: 15px;">
-                                                <a href="fetcherList.php" style="font-size: 15px;"><u>View full list of fetchers</u></a>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-12 grid-margin">
-                                                    <div class="card" style="width:70%; margin:auto;">
-                                                        <div class="card-body">
-                                                            <div class="row" style="padding-bottom: 15px;">
-                                                                <div class="col-md-12">
-                                                                    <label class="col-sm-12 col-form-label">Full Name</label>
-                                                                    <div class="col-sm-12">
-                                                                        <input type="text" class="form-control" name="FTH_name" required>
+                                </div>
+
+                                <div class="tab-content tab-content-basic">
+                                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                                        <div class="row" style="margin-top: 15px;">
+                                            <div class="col-lg-12 d-flex flex-column">
+                                                <div class="row flex-grow">
+                                                    <div class="col-12 grid-margin">
+                                                        <div class="">
+                                                            <div style="text-align: center; margin-bottom: 15px;">
+                                                                <div class="btn-group">
+                                                                    <div>
+                                                                        <button class="btn btn-secondary" style="background-color: #e4e3e3;" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                                            <?php
+                                                                            if (isset($_GET['Grade'])) {
+                                                                                echo "Grade " . $_GET['Grade'];
+                                                                            } else {
+                                                                                echo "Grade";
+                                                                            }
+                                                                            ?>
+                                                                            <i class="fa fa-caret-down"></i>
+                                                                        </button>
+                                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                                                            <?php
+                                                                            $getGradeLevelList = $mysqli->query("SELECT DISTINCT(S_yearLevel) FROM sections");
+                                                                            while ($gradeLevel = $getGradeLevelList->fetch_assoc()) { ?>
+                                                                                <a class="dropdown-item" href="modifySection.php?Grade=<?php echo $gradeLevel['S_yearLevel'] ?>">Grade <?php echo $gradeLevel['S_yearLevel'] ?></a>
+                                                                            <?php }
+                                                                            ?>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="row" style="padding-bottom: 15px;">
-                                                                <div class="col-md-12">
-                                                                    <label class="col-sm-12 col-form-label">Contact Number</label>
-                                                                    <div class="col-sm-12">
-                                                                        <input type="tel" class="form-control" name="FTH_contact" required>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row" style="padding-bottom: 15px;">
-                                                                <div class="col-md-12">
-                                                                    <label class="col-sm-12 col-form-label">Email Address</label>
-                                                                    <div class="col-sm-12">
-                                                                        <input type="email" class="form-control" name="FTH_email">
-                                                                    </div>
-                                                                </div>
+
+                                                            <div class="table-responsive">
+                                                                <table class="table" style="width:50%; margin-left:auto; margin-right:auto;">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>No.</th>
+                                                                            <th>Section</th>
+                                                                            <th>Action</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <?php
+                                                                        if (isset($_GET['Grade'])) {
+                                                                            $getSectionData = $mysqli->query("SELECT DISTINCT S_name FROM sections WHERE acadYear = '{$currentSchoolYear}' AND S_yearLevel = '{$_GET['Grade']}'");
+                                                                            $rowCount = 1;
+                                                                            while ($sectionData = $getSectionData->fetch_assoc()) { ?>
+                                                                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
+                                                                            <tr>
+                                                                                        <td><?php echo $rowCount ?></td>
+                                                                                <td>
+                                                                                            <input type="hidden" class="form-control" name="currentName" value="<?php echo $sectionData['S_name'] ?>">
+                                                                                            <input type="text" class="form-control" name="sectionName" value="<?php echo $sectionData['S_name'] ?>">
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="submit" style="color: #ffffff;" class="btn btn-primary" value="Change Name" name="updateSection">
+                                                                                            <input type="submit" class="btn btn-secondary" value="DELETE" name="deleteSection">
+                                                                                </td>
+                                                                            </tr>
+                                                                        </form>
+                                                                            <?php $rowCount++;
+                                                                            } ?>
+                                                                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
+                                                                            <tr>
+                                                                                <td>ADD</td>
+                                                                                    <td><input type="text" class="form-control" name="sectionName"></td>
+                                                                                    <td><input type="submit" style="color: #ffffff;" class="btn btn-primary" value="ADD" name="addSection"></td>
+                                                                            </tr>
+                                                                        </form>
+                                                                        <?php } else { ?>
+                                                                            <tr>
+                                                                                <td colspan="3">Select a Grade level first</td>
+                                                                            </tr>
+                                                                        <?php }
+                                                                        ?>
+                                                                    </tbody>
+                                                                </table>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -240,20 +283,15 @@ if (empty($_SESSION['AD_number'])) {
                                         </div>
                                     </div>
                                 </div>
-                                <div style="text-align: center;">
-                                    <button type="submit" class="btn btn-primary me-2" name="createFetcher">Create</button>
-                                    <button class="btn btn-light">Back</button>
-                                </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
+                <!-- content-wrapper ends -->
             </div>
+            <!-- main-panel ends -->
         </div>
-    </div>
-    <!-- main-panel ends -->
-    </div>
-    <!-- page-body-wrapper ends -->
+        <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
 
@@ -275,12 +313,9 @@ if (empty($_SESSION['AD_number'])) {
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
     <!-- JavaScript Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
 
     <!-- Template Javascript -->
     <script src="../assets/js/main.js"></script>
-
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>
     <script src="../assets/js/admin/off-canvas.js"></script>
 </body>

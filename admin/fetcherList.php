@@ -1,17 +1,17 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (empty($_SESSION['AD_number'])) {
+if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
+} else {
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
-    <title>Create Fetcher</title>
+    <title>List of Fetchers</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -37,10 +37,10 @@ if (empty($_SESSION['AD_number'])) {
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="../assets/css/style.css" rel="stylesheet">
-    <link href="../assets/css/form-style.css" rel="stylesheet">
+    <link href="../assets/css/dashboard-admin.css" rel="stylesheet">
     <link href="../assets/css/admin/style.css" rel="stylesheet">
-    <link href="../assets/css/admin/materialdesignicons.min.css" rel="stylesheet">
+    <link href="../assets/css/admin/style.css.map" rel="stylesheet">
+
 
 </head>
 
@@ -188,75 +188,75 @@ if (empty($_SESSION['AD_number'])) {
                 </ul>
             </nav>
             <!-- partial -->
-
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="row">
-                        <form class="form-sample" action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
-                            <div class="col-sm-12">
-                                <div class="home-tab">
-                                    <div class="d-sm-flex align-items-center justify-content-between border-bottom">
-                                        <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                                            <h2 class="fw-bold text-primary text-uppercase">Create Fetcher</h2>
-                                        </div>
+                        <div class="col-sm-12">
+                            <div class="home-tab">
+                                <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                                    <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
+                                        <h2 class="fw-bold text-primary text-uppercase">List of Fetchers</h2>
                                     </div>
-                                    <div class="tab-content tab-content-basic">
-                                        <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                                            <div style="text-align: center; padding-bottom: 15px;">
-                                                <a href="fetcherList.php" style="font-size: 15px;"><u>View full list of fetchers</u></a>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-12 grid-margin">
-                                                    <div class="card" style="width:70%; margin:auto;">
-                                                        <div class="card-body">
-                                                            <div class="row" style="padding-bottom: 15px;">
-                                                                <div class="col-md-12">
-                                                                    <label class="col-sm-12 col-form-label">Full Name</label>
-                                                                    <div class="col-sm-12">
-                                                                        <input type="text" class="form-control" name="FTH_name" required>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row" style="padding-bottom: 15px;">
-                                                                <div class="col-md-12">
-                                                                    <label class="col-sm-12 col-form-label">Contact Number</label>
-                                                                    <div class="col-sm-12">
-                                                                        <input type="tel" class="form-control" name="FTH_contact" required>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row" style="padding-bottom: 15px;">
-                                                                <div class="col-md-12">
-                                                                    <label class="col-sm-12 col-form-label">Email Address</label>
-                                                                    <div class="col-sm-12">
-                                                                        <input type="email" class="form-control" name="FTH_email">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                </div>
+                                <div class="tab-content tab-content-basic">
+                                    <div class="row" style="margin-top: 15px;">
+                                        <div class="col-12 grid-margin">
+                                            <div class="card" style="width:80%; margin-left:auto; margin-right:auto;">
+                                                <div class="card-body">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-striped">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>No.</th>
+                                                                    <th>ID no.</th>
+                                                                    <th>Name</th>
+                                                                    <th>Contact No.</th>
+                                                                    <th>Email Address</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <?php
+                                                                $rowCount = 1;
+                                                                $getFetcherAccountsList = $mysqli->query("SELECT * FROM fetcher");
+                                                                if (mysqli_num_rows($getFetcherAccountsList) > 0) {
+                                                                    while ($FetcherAccounts = $getFetcherAccountsList->fetch_assoc()) { ?>
+                                                                        <tr>
+                                                                            <td><?php echo $rowCount; ?></td>
+                                                                            <td><?php echo $FetcherAccounts['FTH_number']; ?></td>
+                                                                            <td><?php echo $FetcherAccounts['FTH_name']; ?></td>
+                                                                            <td><?php echo $FetcherAccounts['FTH_contactNo']; ?></td>
+                                                                            <td><?php echo $FetcherAccounts['FTH_email']; ?></td>
+                                                                        </tr>
+                                                                    <?php
+                                                                        $rowCount++;
+                                                                    }
+                                                                } else { ?>
+                                                                    <tr>
+                                                                        <td colspan="5" class="text-center">No Fetcher account registered yet</td>
+                                                                    </tr>
+                                                                <?php }
+                                                                ?>
+                                                            </tbody>
+                                                        </table>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div style="text-align: center;">
-                                    <button type="submit" class="btn btn-primary me-2" name="createFetcher">Create</button>
-                                    <button class="btn btn-light">Back</button>
-                                </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
+
                 </div>
             </div>
+            <!-- content-wrapper ends -->
         </div>
-    </div>
-    <!-- main-panel ends -->
+        <!-- main-panel ends -->
     </div>
     <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
-
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
         <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
@@ -270,19 +270,15 @@ if (empty($_SESSION['AD_number'])) {
         </div>
     </div>
     <!-- Footer End -->
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
-    <!-- JavaScript Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
-
-    <!-- Template Javascript -->
-    <script src="../assets/js/main.js"></script>
-
-    <script src="../assets/js/admin/vendor.bundle.base.js"></script>
-    <script src="../assets/js/admin/off-canvas.js"></script>
 </body>
+
+<!-- Template Javascript -->
+<script src="../assets/js/main.js"></script>
+
+<script src="../assets/js/admin/vendor.bundle.base.js"></script>
+<script src="../assets/js/admin/off-canvas.js"></script>
+<script src="../assets/js/admin/progressbar.min.js"></script>
+<script src="../assets/js/admin/Chart.min.js"></script>
+
 
 </html>

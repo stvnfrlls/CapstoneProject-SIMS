@@ -6,6 +6,8 @@ if (!isset($_SESSION['F_number'])) {
 } else {
   $getfacultyinfo = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
   $facultyInfo = $getfacultyinfo->fetch_assoc();
+  $getSubjects = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$_SESSION['F_number']}'");
+  $getGradeSection = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$_SESSION['F_number']}'");
 }
 ?>
 
@@ -31,6 +33,8 @@ if (!isset($_SESSION['F_number'])) {
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <link href="../assets/css/sweetAlert.css" rel="stylesheet">
 
   <!-- Libraries Stylesheet -->
   <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
@@ -50,11 +54,13 @@ if (!isset($_SESSION['F_number'])) {
 
 <body>
   <!-- Navbar Start -->
-  <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-    <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
-    <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-      <span class="mdi mdi-menu"></span>
-    </button>
+  <nav class="fixed-top align-items-top">
+    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+      <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
+      <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+        <span class="fa fa-bars"></span>
+      </button>
+    </nav>
   </nav>
   <!-- Navbar End -->
 
@@ -66,7 +72,7 @@ if (!isset($_SESSION['F_number'])) {
           <!-- line 1 -->
           <li class="nav-item nav-category">Profile</li>
           <li class="nav-item">
-            <a class="nav-link" href="">
+            <a class="nav-link" href="../faculty/dashboard.php">
               <i class=""></i>
               <span class="menu-title">Dashboard</span>
             </a>
@@ -81,6 +87,12 @@ if (!isset($_SESSION['F_number'])) {
             <a class="nav-link" href="../faculty/createReminder.php">
               <i class=""></i>
               <span class="menu-title">Create Reminders</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../faculty/reminders.php">
+              <i class=""></i>
+              <span class="menu-title">Reminders</span>
             </a>
           </li>
           <!-- line 2 -->
@@ -110,9 +122,21 @@ if (!isset($_SESSION['F_number'])) {
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../faculty/reminders.php">
+            <a class="nav-link" href="../faculty/studentStatus.php">
               <i class=""></i>
-              <span class="menu-title">Reminders</span>
+              <span class="menu-title">Student Status</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../faculty/dailyReports.php">
+              <i class=""></i>
+              <span class="menu-title">Attendance Report</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../auth/logout.php">
+              <i class=""></i>
+              <span class="menu-title">Logout</span>
             </a>
           </li>
         </ul>
@@ -120,7 +144,7 @@ if (!isset($_SESSION['F_number'])) {
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-          <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
+          <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="reminderForm">
             <div class="row">
               <div class="col-sm-12">
                 <div class="home-tab">
@@ -147,20 +171,34 @@ if (!isset($_SESSION['F_number'])) {
                                   </div>
                                   <div class="col-md-6">
                                     <div class="form-floating">
-                                      <input type="date" class="form-control" name="date" placeholder="Your Email">
+                                      <input type="date" class="form-control" name="date">
                                       <label for="email">Deadline</label>
                                     </div>
                                   </div>
                                   <div class="col-6">
                                     <div class="form-floating">
-                                      <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject">
+                                      <select class="form-select" name="subject" id="subject" placeholder="Subject" required>
+                                        <option value=""></option>
+                                        <?php
+                                        while ($subjectInfo = $getSubjects->fetch_assoc()) {
+                                          echo '<option value=' . $subjectInfo['S_subject'] . '>' . $subjectInfo['S_subject'] . '</option>';
+                                        }
+                                        ?>
+                                      </select>
                                       <label for="subject">Subject</label>
                                     </div>
                                   </div>
                                   <div class="col-6">
                                     <div class="form-floating">
-                                      <input type="text" class="form-control"  name="header" placeholder="Subject">
-                                      <label for="subject">Title</label>
+                                      <select class="form-select" name="forsection" id="forsection" required>
+                                        <option value=""></option>
+                                        <?php
+                                        while ($gradesection = $getGradeSection->fetch_assoc()) {
+                                          echo '<option value=' . $gradesection['SR_section'] . '>Grade ' . $gradesection['SR_grade'] . ' - ' . $gradesection['SR_section'] . '</option>';
+                                        }
+                                        ?>
+                                      </select>
+                                      <label for="forsection">Grade and Section</label>
                                     </div>
                                   </div>
                                   <div class="col-12">
@@ -182,8 +220,9 @@ if (!isset($_SESSION['F_number'])) {
                 </div>
               </div>
               <div style="text-align: center;">
-                <button type="submit" class="btn btn-primary me-2" name="addReminders">Submit</button>
-                <button class="btn btn-light">Cancel</button>
+                <input type="hidden" name="addReminders" value="submit">
+                <button type="button" id="addReminders" class="btn btn-primary me-2">Submit</button>
+                <button type="button" class="btn btn-light">Cancel</button>
               </div>
             </div>
           </form>
@@ -247,18 +286,42 @@ if (!isset($_SESSION['F_number'])) {
   </div>
   <!-- Footer End -->
 
-  <!-- Back to Top -->
-  <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
-  <!-- JavaScript Libraries -->
-
-
   <!-- Template Javascript -->
   <script src="../assets/js/main.js"></script>
 
   <script src="../assets/js/admin/vendor.bundle.base.js"></script>
   <script src="../assets/js/admin/off-canvas.js"></script>
   <script src="../assets/js/admin/file-upload.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+  <script>
+    const addReminders = document.getElementById('addReminders');
+    const reminderForm = document.getElementById('reminderForm');
+
+    addReminders.addEventListener('click', function() {
+      Swal.fire({
+        title: 'Are you sure you want to create this reminder?',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: `No`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: 'Successfully saved!',
+            icon: 'success',
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              reminderForm.submit();
+              window.location.href = '../faculty/reminders.php';
+            }
+          })
+        }
+      })
+
+    })
+  </script>
 
 </body>
 

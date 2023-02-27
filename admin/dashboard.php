@@ -9,73 +9,70 @@ if (!isset($_SESSION['AD_number'])) {
     while ($quarterData = $quarterStatus->fetch_assoc()) {
         $quarterArray[] = $quarterData;
     }
-    $getAcadYear = $mysqli->query("SELECT * FROM acad_year");
-    $acadYear_Data = $getAcadYear->fetch_assoc();
-    $_SESSION['academicYear'] = $acadYear_Data['currentYear'] . " - " . $acadYear_Data['endYear'];
 
-    if (isset($_POST['acadyear'])) {
-        $currentDate = new DateTime();
-        $currentMonth = $currentDate->format('m');
-        $startYear = "";
-        $endYear = "";
+    $CountKinderPresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
+                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
+                            WHERE studentrecord.SR_grade = 'KINDER' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
+    $KinderPresentNow = $CountKinderPresentNow->fetch_assoc();
+    $OverallCountofKinder = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = 'KINDER' AND acadYear = '$currentSchoolYear'");
+    $AllKinder = $OverallCountofKinder->fetch_assoc();
 
-        if ($currentMonth >= 9 && $currentMonth <= 12) {
-            // September to December
-            $startYear = $currentDate->format('Y');
-            $endYear = $currentDate->format('Y') + 1;
-        } else {
-            // January to August
-            $startYear = $currentDate->format('Y') - 1;
-            $endYear = $currentDate->format('Y');
-        }
+    $CountGrade1PresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
+                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
+                            WHERE studentrecord.SR_grade = '1' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
+    $Grade1PresentNow = $CountGrade1PresentNow->fetch_assoc();
+    $OverallCountofGrade1 = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = '1' AND acadYear = '$currentSchoolYear'");
+    $AllGrade1 = $OverallCountofGrade1->fetch_assoc();
 
-        if ($getAcadYear->num_rows <= 0) {
-            //insert portion
-            $createAcadYear = $mysqli->query("INSERT INTO acad_year(currentYear, endYear) VALUES ('{$startYear}', '{$endYear}')");
-            $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
-            header("Refresh:0");
-        } elseif ($getAcadYear->num_rows == 1) {
-            //update portion
-            $startYear = $acadYear_Data['endYear'];
-            $endYear = (int) $startYear + 1;
+    $CountGrade2PresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
+                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
+                            WHERE studentrecord.SR_grade = '2' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
+    $Grade2PresentNow = $CountGrade2PresentNow->fetch_assoc();
+    $OverallCountofGrade2 = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = '2' AND acadYear = '$currentSchoolYear'");
+    $AllGrade2 = $OverallCountofGrade2->fetch_assoc();
 
-            $updateAcadYear = $mysqli->query("UPDATE acad_year SET currentYear = '{$startYear}', endYear = '{$endYear}'");
-            $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
-            header("Refresh:0");
-        }
-    }
-    if (isset($_POST['Open'])) {
-        $enableForms = $mysqli->query('UPDATE quartertable SET quarterStatus = "enabled" WHERE quarterTag = "FORMS"');
-        $enableCurrentQuarter = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "enabled" WHERE quarterStatus = "current"');
-        header("Refresh:0");
-    }
+    $CountGrade3PresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
+                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
+                            WHERE studentrecord.SR_grade = '3' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
+    $Grade3PresentNow = $CountGrade3PresentNow->fetch_assoc();
+    $OverallCountofGrade3 = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = '3' AND acadYear = '$currentSchoolYear'");
+    $AllGrade3 = $OverallCountofGrade3->fetch_assoc();
 
-    if (isset($_POST['Close'])) {
-        $disableForms = $mysqli->query('UPDATE quartertable SET quarterStatus = "disabled" WHERE quarterTag = "FORMS"');
-        $disableCurrentQuarter = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled" WHERE quarterStatus = "current"');
-        header("Refresh:0");
-    }
+    $CountGrade4PresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
+                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
+                            WHERE studentrecord.SR_grade = '4' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
+    $Grade4PresentNow = $CountGrade4PresentNow->fetch_assoc();
+    $OverallCountofGrade4 = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = '4' AND acadYear = '$currentSchoolYear'");
+    $AllGrade4 = $OverallCountofGrade4->fetch_assoc();
 
-    if (isset($_POST['enableFirst'])) {
-        $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
-        $enableFirst = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "1"');
-        header("Refresh:0");
-    }
-    if (isset($_POST['enableSecond'])) {
-        $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
-        $enableSecond = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "2"');
-        header("Refresh:0");
-    }
-    if (isset($_POST['enableThird'])) {
-        $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
-        $enableThird = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "3"');
-        header("Refresh:0");
-    }
-    if (isset($_POST['enableFourth'])) {
-        $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
-        $enableFourth = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "4"');
-        header("Refresh:0");
-    }
+    $CountGrade5PresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
+                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
+                            WHERE studentrecord.SR_grade = '5' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
+    $Grade5PresentNow = $CountGrade5PresentNow->fetch_assoc();
+    $OverallCountofGrade5 = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = '5' AND acadYear = '$currentSchoolYear'");
+    $AllGrade5 = $OverallCountofGrade5->fetch_assoc();
+
+    $CountGrade6PresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
+                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
+                            WHERE studentrecord.SR_grade = '6' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
+    $Grade6PresentNow = $CountGrade6PresentNow->fetch_assoc();
+    $OverallCountofGrade6 = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = '6' AND acadYear = '$currentSchoolYear'");
+    $AllGrade6 = $OverallCountofGrade6->fetch_assoc();
+
+    $AttendancePerGrade[] = $KinderPresentNow['COUNT(studentrecord.SR_number)'];
+    $AttendancePerGrade[] = $Grade1PresentNow['COUNT(studentrecord.SR_number)'];
+    $AttendancePerGrade[] = $Grade2PresentNow['COUNT(studentrecord.SR_number)'];
+    $AttendancePerGrade[] = $Grade3PresentNow['COUNT(studentrecord.SR_number)'];
+    $AttendancePerGrade[] = $Grade4PresentNow['COUNT(studentrecord.SR_number)'];
+    $AttendancePerGrade[] = $Grade5PresentNow['COUNT(studentrecord.SR_number)'];
+    $AttendancePerGrade[] = $Grade6PresentNow['COUNT(studentrecord.SR_number)'];
+
+    var_dump($AttendancePerGrade);
+    $arrayAttendancePerGrade = json_encode($AttendancePerGrade);
+    echo "<script>var arrayAttendance = " . $arrayAttendancePerGrade . ";</script>";
+
+    $getAdminData = $mysqli->query("SELECT * FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+    $AdminData = $getAdminData->fetch_assoc();
 }
 ?>
 <!DOCTYPE html>
@@ -83,7 +80,7 @@ if (!isset($_SESSION['AD_number'])) {
 
 <head>
     <meta charset="utf-8">
-    <title>Administrator - Dashboard</title>
+    <title>Dashboard</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -117,14 +114,14 @@ if (!isset($_SESSION['AD_number'])) {
 </head>
 
 <body>
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-        <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-            <span class="mdi mdi-menu"></span>
-        </button>
+    <nav class="fixed-top align-items-top">
+        <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+            <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+                <span class="fa fa-bars"></span>
+            </button>
+        </nav>
     </nav>
-    <!-- Navbar End -->
 
     <div class="container-scroller">
         <div class="container-fluid page-body-wrapper">
@@ -140,35 +137,53 @@ if (!isset($_SESSION['AD_number'])) {
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="../admin/auditTrail.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Activity History</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="../admin/createAdmin.php">
                             <i class=""></i>
                             <span class="menu-title" style="color: #b9b9b9;">Create Admin</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../admin/addStudent.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Add Student</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="../admin/announcement.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Announcements</span>
+                            <span class="menu-title" style="color: #b9b9b9;">School Announcements</span>
                         </a>
                     </li>
                     <!-- line 2 -->
-                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Student</li>
+                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Student Records</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/addStudent.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/createFetcher.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Student Records</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Student Information</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/editgrades.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Grades</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/editSection.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Change Student Section</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -182,7 +197,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/addFaculty.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Add Faculty</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Register Faculty</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -194,7 +209,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/assignAdvisory.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Assign Advisory</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Advisory Class Assignment</span>
                         </a>
                     </li>
                     <!-- line 4 -->
@@ -202,13 +217,19 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/editlearningareas.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Scheduling</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Work Schedule Assignment</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/modifyCurriculum.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Curriculum</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Edit Curriculum</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/modifySection.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Edit Section</span>
                         </a>
                     </li>
                     <!-- line 5 -->
@@ -228,7 +249,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <!-- line 5 -->
                     <li class="nav-item nav-category" style="padding-top: 10px;"></li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">
+                        <a class="nav-link" href="../auth/logout.php">
                             <i class=""></i>
                             <span class="menu-title" style="color: #b9b9b9;">Logout</span>
                         </a>
@@ -243,7 +264,7 @@ if (!isset($_SESSION['AD_number'])) {
                             <div class="home-tab">
                                 <div class="d-sm-flex border-bottom">
                                     <div class="section-title position-relative">
-                                        <h2 class="dashboard">Hi, Camile!</h2>
+                                        <h2 class="dashboard">Hi, <?php echo $AdminData['AD_name'] ?>!</h2>
                                     </div>
                                 </div>
                                 <div class="tab-content tab-content-basic">
@@ -251,14 +272,8 @@ if (!isset($_SESSION['AD_number'])) {
                                         <div class="row">
                                             <div class="col-12 grid-margin">
                                                 <form id="form-id" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
-                                                    <style>
-                                                        #custom {
-                                                            border-radius: 50px;
-
-                                                        }
-                                                    </style>
                                                     <?php
-                                                    echo '<button type="submit" name="acadyear" class="btn btn-primary m-2">Acad Year: ' . $_SESSION['academicYear'] . '</button>';
+                                                    echo '<button type="submit" name="acadyear" class="btn btn-primary m-2">Acad Year: ' . $currentSchoolYear . '</button>';
 
                                                     if ($quarterArray[0]['quarterStatus'] == 'enabled') {
                                                         echo '<button type="submit" name="Close" class="btn btn-primary m-2">Close Encoding of Grades</button>';
@@ -269,7 +284,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                     if ($quarterArray[1]['quarterTag'] == 1 && $quarterArray[1]['quarterStatus'] == 'current') {
                                                         echo '<button class="" ">1st Quarter (CURRENT)</button>';
                                                     } else {
-                                                        echo '<button type="submit" name="enableFirst" class="btn btn-secondary m-2" id="custom">Enable 1st Quarter</button>';
+                                                        echo '<button type="submit" name="enableFirst" class="btn btn-secondary m-2">Enable 1st Quarter</button>';
                                                     }
 
                                                     if ($quarterArray[2]['quarterTag'] == 2 && $quarterArray[2]['quarterStatus'] == 'current') {
@@ -304,7 +319,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                     <div class="card-body">
                                                         <div class="row">
                                                             <h3 style="font-size: 20px; padding-bottom: 20px; text-align:center;">Today's Average Attendance</h3>
-                                                            <canvas class="my-auto" id="doughnutChart" height="100"></canvas>
+                                                            <canvas class="my-auto" id="doughnutChart" height="200"></canvas>
                                                             <div id="doughnut-chart-legend" class="mt-5 text-center"></div>
                                                         </div>
                                                         <div class="row" style="margin: auto; padding-top:15px;">
@@ -329,20 +344,20 @@ if (!isset($_SESSION['AD_number'])) {
 
                                                                     <tbody>
                                                                         <tr>
-                                                                            <td>Kinder 1 </td>
-                                                                            <td>50 out of 100</td>
+                                                                            <td>Kinder</td>
+                                                                            <td><?php echo $KinderPresentNow['COUNT(studentrecord.SR_number)'] . " out of " . $AllKinder['COUNT(SR_number)'] ?></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td>Kinder 2 </td>
-                                                                            <td>50 out of 100</td>
+                                                                            <td>Grade 1</td>
+                                                                            <td><?php echo $Grade1PresentNow['COUNT(studentrecord.SR_number)'] . " out of " . $AllGrade1['COUNT(SR_number)'] ?></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td>Grade 1 </td>
-                                                                            <td>50 out of 100</td>
+                                                                            <td>Grade 2</td>
+                                                                            <td><?php echo $Grade2PresentNow['COUNT(studentrecord.SR_number)'] . " out of " . $AllGrade2['COUNT(SR_number)'] ?></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td>Grade 2 </td>
-                                                                            <td>50 out of 100</td>
+                                                                            <td>Grade 3</td>
+                                                                            <td><?php echo $Grade3PresentNow['COUNT(studentrecord.SR_number)'] . " out of " . $AllGrade3['COUNT(SR_number)'] ?></td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
@@ -353,20 +368,20 @@ if (!isset($_SESSION['AD_number'])) {
 
                                                                     <tbody>
                                                                         <tr>
-                                                                            <td>Grade 3</td>
-                                                                            <td>50 out of 100</td>
+                                                                            <td>Grade 4</td>
+                                                                            <td><?php echo $Grade4PresentNow['COUNT(studentrecord.SR_number)'] . " out of " . $AllGrade4['COUNT(SR_number)'] ?></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td>Grade 4</td>
-                                                                            <td>50 out of 100</td>
+                                                                            <td>Grade 5</td>
+                                                                            <td><?php echo $Grade5PresentNow['COUNT(studentrecord.SR_number)'] . " out of " . $AllGrade5['COUNT(SR_number)'] ?></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td>Grade 6</td>
-                                                                            <td>50 out of 100</td>
+                                                                            <td><?php echo $Grade6PresentNow['COUNT(studentrecord.SR_number)'] . " out of " . $AllGrade6['COUNT(SR_number)'] ?></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td>Grade 6 </td>
-                                                                            <td>50 out of 100</td>
+                                                                            <td>BLANK</td>
+                                                                            <td>BLANK</td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
@@ -375,14 +390,14 @@ if (!isset($_SESSION['AD_number'])) {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-12 col-lg-6 grid-margin" style="padding-bottom:20px;">
+                                            <div class="col-sm-12 col-lg-6 grid-margin">
                                                 <div class="row">
                                                     <div class="col-sm-12 col-lg-4 grid-margin" style="padding-bottom:20px;">
 
                                                         <div class="card">
                                                             <div class="card-body">
                                                                 <div class="row">
-                                                                    <h3 style="font-size: 20px; padding-bottom: 20px; text-align:left;">No. of Students</h3>
+                                                                    <h3 style="font-size: 20px; padding-bottom: 20px; text-align:left;">Total No. of Students</h3>
                                                                     <div class="d-flex flex-shrink-0">
                                                                         <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628; padding-bottom:15px;">
                                                                             <?php
@@ -407,7 +422,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                         <div class="card">
                                                             <div class="card-body">
                                                                 <div class="row">
-                                                                    <h3 style="font-size: 20px; text-align:left; padding-bottom: 20px;">No. of Faculty Teachers</h3>
+                                                                    <h3 style="font-size: 20px; text-align:left;">Total No. of Faculty Teachers</h3>
                                                                     <div class="d-flex flex-shrink-0">
                                                                         <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628; padding-bottom:15px;">
                                                                             <?php
@@ -431,7 +446,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                         <div class="card">
                                                             <div class="card-body">
                                                                 <div class="row">
-                                                                    <h3 style="font-size: 20px; text-align:left;">No. of Students Added Today</h3>
+                                                                    <h3 style="font-size: 20px; text-align:left;">Total No. of Students Added Today</h3>
                                                                     <div class="d-flex flex-shrink-0">
                                                                         <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628; padding-bottom:15px;">25</h1>
                                                                     </div>
@@ -446,21 +461,52 @@ if (!isset($_SESSION['AD_number'])) {
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-12 grid-margin" style="padding-bottom:20px;">
+                                                    <div class="col-12 grid-margin">
                                                         <div class="card">
                                                             <div class="card-body">
                                                                 <div class="row">
-                                                                    <h3 style="font-size: 20px; text-align:left;"></h3>
+                                                                    <div class="d-flex align-items-center justify-content-between mb-3">
+                                                                        <h4 class="card-title card-title-dash" style="margin-bottom:12px;">Activity History</h4>
+                                                                    </div>
+                                                                    <ul class="bullet-line-list">
+                                                                        <li>
+                                                                            <div class="d-flex justify-content-between">
+                                                                                <div style="text-align: left;"><span class="text-light-green">Camile Sabile</span> assign you a task</div>
+                                                                                <p>01/01/2023</p>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="d-flex justify-content-between">
+                                                                                <div style="text-align: left;"><span class="text-light-green">Hazel Grace</span> assign you a task</div>
+                                                                                <p>01/01/2023</p>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="d-flex justify-content-between">
+                                                                                <div style="text-align: left;"><span class="text-light-green">Steven Frilles</span> assign you a task</div>
+                                                                                <p>01/01/2023</p>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="d-flex justify-content-between">
+                                                                                <div style="text-align: left;"><span class="text-light-green">Steven Frilles</span> assign you a task</div>
+                                                                                <p>01/01/2023</p>
+                                                                            </div>
+                                                                        </li>
+                                                                    </ul>
+                                                                    <div class="list align-items-center pt-3">
+                                                                        <div class="wrapper w-100">
+                                                                            <p class="mb-0">
+                                                                                <a href="../admin/auditTrail.php" class="fw-bold text-primary">Show all <i class="fa fa-arrow-right ms-2"></i></a>
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-
-
                                             </div>
-
-
                                         </div>
 
                                         <div class="row">
@@ -504,7 +550,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                 </table>
                                                                             </div>
                                                                             <div style="padding-top: 10px;">
-                                                                                <a href="#" class="fw-bold text-primary">View all students <i class="fa fa-arrow-right ms-2"></i></a>
+                                                                                <a href="../admin/student.php" class="fw-bold text-primary">View all students <i class="fa fa-arrow-right ms-2"></i></a>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -544,7 +590,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                 </table>
                                                                             </div>
                                                                             <div style="padding-top: 10px;">
-                                                                                <a href="#" class="fw-bold text-primary">View all faculty <i class="fa fa-arrow-right ms-2"></i></a>
+                                                                                <a href="../admin/faculty.php" class="fw-bold text-primary">View all faculty <i class="fa fa-arrow-right ms-2"></i></a>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -555,60 +601,34 @@ if (!isset($_SESSION['AD_number'])) {
                                                             <div class="card">
                                                                 <div class="card-body">
 
-                                                                    <div class="d-flex align-items-center justify-content-between mb-3">
-                                                                        <h4 class="card-title card-title-dash">Activity History</h4>
+                                                                    <div class="section-title section-title-sm position-relative pb-3 mb-4">
+                                                                        <h3 class="mb-0" style="text-align:left;">School Announcements</h3>
                                                                     </div>
-                                                                    <ul class="bullet-line-list">
-                                                                        <li>
-                                                                            <div class="d-flex justify-content-between">
-                                                                                <div style="text-align: left;"><span class="text-light-green">Camile Sabile</span> assign you a task</div>
-                                                                                <p>01/01/2023</p>
+
+                                                                    <?php
+                                                                    $getAnnouncementData = $mysqli->query("SELECT * FROM announcement");
+
+                                                                    while ($announcement = $getAnnouncementData->fetch_assoc()) { ?>
+                                                                        <div class="col-lg-12 wow " style="padding-bottom: 5px;">
+                                                                            <div class="blog-item bg-light rounded overflow-hidden">
+                                                                                <div class="p-4">
+                                                                                    <div class="d-flex mb-3">
+                                                                                        <small class="me-3"><i class="far fa-user text-primary me-2"></i><?php echo $announcement['author']; ?></small>
+                                                                                        <small><i class="far fa-calendar-alt text-primary me-2"></i><?php echo $announcement['date']; ?></small>
+                                                                                    </div>
+                                                                                    <h4 class="mb-3"><?php echo $announcement['header']; ?></h4>
+                                                                                    <p><?php echo $announcement['msg']; ?></p>
+                                                                                    <a class="text-uppercase" href="viewannouncement.php?postID=<?php echo $announcement['ANC_ID']; ?>">Read More <i class="bi bi-arrow-right"></i></a>
+                                                                                </div>
                                                                             </div>
-                                                                        </li>
-                                                                        <li>
-                                                                            <div class="d-flex justify-content-between">
-                                                                                <div style="text-align: left;"><span class="text-light-green">Hazel Grace</span> assign you a task</div>
-                                                                                <p>01/01/2023</p>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li>
-                                                                            <div class="d-flex justify-content-between">
-                                                                                <div style="text-align: left;"><span class="text-light-green">Steven Frilles</span> assign you a task</div>
-                                                                                <p>01/01/2023</p>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li>
-                                                                            <div class="d-flex justify-content-between">
-                                                                                <div style="text-align: left;"><span class="text-light-green">RJ Dumas</span> assign you a task</div>
-                                                                                <p>01/01/2023</p>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li>
-                                                                            <div class="d-flex justify-content-between">
-                                                                                <div style="text-align: left;"><span class="text-light-green">Roselyn Maling</span> assign you a task</div>
-                                                                                <p>01/01/2023</p>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li>
-                                                                            <div class="d-flex justify-content-between">
-                                                                                <div style="text-align: left;"><span class="text-light-green">Genesis Tecson</span> assign you a task</div>
-                                                                                <p>01/01/2023</p>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li>
-                                                                            <div class="d-flex justify-content-between">
-                                                                                <div style="text-align: left;"><span class="text-light-green">Ryu Munoz</span> assign you a task</div>
-                                                                                <p>01/01/2023</p>
-                                                                            </div>
-                                                                        </li>
-                                                                    </ul>
-                                                                    <div class="list align-items-center pt-3">
-                                                                        <div class="wrapper w-100">
-                                                                            <p class="mb-0">
-                                                                                <a href="#" class="fw-bold text-primary">Show all <i class="fa fa-arrow-right ms-2"></i></a>
-                                                                            </p>
                                                                         </div>
-                                                                    </div>
+                                                                    <?php }
+                                                                    ?>
+                                                                    <section class="popular-courses-area courses-page">
+                                                                        <div style="padding-top: 10px;">
+                                                                            <a href="../admin/announcement.php" class="fw-bold text-primary">View all school announcements <i class="fa fa-arrow-right ms-2"></i></a>
+                                                                        </div>
+                                                                    </section>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -632,44 +652,7 @@ if (!isset($_SESSION['AD_number'])) {
     <!-- container-scroller -->
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Address</h3>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
-                    <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>customerservice@cdsp.edu.ph</p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Quick Links</h3>
-                    <a class="btn btn-link" href="">Home</a>
-                    <a class="btn btn-link" href="">About Us</a>
-                    <a class="btn btn-link" href="">Academics</a>
-                    <a class="btn btn-link" href="">Admission</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Useful Links</h3>
-                    <a class="btn btn-link" href="">DepEd</a>
-                    <a class="btn btn-link" href="">Pag Asa</a>
-                    <a class="btn btn-link" href="">City of San Pedro</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Newsletter</h3>
-                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                    <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid copyright">
+        <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
             <div class="container">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
@@ -707,10 +690,9 @@ if (!isset($_SESSION['AD_number'])) {
         var doughnutChartCanvas = $("#doughnutChart").get(0).getContext("2d");
         var doughnutPieData = {
             datasets: [{
-                data: [10, 10, 10, 10, 10, 10, 20, 20],
+                data: arrayAttendance,
                 backgroundColor: [
                     "#1F3BB3",
-                    "#FDD0C7",
                     "#52CDFF",
                     "#81DADA",
                     "#F9F871",
@@ -720,7 +702,6 @@ if (!isset($_SESSION['AD_number'])) {
                 ],
                 borderColor: [
                     "#1F3BB3",
-                    "#FDD0C7",
                     "#52CDFF",
                     "#81DADA",
                     "#F9F871",
@@ -732,14 +713,13 @@ if (!isset($_SESSION['AD_number'])) {
 
             // These labels appear in the legend and in the tooltips when hovering different arcs
             labels: [
-                'K1',
-                'K2',
-                'G1',
-                'G2',
-                'G3',
-                'G4',
-                'G5',
-                'G6',
+                'KINDER',
+                'GR1',
+                'GR2',
+                'GR3',
+                'GR4',
+                'GR5',
+                'GR6',
             ]
         };
         var doughnutPieOptions = {

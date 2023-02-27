@@ -1,8 +1,16 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['UD_role'] != "admin") {
+if (!isset($_SESSION['F_number'])) {
     header('Location: ../auth/login.php');
+} else {
+    $gradeList = "SELECT DISTINCT S_yearLevel FROM sections WHERE acadYear = '{$currentSchoolYear}'";
+    $rungradeList = $mysqli->query($gradeList);
+
+    if (isset($_GET['Grade'])) {
+        $sectionList = "SELECT DISTINCT(S_name) FROM sections WHERE S_yearLevel = '{$_GET['Grade']}' AND acadYear = '{$currentSchoolYear}'";
+        $runsectionList = $mysqli->query($sectionList);
+    }
 }
 ?>
 
@@ -46,11 +54,13 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
 
 <body>
     <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-        <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-            <span class="mdi mdi-menu"></span>
-        </button>
+    <nav class="fixed-top align-items-top">
+        <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+            <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+                <span class="fa fa-bars"></span>
+            </button>
+        </nav>
     </nav>
     <!-- Navbar End -->
 
@@ -62,7 +72,7 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
                     <!-- line 1 -->
                     <li class="nav-item nav-category">Profile</li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">
+                        <a class="nav-link" href="../faculty/dashboard.php">
                             <i class=""></i>
                             <span class="menu-title">Dashboard</span>
                         </a>
@@ -77,6 +87,12 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
                         <a class="nav-link" href="../faculty/createReminder.php">
                             <i class=""></i>
                             <span class="menu-title">Create Reminders</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/reminders.php">
+                            <i class=""></i>
+                            <span class="menu-title">Reminders</span>
                         </a>
                     </li>
                     <!-- line 2 -->
@@ -106,9 +122,21 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../faculty/reminders.php">
+                        <a class="nav-link" href="../faculty/studentStatus.php">
                             <i class=""></i>
-                            <span class="menu-title">Reminders</span>
+                            <span class="menu-title">Student Status</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/dailyReports.php">
+                            <i class=""></i>
+                            <span class="menu-title">Attendance Report</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../auth/logout.php">
+                            <i class=""></i>
+                            <span class="menu-title">Logout</span>
                         </a>
                     </li>
                 </ul>
@@ -119,10 +147,17 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="home-tab">
-                                <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                                <div class="d-sm-flex align-items-center justify-content-between">
                                     <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
                                         <h2 class="fw-bold text-primary text-uppercase">Monthly Reports</h2>
                                     </div>
+                                </div>
+                                <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
+                                    <nav class="nav">
+                                        <a class="nav-link" href="../faculty/dailyReports.php" target="__blank">Daily</a>
+                                        <a class="nav-link active ms-0" href="../faculty/monthlyReports.php" target="__blank" style="color: #c02628;">Monthly</a>
+                                    </nav>
+                                    <div class="border-bottom"></div>
                                 </div>
                                 <div class="tab-content tab-content-basic">
                                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
@@ -148,37 +183,117 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
                                         <div class="row">
                                             <div class="col-12 grid-margin">
                                                 <form class="form-sample">
-                                                    <div class="row" style="padding-bottom: 15px;">
-                                                        <div class="col-md-4">
-                                                            <label class="col-sm-12 col-form-label">Name</label>
-                                                            <div class="col-sm-12">
-                                                                <input type="text" class="form-control" readonly />
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <label class="col-sm-12 col-form-label">Grade and Section</label>
-                                                            <div class="col-sm-12">
-                                                                <input type="text" class="form-control" readonly />
+                                                    <div class="btn-group">
+                                                        <div>
+                                                            <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                                                                <?php if (isset($_GET['month'])) {
+                                                                    echo $_GET['month'];
+                                                                } else {
+                                                                    echo "Month";
+                                                                }
+                                                                ?>
+                                                                <i class="fa fa-caret-down"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                                                <a class="dropdown-item" href="monthlyReports.php?month=January">January</a>
+                                                                <a class="dropdown-item" href="monthlyReports.php?month=February">February</a>
+                                                                <a class="dropdown-item" href="monthlyReports.php?month=March">March</a>
+                                                                <a class="dropdown-item" href="monthlyReports.php?month=April">April</a>
+                                                                <a class="dropdown-item" href="monthlyReports.php?month=May">May</a>
+                                                                <a class="dropdown-item" href="monthlyReports.php?month=June">June</a>
+                                                                <a class="dropdown-item" href="monthlyReports.php?month=July">July</a>
+                                                                <a class="dropdown-item" href="monthlyReports.php?month=August">August</a>
+                                                                <a class="dropdown-item" href="monthlyReports.php?month=September">September</a>
+                                                                <a class="dropdown-item" href="monthlyReports.php?month=October">October</a>
+                                                                <a class="dropdown-item" href="monthlyReports.php?month=November">November</a>
+                                                                <a class="dropdown-item" href="monthlyReports.php?month=December">December</a>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <?php
+                                                    if (isset($_GET['month'])) { ?>
+                                                        <div class="btn-group">
+                                                            <div>
+                                                                <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                                    <?php
+                                                                    if (isset($_GET['Grade'])) {
+                                                                        if ($_GET['Grade'] == "KINDER") {
+                                                                            echo  $_GET['Grade'];
+                                                                        } else {
+                                                                            echo  "Grade " . $_GET['Grade'];
+                                                                        }
+                                                                    } else {
+                                                                        echo "Grade ";
+                                                                    }
+                                                                    ?>
+                                                                    <i class="fa fa-caret-down"></i>
+                                                                </button>
+                                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                                    <?php
+                                                                    while ($gradeData = $rungradeList->fetch_assoc()) { ?>
+                                                                        <a class="dropdown-item" href="monthlyReports.php?month=<?php echo $_GET['month'] ?>&Grade=<?php echo $gradeData['S_yearLevel'] ?>">
+                                                                            <?php
+                                                                            echo "Grade " . $gradeData['S_yearLevel'];
+                                                                            ?>
+                                                                        </a>
+                                                                    <?php } ?>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    <?php }
+                                                    ?>
+                                                    <div class="btn-group">
+                                                        <?php
+                                                        if (isset($_GET['Grade'])) { ?>
+                                                            <div>
+                                                                <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                                    <?php if (isset($_GET['Section'])) {
+                                                                        echo $_GET['Section'];
+                                                                    } else {
+                                                                        echo "Section";
+                                                                    }
+                                                                    ?>
+                                                                    <i class="fa fa-caret-down"></i>
+                                                                </button>
+                                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                                    <?php
+                                                                    while ($sectionData = $runsectionList->fetch_assoc()) { ?>
+                                                                        <a class="dropdown-item" href="monthlyReports.php?month=<?php echo $_GET['month'] ?>&Grade=<?php echo $_GET['Grade'] . "&Section=" . $sectionData['S_name']; ?>">
+                                                                            <?php
+                                                                            echo $sectionData['S_name'];
+                                                                            ?>
+                                                                        </a>
+                                                                    <?php } ?>
+                                                                </div>
+                                                            </div>
+                                                        <?php } ?>
+                                                    </div>
+                                                    <?php
+                                                    if (isset($_GET['month']) && isset($_GET['Grade']) && isset($_GET['Section'])) { ?>
+                                                        <div class="btn-group" style="float: right;">
+                                                            <a href="../reports/MonthlyAttendancebyClass.php?month=<?php echo $_GET['month'] ?>&Grade=<?php echo $_GET['Grade'] ?>&Section=<?php echo $_GET['Section'] ?>" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
+                                                        </div>
+                                                    <?php }
+                                                    ?>
                                                 </form>
                                             </div>
                                         </div>
 
+
                                         <div class="row">
                                             <div class="col-lg-12 d-flex flex-column">
                                                 <div class="row flex-grow">
-                                                    <div class="col-md-6 col-lg-12 grid-margin stretch-card">
-                                                        <div class="card bg-primary card-rounded">
+                                                    <div class="col-12 grid-margind">
+                                                        <div class="">
                                                             <div class="table-responsive">
                                                                 <table class="table">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th>Month</th>
-                                                                            <th>Total of Days Present</th>
-                                                                            <th>Total of Days Late</th>
-                                                                            <th>Total of Days Absent</th>
+                                                                            <th>Student Name</th>
+                                                                            <th>No. of School Days</th>
+                                                                            <th>No. of Days Present</th>
+                                                                            <th>No. of Days Absent</th>
+                                                                            <th>No. of Days Tardy</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
@@ -202,89 +317,75 @@ if (empty($_SESSION['UD_role']) && empty($_SESSION['AD_number']) && $_SESSION['U
                                                                                 color: #000000;
                                                                             }
                                                                         </style>
-                                                                        <tr>
-                                                                            <td class="tabledata">January</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                        </tr>
+                                                                        <?php
+                                                                        $rowCount = 1;
+                                                                        $dateNow = date("Y-m-d");
+                                                                        if (isset($_GET['month']) && isset($_GET['Grade']) && isset($_GET['Section'])) {
+                                                                            $getMonthlyAttendanceData = $mysqli->query("SELECT DISTINCT SR_lname, SR_fname, SR_mname, SR_suffix, attendance.SR_number 
+                                                                            FROM attendance 
+                                                                            LEFT JOIN studentrecord ON attendance.SR_number = studentrecord.SR_number 
+                                                                            WHERE acadYear = '{$currentSchoolYear}' 
+                                                                            AND SR_section = '{$_GET['Section']}' 
+                                                                            AND SR_grade = '{$_GET['Grade']}'
+                                                                            AND MONTHNAME(A_date) = '{$_GET['month']}'");
+                                                                            if (mysqli_num_rows($getMonthlyAttendanceData) > 0) {
+                                                                                while ($AttendanceData = $getMonthlyAttendanceData->fetch_assoc()) { ?>
+                                                                                    <tr>
+                                                                                        <td class="tabledata"><?php echo $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'] . " " . substr($AttendanceData['SR_mname'], 0, 1) . ". " . $AttendanceData['SR_suffix']; ?></td>
+                                                                                        <td class="tabledata">
+                                                                                            <?php
+                                                                                            $month = date_parse($_GET['month'])['month'];
+                                                                                            $year = date("Y");
 
-                                                                        <tr>
-                                                                            <td class="tabledata">February</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                        </tr>
+                                                                                            $first_day = new DateTime("$year-$month-01");
+                                                                                            $num_days = $first_day->format('t');
+                                                                                            $count_weekdays = 0;
+                                                                                            for ($day = 1; $day <= $num_days; $day++) {
+                                                                                                $date = new DateTime("$year-$month-$day");
+                                                                                                if ($date->format('N') <= 5) {
+                                                                                                    $count_weekdays++;
+                                                                                                }
+                                                                                            }
+                                                                                            echo $count_weekdays;
+                                                                                            ?>
+                                                                                        </td>
+                                                                                        <td class="tabledata">
+                                                                                            <?php
+                                                                                            $PRESENT = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$AttendanceData['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}'");
+                                                                                            $PRESENTvalue = $PRESENT->fetch_assoc();
 
-                                                                        <tr>
-                                                                            <td class="tabledata">March</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                        </tr>
+                                                                                            echo $PRESENTvalue['COUNT(A_time_IN)'];
+                                                                                            ?>
+                                                                                        </td>
+                                                                                        <td class="tabledata">
+                                                                                            <?php
+                                                                                            $ABSENT = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$AttendanceData['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}' AND A_status = 'ABSENT'");
+                                                                                            $ABSENTvalue = $ABSENT->fetch_assoc();
 
-                                                                        <tr>
-                                                                            <td class="tabledata">April</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                        </tr>
+                                                                                            echo $ABSENTvalue['COUNT(A_time_IN)'];
+                                                                                            ?>
+                                                                                        </td>
+                                                                                        <td class="tabledata">
+                                                                                            <?php
+                                                                                            $TARDY = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$AttendanceData['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}' AND A_status = 'TARDY'");
+                                                                                            $TARDYvalue = $TARDY->fetch_assoc();
 
-                                                                        <tr>
-                                                                            <td class="tabledata">May</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                        </tr>
-
-                                                                        <tr>
-                                                                            <td class="tabledata">June</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                        </tr>
-
-                                                                        <tr>
-                                                                            <td class="tabledata">July</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                        </tr>
-
-                                                                        <tr>
-                                                                            <td class="tabledata">August</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                        </tr>
-
-                                                                        <tr>
-                                                                            <td class="tabledata">September</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                        </tr>
-
-                                                                        <tr>
-                                                                            <td class="tabledata">October</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                        </tr>
-
-                                                                        <tr>
-                                                                            <td class="tabledata">November</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                        </tr>
-
-                                                                        <tr>
-                                                                            <td class="tabledata">December</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                            <td class="tabledata">Student 1</td>
-                                                                        </tr>
+                                                                                            echo $TARDYvalue['COUNT(A_time_IN)'];
+                                                                                            ?>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                <?php }
+                                                                            } else { ?>
+                                                                                <tr>
+                                                                                    <td colspan="6" class="tabledata">NO ATTENDANCE TODAY <?php echo $dateNow ?></td>
+                                                                                </tr>
+                                                                            <?php }
+                                                                        } else { ?>
+                                                                            <tr>
+                                                                                <td colspan="6" class="tabledata">Select grade level and section first</td>
+                                                                            </tr>
+                                                                        <?php }
+                                                                        ?>
                                                                     </tbody>
                                                                 </table>
                                                             </div>

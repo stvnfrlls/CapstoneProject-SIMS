@@ -2,18 +2,11 @@
 session_start();
 include('database.php');
 include('mail.php');
+global $currentSchoolYear;
 $errors = array();
 $year = date('Y');
 $month = date('m');
 
-function function_alert($msg)
-{
-    echo "<script type='text/javascript'>alert('$msg');</script>";
-}
-function function_prompt($msg)
-{
-    echo "<script type='text/javascript'>prompt('$msg');</script>";
-}
 function validate($data)
 {
     $data = trim($data);
@@ -85,6 +78,11 @@ function timeMinusOneMinute($data) //sa endtime lang to ilalagay
 
     return $data;
 }
+
+$getSchoolYearInfo = $mysqli->query("SELECT * FROM acad_year");
+$SchoolYearData = $getSchoolYearInfo->fetch_assoc();
+$currentSchoolYear = $SchoolYearData['currentYear'] . "-" . $SchoolYearData['endYear'];
+
 //Login and Register Process
 if (isset($_POST['login-button'])) {
     $email = $_POST['usersEmail'];
@@ -246,36 +244,168 @@ if (isset($_POST['updatePassword'])) {
 }
 //END
 
+//Student Process
+if (isset($_POST['editStudentProfile'])) {
+    $SR_fname = $_POST['SR_fname'];
+    $SR_mname = $_POST['SR_mname'];
+    $SR_lname = $_POST['SR_lname'];
+    $SR_suffix = $_POST['SR_suffix'];
+    $SR_age = $_POST['SR_age'];
+    $SR_gender = $_POST['SR_gender'];
+    $SR_birthday = $_POST['SR_birthday'];
+    $SR_birthplace = $_POST['SR_birthplace'];
+    $SR_religion = $_POST['SR_religion'];
+    $SR_citizenship = $_POST['SR_citizenship'];
+    $SR_address = $_POST['SR_address'];
+    $SR_barangay = $_POST['SR_barangay'];
+    $SR_city = $_POST['SR_city'];
+    $SR_state = $_POST['SR_state'];
+    $SR_postal = $_POST['SR_postal'];
+    $SR_email = $_POST['SR_email'];
+
+    $updateStudentInfo = $mysqli->query("UPDATE studentrecord 
+                                        SET 
+                                        SR_fname = '{$SR_fname}', 
+                                        SR_mname = '{$SR_mname}', 
+                                        SR_lname = '{$SR_lname}', 
+                                        SR_suffix = '{$SR_suffix}', 
+                                        SR_gender = '{$SR_gender}', 
+                                        SR_age = '{$SR_age}', 
+                                        SR_birthday = '{$SR_birthday}', 
+                                        SR_birthplace = '{$SR_birthplace}', 
+                                        SR_religion = '{$SR_religion}', 
+                                        SR_citizenship = '{$SR_citizenship}', 
+                                        SR_address = '{$SR_address}', 
+                                        SR_barangay = '{$SR_barangay}', 
+                                        SR_city = '{$SR_city}', 
+                                        SR_state = '{$SR_state}', 
+                                        SR_postal = '{$SR_postal}', 
+                                        SR_email = '{$SR_email}' 
+                                        WHERE SR_number = '{$_POST['SR_number']}'");
+
+    $G_lname = $_POST['G_lname'];
+    $G_fname = $_POST['G_fname'];
+    $G_mname = $_POST['G_mname'];
+    $G_suffix = $_POST['G_suffix'];
+    $G_address = $_POST['G_address'];
+    $G_barangay = $_POST['G_barangay'];
+    $G_city = $_POST['G_city'];
+    $G_state = $_POST['G_state'];
+    $G_postal = $_POST['G_postal'];
+    $G_email = $_POST['G_email'];
+    $G_relationshipStudent = $_POST['G_relationshipStudent'];
+    $G_telephone = $_POST['G_telephone'];
+    $G_contact = $_POST['G_contact'];
+
+    $updateGuardianInfo = $mysqli->query("UPDATE guardian 
+                                        SET 
+                                        G_lname= '{$G_lname}', 
+                                        G_fname = '{$G_fname}', 
+                                        G_mname = '{$G_mname}', 
+                                        G_suffix = '{$G_suffix}', 
+                                        G_address = '{$G_address}', 
+                                        G_barangay = '{$G_barangay}', 
+                                        G_city = '{$G_city}', 
+                                        G_state = '{$G_state}', 
+                                        G_postal = '{$G_postal}', 
+                                        G_email = '{$G_email}', 
+                                        G_relationshipStudent = '{$G_relationshipStudent}', 
+                                        G_telephone = '{$G_telephone}', 
+                                        G_contact = '{$G_contact}' 
+                                        WHERE G_guardianOfStudent = '{$_POST['SR_number']}'");
+}
+
 //Faculty Process
-if (isset($_POST['encode'])) {
-    $SR_number = $mysqli->real_escape_string($_POST['SR_number']);
-    $Subject = $mysqli->real_escape_string($_POST['Subject']);
-    $G_Grade = $mysqli->real_escape_string($_POST['Grade']);
-    $Quarter = $mysqli->real_escape_string($_POST['Quarter']);
+if (isset($_POST['student']) || isset($_POST['fetcher'])) {
 
-    $getQuarter = "SELECT * FROM grades WHERE G_quarter = '$Quarter' AND SR_number = '$SR_number'";
-    $resultgetQuarter = $mysqli->query($getQuarter);
-    $dataresultgetQuarter = $resultgetQuarter->fetch_assoc();
-    $G_grading = $dataresultverify_fetcher['G_grading'];
+    $date = date("Y-m-d");
+    $time = date("H:i A");
 
-    if ($resultgetQuarter->num_rows == 0) {
-        $insertGrade = "INSERT INTO grades(SR_number, SR_section, G_quarter, G_learningArea, G_grade) 
-                        VALUES ('$SR_number', '$SR_section', '$Quarter', '$Subject', '$G_grade')";
-        $resultinsertGrade = $mysqli->query($insertGrade);
-        if ($resultinsertGrade) {
-            header('Location: ../faculty/grades.php');
-        } else {
-            echo "error" . $mysqli->error;
+    $studentID = $_POST['student'];
+    $fetcherID = $_POST['fetcher'];
+
+    if (empty($fetcherID)) {
+        $fetcherID = $studentID;
+    } else {
+        $fetcherID = $fetcherID;
+    }
+
+    $checkAttendance = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$studentID}' AND A_date = '{$date}'");
+    $attendanceData = $checkAttendance->fetch_assoc();
+
+    $getemail = $mysqli->query("SELECT SR_email FROM studentrecord WHERE SR_number = '{$studentID}'");
+    $emailAd = $getemail->fetch_assoc();
+
+    if ($checkAttendance->num_rows == 0) {
+        $timeIN = $mysqli->query("INSERT INTO attendance (SR_number, A_date, A_time_IN, A_fetcher_IN) VALUES ('{$studentID}', '{$date}', '{$time}', '{$fetcherID}')");
+        if ($timeIN) {
+            $getstudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$studentID}'");
+            $mail->addAddress($emailAd['SR_email']);
+            $mail->Subject = 'Attendance: Time In';
+
+            $mail->Body = '<h1>Student Timed In</h1>
+                       <br>
+                       <p>ATTENDANCE DETAILS</p><br>
+                       <b>Time: </b>' . $time . '<br>
+                       <b>Date: </b>' . $date . '<br>';
+            $mail->send();
         }
-    } elseif ($resultgetQuarter->num_rows == 1) {
-        $insertGrade = "UPDATE grades 
-                        SET SR_section = '$SR_section', G_quarter = '$Quarter', G_learningArea = '$Subject', G_grade = '$G_grade',
-                        WHERE SR_number = '$SR_number'";
-        $resultinsertGrade = $mysqli->query($insertGrade);
-        if ($result) {
-            header('Location: ../faculty/grades.php');
-        } else {
-            echo "error" . $mysqli->error;
+    } else if (empty($attendanceData['A_time_OUT']) || empty($attendanceData['A_fetcher_OUT'])) {
+
+        $timeOUT = $mysqli->query("UPDATE attendance SET A_time_OUT = '{$time}', A_fetcher_OUT = '{$fetcherID}' WHERE SR_number = '{$studentID}'");
+        if ($timeOUT) {
+            $mail->addAddress($emailAd['SR_email']);
+            $mail->Subject = 'Attendance: Time Out';
+
+            $mail->Body = '<h1>Student Timed Out</h1>
+                       <br>
+                       <p>Attendance Detail</p><br>
+                       <b>Fetched by: </b>' . $time . '<br>
+                       <b>Date: </b>' . $date . '<br>
+                       <b>Fetched By: </b>' . $fetcherID . '<br>';
+            $mail->send();
+        }
+    }
+}
+if (isset($_POST['encodeGrade'])) {
+    $ids = $_POST['row'];
+    $forms_SR_number = $_POST['SR_number'];
+    $forms_Grade = $_POST['Grade'];
+    $forms_Section = $_POST['Section'];
+    $forms_Subject = $_POST['Subject'];
+
+    $forms_G_gradesQ1 = $_POST['G_gradesQ1'];
+    $forms_G_gradesQ2 = $_POST['G_gradesQ2'];
+    $forms_G_gradesQ3 = $_POST['G_gradesQ3'];
+    $forms_G_gradesQ4 = $_POST['G_gradesQ4'];
+    $forms_FinalGrade = $_POST['FinalGrade'];
+
+    if (isset($_POST['G_gradesQ1'])) {
+        foreach ($ids as $i => $id) {
+            $SR_number = $forms_SR_number[$i];
+            $Grade = $forms_Grade[$i];
+            $Section = $forms_Section[$i];
+            $Subject = $forms_Subject[$i];
+
+            $G_gradesQ1 = $forms_G_gradesQ1[$i];
+
+            $mysqli->query("INSERT INTO grades(SR_number, acadYear, SR_gradeLevel, SR_section, G_learningArea, G_gradesQ1)
+                            VALUES ('{$SR_number}', '{$currentSchoolYear}', '{$Grade}', '{$Section}', '{$Subject}', '{$G_gradesQ1}')");
+        }
+    } elseif (isset($_POST['G_gradesQ2']) || isset($_POST['G_gradesQ3']) || isset($_POST['G_gradesQ4'])) {
+        foreach ($ids as $i => $id) {
+            $SR_number = $forms_SR_number[$i];
+            $Grade = $forms_Grade[$i];
+            $Section = $forms_Section[$i];
+            $Subject = $forms_Subject[$i];
+
+            $G_gradesQ2 = $forms_G_gradesQ2[$i];
+            $G_gradesQ3 = $forms_G_gradesQ3[$i];
+            $G_gradesQ4 = $forms_G_gradesQ4[$i];
+            $FinalGrade = $forms_FinalGrade[$i];
+
+            $mysqli->query("UPDATE grades SET G_gradesQ2 = '{$G_gradesQ1}', G_gradesQ3 = '{$G_gradesQ1}', G_gradesQ4 = '{$G_gradesQ1}', G_finalgrade = '{$FinalGrade}'
+                            WHERE SR_number = '{$SR_number}' AND acadYear = '{$currentSchoolYear}'");
         }
     }
 }
@@ -283,7 +413,6 @@ if (isset($_POST['saveBehavior'])) {
     $ids = $_POST['row'];
     $forms_SR_number = $_GET['viewStudent'];
     $forms_CV_Area = $_POST['CV_Area'];
-    $forms_core_value_subheading = $_POST['core_value_subheading'];
 
     $forms_CV_valueQ1 = $_POST['CV_valueQ1'];
     $forms_CV_valueQ2 = $_POST['CV_valueQ2'];
@@ -291,9 +420,8 @@ if (isset($_POST['saveBehavior'])) {
     $forms_CV_valueQ4 = $_POST['CV_valueQ4'];
 
     foreach ($ids as $i => $id) {
-        $SR_number = $forms_SR_number[$i];
+        $SR_number = $forms_SR_number;
         $CV_Area = $forms_CV_Area[$i];
-        $core_value_subheading = $forms_core_value_subheading[$i];
         $CV_valueQ1 = $forms_CV_valueQ1[$i];
         $CV_valueQ2 = $forms_CV_valueQ2[$i];
         $CV_valueQ3 = $forms_CV_valueQ3[$i];
@@ -301,18 +429,15 @@ if (isset($_POST['saveBehavior'])) {
 
         $check_existing_behaviorData = $mysqli->query("SELECT * FROM behavior WHERE SR_number = '{$SR_number}'");
         if ($check_existing_behaviorData->num_rows > 0) {
-            $updateBehavior = $mysqli->query("UPDATE behavior 
-                                            SET 
-                                            CV_valueQ1 = '$CV_valueQ1',
-                                            CV_valueQ2 = '$CV_valueQ2',
-                                            CV_valueQ3 = '$CV_valueQ3',
-                                            CV_valueQ4 = '$CV_valueQ4'
-                                            WHERE SR_number = '$SR_number'");
+            $updateBehavior = $mysqli->query("UPDATE behavior SET CV_valueQ1 = '$CV_valueQ1', CV_valueQ2 = '$CV_valueQ2', CV_valueQ3 = '$CV_valueQ3', CV_valueQ4 = '$CV_valueQ4' 
+                                                WHERE SR_number = '$SR_number' AND CV_Area = '$CV_Area'");
         } else if ($check_existing_behaviorData->num_rows == 0) {
             $updateBehavior = $mysqli->query("INSERT INTO behavior 
                                             (SR_number, CV_Area, CV_valueQ1, CV_valueQ2, CV_valueQ3, CV_valueQ4) 
                                             VALUES 
                                             ('$SR_number', '$CV_Area', '$CV_valueQ1', '$CV_valueQ2', '$CV_valueQ3', '$CV_valueQ4')");
+        } else {
+            echo "error";
         }
     }
 }
@@ -359,17 +484,15 @@ if (isset($_POST['updateProfile'])) {
 }
 if (isset($_POST['addReminders'])) {
     $author = $mysqli->real_escape_string($_POST['author']);
-    $header = $mysqli->real_escape_string($_POST['header']);
     $subject = $mysqli->real_escape_string($_POST['subject']);
+    $forsection = $mysqli->real_escape_string($_POST['forsection']);
     $MSG = $mysqli->real_escape_string($_POST['MSG']);
     $date = $mysqli->real_escape_string($_POST['date']);
     $dateposted = date("Y/m/d");
 
-    $addReminders = "INSERT INTO reminders(header, date_posted, author, subject, msg, deadline)
-                     VALUE ('$header', '$dateposted', '$author','$subject', '$MSG', '$date')";
-    $resultaddReminders = $mysqli->query($addReminders);
+    $addReminders = $mysqli->query("INSERT INTO reminders(header, date_posted, author, subject, forsection, msg, deadline) VALUE ('$dateposted', '$author','$subject', '$forsection','$MSG', '$date')");
 
-    if ($resultaddReminders) {
+    if ($addReminders) {
         header('Location: ../faculty/reminders.php');
     } else {
         echo "error" . $mysqli->error;
@@ -391,7 +514,6 @@ if (isset($_POST['editReminders'])) {
         echo "error" . $mysqli->error;
     }
 }
-
 //End
 
 //Admin Process
@@ -437,6 +559,14 @@ if (isset($_POST['regStudent'])) {
     $S_grade = $mysqli->real_escape_string($_POST['S_gradelevel']);
     $S_section    = $mysqli->real_escape_string($_POST['S_section']);
 
+    $WithFetcher = $mysqli->real_escape_string($_POST['Fetcher']);
+    $NoFetcher = $mysqli->real_escape_string($_POST['NoFetcher']);
+
+    if (isset($WithFetcher)) {
+        $SR_servicetype = "WITHFETCHER";
+    } elseif (isset($NoFetcher)) {
+        $SR_servicetype = "NOFETCHER";
+    }
     $Lastrow = 'SELECT SR_year FROM studentrecord ORDER BY SR_ID DESC LIMIT 1';
     $resultLastrow = $mysqli->query($Lastrow);
     $getLastrow = $resultLastrow->fetch_assoc();
@@ -462,22 +592,17 @@ if (isset($_POST['regStudent'])) {
     }
 
     $SR_number = $year . "-" . $format_StudentCounter . "-SP";
-    $timeAdded = date("Y/m/d");
 
     $regStudent = "INSERT INTO studentrecord(
-                    SR_number, SR_year, 
-                    SR_lname, SR_fname, SR_mname, SR_suffix,
-                    SR_age, SR_birthday, SR_birthplace, SR_gender,
-                    SR_religion, SR_citizenship, SR_grade, SR_section,
-                    SR_address, SR_barangay, SR_city, SR_state, SR_postal, 
-                    SR_email, SR_added)
+                    SR_number, SR_fname, SR_mname, SR_lname, SR_suffix, 
+                    SR_gender, SR_age, SR_birthday, SR_birthplace, SR_religion, 
+                    SR_citizenship, SR_grade, SR_section, SR_servicetype, SR_address, 
+                    SR_barangay, SR_city, SR_state, SR_postal, SR_email)
                     VALUES(
-                    '$SR_number', '$year', 
-                    '$S_lname', '$S_fname', '$S_mname', '$S_suffix',
-                    '$S_age', '$S_birthday', '$S_birthplace', '$S_gender',
-                    '$S_religion','$S_citizenship', '$S_grade', '$S_section',
-                    '$S_address', '$S_barangay', '$S_city', '$S_state', '$S_postal',
-                    '$S_email', '$timeAdded')";
+                    '$SR_number', '$S_lname', '$S_fname', '$S_mname', '$S_suffix',
+                    '$S_age', '$S_birthday', '$S_birthplace', '$S_gender', '$S_religion',
+                    '$S_citizenship', '$S_grade', '$S_section', '$SR_servicetype', '$S_address', 
+                    '$S_barangay', '$S_city', '$S_state', '$S_postal', '$S_email')";
     $RunregStudent = $mysqli->query($regStudent);
     $regGuardian = "INSERT INTO guardian(
                     G_guardianOfStudent,
@@ -491,18 +616,25 @@ if (isset($_POST['regStudent'])) {
                     '$G_email', '$G_relationshipStudent', '$G_telephone', '$G_contact')";
     $RunregGuardian = $mysqli->query($regGuardian);
 
-    // How to Validate Password Strength in PHP
     // Password must be at least 8 characters in length.
     // Password must include at least one upper case letter.
     // Password must include at least one number.
     // Password must include at least one special character..
 
+    if (isset($WithFetcher) && isset($_POST['FTH_option1'])) {
+        $linkFetcher1 = $mysqli->query("INSERT INTO fetcher_list (FTH_number, FTH_linkedTo) VALUES ('{$_POST['FTH_option1']}', '{$SR_number}')");
+    }
+    if (isset($WithFetcher) && isset($_POST['FTH_option2'])) {
+        $linkFetcher2 = $mysqli->query("INSERT INTO fetcher_list (FTH_number, FTH_linkedTo) VALUES ('{$_POST['FTH_option2']}', '{$SR_number}')");
+    }
+    if (isset($WithFetcher) && isset($_POST['FTH_option3'])) {
+        $linkFetcher3 = $mysqli->query("INSERT INTO fetcher_list (FTH_number, FTH_linkedTo) VALUES ('{$_POST['FTH_option3']}', '{$SR_number}')");
+    }
+
     unset($_SESSION['fromAddStudent']);
     if ($RunregGuardian) {
         $GenPass = generatePassword();
-        $createStudentLoginCredentials = $mysqli->query("INSERT INTO userdetails(SR_email, SR_password, role)
-                                                         VALUES ('$S_email', '$GenPass', 'student')");
-        $Fullname = $S_lname . ", " . $S_fname . " " . $S_mname . " " . $S_suffix;
+        $createStudentLoginCredentials = $mysqli->query("INSERT INTO userdetails(SR_email, SR_password, role) VALUES ('$S_email', '$GenPass', 'student')");
 
         $mail->addAddress($S_email);
         $mail->Subject = 'STUDENT REGISTRATION';
@@ -516,15 +648,71 @@ if (isset($_POST['regStudent'])) {
                        <strong>IT IS RECOMMENDED TO RESET YOUR PASSWORD</strong><br>
                        <a href="siscdsp.online/auth/login.php">Login now</a>';
 
-        if (!$mail->send()) {
-            echo 'Mailer Error: ';
-        } else {
-            echo 'The email message was sent!';
+        if ($mail->send()) {
             header('Location: student.php');
         }
-    } else {
-        echo "error" . $mysqli->error;
     }
+}
+if (isset($_POST['createFetcher'])) {
+    $FTH_name = $_POST['FTH_name'];
+    $FTH_contact = $_POST['FTH_contact'];
+    $FTH_email = $_POST['FTH_email'];
+
+    $getLastFTH = $mysqli->query("SELECT G_ID FROM fetcher ORDER BY G_ID LIMIT 1");
+    $FTHData = $getLastFTH->fetch_assoc();
+    $Plus1 = $FTHData['G_ID'] + 1;
+    $padding_length = 5;
+    $padding_character = '0';
+    $formatted_number = str_pad($Plus1, $padding_length, $padding_character, STR_PAD_LEFT);
+
+    $FTH_number = date("Y") . "-" . $formatted_number . "-FTH";
+
+    if ($_POST['FTH_linkedTo']) {
+        $FTH_linkedTo = $_POST['FTH_linkedTo'];
+        $checkFetcherLimit = $mysqli->query("SELECT COUNT(FTH_number) FROM fetcher WHERE FTH_linkedTo = '{$FTH_linkedTo}'");
+        $countFetcher = $checkFetcherLimit->fetch_assoc();
+        if ($countFetcher['COUNT(FTH_number)'] < 4) {
+            $addFetcher = $mysqli->query("INSERT INTO fetcher (FTH_number, FTH_name, FTH_contactNo, FTH_email, FTH_linkedTo) 
+                                VALUES ('{$FTH_number}', '{$FTH_name}', '{$FTH_contactNo}', '{$FTH_email}', '{$FTH_linkedTo}')");
+        }
+    } else {
+        $addFetcher = $mysqli->query("INSERT INTO fetcher (FTH_number, FTH_name, FTH_contactNo, FTH_email, FTH_linkedTo) 
+                            VALUES ('{$FTH_number}', '{$FTH_name}', '{$FTH_contactNo}', '{$FTH_email}', '{$FTH_linkedTo}')");
+    }
+}
+if (isset($_POST['updateInfoFetcher']) && isset($_POST['FTH_linkedTo'])) {
+    $FTH_name = $_POST['FTH_name'];
+    $FTH_contact = $_POST['FTH_contact'];
+    $FTH_email = $_POST['FTH_email'];
+    $FTH_linkedTo = $_POST['FTH_linkedTo'];
+    $FTH_number = $_POST['FTH_number'];
+
+    $updateFetcher = $mysqli->query("UPDATE fetcher FTH_name = '{$FTH_name}', FTH_contactNo = '{$FTH_contactNo}', FTH_email = '{$FTH_email}') WHERE FTH_number = '{$FTH_number}'");
+}
+if (isset($_POST['deleteFetcher']) && isset($_POST['FTH_number'])) {
+    $FTH_number = $_POST['FTH_number'];
+
+    $deleteFetcher = $mysqli->query("DELETE FROM fetcher WHERE FTH_number = '{$FTH_number}'");
+}
+if (isset($_POST['linkFetcher']) && isset($_POST['FTH_linkedTo'])) {
+    $FTH_name = $_POST['FTH_name'];
+    $FTH_contact = $_POST['FTH_contact'];
+    $FTH_email = $_POST['FTH_email'];
+    $FTH_linkedTo = $_POST['FTH_linkedTo'];
+    $FTH_number = $_POST['FTH_number'];
+
+    $checkFetcherLimit = $mysqli->query("SELECT COUNT(FTH_number) FROM fetcher WHERE FTH_linkedTo = '{$FTH_linkedTo}'");
+    $countFetcher = $checkFetcherLimit->fetch_assoc();
+    if ($countFetcher['COUNT(FTH_number)'] < 4) {
+        $linkFetcher = $mysqli->query("INSERT INTO fetcher (FTH_number, FTH_name, FTH_contactNo, FTH_email, FTH_linkedTo) 
+                                VALUES ('{$FTH_number}', '{$FTH_name}', '{$FTH_contactNo}', '{$FTH_email}', '{$FTH_linkedTo}')");
+    }
+}
+if (isset($_POST['unlinkFetcher']) && isset($_POST['FTH_linkedTo'])) {
+    $FTH_linkedTo = $_POST['FTH_linkedTo'];
+    $FTH_number = $_POST['FTH_number'];
+
+    $unlinkFetcher = $mysqli->query("DELETE FROM fetcher WHERE FTH_number = '{$FTH_number}' WHERE FTH_linkedTo = '{$FTH_linkedTo}'");
 }
 if (isset($_POST['updateInformation'])) {
     $S_lname = $mysqli->real_escape_string($_POST['SR_lname']);
@@ -724,8 +912,6 @@ if (isset($_POST['editFaculty'])) {
     }
 }
 if (isset($_POST['UpdateGrade'])) {
-    $current_url = $_POST['current_url'];
-
     $ids = $_POST['row'];
     $forms_SR_number = $_POST['SR_number'];
     $forms_SR_section = $_POST['SR_section'];
@@ -814,42 +1000,71 @@ if (isset($_POST['addAdmin'])) {
 if (isset($_POST['setSchedule'])) {
     $assignedFaculty = $_POST['assignedFaculty'];
     $subjectname = $_POST['subjectname'];
-    $startime = $_POST['WS_start_time'];
-    $endtime = timeMinusOneMinute($_POST['WS_end_time']);
+    $input_start = $_POST['WS_start_time'];
+    $input_end = $_POST['WS_end_time'];
 
-    $checkSchedule = $mysqli->query("SELECT WS_start_time, WS_end_time FROM workschedule
-                    WHERE F_number = '{$assignedFaculty}' AND
-                    (WS_start_time BETWEEN '{$startime}' AND '{$endtime}') OR 
-                    (WS_end_time BETWEEN '{$startime}' AND '{$endtime}') OR
-                    ('{$startime}' BETWEEN WS_start_time AND WS_end_time)");
+    $time_intervals  = array();
 
-    if ($checkSchedule->num_rows == 0) {
-        $setSchedule = $mysqli->query("INSERT INTO workschedule (F_number, S_subject, SR_grade, SR_section, WS_start_time, WS_end_time) 
-                                    VALUES ('{$assignedFaculty}', '{$subjectname}', '{$_GET['GradeLevel']}', '{$_GET['SectionName']}', '{$startime}', '{$endtime}')");
+    $checkTeacherSchedule = $mysqli->query("SELECT WS_start_time, WS_end_time FROM workschedule WHERE F_number = '{$assignedFaculty}'");
+    while ($TeacherSchedule = $checkTeacherSchedule->fetch_assoc()) {
+        $time_intervals[] = $TeacherSchedule;
+    }
+
+    $overlapping_interval = null;
+    foreach ($time_intervals as $interval) {
+        $interval_start = strtotime($interval['WS_start_time']);
+        $interval_end = strtotime($interval['WS_end_time']);
+        $input_start_time = strtotime($input_start);
+        $input_end_time = strtotime($input_end);
+        if (($input_start_time >= $interval_start && $input_start_time <= $interval_end) || ($input_end_time >= $interval_start && $input_end_time <= $interval_end)) {
+            $overlapping_interval = $interval;
+            break;
+        }
+    }
+    if ($overlapping_interval) {
+        $errors['nocontent'] = "The input time overlaps with the following interval: Start Time: " . $overlapping_interval['WS_start_time'] . ", End Time: " . $overlapping_interval['WS_end_time'] . ".";
     } else {
-        echo "ASSIGNING FAIL CONFLICT IN TIME";
+        $AddSchedule = $mysqli->query("INSERT INTO workschedule(acadYear, F_number, S_subject, SR_grade, SR_section, WS_start_time, WS_end_time) VALUES('{$currentSchoolYear}', '{$assignedFaculty}', '{$subjectname}', '{$_GET['GradeLevel']}', '{$_GET['SectionName']}', '{$input_start}', '{$input_end}')");
     }
 }
-if (isset($_POST['updateSchedule'])) { //NOT WORKING
+if (isset($_POST['updateSchedule'])) {
     $assignedFaculty = $_POST['assignedFaculty'];
     $subjectname = $_POST['subjectname'];
-    $startime = $_POST['WS_start_time'];
-    $endtime = timeMinusOneMinute($_POST['WS_end_time']);
+    $input_start = $_POST['WS_start_time'];
+    $input_end = $_POST['WS_end_time'];
 
-    $checkSchedule = $mysqli->query("SELECT S_subject, WS_start_time, WS_end_time FROM workschedule
-                    WHERE F_number = '{$assignedFaculty}' AND
-                    (WS_start_time BETWEEN '{$startime}' AND '{$endtime}') OR 
-                    (WS_end_time BETWEEN '{$startime}' AND '{$endtime}') OR
-                    ('{$startime}' BETWEEN WS_start_time AND WS_end_time) ");
-    $scheduleData = $checkSchedule->fetch_assoc();
+    $time_intervals  = array();
 
-    if ($checkSchedule->num_rows == 0) {
-        $setSchedule = $mysqli->query("UPDATE workschedule SET WS_start_time = '{$startime}', WS_end_time = '{$endtime}' WHERE S_subject = '{$subjectname}' AND F_number = '{$assignedFaculty}' AND SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['SectionName']}'");
-    } elseif ($scheduleData['S_subject'] == $subjectname) {
-        $setSchedule = $mysqli->query("UPDATE workschedule SET WS_start_time = '{$startime}', WS_end_time = '{$endtime}' WHERE S_subject = '{$subjectname}' AND F_number = '{$assignedFaculty}' AND SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['SectionName']}'");
-    } else {
-        echo "UPDATE FAIL CONFLICT IN TIME";
+    $checkTeacherSchedule = $mysqli->query("SELECT WS_start_time, WS_end_time FROM workschedule WHERE F_number = '{$assignedFaculty}'");
+    while ($TeacherSchedule = $checkTeacherSchedule->fetch_assoc()) {
+        $time_intervals[] = $TeacherSchedule;
     }
+
+    $overlapping_interval = null;
+    foreach ($time_intervals as $interval) {
+        $interval_start = strtotime($interval['WS_start_time']);
+        $interval_end = strtotime($interval['WS_end_time']);
+        $input_start_time = strtotime($input_start);
+        $input_end_time = strtotime($input_end);
+        if (($input_start_time >= $interval_start && $input_start_time <= $interval_end) || ($input_end_time >= $interval_start && $input_end_time <= $interval_end)) {
+            $overlapping_interval = $interval;
+            break;
+        }
+    }
+    if ($overlapping_interval) {
+        $errors['nocontent'] = "The input time overlaps with the following interval: Start Time: " . $overlapping_interval['WS_start_time'] . ", End Time: " . $overlapping_interval['WS_end_time'] . ".";
+    } else {
+        $UpdateSchedule = $mysqli->query("UPDATE workschedule SET F_number = '{$assignedFaculty}', WS_start_time = '{$input_start}', WS_end_time = '{$input_end}' 
+                                    WHERE S_subject = '{$subjectname}' AND SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['SectionName']}' AND acadYear = '{$currentSchoolYear}'");
+    }
+}
+if (isset($_POST['deleteSchedule'])) {
+    $assignedFaculty = $_POST['assignedFaculty'];
+    $subjectname = $_POST['subjectname'];
+    $input_start = $_POST['WS_start_time'];
+    $input_end = $_POST['WS_end_time'];
+
+    $deleteSchedule = $mysqli->query("DELETE FROM workschedule WHERE acadYear = '{$currentSchoolYear}' AND F_number = '{$assignedFaculty}' AND S_subject = '{$subjectname}' AND SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['SectionName']}' AND WS_start_time = '{$input_start}' AND WS_end_time = '{$input_end}'");
 }
 if (isset($_POST['postAnnouncement'])) {
     $author = $_POST['author'];
@@ -863,8 +1078,122 @@ if (isset($_POST['assignAdvisor'])) {
     $section = $_POST['section'];
     $advisor = $_POST['advisor'];
 
-    $assignAdvisor = $mysqli->query("UPDATE sections SET S_adviser = '{$advisor}' WHERE S_name = '{$section}'");
+    $assignSectionsAdvisor = $mysqli->query("UPDATE sections SET S_adviser = '{$advisor}' WHERE S_name = '{$section}' AND acadYear = '{$currentSchoolYear}'");
+    $assignClassListAdvisor = $mysqli->query("UPDATE classlist SET F_number = '{$advisor}' WHERE SR_section = '{$section}' AND acadYear = '{$currentSchoolYear}'");
 }
+if (isset($_POST['moveUpStatus'])) {
+    $FormsSR_number = $_POST['SR_number'];
+    $FormsGrade = $_POST['Grade'];
+    $FormsSection = $_POST['Section'];
+    $FormsstudentStatus = $_POST['studentStatus'];
+    $FormsmoveUpTo = $_POST['moveUpTo'];
 
+    foreach ($ids as $i => $id) {
+        $SR_number = $FormsSR_number[$i];
+        $Grade = $FormsGrade[$i];
+        $Section = $FormsSection[$i];
+        $studentStatus = $FormsstudentStatus[$i];
+        $moveUpTo = $FormsmoveUpTo[$i];
 
+        //update student record => grade amd section
+        $updateCurrentGradeSection = $mysqli->query("UPDATE studentrecord SET SR_grade = '$Grade', SR_section = '$Section' WHERE SR_number = '$SR_number'");
+
+        //insert into classlist
+        $insertIntoClassList = $mysqli->query("INSERT INTO classlist (acadYear, SR_number, SR_grade, SR_section) VALUES ('$currentSchoolYear', '$SR_number', '$Grade', '$Section')");
+    }
+}
+if (isset($_POST['changeto'])) {
+    $SR_number = $_POST['SR_number'];
+    $changeto = $_POST['changeto'];
+
+    $movetoSection = $mysqli->query("UPDATE classlist SET SR_section = '{$changeto}' 
+    WHERE acadYear = '{$currentSchoolYear}' AND SR_number = '{$SR_number}'");
+    $updateRecords = $mysqli->query("UPDATE studentrecord SET SR_section = '{$changeto}' 
+    WHERE SR_number = '{$SR_number}'");
+}
+if (isset($_POST['addSection'])) {
+    $sectionName = $_POST['sectionName'];
+
+    $addSectionName = $mysqli->query("INSERT INTO sections (acadYear, S_name, S_yearLevel) VALUES ('{$currentSchoolYear}}', '{$sectionName}', '{$_GET['Grade']}')");
+}
+if (isset($_POST['updateSection'])) {
+    $currentName = $_POST['currentName'];
+    $sectionName = $_POST['sectionName'];
+
+    $updateSectionName = $mysqli->query("UPDATE sections SET S_name = '{$sectionName}' WHERE acadYear = '{$currentSchoolYear}' AND S_name = '{$currentName}'");
+}
+if (isset($_POST['deleteSection'])) {
+    $currentName = $_POST['currentName'];
+
+    $checkSectionInClasslist = $mysqli->query("SELECT * FROM classlist WHERE acadYear = '{$currentSchoolYear}' AND SR_section = '{$currentName}'");
+    if (mysqli_num_rows($checkSectionInClasslist) == 0) {
+        $deleteSectionName = $mysqli->query("DELETE FROM sections WHERE S_name = '{$currentName}' AND acadYear = '{$currentSchoolYear}'");
+    } else {
+        echo "CANNOT DELETE SECTION. IT IS CURRENTLY USED THIS SCHOOL YEAR";
+    }
+}
 //End
+
+// Admin Buttons
+if (isset($_POST['acadyear'])) {
+    $currentDate = new DateTime();
+    $currentMonth = $currentDate->format('m');
+    $startYear = "";
+    $endYear = "";
+
+    if ($currentMonth >= 9 && $currentMonth <= 12) {
+        // September to December
+        $startYear = $currentDate->format('Y');
+        $endYear = $currentDate->format('Y') + 1;
+    } else {
+        // January to August
+        $startYear = $currentDate->format('Y') - 1;
+        $endYear = $currentDate->format('Y');
+    }
+
+    if ($getAcadYear->num_rows <= 0) {
+        //insert portion
+        $createAcadYear = $mysqli->query("INSERT INTO acad_year(currentYear, endYear) VALUES ('{$startYear}', '{$endYear}')");
+        $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+        header("Refresh:0");
+    } elseif ($getAcadYear->num_rows == 1) {
+        //update portion
+        $startYear = $acadYear_Data['endYear'];
+        $endYear = (int) $startYear + 1;
+
+        $updateAcadYear = $mysqli->query("UPDATE acad_year SET currentYear = '{$startYear}', endYear = '{$endYear}'");
+        $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+        header("Refresh:0");
+    }
+}
+if (isset($_POST['Open'])) {
+    $enableForms = $mysqli->query('UPDATE quartertable SET quarterStatus = "enabled" WHERE quarterTag = "FORMS"');
+    $enableCurrentQuarter = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "enabled" WHERE quarterStatus = "current"');
+    header("Refresh:0");
+}
+if (isset($_POST['Close'])) {
+    $disableForms = $mysqli->query('UPDATE quartertable SET quarterStatus = "disabled" WHERE quarterTag = "FORMS"');
+    $disableCurrentQuarter = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled" WHERE quarterStatus = "current"');
+    header("Refresh:0");
+}
+if (isset($_POST['enableFirst'])) {
+    $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+    $enableFirst = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "1"');
+    header("Refresh:0");
+}
+if (isset($_POST['enableSecond'])) {
+    $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+    $enableSecond = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "2"');
+    header("Refresh:0");
+}
+if (isset($_POST['enableThird'])) {
+    $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+    $enableThird = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "3"');
+    header("Refresh:0");
+}
+if (isset($_POST['enableFourth'])) {
+    $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+    $enableFourth = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "4"');
+    header("Refresh:0");
+}
+// 

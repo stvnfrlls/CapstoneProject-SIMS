@@ -58,6 +58,9 @@ if (!isset($_SESSION['AD_number'])) {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="../assets/css/sweetAlert.css" rel="stylesheet">
+
     <!-- Libraries Stylesheet -->
     <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
     <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
@@ -75,14 +78,14 @@ if (!isset($_SESSION['AD_number'])) {
 </head>
 
 <body>
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-        <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-            <span class="mdi mdi-menu"></span>
-        </button>
+    <nav class="fixed-top align-items-top">
+        <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+            <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+                <span class="fa fa-bars"></span>
+            </button>
+        </nav>
     </nav>
-    <!-- Navbar End -->
 
     <div class="container-scroller">
         <div class="container-fluid page-body-wrapper">
@@ -98,35 +101,53 @@ if (!isset($_SESSION['AD_number'])) {
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="../admin/auditTrail.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Activity History</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="../admin/createAdmin.php">
                             <i class=""></i>
                             <span class="menu-title" style="color: #b9b9b9;">Create Admin</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../admin/addStudent.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Add Student</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="../admin/announcement.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Announcements</span>
+                            <span class="menu-title" style="color: #b9b9b9;">School Announcements</span>
                         </a>
                     </li>
                     <!-- line 2 -->
-                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Student</li>
+                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Student Records</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/addStudent.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/createFetcher.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Student Records</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Student Information</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/editgrades.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Grades</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/editSection.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Change Student Section</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -140,7 +161,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/addFaculty.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Add Faculty</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Register Faculty</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -152,7 +173,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/assignAdvisory.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Assign Advisory</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Advisory Class Assignment</span>
                         </a>
                     </li>
                     <!-- line 4 -->
@@ -160,13 +181,19 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/editlearningareas.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Scheduling</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Work Schedule Assignment</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/modifyCurriculum.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Curriculum</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Edit Curriculum</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/modifySection.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Edit Section</span>
                         </a>
                     </li>
                     <!-- line 5 -->
@@ -186,7 +213,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <!-- line 5 -->
                     <li class="nav-item nav-category" style="padding-top: 10px;"></li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">
+                        <a class="nav-link" href="../auth/logout.php">
                             <i class=""></i>
                             <span class="menu-title" style="color: #b9b9b9;">Logout</span>
                         </a>
@@ -199,7 +226,7 @@ if (!isset($_SESSION['AD_number'])) {
                 <div class="content-wrapper">
                     <div class="row">
                         <div class="col-sm-12">
-                            <form action="confirmstudent.php" method="POST">
+                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="confirmStudent">
                                 <div class="home-tab">
                                     <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                                         <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
@@ -452,6 +479,96 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 </div>
                                                             </div>
                                                         </div>
+
+
+                                                        <div class="row" style="padding-bottom: 15px;">
+                                                            <div class="col-md-2">
+                                                                <div class="col-sm-12">
+                                                                    <label class="form-check-label" for="option1">
+                                                                        <input type="checkbox" class="form-check-input" id="option1" name="Fetcher" onclick="handleCheckboxClick(this)">
+                                                                        With Fetcher
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="col-sm-12">
+                                                                    <label class="form-check-label" for="option2">
+                                                                        <input type="checkbox" class="form-check-input" id="option2" name="NoFetcher" onclick="handleCheckboxClick(this)">
+                                                                        Without Fetcher
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div id="additionalInputs" style="display: none;">
+                                                            <?php
+                                                            $FetcherData_Array = array();
+                                                            $getFetcherList = $mysqli->query("SELECT * FROM fetcher_data");
+                                                            while ($FetcherData = $getFetcherList->fetch_assoc()) {
+                                                                $FetcherData_Array[] = $FetcherData;
+                                                            }
+                                                            $i = 0;
+                                                            ?>
+                                                            <div class="row" style="padding-bottom: 15px;">
+                                                                <div class="col-md-4">
+                                                                    <label label class="col-sm-12 col-form-label">Fetcher Name </span></label>
+                                                                    <div class="col-sm-12">
+                                                                        <select id="" class="form-select" name="FTH_option1" required>
+                                                                            <option selected></option>
+                                                                            <?php
+                                                                            $FTH_option1 = 0;
+                                                                            if (sizeof($FetcherData_Array) > 0) {
+                                                                                while ($FTH_option1 != sizeof($FetcherData_Array)) { ?>
+                                                                                    <option value="<?php echo $FetcherData_Array[$FTH_option1]['FTH_number'] ?>"><?php echo $FetcherData_Array[$FTH_option1]['FTH_name'] ?></option>
+                                                                                <?php $FTH_option1++;
+                                                                                }
+                                                                            } else { ?>
+                                                                                <option>No available fetchers yet</option>
+                                                                            <?php }
+                                                                            ?>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <label label class="col-sm-12 col-form-label">Fetcher Name</span></label>
+                                                                    <div class="col-sm-12">
+                                                                        <select id="" class="form-select" name="FTH_option2" required>
+                                                                            <option selected></option>
+                                                                            <?php
+                                                                            $FTH_option2 = 0;
+                                                                            if (sizeof($FetcherData_Array) > 0) {
+                                                                                while ($FTH_option2 != sizeof($FetcherData_Array)) { ?>
+                                                                                    <option value="<?php echo $FetcherData_Array[$FTH_option2]['FTH_number'] ?>"><?php echo $FetcherData_Array[$FTH_option2]['FTH_name'] ?></option>
+                                                                                <?php $FTH_option2++;
+                                                                                }
+                                                                            } else { ?>
+                                                                                <option>No available fetchers yet</option>
+                                                                            <?php }
+                                                                            ?>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <label label class="col-sm-12 col-form-label">Fetcher Name</span></label>
+                                                                    <div class="col-sm-12">
+                                                                        <select id="" class="form-select" name="FTH_option3" required>
+                                                                            <option selected></option>
+                                                                            <?php
+                                                                            $FTH_option3 = 0;
+                                                                            if (sizeof($FetcherData_Array) > 0) {
+                                                                                while ($FTH_option3 != sizeof($FetcherData_Array)) { ?>
+                                                                                    <option value="<?php echo $FetcherData_Array[$FTH_option3]['FTH_number'] ?>"><?php echo $FetcherData_Array[$FTH_option3]['FTH_name'] ?></option>
+                                                                                <?php $FTH_option3++;
+                                                                                }
+                                                                            } else { ?>
+                                                                                <option>No available fetchers yet</option>
+                                                                            <?php }
+                                                                            ?>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -501,8 +618,9 @@ if (!isset($_SESSION['AD_number'])) {
                                     </div>
                                 </div>
                                 <div style="text-align: center;">
-                                    <input type="submit" class="btn btn-primary me-2" name="confirm_student" value="Register">
-                                    <button class="btn btn-light">Back</button>
+                                    <input type="hidden" name="regStudent" value="submit">
+                                    <button type="button" id="regStudent" class="btn btn-primary me-2">Register</button>
+                                    <button type="button" class="btn btn-light">Back</button>
                                 </div>
                             </form>
                         </div>
@@ -518,44 +636,7 @@ if (!isset($_SESSION['AD_number'])) {
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Address</h3>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
-                    <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>customerservice@cdsp.edu.ph</p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Quick Links</h3>
-                    <a class="btn btn-link" href="">Home</a>
-                    <a class="btn btn-link" href="">About Us</a>
-                    <a class="btn btn-link" href="">Academics</a>
-                    <a class="btn btn-link" href="">Admission</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Useful Links</h3>
-                    <a class="btn btn-link" href="">DepEd</a>
-                    <a class="btn btn-link" href="">Pag Asa</a>
-                    <a class="btn btn-link" href="">City of San Pedro</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Newsletter</h3>
-                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                    <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid copyright">
+        <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
             <div class="container">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
@@ -627,6 +708,53 @@ if (!isset($_SESSION['AD_number'])) {
 
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>
     <script src="../assets/js/admin/off-canvas.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+    <script>
+        const confirmStudent = document.getElementById('confirmStudent');
+        const regStudent = document.getElementById('regStudent');
+        regStudent.addEventListener('click', function() {
+            Swal.fire({
+                title: 'Are you sure you want to register this student?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: `No`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'The student has been registered successfully!',
+                        icon: 'success',
+                    }).then(() => {
+                        // Add your function here
+                        confirmStudent.submit();
+                    });
+                }
+            })
+
+        })
+    </script>
+
+    <script>
+        function handleCheckboxClick(clickedCheckbox) {
+            const option1Checkbox = document.getElementById('option1');
+            const option2Checkbox = document.getElementById('option2');
+            const additionalInputs = document.getElementById('additionalInputs');
+
+            if (clickedCheckbox === option1Checkbox) {
+                if (clickedCheckbox.checked) {
+                    additionalInputs.style.display = 'block';
+                    option2Checkbox.checked = false;
+                } else {
+                    additionalInputs.style.display = 'none';
+                }
+            } else if (clickedCheckbox === option2Checkbox) {
+                if (clickedCheckbox.checked) {
+                    option1Checkbox.checked = false;
+                    additionalInputs.style.display = 'none';
+                }
+            }
+        }
+    </script>
 </body>
 
 </html>

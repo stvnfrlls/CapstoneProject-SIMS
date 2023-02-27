@@ -1,3 +1,20 @@
+<?php
+require_once("../assets/php/server.php");
+
+if (!isset($_SESSION['SR_number'])) {
+    header('Location: ../auth/login.php');
+} else {
+    $getStudentInformation = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$_SESSION['SR_number']}'");
+    $student = $getStudentInformation->fetch_assoc();
+    $getSectionInformation = $mysqli->query("SELECT * FROM sections WHERE S_name = '{$student['SR_section']}' AND acadYear = '{$currentSchoolYear}'");
+    $section = $getSectionInformation->fetch_assoc();
+
+    if (!empty($section['S_adviser'])) {
+        $getfacultyInformation = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$section['S_adviser']}'");
+        $faculty = $getfacultyInformation->fetch_assoc();
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -36,22 +53,9 @@
 </head>
 
 <body>
-    <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status"></div>
-        <img class="position-absolute top-50 start-50 translate-middle" src="../assets/img/icons/icon-1.png" alt="Icon">
-    </div>
-    <!-- Spinner End -->
-
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-        <img class="m-3" src="../assets/img/logo.png" style="height: 50px; width:50px;" alt="Icon">
-        <div class="d-flex align-items-center justify-content-center text-center">
-            <a href="../index.php" class="navbar-brand ms-4 ms-lg-0 text-center">
-                <h1 class="cdsp">Colegio De San Pedro</h1>
-                <h1 class="cdsp1" alt="Icon">Student Information and Monitoring System</h1>
-            </a>
-        </div>
+        <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
     </nav>
     <!-- Navbar End -->
 
@@ -62,24 +66,31 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0 ">
-                <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px; margin-top: 5px;">Home</a>
-                <a href="about.html" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
+            <style>
+                @media (max-width: 991.98px) {
+                    .navbar-nav {
+                        margin-left: 0px !important;
+                    }
+
+                    .navbar .navbar-nav .nav-link {
+                        margin-left: 0px !important;
+                    }
+                }
+            </style>
+            <div class="navbar-nav m-auto p-4 p-lg-0 ">
+                <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
+                <a href="" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-item nav-link" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Academics <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                    <a href="#" class="nav-item nav-link" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Dashboard <i class="fa fa-caret-down"></i></a>
                     <div class="dropdown-menu bg-dark border-0 m-0">
-                        <a href="auth/login.php" class="dropdown-item" style="color: white; font-size: 14px;">Student Information System</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Kindergarten</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Pre-Elementary</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Elementary</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Highschool</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">Senior Highschool</a>
-                        <a href="" class="dropdown-item" style="color: white; font-size: 14px;">College</a>
+                        <a href="../student/profile.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Profile</a>
+                        <a href="../student/grades.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Grades</a>
+                        <a href="../student/dailyAttendance.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Attendance</a>
+                        <a href="../student/reminders.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Reminders</a>
+                        <a href="../student/announcement.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">School Announcements</a>
                     </div>
                 </div>
-                <a href="service.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Admissions</a>
-                <a href="contact.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Scholarship and Discounts</a>
-                <a href="contact.html" class="nav-item nav-link" style="color: white; font-size: 14px;">Contact Us</a>
+                <a href="" class="nav-item nav-link" style="color: white; font-size: 14px;">Contact Us</a>
             </div>
         </div>
     </nav>
@@ -98,8 +109,8 @@
                             </div>
                             <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
                                 <nav class="nav">
-                                    <a class="nav-link active ms-0" href="../student/dailyAttendance.php" target="__blank" style="color: #c02628;">Daily</a>
-                                    <a class="nav-link" href="../student/monthlyAttendance.php" target="__blank">Monthly</a>
+                                    <a class="nav-link active ms-0" href="dailyAttendance.php" style="color: #c02628;">Daily</a>
+                                    <a class="nav-link" href="monthlyAttendance.php">Monthly</a>
                                 </nav>
                                 <div class="border-bottom"></div>
                             </div>
@@ -108,68 +119,84 @@
 
                                     <div class="row">
                                         <div class="col-12 grid-margin">
-                                            <form class="form-sample">
-                                                <div class="col-12 grid-margin">
-
-                                                    <div class="row">
-                                                        <div class="col-md-4">
-                                                            <label class="col-sm-12 col-form-label">Name</label>
-                                                            <div class="col-sm-12">
-                                                                <input type="text" class="form-control" readonly />
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <label class="col-sm-12 col-form-label">Grade and Section</label>
-                                                            <div class="col-sm-12">
-                                                                <input type="text" class="form-control" readonly />
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <label class="col-sm-12 col-form-label">School Year</label>
-                                                            <div class="col-sm-12">
-                                                                <input type="text" class="form-control" readonly />
-                                                            </div>
+                                            <div class="col-12 grid-margin">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <label class="col-sm-12 col-form-label">Name</label>
+                                                        <div class="col-sm-12">
+                                                            <input type="text" class="form-control" value="<?php echo  $student['SR_lname'] .  ", " . $student['SR_fname'] . " " . substr($student['SR_mname'], 0, 1) . ". " . $student['SR_suffix'];  ?>" readonly />
                                                         </div>
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="col-md-4">
-                                                            <label class="col-sm-12 col-form-label">Adviser</label>
-                                                            <div class="col-sm-12">
-                                                                <input type="text" class="form-control" readonly />
-                                                            </div>
+                                                    <div class="col-md-3">
+                                                        <label class="col-sm-12 col-form-label">Grade and Section</label>
+                                                        <div class="col-sm-12">
+                                                            <input type="text" class="form-control" value="<?php echo "Grade " . $student['SR_grade'] . " - " . $student['SR_section'] ?>" readonly />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label class="col-sm-12 col-form-label">School Year</label>
+                                                        <div class="col-sm-12">
+                                                            <input type="text" class="form-control" value="<?php echo "S.Y. " . $currentSchoolYear ?>" readonly />
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </form>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <label class="col-sm-12 col-form-label">Adviser</label>
+                                                        <div class="col-sm-12">
+                                                            <?php
+                                                            if (!empty($section['S_adviser'])) { ?>
+                                                                <input type="text" class="form-control" value="<?php echo $faculty['F_lname'] .  ", " . $faculty['F_fname'] . " " . substr($faculty['F_mname'], 0, 1) . ". " . $faculty['F_suffix']; ?>" readonly />
+                                                            <?php } else { ?>
+                                                                <input type="text" class="form-control" value="Teacher not yet Assigned" readonly />
+                                                            <?php }
+                                                            ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
                                     <div class="btn-group">
                                         <div class="dropdown">
                                             <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
-                                                Month <i class="fa fa-caret-down"></i>
+                                                <?php
+                                                if (isset($_GET['month'])) {
+                                                    echo $_GET['month'];
+                                                } else {
+                                                    echo "Month";
+                                                }
+                                                ?>
+                                                <i class="fa fa-caret-down"></i>
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                                <a class="dropdown-item" href="">January</a>
-                                                <a class="dropdown-item" href="">February</a>
-                                                <a class="dropdown-item" href="">March</a>
-                                                <a class="dropdown-item" href="">April</a>
-                                                <a class="dropdown-item" href="">June</a>
-                                                <a class="dropdown-item" href="">July</a>
-                                                <a class="dropdown-item" href="">August</a>
-                                                <a class="dropdown-item" href="">September</a>
-                                                <a class="dropdown-item" href="">October</a>
-                                                <a class="dropdown-item" href="">November</a>
-                                                <a class="dropdown-item" href="">December</a>
+                                                <a class="dropdown-item" href="dailyAttendance.php">All</a>
+                                                <a class="dropdown-item" href="dailyAttendance.php?month=January">January</a>
+                                                <a class="dropdown-item" href="dailyAttendance.php?month=February">February</a>
+                                                <a class="dropdown-item" href="dailyAttendance.php?month=March">March</a>
+                                                <a class="dropdown-item" href="dailyAttendance.php?month=April">April</a>
+                                                <a class="dropdown-item" href="dailyAttendance.php?month=May">May</a>
+                                                <a class="dropdown-item" href="dailyAttendance.php?month=June">June</a>
+                                                <a class="dropdown-item" href="dailyAttendance.php?month=July">July</a>
+                                                <a class="dropdown-item" href="dailyAttendance.php?month=August">August</a>
+                                                <a class="dropdown-item" href="dailyAttendance.php?month=September">September</a>
+                                                <a class="dropdown-item" href="dailyAttendance.php?month=October">October</a>
+                                                <a class="dropdown-item" href="dailyAttendance.php?month=November">November</a>
+                                                <a class="dropdown-item" href="dailyAttendance.php?month=December">December</a>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="btn-group" style="margin: auto;">
-                                        <form style="text-align: right;">
-                                            <button type="submit" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3;">Print <i class="fa fa-print" style="font-size: 12px;"></i></button>
-                                        </form>
+                                        <?php
+                                        if (isset($_GET['month'])) {
+                                            echo '<a href="../reports/PDFAttendance.php?month=' . $_GET['month'] . '&ID=' . $_SESSION['SR_number'] . '" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3;">Print <i class="fa fa-print" style="font-size: 12px;"></i></a>';
+                                        } else {
+                                            echo '<a href="../reports/PDFAttendance.php?ID=' . $_SESSION['SR_number'] . '" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3;">Print <i class="fa fa-print" style="font-size: 12px;"></i></a>';
+                                        }
+                                        ?>
                                     </div>
-                                    <div class="row">
+                                    <div class="row mt-3">
                                         <div class="col-lg-12 d-flex flex-column">
                                             <div class="row flex-grow">
                                                 <div class="col-md-6 col-lg-12 grid-margin stretch-card">
@@ -206,21 +233,32 @@
                                                                             color: #000000;
                                                                         }
                                                                     </style>
-                                                                    <tr>
-                                                                        <td class="tabledata">1</td>
-                                                                        <td class="tabledata">01/01/23</td>
-                                                                        <td class="tabledata">7:00AM</td>
-                                                                        <td class="tabledata">1:00PM</td>
-                                                                        <td class="tabledata" style="width: auto;">
-                                                                            <select class="form-select" required>
-                                                                                <option selected>Present</option>
-                                                                                <option value="Male">Late</option>
-                                                                                <option value="Female">Excuse</option>
-                                                                                <option value="NA">Absent</option>
-                                                                            </select>
-
-                                                                        </td>
-                                                                    </tr>
+                                                                    <?php
+                                                                    $rowCount = 1;
+                                                                    if (isset($_GET['month'])) {
+                                                                        $getAttendanceInformation = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}'");
+                                                                    } else {
+                                                                        $getAttendanceInformation = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND acadYear = '{$currentSchoolYear}'");
+                                                                    }
+                                                                    $attendanceCount = $getAttendanceInformation->num_rows;
+                                                                    if ($attendanceCount == 0) { ?>
+                                                                        <tr>
+                                                                            <td class="tabledata" colspan="10">No Data Available</td>
+                                                                        </tr>
+                                                                        <?php
+                                                                    } else {
+                                                                        while ($attendance = $getAttendanceInformation->fetch_assoc()) { ?>
+                                                                            <tr>
+                                                                                <td class="tabledata"><?php echo $rowCount; ?></td>
+                                                                                <td class="tabledata"><?php echo $attendance['A_date'] ?></td>
+                                                                                <td class="tabledata"><?php echo $attendance['A_time_IN']; ?></td>
+                                                                                <td class="tabledata"><?php echo $attendance['A_time_OUT']; ?></td>
+                                                                                <td class="tabledata"><?php echo $attendance['A_status']; ?></td>
+                                                                            </tr>
+                                                                    <?php $rowCount++;
+                                                                        }
+                                                                    }
+                                                                    ?>
                                                                 </tbody>
                                                             </table>
                                                         </div>
