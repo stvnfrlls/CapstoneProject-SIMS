@@ -7,7 +7,7 @@ if (isset($_GET['month']) && isset($_GET['Grade']) && isset($_GET['Section'])) {
     {
         function Header()
         {
-            $mysqli = new mysqli("localhost", "root", "", "sis_cdsp");
+            $mysqli = new mysqli("localhost", "u952901270_admin0326", "giTG^W3y", "u952901270_sis_cdsp");
             $getAcadYear = $mysqli->query("SELECT * FROM acad_year");
             $acadYear_Data = $getAcadYear->fetch_assoc();
             //Logo Image
@@ -55,17 +55,6 @@ if (isset($_GET['month']) && isset($_GET['Grade']) && isset($_GET['Section'])) {
             $this->Cell(0, 10, 'Page ' . $this->PageNo(), 0, 0, 'C');
         }
     }
-
-    // $getstudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$_GET['ID']}'");
-    // $studentInfo = $getstudentInfo->fetch_assoc();
-
-    // $Student_Fullname = $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix'];
-
-    // $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_name = '{$studentInfo['SR_section']}'");
-    // $SectionInfo = $getSectionInfo->fetch_assoc();
-
-    // $getAdvisorInfo = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$SectionInfo['S_adviser']}'");
-    // $AdvisorInfo = $getAdvisorInfo->fetch_assoc();
 
     $pdf = new PDF('P', 'mm', 'A4');
     $pdf->AddPage();

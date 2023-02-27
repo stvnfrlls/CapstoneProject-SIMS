@@ -7,7 +7,7 @@ if (isset($_GET['department'])) {
     {
         function Header()
         {
-            $mysqli = new mysqli("localhost", "root", "", "sis_cdsp");
+            $mysqli = new mysqli("localhost", "u952901270_admin0326", "giTG^W3y", "u952901270_sis_cdsp");
             $getAcadYear = $mysqli->query("SELECT * FROM acad_year");
             $acadYear_Data = $getAcadYear->fetch_assoc();
             //Logo Image
@@ -73,5 +73,5 @@ if (isset($_GET['department'])) {
         $pdf->Cell(50, 10, $FacultyDept['F_department'] . " Department", 1, 1, 'C');
     }
 
-    $pdf->Output('D', $_GET['department'] . " Department" . '.pdf');
+    $pdf->Output();
 }

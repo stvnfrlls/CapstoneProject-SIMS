@@ -7,7 +7,7 @@ if (isset($_GET['ID']) || isset($_GET['month'])) {
     {
         function Header()
         {
-            $mysqli = new mysqli("localhost", "root", "", "sis_cdsp");
+            $mysqli = new mysqli("localhost", "u952901270_admin0326", "giTG^W3y", "u952901270_sis_cdsp");
             $getAcadYear = $mysqli->query("SELECT * FROM acad_year");
             $acadYear_Data = $getAcadYear->fetch_assoc();
             //Logo Image
@@ -105,5 +105,5 @@ if (isset($_GET['ID']) || isset($_GET['month'])) {
         $pdf->Cell(60, 10, $attendance['A_fetcher_OUT'], 1, 1, 'C');
     }
 
-    $pdf->Output('D', "ATTENDANCE REPORT - " . $studentInfo['SR_lname'] . '.pdf');
+    $pdf->Output();
 }

@@ -7,7 +7,7 @@ if (isset($_GET['ID'])) {
     {
         function Header()
         {
-            $mysqli = new mysqli("localhost", "root", "", "sis_cdsp");
+            $mysqli = new mysqli("localhost", "u952901270_admin0326", "giTG^W3y", "u952901270_sis_cdsp");
             $getAcadYear = $mysqli->query("SELECT * FROM acad_year");
             $acadYear_Data = $getAcadYear->fetch_assoc();
             //Logo Image
@@ -117,7 +117,7 @@ if (isset($_GET['ID'])) {
     $pdf->Cell(15, 10, '2nd', 1, 0, 'C');
     $pdf->Cell(15, 10, '3rd', 1, 0, 'C');
     $pdf->Cell(15, 10, '4th', 1, 0, 'C');
-    $pdf->SetXY(140, 68); //baguhin pag may header na
+    $pdf->SetXY(140, 68);
     $pdf->Cell(30, 20, 'Final Rating', 1, 0, 'C');
     $pdf->Cell(30, 20, 'Remarks', 1, 1, 'C');
 
@@ -415,5 +415,5 @@ if (isset($_GET['ID'])) {
     $TOTALvalue = $TOTAL->fetch_assoc();
     $pdf->Cell(20, 5, $TOTALvalue['COUNT(A_status)'], 1, 1, 'C');
 
-    $pdf->Output('D', $studentInfo['SR_lname'] . ' - ' . $studentInfo['SR_grade'] . " - " . $studentInfo['SR_section'] . '.pdf');
+    $pdf->Output();
 }
