@@ -502,6 +502,13 @@ if (!isset($_SESSION['AD_number'])) {
                                                                         <?php }
                                                                         ?>
                                                                     </ul>
+                                                                    <div class="list align-items-center pt-3">
+                                                                        <div class="wrapper w-100">
+                                                                            <p class="mb-0">
+                                                                                <a href="../admin/auditTrail.php" class="fw-bold text-primary">Show all <i class="fa fa-arrow-right ms-2"></i></a>
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>

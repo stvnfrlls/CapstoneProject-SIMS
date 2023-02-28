@@ -10890,8 +10890,8 @@ textarea.form-control-lg {
 }
 
 .form-check-input:checked {
-  background-color: #0d6efd;
-  border-color: #0d6efd;
+  background-color: #c02628;
+  border-color: #c02628;
 }
 
 .form-check-input:checked[type="checkbox"] {
@@ -17830,7 +17830,7 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
     padding-left: 3rem !important;
   }
   .py-lg-0 {
-    padding-top: 0 !important;
+    padding-top: 1px !important;
     padding-bottom: 0 !important;
   }
   .py-lg-1 {
