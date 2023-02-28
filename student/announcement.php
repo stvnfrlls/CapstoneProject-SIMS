@@ -41,13 +41,14 @@ if (!isset($_SESSION['SR_number'])) {
     <link href="../assets/css/style.css" rel="stylesheet">
     <link href="../assets/css/admin/style.css" rel="stylesheet">
     <link href="../assets/css/educ/main.css" rel="stylesheet">
+    <link href="../assets/css/dashboard-user.css" rel="stylesheet">
 
 </head>
 
 <body>
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-        <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
+        <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
     </nav>
     <!-- Navbar End -->
 
@@ -80,6 +81,7 @@ if (!isset($_SESSION['SR_number'])) {
                         <a href="../student/dailyAttendance.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Attendance</a>
                         <a href="../student/reminders.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Reminders</a>
                         <a href="../student/announcement.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">School Announcements</a>
+                        <a href="../auth/logout.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Logout</a>
                     </div>
                 </div>
                 <a href="" class="nav-item nav-link" style="color: white; font-size: 14px;">Contact Us</a>
@@ -91,71 +93,57 @@ if (!isset($_SESSION['SR_number'])) {
     <section class="popular-courses-area section-gap courses-page">
         <div class="container">
             <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
-                <h3 class="mb-0">School Announcement</h3>
+                <h5 class="fw-bold text-primary text-uppercase" style="font-size: 30px; margin-top: 0px;">School Announcements</h5>
             </div>
-            <div class="row">
+            <section class="post-content-area">
+                <div class="container">
                 <?php
                 $getAnnouncementData = $mysqli->query("SELECT * FROM announcement ORDER BY date");
                 while ($announcement = $getAnnouncementData->fetch_assoc()) { ?>
-                    <div class="single-popular-carusel col-lg-3 col-md-6">
-                        <div class="details">
-                            <a href="viewannouncement.php?ID=<?php echo $announcement['ANC_ID'] ?>">
-                                <h4><?php echo $announcement['header'] ?></h4>
-                            </a>
-                            <div class="d-flex mb-3">
-                                <small class="me-3"><i class="far fa-user text-primary me-2"></i><?php echo $announcement['author'] ?></small>
-                                <small><i class="far fa-calendar-alt text-primary me-2"></i><?php echo $announcement['date'] ?></small>
+                        <div class="row col-lg-10" style="padding-top: 15px;">
+                            <div class="col-lg-10 posts-list" style="margin-left: auto;">
+                                <div class="single-post row">
+                                    <div class="col-lg-3  col-md-3 meta-details">
+                                        <div class="user-details row" style="margin-top: 40px;">
+                                            <p class="user-name col-lg-12 col-md-12 col-6"><span class="far fa-user" style="color: #c02628;"> </span><a> <?php echo $announcement['author'] ?></a> </p>
+                                            <p class="date col-lg-12 col-md-12 col-6"><span class="fa fa-calendar" style="color: #c02628;"> </span><a> <?php echo $announcement['date'] ?></a> </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-9">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="col-lg-12 col-md-9 ">
+                                                    <a class="posts-title" href="viewannouncement.php?ID=<?php echo $announcement['ANC_ID'] ?>">
+                                                        <h3><?php echo $announcement['header'] ?></h3>
+                                                    </a>
+                                                    <p class="excert">
+                                                        <?php
+                                                        if (empty($announcement['msg'])) {
+                                                            echo "No Description";
+                                                        } else {
+                                                            echo $announcement['msg'];
+                                                        }
+                                                        ?>
+                                                    </p>
+                                                    <button type="button" onclick="location.href='viewannouncement.php?ID=<?php echo $announcement['ANC_ID'] ?>'" class=" btn btn-primary me-2" name="">View More</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <p><?php echo $announcement['msg'] ?></p>
                         </div>
-                    </div>
-                <?php }
-                ?>
-
-            </div>
+                    <?php }
+                    ?>
+                </div>
+            </section>
+            
         </div>
     </section>
 
     <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-body footer mt-5 pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Address</h3>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
-                    <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>di ko alam email</p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-square btn-outline-body me-1" href="" style="border-radius: 5px;"><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href="" style="border-radius: 5px;"><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href="" style="border-radius: 5px;"><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-square btn-outline-body me-0" href="" style="border-radius: 5px;"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Quick Links</h3>
-                    <a class="btn btn-link" href="">Home</a>
-                    <a class="btn btn-link" href="">About Us</a>
-                    <a class="btn btn-link" href="">Academics</a>
-                    <a class="btn btn-link" href="">Admission</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Useful Links</h3>
-                    <a class="btn btn-link" href="">DepEd</a>
-                    <a class="btn btn-link" href="">Pag Asa</a>
-                    <a class="btn btn-link" href="">City of San Pedro</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Newsletter</h3>
-                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                    <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid copyright">
+    <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
+        <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
             <div class="container">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">

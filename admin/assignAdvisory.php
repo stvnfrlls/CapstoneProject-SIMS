@@ -11,7 +11,7 @@ if (!isset($_SESSION['AD_number'])) {
 
 <head>
   <meta charset="utf-8">
-  <title>Advisory Class Assignment</title>
+  <title>Advisory Class AssignmentT</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta content="" name="keywords">
   <meta content="" name="description">

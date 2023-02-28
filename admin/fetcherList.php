@@ -208,6 +208,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                             <thead>
                                                                 <tr>
                                                                     <th>No.</th>
+
                                                                     <th>ID no.</th>
                                                                     <th>Name</th>
                                                                     <th>Contact No.</th>

@@ -429,8 +429,6 @@ if (!isset($_SESSION['AD_number'])) {
                                         <td colspan="6" class="tabledata">Select grade level and section first</td>
                                       </tr>
                                     <?php }
-                                    ?>
-
                                   </tbody>
                                 </table>
                               </div>
