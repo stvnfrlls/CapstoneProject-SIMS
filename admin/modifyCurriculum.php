@@ -33,6 +33,9 @@ if (!isset($_SESSION['AD_number'])) {
     <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="../assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
 
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="../assets/css/sweetAlert.css" rel="stylesheet">
+
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
@@ -224,7 +227,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                         $dataSubject = $mysqli->query("SELECT subjectName, minYearLevel, maxYearLevel FROM subjectperyear");
                                                                         if (mysqli_num_rows($dataSubject) > 0) {
                                                                             while ($subject != $dataSubject->fetch_assoc()) { ?>
-                                                                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
+                                                                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="modifyCurrForm">
                                                                                     <tr>
                                                                                         <td><?php echo $rowCount; ?></td>
                                                                                         <td>
@@ -234,8 +237,8 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                         <td><input type="number" name="minYearLevel" class="form-control text-center" value="<?php echo $subjects['minYearLevel']; ?>"></td>
                                                                                         <td><input type="number" name="maxYearLevel" class="form-control text-center" value="<?php echo  $subjects['maxYearLevel']; ?>"></td>
                                                                                         <td>
-                                                                                            <input type="submit" style="color: #ffffff;" class="btn btn-primary" value="UPDATE" name="updateCurr">
-                                                                                            <input type="submit" class="btn btn-secondary" value="DELETE" name="deleteCurr">
+                                                                                            <button type="button" style="color: #ffffff;" class="btn btn-primary" value="UPDATE" name="updateCurr" id="updateCurr">
+                                                                                            <button type="button" class="btn btn-secondary" value="DELETE" name="deleteCurr" id="deleteCurr">
                                                                                         </td>
                                                                                     </tr>
                                                                                 </form>
@@ -246,13 +249,13 @@ if (!isset($_SESSION['AD_number'])) {
                                                                             <tr>
                                                                                 <td colspan="5">NO SUBJECTS AVAILABLE</td>
                                                                             </tr>
-                                                                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
+                                                                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="addCurrForm">
                                                                                 <tr>
                                                                                     <td>ADD</td>
                                                                                     <td><input type="text" name="sbjName" class="form-control"></td>
                                                                                     <td><input type="number" name="minYearLevel" class="form-control"></td>
                                                                                     <td><input type="number" name="maxYearLevel" class="form-control"></td>
-                                                                                    <td><input type="submit" style="color: #ffffff;" class="btn btn-primary" value="ADD SUBJECT" name="addSubject"></td>
+                                                                                    <td><input type="submit" style="color: #ffffff;" class="btn btn-primary" value="ADD SUBJECT" name="addCurr" id="addCurr"></td>
                                                                                 </tr>
                                                                             </form>
                                                                         <?php }
@@ -302,6 +305,68 @@ if (!isset($_SESSION['AD_number'])) {
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>
     <script src="../assets/js/admin/off-canvas.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+    <script>
+        const addCurrForm = document.getElementById('addCurrForm');
+        const modifyCurrForm = document.getElementById('modifyCurrForm');
+
+        const addCurr = document.getElementById('addCurr');
+        const updateCurr = document.getElementById('updateCurr');
+        const deleteCurr = document.getElementById('deleteCurr');
+
+        addCurr.addEventListener('click', function(event) {
+            Swal.fire({
+                title: 'Are you sure you want to add this subject?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: `No`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Subject added successfully!',
+                        icon: 'success',
+                    }).then(() => {
+                        addCurrForm.submit();
+                    });
+                }
+            })
+        })
+        updateCurr.addEventListener('click', function(event) {
+            Swal.fire({
+                title: 'Are you sure you want to update this subject?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: `No`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Subject updated successfully!',
+                        icon: 'success',
+                    }).then(() => {
+                        modifyCurrForm.submit();
+                    });
+                }
+            })
+        })
+        deleteCurr.addEventListener('click', function(event) {
+            Swal.fire({
+                title: 'Are you sure you want to delete this subject?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: `No`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Subject deleted successfully!',
+                        icon: 'success',
+                    }).then(() => {
+                        modifyCurrForm.submit();
+                    });
+                }
+            })
+        })
+    </script>
 </body>
 
 </html>

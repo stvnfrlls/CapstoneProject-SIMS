@@ -313,9 +313,13 @@ if (!isset($_SESSION['AD_number'])) {
                 confirmButtonText: 'Yes',
                 cancelButtonText: `No`,
             }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                    form.submit();
+                    Swal.fire({
+                        title: 'Announcement created successfully!',
+                        icon: 'success',
+                    }).then(() => {
+                        form.submit();
+                    });
                 }
             })
         })

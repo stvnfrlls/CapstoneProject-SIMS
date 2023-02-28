@@ -811,13 +811,11 @@ if (!isset($_SESSION['AD_number'])) {
                 confirmButtonText: 'Yes',
                 cancelButtonText: `No`,
             }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     Swal.fire({
                         title: 'The student has been registered successfully!',
                         icon: 'success',
                     }).then(() => {
-                        // Add your function here
                         confirmStudent.submit();
                     });
                 }

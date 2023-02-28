@@ -484,16 +484,13 @@ if (!isset($_SESSION['AD_number'])) {
         confirmButtonText: 'Yes',
         cancelButtonText: `No`,
       }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
-          setTimeout(() => {
-            gradeForm.submit();
-          }, 3000);
           Swal.fire({
-            title: 'Successfully changed!',
+            title: 'Grades successfully changed!',
             icon: 'success',
-          })
-
+          }).then(() => {
+            gradeForm.submit();
+          });
         }
       })
 

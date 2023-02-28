@@ -33,6 +33,9 @@ if (empty($_SESSION['AD_number'])) {
     <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="../assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
 
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="../assets/css/sweetAlert.css" rel="stylesheet">
+
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
@@ -192,7 +195,7 @@ if (empty($_SESSION['AD_number'])) {
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="row">
-                        <form class="form-sample" action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
+                        <form class="form-sample" action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="fetcherForm">
                             <div class="col-sm-12">
                                 <div class="home-tab">
                                     <div class="d-sm-flex align-items-center justify-content-between border-bottom">
@@ -241,8 +244,8 @@ if (empty($_SESSION['AD_number'])) {
                                     </div>
                                 </div>
                                 <div style="text-align: center;">
-                                    <button type="submit" class="btn btn-primary me-2" name="createFetcher">Create</button>
-                                    <button class="btn btn-light">Back</button>
+                                    <button type="button" class="btn btn-primary me-2" name="createFetcher" id="createFetcher">Create</button>
+                                    <button type="button" class="btn btn-light">Back</button>
                                 </div>
                             </div>
                         </form>
@@ -283,6 +286,29 @@ if (empty($_SESSION['AD_number'])) {
 
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>
     <script src="../assets/js/admin/off-canvas.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+    <script>
+        const createFetcher = document.getElementById('createFetcher');
+        const fetcherForm = document.getElementById('fetcherForm');
+
+        createFetcher.addEventListener('click', function(event) {
+            Swal.fire({
+                title: 'Are you sure you want to register this fetcher?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: `No`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Fetcher registered successfully!',
+                        icon: 'success',
+                    }).then(() => {
+                        fetcherForm.submit();
+                    });
+                }
+            })
+        })
+    </script>
 </body>
 
 </html>

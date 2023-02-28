@@ -31,6 +31,9 @@ if (!isset($_SESSION['AD_number'])) {
     <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="../assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
 
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="../assets/css/sweetAlert.css" rel="stylesheet">
+
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
@@ -258,7 +261,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                             $getSectionData = $mysqli->query("SELECT DISTINCT S_name FROM sections WHERE acadYear = '{$currentSchoolYear}' AND S_yearLevel = '{$_GET['Grade']}'");
                                                                             $rowCount = 1;
                                                                             while ($sectionData = $getSectionData->fetch_assoc()) { ?>
-                                                                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
+                                                                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="modifySectionForm">
                                                                                     <tr>
                                                                                         <td><?php echo $rowCount ?></td>
                                                                                         <td>
@@ -266,18 +269,18 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                             <input type="text" class="form-control" name="sectionName" value="<?php echo $sectionData['S_name'] ?>">
                                                                                         </td>
                                                                                         <td>
-                                                                                            <input type="submit" style="color: #ffffff;" class="btn btn-primary" value="Change Name" name="updateSection">
-                                                                                            <input type="submit" class="btn btn-secondary" value="DELETE" name="deleteSection">
+                                                                                            <butt type="button" style="color: #ffffff;" class="btn btn-primary" value="Change Name" id="updateSection" name="updateSection">
+                                                                                            <input type="button" class="btn btn-secondary" value="DELETE" id="deleteSection" name="deleteSection">
                                                                                         </td>
                                                                                     </tr>
                                                                                 </form>
                                                                             <?php $rowCount++;
                                                                             } ?>
-                                                                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
+                                                                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="addSectionForm">
                                                                                 <tr>
                                                                                     <td>ADD</td>
                                                                                     <td><input type="text" class="form-control" name="sectionName"></td>
-                                                                                    <td><input type="submit" style="color: #ffffff;" class="btn btn-primary" value="ADD" name="addSection"></td>
+                                                                                    <td><input type="submit" style="color: #ffffff;" class="btn btn-primary" value="ADD" name="addSection" id="addSection"></td>
                                                                                 </tr>
                                                                             </form>
                                                                         <?php } else { ?>
@@ -331,6 +334,68 @@ if (!isset($_SESSION['AD_number'])) {
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>
     <script src="../assets/js/admin/off-canvas.js"></script>
+
+    <script>
+        const addSectionForm = document.getElementById('addSectionForm');
+        const modifySectionForm = document.getElementById('modifySectionForm');
+
+        const addSection = document.getElementById('addSection');
+        const updateSection = document.getElementById('updateSection');
+        const deleteSection = document.getElementById('deleteSection');
+        addSection.addEventListener('click', function(event) {
+            Swal.fire({
+                title: 'Are you sure you want to add this section?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: `No`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Section added successfully!',
+                        icon: 'success',
+                    }).then(() => {
+                        addSectionForm.submit();
+                    });
+                }
+            })
+        })
+
+        updateSection.addEventListener('click', function(event) {
+            Swal.fire({
+                title: 'Are you sure you want to update this section?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: `No`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Section updated successfully!',
+                        icon: 'success',
+                    }).then(() => {
+                        modifySectionForm.submit();
+                    });
+                }
+            })
+        })
+
+        deleteSection.addEventListener('click', function(event) {
+            Swal.fire({
+                title: 'Are you sure you want to delete this section?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: `No`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Section deleted successfully!',
+                        icon: 'success',
+                    }).then(() => {
+                        modifySectionForm.submit();
+                    });
+                }
+            })
+        })
+    </script>
 </body>
 
 </html>

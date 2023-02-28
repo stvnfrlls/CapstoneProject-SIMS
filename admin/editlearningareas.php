@@ -329,7 +329,6 @@ if (empty($_SESSION['AD_number'])) {
                                       <th>Assigned Professor</th>
                                       <th>Start Time</th>
                                       <th>End Time</th>
-                                      <th>Room</th>
                                       <th>Action</th>
                                     </tr>
                                   </thead>
@@ -399,15 +398,6 @@ if (empty($_SESSION['AD_number'])) {
                                                 echo '<input type="time" class="form-control" name="WS_end_time">';
                                               } else {
                                                 echo '<input type="time" class="form-control" name="WS_end_time" value=' . $schedule[$rowCount]['WS_end_time'] . '>';
-                                              }
-                                              ?>
-                                            </td>
-                                            <td>
-                                              <?php
-                                              if (empty($schedule[$rowCount]['WS_start_time'])) {
-                                                echo '<input type="text" class="form-control" size="4" name="WS_room">';
-                                              } else {
-                                                echo '<input type="text" class="form-control" size="4" name="WS_room">';
                                               }
                                               ?>
                                             </td>

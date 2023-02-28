@@ -535,14 +535,14 @@ if (!isset($_SESSION['AD_number'])) {
                 confirmButtonText: 'Yes',
                 cancelButtonText: `No`,
             }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     Swal.fire({
                         title: 'Successfully changed!',
                         icon: 'success',
-                    })
-                    editstudentform.submit();
-                    window.location.href = '../admin/student.php';
+                    }).then(() => {
+                        editstudentform.submit();
+                        window.location.href = '../admin/student.php';
+                    });
                 }
             })
 
