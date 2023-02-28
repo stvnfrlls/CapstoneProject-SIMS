@@ -627,6 +627,9 @@ if (isset($_POST['createFetcher'])) {
 
     $getLastFTH = $mysqli->query("SELECT G_ID FROM fetcher_data ORDER BY G_ID LIMIT 1");
     $FTHData = $getLastFTH->fetch_assoc();
+    if ($FTHData['G_ID'] = 0) {
+        $FTHData['G_ID'] = $FTHData['G_ID'] + 1;
+    }
     $Plus1 = $FTHData['G_ID'] + 1;
     $padding_length = 5;
     $padding_character = '0';
@@ -740,62 +743,39 @@ if (isset($_POST['updateInformation'])) {
 }
 if (isset($_POST['regFaculty'])) {
     $F_department = $mysqli->real_escape_string($_POST['F_department']);
-
+    $F_profile_img = $_FILES['image']['name'];
+    $F_status = "TEACHING";
     $F_lname = $mysqli->real_escape_string($_POST['F_lname']);
     $F_fname = $mysqli->real_escape_string($_POST['F_fname']);
     $F_mname = $mysqli->real_escape_string($_POST['F_mname']);
     $F_suffix = $mysqli->real_escape_string($_POST['F_suffix']);
-
     $F_age = $mysqli->real_escape_string($_POST['F_age']);
     $F_birthday = $mysqli->real_escape_string($_POST['F_birthday']);
     $F_gender = $mysqli->real_escape_string($_POST['F_gender']);
-
     $F_religion = $mysqli->real_escape_string($_POST['F_religion']);
     $F_citizenship = $mysqli->real_escape_string($_POST['F_citizenship']);
-
     $F_address = $mysqli->real_escape_string($_POST['F_address']);
     $F_barangay = $mysqli->real_escape_string($_POST['F_barangay']);
-    $F_city = $mysqli->real_escape_string($_POST['F_city']);
+    $F_city = $mysqli->real_escape_string($_POST['city']); //need ayusin
     $F_state = $mysqli->real_escape_string($_POST['F_state']);
     $F_postal = $mysqli->real_escape_string($_POST['F_postal']);
-
-    $F_contactNumber = $mysqli->real_escape_string($_POST['F_contact']);
+    $F_contactNumber = $mysqli->real_escape_string($_POST['F_contactNumber']);
     $F_email = $mysqli->real_escape_string($_POST['F_email']);
 
-    //DOUBLE CHECK KUNG TAMA BA KASI MALI YUNG APG GENERATE NG STUDENT NUMBER DI NARESET BACK TO 1 YUNG NUMBER
-    $Lastrow = 'SELECT F_year FROM faculty ORDER BY F_ID DESC LIMIT 1';
-    $resultLastrow = $mysqli->query($Lastrow);
-    $getLastrow = $resultLastrow->fetch_assoc();
+    $getFacultyID = $mysqli->query("SELECT F_ID FROM faculty ORDER BY F_ID DESC LIMIT 1");
+    $FacultyID = $getFacultyID->fetch_assoc();
 
-    if (empty($getLastrow["F_year"])) {
-        $FacultyCount = "SELECT COUNT(F_number) FROM faculty";
-        $resultFacultyCount = $mysqli->query($FacultyCount);
-        $getFacultyCount = $resultFacultyCount->fetch_assoc();
-
-        $FacultyNumber = sprintf("%05d", ($getFacultyCount["COUNT(F_number)"] + 1));
-    } else if ($getLastrow["F_year"] == $year) {
-        $FacultyCount = "SELECT COUNT(F_number) FROM faculty";
-        $resultFacultyCount = $mysqli->query($FacultyCount);
-        $getFacultyCount = $resultFacultyCount->fetch_assoc();
-
-        $FacultyNumber = sprintf("%05d", ($getFacultyCount["COUNT(F_number)"] + 1));
-    } else {
-        $FacultyCount = "SELECT COUNT(F_year) FROM faculty WHERE F_year == '$year'";
-        $resultFacultyCount = $mysqli->query($FacultyCount);
-        $getFacultyCount = $resultFacultyCount->fetch_assoc();
-
-        $FacultyNumber = sprintf("%05d", ($getFacultyCount["COUNT(F_year)"] + 1));
-    }
-    $F_number = $year . "-" . $month . "-" . $FacultyNumber . "-F";
+    $formatted_FacultyID = sprintf("%05d", ($FacultyID["F_ID"] + 1));
+    $F_number = $year . "-" . $formatted_FacultyID . "-F";
 
     $regFaculty = "INSERT INTO faculty(
-                    F_department, F_number, F_year, F_lname, F_fname, F_mname, F_suffix, 
-                    F_age, F_birthday, F_gender, F_religion, F_citizenship, F_address, F_barangay, F_city, F_state, F_postal, 
-                    F_contactNumber, F_email)
+                    F_department, F_profile_img, F_number, F_status, F_lname, F_fname, F_mname, F_suffix, 
+                    F_age, F_birthday, F_gender, F_religion, F_citizenship, 
+                    F_address, F_barangay, F_city, F_state, F_postal, F_contactNumber, F_email)
                    VALUES(
-                    '$F_department', '$F_number', '$year', '$F_lname', '$F_fname', '$F_mname', '$F_suffix', 
-                    '$F_age', '$F_birthday', '$F_gender', '$F_religion', '$F_citizenship', '$F_address', '$F_barangay', '$F_city', '$F_state', '$F_postal', 
-                    '$F_contactNumber', '$F_email')";
+                    '{$F_department}', '{$F_profile_img}', '{$F_number}', '{$F_status}', '{$F_lname}', '{$F_fname}', '{$F_mname}', '{$F_suffix}', 
+                    '{$F_age}', '{$F_birthday}', '{$F_gender}', '{$F_religion}', '{$F_citizenship}', 
+                    '{$F_address}', '{$F_barangay}', '{$F_city}', '{$F_state}', '{$F_postal}', '{$F_contactNumber}', '{$F_email}')";
     $resultregFaculty = $mysqli->query($regFaculty);
     unset($_SESSION['fromAddFaculty']);
     if ($resultregFaculty) {
@@ -805,7 +785,7 @@ if (isset($_POST['regFaculty'])) {
         $Fullname = $F_lname . ", " . $F_fname . " " . $F_mname . " " . $F_suffix;
 
         $mail->addAddress($F_email);
-        $mail->Subject = 'STUDENT REGISTRATION';
+        $mail->Subject = 'FACULTY REGISTRATION';
 
         $mail->Body = '<h1>Registration Complete</h1>
                        <br>
@@ -816,14 +796,7 @@ if (isset($_POST['regFaculty'])) {
                        <strong>IT IS RECOMMENDED TO RESET YOUR PASSWORD</strong><br>
                        <a href="siscdsp.online/auth/login.php">Login now</a>';
 
-        if (!$mail->send()) {
-            echo 'Mailer Error: ';
-        } else {
-            echo 'The email message was sent!';
-            header('Location: ../admin/faculty.php');
-        }
-    } else {
-        echo "error" . $mysqli->error;
+        $mail->send();
     }
 }
 if (isset($_POST['editFaculty'])) {

@@ -217,7 +217,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                             <tbody>
                                                                 <?php
                                                                 $rowCount = 1;
-                                                                $getFetcherAccountsList = $mysqli->query("SELECT * FROM fetcher");
+                                                                $getFetcherAccountsList = $mysqli->query("SELECT * FROM fetcher_data");
                                                                 if (mysqli_num_rows($getFetcherAccountsList) > 0) {
                                                                     while ($FetcherAccounts = $getFetcherAccountsList->fetch_assoc()) { ?>
                                                                         <tr>
