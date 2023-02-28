@@ -98,7 +98,7 @@ if (!isset($_SESSION['SR_number'])) {
             <section class="post-content-area">
                 <div class="container">
                 <?php
-                $getAnnouncementData = $mysqli->query("SELECT * FROM announcement");
+                $getAnnouncementData = $mysqli->query("SELECT * FROM announcement ORDER BY date");
                 while ($announcement = $getAnnouncementData->fetch_assoc()) { ?>
                         <div class="row col-lg-10" style="padding-top: 15px;">
                             <div class="col-lg-10 posts-list" style="margin-left: auto;">

@@ -15,7 +15,11 @@ if (!isset($_SESSION['F_number'])) {
     $getFacultyName = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
     $FacultyData = $getFacultyName->fetch_assoc();
 
-    $getSectionClassList = $mysqli->query("SELECT * FROM studentrecord WHERE SR_section = '{$SectionData['S_name']}'");
+    if (isset($_GET['SY'])) {
+      $getSectionClassList = $mysqli->query("SELECT * FROM classlist WHERE SR_section = '{$SectionData['S_name']}' AND acadYear = '{$_GET['SY']}'");
+    } else {
+      $getSectionClassList = $mysqli->query("SELECT * FROM classlist WHERE SR_section = '{$SectionData['S_name']}' AND acadYear = '{$currentSchoolYear}'");
+    }
   } else {
     header('Location: dashboard.php');
   }
@@ -179,13 +183,23 @@ if (!isset($_SESSION['F_number'])) {
                             <form class="form-sample" action="confirmfaculty.php" method="POST">
                               <div class="btn-group" style="margin-bottom: 15px;">
                                 <div>
-                                  <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">Academic Year
+                                  <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                                    <?php
+                                    if (isset($_GET['SY'])) {
+                                      echo "S.Y. " . $_GET['SY'];
+                                    } else {
+                                      echo "Academic Year";
+                                    }
+                                    ?>
                                     <i class="fa fa-caret-down"></i>
                                   </button>
                                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <a class="dropdown-item" href="">2022-2023</a>
-                                    <a class="dropdown-item" href="">2023-2024</a>
-                                    <a class="dropdown-item" href="">2024-2025</a>
+                                    <?php
+                                    $getAcadYear = $mysqli->query("SELECT DISTINCT(acadYear) FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'");
+                                    while ($acadYearData = $getAcadYear->fetch_assoc()) { ?>
+                                      <a class="dropdown-item" href="advisoryPage.php?SY=<?php echo $acadYearData['acadYear'] ?>"><?php echo $acadYearData['acadYear']; ?></a>
+                                    <?php }
+                                    ?>
                                   </div>
                                 </div>
                               </div>
@@ -218,7 +232,12 @@ if (!isset($_SESSION['F_number'])) {
                                         <td class="hatdog"><?php echo $SectionClassListData['SR_number']; ?></td>
                                         <td class="hatdog">
                                           <a href="viewCard.php?ID=<?php echo $SectionClassListData['SR_number']; ?>">
-                                            <?php echo $SectionClassListData['SR_lname'] . ", " . $SectionClassListData['SR_fname'] . " " . substr($SectionClassListData['SR_mname'], 0, 1); ?>
+                                            <?php
+                                            $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$SectionClassListData['SR_number']}'");
+                                            $studentInfo = $getStudentInfo->fetch_assoc();
+
+                                            echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix'];
+                                            ?>
                                           </a>
                                         </td>
                                       </tr>

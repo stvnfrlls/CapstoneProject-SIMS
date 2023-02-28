@@ -14,6 +14,14 @@ if (!isset($_SESSION['F_number'])) {
     $array = array_column($SR_numberArray, 'SR_lname');
     $SR_numberJSON = json_encode($array);
     echo "<script>var sr_numbers = " . $SR_numberJSON . ";</script>";
+
+    $gradeList = "SELECT DISTINCT S_yearLevel FROM sections WHERE acadYear = '{$currentSchoolYear}'";
+    $rungradeList = $mysqli->query($gradeList);
+
+    if (isset($_GET['Grade'])) {
+        $sectionList = "SELECT DISTINCT(S_name) FROM sections WHERE S_yearLevel = '{$_GET['Grade']}' AND acadYear = '{$currentSchoolYear}'";
+        $runsectionList = $mysqli->query($sectionList);
+    }
 }
 ?>
 
@@ -157,8 +165,8 @@ if (!isset($_SESSION['F_number'])) {
                                 </div>
                                 <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
                                     <nav class="nav">
-                                        <a class="nav-link active ms-0" href="../faculty/dailyReports.php" target="__blank" style="color: #c02628;">Daily</a>
-                                        <a class="nav-link" href="../faculty/monthlyReports.php" target="__blank">Monthly</a>
+                                        <a class="nav-link active ms-0" href="dailyReports.php" style="color: #c02628;">Daily</a>
+                                        <a class="nav-link" href="monthlyReports.php" >Monthly</a>
                                     </nav>
                                     <div class="border-bottom"></div>
                                 </div>
@@ -242,36 +250,70 @@ if (!isset($_SESSION['F_number'])) {
 
                                         <div class="btn-group">
                                             <div>
-                                                <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
-                                                    Grade<i class="fa fa-caret-down"></i>
+                                                <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                    <?php
+                                                    if (isset($_GET['Grade'])) {
+                                                        if ($_GET['Grade'] == "KINDER") {
+                                                            echo  $_GET['Grade'];
+                                                        } else {
+                                                            echo  "Grade " . $_GET['Grade'];
+                                                        }
+                                                    } else {
+                                                        echo "Grade ";
+                                                    }
+                                                    ?>
+                                                    <i class="fa fa-caret-down"></i>
                                                 </button>
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                                    <a class="dropdown-item" href="">January</a>
-                                                    <a class="dropdown-item" href="">February</a>
-                                                    <a class="dropdown-item" href="">March</a>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                    <?php
+                                                    while ($gradeData = $rungradeList->fetch_assoc()) { ?>
+                                                        <a class="dropdown-item" href="dailyReports.php?Grade=<?php echo $gradeData['S_yearLevel'] ?>">
+                                                            <?php
+                                                            echo "Grade " . $gradeData['S_yearLevel'];
+                                                            ?>
+                                                        </a>
+                                                    <?php } ?>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="btn-group">
-                                            <div>
-                                                <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
-                                                    Section<i class="fa fa-caret-down"></i>
-                                                </button>
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                                    <a class="dropdown-item" href="">January</a>
-                                                    <a class="dropdown-item" href="">February</a>
-                                                    <a class="dropdown-item" href="">March</a>
+                                            <?php
+                                            if (isset($_GET['Grade'])) { ?>
+                                                <div>
+                                                    <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                        <?php if (isset($_GET['Section'])) {
+                                                            echo $_GET['Section'];
+                                                        } else {
+                                                            echo "Section";
+                                                        }
+                                                        ?>
+                                                        <i class="fa fa-caret-down"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                        <?php
+                                                        while ($sectionData = $runsectionList->fetch_assoc()) { ?>
+                                                            <a class="dropdown-item" href="dailyReports.php?Grade=<?php echo $_GET['Grade'] . "&Section=" . $sectionData['S_name']; ?>">
+                                                                <?php
+                                                                echo $sectionData['S_name'];
+                                                                ?>
+                                                            </a>
+                                                        <?php } ?>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            <?php } ?>
                                         </div>
                                         <div class="btn-group">
                                             <div>
                                                 <input type="date" class="form-control" name="date" value="">
                                             </div>
                                         </div>
-                                        <div class="btn-group" style="float: right;">
-                                            <a href="" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
-                                        </div>
+                                        <?php
+                                        if (isset($_GET['Grade']) && isset($_GET['Section'])) { ?>
+                                            <div class="btn-group" style="float: right;">
+                                                <a href="../reports/DailyAttendancebyClass.php?Grade=<?php echo $_GET['Grade'] . "&Section=" . $_GET['Section']; ?>" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
+                                            </div>
+                                        <?php }
+                                        ?>
                                         <div class="row" style="margin-top: 15px;">
                                             <div class="col-lg-12 d-flex flex-column">
                                                 <div class="row flex-grow">
@@ -310,14 +352,40 @@ if (!isset($_SESSION['F_number'])) {
                                                                                 color: #000000;
                                                                             }
                                                                         </style>
-                                                                        <tr>
-                                                                            <td class="tabledata">1</td>
-                                                                            <td class="tabledata">Camille Anne G. Sabile</td>
-                                                                            <td class="tabledata">7:00AM</td>
-                                                                            <td class="tabledata">1:00PM</td>
-                                                                            <td class="tabledata">Hazel Grace Cantuba</td>
-                                                                            <td class="tabledata">Present/Tardy/Absent</td>
-                                                                        </tr>
+                                                                        <?php
+                                                                        $rowCount = 1;
+                                                                        $dateNow = date("Y-m-d");
+                                                                        if (isset($_GET['Grade']) && isset($_GET['Section'])) {
+                                                                            $getDailyAttendanceData = $mysqli->query("SELECT DISTINCT SR_lname, SR_fname, SR_mname, SR_suffix, attendance.SR_number, attendance.A_time_IN, attendance.A_time_OUT, attendance.A_fetcher_OUT, attendance.A_status 
+                                                                            FROM attendance 
+                                                                            LEFT JOIN studentrecord ON attendance.SR_number = studentrecord.SR_number 
+                                                                            WHERE acadYear = '{$currentSchoolYear}' 
+                                                                            AND SR_section = '{$_GET['Section']}' 
+                                                                            AND SR_grade = '{$_GET['Grade']}'
+                                                                            AND A_date = '{$dateNow}'");
+                                                                            if (mysqli_num_rows($getDailyAttendanceData) > 0) {
+                                                                                while ($AttendanceData = $getDailyAttendanceData->fetch_assoc()) { ?>
+                                                                                    <tr>
+                                                                                        <td class="tabledata"><?php echo $rowCount; ?></td>
+                                                                                        <td class="tabledata"><?php echo $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'] . " " . substr($AttendanceData['SR_mname'], 0, 1) . ". " . $AttendanceData['SR_suffix']; ?></td>
+                                                                                        <td class="tabledata"><?php echo $AttendanceData['A_time_IN']; ?></td>
+                                                                                        <td class="tabledata"><?php echo $AttendanceData['A_time_OUT']; ?></td>
+                                                                                        <td class="tabledata"><?php echo $AttendanceData['A_fetcher_OUT']; ?></td>
+                                                                                        <td class="tabledata"><?php echo $AttendanceData['A_status']; ?></td>
+                                                                                    </tr>
+                                                                                <?php $rowCount++;
+                                                                                }
+                                                                            } else { ?>
+                                                                                <tr>
+                                                                                    <td colspan="6" class="tabledata">NO ATTENDANCE TODAY <?php echo $dateNow ?></td>
+                                                                                </tr>
+                                                                            <?php }
+                                                                        } else { ?>
+                                                                            <tr>
+                                                                                <td colspan="6" class="tabledata">Select grade level and section first</td>
+                                                                            </tr>
+                                                                        <?php }
+                                                                        ?>
                                                                     </tbody>
                                                                 </table>
                                                             </div>

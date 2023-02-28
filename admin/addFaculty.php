@@ -9,16 +9,17 @@ if (!isset($_SESSION['AD_number'])) {
   if (isset($_POST['confirm_faculty'])) {
     header('Location: confirmfaculty.php');
   } else {
-    $cityprovreg = $mysqli->query('SELECT * FROM cityprovregion');
     $array_cityprovreg = array();
+
+    $cityprovreg = $mysqli->query('SELECT * FROM cityprovregion');
 
     while ($cityprovreg_data = $cityprovreg->fetch_assoc()) {
       $array_cityprovreg[] = $cityprovreg_data;
     }
 
-    $json = json_encode($array_cityprovreg);
+    $student = json_encode($array_cityprovreg);
 
-    echo "<script>var cityprov = " . $json . ";</script>";
+    echo "<script>var cityprov = " . $student . ";</script>";
   }
 }
 ?>
@@ -213,7 +214,7 @@ if (!isset($_SESSION['AD_number'])) {
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
-            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="confirmFaculty">
+            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="confirmFaculty" enctype="multipart/form-data">
               <div class="col-sm-12">
                 <div class="home-tab">
                   <div class="d-sm-flex align-items-center justify-content-between border-bottom">
@@ -248,7 +249,7 @@ if (!isset($_SESSION['AD_number'])) {
                                   <div class="col-sm-12">
                                     <div class="form-group">
                                       <div class="input-group col-xs-12">
-                                        <input type="file" class="form-control file-upload-info" placeholder="Upload Image">
+                                        <input type="file" class="form-control file-upload-info" name="image" placeholder="Upload Image" accept="image/*">
                                       </div>
                                     </div>
                                   </div>
@@ -300,7 +301,6 @@ if (!isset($_SESSION['AD_number'])) {
                                       <option selected></option>
                                       <option value="Male">Male</option>
                                       <option value="Female">Female</option>
-                                      <option value="NA">Prefer not to say</option>
                                     </select>
                                   </div>
                                 </div>
@@ -362,7 +362,7 @@ if (!isset($_SESSION['AD_number'])) {
                                 <div class="col-md-6">
                                   <label label class="col-sm-12 col-form-label">Contact Number <span style="color: red;">*</span></label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="F_contact" required>
+                                    <input type="text" class="form-control" name="F_contactNumber" id="F_contact" required>
                                   </div>
                                 </div>
                                 <div class="col-md-6">
@@ -420,6 +420,31 @@ if (!isset($_SESSION['AD_number'])) {
 
   <script src="../assets/js/admin/vendor.bundle.base.js"></script>
   <script src="../assets/js/admin/off-canvas.js"></script>
+
+  <script>
+    const phoneInput = document.getElementById('F_contact');
+
+    phoneInput.addEventListener('input', function(e) {
+      // Get the current input value and remove all non-numeric characters
+      const input = e.target.value.replace(/\D/g, '');
+
+      // Format the input value as a phone number
+      const match = input.match(/^(\d{0,4})(\d{0,3})(\d{0,4})$/);
+      let formatted = '';
+      if (match) {
+        formatted = `(${match[1]})`;
+        if (match[2]) formatted += ` ${match[2]}`;
+        if (match[3]) formatted += `-${match[3]}`;
+      }
+
+      // Update the input field with the formatted value
+      e.target.value = formatted;
+
+      if (input.length >= 12) {
+        e.target.value = formatted.slice(0, 14);
+      }
+    });
+  </script>
 
   <script>
     const city = document.getElementById('city');

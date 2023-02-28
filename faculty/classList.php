@@ -4,14 +4,13 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['F_number'])) {
   header('Location: ../auth/login.php');
 } else {
-  $getWorkSchedule = $mysqli->query("SELECT SR_grade, SR_section, S_subject FROM workschedule WHERE F_number = '{$_SESSION['F_number']}'");
+  $getWorkSchedule = $mysqli->query("SELECT acadYear, SR_grade, SR_section, S_subject FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
   $array_GradeSection = array();
   array_unshift($array_GradeSection, null);
 
   while ($dataWorkSchedule = $getWorkSchedule->fetch_assoc()) {
     $array_GradeSection[] = $dataWorkSchedule;
   }
-  $current_url = $_SERVER["REQUEST_URI"];
 }
 ?>
 
@@ -165,9 +164,12 @@ if (!isset($_SESSION['F_number'])) {
                                     <i class="fa fa-caret-down"></i>
                                   </button>
                                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <a class="dropdown-item" href="">2022-2023</a>
-                                    <a class="dropdown-item" href="">2023-2024</a>
-                                    <a class="dropdown-item" href="">2024-2025</a>
+                                    <?php
+                                    $getAcadYears = $mysqli->query("SELECT DISTINCT acadYear FROM classlist WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
+                                    while ($acadYears = $getAcadYears->fetch_assoc()) { ?>
+                                      <a class="dropdown-item" href="classlist.php?SY=<?php echo $acadYears['acadYear'] ?>"><?php echo $acadYears['acadYear'] ?></a>
+                                    <?php }
+                                    ?>
                                   </div>
                                 </div>
                               </div>
@@ -187,7 +189,7 @@ if (!isset($_SESSION['F_number'])) {
                                 $GradeSectionRowCount = sizeof($array_GradeSection);
                                 while ($rowCount != $GradeSectionRowCount) { ?>
                                   <a class="dropdown-item" href="<?php echo "classList.php?Grade=" . $array_GradeSection[$rowCount]['SR_grade'] . "&Section=" . $array_GradeSection[$rowCount]['SR_section']; ?>">
-                                    <?php echo "Grade " . $array_GradeSection[$rowCount]['SR_grade'] . "-" . $array_GradeSection[$rowCount]['SR_section']; ?>
+                                    <?php echo "Grade " . $array_GradeSection[$rowCount]['SR_grade'] . "-" . $array_GradeSection[$rowCount]['SR_section'] . " (" . $array_GradeSection[$rowCount]['acadYear'] . ")"; ?>
                                   </a>
                                 <?php $rowCount++;
                                 }
@@ -225,22 +227,36 @@ if (!isset($_SESSION['F_number'])) {
                                       </tr>
                                       <?php
                                     } else {
-                                      $getClassList = "SELECT * FROM studentrecord WHERE SR_grade = '{$_GET['Grade']}'";
-                                      $rungetClassList = $mysqli->query($getClassList);
-                                      $rowCount = 1;
-                                      while ($dataClassList = $rungetClassList->fetch_assoc()) { ?>
-                                        <tr>
-                                          <td><?php echo $rowCount ?></td>
-                                          <td><?php echo $dataClassList['SR_number'] ?></td>
-                                          <td>
-                                            <a href="viewstudent.php?ID=<?php echo $dataClassList['SR_number'] ?>">
-                                              <?php echo $dataClassList['SR_lname'] . ", " . $dataClassList['SR_fname'] . " " . substr($dataClassList['SR_mname'], 0, 1); ?>
-                                            </a>
-                                          </td>
-                                        </tr>
-                                    <?php
-                                        $rowCount++;
+                                      if (isset($_GET['SY'])) {
+                                        $getClassList = $mysqli->query("SELECT * FROM classlist WHERE SR_grade = '{$_GET['Grade']}' AND acadYear = '{$_GET['SY']}'");
+                                      } else {
+                                        $getClassList = $mysqli->query("SELECT * FROM classlist WHERE SR_grade = '{$_GET['Grade']}' AND acadYear = '{$currentSchoolYear}'");
                                       }
+
+                                      if (mysqli_num_rows($getClassList) > 0) {
+                                        $rowCount = 1;
+                                        while ($dataClassList = $getClassList->fetch_assoc()) { ?>
+                                          <tr>
+                                            <td><?php echo $rowCount ?></td>
+                                            <td><?php echo $dataClassList['SR_number'] ?></td>
+                                            <td>
+                                              <?php
+                                              $getstudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$dataClassList['SR_number']}'");
+                                              $studentInfo = $getstudentInfo->fetch_assoc();
+                                              ?>
+                                              <a href="viewstudent.php?ID=<?php echo $studentInfo['SR_number'] ?>">
+                                                <?php echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix']; ?>
+                                              </a>
+                                            </td>
+                                          </tr>
+                                        <?php
+                                          $rowCount++;
+                                        }
+                                      } else { ?>
+                                        <tr>
+                                          <td colspan="3">NO AVAILABLE DATA</td>
+                                        </tr>
+                                    <?php }
                                     }
                                     ?>
                                   </form>

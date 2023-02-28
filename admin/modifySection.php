@@ -1,3 +1,9 @@
+<?php
+require_once("../assets/php/server.php");
+if (!isset($_SESSION['AD_number'])) {
+    header('Location: ../auth/login.php');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -203,25 +209,35 @@
                                                                 <div class="btn-group">
                                                                     <div>
                                                                         <button class="btn btn-secondary" style="background-color: #e4e3e3;" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                                            Grade <i class="fa fa-caret-down"></i>
+                                                                            <?php
+                                                                            if (isset($_GET['Grade']) && $_GET['Grade'] == 'KINDER') {
+                                                                                echo $_GET['Grade'];
+                                                                            }
+
+                                                                            if (isset($_GET['Grade']) && $_GET['Grade'] != 'KINDER') {
+                                                                                echo "Grade " . $_GET['Grade'];
+                                                                            }
+                                                                            if (!isset($_GET['Grade'])) {
+                                                                                echo "Grade";
+                                                                            }
+                                                                            ?>
+                                                                            <i class="fa fa-caret-down"></i>
                                                                         </button>
                                                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                                                            <a class="dropdown-item" href="">Grade 1</a>
-                                                                            <a class="dropdown-item" href="">Grade 2</a>
-                                                                            <a class="dropdown-item" href="">Grade 3</a>
-                                                                            <a class="dropdown-item" href="">Grade 4</a>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="btn-group">
-                                                                    <div>
-                                                                        <button class="btn btn-secondary" style="background-color: #e4e3e3;" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                                            Section <i class="fa fa-caret-down"></i>
-                                                                        </button>
-                                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                                                            <a class="dropdown-item" href="">Carnation</a>
-                                                                            <a class="dropdown-item" href="">Chrysanthemum</a>
-                                                                            <a class="dropdown-item" href="">Narra</a>
+                                                                            <?php
+                                                                            $getGradeLevelList = $mysqli->query("SELECT gradeLevel FROM grade_level ORDER BY gradeID");
+                                                                            while ($gradeLevel = $getGradeLevelList->fetch_assoc()) { ?>
+                                                                                <a class="dropdown-item" href="modifySection.php?Grade=<?php echo $gradeLevel['gradeLevel'] ?>">
+                                                                                    <?php
+                                                                                    if ($gradeLevel['gradeLevel'] == 'KINDER') {
+                                                                                        echo $gradeLevel['gradeLevel'];
+                                                                                    } else {
+                                                                                        echo "Grade " . $gradeLevel['gradeLevel'];
+                                                                                    }
+                                                                                    ?>
+                                                                                </a>
+                                                                            <?php }
+                                                                            ?>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -237,26 +253,39 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-
-                                                                        <form action="" method="POST">
+                                                                        <?php
+                                                                        if (isset($_GET['Grade'])) {
+                                                                            $getSectionData = $mysqli->query("SELECT DISTINCT S_name FROM sections WHERE acadYear = '{$currentSchoolYear}' AND S_yearLevel = '{$_GET['Grade']}'");
+                                                                            $rowCount = 1;
+                                                                            while ($sectionData = $getSectionData->fetch_assoc()) { ?>
+                                                                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
+                                                                                    <tr>
+                                                                                        <td><?php echo $rowCount ?></td>
+                                                                                        <td>
+                                                                                            <input type="hidden" class="form-control" name="currentName" value="<?php echo $sectionData['S_name'] ?>">
+                                                                                            <input type="text" class="form-control" name="sectionName" value="<?php echo $sectionData['S_name'] ?>">
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="submit" style="color: #ffffff;" class="btn btn-primary" value="Change Name" name="updateSection">
+                                                                                            <input type="submit" class="btn btn-secondary" value="DELETE" name="deleteSection">
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </form>
+                                                                            <?php $rowCount++;
+                                                                            } ?>
+                                                                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
+                                                                                <tr>
+                                                                                    <td>ADD</td>
+                                                                                    <td><input type="text" class="form-control" name="sectionName"></td>
+                                                                                    <td><input type="submit" style="color: #ffffff;" class="btn btn-primary" value="ADD" name="addSection"></td>
+                                                                                </tr>
+                                                                            </form>
+                                                                        <?php } else { ?>
                                                                             <tr>
-                                                                                <td>1</td>
-                                                                                <td><input type="text" class="form-control"></td>
-                                                                                <td>
-                                                                                    <input type="submit" style="color: #ffffff;" class="btn btn-primary" value="UPDATE" name="updateCurr">
-                                                                                    <input type="submit" class="btn btn-secondary" value="DELETE" name="deleteCurr">
-                                                                                </td>
+                                                                                <td colspan="4">Select a Grade level first</td>
                                                                             </tr>
-                                                                        </form>
-
-                                                                        <form action="" method="post">
-                                                                            <tr>
-                                                                                <td>ADD</td>
-                                                                                <td><input type="text" class="form-control"></td>
-                                                                                <td><input type="submit" style="color: #ffffff;" class="btn btn-primary" value="ADD"></td>
-                                                                            </tr>
-                                                                        </form>
-
+                                                                        <?php }
+                                                                        ?>
                                                                     </tbody>
                                                                 </table>
                                                             </div>

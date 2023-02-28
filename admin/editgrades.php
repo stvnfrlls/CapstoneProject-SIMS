@@ -209,15 +209,17 @@ if (!isset($_SESSION['AD_number'])) {
                         <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
                           <?php
                           if (isset($_GET['Section'])) {
-                            $subjects = array();
-                            array_unshift($subjects, null);
                             if ($_GET['Grade'] == "KINDER") {
                               $getListSubject = $mysqli->query("SELECT subjectName FROM subjectperyear WHERE minYearLevel = '0' AND maxYearLevel >= '0'");
                             } else if ($_GET['Grade']) {
                               $getListSubject = $mysqli->query("SELECT subjectName FROM subjectperyear WHERE minYearLevel <= '{$_GET['Grade']}' AND maxYearLevel >= '{$_GET['Grade']}'");
                             }
-                            while ($dataSubject = $getListSubject->fetch_assoc()) {
-                              $subjects[] = $dataSubject;
+                            $subjects = array();
+                            array_unshift($subjects, null);
+                            if (mysqli_num_rows($getListSubject) > 0) {
+                              while ($dataSubject = $getListSubject->fetch_assoc()) {
+                                $subjects[] = $dataSubject;
+                              }
                             }
                             echo "GR." . $_GET['Grade'] . " - " . $_GET['Section'];
                           } else {
@@ -245,7 +247,8 @@ if (!isset($_SESSION['AD_number'])) {
                         </div>
                       </div>
                     </div>
-                    <?php if (isset($_GET['Section'])) { ?>
+                    <?php
+                    if (isset($_GET['Section'])) { ?>
                       <div class="btn-group">
                         <div>
                           <button class="btn btn-secondary" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
@@ -260,7 +263,6 @@ if (!isset($_SESSION['AD_number'])) {
                           </button>
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
                             <?php
-
                             $rowCount = 1;
                             while ($rowCount != count($subjects)) { ?>
                               <a class="dropdown-item" href="editgrades.php?Grade=<?php echo $_GET['Grade'] . "&Section=" . $_GET['Section'] . "&LearningArea=" . $subjects[$rowCount]['subjectName']; ?>">
@@ -277,7 +279,6 @@ if (!isset($_SESSION['AD_number'])) {
                     <div class="row" style="margin-top: 15px;;">
                       <div class="col-lg-12 d-flex flex-column">
                         <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="gradeForm">
-                          <input type="hidden" value="<?php echo $_SERVER['REQUEST_URI'] ?>" name="current_url">
                           <div class="row flex-grow">
                             <div class="col-md-6 col-lg-12 grid-margin stretch-card">
                               <div class="card bg-primary card-rounded">
@@ -325,86 +326,93 @@ if (!isset($_SESSION['AD_number'])) {
                                         $bySubject = $_GET['LearningArea'];
                                         $getData = "SELECT studentrecord.SR_number, studentrecord.SR_fname, studentrecord.SR_lname,
                                                           grades.SR_gradeLevel, grades.SR_section, grades.G_learningArea, 
-                                                          grades.G_id, grades.G_gradesQ1, grades.G_gradesQ2, grades.G_gradesQ3, grades.G_gradesQ4
+                                                          grades.acadYear, grades.G_gradesQ1, grades.G_gradesQ2, grades.G_gradesQ3, grades.G_gradesQ4
                                                     FROM studentrecord 
                                                     INNER JOIN grades
                                                     ON studentrecord.SR_number = grades.SR_number
                                                     WHERE studentrecord.SR_section = '$byGradeLevel'
-                                                    AND G_learningArea LIKE '%$bySubject%'";
+                                                    AND G_learningArea LIKE '%$bySubject%'
+                                                    AND acadYear = '{$currentSchoolYear}'";
                                         $rungetData = $mysqli->query($getData);
                                         $rowNum = 1;
-                                        while ($gradeData =  $rungetData->fetch_assoc()) { ?>
-                                          <tr>
-                                            <td class="grade_table">
-                                              <?php echo $rowNum; ?>
-                                              <input type="hidden" name="row[]" value="<?php echo $rowNum; ?>">
-                                            </td>
-                                            <td class="grade_table">
-                                              <?php echo $gradeData['SR_lname'] . ", " . $gradeData['SR_fname']; ?>
-                                              <input type="hidden" name="SR_number[]" value="<?php echo $gradeData['SR_number']; ?>">
-                                            </td>
-                                            <td class="grade_table">
-                                              <?php echo $gradeData['SR_gradeLevel'] . " - " . $gradeData['SR_section']; ?>
-                                              <input type="hidden" name="SR_section[]" value="<?php echo $gradeData['SR_section']; ?>">
-                                              <input type="hidden" name="G_learningArea[]" value="<?php echo $gradeData['G_learningArea']; ?>">
-                                            </td>
-                                            <?php
-                                            if ($gradeData['G_gradesQ1']) { ?>
+                                        if (mysqli_num_rows($rungetData) > 0) {
+                                          while ($gradeData =  $rungetData->fetch_assoc()) { ?>
+                                            <tr>
                                               <td class="grade_table">
-                                                <input type="number" name="G_gradesQ1[]" style="text-align: center;" value="<?php echo $gradeData['G_gradesQ1']; ?>">
+                                                <?php echo $rowNum; ?>
+                                                <input type="hidden" name="row[]" value="<?php echo $rowNum; ?>">
                                               </td>
-                                            <?php
-                                            } else { ?>
                                               <td class="grade_table">
-                                                <input type="number" name="G_gradesQ1[]" style="text-align: center;" value="" disabled>
+                                                <?php echo $gradeData['SR_lname'] . ", " . $gradeData['SR_fname']; ?>
+                                                <input type="hidden" name="SR_number[]" value="<?php echo $gradeData['SR_number']; ?>">
                                               </td>
-                                            <?php } ?>
-
-                                            <?php
-                                            if ($gradeData['G_gradesQ2']) { ?>
                                               <td class="grade_table">
-                                                <input type="number" name="G_gradesQ2[]" style="text-align: center;" value="<?php echo $gradeData['G_gradesQ2']; ?>">
+                                                <?php echo $gradeData['SR_gradeLevel'] . " - " . $gradeData['SR_section'] . " (" . $gradeData['acadYear'] . ")"; ?>
+                                                <input type="hidden" name="SR_section[]" value="<?php echo $gradeData['SR_section']; ?>">
+                                                <input type="hidden" name="G_learningArea[]" value="<?php echo $gradeData['G_learningArea']; ?>">
                                               </td>
-                                            <?php
-                                            } else { ?>
-                                              <td class="grade_table">
-                                                <input type="number" placeholder="##" style="text-align: center;" value="" disabled>
-                                              </td>
-                                            <?php } ?>
-
-                                            <?php
-                                            if ($gradeData['G_gradesQ3']) { ?>
-                                              <td class="grade_table">
-                                                <input type="number" name="G_gradesQ3[]" style="text-align: center;" value="<?php echo $gradeData['G_gradesQ3']; ?>">
-                                              </td>
-                                            <?php
-                                            } else { ?>
-                                              <td class="grade_table">
-                                                <input type="number" placeholder="##" style="text-align: center;" value="" disabled>
-                                              </td>
-                                            <?php } ?>
-
-                                            <?php
-                                            if ($gradeData['G_gradesQ4']) { ?>
-                                              <td class="grade_table">
-                                                <input type="number" name="G_gradesQ4[]" style="text-align: center;" value="<?php echo $gradeData['G_gradesQ4']; ?>">
-                                              </td>
-                                            <?php
-                                            } else { ?>
-                                              <td class="grade_table">
-                                                <input type="number" placeholder="##" style="text-align: center;" value="" disabled>
-                                              </td>
-                                            <?php } ?>
-                                            <td class="grade_table">
                                               <?php
-                                              $sum = $gradeData['G_gradesQ1'] + $gradeData['G_gradesQ2'] + $gradeData['G_gradesQ3'] + $gradeData['G_gradesQ4'];
-                                              $average = $sum / 4;
-                                              echo round($average);
-                                              ?>
-                                            </td>
+                                              if ($gradeData['G_gradesQ1']) { ?>
+                                                <td class="grade_table">
+                                                  <input type="number" name="G_gradesQ1[]" style="text-align: center;" value="<?php echo $gradeData['G_gradesQ1']; ?>">
+                                                </td>
+                                              <?php
+                                              } else { ?>
+                                                <td class="grade_table">
+                                                  <input type="number" name="G_gradesQ1[]" style="text-align: center;" value="" disabled>
+                                                </td>
+                                              <?php } ?>
+
+                                              <?php
+                                              if ($gradeData['G_gradesQ2']) { ?>
+                                                <td class="grade_table">
+                                                  <input type="number" name="G_gradesQ2[]" style="text-align: center;" value="<?php echo $gradeData['G_gradesQ2']; ?>">
+                                                </td>
+                                              <?php
+                                              } else { ?>
+                                                <td class="grade_table">
+                                                  <input type="number" placeholder="##" style="text-align: center;" value="" disabled>
+                                                </td>
+                                              <?php } ?>
+
+                                              <?php
+                                              if ($gradeData['G_gradesQ3']) { ?>
+                                                <td class="grade_table">
+                                                  <input type="number" name="G_gradesQ3[]" style="text-align: center;" value="<?php echo $gradeData['G_gradesQ3']; ?>">
+                                                </td>
+                                              <?php
+                                              } else { ?>
+                                                <td class="grade_table">
+                                                  <input type="number" placeholder="##" style="text-align: center;" value="" disabled>
+                                                </td>
+                                              <?php } ?>
+
+                                              <?php
+                                              if ($gradeData['G_gradesQ4']) { ?>
+                                                <td class="grade_table">
+                                                  <input type="number" name="G_gradesQ4[]" style="text-align: center;" value="<?php echo $gradeData['G_gradesQ4']; ?>">
+                                                </td>
+                                              <?php
+                                              } else { ?>
+                                                <td class="grade_table">
+                                                  <input type="number" placeholder="##" style="text-align: center;" value="" disabled>
+                                                </td>
+                                              <?php } ?>
+                                              <td class="grade_table">
+                                                <?php
+                                                $sum = $gradeData['G_gradesQ1'] + $gradeData['G_gradesQ2'] + $gradeData['G_gradesQ3'] + $gradeData['G_gradesQ4'];
+                                                $average = $sum / 4;
+                                                echo round($average);
+                                                ?>
+                                              </td>
+                                            </tr>
+                                          <?php $rowNum++;
+                                          }
+                                        } else { ?>
+                                          <tr>
+                                            <td colspan="10">No Grades Encoded yet for School Year <?php echo $currentSchoolYear ?></td>
                                           </tr>
-                                        <?php $rowNum++;
-                                        }
+                                        <?php }
                                       } else { ?>
                                         <tr>
                                           <td colspan="10">No Data. Please Select from the options above.</td>

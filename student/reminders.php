@@ -6,7 +6,7 @@ if (!isset($_SESSION['SR_number'])) {
 } else {
     $getstudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$_SESSION['SR_number']}'");
     $studentInfo = $getstudentInfo->fetch_assoc();
-    $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_name = '{$studentInfo['SR_section']}'");
+    $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_name = '{$studentInfo['SR_section']}' AND acadYear = '{$currentSchoolYear}'");
     $SectionInfo = $getSectionInfo->fetch_assoc();
 }
 ?>
@@ -101,7 +101,7 @@ if (!isset($_SESSION['SR_number'])) {
             <div class="row col-lg-10">
                 <div class="col-lg-10 posts-list" style="margin-left: auto;">
                     <?php
-                    $getReminderData = $mysqli->query("SELECT * FROM reminders WHERE forsection = '{$studentInfo['SR_section']}'");
+                    $getReminderData = $mysqli->query("SELECT * FROM reminders WHERE forsection = '{$studentInfo['SR_section']}' AND acadYear = '{$currentSchoolYear}'");
                     if ($getReminderData->num_rows > 0) {
                         while ($reminders = $getReminderData->fetch_assoc()) { ?>
                             <div class="single-post row">
@@ -142,8 +142,22 @@ if (!isset($_SESSION['SR_number'])) {
                                     </div>
                                 </div>
                             </div>
+                        <?php }
+                    } else { ?>
+                        <div class="">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="text-center">
+                                            <p class="excert">
+                                                No Annoucement yet!
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     <?php }
-                    }
                     ?>
 
                 </div>

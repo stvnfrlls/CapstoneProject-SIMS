@@ -240,7 +240,7 @@ if (!isset($_SESSION['SR_number'])) {
                                                                     if (isset($_GET['month'])) {
                                                                         $getAttendanceInformation = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}'");
                                                                     } else {
-                                                                        $getAttendanceInformation = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}'");
+                                                                        $getAttendanceInformation = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND acadYear = '{$currentSchoolYear}'");
                                                                     }
                                                                     $attendanceCount = $getAttendanceInformation->num_rows;
                                                                     if ($attendanceCount == 0) { ?>

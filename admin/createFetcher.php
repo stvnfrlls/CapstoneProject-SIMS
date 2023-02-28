@@ -203,7 +203,7 @@ if (empty($_SESSION['AD_number'])) {
                                     <div class="tab-content tab-content-basic">
                                         <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                                             <div style="text-align: center; padding-bottom: 15px;">
-                                                <a href="../admin/adminList.php" style="font-size: 15px;"><u>View full list of fetchers</u></a>
+                                                <a href="fetcherList.php" style="font-size: 15px;"><u>View full list of fetchers</u></a>
                                             </div>
                                             <div class="row">
                                                 <div class="col-12 grid-margin">
@@ -213,7 +213,7 @@ if (empty($_SESSION['AD_number'])) {
                                                                 <div class="col-md-12">
                                                                     <label class="col-sm-12 col-form-label">Full Name</label>
                                                                     <div class="col-sm-12">
-                                                                        <input type="text" class="form-control" name="adminName" required>
+                                                                        <input type="text" class="form-control" name="FTH_name" required>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -221,7 +221,7 @@ if (empty($_SESSION['AD_number'])) {
                                                                 <div class="col-md-12">
                                                                     <label class="col-sm-12 col-form-label">Contact Number</label>
                                                                     <div class="col-sm-12">
-                                                                        <input type="text" class="form-control" name="adminEmail" required>
+                                                                        <input type="tel" class="form-control" name="FTH_contact" required>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -229,15 +229,7 @@ if (empty($_SESSION['AD_number'])) {
                                                                 <div class="col-md-12">
                                                                     <label class="col-sm-12 col-form-label">Email Address</label>
                                                                     <div class="col-sm-12">
-                                                                        <input type="password" class="form-control" name="adminPassword">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row" style="padding-bottom: 15px;">
-                                                                <div class="col-md-12">
-                                                                    <label class="col-sm-12 col-form-label">Relationship to the Student</label>
-                                                                    <div class="col-sm-12">
-                                                                        <input type="password" class="form-control" name="confirmPassword">
+                                                                        <input type="email" class="form-control" name="FTH_email">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -249,9 +241,10 @@ if (empty($_SESSION['AD_number'])) {
                                     </div>
                                 </div>
                                 <div style="text-align: center;">
-                                    <button type="submit" class="btn btn-primary me-2" name="addAdmin">Create</button>
+                                    <button type="submit" class="btn btn-primary me-2" name="createFetcher">Create</button>
                                     <button class="btn btn-light">Back</button>
                                 </div>
+                            </div>
                         </form>
                     </div>
                 </div>

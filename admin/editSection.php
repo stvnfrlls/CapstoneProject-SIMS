@@ -206,14 +206,25 @@ if (!isset($_SESSION['AD_number'])) {
                                         <div class="btn-group">
                                             <div>
                                                 <button class="btn btn-secondary" style="background-color: #e4e3e3;" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                    Grade <i class="fa fa-caret-down"></i>
+                                                    <?php
+                                                    if (isset($_GET['grade'])) {
+                                                        echo "GR." . $_GET['grade'];
+                                                    } else {
+                                                        echo "Grade";
+                                                    }
+
+                                                    ?>
+                                                    <i class="fa fa-caret-down"></i>
                                                 </button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                                    <a class="dropdown-item" href="editSection.php">All</a>
                                                     <?php
                                                     $getgradelevel = $mysqli->query("SELECT DISTINCT(S_yearLevel) FROM sections");
-
                                                     while ($gradeLevel = $getgradelevel->fetch_assoc()) { ?>
-                                                        <a class="dropdown-item" href="assignAdvisory.php?grade=<?php echo $gradeLevel['S_yearLevel'] ?>">Grade <?php echo $gradeLevel['S_yearLevel'] ?></a>
+                                                        <a class="dropdown-item" href="editSection.php?grade=<?php echo $gradeLevel['S_yearLevel'] ?>">
+                                                            Grade
+                                                            <?php echo $gradeLevel['S_yearLevel'] ?>
+                                                        </a>
                                                     <?php }
                                                     ?>
                                                 </div>
@@ -222,24 +233,27 @@ if (!isset($_SESSION['AD_number'])) {
                                         <div class="btn-group">
                                             <div>
                                                 <button class="btn btn-secondary" style="background-color: #e4e3e3;" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                    Section <i class="fa fa-caret-down"></i>
+                                                    <?php
+                                                    if (isset($_GET['section'])) {
+                                                        echo $_GET['section'];
+                                                    } else {
+                                                        echo "Section";
+                                                    }
+                                                    ?>
+                                                    <i class="fa fa-caret-down"></i>
                                                 </button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                                    <a class="dropdown-item" href="editSection.php">All</a>
                                                     <?php
-                                                    $getgradelevel = $mysqli->query("SELECT DISTINCT(S_yearLevel) FROM sections");
+                                                    $getsection = $mysqli->query("SELECT DISTINCT(S_name) FROM sections WHERE acadYear = '{$currentSchoolYear}' AND S_yearLevel = '{$_GET['grade']}' ");
 
-                                                    while ($gradeLevel = $getgradelevel->fetch_assoc()) { ?>
-                                                        <a class="dropdown-item" href="assignAdvisory.php?grade=<?php echo $gradeLevel['S_yearLevel'] ?>">Grade <?php echo $gradeLevel['S_yearLevel'] ?></a>
+                                                    while ($section = $getsection->fetch_assoc()) { ?>
+                                                        <a class="dropdown-item" href="editSection.php?grade=<?php echo $_GET['grade'] ?>&section=<?php echo $section['S_name'] ?>">
+                                                            <?php echo $section['S_name'] ?>
+                                                        </a>
                                                     <?php }
                                                     ?>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="btn-group" style="float: right;">
-                                            <div class="">
-                                                <form>
-                                                    <button type="submit" class="btn btn-primary">Update</button>
-                                                </form>
                                             </div>
                                         </div>
                                         <div class="row" style="margin-top: 15px;">
@@ -256,6 +270,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                             <th class="hatdog" style="border-bottom: #ffffff;">Student Name</th>
                                                                             <th class="hatdog" style="border-bottom: #ffffff;">Section</th>
                                                                             <th class="hatdog" style="border-bottom: #ffffff;">Transfer to</th>
+                                                                            <th class="hatdog" style="border-bottom: #ffffff;">Action</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
@@ -281,47 +296,75 @@ if (!isset($_SESSION['AD_number'])) {
                                                                         </style>
                                                                         <?php
                                                                         $rowCount = 1;
-
-                                                                        if (isset($_GET['grade'])) {
-                                                                            $getAdvisoryData = $mysqli->query("SELECT * FROM sections WHERE S_yearLevel = '{$_GET['grade']}'");
-                                                                        } else {
-                                                                            $getAdvisoryData = $mysqli->query("SELECT * FROM sections");
-                                                                        }
-                                                                        while ($AdvisoryData = $getAdvisoryData->fetch_assoc()) { ?>
-                                                                            <form action="" method="post">
+                                                                        if (isset($_GET['grade']) && isset($_GET['section'])) {
+                                                                            $getClasslistData = $mysqli->query("SELECT * FROM classlist WHERE SR_grade = '{$_GET['grade']}' AND SR_section = '{$_GET['section']}' AND acadYear = '{$currentSchoolYear}'");
+                                                                            if (mysqli_num_rows($getClasslistData) > 0) {
+                                                                                while ($ClasslistData = $getClasslistData->fetch_assoc()) { ?>
+                                                                                    <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="changeSectionForm">
                                                                                 <tr>
                                                                                     <td class="hatdog"><?php echo $rowCount; ?></td>
                                                                                     <td class="hatdog">
-                                                                                        <input type="hidden" name="section" value="<?php echo $AdvisoryData['S_name']; ?>">
-                                                                                        <?php echo "Grade " . $AdvisoryData['S_yearLevel'] . " - " . $AdvisoryData['S_name'] ?>
+                                                                                                <?php echo $ClasslistData['SR_number'] ?>
+                                                                                                <input type="hidden" name="SR_number" value="<?php echo $ClasslistData['SR_number'] ?>">
                                                                                     </td>
                                                                                     <td class="hatdog">
-                                                                                        <input type="hidden" name="section" value="<?php echo $AdvisoryData['S_name']; ?>">
-                                                                                        <?php echo "Grade " . $AdvisoryData['S_yearLevel'] . " - " . $AdvisoryData['S_name'] ?>
+                                                                                                <?php
+                                                                                                $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$ClasslistData['SR_number']}'");
+                                                                                                $studentInfo = $getStudentInfo->fetch_assoc();
+                                                                                                echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix'];
+                                                                                                ?>
+
                                                                                     </td>
                                                                                     <td class="hatdog">
-                                                                                        <?php echo "Grade " . $AdvisoryData['S_yearLevel'] . " - " . $AdvisoryData['S_name'] ?>
+                                                                                                <?php echo "Grade " . $ClasslistData['SR_grade'] . " - " . $ClasslistData['SR_section'] ?>
                                                                                     </td>
                                                                                     <td class="hatdog">
-                                                                                        <select class="form-select" name="advisor" aria-label="Default select example">
                                                                                             <?php
-                                                                                            $getAssignedFacultyData = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$AdvisoryData['S_adviser']}'");
-                                                                                            $AssignedFacultyData = $getAssignedFacultyData->fetch_assoc();
-                                                                                            if (empty($AdvisoryData['S_adviser'])) {
-                                                                                                echo "<option selected>assign a teacher</option>";
-                                                                                            } else {
-                                                                                                echo "<option selected>" . $AssignedFacultyData['F_lname'] . ", " . $AssignedFacultyData['F_fname'] . " " . substr($AssignedFacultyData['F_mname'], 0, 1) . "</option>";
+                                                                                                $getSection = $mysqli->query("SELECT S_name FROM sections 
+                                                                                                WHERE S_name != '{$_GET['section']}' 
+                                                                                                AND S_yearLevel = '{$_GET['grade']}'
+                                                                                                AND acadYear = '{$currentSchoolYear}'");
+                                                                                                if (mysqli_num_rows($getSection) == 0) { ?>
+                                                                                                    <select class="form-select" name="changeto" aria-label="Default select example" disabled>
+                                                                                                        <option select>No Available Section</option>
+                                                                                                    </select>
+                                                                                                <?php } else {  ?>
+                                                                                                    <select class="form-select" name="changeto" aria-label="Default select example" required>
+                                                                                                        <option></option>
+                                                                                                        <?php
+                                                                                                        while ($Section = $getSection->fetch_assoc()) {
+                                                                                                            echo "<option value=" . $Section['S_name'] . ">" . $Section['S_name'] .  "</option>";
                                                                                             }
-                                                                                            $getFacultyData = $mysqli->query("SELECT faculty.F_number, faculty.F_lname, faculty.F_fname, faculty.F_mname, faculty.F_suffix FROM faculty LEFT JOIN sections ON faculty.F_number = sections.S_adviser WHERE sections.S_adviser IS NULL");
-                                                                                            while ($FacultyData = $getFacultyData->fetch_assoc()) { ?>
-                                                                                                <option value="<?php echo $FacultyData['F_number'] ?>"><?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1); ?></option>
-                                                                                            <?php } ?>
+                                                                                                        ?>
                                                                                         </select>
+                                                                                                <?php }
+                                                                                                ?>
+                                                                                            </td>
+                                                                                            <td class="hatdog">
+                                                                                                <div style="text-align: center;">
+                                                                                                    <?php
+                                                                                                    if (mysqli_num_rows($getSection) == 0) { ?>
+                                                                                                        <button type="button" class="btn btn-secondary" disabled>Update</button>
+                                                                                                    <?php } else { ?>
+                                                                                                        <button type="button" class="btn btn-primary" id="changeSection">Update</button>
+                                                                                                    <?php }
+                                                                                                    ?>
+                                                                                                </div>
                                                                                     </td>
                                                                                 </tr>
                                                                             </form>
                                                                         <?php $rowCount++;
                                                                         }
+                                                                            } else { ?>
+                                                                                <tr>
+                                                                                    <td colspan="6">No Student Found</td>
+                                                                                </tr>
+                                                                            <?php }
+                                                                        } else { ?>
+                                                                            <tr>
+                                                                                <td colspan="6">Select Grade and Section First</td>
+                                                                            </tr>
+                                                                        <?php }
                                                                         ?>
                                                                     </tbody>
                                                                 </table>

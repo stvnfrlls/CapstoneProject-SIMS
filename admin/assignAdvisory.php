@@ -279,13 +279,19 @@ if (!isset($_SESSION['AD_number'])) {
                                               if (empty($AdvisoryData['S_adviser'])) {
                                                 echo "<option selected>assign a teacher</option>";
                                               } else {
-                                                echo "<option selected>" . $AssignedFacultyData['F_lname'] . ", " . $AssignedFacultyData['F_fname'] . " " . substr($AssignedFacultyData['F_mname'], 0, 1) . "</option>";
+                                                echo "<option selected value=" . $AdvisoryData['S_adviser'] . ">" . $AssignedFacultyData['F_lname'] . ", " . $AssignedFacultyData['F_fname'] . " " . substr($AssignedFacultyData['F_mname'], 0, 1) . "</option>";
                                               }
+
+                                              $checkadvisory = $mysqli->query("SELECT S_adviser FROM sections WHERE acadYear = '{$currentSchoolYear}' AND S_adviser IS NOT NULL");
+                                              if (mysqli_num_rows($checkadvisory) > 0) {
+                                                $getFacultyData = $mysqli->query("SELECT F_number, F_lname, F_fname, F_mname, F_suffix FROM faculty 
+                                                                                WHERE F_number 
+                                                                                NOT IN (SELECT S_adviser FROM sections WHERE S_adviser IS NOT NULL AND acadYear = '{$currentSchoolYear}')");
+                                              } else {
                                               $getFacultyData = $mysqli->query("SELECT faculty.F_number, faculty.F_lname, faculty.F_fname, faculty.F_mname, faculty.F_suffix FROM faculty 
-                                              LEFT JOIN sections ON faculty.F_number = sections.S_adviser
-                                              WHERE sections.S_adviser 
-                                              NOT IN (SELECT S_adviser FROM sections WHERE acadYear = '{$currentSchoolYear}' AND S_adviser IS NOT NULL)
-                                              ORDER BY faculty.F_lname");
+                                                                  LEFT JOIN sections ON faculty.F_number = sections.S_adviser");
+                                              }
+
                                               while ($FacultyData = $getFacultyData->fetch_assoc()) { ?>
                                                 <option value="<?php echo $FacultyData['F_number'] ?>"><?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1); ?></option>
                                               <?php } ?>

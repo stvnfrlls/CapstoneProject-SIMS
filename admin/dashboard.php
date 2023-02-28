@@ -67,7 +67,6 @@ if (!isset($_SESSION['AD_number'])) {
     $AttendancePerGrade[] = $Grade5PresentNow['COUNT(studentrecord.SR_number)'];
     $AttendancePerGrade[] = $Grade6PresentNow['COUNT(studentrecord.SR_number)'];
 
-    var_dump($AttendancePerGrade);
     $arrayAttendancePerGrade = json_encode($AttendancePerGrade);
     echo "<script>var arrayAttendance = " . $arrayAttendancePerGrade . ";</script>";
 
@@ -410,7 +409,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     </div>
                                                                     <div class="percentage">
                                                                         <div class="progress">
-                                                                            <div class="progress-bar" role="progressbar" style="width: 80%; background-color:#c02628;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                            <div class="progress-bar" role="progressbar" style="width: <?php echo $numofStudent['COUNT(*)']; ?>; background-color:#c02628;" aria-valuenow="<?php echo $numofStudent['COUNT(*)']; ?>" aria-valuemin="0" aria-valuemax="100"></div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -435,7 +434,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     </div>
                                                                     <div class="percentage">
                                                                         <div class="progress">
-                                                                            <div class="progress-bar" role="progressbar" style="width: 80%; background-color:#c02628;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                            <div class="progress-bar" role="progressbar" style="width: <?php echo $numofFaculty['COUNT(*)'] ?>; background-color:#c02628;" aria-valuenow="<?php echo $numofFaculty['COUNT(*)'] ?>" aria-valuemin="0" aria-valuemax="100"></div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -448,11 +447,17 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 <div class="row">
                                                                     <h3 style="font-size: 20px; text-align:left;">Total No. of Students Added Today</h3>
                                                                     <div class="d-flex flex-shrink-0">
-                                                                        <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628; padding-bottom:15px;">25</h1>
+                                                                        <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628; padding-bottom:15px;">
+                                                                            <?php
+                                                                            $countNumofAddedStudent = $mysqli->query("SELECT COUNT(AD_action) FROM admin_logs WHERE AD_action = 'Added Student' AND logDate IN (SELECT CURDATE())");
+                                                                            $AddedStudent = $countNumofAddedStudent->fetch_assoc();
+
+                                                                            echo $AddedStudent['COUNT(AD_action)'];
+                                                                            ?></h1>
                                                                     </div>
                                                                     <div class="percentage">
                                                                         <div class="progress">
-                                                                            <div class="progress-bar" role="progressbar" style="width: 80%; background-color:#c02628;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                            <div class="progress-bar" role="progressbar" style="width: <?php echo $AddedStudent['COUNT(AD_action)']; ?>; background-color:#c02628;" aria-valuenow="<?php echo $AddedStudent['COUNT(AD_action)']; ?>" aria-valuemin="0" aria-valuemax="100"></div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -469,30 +474,33 @@ if (!isset($_SESSION['AD_number'])) {
                                                                         <h4 class="card-title card-title-dash" style="margin-bottom:12px;">Activity History</h4>
                                                                     </div>
                                                                     <ul class="bullet-line-list">
-                                                                        <li>
-                                                                            <div class="d-flex justify-content-between">
-                                                                                <div style="text-align: left;"><span class="text-light-green">Camile Sabile</span> assign you a task</div>
-                                                                                <p>01/01/2023</p>
+                                                                        <?php
+                                                                        $getLoggedData = $mysqli->query("SELECT * FROM admin_logs WHERE acadYear = '{$currentSchoolYear}' ORDER BY logDate LIMIT 5 ");
+                                                                        if (mysqli_num_rows($getLoggedData) > 0) {
+                                                                            while ($LoggedData = $getLoggedData->fetch_assoc()) { ?>
+                                                                                <li>
+                                                                                    <div class="d-flex justify-content-between">
+                                                                                        <div style="text-align: left;"><span class="text-light-green"><?php echo $LoggedData['AD_name'] ?></span><?php echo $LoggedData['AD_action'] ?></div>
+                                                                                        <p><?php echo $LoggedData['logDate'] ?></p>
+                                                                                    </div>
+                                                                                </li>
+
+                                                                            <?php } ?>
+                                                                            <div class="list align-items-center pt-3">
+                                                                                <div class="wrapper w-100">
+                                                                                    <p class="mb-0">
+                                                                                        <a href="../admin/auditTrail.php" class="fw-bold text-primary">Show all <i class="fa fa-arrow-right ms-2"></i></a>
+                                                                                    </p>
+                                                                                </div>
                                                                             </div>
-                                                                        </li>
-                                                                        <li>
-                                                                            <div class="d-flex justify-content-between">
-                                                                                <div style="text-align: left;"><span class="text-light-green">Hazel Grace</span> assign you a task</div>
-                                                                                <p>01/01/2023</p>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li>
-                                                                            <div class="d-flex justify-content-between">
-                                                                                <div style="text-align: left;"><span class="text-light-green">Steven Frilles</span> assign you a task</div>
-                                                                                <p>01/01/2023</p>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li>
-                                                                            <div class="d-flex justify-content-between">
-                                                                                <div style="text-align: left;"><span class="text-light-green">Steven Frilles</span> assign you a task</div>
-                                                                                <p>01/01/2023</p>
-                                                                            </div>
-                                                                        </li>
+                                                                        <?php } else { ?>
+                                                                            <li>
+                                                                                <div class="d-flex justify-content-between">
+                                                                                    <div style="text-align: center;"><span class="text-light-green"></span>No Data Available yet</div>
+                                                                                </div>
+                                                                            </li>
+                                                                        <?php }
+                                                                        ?>
                                                                     </ul>
                                                                     <div class="list align-items-center pt-3">
                                                                         <div class="wrapper w-100">
@@ -532,19 +540,24 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                     <tbody>
                                                                                         <?php
                                                                                         $rowCount = 1;
-                                                                                        $studentPopulationData = $mysqli->query("SELECT * FROM studentrecord ORDER BY RAND()");
+                                                                                        $studentPopulationData = $mysqli->query("SELECT * FROM studentrecord ORDER BY RAND() LIMIT 5");
 
-                                                                                        while ($rowCount <= 10) {
-                                                                                            $studentPopulation = $studentPopulationData->fetch_assoc(); ?>
+                                                                                        if (mysqli_num_rows($studentPopulationData) > 0) {
+                                                                                            while ($studentPopulation = $studentPopulationData->fetch_assoc()) { ?>
+                                                                                                <tr>
+                                                                                                    <td><?php echo $rowCount; ?></td>
+                                                                                                    <td><?php echo $studentPopulation['SR_number']; ?></td>
+                                                                                                    <td><?php echo $studentPopulation['SR_lname'] .  ", " . $studentPopulation['SR_fname'] . " " . substr($studentPopulation['SR_mname'], 0, 1) ?></td>
+                                                                                                    <td><?php echo "Grade " . $studentPopulation['SR_grade'] . " - " . $studentPopulation['SR_section']; ?></td>
+                                                                                                </tr>
+                                                                                            <?php
+                                                                                                $rowCount++;
+                                                                                            }
+                                                                                        } else { ?>
                                                                                             <tr>
-                                                                                                <td><?php echo $rowCount; ?></td>
-                                                                                                <td><?php echo $studentPopulation['SR_number']; ?></td>
-                                                                                                <td><?php echo $studentPopulation['SR_lname'] .  ", " . $studentPopulation['SR_fname'] . " " . substr($studentPopulation['SR_mname'], 0, 1) ?></td>
-                                                                                                <td><?php echo "Grade " . $studentPopulation['SR_grade'] . " - " . $studentPopulation['SR_section']; ?></td>
+                                                                                                <td colspan="4">No Data Avaiable</td>
                                                                                             </tr>
-                                                                                        <?php
-                                                                                            $rowCount++;
-                                                                                        }
+                                                                                        <?php }
                                                                                         ?>
                                                                                     </tbody>
                                                                                 </table>
@@ -572,19 +585,25 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                     <tbody>
                                                                                         <?php
                                                                                         $rowCount = 1;
-                                                                                        $facultyPopulationData = $mysqli->query("SELECT * FROM faculty ORDER BY RAND()");
+                                                                                        $facultyPopulationData = $mysqli->query("SELECT * FROM faculty ORDER BY RAND() LIMIT 5");
 
-                                                                                        while ($rowCount <= 5) {
-                                                                                            $facultyPopulation = $facultyPopulationData->fetch_assoc(); ?>
+                                                                                        if (mysqli_num_rows($facultyPopulationData) > 0) {
+                                                                                            while ($rowCount <= 5) {
+                                                                                                $facultyPopulation = $facultyPopulationData->fetch_assoc(); ?>
+                                                                                                <tr>
+                                                                                                    <td><?php echo $rowCount; ?></td>
+                                                                                                    <td><?php echo $facultyPopulation['F_number']; ?></td>
+                                                                                                    <td><?php echo $facultyPopulation['F_department']; ?></td>
+                                                                                                    <td><?php echo $facultyPopulation['F_lname'] .  ", " . $facultyPopulation['F_fname'] . " " . substr($facultyPopulation['F_mname'], 0, 1) ?></td>
+                                                                                                </tr>
+                                                                                            <?php
+                                                                                                $rowCount++;
+                                                                                            }
+                                                                                        } else { ?>
                                                                                             <tr>
-                                                                                                <td><?php echo $rowCount; ?></td>
-                                                                                                <td><?php echo $facultyPopulation['F_number']; ?></td>
-                                                                                                <td><?php echo $facultyPopulation['F_department']; ?></td>
-                                                                                                <td><?php echo $facultyPopulation['F_lname'] .  ", " . $facultyPopulation['F_fname'] . " " . substr($facultyPopulation['F_mname'], 0, 1) ?></td>
+                                                                                                <td colspan="4">No Data Avaiable</td>
                                                                                             </tr>
-                                                                                        <?php
-                                                                                            $rowCount++;
-                                                                                        }
+                                                                                        <?php }
                                                                                         ?>
                                                                                     </tbody>
                                                                                 </table>
@@ -606,19 +625,29 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     </div>
 
                                                                     <?php
-                                                                    $getAnnouncementData = $mysqli->query("SELECT * FROM announcement");
+                                                                    $getAnnouncementData = $mysqli->query("SELECT * FROM announcement ORDER BY date");
 
-                                                                    while ($announcement = $getAnnouncementData->fetch_assoc()) { ?>
+                                                                    if (mysqli_num_rows($getAnnouncementData) > 0) {
+                                                                        while ($announcement = $getAnnouncementData->fetch_assoc()) { ?>
+                                                                            <div class="col-lg-12 wow " style="padding-bottom: 5px;">
+                                                                                <div class="blog-item bg-light rounded overflow-hidden">
+                                                                                    <div class="p-4">
+                                                                                        <div class="d-flex mb-3">
+                                                                                            <small class="me-3"><i class="far fa-user text-primary me-2"></i><?php echo $announcement['author']; ?></small>
+                                                                                            <small><i class="far fa-calendar-alt text-primary me-2"></i><?php echo $announcement['date']; ?></small>
+                                                                                        </div>
+                                                                                        <h4 class="mb-3"><?php echo $announcement['header']; ?></h4>
+                                                                                        <p><?php echo $announcement['msg']; ?></p>
+                                                                                        <a class="text-uppercase" href="viewannouncement.php?postID=<?php echo $announcement['ANC_ID']; ?>">Read More <i class="bi bi-arrow-right"></i></a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        <?php }
+                                                                    } else { ?>
                                                                         <div class="col-lg-12 wow " style="padding-bottom: 5px;">
                                                                             <div class="blog-item bg-light rounded overflow-hidden">
-                                                                                <div class="p-4">
-                                                                                    <div class="d-flex mb-3">
-                                                                                        <small class="me-3"><i class="far fa-user text-primary me-2"></i><?php echo $announcement['author']; ?></small>
-                                                                                        <small><i class="far fa-calendar-alt text-primary me-2"></i><?php echo $announcement['date']; ?></small>
-                                                                                    </div>
-                                                                                    <h4 class="mb-3"><?php echo $announcement['header']; ?></h4>
-                                                                                    <p><?php echo $announcement['msg']; ?></p>
-                                                                                    <a class="text-uppercase" href="viewannouncement.php?postID=<?php echo $announcement['ANC_ID']; ?>">Read More <i class="bi bi-arrow-right"></i></a>
+                                                                                <div class="p-4 text-center">
+                                                                                    <h4 class="mb-3">NO ANNOUNCEMENT YET</h4>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
