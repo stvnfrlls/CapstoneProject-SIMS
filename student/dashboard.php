@@ -1,5 +1,6 @@
 <?php
 require_once("../assets/php/server.php");
+include('../assets/phpqrcode/qrlib.php');
 
 if (!isset($_SESSION['SR_number'])) {
   header('Location: ../auth/login.php');
@@ -42,6 +43,9 @@ if (!isset($_SESSION['SR_number'])) {
   <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
   <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
   <link href="../assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <link href="../assets/css/sweetAlert.css" rel="stylesheet">
 
   <!-- Customized Bootstrap Stylesheet -->
   <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
@@ -129,7 +133,7 @@ if (!isset($_SESSION['SR_number'])) {
                                   if (!empty($SectionInfo['S_adviser'])) {
                                     echo $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'] . " " . substr($AdvisorInfo['F_mname'], 0, 1) . ". " . $AdvisorInfo['F_suffix'];
                                   } else {
-                                    echo "Advisor not yet Assigned";
+                                    echo "Advisor not yet assigned";
                                   }
                                   ?>
                                 </p>
@@ -225,7 +229,7 @@ if (!isset($_SESSION['SR_number'])) {
                           <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
                             <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-qrcode"></i></h1>
                           </div>
-                          <a href="">
+                          <a id="viewQR">
                             <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">QR Code</h3>
                           </a>
                           <p class="d-flex flex-shrink-0 text-center">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
@@ -260,7 +264,6 @@ if (!isset($_SESSION['SR_number'])) {
                     </div>
                   </div>
                   <div class="row">
-
                     <div class="row">
                       <div class="col-lg-6 offset-lg-3" style="margin-top: 30px;">
                         <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
@@ -339,31 +342,39 @@ if (!isset($_SESSION['SR_number'])) {
                       <div class="section-title section-title-sm position-relative pb-3 mb-4">
                         <h3 class="mb-0" style="text-align:left;">School Announcements</h3>
                       </div>
-
                       <?php
                       $getAnnouncementData = $mysqli->query("SELECT * FROM announcement");
-
-                      while ($announcement = $getAnnouncementData->fetch_assoc()) { ?>
+                      if (mysqli_num_rows($getAnnouncementData) > 0) {
+                        while ($announcement = $getAnnouncementData->fetch_assoc()) { ?>
+                          <div class="col-lg-12 wow " style="padding-bottom: 5px;">
+                            <div class="blog-item bg-light rounded overflow-hidden">
+                              <div class="p-4">
+                                <div class="d-flex mb-3">
+                                  <small class="me-3"><i class="far fa-user text-primary me-2"></i><?php echo $announcement['author']; ?></small>
+                                  <small><i class="far fa-calendar-alt text-primary me-2"></i><?php echo $announcement['date']; ?></small>
+                                </div>
+                                <h4 class="mb-3"><?php echo $announcement['header']; ?></h4>
+                                <p><?php echo $announcement['msg']; ?></p>
+                                <a class="text-uppercase" href="viewannouncement.php?postID=<?php echo $announcement['ANC_ID']; ?>">Read More <i class="bi bi-arrow-right"></i></a>
+                              </div>
+                            </div>
+                          </div>
+                        <?php } ?>
+                        <section class="popular-courses-area courses-page">
+                          <div style="text-align: center;">
+                            <a href="#" class="primary-btn text-uppercase" style="width: auto;">View More School Announcements</a>
+                          </div>
+                        </section>
+                      <?php } else { ?>
                         <div class="col-lg-12 wow " style="padding-bottom: 5px;">
                           <div class="blog-item bg-light rounded overflow-hidden">
-                            <div class="p-4">
-                              <div class="d-flex mb-3">
-                                <small class="me-3"><i class="far fa-user text-primary me-2"></i><?php echo $announcement['author']; ?></small>
-                                <small><i class="far fa-calendar-alt text-primary me-2"></i><?php echo $announcement['date']; ?></small>
-                              </div>
-                              <h4 class="mb-3"><?php echo $announcement['header']; ?></h4>
-                              <p><?php echo $announcement['msg']; ?></p>
-                              <a class="text-uppercase" href="viewannouncement.php?postID=<?php echo $announcement['ANC_ID']; ?>">Read More <i class="bi bi-arrow-right"></i></a>
+                            <div class="p-4 text-center">
+                              <h4>NO ANNOUNCEMENT YET</h4>
                             </div>
                           </div>
                         </div>
                       <?php }
                       ?>
-                      <section class="popular-courses-area courses-page">
-                        <div style="text-align: center;">
-                          <a href="#" class="primary-btn text-uppercase" style="width: auto;">View More School Announcements</a>
-                        </div>
-                      </section>
                     </div>
                   </div>
                 </div>
@@ -409,8 +420,29 @@ if (!isset($_SESSION['SR_number'])) {
   <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/js/admin/dashboard.js"></script>
 
+  <?php
+  $getQRData = $mysqli->query("SELECT SR_number FROM studentrecord WHERE SR_number = '{$_SESSION['SR_number']}'");
+  if (mysqli_num_rows($getQRData) == 1) {
+    $QRData =  $getQRData->fetch_assoc();
 
+    $tempDir = '../assets/temp/';
+    if (!file_exists($tempDir)) {
+      mkdir($tempDir);
+    }
+    $qrcode_data = $QRData['SR_number'];
+    QRcode::png($qrcode_data,  $tempDir . '' . $qrcode_data . '.png', QR_ECLEVEL_L);
+  }
+  ?>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+  <script>
+    const viewQR = document.querySelector("#viewQR");
 
+    viewQR.addEventListener("click", function() {
+      Swal.fire({
+        imageUrl: '<?php echo "../assets/temp/" . $QRData['SR_number'] . ".png"; ?>',
+      })
+    });
+  </script>
 </body>
 
 </html>

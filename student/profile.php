@@ -1,5 +1,6 @@
 <?php
 require_once("../assets/php/server.php");
+include('../assets/phpqrcode/qrlib.php');
 
 if (!isset($_SESSION['SR_number'])) {
   header('Location: ../auth/login.php');
@@ -45,6 +46,9 @@ if (!isset($_SESSION['SR_number'])) {
   <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
   <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
   <link href="../assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <link href="../assets/css/sweetAlert.css" rel="stylesheet">
 
   <!-- Customized Bootstrap Stylesheet -->
   <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
@@ -112,14 +116,22 @@ if (!isset($_SESSION['SR_number'])) {
               <p class="text-muted mb-4"><?php echo $studentInfo['SR_grade'] . " - " . $studentInfo['SR_section'] ?></p>
               <div class="d-flex justify-content-center mb-2">
                 <button type="button" class="btn btn-outline-primary ms-1" onclick="location.href='../student/editProfile.php'">Edit</button>
-                <button type="button" class="btn btn-outline-primary ms-1" onclick="openImage()">View QR Code</button>
+                <button type="button" class="btn btn-outline-primary ms-1" id="viewQR">View QR Code</button>
               </div>
             </div>
           </div>
           <div class="card mb-4">
             <div class="card-body">
               <p class="mb-4" style="text-align: center; color:#c02628;">Class Adviser</p>
-              <p class="mb-1" style="font-size: .90rem;"><?php echo $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'] . " " . substr($AdvisorInfo['F_mname'], 0, 1) . ". " . $AdvisorInfo['F_suffix'] ?></p>
+              <p class="mb-1" style="font-size: .90rem; text-align: center;">
+                <?php
+                if (mysqli_num_rows($getAdvisorInfo) > 0) {
+                  echo $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'] . " " . substr($AdvisorInfo['F_mname'], 0, 1) . ". " . $AdvisorInfo['F_suffix'];
+                } else {
+                  echo "Advisor not yet assigned";
+                }
+                ?>
+              </p>
 
             </div>
           </div>
@@ -128,10 +140,16 @@ if (!isset($_SESSION['SR_number'])) {
               <p class="mb-4" style="text-align: center; color:#c02628;">Class Schedule</p>
               <?php
               $getSchedule = $mysqli->query("SELECT * FROM workschedule WHERE SR_section = '{$studentInfo['SR_section']}'");
-              while ($Schedule = $getSchedule->fetch_assoc()) { ?>
-                <p class="mb-1" style="font-size: .90rem;"><?php echo $Schedule['S_subject'] ?></p>
+              if (mysqli_num_rows($getSchedule) > 0) {
+                while ($Schedule = $getSchedule->fetch_assoc()) { ?>
+                  <p class="mb-1" style="font-size: .90rem;"><?php echo $Schedule['S_subject'] ?></p>
+                  <div class="progress rounded" style="height: 25px;">
+                    <p style="font-size: .77rem; margin: 5px 0px 0px 7px">MONDAY-FRIDAY (<?php echo $Schedule['WS_start_time'] . " - " . $Schedule['WS_end_time'] ?>)</p>
+                  </div>
+                <?php }
+              } else { ?>
                 <div class="progress rounded" style="height: 25px;">
-                  <p style="font-size: .77rem; margin: 5px 0px 0px 7px">MONDAY-FRIDAY (<?php echo $Schedule['WS_start_time'] . " - " . $Schedule['WS_end_time'] ?>)</p>
+                  <p style="font-size: .77rem; margin: 5px 0px 0px 7px; text-align: center;">NO DATA</p>
                 </div>
               <?php }
               ?>
@@ -309,17 +327,6 @@ if (!isset($_SESSION['SR_number'])) {
   </div>
   <!-- Footer End -->
 
-  <script>
-    function openImage() {
-      var width = window.innerWidth * 0.8; // calculate the width of the new window
-      var height = window.innerHeight * 0.8; // calculate the height of the new window
-      var left = (window.innerWidth - width) / 2; // calculate the horizontal position of the new window
-      var top = (window.innerHeight - height) / 2; // calculate the vertical position of the new window
-      var features = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top; // specify the features of the new window
-      var image = window.open("../assets/img/profile.jpg", "Image", features); // open the new window and display the image inside it
-    }
-  </script>
-
   <!-- JavaScript Libraries -->
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -361,6 +368,28 @@ if (!isset($_SESSION['SR_number'])) {
   <script src="../assets/js/educ/mail-script.js"></script>
   <script src="../assets/js/educ/main.js"></script>
 
+  <?php
+  $getQRData = $mysqli->query("SELECT SR_number FROM studentrecord WHERE SR_number = '{$_SESSION['SR_number']}'");
+  if (mysqli_num_rows($getQRData) == 1) {
+    $QRData =  $getQRData->fetch_assoc();
+
+    $tempDir = '../assets/temp/';
+    if (!file_exists($tempDir)) {
+      mkdir($tempDir);
+    }
+    $qrcode_data = $QRData['SR_number'];
+    QRcode::png($qrcode_data,  $tempDir . '' . $qrcode_data . '.png', QR_ECLEVEL_L);
+  }
+  ?>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+  <script>
+    const viewQR = document.getElementById('viewQR');
+    viewQR.addEventListener('click', function() {
+      Swal.fire({
+        imageUrl: '<?php echo "../assets/temp/" . $QRData['SR_number'] . ".png"; ?>',
+      })
+    })
+  </script>
 </body>
 
 </html>
