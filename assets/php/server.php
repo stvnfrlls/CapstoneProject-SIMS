@@ -457,6 +457,18 @@ if (isset($_POST['editReminders'])) {
         echo "error" . $mysqli->error;
     }
 }
+if (isset($_POST['attendanceReport'])) {
+    $F_number = $_SESSION['F_number'];
+    $subjectName = $_POST['subjectName'];
+    $SR_number = $_POST['SR_number'];
+    $SR_grade = $_GET['SR_grade'];
+    $SR_section = $_GET['SR_section'];
+    $RP_reportDate = $_POST['RP_reportDate'];
+    $RP_reportTime = $_POST['RP_reportTime'];
+
+    $reportAttendanceIssue = $mysqli->query("INSERT INTO attendance_student_report(F_number, subjectName, SR_number, SR_grade, SR_section, RP_reportDate, RP_reportTime)
+                                            VALUES('{$F_number}', '{$subjectName}', '{$SR_number}', '{$SR_grade}', '{$SR_section}', '{$RP_reportDate}', '{$RP_reportTime}')");
+}
 //End
 
 //Admin Process
@@ -884,8 +896,25 @@ if (isset($_POST['releaseGrades']) && !empty($_SESSION['AD_number'])) {
 
     $getUnreleasedGrades = $mysqli->query("SELECT * FROM grades WHERE SR_gradeLevel = '{$grade}' AND SR_section = '{$section}' AND acadYear = '{$currentSchoolYear}'");
     while ($Grades = $getUnreleasedGrades->fetch_assoc()) {
-        $insertUnreleasedGrades = $mysqli->query("INSERT INTO student_grades(SR_number, acadYear, SR_gradeLevel, SR_section, G_learningArea, G_gradesQ1, G_gradesQ2, G_gradesQ3, G_gradesQ4, G_finalgrade)
-                                VALUES('{$Grades['SR_number']}', '{$Grades['acadYear']}', '{$Grades['SR_gradeLevel']}', '{$Grades['SR_section']}', '{$Grades['G_learningArea']}', '{$Grades['G_gradesQ1']}', '{$Grades['G_gradesQ2']}', '{$Grades['G_gradesQ3']}', '{$Grades['G_gradesQ4']}', '{$Grades['G_finalgrade']}')");
+        $checkIfexisting = $mysqli->query("SELECT * FROM student_grades WHERE SR_gradeLevel = '{$grade}' AND SR_section = '{$section}' AND acadYear = '{$currentSchoolYear}'");
+        if (mysqli_num_rows($checkIfexisting) > 0) {
+            $updateIfexistingUnreleasedGrades = $mysqli->query("UPDATE student_grades 
+                                                            SET G_gradesQ1 = '{$Grades['G_gradesQ1']}', 
+                                                                G_gradesQ2 = '{$Grades['G_gradesQ2']}', 
+                                                                G_gradesQ3 = '{$Grades['G_gradesQ3']}', 
+                                                                G_gradesQ4 = '{$Grades['G_gradesQ4']}', 
+                                                                G_finalgrade = '{$Grades['G_finalgrade']}'
+                                                            WHERE
+                                                            SR_number = '{$Grades['SR_number']}' AND
+                                                            acadYear = '{$Grades['acadYear']}' AND
+                                                            SR_gradeLevel = '{$Grades['SR_gradeLevel']}' AND 
+                                                            SR_section = '{$Grades['SR_section']}' AND
+                                                            G_learningArea = '{$Grades['G_learningArea']}'");
+        } else {
+            $insertUnreleasedGrades = $mysqli->query("INSERT INTO student_grades(SR_number, acadYear, SR_gradeLevel, SR_section, G_learningArea, G_gradesQ1, G_gradesQ2, G_gradesQ3, G_gradesQ4, G_finalgrade)
+                                                      VALUES('{$Grades['SR_number']}', '{$Grades['acadYear']}', '{$Grades['SR_gradeLevel']}', '{$Grades['SR_section']}', '{$Grades['G_learningArea']}', 
+                                                             '{$Grades['G_gradesQ1']}', '{$Grades['G_gradesQ2']}', '{$Grades['G_gradesQ3']}', '{$Grades['G_gradesQ4']}', '{$Grades['G_finalgrade']}')");
+        }
     }
 }
 if (isset($_POST['addSubject']) && !empty($_SESSION['AD_number'])) {
