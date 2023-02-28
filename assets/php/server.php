@@ -7,78 +7,6 @@ $errors = array();
 $year = date('Y');
 $month = date('m');
 
-function validate($data)
-{
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-}
-function generatePassword()
-{
-    // characters to choose from
-    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?";
-    // password length
-    $passwordLength = 8;
-    // initialize the password as an empty string
-    $password = "";
-    // loop until the desired length is reached
-    for ($i = 0; $i < $passwordLength; $i++) {
-        // pick a random character from the set of characters
-        $password .= $chars[rand(0, strlen($chars) - 1)];
-    }
-    // check if the password contains at least one uppercase letter, one number, and one special character
-    if (!preg_match("/[A-Z]/", $password) || !preg_match("/[0-9]/", $password) || !preg_match("/[!@#\$%\^&\*\(\)_\-=\+;:\,\.\?]/", $password)) {
-        // if not, generate a new password
-        $password = generatePassword();
-    }
-    // return the generated password
-    return $password;
-}
-function generateOTP()
-{
-    $otp = "";
-    for ($i = 0; $i < 6; $i++) {
-        $otp .= mt_rand(0, 9);
-    }
-    return $otp;
-}
-
-function timeRoundUp($data)
-{
-    // Create a DateTime object for the input time
-    $data = new DateTime($data);
-
-    // Get the minute of the input time
-    $minute = (int) $data->format("i");
-
-    // Round up the minute to the nearest quarter hour
-    if ($minute > 0 && $minute <= 15) {
-        $minute = 15;
-    } elseif ($minute > 15 && $minute <= 30) {
-        $minute = 30;
-    } elseif ($minute > 30 && $minute <= 45) {
-        $minute = 45;
-    } else {
-        $data->add(new DateInterval('PT1H'));
-        $minute = 0;
-    }
-
-    // Set the rounded minute to the DateTime object
-    $data->setTime((int) $data->format("H"), $minute);
-
-    // Output the rounded time
-    return $data->format("H:i");
-}
-function timeMinusOneMinute($data) //sa endtime lang to ilalagay
-{
-    $convertedTime = strtotime($data);
-    $timeMinusOneMinute = $convertedTime - 60;
-    $data = date("H:i", $timeMinusOneMinute);
-
-    return $data;
-}
-
 $getSchoolYearInfo = $mysqli->query("SELECT * FROM acad_year");
 $SchoolYearData = $getSchoolYearInfo->fetch_assoc();
 $currentSchoolYear = $SchoolYearData['currentYear'] . "-" . $SchoolYearData['endYear'];
@@ -950,6 +878,16 @@ if (isset($_POST['UpdateGrade']) && !empty($_SESSION['AD_number'])) {
     $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
     VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
 }
+if (isset($_POST['releaseGrades']) && !empty($_SESSION['AD_number'])) {
+    $grade =  $_GET['Grade'];
+    $section = $_GET['Section'];
+
+    $getUnreleasedGrades = $mysqli->query("SELECT * FROM grades WHERE SR_gradeLevel = '{$grade}' AND SR_section = '{$section}' AND acadYear = '{$currentSchoolYear}'");
+    while ($Grades = $getUnreleasedGrades->fetch_assoc()) {
+        $insertUnreleasedGrades = $mysqli->query("INSERT INTO student_grades(SR_number, acadYear, SR_gradeLevel, SR_section, G_learningArea, G_gradesQ1, G_gradesQ2, G_gradesQ3, G_gradesQ4, G_finalgrade)
+                                VALUES('{$Grades['SR_number']}', '{$Grades['acadYear']}', '{$Grades['SR_gradeLevel']}', '{$Grades['SR_section']}', '{$Grades['G_learningArea']}', '{$Grades['G_gradesQ1']}', '{$Grades['G_gradesQ2']}', '{$Grades['G_gradesQ3']}', '{$Grades['G_gradesQ4']}', '{$Grades['G_finalgrade']}')");
+    }
+}
 if (isset($_POST['addSubject']) && !empty($_SESSION['AD_number'])) {
     $subjectName = $mysqli->real_escape_string($_POST['sbjName']);
     $minYearLevel = $mysqli->real_escape_string($_POST['minYearLevel']);
@@ -1312,4 +1250,97 @@ if (isset($_POST['enableFourth']) && !empty($_SESSION['AD_number'])) {
     $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
     VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
 }
-// 
+//
+
+//functions
+function validate($data)
+{
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+function generatePassword()
+{
+    // characters to choose from
+    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?";
+    // password length
+    $passwordLength = 8;
+    // initialize the password as an empty string
+    $password = "";
+    // loop until the desired length is reached
+    for ($i = 0; $i < $passwordLength; $i++) {
+        // pick a random character from the set of characters
+        $password .= $chars[rand(0, strlen($chars) - 1)];
+    }
+    // check if the password contains at least one uppercase letter, one number, and one special character
+    if (!preg_match("/[A-Z]/", $password) || !preg_match("/[0-9]/", $password) || !preg_match("/[!@#\$%\^&\*\(\)_\-=\+;:\,\.\?]/", $password)) {
+        // if not, generate a new password
+        $password = generatePassword();
+    }
+    // return the generated password
+    return $password;
+}
+function generateOTP()
+{
+    $otp = "";
+    for ($i = 0; $i < 6; $i++) {
+        $otp .= mt_rand(0, 9);
+    }
+    return $otp;
+}
+
+function timeRoundUp($data)
+{
+    // Create a DateTime object for the input time
+    $data = new DateTime($data);
+
+    // Get the minute of the input time
+    $minute = (int) $data->format("i");
+
+    // Round up the minute to the nearest quarter hour
+    if ($minute > 0 && $minute <= 15) {
+        $minute = 15;
+    } elseif ($minute > 15 && $minute <= 30) {
+        $minute = 30;
+    } elseif ($minute > 30 && $minute <= 45) {
+        $minute = 45;
+    } else {
+        $data->add(new DateInterval('PT1H'));
+        $minute = 0;
+    }
+
+    // Set the rounded minute to the DateTime object
+    $data->setTime((int) $data->format("H"), $minute);
+
+    // Output the rounded time
+    return $data->format("H:i");
+}
+function timeMinusOneMinute($data) //sa endtime lang to ilalagay
+{
+    $convertedTime = strtotime($data);
+    $timeMinusOneMinute = $convertedTime - 60;
+    $data = date("H:i", $timeMinusOneMinute);
+
+    return $data;
+}
+
+function countWeekdaysInMonth($year, $month)
+{
+    $numDays = cal_days_in_month(CAL_GREGORIAN, $month, $year); // get the number of days in the month
+    $weekdays = 0; // initialize the weekday count
+
+    // loop through each day in the month
+    for ($day = 1; $day <= $numDays; $day++) {
+        $timestamp = strtotime("$year-$month-$day"); // get the UNIX timestamp for the current day
+        $dayOfWeek = date('N', $timestamp); // get the day of the week as a number (1 = Monday, 7 = Sunday)
+
+        // check if the current day is a weekday (i.e., not a Saturday or Sunday)
+        if ($dayOfWeek <= 5) {
+            $weekdays++; // increment the weekday count
+        }
+    }
+
+    return $weekdays;
+}
+//end functions
