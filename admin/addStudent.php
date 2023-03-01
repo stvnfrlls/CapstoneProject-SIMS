@@ -487,8 +487,6 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 </div>
                                                             </div>
                                                         </div>
-
-
                                                         <div class="row" style="padding-bottom: 15px;">
                                                             <div class="col-md-2">
                                                                 <div class="col-sm-12">
@@ -507,7 +505,6 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 </div>
                                                             </div>
                                                         </div>
-
                                                         <div id="additionalInputs" style="display: none;">
                                                             <?php
                                                             $FetcherData_Array = array();
@@ -577,51 +574,6 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 </div>
                                                             </div>
                                                         </div>
-
-
-                                                        <div class="row" style="padding-bottom: 15px;">
-                                                            <div class="col-md-2">
-                                                                <div class="col-sm-12">
-                                                                    <label class="form-check-label" for="option1"> <input type="checkbox" class="form-check-input" id="option1" name="option1" value="option1" onclick="handleCheckboxClick(this)"> With Fetcher</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <div class="col-sm-12">
-                                                                    <label class="form-check-label" for="option2"> <input type="checkbox" class="form-check-input" id="option2" name="option2" value="option2" onclick="handleCheckboxClick(this)"> Without Fetcher</label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div id="additionalInputs" style="display: none;">
-                                                            <div class="row" style="padding-bottom: 15px;">
-                                                                <div class="col-md-4">
-                                                                    <label label class="col-sm-12 col-form-label">Fetcher Name </span></label>
-                                                                    <div class="col-sm-12">
-                                                                        <select id="" class="form-select" name="" required>
-                                                                            <option selected></option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <label label class="col-sm-12 col-form-label">Fetcher Name</span></label>
-                                                                    <div class="col-sm-12">
-                                                                        <select id="" class="form-select" name="" required>
-                                                                            <option selected></option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <label label class="col-sm-12 col-form-label">Fetcher Name</span></label>
-                                                                    <div class="col-sm-12">
-                                                                        <select id="" class="form-select" name="" required>
-                                                                            <option selected></option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-
                                                     </div>
                                                 </div>
                                             </div>
