@@ -491,9 +491,25 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
           FormGrades.submit();
         }
       })
-
     })
   </script>
+  <script>
+    function sweetalert() {
+      Swal.fire({
+        text: 'Encoding of Grades is not yet open',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      }).then((result) => {
+        window.location.replace("./dashboard.php");
+      })
+    }
+  </script>
+  <?php
+  $checkEncodeGradePermission = $mysqli->query("SELECT quarterStatus FROM quartertable WHERE quarterTag = 'FORMS' AND quarterStatus = 'enabled'");
+  if (mysqli_num_rows($checkEncodeGradePermission) == 0) {
+    echo '<script>sweetalert();</script>';
+  }
+  ?>
 </body>
 
 </html>

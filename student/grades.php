@@ -116,12 +116,24 @@ if (!isset($_SESSION['SR_number'])) {
             <div class="col m-3">
                 <table id="head" class="table" style="margin-bottom:20px;">
                     <tr>
-                        <td class="hatdog" style="text-align: left;">Name: <?php echo $studentData['SR_lname'] . ", " . $studentData['SR_fname'] . " " . substr($studentData['SR_mname'], 0, 1) ?></td>
+                        <td class="hatdog" style="text-align: left;">
+                            Name: <?php echo $studentData['SR_lname'] . ", " . $studentData['SR_fname'] . " " . substr($studentData['SR_mname'], 0, 1) ?>
+                        </td>
                         <td class="hatdog" style="text-align: left;">Student Number: <?php echo $studentData['SR_number']; ?></td>
                     </tr>
                     <tr>
-                        <td class="hatdog" style="text-align: left;">Grade and Section: <?php echo $GradeSectionData['S_yearLevel'] . " - " . $GradeSectionData['S_name']; ?></td>
-                        <td class="hatdog" style="text-align: left;">Adviser: <?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1) ?></td>
+                        <td class="hatdog" style="text-align: left;">
+                            Grade and Section: <?php echo $GradeSectionData['S_yearLevel'] . " - " . $GradeSectionData['S_name']; ?>
+                        </td>
+                        <td class="hatdog" style="text-align: left;">
+                            <?php
+                            if (mysqli_num_rows($Faculty) > 0) {
+                                echo "Adviser: " . $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1);
+                            } else {
+                                echo "Adviser: NO ADVISER ASSIGNED YET";
+                            }
+                            ?>
+                        </td>
                     </tr>
                 </table>
                 <div class="">
@@ -318,7 +330,7 @@ if (!isset($_SESSION['SR_number'])) {
                                     }
                                 } else { ?>
                                     <tr>
-                                        <td colspan="10">No Data Available</td>
+                                        <td colspan="10">NO DATA AVAILABLE</td>
                                     </tr>
                                 <?php }
                                 ?>
@@ -350,7 +362,7 @@ if (!isset($_SESSION['SR_number'])) {
                     </div>
                 </div>
 
-                <div class="">
+                <div class="mb-5">
                     <div class="table-responsive">
                         <table class="table text-center" style="margin-top: 30px;">
                             <thead>

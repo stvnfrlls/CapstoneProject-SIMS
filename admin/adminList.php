@@ -33,6 +33,9 @@ if (!isset($_SESSION['AD_number'])) {
     <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="../assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
 
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="../assets/css/sweetAlert.css" rel="stylesheet">
+
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
@@ -276,6 +279,5 @@ if (!isset($_SESSION['AD_number'])) {
 <script src="../assets/js/admin/off-canvas.js"></script>
 <script src="../assets/js/admin/progressbar.min.js"></script>
 <script src="../assets/js/admin/Chart.min.js"></script>
-
 
 </html>

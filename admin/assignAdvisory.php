@@ -33,6 +33,9 @@ if (!isset($_SESSION['AD_number'])) {
   <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
   <link href="../assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
 
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <link href="../assets/css/sweetAlert.css" rel="stylesheet">
+
   <!-- Customized Bootstrap Stylesheet -->
   <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
@@ -264,7 +267,7 @@ if (!isset($_SESSION['AD_number'])) {
                                       $getAdvisoryData = $mysqli->query("SELECT * FROM sections WHERE acadYear = '{$currentSchoolYear}'");
                                     }
                                     while ($AdvisoryData = $getAdvisoryData->fetch_assoc()) { ?>
-                                      <form action="" method="post">
+                                      <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="assignAdvisorForm">
                                         <tr>
                                           <td class="hatdog"><?php echo $rowCount; ?></td>
                                           <td class="hatdog">
@@ -288,7 +291,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                 WHERE F_number 
                                                                                 NOT IN (SELECT S_adviser FROM sections WHERE S_adviser IS NOT NULL AND acadYear = '{$currentSchoolYear}')");
                                               } else {
-                                              $getFacultyData = $mysqli->query("SELECT faculty.F_number, faculty.F_lname, faculty.F_fname, faculty.F_mname, faculty.F_suffix FROM faculty 
+                                                $getFacultyData = $mysqli->query("SELECT faculty.F_number, faculty.F_lname, faculty.F_fname, faculty.F_mname, faculty.F_suffix FROM faculty 
                                                                   LEFT JOIN sections ON faculty.F_number = sections.S_adviser");
                                               }
 
@@ -298,7 +301,7 @@ if (!isset($_SESSION['AD_number'])) {
                                             </select>
                                           </td>
                                           <td class="hatdog">
-                                            <input type="submit" class="btn btn-primary" name="assignAdvisor" value="SET" style="text-align: center; color:#ffffff;">
+                                            <input type="button" class="btn btn-primary" id="assignAdvisor" name="assignAdvisor" value="SET" style="text-align: center; color:#ffffff;">
                                           </td>
                                         </tr>
                                       </form>
@@ -341,16 +344,33 @@ if (!isset($_SESSION['AD_number'])) {
   </div>
   <!-- Footer End -->
 
-  <!-- Back to Top -->
-  <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
-
-
   <!-- Template Javascript -->
   <script src="../assets/js/main.js"></script>
 
   <script src="../assets/js/admin/vendor.bundle.base.js"></script>
   <script src="../assets/js/admin/off-canvas.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+  <script>
+    const assignAdvisor = document.getElementById('assignAdvisor');
+    const assignAdvisorForm = document.getElementById('assignAdvisorForm')
+    assignAdvisor.addEventListener('click', function() {
+      Swal.fire({
+        title: 'Are you sure you want to proceed with this action?',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: `No`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: 'Form submitted!',
+            icon: 'success',
+          }).then(() => {
+            assignAdvisorForm.submit();
+          });
+        }
+      })
+    })
+  </script>
 </body>
 
 </html>

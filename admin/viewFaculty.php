@@ -216,7 +216,7 @@ if (!isset($_SESSION['AD_number'])) {
                             <h4 class="card-title">Profile</h4>
                             <div class="row" style="padding-bottom: 15px;">
                               <div class="col-md-12 col-sm-6" style="text-align: center; margin-bottom: 20px; margin-top: 10px;">
-                                <img src="../assets/img/profile.jpg" alt="avatar" class="rounded-circle img-fluidr" style="width: 150px;">
+                                <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluidr" style="width: 150px;">
                               </div>
                             </div>
                             <div class="row" style="padding-bottom: 15px;">

@@ -336,11 +336,11 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                             <?php
                                                                                             if ($getAvgGrade['finalgrade'] >= 75) { ?>
                                                                                                 <select class="form-select" name="studentStatus[]" aria-label="Default select example">
-                                                                                                <option value=""></option>
-                                                                                                <option value="Dropped">Dropped</option>
-                                                                                                <option value="MovingUp">Moving Up</option>
-                                                                                                <option value="Transferring">Transferring</option>
-                                                                                            </select>
+                                                                                                    <option value=""></option>
+                                                                                                    <option value="Dropped">Dropped</option>
+                                                                                                    <option value="MovingUp">Moving Up</option>
+                                                                                                    <option value="Transferring">Transferring</option>
+                                                                                                </select>
                                                                                             <?php
                                                                                             } else { ?>
                                                                                                 <select class="form-select" name="studentStatus" aria-label="Default select example" disabled>
@@ -452,8 +452,9 @@ if (!isset($_SESSION['AD_number'])) {
                     Swal.fire({
                         title: 'Successfully changed!',
                         icon: 'success',
-                    })
-                    updateStatusForm.submit();
+                    }).then(() => {
+                        updateStatusForm.submit();
+                    });
                 }
             })
 

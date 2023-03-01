@@ -166,88 +166,13 @@ if (!isset($_SESSION['F_number'])) {
                                 <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
                                     <nav class="nav">
                                         <a class="nav-link active ms-0" href="dailyReports.php" style="color: #c02628;">Daily</a>
-                                        <a class="nav-link" href="monthlyReports.php" >Monthly</a>
+                                        <a class="nav-link" href="monthlyReports.php">Monthly</a>
+                                        <a class="nav-link" href="attendance.php">Attendance Report</a>
                                     </nav>
                                     <div class="border-bottom"></div>
                                 </div>
                                 <div class="tab-content tab-content-basic">
                                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-
-                                        <!--    <div class="row">
-                                            <form action="" method="post">
-                                                <div class="col-12 grid-margin autocomplete">
-                                                    <div class="row">
-                                                        <div class="col-lg-4" style="margin: auto; text-align:center;">
-                                                            <label class="col-sm-12 col-form-label">Student Number</label>
-                                                            <style>
-                                                                /*the container must be positioned relative:*/
-                                                                .autocomplete {
-                                                                    position: relative;
-                                                                    display: inline-block;
-                                                                }
-
-                                                                input {
-                                                                    border: 1px solid transparent;
-                                                                    background-color: #f1f1f1;
-                                                                    padding: 10px;
-                                                                    font-size: 16px;
-                                                                }
-
-                                                                input[type=text] {
-                                                                    background-color: #f1f1f1;
-                                                                    width: 100%;
-                                                                }
-
-                                                                input[type=submit] {
-                                                                    background-color: DodgerBlue;
-                                                                    color: #fff;
-                                                                    cursor: pointer;
-                                                                }
-
-                                                                .autocomplete-items {
-                                                                    position: absolute;
-                                                                    border: 1px solid #d4d4d4;
-                                                                    border-bottom: none;
-                                                                    border-top: none;
-                                                                    z-index: 99;
-                                                                    /*position the autocomplete items to be the same width as the container:*/
-                                                                    top: 100%;
-                                                                    left: 0;
-                                                                    right: 0;
-                                                                }
-
-                                                                .autocomplete-items div {
-                                                                    padding: 10px;
-                                                                    cursor: pointer;
-                                                                    background-color: #fff;
-                                                                    border-bottom: 1px solid #d4d4d4;
-                                                                }
-
-                                                                /*when hovering an item:*/
-                                                                .autocomplete-items div:hover {
-                                                                    background-color: #e9e9e9;
-                                                                }
-
-                                                                /*when navigating through the items using the arrow keys:*/
-                                                                .autocomplete-active {
-                                                                    background-color: DodgerBlue !important;
-                                                                    color: #ffffff;
-                                                                }
-                                                            </style>
-                                                            <div class="col-sm-12">
-                                                                <input id="myInput" type="text" class="form-control" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div style="text-align: center; padding-top: 0px;">
-                                                    <input type="button" style="color:#ffffff;" class="btn btn-primary me-2" name="findStudent" value="Enter">
-                                                </div>
-                                            </form>
-                                        </div>
-
-                                                            -->
-
                                         <div class="btn-group">
                                             <div>
                                                 <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">

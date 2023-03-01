@@ -5,8 +5,7 @@ if (!isset($_SESSION['F_number'])) {
   header('Location: ../auth/login.php');
 } else {
   $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'");
-  $rowCount = $getSectionInfo->num_rows;
-  if ($rowCount > 0) {
+  if (mysqli_num_rows($getSectionInfo) > 0) {
     $ClassListRow = 1;
 
     $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'");
@@ -20,8 +19,6 @@ if (!isset($_SESSION['F_number'])) {
     } else {
       $getSectionClassList = $mysqli->query("SELECT * FROM classlist WHERE SR_section = '{$SectionData['S_name']}' AND acadYear = '{$currentSchoolYear}'");
     }
-  } else {
-    header('Location: dashboard.php');
   }
 }
 ?>
@@ -53,6 +50,9 @@ if (!isset($_SESSION['F_number'])) {
   <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
   <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
   <link href="../assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <link href="../assets/css/sweetAlert.css" rel="stylesheet">
 
   <!-- Customized Bootstrap Stylesheet -->
   <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
@@ -169,9 +169,17 @@ if (!isset($_SESSION['F_number'])) {
                       <div class="  col-sm-12  col-lg-4 grid-margin">
                         <div class="card">
                           <div class="card-body">
-                            <h3><?php echo "Grade " . $SectionData['S_yearLevel'] . " - " . $SectionData['S_name']; ?></h3>
-                            <p style="margin-bottom: 5px;"><?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1); ?></p>
-                            <p style="margin-bottom: 5px;">School Year: 2022-2023</p>
+                            <?php
+                            if (mysqli_num_rows($getSectionInfo) > 0) { ?>
+                              <h3><?php echo "Grade " . $SectionData['S_yearLevel'] . " - " . $SectionData['S_name']; ?></h3>
+                              <p style="margin-bottom: 5px;"><?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1); ?></p>
+                              <p style="margin-bottom: 5px;">School Year: <?php echo $currentSchoolYear ?></p>
+                            <?php } else { ?>
+                              <h3>NO DATA</h3>
+                              <p style="margin-bottom: 5px;">NO DATA</p>
+                              <p style="margin-bottom: 5px;">School Year: NO DATA</p>
+                            <?php }
+                            ?>
                           </div>
                         </div>
                       </div>
@@ -226,23 +234,29 @@ if (!isset($_SESSION['F_number'])) {
                                   </thead>
                                   <tbody>
                                     <?php
-                                    while ($SectionClassListData = $getSectionClassList->fetch_assoc()) { ?>
-                                      <tr>
-                                        <td class="hatdog"><?php echo $ClassListRow; ?></td>
-                                        <td class="hatdog"><?php echo $SectionClassListData['SR_number']; ?></td>
-                                        <td class="hatdog">
-                                          <a href="viewCard.php?ID=<?php echo $SectionClassListData['SR_number']; ?>">
-                                            <?php
-                                            $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$SectionClassListData['SR_number']}'");
-                                            $studentInfo = $getStudentInfo->fetch_assoc();
+                                    if (mysqli_num_rows($getSectionInfo) > 0) {
+                                      while ($SectionClassListData = $getSectionClassList->fetch_assoc()) { ?>
+                                        <tr>
+                                          <td class="hatdog"><?php echo $ClassListRow; ?></td>
+                                          <td class="hatdog"><?php echo $SectionClassListData['SR_number']; ?></td>
+                                          <td class="hatdog">
+                                            <a href="viewCard.php?ID=<?php echo $SectionClassListData['SR_number']; ?>">
+                                              <?php
+                                              $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$SectionClassListData['SR_number']}'");
+                                              $studentInfo = $getStudentInfo->fetch_assoc();
 
-                                            echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix'];
-                                            ?>
-                                          </a>
-                                        </td>
+                                              echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix'];
+                                              ?>
+                                            </a>
+                                          </td>
+                                        </tr>
+                                      <?php $ClassListRow++;
+                                      }
+                                    } else { ?>
+                                      <tr>
+                                        <td class="hatdog" colspan="3">NO DATA</td>
                                       </tr>
-                                    <?php $ClassListRow++;
-                                    }
+                                    <?php }
                                     ?>
                                   </tbody>
                                 </table>
@@ -287,7 +301,24 @@ if (!isset($_SESSION['F_number'])) {
 
   <script src="../assets/js/admin/vendor.bundle.base.js"></script>
   <script src="../assets/js/admin/off-canvas.js"></script>
-  <script src="../assets/js/admin/file-upload.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+  <script>
+    function sweetalert() {
+      Swal.fire({
+        text: 'No advisory class assigned',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      }).then((result) => {
+        window.location.replace("./dashboard.php");
+      })
+    }
+  </script>
+  <?php
+  $checkAdvisoryPermission = $mysqli->query("SELECT * FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'");
+  if (mysqli_num_rows($checkAdvisoryPermission) == 0) {
+    echo '<script>sweetalert();</script>';
+  }
+  ?>
 </body>
 
 
