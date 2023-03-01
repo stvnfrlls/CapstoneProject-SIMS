@@ -346,7 +346,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     <div class="col-md-3">
                                                                         <label label class="col-sm-12 col-form-label">Barangay <span style="color: red;">*</span></label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="text" class="form-control" name="S_barangay" required>
+                                                                            <input type="text" class="form-control" name="S_address" required>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-3">
@@ -363,9 +363,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     <div class="col-md-4">
                                                                         <label label class="col-sm-12 col-form-label">State <span style="color: red;">*</span></label>
                                                                         <div class="col-sm-12">
-                                                                            <select id="province" class="form-select" name="S_state" required>
-                                                                                <option selected></option>
-                                                                            </select>
+                                                                            <input type="text" class="form-control" id="state" name="S_state" required readonly>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-4">
@@ -431,7 +429,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                             <div class="col-md-3">
                                                                 <label label class="col-sm-12 col-form-label">Barangay <span style="color: red;">*</span></label>
                                                                 <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" name="G_barangay" required>
+                                                                    <input type="text" class="form-control" id="G_barangay" name="G_barangay" required>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
@@ -448,9 +446,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                             <div class="col-md-4">
                                                                 <label label class="col-sm-12 col-form-label">State <span style="color: red;">*</span></label>
                                                                 <div class="col-sm-12">
-                                                                    <select id="G_state" class="form-select" name="G_state" required>
-                                                                        <option selected></option>
-                                                                    </select>
+                                                                    <input type="text" class="form-control" id="G_state" name="G_state" required readonly>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4">
@@ -487,6 +483,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                         <div class="row" style="padding-bottom: 15px;">
                                                             <div class="col-md-2">
                                                                 <div class="col-sm-12">
@@ -505,6 +502,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                         <div id="additionalInputs" style="display: none;">
                                                             <?php
                                                             $FetcherData_Array = array();
@@ -743,7 +741,7 @@ if (!isset($_SESSION['AD_number'])) {
     </script>
     <script>
         const city = document.getElementById('city');
-        const province = document.getElementById('province');
+        const state = document.getElementById('state');
         const postal = document.getElementById('postal');
 
         for (let i = 0; i < cityprov.length; i++) {
@@ -755,20 +753,16 @@ if (!isset($_SESSION['AD_number'])) {
 
         city.addEventListener("change", function() {
             const cityValue = this.value;
-            const findCity = cityprov.find(function(element) {
+            const findcity = cityprov.find(function(element) {
                 return element.city == cityValue;
             });
-            const option = document.createElement("option");
-            option.value = findCity.province;
-            option.text = findCity.province;
-            province.replaceChildren(option);
-
-            postal.value = findCity.zip_code;
+            state.value = findcity.state;
+            postal.value = findcity.zip_code;
         });
     </script>
     <script>
         const g_city = document.getElementById('G_city');
-        const g_province = document.getElementById('G_state');
+        const g_state = document.getElementById('G_state');
         const g_postal = document.getElementById('G_postal');
 
         for (let i = 0; i < g_cityprov.length; i++) {
@@ -779,15 +773,11 @@ if (!isset($_SESSION['AD_number'])) {
         }
 
         g_city.addEventListener("change", function() {
-            const g_cityValue = this.value;
+            const g_CityValue = this.value;
             const g_findCity = g_cityprov.find(function(element) {
-                return element.city == g_cityValue;
+                return element.city == g_CityValue;
             });
-            const option1 = document.createElement("option");
-            option1.value = g_findCity.province;
-            option1.text = g_findCity.province;
-            g_province.replaceChildren(option1);
-
+            g_state.value = g_findCity.state;
             g_postal.value = g_findCity.zip_code;
         });
     </script>
