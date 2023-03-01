@@ -93,7 +93,7 @@ require_once("../assets/php/server.php");
             <div class="wrap-login100">
                 <form class="login100-form validate-form" method="POST" action="<?php $_SERVER["PHP_SELF"] ?>">
                     <span class="login100-form-title p-b-43">
-                        Enter One Time OTP Code
+                        Enter OTP Code
                     </span>
                     <?php
                     if (count($errors) > 0) {
@@ -109,7 +109,7 @@ require_once("../assets/php/server.php");
                     }
                     ?>
                     <div class="form-group validate-input" data-validate="Valid OTP Code is required">
-                        <input style="font-size: 13px;" class="form-control form-control-lg" id="exampleInputEmail1" type="text" name="OTPCode" placeholder="OTP Code">
+                        <input style="font-size: 13px;" class="form-control form-control-lg" type="number" name="OTPCode" placeholder="OTP Code" required>
 
                     </div>
                     <div class="container-login100-form-btn">

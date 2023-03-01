@@ -33,6 +33,9 @@ if (!isset($_SESSION['verifyEmailData']) && !isset($_POST['submitOTP'])) {
     <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="../assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
 
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="../assets/css/sweetAlert.css" rel="stylesheet">
+
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
@@ -92,42 +95,23 @@ if (!isset($_SESSION['verifyEmailData']) && !isset($_POST['submitOTP'])) {
     <div class="limiter">
         <div class="container-login100">
             <div class="wrap-login100">
-                <form class="login100-form validate-form" method="post" action="<?php $_SERVER["PHP_SELF"] ?>">
+                <form class="login100-form validate-form" method="post" action="<?php $_SERVER["PHP_SELF"] ?>" id="form">
                     <span class="login100-form-title p-b-43">
                         Forget Password
                     </span>
-                    <?php
-                    if (count($errors) > 0) {
-                    ?>
-                        <div class="alert alert-danger text-center">
-                            <?php
-                            foreach ($errors as $showerror) {
-                                echo $showerror;
-                            }
-                            ?>
-                        </div>
-                    <?php
-                    }
-                    ?>
-                    <div class="form-group validate-input" data-validate="Password is required">
-                        <input style="font-size: 13px;" class="form-control form-control-lg" id="exampleInputEmail1" type="password" name="newPasssword" placeholder="Email Address">
-
+                    <div class="form-group validate-input">
+                        <input style="font-size: 13px;" class="form-control form-control-lg" id="password" type="password" name="newPasssword" placeholder="New password" required>
                     </div>
-
-
-                    <div class="form-group validate-input" data-validate="Password is required">
-                        <input style="font-size: 13px;" class="form-control form-control-lg" id="exampleInputEmail1" type="password" name="confirmPassword" placeholder="Email Address">
-
+                    <div class="form-group validate-input">
+                        <input style="font-size: 13px;" class="form-control form-control-lg" id="confirm_password" type="password" name="confirmPassword" placeholder="Confirm password" required>
                     </div>
-
                     <div class="container-login100-form-btn">
-                        <button type="submit" class="login100-form-btn" name="updatePassword">
+                        <input type="hidden" name="updatePassword" value="updatePassword">
+                        <button type="button" class="login100-form-btn" id="submitBTN">
                             Update Password
                         </button>
                     </div>
-
                 </form>
-
                 <div class="login100-more" style="background-image: url('../assets/img/banner_1.jpg');">
                 </div>
             </div>
@@ -199,7 +183,72 @@ if (!isset($_SESSION['verifyEmailData']) && !isset($_POST['submitOTP'])) {
 
     <!-- Template Javascript -->
     <script src="../assets/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+    <script>
+        const passwordInput = document.getElementById("password");
+        const confirmPasswordInput = document.getElementById("confirm_password");
+        const form = document.getElementById("form");
+        const submitBTN = document.getElementById("submitBTN");
 
+        submitBTN.addEventListener('click', function() {
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+
+            if (password !== confirmPassword) {
+                Swal.fire({
+                    icon: 'error',
+                    text: 'Passwords do not match'
+                })
+                return false;
+            }
+
+            // Check if password meets criteria
+            const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            if (!regex.test(password)) {
+                let errorMessages = [];
+
+                if (password.length < 8) {
+                    errorMessages.push("Password must be at least 8 characters long.");
+                }
+
+                const uppercaseRegex = /[A-Z]/;
+                if (!uppercaseRegex.test(password)) {
+                    errorMessages.push("Password must include at least one uppercase letter.");
+                }
+
+                const numberRegex = /\d/;
+                if (!numberRegex.test(password)) {
+                    errorMessages.push("Password must include at least one number.");
+                }
+
+                const specialCharRegex = /[@$!%*?&]/;
+                if (!specialCharRegex.test(password)) {
+                    errorMessages.push("Password must include at least one special character.");
+                }
+
+                let errorMessageHtml = "<ul>";
+                for (const errorMessage of errorMessages) {
+                    errorMessageHtml += `<li>${errorMessage}</li>`;
+                }
+                errorMessageHtml += "</ul>";
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Weak Password',
+                    html: `Password does not meet criteria:<br>${errorMessageHtml}`
+                }).then((result) => {
+                    return false;
+                })
+            }
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Password meets criteria.'
+            }).then((result) => {
+                form.submit();
+            })
+        })
+    </script>
 </body>
 
 </html>

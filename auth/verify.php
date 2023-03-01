@@ -109,7 +109,7 @@ require_once("../assets/php/server.php");
                     }
                     ?>
                     <div class="form-group validate-input" data-validate="Valid email is required: ex@abc.xyz">
-                        <input style="font-size: 13px;" class="form-control form-control-lg" id="exampleInputEmail1" type="email" name="usersEmail" placeholder="Email Address">
+                        <input style="font-size: 13px;" class="form-control form-control-lg" id="exampleInputEmail1" type="email" name="usersEmail" placeholder="Email Address" required>
                     </div>
                     <div class="container-login100-form-btn">
                         <button type="submit" class="login100-form-btn" name="verifyEmail">
