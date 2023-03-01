@@ -304,14 +304,14 @@ if (!isset($_SESSION['AD_number'])) {
         const adminForm = document.getElementById('adminForm')
         createAdmin.addEventListener('click', function() {
             Swal.fire({
-                title: 'Are you sure you want to create this account?',
+                title: 'Are you sure you want to proceed with this action?',
                 showCancelButton: true,
                 confirmButtonText: 'Yes',
                 cancelButtonText: `No`,
             }).then((result) => {
                 if (result.isConfirmed) {
                     Swal.fire({
-                        title: 'Successfully Created!',
+                        title: 'Form submitted!',
                         icon: 'success',
                     }).then(() => {
                         adminForm.submit();

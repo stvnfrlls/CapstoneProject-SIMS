@@ -308,14 +308,14 @@ if (!isset($_SESSION['AD_number'])) {
 
         postButton.addEventListener('click', function(event) {
             Swal.fire({
-                title: 'Are you sure you want to create this announcement?',
+                title: 'Are you sure you want to proceed with this action?',
                 showCancelButton: true,
                 confirmButtonText: 'Yes',
                 cancelButtonText: `No`,
             }).then((result) => {
                 if (result.isConfirmed) {
                     Swal.fire({
-                        title: 'Announcement created successfully!',
+                        title: 'Form submitted!',
                         icon: 'success',
                     }).then(() => {
                         form.submit();

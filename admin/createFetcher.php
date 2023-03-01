@@ -293,14 +293,14 @@ if (empty($_SESSION['AD_number'])) {
 
         createFetcher.addEventListener('click', function(event) {
             Swal.fire({
-                title: 'Are you sure you want to register this fetcher?',
+                title: 'Are you sure you want to proceed with this action?',
                 showCancelButton: true,
                 confirmButtonText: 'Yes',
                 cancelButtonText: `No`,
             }).then((result) => {
                 if (result.isConfirmed) {
                     Swal.fire({
-                        title: 'Fetcher registered successfully!',
+                        title: 'Form submitted!',
                         icon: 'success',
                     }).then(() => {
                         fetcherForm.submit();

@@ -421,22 +421,21 @@ if (!isset($_SESSION['AD_number'])) {
     const editFaculty = document.getElementById('editFaculty');
     editFaculty.addEventListener('click', function() {
       Swal.fire({
-        title: 'Are you sure you want to save your changes?',
+        title: 'Are you sure you want to proceed with this action?',
         showCancelButton: true,
         confirmButtonText: 'Yes',
         cancelButtonText: `No`,
       }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
           Swal.fire({
-            title: 'Successfully changed!',
+            title: 'Form submitted!',
             icon: 'success',
-          })
-          editfacultyform.submit();
-          window.location.href = '../admin/faculty.php';
+          }).then(() => {
+            editfacultyform.submit();
+            window.location.href = '../admin/faculty.php';
+          });
         }
       })
-
     })
   </script>
 </body>

@@ -46,6 +46,9 @@ if (!isset($_SESSION['AD_number'])) {
     <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="../assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
 
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="../assets/css/sweetAlert.css" rel="stylesheet">
+
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
@@ -530,14 +533,14 @@ if (!isset($_SESSION['AD_number'])) {
         const updateInformation = document.getElementById('updateInformation');
         updateInformation.addEventListener('click', function() {
             Swal.fire({
-                title: 'Are you sure you want to save your changes?',
+                title: 'Are you sure you want to proceed with this action?',
                 showCancelButton: true,
                 confirmButtonText: 'Yes',
                 cancelButtonText: `No`,
             }).then((result) => {
                 if (result.isConfirmed) {
                     Swal.fire({
-                        title: 'Successfully changed!',
+                        title: 'Form submitted!',
                         icon: 'success',
                     }).then(() => {
                         editstudentform.submit();
@@ -545,7 +548,6 @@ if (!isset($_SESSION['AD_number'])) {
                     });
                 }
             })
-
         })
     </script>
 </body>

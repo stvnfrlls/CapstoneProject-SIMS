@@ -479,21 +479,20 @@ if (!isset($_SESSION['AD_number'])) {
 
     confirmChanges.addEventListener('click', function() {
       Swal.fire({
-        title: 'Are you sure you want save your changes?',
+        title: 'Are you sure you want to proceed with this action?',
         showCancelButton: true,
         confirmButtonText: 'Yes',
         cancelButtonText: `No`,
       }).then((result) => {
         if (result.isConfirmed) {
           Swal.fire({
-            title: 'Grades successfully changed!',
+            title: 'Form submitted!',
             icon: 'success',
           }).then(() => {
             gradeForm.submit();
           });
         }
       })
-
     })
   </script>
 </body>

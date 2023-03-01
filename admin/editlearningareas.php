@@ -79,6 +79,9 @@ if (empty($_SESSION['AD_number'])) {
   <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
   <link href="../assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
 
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <link href="../assets/css/sweetAlert.css" rel="stylesheet">
+
   <!-- Customized Bootstrap Stylesheet -->
   <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
@@ -338,7 +341,7 @@ if (empty($_SESSION['AD_number'])) {
                                     if (isset($_GET['GradeLevel']) && isset($_GET['SectionName'])) {
                                       $subjectRowCount = sizeof($subjects);
                                       while ($rowCount != $subjectRowCount) { ?>
-                                        <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
+                                        <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="AssignScheduleForm">
                                           <tr>
                                             <td><?php echo $rowCount; ?></td>
                                             <td>
@@ -397,20 +400,21 @@ if (empty($_SESSION['AD_number'])) {
                                               if (empty($schedule[$rowCount]['WS_start_time'])) {
                                                 echo '<input type="time" class="form-control" name="WS_end_time">';
                                               } else {
-                                                echo '<input type="time" class="form-control" name="WS_end_time" value=' . $schedule[$rowCount]['WS_end_time'] . '>';
+                                                echo '<input type="time" class="form-control" name="WS_end_time" value=' . timePlusOneMinute($schedule[$rowCount]['WS_end_time']) . '>';
                                               }
                                               ?>
                                             </td>
                                             <td>
 
                                               <?php
-                                              if (empty($schedule[$rowCount]['F_number'])) {
-                                                echo '<input type="submit" class="btn btn-primary" name="setSchedule" value="SET">';
-                                                echo '<input type="submit" class="btn btn-primary" name="deleteSchedule" value="DEL">';
+                                              if (empty($schedule[$rowCount]['F_number'])) { ?>
+                                                <input type="submit" class="btn btn-primary" name="setSchedule" id="setSchedule" value="SET">
+                                              <?php
                                               } else {
-                                                echo '<input type="submit" class="btn btn-primary" name="updateSchedule" value="UPD">';
-                                                echo '<input type="submit" class="btn btn-primary" name="deleteSchedule" value="DEL">';
-                                              }
+                                              ?>
+                                                <input type="submit" class="btn btn-primary" name="updateSchedule" id="updateSchedule" value="UPD">
+                                                <input type="submit" class="btn btn-primary" name="deleteSchedule" id="deleteSchedule" value="DEL">
+                                              <?php }
                                               ?>
                                             </td>
                                           </tr>
@@ -468,6 +472,65 @@ if (empty($_SESSION['AD_number'])) {
   <script src="../assets/js/main.js"></script>
   <script src="../assets/js/admin/vendor.bundle.base.js"></script>
   <script src="../assets/js/admin/off-canvas.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+
+  <script>
+    const AssignScheduleForm = document.getElementById('AssignScheduleForm');
+    const setSchedule = document.getElementById('setSchedule');
+    const updateSchedule = document.getElementById('updateSchedule');
+    const deleteSchedule = document.getElementById('deleteSchedule');
+    setSchedule.addEventListener('click', function() {
+      Swal.fire({
+        title: 'Are you sure you want to proceed with this action?',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: `No`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: 'Form submitted!',
+            icon: 'success',
+          }).then(() => {
+            AssignScheduleForm.submit();
+          });
+        }
+      })
+    })
+    updateSchedule.addEventListener('click', function() {
+      Swal.fire({
+        title: 'Are you sure you want to proceed with this action?',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: `No`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: 'Form submitted!',
+            icon: 'success',
+          }).then(() => {
+            AssignScheduleForm.submit();
+          });
+        }
+      })
+    })
+    deleteSchedule.addEventListener('click', function() {
+      Swal.fire({
+        title: 'Are you sure you want to proceed with this action?',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: `No`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: 'Form submitted!',
+            icon: 'success',
+          }).then(() => {
+            AssignScheduleForm.submit();
+          });
+        }
+      })
+    })
+  </script>
 </body>
 
 </html>

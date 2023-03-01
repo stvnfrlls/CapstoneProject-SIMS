@@ -420,22 +420,20 @@ if (!isset($_SESSION['AD_number'])) {
         const changeSection = document.getElementById('changeSection');
         changeSection.addEventListener('click', function() {
             Swal.fire({
-                title: 'Are you sure you want save your changes?',
+                title: 'Are you sure you want to proceed with this action?',
                 showCancelButton: true,
                 confirmButtonText: 'Yes',
                 cancelButtonText: `No`,
             }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     Swal.fire({
-                        title: 'Successfully changed!',
+                        title: 'Form submitted!',
                         icon: 'success',
                     }).then(() => {
                         changeSectionForm.submit();
-                    })
+                    });
                 }
             })
-
         })
     </script>
 </body>
