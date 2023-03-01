@@ -74,17 +74,17 @@ if (isset($_POST['verifyEmail'])) {
     if (empty($email)) {
         $errors['NoInputs'] = "Please enter your login credentials.";
     } else {
-        $authAccount = $mysqli->query("SELECT * FROM userdetails WHERE SR_email = '$email'");
+        $authAccount = $mysqli->query("SELECT * FROM userdetails WHERE SR_email = '{$email}'");
 
-        if ($authAccount->num_rows == 1) {
+        if (mysqli_num_rows($authAccount) == 1) {
             $verifyData = $authAccount->fetch_assoc();
 
             $check_existingOTP = $mysqli->query("SELECT OTP FROM userdetails WHERE SR_email = '{$email}'");
             $otpData = $check_existingOTP->fetch_assoc();
 
-            if ($otpData['OTP'] == "") {
+            if ($otpData['OTP'] == "" || empty($otpData['OTP'])) {
                 $otp = generateOTP();
-                $createOTP = $mysqli->query("UPDATE userdetails SET OTP = '$otp' WHERE SR_email = '{$verifyData['SR_email']}'");
+                $createOTP = $mysqli->query("UPDATE userdetails SET OTP = '{$otp}' WHERE SR_email = '{$verifyData['SR_email']}'");
                 $_SESSION['verifyEmailData'] = $verifyData['SR_email'];
 
                 $mail->addAddress($verifyData['SR_email']);
@@ -103,11 +103,8 @@ if (isset($_POST['verifyEmail'])) {
                             <strong>Best regards, </strong><br>
                             <strong>CDSP Admin Office</strong>
                             <br>';
-
-                if (!$mail->send()) {
-                    echo 'Mailer Error: ';
-                } else {
-                    echo 'The email message was sent!';
+                if ($mail->send()) {
+                    header('Location: ../auth/otp.php');
                 }
             } else {
                 $errors['LoginError'] = "Check your email for the OTP Code.";
@@ -120,7 +117,7 @@ if (isset($_POST['verifyEmail'])) {
 if (isset($_POST['submitOTP'])) {
     $verifyOTP = $mysqli->query("SELECT OTP FROM userdetails WHERE SR_email = '{$_SESSION['verifyEmailData']}' AND OTP = '{$_POST['OTPCode']}'");
 
-    if ($verifyOTP->num_rows == 1) {
+    if (mysqli_num_rows($verifyOTP) == 1) {
         header('Location: ../auth/reset.php');
     } else {
         $errors['LoginError'] = "Incorrect OTP Code.";
@@ -159,11 +156,8 @@ if (isset($_POST['updatePassword'])) {
                                 <strong>Best regards, </strong><br>
                                 <strong>CDSP Admin Office</strong>
                                 <br>';
-                if (!$mail->send()) {
-                    echo 'Mailer Error: ';
-                } else {
+                if ($mail->send()) {
                     $removeOTP = $mysqli->query("UPDATE userdetails SET OTP = null WHERE SR_email = '{$verifyData['SR_email']}'");
-                    echo 'The email message was sent!';
                     header('Location: login.php');
                 }
             }
@@ -746,6 +740,8 @@ if (isset($_POST['regFaculty']) && !empty($_SESSION['AD_number'])) {
     $getFacultyID = $mysqli->query("SELECT F_ID FROM faculty ORDER BY F_ID DESC LIMIT 1");
     $FacultyID = $getFacultyID->fetch_assoc();
 
+    if (mysqli_num_rows($getFacultyID) > 0) {
+    }
     $formatted_FacultyID = sprintf("%05d", ($FacultyID["F_ID"] + 1));
     $F_number = $year . "-" . $formatted_FacultyID . "-F";
 
