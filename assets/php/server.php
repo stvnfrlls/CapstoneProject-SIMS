@@ -457,17 +457,18 @@ if (isset($_POST['editReminders'])) {
         echo "error" . $mysqli->error;
     }
 }
-if (isset($_POST['attendanceReport'])) {
+if (isset($_POST['attendanceReport']) && isset($_SESSION['F_number'])) {
     $F_number = $_SESSION['F_number'];
-    $subjectName = $_POST['subjectName'];
+    $subjectName = $_GET['subject'];
     $SR_number = $_POST['SR_number'];
     $SR_grade = $_GET['SR_grade'];
     $SR_section = $_GET['SR_section'];
     $RP_reportDate = $_POST['RP_reportDate'];
     $RP_reportTime = $_POST['RP_reportTime'];
+    $RP_attendanceReport = $_POST['RP_attendanceReport'];
 
-    $reportAttendanceIssue = $mysqli->query("INSERT INTO attendance_student_report(F_number, subjectName, SR_number, SR_grade, SR_section, RP_reportDate, RP_reportTime)
-                                            VALUES('{$F_number}', '{$subjectName}', '{$SR_number}', '{$SR_grade}', '{$SR_section}', '{$RP_reportDate}', '{$RP_reportTime}')");
+    $reportAttendanceIssue = $mysqli->query("INSERT INTO attendance_student_report(F_number, subjectName, SR_number, SR_grade, SR_section, RP_reportDate, RP_reportTime, RP_attendanceReport)
+                                            VALUES('{$F_number}', '{$subjectName}', '{$SR_number}', '{$SR_grade}', '{$SR_section}', '{$RP_reportDate}', '{$RP_reportTime}', '{$RP_attendanceReport}')");
 }
 //End
 
@@ -988,7 +989,7 @@ if (isset($_POST['setSchedule']) && !empty($_SESSION['AD_number'])) {
     $assignedFaculty = $_POST['assignedFaculty'];
     $subjectname = $_POST['subjectname'];
     $input_start = $_POST['WS_start_time'];
-    $input_end = $_POST['WS_end_time'];
+    $input_end = timeMinusOneMinute($_POST['WS_end_time']);
 
     $time_intervals  = array();
 
@@ -1009,10 +1010,11 @@ if (isset($_POST['setSchedule']) && !empty($_SESSION['AD_number'])) {
         }
     }
     if ($overlapping_interval) {
-        $errors['nocontent'] = "The input time overlaps with the following interval: Start Time: " . $overlapping_interval['WS_start_time'] . ", End Time: " . $overlapping_interval['WS_end_time'] . ".";
+        $errors['nocontent'] = "The input time overlaps with the following interval: Start Time: " . $overlapping_interval['WS_start_time'] . ", End Time: " . timePlusOneMinute($overlapping_interval['WS_end_time']) . ".";
     } else {
         $AddSchedule = $mysqli->query("INSERT INTO workschedule(acadYear, F_number, S_subject, SR_grade, SR_section, WS_start_time, WS_end_time) VALUES('{$currentSchoolYear}', '{$assignedFaculty}', '{$subjectname}', '{$_GET['GradeLevel']}', '{$_GET['SectionName']}', '{$input_start}', '{$input_end}')");
     }
+    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
     $AdminName = $getAdminName->fetch_assoc();
     $AD_action = "ADDED SCHEDULE FOR " . $assignedFaculty . "FOR SECTION" . $_GET['SectionName'];
     $currentDate = date("Y-m-d");
@@ -1049,6 +1051,7 @@ if (isset($_POST['updateSchedule']) && !empty($_SESSION['AD_number'])) {
         $UpdateSchedule = $mysqli->query("UPDATE workschedule SET F_number = '{$assignedFaculty}', WS_start_time = '{$input_start}', WS_end_time = '{$input_end}' 
                                     WHERE S_subject = '{$subjectname}' AND SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['SectionName']}' AND acadYear = '{$currentSchoolYear}'");
     }
+    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
     $AdminName = $getAdminName->fetch_assoc();
     $AD_action = "UPDATED SCHEDULE OF " . $assignedFaculty . "FOR SECTION" . $_GET['SectionName'];
     $currentDate = date("Y-m-d");
@@ -1062,6 +1065,7 @@ if (isset($_POST['deleteSchedule']) && !empty($_SESSION['AD_number'])) {
     $input_end = $_POST['WS_end_time'];
 
     $deleteSchedule = $mysqli->query("DELETE FROM workschedule WHERE acadYear = '{$currentSchoolYear}' AND F_number = '{$assignedFaculty}' AND S_subject = '{$subjectname}' AND SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['SectionName']}' AND WS_start_time = '{$input_start}' AND WS_end_time = '{$input_end}'");
+    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
     $AdminName = $getAdminName->fetch_assoc();
     $AD_action = "DELETED SCHEDULE OF " . $assignedFaculty . "FOR SECTION" . $_GET['SectionName'];
     $currentDate = date("Y-m-d");
@@ -1100,6 +1104,7 @@ if (isset($_POST['postAnnouncement']) && !empty($_SESSION['AD_number'])) {
             $mail->send();
         }
     }
+    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
     $AdminName = $getAdminName->fetch_assoc();
     $AD_action = "POSTED ANNOUNCEMENT";
     $currentDate = date("Y-m-d");
@@ -1344,6 +1349,14 @@ function timeRoundUp($data)
 
     // Output the rounded time
     return $data->format("H:i");
+}
+function timePlusOneMinute($data) //sa endtime lang to ilalagay
+{
+    $convertedTime = strtotime($data);
+    $timeMinusOneMinute = $convertedTime + 60;
+    $data = date("H:i", $timeMinusOneMinute);
+
+    return $data;
 }
 function timeMinusOneMinute($data) //sa endtime lang to ilalagay
 {
