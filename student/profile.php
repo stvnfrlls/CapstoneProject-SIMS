@@ -116,7 +116,7 @@ if (!isset($_SESSION['SR_number'])) {
               <p class="text-muted mb-4"><?php echo $studentInfo['SR_grade'] . " - " . $studentInfo['SR_section'] ?></p>
               <div class="d-flex justify-content-center mb-2">
                 <button type="button" class="btn btn-outline-primary ms-1" onclick="location.href='../student/editProfile.php'">Edit</button>
-                <button type="button" class="btn btn-outline-primary ms-1" id="viewQR">View QR Code</button>
+                <button type="button" class="btn btn-outline-primary ms-1" onclick="openImage()">View QR Code</button>
               </div>
             </div>
           </div>
@@ -382,13 +382,23 @@ if (!isset($_SESSION['SR_number'])) {
   }
   ?>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
-  <script>
+  <!-- <script>
     const viewQR = document.getElementById('viewQR');
     viewQR.addEventListener('click', function() {
       Swal.fire({
         imageUrl: '<?php echo "../assets/temp/" . $QRData['SR_number'] . ".png"; ?>',
       })
     })
+  </script> -->
+  <script>
+    function openImage() {
+      var width = window.innerWidth * 0.8; // calculate the width of the new window
+      var height = window.innerHeight * 0.8; // calculate the height of the new window
+      var left = (window.innerWidth - width) / 2; // calculate the horizontal position of the new window
+      var top = (window.innerHeight - height) / 2; // calculate the vertical position of the new window
+      var features = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top; // specify the features of the new window
+      var image = window.open("<?php echo "../assets/temp/" . $QRData['SR_number'] . ".png"; ?>", "Image", features); // open the new window and display the image inside it
+    }
   </script>
 </body>
 
