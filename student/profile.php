@@ -110,7 +110,7 @@ if (!isset($_SESSION['SR_number'])) {
         <div class="col-lg-4">
           <div class="card mb-4">
             <div class="card-body text-center">
-              <img src="../assets/img/profile.jpg" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+              <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
               <h5 class="my-3"><?php echo $Student_Fullname ?></h5>
               <p class="text-muted mb-1"><?php echo $studentInfo['SR_number'] ?></p>
               <p class="text-muted mb-4"><?php echo $studentInfo['SR_grade'] . " - " . $studentInfo['SR_section'] ?></p>

@@ -216,7 +216,7 @@ if (empty($_SESSION['F_number'])) {
                                                             <form class="form-sample">
                                                                 <div class="row" style="padding-bottom: 15px;">
                                                                     <div class="col-md-6 col-sm-6 col-lg-12" style="text-align: center; margin-bottom: 20px; margin-top: 10px;">
-                                                                        <img src="../assets/img/profile.jpg" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                                                                        <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
                                                                     </div>
                                                                 </div>
                                                             </form>
