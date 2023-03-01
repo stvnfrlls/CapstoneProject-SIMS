@@ -229,7 +229,9 @@ if (!isset($_SESSION['SR_number'])) {
                           <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
                             <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-qrcode"></i></h1>
                           </div>
-                          <a id="viewQR">
+                          <!-- <a id="viewQR"> -->
+                          <a onclick="openImage()">
+
                             <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">QR Code</h3>
                           </a>
                           <p class="d-flex flex-shrink-0 text-center">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
@@ -434,7 +436,7 @@ if (!isset($_SESSION['SR_number'])) {
   }
   ?>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
-  <script>
+  <!-- <script>
     const viewQR = document.querySelector("#viewQR");
 
     viewQR.addEventListener("click", function() {
@@ -442,6 +444,16 @@ if (!isset($_SESSION['SR_number'])) {
         imageUrl: '<?php echo "../assets/temp/" . $QRData['SR_number'] . ".png"; ?>',
       })
     });
+  </script> -->
+  <script>
+    function openImage() {
+      var width = window.innerWidth * 0.8; // calculate the width of the new window
+      var height = window.innerHeight * 0.8; // calculate the height of the new window
+      var left = (window.innerWidth - width) / 2; // calculate the horizontal position of the new window
+      var top = (window.innerHeight - height) / 2; // calculate the vertical position of the new window
+      var features = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top; // specify the features of the new window
+      var image = window.open("<?php echo "../assets/temp/" . $QRData['SR_number'] . ".png"; ?>", "Image", features); // open the new window and display the image inside it
+    }
   </script>
 </body>
 
