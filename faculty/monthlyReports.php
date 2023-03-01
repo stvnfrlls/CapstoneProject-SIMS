@@ -154,8 +154,9 @@ if (!isset($_SESSION['F_number'])) {
                                 </div>
                                 <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
                                     <nav class="nav">
-                                        <a class="nav-link" href="../faculty/dailyReports.php" target="__blank">Daily</a>
-                                        <a class="nav-link active ms-0" href="../faculty/monthlyReports.php" target="__blank" style="color: #c02628;">Monthly</a>
+                                        <a class="nav-link" href="dailyReports.php">Daily</a>
+                                        <a class="nav-link active ms-0" href="monthlyReports.php" style="color: #c02628;">Monthly</a>
+                                        <a class="nav-link" href="attendance.php">Attendance Report</a>
                                     </nav>
                                     <div class="border-bottom"></div>
                                 </div>
