@@ -346,7 +346,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     <div class="col-md-3">
                                                                         <label label class="col-sm-12 col-form-label">Barangay <span style="color: red;">*</span></label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="text" class="form-control" name="S_address" required>
+                                                                            <input type="text" class="form-control" name="S_barangay" required>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-3">
@@ -694,6 +694,7 @@ if (!isset($_SESSION['AD_number'])) {
     </script>
     <script>
         const phoneInput = document.getElementById('phone');
+        phoneInput.maxLength = 15;
 
         phoneInput.addEventListener('input', function(e) {
             // Get the current input value and remove all non-numeric characters
@@ -711,8 +712,8 @@ if (!isset($_SESSION['AD_number'])) {
             // Update the input field with the formatted value
             e.target.value = formatted;
 
-            if (input.length >= 12) {
-                e.target.value = formatted.slice(0, 14);
+            if (input.length >= 15) {
+                e.target.value = formatted.slice(0, 15);
             }
         });
 
@@ -807,7 +808,6 @@ if (!isset($_SESSION['AD_number'])) {
                     });
                 }
             })
-
         })
     </script>
 
