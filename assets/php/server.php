@@ -157,7 +157,7 @@ if (isset($_POST['updatePassword'])) {
                                 <strong>CDSP Admin Office</strong>
                                 <br>';
                 if ($mail->send()) {
-                    $removeOTP = $mysqli->query("UPDATE userdetails SET OTP = null WHERE SR_email = '{$verifyData['SR_email']}'");
+                    $removeOTP = $mysqli->query("UPDATE userdetails SET OTP = NULL WHERE SR_email = '{$verifyData['SR_email']}'");
                     header('Location: login.php');
                 }
             }
@@ -513,70 +513,70 @@ if (isset($_POST['regStudent'])) {
     $S_grade = $mysqli->real_escape_string($_POST['S_gradelevel']);
     $S_section    = $mysqli->real_escape_string($_POST['S_section']);
 
-    if (isset($_POST['Fetcher'])) {
-        $SR_servicetype = "WITHFETCHER";
-    }
-    if (!isset($_POST['Fetcher']) && !isset($_POST['NoFetcher'])) {
-        $SR_servicetype = "NOFETCHER";
-    }
-    if (isset($_POST['NoFetcher'])) {
-        $SR_servicetype = "NOFETCHER";
-    }
+    $checkSR_email = $mysqli->query("SELECT SR_email FROM studentrecord WHERE SR_email = '{$S_email}'");
+    if (mysqli_num_rows($checkSR_email) == 0) {
+        if (isset($_POST['Fetcher'])) {
+            $SR_servicetype = "WITHFETCHER";
+        }
+        if (!isset($_POST['Fetcher']) && !isset($_POST['NoFetcher'])) {
+            $SR_servicetype = "NOFETCHER";
+        }
+        if (isset($_POST['NoFetcher'])) {
+            $SR_servicetype = "NOFETCHER";
+        }
 
-    $regStudent = "INSERT INTO studentrecord(
-                    SR_profile_img, SR_number, SR_fname, SR_mname, SR_lname, SR_suffix, 
-                    SR_gender, SR_age, SR_birthday, SR_birthplace, SR_religion, 
-                    SR_citizenship, SR_grade, SR_section, SR_servicetype, SR_address, 
-                    SR_barangay, SR_city, SR_state, SR_postal, SR_email)
-                    VALUES(
-                    '$SR_profile_img', '$SR_LRN', '$S_lname', '$S_fname', '$S_mname', '$S_suffix',
-                    '$S_age', '$S_birthday', '$S_birthplace', '$S_gender', '$S_religion',
-                    '$S_citizenship', '$S_grade', '$S_section', '$SR_servicetype', '$S_address', 
-                    '$S_barangay', '$S_city', '$S_state', '$S_postal', '$S_email')";
-    $RunregStudent = $mysqli->query($regStudent);
-    $regGuardian = "INSERT INTO guardian(
-                    G_guardianOfStudent,
-                    G_lname, G_fname, G_mname, G_suffix,
-                    G_address, G_barangay, G_city, G_state, G_postal, 
-                    G_email, G_relationshipStudent, G_telephone, G_contact)
-                    VALUES(
-                    '$SR_LRN',
-                    '$G_lname', '$G_fname', '$G_mname', '$G_suffix',
-                    '$G_address', '$G_barangay', '$G_city', '$G_state', '$G_postal',
-                    '$G_email', '$G_relationshipStudent', '$G_telephone', '$G_contact')";
-    $RunregGuardian = $mysqli->query($regGuardian);
+        $regStudent = "INSERT INTO studentrecord(
+                        SR_profile_img, SR_number, SR_fname, SR_mname, SR_lname, SR_suffix, 
+                        SR_gender, SR_age, SR_birthday, SR_birthplace, SR_religion, 
+                        SR_citizenship, SR_grade, SR_section, SR_servicetype, SR_address, 
+                        SR_barangay, SR_city, SR_state, SR_postal, SR_email)
+                        VALUES(
+                        '$SR_profile_img', '$SR_LRN', '$S_lname', '$S_fname', '$S_mname', '$S_suffix',
+                        '$S_age', '$S_birthday', '$S_birthplace', '$S_gender', '$S_religion',
+                        '$S_citizenship', '$S_grade', '$S_section', '$SR_servicetype', '$S_address', 
+                        '$S_barangay', '$S_city', '$S_state', '$S_postal', '$S_email')";
+        $RunregStudent = $mysqli->query($regStudent);
+        $regGuardian = "INSERT INTO guardian(
+                        G_guardianOfStudent,
+                        G_lname, G_fname, G_mname, G_suffix,
+                        G_address, G_barangay, G_city, G_state, G_postal, 
+                        G_email, G_relationshipStudent, G_telephone, G_contact)
+                        VALUES(
+                        '$SR_LRN',
+                        '$G_lname', '$G_fname', '$G_mname', '$G_suffix',
+                        '$G_address', '$G_barangay', '$G_city', '$G_state', '$G_postal',
+                        '$G_email', '$G_relationshipStudent', '$G_telephone', '$G_contact')";
+        $RunregGuardian = $mysqli->query($regGuardian);
 
-    $addtoClasslist = $mysqli->query("INSERT INTO classlist(acadYear, SR_number, SR_grade, SR_section)
-    VALUES('{$currentSchoolYear}', '{$SR_LRN}', '{$S_grade}', '{$S_section}')");
+        $addtoClasslist = $mysqli->query("INSERT INTO classlist(acadYear, SR_number, SR_grade, SR_section)
+        VALUES('{$currentSchoolYear}', '{$SR_LRN}', '{$S_grade}', '{$S_section}')");
 
-    // Password must be at least 8 characters in length.
-    // Password must include at least one upper case letter.
-    // Password must include at least one number.
-    // Password must include at least one special character..
+        unset($_SESSION['fromAddStudent']);
+        if ($RunregGuardian) {
+            $GenPass = generatePassword();
+            $createStudentLoginCredentials = $mysqli->query("INSERT INTO userdetails(SR_email, SR_password, role) VALUES ('$S_email', '$GenPass', 'student')");
 
-    unset($_SESSION['fromAddStudent']);
-    if ($RunregGuardian) {
-        $GenPass = generatePassword();
-        $createStudentLoginCredentials = $mysqli->query("INSERT INTO userdetails(SR_email, SR_password, role) VALUES ('$S_email', '$GenPass', 'student')");
+            $mail->addAddress($S_email);
+            $mail->Subject = 'STUDENT REGISTRATION';
 
-        $mail->addAddress($S_email);
-        $mail->Subject = 'STUDENT REGISTRATION';
-
-        $mail->Body = '<h1>Registration Complete</h1>
-                       <br>
-                       <p>Your login credentials is:</p><br>
-                       <b>Email: </b>' . $S_email . '<br>
-                       <b>Password: </b>' . $GenPass . '<br>
-                       <br>
-                       <strong>IT IS RECOMMENDED TO RESET YOUR PASSWORD</strong><br>
-                       <a href="siscdsp.online/auth/login.php">Login now</a>';
-        $mail->send();
-        $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
-        $AdminName = $getAdminName->fetch_assoc();
-        $AD_action = "REGISTERED STUDENT - " . $SR_LRN;
-        $currentDate = date("Y-m-d");
-        $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
-        VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
+            $mail->Body = '<h1>Registration Complete</h1>
+                           <br>
+                           <p>Your login credentials is:</p><br>
+                           <b>Email: </b>' . $S_email . '<br>
+                           <b>Password: </b>' . $GenPass . '<br>
+                           <br>
+                           <strong>IT IS RECOMMENDED TO RESET YOUR PASSWORD</strong><br>
+                           <a href="siscdsp.online/auth/login.php">Login now</a>';
+            $mail->send();
+            $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+            $AdminName = $getAdminName->fetch_assoc();
+            $AD_action = "REGISTERED STUDENT - " . $SR_LRN;
+            $currentDate = date("Y-m-d");
+            $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
+            VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
+        }
+    } else {
+        echo "ERROR";
     }
 }
 if (isset($_POST['createFetcher'])) {
@@ -731,7 +731,7 @@ if (isset($_POST['regFaculty']) && !empty($_SESSION['AD_number'])) {
     $F_citizenship = $mysqli->real_escape_string($_POST['F_citizenship']);
     $F_address = $mysqli->real_escape_string($_POST['F_address']);
     $F_barangay = $mysqli->real_escape_string($_POST['F_barangay']);
-    $F_city = $mysqli->real_escape_string($_POST['city']); //need ayusin
+    $F_city = $mysqli->real_escape_string($_POST['F_city']); //need ayusin
     $F_state = $mysqli->real_escape_string($_POST['F_state']);
     $F_postal = $mysqli->real_escape_string($_POST['F_postal']);
     $F_contactNumber = $mysqli->real_escape_string($_POST['F_contactNumber']);
@@ -741,46 +741,46 @@ if (isset($_POST['regFaculty']) && !empty($_SESSION['AD_number'])) {
     $FacultyID = $getFacultyID->fetch_assoc();
 
     if (mysqli_num_rows($getFacultyID) > 0) {
+        $formatted_FacultyID = sprintf("%05d", ($FacultyID["F_ID"] + 1));
+        $F_number = $year . "-" . $formatted_FacultyID . "-F";
+
+        $regFaculty = "INSERT INTO faculty(
+                        F_department, F_profile_img, F_number, F_status, F_lname, F_fname, F_mname, F_suffix, 
+                        F_age, F_birthday, F_gender, F_religion, F_citizenship, 
+                        F_address, F_barangay, F_city, F_state, F_postal, F_contactNumber, F_email)
+                       VALUES(
+                        '{$F_department}', '{$F_profile_img}', '{$F_number}', '{$F_status}', '{$F_lname}', '{$F_fname}', '{$F_mname}', '{$F_suffix}', 
+                        '{$F_age}', '{$F_birthday}', '{$F_gender}', '{$F_religion}', '{$F_citizenship}', 
+                        '{$F_address}', '{$F_barangay}', '{$F_city}', '{$F_state}', '{$F_postal}', '{$F_contactNumber}', '{$F_email}')";
+        $resultregFaculty = $mysqli->query($regFaculty);
+        unset($_SESSION['fromAddFaculty']);
+        if ($resultregFaculty) {
+            $GenPass = generatePassword();
+            $createStudentLoginCredentials = $mysqli->query("INSERT INTO userdetails(SR_email, SR_password, role)
+                                                             VALUES ('$F_email', '$GenPass', 'faculty')");
+            $Fullname = $F_lname . ", " . $F_fname . " " . $F_mname . " " . $F_suffix;
+
+            $mail->addAddress($F_email);
+            $mail->Subject = 'FACULTY REGISTRATION';
+
+            $mail->Body = '<h1>Registration Complete</h1>
+                           <br>
+                           <p>Your login credentials is:</p><br>
+                           <b>Email: </b>' . $F_email . '<br>
+                           <b>Password: </b>' . $GenPass . '<br>
+                           <br>
+                           <strong>IT IS RECOMMENDED TO RESET YOUR PASSWORD</strong><br>
+                           <a href="siscdsp.online/auth/login.php">Login now</a>';
+
+            $mail->send();
+        }
+        $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+        $AdminName = $getAdminName->fetch_assoc();
+        $AD_action = "REGISTERED TEACHER - " . $F_number;
+        $currentDate = date("Y-m-d");
+        $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
+        VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
     }
-    $formatted_FacultyID = sprintf("%05d", ($FacultyID["F_ID"] + 1));
-    $F_number = $year . "-" . $formatted_FacultyID . "-F";
-
-    $regFaculty = "INSERT INTO faculty(
-                    F_department, F_profile_img, F_number, F_status, F_lname, F_fname, F_mname, F_suffix, 
-                    F_age, F_birthday, F_gender, F_religion, F_citizenship, 
-                    F_address, F_barangay, F_city, F_state, F_postal, F_contactNumber, F_email)
-                   VALUES(
-                    '{$F_department}', '{$F_profile_img}', '{$F_number}', '{$F_status}', '{$F_lname}', '{$F_fname}', '{$F_mname}', '{$F_suffix}', 
-                    '{$F_age}', '{$F_birthday}', '{$F_gender}', '{$F_religion}', '{$F_citizenship}', 
-                    '{$F_address}', '{$F_barangay}', '{$F_city}', '{$F_state}', '{$F_postal}', '{$F_contactNumber}', '{$F_email}')";
-    $resultregFaculty = $mysqli->query($regFaculty);
-    unset($_SESSION['fromAddFaculty']);
-    if ($resultregFaculty) {
-        $GenPass = generatePassword();
-        $createStudentLoginCredentials = $mysqli->query("INSERT INTO userdetails(SR_email, SR_password, role)
-                                                         VALUES ('$F_email', '$GenPass', 'faculty')");
-        $Fullname = $F_lname . ", " . $F_fname . " " . $F_mname . " " . $F_suffix;
-
-        $mail->addAddress($F_email);
-        $mail->Subject = 'FACULTY REGISTRATION';
-
-        $mail->Body = '<h1>Registration Complete</h1>
-                       <br>
-                       <p>Your login credentials is:</p><br>
-                       <b>Email: </b>' . $F_email . '<br>
-                       <b>Password: </b>' . $GenPass . '<br>
-                       <br>
-                       <strong>IT IS RECOMMENDED TO RESET YOUR PASSWORD</strong><br>
-                       <a href="siscdsp.online/auth/login.php">Login now</a>';
-
-        $mail->send();
-    }
-    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
-    $AdminName = $getAdminName->fetch_assoc();
-    $AD_action = "REGISTERED TEACHER - " . $F_number;
-    $currentDate = date("Y-m-d");
-    $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
-    VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
 }
 if (isset($_POST['editFaculty']) && !empty($_SESSION['AD_number'])) {
     $F_number = $_POST['F_number'];
