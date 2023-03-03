@@ -202,6 +202,13 @@ if (!isset($_SESSION['AD_number'])) {
                     <h2 class="fw-bold text-primary text-uppercase">Edit Grades</h2>
                   </div>
                 </div>
+                <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
+                  <nav class="nav">
+                    <a class="nav-link active ms-0" href="editgrades.php" style="color: #c02628;">Edit Grades</a>
+                    <a class="nav-link" href="release.php">Finalize Grades</a>
+                  </nav>
+                  <div class="border-bottom"></div>
+                </div>
                 <div class="tab-content tab-content-basic">
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                     <div class="btn-group">
