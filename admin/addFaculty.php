@@ -421,6 +421,7 @@ if (!isset($_SESSION['AD_number'])) {
 
   <script>
     const phoneInput = document.getElementById('F_contact');
+    phoneInput.maxLength = 15;
 
     phoneInput.addEventListener('input', function(e) {
       // Get the current input value and remove all non-numeric characters
@@ -438,8 +439,8 @@ if (!isset($_SESSION['AD_number'])) {
       // Update the input field with the formatted value
       e.target.value = formatted;
 
-      if (input.length >= 12) {
-        e.target.value = formatted.slice(0, 14);
+      if (input.length >= 15) {
+        e.target.value = formatted.slice(0, 15);
       }
     });
   </script>
