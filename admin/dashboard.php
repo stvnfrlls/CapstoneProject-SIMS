@@ -378,10 +378,6 @@ if (!isset($_SESSION['AD_number'])) {
                                                                             <td>Grade 6</td>
                                                                             <td><?php echo $Grade6PresentNow['COUNT(studentrecord.SR_number)'] . " out of " . $AllGrade6['COUNT(SR_number)'] ?></td>
                                                                         </tr>
-                                                                        <tr>
-                                                                            <td>BLANK</td>
-                                                                            <td>BLANK</td>
-                                                                        </tr>
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -480,11 +476,10 @@ if (!isset($_SESSION['AD_number'])) {
                                                                             while ($LoggedData = $getLoggedData->fetch_assoc()) { ?>
                                                                                 <li>
                                                                                     <div class="d-flex justify-content-between">
-                                                                                        <div style="text-align: left;"><span class="text-light-green"><?php echo $LoggedData['AD_name'] ?></span><?php echo $LoggedData['AD_action'] ?></div>
+                                                                                        <div style="text-align: left;"><span class="text-light-green"><?php echo $LoggedData['AD_name'] ?></span><?php echo " - " . $LoggedData['AD_action'] ?></div>
                                                                                         <p><?php echo $LoggedData['logDate'] ?></p>
                                                                                     </div>
                                                                                 </li>
-
                                                                             <?php } ?>
                                                                             <div class="list align-items-center pt-3">
                                                                                 <div class="wrapper w-100">
@@ -502,13 +497,6 @@ if (!isset($_SESSION['AD_number'])) {
                                                                         <?php }
                                                                         ?>
                                                                     </ul>
-                                                                    <div class="list align-items-center pt-3">
-                                                                        <div class="wrapper w-100">
-                                                                            <p class="mb-0">
-                                                                                <a href="../admin/auditTrail.php" class="fw-bold text-primary">Show all <i class="fa fa-arrow-right ms-2"></i></a>
-                                                                            </p>
-                                                                        </div>
-                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -562,9 +550,13 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                     </tbody>
                                                                                 </table>
                                                                             </div>
-                                                                            <div style="padding-top: 10px;">
-                                                                                <a href="../admin/student.php" class="fw-bold text-primary">View all students <i class="fa fa-arrow-right ms-2"></i></a>
-                                                                            </div>
+                                                                            <?php
+                                                                            if (mysqli_num_rows($studentPopulationData) > 0) { ?>
+                                                                                <div style="padding-top: 10px;">
+                                                                                    <a href="../admin/student.php" class="fw-bold text-primary">View all students <i class="fa fa-arrow-right ms-2"></i></a>
+                                                                                </div>
+                                                                            <?php }
+                                                                            ?>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -608,9 +600,13 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                     </tbody>
                                                                                 </table>
                                                                             </div>
-                                                                            <div style="padding-top: 10px;">
-                                                                                <a href="../admin/faculty.php" class="fw-bold text-primary">View all faculty <i class="fa fa-arrow-right ms-2"></i></a>
-                                                                            </div>
+                                                                            <?php
+                                                                            if (mysqli_num_rows($facultyPopulationData) > 0) { ?>
+                                                                                <div style="padding-top: 10px;">
+                                                                                    <a href="../admin/faculty.php" class="fw-bold text-primary">View all faculty <i class="fa fa-arrow-right ms-2"></i></a>
+                                                                                </div>
+                                                                            <?php }
+                                                                            ?>
                                                                         </div>
                                                                     </div>
                                                                 </div>
