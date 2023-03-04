@@ -717,7 +717,6 @@ if (isset($_POST['updateInformation']) && !empty($_SESSION['AD_number'])) {
     VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
 }
 if (isset($_POST['regFaculty']) && !empty($_SESSION['AD_number'])) {
-    $F_department = $mysqli->real_escape_string($_POST['F_department']);
     $F_profile_img = $_FILES['image']['name'];
     $F_status = "TEACHING";
     $F_lname = $mysqli->real_escape_string($_POST['F_lname']);
@@ -745,11 +744,11 @@ if (isset($_POST['regFaculty']) && !empty($_SESSION['AD_number'])) {
         $F_number = $year . "-" . $formatted_FacultyID . "-F";
 
         $regFaculty = "INSERT INTO faculty(
-                        F_department, F_profile_img, F_number, F_status, F_lname, F_fname, F_mname, F_suffix, 
+                        F_profile_img, F_number, F_status, F_lname, F_fname, F_mname, F_suffix, 
                         F_age, F_birthday, F_gender, F_religion, F_citizenship, 
                         F_address, F_barangay, F_city, F_state, F_postal, F_contactNumber, F_email)
                        VALUES(
-                        '{$F_department}', '{$F_profile_img}', '{$F_number}', '{$F_status}', '{$F_lname}', '{$F_fname}', '{$F_mname}', '{$F_suffix}', 
+                        '{$F_profile_img}', '{$F_number}', '{$F_status}', '{$F_lname}', '{$F_fname}', '{$F_mname}', '{$F_suffix}', 
                         '{$F_age}', '{$F_birthday}', '{$F_gender}', '{$F_religion}', '{$F_citizenship}', 
                         '{$F_address}', '{$F_barangay}', '{$F_city}', '{$F_state}', '{$F_postal}', '{$F_contactNumber}', '{$F_email}')";
         $resultregFaculty = $mysqli->query($regFaculty);
