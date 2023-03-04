@@ -815,19 +815,14 @@ if (!isset($_SESSION['AD_number'])) {
         function handleCheckboxClick(clickedCheckbox) {
             const option1Checkbox = document.getElementById('option1');
             const option2Checkbox = document.getElementById('option2');
-            const additionalInputs = document.getElementById('additionalInputs');
 
             if (clickedCheckbox === option1Checkbox) {
                 if (clickedCheckbox.checked) {
-                    additionalInputs.style.display = 'block';
                     option2Checkbox.checked = false;
-                } else {
-                    additionalInputs.style.display = 'none';
                 }
             } else if (clickedCheckbox === option2Checkbox) {
                 if (clickedCheckbox.checked) {
                     option1Checkbox.checked = false;
-                    additionalInputs.style.display = 'none';
                 }
             }
         }
