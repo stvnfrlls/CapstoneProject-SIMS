@@ -3,6 +3,22 @@ require_once("../assets/php/server.php");
 
 if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
+} else {
+    if ($_SESSION['AD_number'] != "5UP3R4DM1N") {
+        echo <<<EOT
+            <script>
+                document.addEventListener("DOMContentLoaded", function(event) { 
+                    swal.fire({
+                        text: 'Your account is not allowed for this feature.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                    }).then(() => {
+                        window.location.href = 'dashboard.php';
+                    });
+                });
+            </script>
+        EOT;
+    }
 }
 ?>
 
@@ -254,8 +270,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     <div class="col-md-12">
                                                                         <label class="col-sm-12 col-form-label">Full Name</label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="hidden" name="addAdmin" value="submit">
-                                                                            <input type="text" class="form-control" name="adminName" required>
+                                                                            <input type="text" class="form-control" name="adminName" required />
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -263,7 +278,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     <div class="col-md-12">
                                                                         <label class="col-sm-12 col-form-label">Email</label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="text" class="form-control" name="adminEmail" required />
+                                                                            <input type="email" class="form-control" name="adminEmail" required />
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -284,7 +299,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     </div>
                                                                 </div>
                                                                 <div style="text-align: center;">
-                                                                    <button type="hidden" name="addAdmin" class="btn btn-primary me-2">Create</button>
+                                                                    <button type="submit" name="addAdmin" class="btn btn-primary me-2">Create</button>
                                                                 </div>
                                                             </form>
                                                         </div>
