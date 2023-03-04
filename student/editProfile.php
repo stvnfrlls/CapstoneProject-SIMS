@@ -163,6 +163,53 @@ if (!isset($_SESSION['SR_number'])) {
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="col-lg-10" style="margin: auto;">
+            <div class="card mb-4">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-sm-3" style="padding-top:11px;">
+                    <p class="mb-0">Fetcher Name</p>
+                  </div>
+                  <div class="col-sm-9">
+                    <select id="" class="form-select" required>
+                      <option selected></option>
+
+                      <option>No available fetchers yet</option>
+
+                    </select>
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3" style="padding-top:11px;">
+                    <p class="mb-0">Fetcher Name</p>
+                  </div>
+                  <div class="col-sm-9">
+                    <select id="" class="form-select" required>
+                      <option selected></option>
+                      <option>No available fetchers yet</option>
+
+                    </select>
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3" style="padding-top:11px;">
+                    <p class="mb-0">Fetcher Name</p>
+                  </div>
+                  <div class="col-sm-9">
+                    <select id="" class="form-select" required>
+                      <option selected></option>
+                      <option>No available fetchers yet</option>
+
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div style="text-align: center;">
           <button type="submit" class="btn btn-primary me-2" name="editStudentProfile">Save</button>
           <button type="button" class="btn btn-light" onclick="location.href='../student/profile.php'">Back</button>

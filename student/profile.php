@@ -135,7 +135,7 @@ if (!isset($_SESSION['SR_number'])) {
 
             </div>
           </div>
-          <div class="card mb-4 mb-md-0">
+          <div class="card mb-4">
             <div class="card-body">
               <p class="mb-4" style="text-align: center; color:#c02628;">Class Schedule</p>
               <?php
@@ -153,6 +153,36 @@ if (!isset($_SESSION['SR_number'])) {
                 </div>
               <?php }
               ?>
+            </div>
+          </div>
+          <div class="card mb-4 mb-md-0">
+            <div class="card-body">
+              <p class="mb-4" style="text-align: center; color:#c02628;">Fetchers</p>
+              <div class="accordion-left">
+                <dl class="accordion">
+                  <dt>
+                    <a href="" style="font-size: 15px"> > Ricardo Dalisay</a>
+                  </dt>
+                  <dd>
+                    <h7>Contact Number: 0987 930 4832</h7>
+                    <p>Email Address: juandelacruz@gmail.com</p>
+                  </dd>
+                  <dt>
+                    <a href="" style="font-size: 15px"> > Juan Dela Cruz</a>
+                  </dt>
+                  <dd>
+                    <h7>Contact Number: 0987 930 4832</h7>
+                    <p>Email Address: juandelacruz@gmail.com</p>
+                  </dd>
+                  <dt>
+                    <a href="" style="font-size: 15px"> > Lolong</a>
+                  </dt>
+                  <dd>
+                    <h7>Contact Number: 0987 930 4832</h7>
+                    <p>Email Address: juandelacruz@gmail.com</p>
+                  </dd>
+                </dl>
+              </div>
             </div>
           </div>
         </div>
