@@ -40,10 +40,9 @@ if (!isset($_SESSION['AD_number'])) {
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="../assets/css/style.css" rel="stylesheet">
-    <link href="../assets/css/form-style.css" rel="stylesheet">
+
     <link href="../assets/css/admin/style.css" rel="stylesheet">
-    <link href="../assets/css/admin/materialdesignicons.min.css" rel="stylesheet">
+    <link href="../assets/css/admin/style.css.map" rel="stylesheet">
 
 </head>
 
@@ -200,49 +199,92 @@ if (!isset($_SESSION['AD_number'])) {
                                 <div class="home-tab">
                                     <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                                         <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                                            <h2 class="fw-bold text-primary text-uppercase">Create Administrator</h2>
+                                            <h2 class="fw-bold text-primary text-uppercase">Administrator</h2>
                                         </div>
                                     </div>
                                     <div class="tab-content tab-content-basic" style="padding-bottom: 0px;">
                                         <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                                            <div style="text-align: center; padding-bottom: 15px;">
-                                                <a href="../admin/adminList.php" style="font-size: 15px;"><u>View full list of administrators</u></a>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-12 grid-margin">
-                                                    <div class="card" style="width:70%; margin:auto;">
-                                                        <div class="card-body">
-                                                            <div class="row" style="padding-bottom: 15px;">
-                                                                <div class="col-md-12">
-                                                                    <label class="col-sm-12 col-form-label">Full Name</label>
-                                                                    <div class="col-sm-12">
-                                                                        <input type="hidden" name="addAdmin" value="submit">
-                                                                        <input type="text" class="form-control" name="adminName" required>
-                                                                    </div>
+                                            <div class="col-12 grid-margin">
+                                                <div class="row">
+                                                    <div class="col-lg-8 col-sm-12 grid-margin">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <h4 style="text-align: center">List of Administrators</h4>
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-striped">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>No.</th>
+                                                                                <th>Name</th>
+                                                                                <th>Email Address</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <?php
+                                                                            $rowCount = 1;
+                                                                            $getAdminAccountsList = $mysqli->query("SELECT * FROM admin_accounts");
+                                                                            if (mysqli_num_rows($getAdminAccountsList) > 0) {
+                                                                                while ($AdminAccounts = $getAdminAccountsList->fetch_assoc()) { ?>
+                                                                                    <tr>
+                                                                                        <td><?php echo $rowCount; ?></td>
+                                                                                        <td><?php echo $AdminAccounts['AD_name']; ?></td>
+                                                                                        <td><?php echo $AdminAccounts['AD_email']; ?></td>
+                                                                                    </tr>
+                                                                                <?php
+                                                                                    $rowCount++;
+                                                                                }
+                                                                            } else { ?>
+                                                                                <tr>
+                                                                                    <td colspan="3" class="text-center">No Admin account registered yet</td>
+                                                                                </tr>
+                                                                            <?php }
+                                                                            ?>
+                                                                        </tbody>
+                                                                    </table>
                                                                 </div>
                                                             </div>
-                                                            <div class="row" style="padding-bottom: 15px;">
-                                                                <div class="col-md-12">
-                                                                    <label class="col-sm-12 col-form-label">Email</label>
-                                                                    <div class="col-sm-12">
-                                                                        <input type="text" class="form-control" name="adminEmail" required>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-sm-12 grid-margin">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                            <h4 style="text-align: center">Create Administrator</h4>
+                                                                <div class="row" style="padding-bottom: 15px;">
+                                                                    <div class="col-md-12">
+                                                                        <label class="col-sm-12 col-form-label">Full Name</label>
+                                                                        <div class="col-sm-12">
+                                                                            <input type="hidden" name="addAdmin" value="submit">
+                                                                            <input type="text" class="form-control" name="adminName" required>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="row" style="padding-bottom: 15px;">
-                                                                <div class="col-md-12">
-                                                                    <label class="col-sm-12 col-form-label">Enter Password</label>
-                                                                    <div class="col-sm-12">
-                                                                        <input type="password" class="form-control" name="adminPassword" required>
+                                                                <div class="row" style="padding-bottom: 15px;">
+                                                                    <div class="col-md-12">
+                                                                        <label class="col-sm-12 col-form-label">Email</label>
+                                                                        <div class="col-sm-12">
+                                                                            <input type="text" class="form-control" name="adminEmail" required>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="row" style="padding-bottom: 15px;">
-                                                                <div class="col-md-12">
-                                                                    <label class="col-sm-12 col-form-label">Confirm Password</label>
-                                                                    <div class="col-sm-12">
-                                                                        <input type="password" class="form-control" name="confirmPassword" required>
+                                                                <div class="row" style="padding-bottom: 15px;">
+                                                                    <div class="col-md-12">
+                                                                        <label class="col-sm-12 col-form-label">Enter Password</label>
+                                                                        <div class="col-sm-12">
+                                                                            <input type="password" class="form-control" name="adminPassword" required>
+                                                                        </div>
                                                                     </div>
+                                                                </div>
+                                                                <div class="row" style="padding-bottom: 15px;">
+                                                                    <div class="col-md-12">
+                                                                        <label class="col-sm-12 col-form-label">Confirm Password</label>
+                                                                        <div class="col-sm-12">
+                                                                            <input type="password" class="form-control" name="confirmPassword" required>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div style="text-align: center;">
+                                                                    <button type="button" id="createAdmin" class="btn btn-primary me-2">Create</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -251,12 +293,6 @@ if (!isset($_SESSION['AD_number'])) {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-
-
-                                <div style="text-align: center;">
-                                    <button type="button" id="createAdmin" class="btn btn-primary me-2">Create</button>
-                                    <button type="button" class="btn btn-light">Back</button>
                                 </div>
                             </div>
                         </form>
