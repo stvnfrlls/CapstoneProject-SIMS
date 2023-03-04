@@ -144,12 +144,6 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../faculty/createReminder.php">
-              <i class=""></i>
-              <span class="menu-title">Create Reminders</span>
-            </a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="../faculty/reminders.php">
               <i class=""></i>
               <span class="menu-title">Reminders</span>
@@ -166,7 +160,7 @@ if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject']))
           <li class="nav-item">
             <a class="nav-link" href="../faculty/advisoryPage.php">
               <i class=""></i>
-              <span class="menu-title">Advisory</span>
+              <span class="menu-title">Advisory Class</span>
             </a>
           </li>
           <li class="nav-item">

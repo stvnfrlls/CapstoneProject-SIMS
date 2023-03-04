@@ -78,12 +78,6 @@ if (!isset($_SESSION['F_number'])) {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../faculty/createReminder.php">
-                            <i class=""></i>
-                            <span class="menu-title">Create Reminders</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="../faculty/reminders.php">
                             <i class=""></i>
                             <span class="menu-title">Reminders</span>
@@ -100,7 +94,7 @@ if (!isset($_SESSION['F_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../faculty/advisoryPage.php">
                             <i class=""></i>
-                            <span class="menu-title">Advisory</span>
+                            <span class="menu-title">Advisory Class</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -165,7 +159,6 @@ if (!isset($_SESSION['F_number'])) {
                                                                     <div class="col-8" style="align-self: center;">
                                                                         <h3 style="text-align: left;"><?php echo $getFacultyData['F_lname'] . ", " . $getFacultyData['F_fname'] . " " . substr($getFacultyData['F_mname'], 0, 1) . ". " . $getFacultyData['F_suffix'] . "." ?></h3>
                                                                         <p style="margin-bottom: 8px;"><?php echo $getFacultyData['F_number'] ?></p>
-                                                                        <p style="margin-bottom: 8px;"><?php echo $getFacultyData['F_department'] . " Department" ?></p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -250,61 +243,9 @@ if (!isset($_SESSION['F_number'])) {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-12">
-                                                        <div class="row" style="padding-top: 20px;">
-                                                            <div class="col-sm-12 col-lg-3 grid-margin">
-                                                                <div class="card">
-                                                                    <div class="card-body">
-                                                                        <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
-                                                                            <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-user"></i></h1>
-                                                                        </div>
-                                                                        <a href="../faculty/viewProfile.php">
-                                                                            <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Profile</h3>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-12 col-lg-3 grid-margin">
-                                                                <div class="card">
-                                                                    <div class="card-body">
-                                                                        <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
-                                                                            <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-book"></i></h1>
-                                                                        </div>
-                                                                        <a href="../faculty/viewProfile.php">
-                                                                            <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Subjects</h3>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-12 col-lg-3 grid-margin">
-                                                                <div class="card">
-                                                                    <div class="card-body">
-                                                                        <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
-                                                                            <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-bullhorn"></i></h1>
-                                                                        </div>
-                                                                        <a href="../faculty/encodeGrades.php">
-                                                                            <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Grades</h3>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-12 col-lg-3 grid-margin">
-                                                                <div class="card">
-                                                                    <div class="card-body">
-                                                                        <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
-                                                                            <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-exclamation"></i></h1>
-                                                                        </div>
-                                                                        <a href="../faculty/reminders.php">
-                                                                            <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Reminders</h3>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
+                                                    <div class="row" style="padding: 20px 0px 0px 15px;">
                                                         <div class="col-lg-8 col-sm-12 grid-margin">
-                                                            <div class="card">
+                                                            <div class="card" >
                                                                 <div class="card-body">
                                                                     <div class="row">
                                                                         <div class="section-title section-title-sm position-relative pb-3 mb-4">
@@ -361,7 +302,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-4 col-sm-12 grid-margin">
+                                                        <div class="col-lg-4 col-sm-12" style="padding-right: 0px;">
                                                             <div class="card">
                                                                 <div class="card-body">
                                                                     <div class="row">

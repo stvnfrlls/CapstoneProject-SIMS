@@ -15118,6 +15118,10 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
     left: 0;
     z-index: 1030;
   }
+
+  .home-tab{
+    margin-top: 100px !important; 
+  }
 }
 
 @media (max-width: 768px) {
@@ -15129,6 +15133,10 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
     z-index: 1030;
   }
 
+  .home-tab{
+    margin-top: 100px !important;
+  }
+
 }
 
 @media (max-width: 992px) {
@@ -15138,6 +15146,10 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
     right: 0;
     left: 0;
     z-index: 1030;
+  }
+
+  .home-tab{
+    margin-top: 100px !important;
   }
 }
 .fixed-bottom {
@@ -28200,6 +28212,7 @@ div.tagsinput span.tag a {
   .main-panel {
     margin-left: 0;
     width: 100%;
+
   }
 }
 
