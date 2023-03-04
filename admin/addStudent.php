@@ -659,6 +659,9 @@ if (!isset($_SESSION['AD_number'])) {
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
     <!-- JavaScript Libraries -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/admin/vendor.bundle.base.js"></script>
+    <script src="../assets/js/admin/off-canvas.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -798,11 +801,6 @@ if (!isset($_SESSION['AD_number'])) {
     </script>
 
     <!-- Template Javascript -->
-    <script src="../assets/js/main.js"></script>
-
-    <script src="../assets/js/admin/vendor.bundle.base.js"></script>
-    <script src="../assets/js/admin/off-canvas.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
     <script>
         const confirmStudent = document.getElementById('confirmStudent');
         const regStudent = document.getElementById('regStudent');
@@ -814,15 +812,10 @@ if (!isset($_SESSION['AD_number'])) {
                 cancelButtonText: `No`,
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Swal.fire({
-                        title: 'The student has been registered successfully!',
-                        icon: 'success',
-                    }).then(() => {
-                        confirmStudent.submit();
-                    });
+                    confirmStudent.submit();
                 }
-            })
-        })
+            });
+        });
     </script>
 
     <script>

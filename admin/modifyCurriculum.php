@@ -226,7 +226,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                         $rowCount = 0;
                                                                         $dataSubject = $mysqli->query("SELECT subjectName, minYearLevel, maxYearLevel FROM subjectperyear");
                                                                         if (mysqli_num_rows($dataSubject) > 0) {
-                                                                            while ($subject != $dataSubject->fetch_assoc()) { ?>
+                                                                            while ($subject = $dataSubject->fetch_assoc()) { ?>
                                                                                 <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="modifyCurrForm">
                                                                                     <tr>
                                                                                         <td><?php echo $rowCount; ?></td>
