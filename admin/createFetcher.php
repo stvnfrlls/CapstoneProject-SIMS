@@ -244,7 +244,8 @@ if (empty($_SESSION['AD_number'])) {
                                     </div>
                                 </div>
                                 <div style="text-align: center;">
-                                    <button type="button" class="btn btn-primary me-2" name="createFetcher" id="createFetcher">Create</button>
+                                    <input type="hidden" name="createFetcher" value="submit">
+                                    <button type="button" class="btn btn-primary me-2" id="createFetcher">Create</button>
                                     <button type="button" class="btn btn-light">Back</button>
                                 </div>
                             </div>

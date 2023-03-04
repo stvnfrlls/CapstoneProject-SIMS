@@ -336,7 +336,7 @@ if (!isset($_SESSION['AD_number'])) {
                                 <div class="col-md-3">
                                   <label label class="col-sm-12 col-form-label">City <span style="color: red;">*</span></label>
                                   <div class="col-sm-12">
-                                    <select name="city" class="form-select" name="F_city" id="city" required>
+                                    <select class="form-select" name="F_city" id="F_city" required>
                                       <option selected></option>
                                     </select>
                                   </div>
@@ -346,15 +346,13 @@ if (!isset($_SESSION['AD_number'])) {
                                 <div class="col-md-4">
                                   <label label class="col-sm-12 col-form-label">State <span style="color: red;">*</span></label>
                                   <div class="col-sm-12">
-                                    <select class="form-select" name="F_state" id="province" required>
-                                      <option selected></option>
-                                    </select>
+                                    <input type="text" class="form-control" name="F_state" id="F_state" required readonly>
                                   </div>
                                 </div>
                                 <div class="col-md-4">
                                   <label label class="col-sm-12 col-form-label">Postal Code <span style="color: red;">*</span></label>
                                   <div class="col-sm-12">
-                                    <input type="number" id="postal" class="form-control" name="F_postal" required readonly>
+                                    <input type="number" id="F_postal" class="form-control" name="F_postal" required readonly>
                                   </div>
                                 </div>
                               </div>
@@ -423,6 +421,7 @@ if (!isset($_SESSION['AD_number'])) {
 
   <script>
     const phoneInput = document.getElementById('F_contact');
+    phoneInput.maxLength = 15;
 
     phoneInput.addEventListener('input', function(e) {
       // Get the current input value and remove all non-numeric characters
@@ -440,35 +439,31 @@ if (!isset($_SESSION['AD_number'])) {
       // Update the input field with the formatted value
       e.target.value = formatted;
 
-      if (input.length >= 12) {
-        e.target.value = formatted.slice(0, 14);
+      if (input.length >= 15) {
+        e.target.value = formatted.slice(0, 15);
       }
     });
   </script>
 
   <script>
-    const city = document.getElementById('city');
-    const province = document.getElementById('province');
-    const postal = document.getElementById('postal');
+    const F_city = document.getElementById('F_city');
+    const F_state = document.getElementById('F_state');
+    const F_postal = document.getElementById('F_postal');
 
     for (let i = 0; i < cityprov.length; i++) {
       const option = document.createElement('option');
       option.value = cityprov[i].city;
       option.text = cityprov[i].city;
-      city.add(option);
+      F_city.add(option);
     }
 
-    city.addEventListener("change", function() {
-      const cityValue = this.value;
+    F_city.addEventListener("change", function() {
+      const F_CityValue = this.value;
       const findCity = cityprov.find(function(element) {
-        return element.city == cityValue;
+        return element.city == F_CityValue;
       });
-      const option = document.createElement("option");
-      option.value = findCity.province;
-      option.text = findCity.province;
-      province.replaceChildren(option);
-
-      postal.value = findCity.zip_code;
+      F_state.value = findCity.state;
+      F_postal.value = findCity.zip_code;
     });
   </script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
