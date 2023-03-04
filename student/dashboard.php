@@ -219,7 +219,7 @@ if (!isset($_SESSION['SR_number'])) {
                           <a href="../student/profile.php">
                             <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Profile</h3>
                           </a>
-                          <p class="d-flex flex-shrink-0 text-center">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
+                          <p class="d-flex flex-shrink-0 text-center">Information about the user's account or identity.</p>
                         </div>
                       </div>
                     </div>
@@ -234,7 +234,7 @@ if (!isset($_SESSION['SR_number'])) {
 
                             <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">QR Code</h3>
                           </a>
-                          <p class="d-flex flex-shrink-0 text-center">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
+                          <p class="d-flex flex-shrink-0 text-center">A digital code that can be scanned for information.</p>
                         </div>
                       </div>
                     </div>
@@ -247,7 +247,7 @@ if (!isset($_SESSION['SR_number'])) {
                           <a href="../student/dailyAttendance.php">
                             <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Attendance</h3>
                           </a>
-                          <p class="d-flex flex-shrink-0 text-center">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
+                          <p class="d-flex flex-shrink-0 text-center">Record of user's presence/absence in class/work.</p>
                         </div>
                       </div>
                     </div>
@@ -260,7 +260,7 @@ if (!isset($_SESSION['SR_number'])) {
                           <a href="../student/grades.php">
                             <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Grades</h3>
                           </a>
-                          <p class="d-flex flex-shrink-0 text-center">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
+                          <p class="d-flex flex-shrink-0 text-center">Evaluation of a user's performance or achievement.</p>
                         </div>
                       </div>
                     </div>
