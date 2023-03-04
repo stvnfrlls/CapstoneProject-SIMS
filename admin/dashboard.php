@@ -564,7 +564,6 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                         <tr>
                                                                                             <th>No.</th>
                                                                                             <th>Faculty Number</th>
-                                                                                            <th>Department</th>
                                                                                             <th>Faculty Name</th>
                                                                                         </tr>
                                                                                     </thead>
@@ -579,7 +578,6 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                                 <tr>
                                                                                                     <td><?php echo $rowCount; ?></td>
                                                                                                     <td><?php echo $facultyPopulation['F_number']; ?></td>
-                                                                                                    <td><?php echo $facultyPopulation['F_department']; ?></td>
                                                                                                     <td><?php echo $facultyPopulation['F_lname'] .  ", " . $facultyPopulation['F_fname'] . " " . substr($facultyPopulation['F_mname'], 0, 1) ?></td>
                                                                                                 </tr>
                                                                                             <?php

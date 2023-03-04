@@ -219,22 +219,6 @@ if (!isset($_SESSION['AD_number'])) {
                                 <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluidr" style="width: 150px;">
                               </div>
                             </div>
-                            <div class="row" style="padding-bottom: 15px;">
-                              <div class="col-12">
-                                <label class="col-sm-12 col-form-label">Department</label>
-                                <div class="col-sm-12">
-                                  <select class="form-select" name="F_department" disabled>
-                                    <option selected><?php echo $getFacultyData['F_department'] ?></option>
-                                    <option value="English">English Department</option>
-                                    <option value="Filipino">Filipino Department</option>
-                                    <option value="Mathematics">Mathematics Department</option>
-                                    <option value="Science">Science Department</option>
-                                    <option value="History">History Department</option>
-                                    <option value="Personality Development">Personality Development Department</option>
-                                  </select>
-                                </div>
-                              </div>
-                            </div>
                           </div>
                         </div>
                       </div>

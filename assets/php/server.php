@@ -359,7 +359,6 @@ if (isset($_POST['saveBehavior'])) {
     }
 }
 if (isset($_POST['updateProfile'])) {
-    $F_department = $mysqli->real_escape_string($_POST['F_department']);
     $F_fname = $mysqli->real_escape_string($_POST['F_fname']);
     $F_mname    = $mysqli->real_escape_string($_POST['F_mname']);
     $F_lname = $mysqli->real_escape_string($_POST['F_lname']);
@@ -381,7 +380,6 @@ if (isset($_POST['updateProfile'])) {
 
     $updateFaculty = "UPDATE faculty 
                       SET 
-                        F_department = '$F_department',
                         F_fname = '$F_fname', 
                         F_mname = '$F_mname',
                         F_lname = '$F_lname',
@@ -783,7 +781,6 @@ if (isset($_POST['regFaculty']) && !empty($_SESSION['AD_number'])) {
 }
 if (isset($_POST['editFaculty']) && !empty($_SESSION['AD_number'])) {
     $F_number = $_POST['F_number'];
-    $F_department = $mysqli->real_escape_string($_POST['F_department']);
 
     $F_lname = $mysqli->real_escape_string($_POST['F_lname']);
     $F_fname = $mysqli->real_escape_string($_POST['F_fname']);

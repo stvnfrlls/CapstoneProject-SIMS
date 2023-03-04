@@ -7,17 +7,6 @@ if (!isset($_SESSION['AD_number'])) {
   if (!empty($_GET['F_number'])) {
     header('Location: ../viewFaculty.php?F_number=' . $_GET['F_number']);
   }
-
-  $Department = "SELECT DISTINCT(F_department) FROM faculty";
-  $runDepartment = $mysqli->query($Department);
-
-  if (empty($_GET['department'])) {
-    $ListofFaculty = "SELECT * FROM faculty";
-    $resultListofFaculty = $mysqli->query($ListofFaculty);
-  } else {
-    $ListofFaculty = "SELECT * FROM faculty WHERE F_department = '{$_GET['department']}'";
-    $resultListofFaculty = $mysqli->query($ListofFaculty);
-  }
 }
 ?>
 
@@ -224,30 +213,6 @@ if (!isset($_SESSION['AD_number'])) {
                 </div>
                 <div class="tab-content tab-content-basic">
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                    <div class="btn-group">
-                      <div>
-                        <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
-                          Department <i class="fa fa-caret-down"></i>
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                          <?php while ($deptData = $runDepartment->fetch_assoc()) { ?>
-                            <a class="dropdown-item" href="faculty.php?department=<?php echo $deptData['F_department'] ?>">
-                              <?php echo $deptData['F_department'] ?>
-                            </a>
-                          <?php } ?>
-                        </div>
-                      </div>
-                    </div>
-                    <?php
-                    if (isset($_GET['department'])) { ?>
-                      <div class="btn-group" style="float: right;">
-                        <a href="../reports/getFacultyDept.php?department=<?php echo $_GET['department'] ?>" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">
-                          Print
-                          <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i>
-                        </a>
-                      </div>
-                    <?php }
-                    ?>
                     <div class="row" style="margin-top: 15px;">
                       <div class="col-lg-12 d-flex flex-column">
                         <div class="row flex-grow">
@@ -259,18 +224,18 @@ if (!isset($_SESSION['AD_number'])) {
                                     <tr>
                                       <th class="hatdog">No.</th>
                                       <th class="hatdog">Faculty ID</th>
-                                      <th class="hatdog">Department</th>
                                       <th class="hatdog">Full Name</th>
                                     </tr>
                                   </thead>
                                   <tbody>
                                     <?php $rowCount = 1;
+                                    $ListofFaculty = "SELECT * FROM faculty";
+                                    $resultListofFaculty = $mysqli->query($ListofFaculty);
                                     if (mysqli_num_rows($resultListofFaculty) > 0) {
                                       while ($data = $resultListofFaculty->fetch_assoc()) { ?>
                                         <tr>
                                           <td class="hatdog"><?php echo $rowCount ?></td>
                                           <td class="hatdog"><?php echo $data['F_number'] ?></td>
-                                          <td class="hatdog"><?php echo $data['F_department'] ?></td>
                                           <td class="hatdog"><a href="faculty.php/get?F_number=<?php echo $data['F_number'] ?>"><?php echo $data['F_lname'] . ", " . $data['F_fname'] ?></a></td>
                                         </tr>
                                       <?php $rowCount++;
