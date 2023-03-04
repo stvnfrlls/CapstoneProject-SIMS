@@ -205,7 +205,9 @@ if (!isset($_SESSION['AD_number'])) {
                                                 <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
                                                     <?php
                                                     if (isset($_GET['ID'])) {
-                                                        echo $_GET['ID'];
+                                                        $getAD_name = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_GET['ID']}'");
+                                                        $AD_name = $getAD_name->fetch_assoc();
+                                                        echo $AD_name['AD_name'];
                                                     } else {
                                                         echo "Name";
                                                     }
@@ -215,13 +217,13 @@ if (!isset($_SESSION['AD_number'])) {
                                                 <?php
                                                 $getLoggedNames = $mysqli->query("SELECT DISTINCT AD_number, AD_name FROM admin_logs WHERE acadYear = '{$currentSchoolYear}'");
                                                 if (mysqli_num_rows($getLoggedNames) > 0) { ?>
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                                         <?php
                                                         while ($LoggedNames = $getLoggedNames->fetch_assoc()) { ?>
                                                             <a class="dropdown-item" href="auditTrail.php?ID=<?php echo $LoggedNames['AD_number'] ?>"><?php echo $LoggedNames['AD_name'] ?></a>
                                                         <?php }
                                                         ?>
-                                                </div>
+                                                    </div>
                                                 <?php }
                                                 ?>
                                             </div>
@@ -261,17 +263,17 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     <?php
                                                                     if (mysqli_num_rows($GetLogs) > 0) {
                                                                         while ($LogData = $GetLogs->fetch_assoc()) { ?>
-                                                                    <tr>
+                                                                            <tr>
                                                                                 <td><?php echo $LogData['AD_name'] ?></td>
                                                                                 <td><?php echo $LogData['logDate'] ?></td>
                                                                                 <td><?php echo $LogData['AD_action'] ?></td>
-                                                                    </tr>
+                                                                            </tr>
                                                                         <?php  } ?>
                                                                     <?php
                                                                     } else { ?>
-                                                                    <tr>
+                                                                        <tr>
                                                                             <td colspan="3" class="text-center">No Logged Action</td>
-                                                                    </tr>
+                                                                        </tr>
                                                                     <?php }
 
                                                                     ?>
