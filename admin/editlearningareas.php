@@ -350,41 +350,32 @@ if (empty($_SESSION['AD_number'])) {
                                             </td>
                                             <td>
                                               <?php
-                                              $getAllFacultyName = "SELECT faculty.F_number, faculty.F_lname, faculty.F_fname, faculty.F_mname, faculty.F_suffix
-                                                                  FROM faculty LEFT JOIN workschedule ON faculty.F_number = workschedule.F_number";
-                                              $runAllFacultyName = $mysqli->query($getAllFacultyName);
-                                              while ($dataAllFacultyName = $runAllFacultyName->fetch_assoc()) {
-                                                $AllFacultyName[] = $dataAllFacultyName;
-                                              }
-                                              $arrayRowCount = 1;
-                                              $arrayCount = count($AllFacultyName); ?>
+                                              $getAssignedFaculty = $mysqli->query("SELECT * FROM workschedule 
+                                                                                    WHERE SR_grade = '{$_GET['GradeLevel']}' 
+                                                                                    AND SR_section = '{$_GET['SectionName']}' 
+                                                                                    AND acadYear = '{$currentSchoolYear}'
+                                                                                    AND S_subject = '{$subjects[$rowCount]['subjectName']}'");
+                                              $assignedFaculty = $getAssignedFaculty->fetch_assoc();
+                                              ?>
                                               <select class="form-select" name="assignedFaculty" aria-label="Default select example" required>
                                                 <?php
-                                                $getFacultyName = $mysqli->query("SELECT F_number, F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$schedule[$rowCount]['F_number']}'");
-                                                while ($dataFacultyName = $getFacultyName->fetch_assoc()) {
-                                                  $FacultyName[] = $dataFacultyName;
-                                                }
-                                                if (empty($schedule[$rowCount]['F_number'])) {
-                                                  echo "<option selected></option>";
-                                                } else {
-                                                  echo "<option selected value=" . $FacultyName[$rowCount]['F_number'] . ">" . $FacultyName[$rowCount]['F_lname'] .  ", " . $FacultyName[$rowCount]['F_fname'] . " " . substr($FacultyName[$rowCount]['F_mname'], 0, 1);
-                                                  "</option";
-                                                }
+                                                if (mysqli_num_rows($getAssignedFaculty) > 0) {
+                                                  $getFacultyName = $mysqli->query("SELECT F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$assignedFaculty['F_number']}'");
+                                                  $FacultyName = $getFacultyName->fetch_assoc();
+                                                ?>
+                                                  <option value="<?php echo $assignedFaculty['F_number'] ?>" selected><?php echo $FacultyName['F_lname'] . ", " . $FacultyName['F_fname'] . " " . substr($FacultyName['F_mname'], 0, 1) . ". " . $FacultyName['F_suffix'] . "." ?></option>
+                                                <?php } else { ?>
+                                                  <option selected>No assigned teacher</option>
+                                                <?php }
                                                 ?>
 
                                                 <?php
-                                                while ($arrayRowCount < $arrayCount) { ?>
-                                                  <option value="<?php echo $AllFacultyName[$arrayRowCount]['F_number']; ?>">
-                                                    <?php
-                                                    echo $AllFacultyName[$arrayRowCount]['F_lname'] . ", " . $AllFacultyName[$arrayRowCount]['F_fname'] . " " . substr($AllFacultyName[$arrayRowCount]['F_mname'], 0, 1);
-                                                    ?>
-                                                  </option>
-                                                <?php $arrayRowCount++;
-                                                }
+                                                $listFacultyData = $mysqli->query("SELECT F_number, F_lname, F_fname, F_mname, F_suffix FROM faculty ORDER BY F_lname");
+                                                while ($listFaculty = $listFacultyData->fetch_assoc()) { ?>
+                                                  <option value="<?php echo $listFaculty['F_number'] ?>"><?php echo $listFaculty['F_lname'] . ", " . $listFaculty['F_fname'] . " " . substr($listFaculty['F_mname'], 0, 1) . ". " . $listFaculty['F_suffix'] . "." ?></option>
+                                                <?php }
                                                 ?>
                                               </select>
-                                              <?php
-                                              ?>
                                             </td>
                                             <td>
                                               <?php
