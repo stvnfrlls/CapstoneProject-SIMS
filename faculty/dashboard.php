@@ -155,9 +155,13 @@ if (!isset($_SESSION['F_number'])) {
                                                         <div class="card">
                                                             <div class="card-body">
                                                                 <div class="row">
-                                                                    <div class="col-4">
+                                                                    <?php
+                                                                    if (empty($getFacultyData['F_profile_img'])) { ?>
                                                                         <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
-                                                                    </div>
+                                                                    <?php } else { ?>
+                                                                        <img src="../assets/img/<?php echo $getFacultyData['F_profile_img'] ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
+                                                                    <?php }
+                                                                    ?>
                                                                     <div class="col-8" style="align-self: center;">
                                                                         <h3 style="text-align: left;"><?php echo $getFacultyData['F_lname'] . ", " . $getFacultyData['F_fname'] . " " . substr($getFacultyData['F_mname'], 0, 1) . ". " . $getFacultyData['F_suffix'] . "." ?></h3>
                                                                         <p style="margin-bottom: 8px;"><?php echo $getFacultyData['F_number'] ?></p>

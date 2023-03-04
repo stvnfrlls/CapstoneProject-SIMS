@@ -271,13 +271,13 @@ if (!isset($_SESSION['AD_number'])) {
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Age <span style="color: red;">*</span></label>
                                   <div class="col-sm-12">
-                                    <input type="number" class="form-control" name="F_age" required>
+                                    <input type="number" class="form-control" name="F_age" id="F_age" required readonly>
                                   </div>
                                 </div>
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Birthdate <span style="color: red;">*</span></label>
                                   <div class="col-sm-12">
-                                    <input type="date" class="form-control" name="F_birthday" required>
+                                    <input type="date" class="form-control" name="F_birthday" id="F_birthday" required onchange="calculateAge()">
                                   </div>
                                 </div>
                                 <div class="col-md-4">
@@ -406,6 +406,20 @@ if (!isset($_SESSION['AD_number'])) {
   <script src="../assets/js/admin/off-canvas.js"></script>
 
   <script>
+    function calculateAge() {
+      const F_birthday = document.getElementById("F_birthday").value;
+      const today = new Date();
+      const birthDate = new Date(F_birthday);
+
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+
+      document.getElementById("F_age").value = age;
+    }
     const phoneInput = document.getElementById('F_contact');
     phoneInput.maxLength = 15;
 

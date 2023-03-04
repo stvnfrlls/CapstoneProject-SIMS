@@ -468,7 +468,9 @@ if (isset($_POST['attendanceReport']) && isset($_SESSION['F_number'])) {
 if (isset($_POST['regStudent'])) {
     $SR_LRN = $mysqli->real_escape_string($_POST['LRN']);
 
-    $SR_profile_img = $_FILES['image']['tmp_name'];
+    $SR_profile_img = $_FILES['image']['name'];
+    $tempname = $_FILES["image"]["tmp_name"];
+    $folder = "../img/" . $SR_profile_img;
 
     $S_lname = $mysqli->real_escape_string($_POST['S_lname']);
     $S_fname = $mysqli->real_escape_string($_POST['S_fname']);
@@ -534,6 +536,7 @@ if (isset($_POST['regStudent'])) {
                         '$S_citizenship', '$S_grade', '$S_section', '$SR_servicetype', '$S_address', 
                         '$S_barangay', '$S_city', '$S_state', '$S_postal', '$S_email')";
         $RunregStudent = $mysqli->query($regStudent);
+        move_uploaded_file($tempname, $folder);
         $regGuardian = "INSERT INTO guardian(
                         G_guardianOfStudent,
                         G_lname, G_fname, G_mname, G_suffix,
@@ -716,6 +719,9 @@ if (isset($_POST['updateInformation']) && !empty($_SESSION['AD_number'])) {
 }
 if (isset($_POST['regFaculty']) && !empty($_SESSION['AD_number'])) {
     $F_profile_img = $_FILES['image']['name'];
+    $tempname = $_FILES["image"]["tmp_name"];
+    $folder = "../img/" . $F_profile_img;
+
     $F_status = "TEACHING";
     $F_lname = $mysqli->real_escape_string($_POST['F_lname']);
     $F_fname = $mysqli->real_escape_string($_POST['F_fname']);
@@ -750,6 +756,7 @@ if (isset($_POST['regFaculty']) && !empty($_SESSION['AD_number'])) {
                         '{$F_age}', '{$F_birthday}', '{$F_gender}', '{$F_religion}', '{$F_citizenship}', 
                         '{$F_address}', '{$F_barangay}', '{$F_city}', '{$F_state}', '{$F_postal}', '{$F_contactNumber}', '{$F_email}')";
         $resultregFaculty = $mysqli->query($regFaculty);
+        move_uploaded_file($tempname, $folder);
         unset($_SESSION['fromAddFaculty']);
         if ($resultregFaculty) {
             $GenPass = generatePassword();
@@ -1289,7 +1296,7 @@ function validate($data)
 function generatePassword()
 {
     // characters to choose from
-    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?";
+    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:.?";
     // password length
     $passwordLength = 8;
     // initialize the password as an empty string
@@ -1300,7 +1307,7 @@ function generatePassword()
         $password .= $chars[rand(0, strlen($chars) - 1)];
     }
     // check if the password contains at least one uppercase letter, one number, and one special character
-    if (!preg_match("/[A-Z]/", $password) || !preg_match("/[0-9]/", $password) || !preg_match("/[!@#\$%\^&\*\(\)_\-=\+;:\,\.\?]/", $password)) {
+    if (!preg_match("/[A-Z]/", $password) || !preg_match("/[0-9]/", $password) || !preg_match("/[!@#\$%\^&\*\(\)_\-=\+;:\.\?]/", $password)) {
         // if not, generate a new password
         $password = generatePassword();
     }

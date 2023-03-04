@@ -292,13 +292,13 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     <div class="col-md-4">
                                                                         <label label class="col-sm-12 col-form-label">Birthdate <span style="color: red;">*</span></label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="date" class="form-control" name="S_birthday" required>
+                                                                            <input type="date" class="form-control" name="S_birthday" id="S_birthday" required onchange="calculateAge()">
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-1">
                                                                         <label label class="col-sm-12 col-form-label">Age <span style="color: red;">*</span></label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="number" class="form-control" maxlength="2" name="S_age" id="S_age" required>
+                                                                            <input type="number" class="form-control" maxlength="2" name="S_age" id="S_age" required readonly>
                                                                         </div>
                                                                     </div>
 
@@ -693,6 +693,20 @@ if (!isset($_SESSION['AD_number'])) {
         });
     </script>
     <script>
+        function calculateAge() {
+            const S_birthday = document.getElementById("S_birthday").value;
+            const today = new Date();
+            const birthDate = new Date(S_birthday);
+
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+
+            document.getElementById("S_age").value = age;
+        }
         const phoneInput = document.getElementById('phone');
         phoneInput.maxLength = 15;
 
