@@ -266,47 +266,56 @@ if (!isset($_SESSION['AD_number'])) {
                                     } else {
                                       $getAdvisoryData = $mysqli->query("SELECT * FROM sections WHERE acadYear = '{$currentSchoolYear}'");
                                     }
-                                    while ($AdvisoryData = $getAdvisoryData->fetch_assoc()) { ?>
-                                      <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="assignAdvisorForm">
-                                        <tr>
-                                          <td class="hatdog"><?php echo $rowCount; ?></td>
-                                          <td class="hatdog">
-                                            <input type="hidden" name="section" value="<?php echo $AdvisoryData['S_name']; ?>">
-                                            <?php echo "Grade " . $AdvisoryData['S_yearLevel'] . " - " . $AdvisoryData['S_name'] ?>
-                                          </td>
-                                          <td class="hatdog">
-                                            <select class="form-select" name="advisor" aria-label="Default select example">
-                                              <?php
-                                              $getAssignedFacultyData = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$AdvisoryData['S_adviser']}'");
-                                              $AssignedFacultyData = $getAssignedFacultyData->fetch_assoc();
-                                              if (empty($AdvisoryData['S_adviser'])) {
-                                                echo "<option selected>assign a teacher</option>";
-                                              } else {
-                                                echo "<option selected value=" . $AdvisoryData['S_adviser'] . ">" . $AssignedFacultyData['F_lname'] . ", " . $AssignedFacultyData['F_fname'] . " " . substr($AssignedFacultyData['F_mname'], 0, 1) . "</option>";
-                                              }
 
-                                              $checkadvisory = $mysqli->query("SELECT S_adviser FROM sections WHERE acadYear = '{$currentSchoolYear}' AND S_adviser IS NOT NULL");
-                                              if (mysqli_num_rows($checkadvisory) > 0) {
-                                                $getFacultyData = $mysqli->query("SELECT F_number, F_lname, F_fname, F_mname, F_suffix FROM faculty 
-                                                                                WHERE F_number 
-                                                                                NOT IN (SELECT S_adviser FROM sections WHERE S_adviser IS NOT NULL AND acadYear = '{$currentSchoolYear}')");
-                                              } else {
-                                                $getFacultyData = $mysqli->query("SELECT faculty.F_number, faculty.F_lname, faculty.F_fname, faculty.F_mname, faculty.F_suffix FROM faculty 
-                                                                  LEFT JOIN sections ON faculty.F_number = sections.S_adviser");
-                                              }
+                                    if (mysqli_num_rows($getAdvisoryData) > 0) {
+                                      while ($AdvisoryData = $getAdvisoryData->fetch_assoc()) { ?>
+                                        <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="assignAdvisorForm">
+                                          <tr>
+                                            <td class="hatdog"><?php echo $rowCount; ?></td>
+                                            <td class="hatdog">
+                                              <input type="hidden" name="section" value="<?php echo $AdvisoryData['S_name']; ?>">
+                                              <?php echo "Grade " . $AdvisoryData['S_yearLevel'] . " - " . $AdvisoryData['S_name'] ?>
+                                            </td>
+                                            <td class="hatdog">
+                                              <select class="form-select" name="advisor" aria-label="Default select example" required>
+                                                <?php
+                                                $getAssignedFaculty = $mysqli->query("SELECT * FROM sections WHERE S_name = '{$AdvisoryData['S_name']}'");
+                                                $AssignedFaculty = $getAssignedFaculty->fetch_assoc();
 
-                                              while ($FacultyData = $getFacultyData->fetch_assoc()) { ?>
-                                                <option value="<?php echo $FacultyData['F_number'] ?>"><?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1); ?></option>
-                                              <?php } ?>
-                                            </select>
-                                          </td>
-                                          <td class="hatdog">
-                                            <input type="button" class="btn btn-primary" id="assignAdvisor" name="assignAdvisor" value="SET" style="text-align: center; color:#ffffff;">
-                                          </td>
-                                        </tr>
-                                      </form>
-                                    <?php $rowCount++;
-                                    }
+                                                if (empty($AssignedFaculty['S_adviser']) || $AssignedFaculty['S_adviser'] == "") { ?>
+                                                  <option selected>No Assigned Advisor</option>
+                                                <?php } else { ?>
+                                                  <option selected value="<?php echo $AssignedFaculty['S_adviser'] ?>">
+                                                    <?php
+                                                    $getFacultyName = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$AssignedFaculty['S_adviser']}'");
+                                                    $FacultyName = $getFacultyName->fetch_assoc();
+                                                    echo $FacultyName['F_lname'] . ", " . $FacultyName['F_fname'] . " " . substr($FacultyName['F_mname'], 0, 1) . ". " . $FacultyName['F_suffix'] . "."
+                                                    ?>
+                                                  </option>
+                                                <?php }
+                                                ?>
+
+                                                <?php
+                                                $getFacultyData = $mysqli->query("SELECT * FROM faculty WHERE F_number NOT IN (SELECT F_number FROM sections WHERE F_number = '{$AdvisoryData['S_adviser']}')");
+
+                                                while ($FacultyData = $getFacultyData->fetch_assoc()) { ?>
+                                                  <option value="<?php echo $FacultyData['F_number'] ?>"><?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1) . ". " . $FacultyData['F_suffix'] . "." ?></option>
+                                                <?php }
+                                                ?>
+                                              </select>
+                                            </td>
+                                            <td class="hatdog">
+                                              <button type="submit" class="btn btn-primary" name="assignAdvisor" style="text-align: center; color:#ffffff;">SET</button>
+                                            </td>
+                                          </tr>
+                                        </form>
+                                      <?php $rowCount++;
+                                      }
+                                    } else { ?>
+                                      <tr>
+                                        <td class="hatdog" colspan="4">NO DATA</td>
+                                      </tr>
+                                    <?php }
                                     ?>
                                   </tbody>
                                 </table>
@@ -361,12 +370,7 @@ if (!isset($_SESSION['AD_number'])) {
         cancelButtonText: `No`,
       }).then((result) => {
         if (result.isConfirmed) {
-          Swal.fire({
-            title: 'Form submitted!',
-            icon: 'success',
-          }).then(() => {
-            assignAdvisorForm.submit();
-          });
+          assignAdvisorForm.submit();
         }
       })
     })
