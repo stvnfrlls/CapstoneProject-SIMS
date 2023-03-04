@@ -122,7 +122,13 @@ if (!isset($_SESSION['SR_number'])) {
                           <div class="card-body">
                             <div class="row">
                               <div class="col-4">
-                                <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
+                                <?php
+                                if (empty($studentInfo['SR_profile_img'])) { ?>
+                                  <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
+                                <?php } else { ?>
+                                  <img src="../assets/img/<?php echo $studentInfo['SR_profile_img'] ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
+                                <?php }
+                                ?>
                               </div>
                               <div class="col-8" style="align-self: center;">
                                 <h3 style="margin-bottom: 8px;"><?php echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix']; ?></h3>
