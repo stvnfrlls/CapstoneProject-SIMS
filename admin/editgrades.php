@@ -4,7 +4,31 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['AD_number'])) {
   header('Location: ../auth/login.php');
 } else {
+  $colspan = 1;
+  if (isset($_GET['Grade'])) {
+    $subject_Array = array();
+    if ($_GET['Grade'] == "KINDER") {
+      $getSubject = $mysqli->query("SELECT subjectName FROM subjectperyear
+                                        WHERE
+                                        subjectperyear.minYearLevel = '0' 
+                                        AND
+                                        subjectperyear.maxYearLevel >= '0'");
+    } else {
+      $getSubject = $mysqli->query("SELECT subjectName FROM subjectperyear
+                                        WHERE 
+                                        subjectperyear.minYearLevel <= '{$_GET['Grade']}' 
+                                        AND
+                                        subjectperyear.maxYearLevel >= '{$_GET['Grade']}'");
+    }
+    if (mysqli_num_rows($getSubject) > 0) {
+      $colspan = mysqli_num_rows($getSubject);
+    }
+    while ($subject = $getSubject->fetch_assoc()) {
+      $subject_Array[] = $subject;
+    }
+  }
 }
+// var_dump($_POST);
 ?>
 
 <!DOCTYPE html>
@@ -199,93 +223,102 @@ if (!isset($_SESSION['AD_number'])) {
               <div class="home-tab">
                 <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                   <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                    <h2 class="fw-bold text-primary text-uppercase">Edit Grades</h2>
+                    <h2 class="fw-bold text-primary text-uppercase">Finalize Grades</h2>
                   </div>
                 </div>
-                <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
-                  <nav class="nav">
-                    <a class="nav-link active ms-0" href="editgrades.php" style="color: #c02628;">Edit Grades</a>
-                    <a class="nav-link" href="release.php">Finalize Grades</a>
-                  </nav>
-                  <div class="border-bottom"></div>
-                </div>
-                <div class="tab-content tab-content-basic">
-                  <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                    <div class="btn-group">
-                      <div>
-                        <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
-                          <?php
-                          if (isset($_GET['Section'])) {
-                            if ($_GET['Grade'] == "KINDER") {
-                              $getListSubject = $mysqli->query("SELECT subjectName FROM subjectperyear WHERE minYearLevel = '0' AND maxYearLevel >= '0'");
-                            } else if ($_GET['Grade']) {
-                              $getListSubject = $mysqli->query("SELECT subjectName FROM subjectperyear WHERE minYearLevel <= '{$_GET['Grade']}' AND maxYearLevel >= '{$_GET['Grade']}'");
-                            }
-                            $subjects = array();
-                            array_unshift($subjects, null);
-                            if (mysqli_num_rows($getListSubject) > 0) {
-                              while ($dataSubject = $getListSubject->fetch_assoc()) {
-                                $subjects[] = $dataSubject;
-                              }
-                            }
-                            echo "GR." . $_GET['Grade'] . " - " . $_GET['Section'];
-                          } else {
-                            echo "Grade and Section";
-                          }
-                          ?>
-                          <i class="fa fa-caret-down"></i>
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                          <?php
-                          $sectionList = "SELECT S_name, S_yearLevel FROM sections WHERE acadYear = '{$currentSchoolYear}'";
-                          $runsectionList = $mysqli->query($sectionList);
-
-                          while ($sectionData = $runsectionList->fetch_assoc()) { ?>
-                            <a class="dropdown-item" href="editgrades.php?Grade=<?php echo $sectionData['S_yearLevel'] ?>&Section=<?php echo $sectionData['S_name'] ?>">
-                              <?php
-                              if (strpos($sectionData['S_yearLevel'], "KINDER")) {
-                                echo $sectionData['S_yearLevel'] . " - " . $sectionData['S_name'];
-                              } else {
-                                echo "Grade - " . $sectionData['S_yearLevel'] . " - " . $sectionData['S_name'];
-                              }
-                              ?>
-                            </a>
-                          <?php } ?>
-                        </div>
-                      </div>
-                    </div>
-                    <?php
-                    if (isset($_GET['Section'])) { ?>
+                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="gradeForm">
+                  <div class="tab-content tab-content-basic">
+                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                       <div class="btn-group">
                         <div>
-                          <button class="btn btn-secondary" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                          <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
                             <?php
-                            if (!isset($_GET['LearningArea'])) {
-                              echo 'LearningArea';
+                            if (isset($_GET['Quarter'])) {
+                              echo "Quarter " . $_GET['Quarter'];
                             } else {
-                              echo $_GET['LearningArea'];
+                              echo "Quarter";
                             }
                             ?>
                             <i class="fa fa-caret-down"></i>
                           </button>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
                             <?php
-                            $rowCount = 1;
-                            while ($rowCount != count($subjects)) { ?>
-                              <a class="dropdown-item" href="editgrades.php?Grade=<?php echo $_GET['Grade'] . "&Section=" . $_GET['Section'] . "&LearningArea=" . $subjects[$rowCount]['subjectName']; ?>">
-                                <?php echo $subjects[$rowCount]['subjectName'] ?>
-                              </a>
-                            <?php
-                              $rowCount++;
-                            }
+                            $getQuarterData = $mysqli->query("SELECT quarterTag FROM quartertable WHERE quarterID < 5");
+                            while ($QuarterData = $getQuarterData->fetch_assoc()) {
+                              if (isset($_GET['Grade']) && isset($_GET['Section'])) { ?>
+                                <a class="dropdown-item" href="editgrades.php?Quarter=<?php echo $QuarterData['quarterTag'] ?>&Grade=<?php echo $_GET['Grade'] ?>&Section=<?php echo $_GET['Section'] ?>">
+                                  <?php echo $QuarterData['quarterTag'] ?>
+                                </a>
+                              <?php } else { ?>
+                                <a class="dropdown-item" href="editgrades.php?Quarter=<?php echo $QuarterData['quarterTag'] ?>">
+                                  <?php echo $QuarterData['quarterTag'] ?>
+                                </a>
+                              <?php }
+                              ?>
+                            <?php }
                             ?>
                           </div>
                         </div>
                       </div>
-                    <?php } ?>
-                    <div class="row" style="margin-top: 15px;;">
-                      <div class="col-lg-12 d-flex flex-column">
-                        <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="gradeForm">
+                      <?php
+                      if (isset($_GET['Quarter'])) { ?>
+                        <div class="btn-group">
+                          <div>
+                            <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                              <?php
+                              if (isset($_GET['Section'])) {
+                                if ($_GET['Grade'] == "KINDER") {
+                                  $getListSubject = $mysqli->query("SELECT subjectName FROM subjectperyear WHERE minYearLevel = '0' AND maxYearLevel >= '0'");
+                                } else if ($_GET['Grade']) {
+                                  $getListSubject = $mysqli->query("SELECT subjectName FROM subjectperyear WHERE minYearLevel <= '{$_GET['Grade']}' AND maxYearLevel >= '{$_GET['Grade']}'");
+                                }
+                                $subjects = array();
+                                array_unshift($subjects, null);
+                                if (mysqli_num_rows($getListSubject) > 0) {
+                                  while ($dataSubject = $getListSubject->fetch_assoc()) {
+                                    $subjects[] = $dataSubject;
+                                  }
+                                }
+                                if ($_GET['Grade'] == "KINDER") {
+                                  echo $_GET['Grade'] . " - " . $_GET['Section'];
+                                } else {
+                                  echo "GR." . $_GET['Grade'] . " - " . $_GET['Section'];
+                                }
+                              } else {
+                                echo "Grade and Section";
+                              }
+                              ?>
+                              <i class="fa fa-caret-down"></i>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                              <?php
+                              $sectionList = "SELECT S_name, S_yearLevel FROM sections WHERE acadYear = '{$currentSchoolYear}'";
+                              $runsectionList = $mysqli->query($sectionList);
+
+                              while ($sectionData = $runsectionList->fetch_assoc()) { ?>
+                                <a class="dropdown-item" href="editgrades.php?Quarter=<?php echo $_GET['Quarter'] ?>&Grade=<?php echo $sectionData['S_yearLevel'] ?>&Section=<?php echo $sectionData['S_name'] ?>">
+                                  <?php
+                                  if ($sectionData['S_yearLevel'] == "KINDER") {
+                                    echo $sectionData['S_yearLevel'] . " - " . $sectionData['S_name'];
+                                  } else {
+                                    echo "Grade - " . $sectionData['S_yearLevel'] . " - " . $sectionData['S_name'];
+                                  }
+                                  ?>
+                                </a>
+                              <?php } ?>
+                            </div>
+                          </div>
+                        </div>
+                      <?php }
+                      ?>
+                      <div class="btn-group" style="text-align: center;">
+                        <button type="button" class="btn btn-primary" id="confirmChanges" name="saveGrades" value="Save">Save Grades</button>
+                      </div>
+                      <div class="btn-group" style="text-align: center;">
+                        <button type="button" class="btn btn-primary" id="confirmChanges" name="releaseGrades" value="Release">Release Grades</button>
+                      </div>
+                      <div class="row" style="margin-top: 15px;;">
+                        <div class="col-lg-12 d-flex flex-column">
                           <div class="row flex-grow">
                             <div class="col-md-6 col-lg-12 grid-margin stretch-card">
                               <div class="card bg-primary card-rounded">
@@ -313,135 +346,102 @@ if (!isset($_SESSION['AD_number'])) {
                                         }
                                       </style>
                                       <tr>
-                                        <th rowspan="2" class="grade_table">No.</th>
                                         <th rowspan="2" class="grade_table">Student Name</th>
-                                        <th rowspan="2" class="grade_table">Grade Level - Section</th>
-                                        <th colspan="4" class="grade_table">Quarter</th>
-                                        <th rowspan="2" class="grade_table">Final Grade</th>
+                                        <?php
+                                        $getQuarterLabelData = $mysqli->query("SELECT quarterTag FROM quartertable WHERE quarterStatus = 'enabled'");
+                                        $QuarterLabelData = $getQuarterLabelData->fetch_assoc();
+                                        if (isset($_GET['Quarter'])) {
+                                          $currentQuarter = "Subject Grade for Quarter " . $_GET['Quarter'];
+                                        } else {
+                                          $currentQuarter = "NO QUARTER SELECTED";
+                                        }
+                                        ?>
+                                        <th colspan="<?php echo $colspan ?>" class="grade_table"><?php echo $currentQuarter ?></th>
                                       </tr>
+
                                       <tr>
-                                        <th class="grade_table">1</th>
-                                        <th class="grade_table">2</th>
-                                        <th class="grade_table">3</th>
-                                        <th class="grade_table">4</th>
+                                        <?php
+                                        if (isset($_GET['Grade'])) {
+                                          $subjectHeaderCount = 0;
+                                          while ($subjectHeaderCount != sizeof($subject_Array)) {
+                                            echo "<th class='grade_table'>" . $subject_Array[$subjectHeaderCount]['subjectName'] . "</th>";
+                                            $subjectHeaderCount++;
+                                          }
+                                        }
+                                        ?>
                                       </tr>
                                     </thead>
                                     <tbody>
-                                      <input type="hidden" name="UpdateGrade" value="submit">
-                                      <?php if (!empty(isset($_GET['Section'])) && !empty(isset($_GET['LearningArea']))) {
-                                        $byGradeLevel = $_GET['Section'];
-                                        $bySubject = $_GET['LearningArea'];
-                                        $getData = "SELECT studentrecord.SR_number, studentrecord.SR_fname, studentrecord.SR_lname,
-                                                          grades.SR_gradeLevel, grades.SR_section, grades.G_learningArea, 
-                                                          grades.acadYear, grades.G_gradesQ1, grades.G_gradesQ2, grades.G_gradesQ3, grades.G_gradesQ4
-                                                    FROM studentrecord 
-                                                    INNER JOIN grades
-                                                    ON studentrecord.SR_number = grades.SR_number
-                                                    WHERE studentrecord.SR_section = '$byGradeLevel'
-                                                    AND G_learningArea LIKE '%$bySubject%'
-                                                    AND acadYear = '{$currentSchoolYear}'";
-                                        $rungetData = $mysqli->query($getData);
-                                        $rowNum = 1;
-                                        if (mysqli_num_rows($rungetData) > 0) {
-                                          while ($gradeData =  $rungetData->fetch_assoc()) { ?>
-                                            <tr>
-                                              <td class="grade_table">
-                                                <?php echo $rowNum; ?>
-                                                <input type="hidden" name="row[]" value="<?php echo $rowNum; ?>">
-                                              </td>
-                                              <td class="grade_table">
-                                                <?php echo $gradeData['SR_lname'] . ", " . $gradeData['SR_fname']; ?>
-                                                <input type="hidden" name="SR_number[]" value="<?php echo $gradeData['SR_number']; ?>">
-                                              </td>
-                                              <td class="grade_table">
-                                                <?php echo $gradeData['SR_gradeLevel'] . " - " . $gradeData['SR_section'] . " (" . $gradeData['acadYear'] . ")"; ?>
-                                                <input type="hidden" name="SR_section[]" value="<?php echo $gradeData['SR_section']; ?>">
-                                                <input type="hidden" name="G_learningArea[]" value="<?php echo $gradeData['G_learningArea']; ?>">
-                                              </td>
-                                              <?php
-                                              if ($gradeData['G_gradesQ1']) { ?>
-                                                <td class="grade_table">
-                                                  <input type="number" name="G_gradesQ1[]" style="text-align: center;" value="<?php echo $gradeData['G_gradesQ1']; ?>">
-                                                </td>
-                                              <?php
-                                              } else { ?>
-                                                <td class="grade_table">
-                                                  <input type="number" name="G_gradesQ1[]" style="text-align: center;" value="" disabled>
-                                                </td>
-                                              <?php } ?>
-
-                                              <?php
-                                              if ($gradeData['G_gradesQ2']) { ?>
-                                                <td class="grade_table">
-                                                  <input type="number" name="G_gradesQ2[]" style="text-align: center;" value="<?php echo $gradeData['G_gradesQ2']; ?>">
-                                                </td>
-                                              <?php
-                                              } else { ?>
-                                                <td class="grade_table">
-                                                  <input type="number" placeholder="##" style="text-align: center;" value="" disabled>
-                                                </td>
-                                              <?php } ?>
-
-                                              <?php
-                                              if ($gradeData['G_gradesQ3']) { ?>
-                                                <td class="grade_table">
-                                                  <input type="number" name="G_gradesQ3[]" style="text-align: center;" value="<?php echo $gradeData['G_gradesQ3']; ?>">
-                                                </td>
-                                              <?php
-                                              } else { ?>
-                                                <td class="grade_table">
-                                                  <input type="number" placeholder="##" style="text-align: center;" value="" disabled>
-                                                </td>
-                                              <?php } ?>
-
-                                              <?php
-                                              if ($gradeData['G_gradesQ4']) { ?>
-                                                <td class="grade_table">
-                                                  <input type="number" name="G_gradesQ4[]" style="text-align: center;" value="<?php echo $gradeData['G_gradesQ4']; ?>">
-                                                </td>
-                                              <?php
-                                              } else { ?>
-                                                <td class="grade_table">
-                                                  <input type="number" placeholder="##" style="text-align: center;" value="" disabled>
-                                                </td>
-                                              <?php } ?>
-                                              <td class="grade_table">
-                                                <?php
-                                                $sum = $gradeData['G_gradesQ1'] + $gradeData['G_gradesQ2'] + $gradeData['G_gradesQ3'] + $gradeData['G_gradesQ4'];
-                                                $average = $sum / 4;
-                                                echo round($average);
-                                                ?>
-                                              </td>
-                                            </tr>
-                                          <?php $rowNum++;
-                                          }
-                                        } else { ?>
+                                      <?php
+                                      if (isset($_GET['Grade']) && isset($_GET['Section'])) {
+                                        $getClassList = $mysqli->query(
+                                          "SELECT * FROM studentrecord 
+                                          WHERE SR_number IN (
+                                              SELECT SR_number FROM classlist 
+                                              WHERE SR_grade = '{$_GET['Grade']}' 
+                                              AND SR_section = '{$_GET['Section']}' 
+                                              AND acadYear = '{$currentSchoolYear}')"
+                                        );
+                                        while ($classList = $getClassList->fetch_assoc()) { ?>
                                           <tr>
-                                            <td colspan="10">No Grades Encoded yet for School Year <?php echo $currentSchoolYear ?></td>
+                                            <td>
+                                              <?php echo $classList['SR_lname'] .  ", " . $classList['SR_fname'] . " " . substr($classList['SR_mname'], 0, 1) . ". " . $classList['SR_suffix']; ?>
+                                              <input type="hidden" name="SR_number[]" value=" <?php echo $classList['SR_number'] ?>">
+                                            </td>
+                                            <?php
+                                            $getGradeData = $mysqli->query("SELECT * FROM grades 
+                                                                            WHERE acadYear = '{$currentSchoolYear}' 
+                                                                            AND SR_number = '{$classList['SR_number']}'");
+                                            while ($Grade = $getGradeData->fetch_assoc()) {
+                                              $getQuarterData = $mysqli->query("SELECT quarterTag FROM quartertable WHERE quarterTag = '{$_GET['Quarter']}'");
+                                              $QuarterData = $getQuarterData->fetch_assoc();
+                                              if (mysqli_num_rows($getQuarterData) > 0) {
+                                                if ($QuarterData['quarterTag'] == 1) { ?>
+                                                  <td>
+                                                    <input type="number" maxlength="2" class="form-control text-center" name="grade[]" value="<?php echo $Grade['G_gradesQ1'] ?>">
+                                                  </td>
+                                                <?php } elseif ($QuarterData['quarterTag'] == 2) { ?>
+                                                  <td>
+                                                    <input type="number" maxlength="2" class="form-control text-center" name="grade[]" value="<?php echo $Grade['G_gradesQ2'] ?>">
+                                                  </td>
+                                                <?php } elseif ($QuarterData['quarterTag'] == 3) { ?>
+                                                  <td>
+                                                    <input type="number" maxlength="2" class="form-control text-center" name="grade[]" value="<?php echo $Grade['G_gradesQ3'] ?>">
+                                                  </td>
+                                                <?php } elseif ($QuarterData['quarterTag'] == 4) { ?>
+                                                  <td>
+                                                    <input type="number" maxlength="2" class="form-control text-center" name="grade[]" value="<?php echo $Grade['G_gradesQ4'] ?>">
+                                                  </td>
+                                                <?php } else { ?>
+                                                  <td> Invalid quarter </td>
+                                                <?php } ?>
+                                              <?php } else { ?>
+                                                <td> No quarter found </td>
+                                            <?php }
+                                            }
+                                            ?>
                                           </tr>
                                         <?php }
                                       } else { ?>
                                         <tr>
-                                          <td colspan="10">No Data. Please Select from the options above.</td>
+                                          <td colspan="2">No Data</td>
                                         </tr>
-                                      <?php } ?>
+                                      <?php }
+                                      ?>
                                     </tbody>
                                   </table>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </form>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                </form>
+
               </div>
             </div>
-          </div>
-          <div style="text-align: center;">
-            <button type="button" class="btn btn-primary" id="confirmChanges">Update</button>
-            <button type="button" class="btn btn-light">Back</button>
           </div>
         </div>
         <!-- content-wrapper ends -->
