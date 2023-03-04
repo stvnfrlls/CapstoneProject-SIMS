@@ -126,7 +126,7 @@ if (!isset($_SESSION['SR_number'])) {
                                 if (empty($studentInfo['SR_profile_img'])) { ?>
                                   <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
                                 <?php } else { ?>
-                                  <img src="../assets/img/<?php echo $studentInfo['SR_profile_img'] ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
+                                  <img src="../assets/img/profile/<?php echo $studentInfo['SR_profile_img'] ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
                                 <?php }
                                 ?>
                               </div>

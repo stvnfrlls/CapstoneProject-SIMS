@@ -162,6 +162,13 @@ if (!isset($_SESSION['F_number'])) {
                               <div class="row" style="padding-bottom: 15px;">
                                 <div class="col-md-12 col-sm-6" style="text-align: center; margin-bottom: 20px; margin-top: 10px;">
                                   <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluidr" style="width: 150px;">
+                                  <?php
+                                  if (empty($facultyData['F_profile_img'])) { ?>
+                                    <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
+                                  <?php } else { ?>
+                                    <img src="../assets/img/profile/<?php echo $facultyData['F_profile_img'] ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
+                                  <?php }
+                                  ?>
                                 </div>
                               </div>
                             </form>
