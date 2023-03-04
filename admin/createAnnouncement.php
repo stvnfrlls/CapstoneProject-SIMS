@@ -212,7 +212,6 @@ if (!isset($_SESSION['AD_number'])) {
                                                 <div class="col-12 grid-margin">
                                                     <div class="card">
                                                         <div class="card-body">
-                                                            <h4 class="card-title">Create Reminders</h4>
                                                             <div class="row">
                                                                 <div class="row g-3">
                                                                     <div class="col-md-6">
@@ -226,7 +225,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     <div class="col-md-6">
                                                                         <div class="form-floating">
                                                                             <input type="email" class="form-control" name="date" value="<?php echo  date('m/d/Y') ?>" readonly>
-                                                                            <label for="email">Date of the Event</label>
+                                                                            <label for="email">Date Posted</label>
                                                                         </div>
                                                                     </div>
 
