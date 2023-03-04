@@ -690,19 +690,6 @@ if (!isset($_SESSION['AD_number'])) {
 <script src="../assets/js/admin/progressbar.min.js"></script>
 <script src="../assets/js/admin/Chart.min.js"></script>
 <script>
-    const form = document.getElementById('form-id');
-
-    form.addEventListener('submit', (event) => {
-        if (confirm('Are you sure you want to do this action?') == true) {
-            form.submit();
-            return true;
-        } else {
-            event.preventDefault();
-            return false;
-        }
-    });
-</script>
-<script>
     if ($("#doughnutChart").length) {
         var doughnutChartCanvas = $("#doughnutChart").get(0).getContext("2d");
         var doughnutPieData = {
