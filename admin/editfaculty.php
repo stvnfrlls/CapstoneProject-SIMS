@@ -418,7 +418,6 @@ if (!isset($_SESSION['AD_number'])) {
             icon: 'success',
           }).then(() => {
             editfacultyform.submit();
-            window.location.href = '../admin/faculty.php';
           });
         }
       })
