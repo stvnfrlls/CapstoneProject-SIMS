@@ -6,7 +6,19 @@ if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 } else {
     if (empty($_GET['SR_Number'])) {
-        header('Location: student.php');
+        echo <<<EOT
+            <script>
+                document.addEventListener("DOMContentLoaded", function(event) { 
+                    swal.fire({
+                        text: 'Please select a student first.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                    }).then(() => {
+                        window.location.href = 'student.php';
+                    });
+                });
+            </script>
+        EOT;
     } else {
         $verifySR_number = "SELECT * FROM studentrecord 
                         INNER JOIN guardian
@@ -15,13 +27,29 @@ if (!isset($_SESSION['AD_number'])) {
         $runverifySR_number = $mysqli->query($verifySR_number);
         $getRecord =  $runverifySR_number->fetch_assoc();
 
-        if ($getRecord['SR_number'] == $_GET['SR_Number']) {
-            $tempDir = '../assets/temp/';
-            if (!file_exists($tempDir)) {
-                mkdir($tempDir);
+        if (mysqli_num_rows($runverifySR_number) > 0) {
+            if ($getRecord['SR_number'] == $_GET['SR_Number']) {
+                $tempDir = '../assets/temp/';
+                if (!file_exists($tempDir)) {
+                    mkdir($tempDir);
+                }
+                $qrcode_data = $getRecord['SR_number'];
+                QRcode::png($qrcode_data,  $tempDir . '' . $qrcode_data . '.png', QR_ECLEVEL_L);
             }
-            $qrcode_data = $getRecord['SR_number'];
-            QRcode::png($qrcode_data,  $tempDir . '' . $qrcode_data . '.png', QR_ECLEVEL_L);
+        } else {
+            echo <<<EOT
+            <script>
+                document.addEventListener("DOMContentLoaded", function(event) { 
+                    swal.fire({
+                        text: 'No guardian information found.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                    }).then(() => {
+                        window.location.href = 'student.php';
+                    });
+                });
+            </script>
+            EOT;
         }
     }
 }
@@ -52,6 +80,8 @@ if (!isset($_SESSION['AD_number'])) {
     <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
     <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="../assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="../assets/css/sweetAlert.css" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
