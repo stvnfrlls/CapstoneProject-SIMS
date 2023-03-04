@@ -269,7 +269,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                             <input type="text" class="form-control" name="sectionName" value="<?php echo $sectionData['S_name'] ?>">
                                                                                         </td>
                                                                                         <td>
-                                                                                            <butt type="button" style="color: #ffffff;" class="btn btn-primary" value="Change Name" id="updateSection" name="updateSection">
+                                                                                            <input type="button" style="color: #ffffff;" class="btn btn-primary" value="Change Name" id="updateSection" name="updateSection">
                                                                                             <input type="button" class="btn btn-secondary" value="DELETE" id="deleteSection" name="deleteSection">
                                                                                         </td>
                                                                                     </tr>
