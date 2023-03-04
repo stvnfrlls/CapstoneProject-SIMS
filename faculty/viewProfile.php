@@ -148,6 +148,9 @@ if (!isset($_SESSION['F_number'])) {
                     <h2 class="fw-bold text-primary text-uppercase">Profile Information</h2>
                   </div>
                 </div>
+                <form style="text-align: right; margin-top: 15px">
+                  <a href="editProfile.php" class="btn btn-primary me-2">Edit</a>
+                </form>
                 <div class="tab-content tab-content-basic">
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                     <div class="row">
@@ -159,14 +162,6 @@ if (!isset($_SESSION['F_number'])) {
                               <div class="row" style="padding-bottom: 15px;">
                                 <div class="col-md-12 col-sm-6" style="text-align: center; margin-bottom: 20px; margin-top: 10px;">
                                   <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluidr" style="width: 150px;">
-                                </div>
-                              </div>
-                              <div class="row" style="padding-bottom: 15px;">
-                                <div class="col-12">
-                                  <label class="col-sm-12 col-form-label">Department</label>
-                                  <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="F_lname" value="<?php echo $facultyData['F_department']; ?>" required readonly>
-                                  </div>
                                 </div>
                               </div>
                             </form>
@@ -320,10 +315,6 @@ if (!isset($_SESSION['F_number'])) {
                 </div>
               </div>
             </div>
-            <form style="text-align: center;">
-              <a href="editProfile.php" class="btn btn-primary me-2">Edit</a>
-              <button class="btn btn-light">Back</button>
-            </form>
           </div>
         </div>
         <!-- content-wrapper ends -->
