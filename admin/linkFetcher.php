@@ -200,14 +200,11 @@ if (empty($_SESSION['AD_number'])) {
                                 <div class="home-tab">
                                     <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                                         <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                                            <h2 class="fw-bold text-primary text-uppercase">Create Fetcher</h2>
+                                            <h2 class="fw-bold text-primary text-uppercase">Link Fetcher</h2>
                                         </div>
                                     </div>
                                     <div class="tab-content tab-content-basic">
                                         <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                                            <div style="text-align: center; padding-bottom: 15px;">
-                                                <a href="fetcherList.php" style="font-size: 15px;"><u>View full list of fetchers</u></a>
-                                            </div>
                                             <div class="row">
                                                 <div class="col-12 grid-margin">
                                                     <div class="card" style="width:70%; margin:auto;">
@@ -310,6 +307,9 @@ if (empty($_SESSION['AD_number'])) {
                                                                             </select>
                                                                         </div>
                                                                     </div>
+                                                                </div>
+                                                                <div style="text-align: center;">
+                                                                    <button type="button" class="btn btn-primary me-2">Save</button>
                                                                 </div>
                                                             </div>
 
