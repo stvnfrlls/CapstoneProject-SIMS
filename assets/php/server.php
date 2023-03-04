@@ -476,8 +476,8 @@ if (isset($_POST['regStudent'])) {
 
     $SR_profile_img = $_FILES['image']['name'];
     $tempname = $_FILES["image"]["tmp_name"];
-    $folder = "../img/" . $SR_profile_img;
-
+    $folder = "../assets/img/profile/" . $SR_profile_img;
+    
     $S_lname = $mysqli->real_escape_string($_POST['S_lname']);
     $S_fname = $mysqli->real_escape_string($_POST['S_fname']);
     $S_mname    = $mysqli->real_escape_string($_POST['S_mname']);
@@ -621,7 +621,7 @@ if (isset($_POST['createFetcher'])) {
         $addFetcher = $mysqli->query("INSERT INTO fetcher_data (FTH_number, FTH_name, FTH_contactNo, FTH_email) 
                             VALUES ('{$FTH_number}', '{$FTH_name}', '{$FTH_contactNo}', '{$FTH_email}')");
         if ($addFetcher) {
-            showSweetAlert('Fetcher successfully linked.', 'success');
+            showSweetAlert('Fetcher successfully registered.', 'success');
         }
     }
     $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
@@ -698,7 +698,7 @@ if (isset($_POST['updateInformation']) && !empty($_SESSION['AD_number'])) {
 if (isset($_POST['regFaculty']) && !empty($_SESSION['AD_number'])) {
     $F_profile_img = $_FILES['image']['name'];
     $tempname = $_FILES["image"]["tmp_name"];
-    $folder = "../img/" . $F_profile_img;
+    $folder = "../assets/img/profile/" . $F_profile_img;
 
     $F_status = "TEACHING";
     $F_lname = $mysqli->real_escape_string($_POST['F_lname']);
@@ -902,13 +902,13 @@ if (isset($_POST['releaseGrades']) && !empty($_SESSION['AD_number'])) {
             $insertUnreleasedGrades = $mysqli->query("INSERT INTO student_grades(SR_number, acadYear, SR_gradeLevel, SR_section, G_learningArea, G_gradesQ1, G_gradesQ2, G_gradesQ3, G_gradesQ4, G_finalgrade)
                                                       VALUES('{$Grades['SR_number']}', '{$Grades['acadYear']}', '{$Grades['SR_gradeLevel']}', '{$Grades['SR_section']}', '{$Grades['G_learningArea']}', 
                                                              '{$Grades['G_gradesQ1']}', '{$Grades['G_gradesQ2']}', '{$Grades['G_gradesQ3']}', '{$Grades['G_gradesQ4']}', '{$Grades['G_finalgrade']}')");
-            // showSweetAlert('Teacher successfully released.', 'success');
+            showSweetAlert('Grades successfully published.', 'success');
         } else {
-            // showSweetAlert('Failed to publish grades.', 'error');
+            showSweetAlert('Failed to publish grades.', 'error');
         }
     }
 }
-if (isset($_POST['addSubject']) && !empty($_SESSION['AD_number'])) {
+if (isset($_POST['addCurr']) && !empty($_SESSION['AD_number'])) {
     $subjectName = $mysqli->real_escape_string($_POST['sbjName']);
     $minYearLevel = $mysqli->real_escape_string($_POST['minYearLevel']);
     $maxYearLevel = $mysqli->real_escape_string($_POST['maxYearLevel']);
@@ -934,17 +934,17 @@ if (isset($_POST['updateCurr']) && !empty($_SESSION['AD_number'])) {
     $minYearLevel = $_POST['minYearLevel'];
     $maxYearLevel = $_POST['maxYearLevel'];
 
-    $checkIfsubjectExist = $mysqli->query("SELECT subjectName FROM subjectperyear WHERE subjectName LIKE '%$subjectName%'");
-    if (mysqli_num_rows($checkIfsubjectExist) > 0) {
-        showSweetAlert('Subject name already exist.', 'error');
-    } else {
-        $updateSubject = $mysqli->query("UPDATE subjectperyear SET minYearLevel = '$minYearLevel', maxYearLevel = '$maxYearLevel' WHERE subjectName = '$subjectName'");
+    $updateSubject = $mysqli->query("UPDATE subjectperyear SET minYearLevel = '$minYearLevel', maxYearLevel = '$maxYearLevel' WHERE subjectName = '$subjectName'");
+    if ($updateSubject) {
+        showSweetAlert('subject successfully updated.', 'success');
         $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
         $AdminName = $getAdminName->fetch_assoc();
         $AD_action = "UPDATED SUBJECT -" . $subjectName . " WITH MIN LEVEL " . $minYearLevel . " AND MAX LEVEL" . $maxYearLevel;
         $currentDate = date("Y-m-d");
         $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
                                     VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
+    } else {
+        showSweetAlert('Failed to add subject.', 'error');
     }
 }
 if (isset($_POST['deleteCurr']) && !empty($_SESSION['AD_number'])) {
@@ -966,22 +966,27 @@ if (isset($_POST['addAdmin']) && !empty($_SESSION['AD_number'])) {
     $adminPassword    = $mysqli->real_escape_string($_POST['adminPassword']);
     $confirmPassword = $mysqli->real_escape_string($_POST['confirmPassword']);
 
-    $checkAdminEmail = $mysqli->query("SELECT * FROM admin_accounts WHERE AD_email = '{$adminEmail}'");
-    if ($checkAdminEmail->num_rows == 1) {
-        showSweetAlert('Oops! Email already exist.', 'error');
+    if ($adminPassword === $confirmPassword) {
+        $checkAdminEmail = $mysqli->query("SELECT * FROM admin_accounts WHERE AD_email = '{$adminEmail}'");
+        if ($checkAdminEmail->num_rows == 1) {
+            showSweetAlert('Oops! Email already exist.', 'error');
+        } else {
+            $adData = date('Y');
+            $randNum = rand(1000, 9999);
+            $AD_number = $adData . "-" . $randNum;
+            $addAdminAccount = $mysqli->query("INSERT INTO admin_accounts (AD_number, AD_name, AD_email, AD_password) VALUES ('$AD_number', '$adminName', '$adminEmail', '$confirmPassword')");
+            showSweetAlert('Admin successfully created.', 'success');
+
+            $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+            $AdminName = $getAdminName->fetch_assoc();
+            $AD_action = "ADDED ADMIN ACCOUNT " . $adminName;
+            $currentDate = date("Y-m-d");
+            $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
+        VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
+        }
     } else {
-        $adData = date('Y');
-        $randNum = rand(1000, 9999);
-        $AD_number = $adData . "-" . $randNum;
-        $addAdminAccount = $mysqli->query("INSERT INTO admin_accounts (AD_number, AD_name, AD_email, AD_password) VALUES ('$AD_number', '$adminName', '$adminEmail', '$confirmPassword')");
-        showSweetAlert('Admin successfully created.', 'success');
+        showSweetAlert('Password do not match.', 'error');
     }
-    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
-    $AdminName = $getAdminName->fetch_assoc();
-    $AD_action = "ADDED ADMIN ACCOUNT " . $adminName;
-    $currentDate = date("Y-m-d");
-    $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
-    VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
 }
 if (isset($_POST['setSchedule']) && !empty($_SESSION['AD_number'])) {
     $assignedFaculty = $_POST['assignedFaculty'];
@@ -1087,32 +1092,36 @@ if (isset($_POST['postAnnouncement']) && !empty($_SESSION['AD_number'])) {
         $sendtoGuardianData = $mysqli->query("SELECT G_email FROM guardian WHERE G_guardianOfStudent 
                                         IN 
                                         (SELECT SR_number FROM classlist WHERE acadYear = '{$currentSchoolYear}')");
-        while ($sendtoGuardian = $sendtoGuardianData->fetch_assoc()) {
-            $mail->addAddress($sendtoGuardian['G_email']);
-            $mail->Subject = $subject;
-
-            $mail->Body = '<h1>School Annoucement</h1><br>
-                           <p>' . $message . '</p><br>';
-            $mail->send();
-        }
         $sendtoStudentData = $mysqli->query("SELECT SR_email FROM studentrecord WHERE SR_number 
-                                            IN 
-                                            (SELECT SR_number FROM classlist WHERE acadYear = '{$currentSchoolYear}')");
-        while ($sendtoStudent = $sendtoStudentData->fetch_assoc()) {
-            $mail->addAddress($sendtoStudent['SR_email']);
-            $mail->Subject = $subject;
+                                        IN 
+                                        (SELECT SR_number FROM classlist WHERE acadYear = '{$currentSchoolYear}')");
+        if (mysqli_num_rows($sendtoGuardianData) > 0 && mysqli_num_rows($sendtoStudentData) > 0) {
+            while ($sendtoGuardian = $sendtoGuardianData->fetch_assoc()) {
+                $mail->addAddress($sendtoGuardian['G_email']);
+                $mail->Subject = $subject;
 
-            $mail->Body = '<h1>School Annoucement</h1><br>
-                            <p>' . $message . '</p><br>';
-            $mail->send();
+                $mail->Body = '<h1>School Annoucement</h1><br>
+                               <p>' . $message . '</p><br>';
+                $mail->send();
+            }
+            while ($sendtoStudent = $sendtoStudentData->fetch_assoc()) {
+                $mail->addAddress($sendtoStudent['SR_email']);
+                $mail->Subject = $subject;
+
+                $mail->Body = '<h1>School Annoucement</h1><br>
+                                <p>' . $message . '</p><br>';
+                $mail->send();
+            }
+        } else {
+            showSweetAlert('Announcement posted but not sent to everyone.', 'info');
         }
+        $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+        $AdminName = $getAdminName->fetch_assoc();
+        $AD_action = "POSTED ANNOUNCEMENT";
+        $currentDate = date("Y-m-d");
+        $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
+        VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
     }
-    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
-    $AdminName = $getAdminName->fetch_assoc();
-    $AD_action = "POSTED ANNOUNCEMENT";
-    $currentDate = date("Y-m-d");
-    $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
-    VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
 }
 if (isset($_POST['assignAdvisor']) && !empty($_SESSION['AD_number'])) {
     $section = $_POST['section'];
@@ -1120,10 +1129,17 @@ if (isset($_POST['assignAdvisor']) && !empty($_SESSION['AD_number'])) {
 
     $assignSectionsAdvisor = $mysqli->query("UPDATE sections SET S_adviser = '{$advisor}' WHERE S_name = '{$section}' AND acadYear = '{$currentSchoolYear}'");
     $assignClassListAdvisor = $mysqli->query("UPDATE classlist SET F_number = '{$advisor}' WHERE SR_section = '{$section}' AND acadYear = '{$currentSchoolYear}'");
-    $AD_action = "ASSIGNED ADVISOR FOR SECTION " . $section;
-    $currentDate = date("Y-m-d");
-    $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
-    VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
+
+    if ($assignSectionsAdvisor && $assignClassListAdvisor) {
+        showSweetAlert('Successfully assigned advisory.', 'success');
+
+        $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+        $AdminName = $getAdminName->fetch_assoc();
+        $AD_action = "ASSIGNED ADVISOR FOR SECTION " . $section;
+        $currentDate = date("Y-m-d");
+        $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
+        VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
+    }
 }
 if (isset($_POST['moveUpStatus']) && !empty($_SESSION['AD_number'])) {
     $FormsSR_number = $_POST['SR_number'];
@@ -1146,6 +1162,8 @@ if (isset($_POST['moveUpStatus']) && !empty($_SESSION['AD_number'])) {
         $insertIntoClassList = $mysqli->query("INSERT INTO classlist (acadYear, SR_number, SR_grade, SR_section) VALUES ('$currentSchoolYear', '$SR_number', '$Grade', '$Section')");
     }
     $assignClassListAdvisor = $mysqli->query("UPDATE classlist SET F_number = '{$advisor}' WHERE SR_section = '{$section}' AND acadYear = '{$currentSchoolYear}'");
+    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+    $AdminName = $getAdminName->fetch_assoc();
     $AD_action = "UPDATED STUDENT GRADE LEVEL";
     $currentDate = date("Y-m-d");
     $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
@@ -1159,6 +1177,8 @@ if (isset($_POST['changeto']) && !empty($_SESSION['AD_number'])) {
     WHERE acadYear = '{$currentSchoolYear}' AND SR_number = '{$SR_number}'");
     $updateRecords = $mysqli->query("UPDATE studentrecord SET SR_section = '{$changeto}' 
     WHERE SR_number = '{$SR_number}'");
+    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+    $AdminName = $getAdminName->fetch_assoc();
     $AD_action = "CHANGED SECTION OF STUDENT: " . $SR_number;
     $currentDate = date("Y-m-d");
     $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
@@ -1168,6 +1188,8 @@ if (isset($_POST['addSection']) && !empty($_SESSION['AD_number'])) {
     $sectionName = $_POST['sectionName'];
 
     $addSectionName = $mysqli->query("INSERT INTO sections (acadYear, S_yearLevel, S_name) VALUES ('{$currentSchoolYear}', '{$_GET['Grade']}', '{$sectionName}')");
+    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+    $AdminName = $getAdminName->fetch_assoc();
     $AD_action = "ADDED SECTION " . $sectionName;
     $currentDate = date("Y-m-d");
     $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
@@ -1177,7 +1199,48 @@ if (isset($_POST['updateSection']) && !empty($_SESSION['AD_number'])) {
     $currentName = $_POST['currentName'];
     $sectionName = $_POST['sectionName'];
 
-    $updateSectionName = $mysqli->query("UPDATE sections SET S_name = '{$sectionName}' WHERE acadYear = '{$currentSchoolYear}' AND S_name = '{$currentName}'");
+    $findSectionInSection = $mysqli->query("SELECT * FROM sections WHERE S_name = '{$sectionName}' AND acadYear = '{$currentSchoolYear}'");
+    $Section = $findSectionInSection->fetch_assoc();
+    if (mysqli_num_rows($findSectionInSection) > 0) {
+        $updateSectionName = $mysqli->query("UPDATE sections SET S_name = '{$sectionName}' WHERE acadYear = '{$currentSchoolYear}' AND S_yearLevel = '{$Section['S_yearLevel']}'");
+    }
+
+    $findSectionInClasslist = $mysqli->query("SELECT * FROM classlist WHERE SR_section = '{$sectionName}' AND acadYear = '{$currentSchoolYear}'");
+    $Classlist = $findSectionInClasslist->fetch_assoc();
+    if (mysqli_num_rows($findSectionInClasslist) > 0) {
+        $updateClasslistName = $mysqli->query("UPDATE classlist SET SR_section = '{$sectionName}' WHERE acadYear = '{$currentSchoolYear}' AND SR_grade = '{$Classlist['SR_grade']}'");
+    }
+
+    $findSectionInWorkSchedule = $mysqli->query("SELECT * FROM workschedule WHERE SR_section = '{$sectionName}' AND acadYear = '{$currentSchoolYear}'");
+    $WorkSchedule = $findSectionInWorkSchedule->fetch_assoc();
+    if (mysqli_num_rows($findSectionInWorkSchedule) > 0) {
+        $updateWorkSchedule = $mysqli->query("UPDATE workschedule SET SR_section = '{$sectionName}' WHERE acadYear = '{$currentSchoolYear}' AND SR_grade = '{$WorkSchedule['SR_grade']}'");
+    }
+
+    $findSectionInStudentRecords = $mysqli->query("SELECT * FROM studentrecord WHERE SR_section = '{$sectionName}'");
+    $StudentRecord = $findSectionInStudentRecords->fetch_assoc();
+    if (mysqli_num_rows($findSectionInStudentRecords) > 0) {
+        $updateStudentRecords = $mysqli->query("UPDATE studentrecord SET SR_section = '{$sectionName}' WHERE SR_grade = '{$StudentRecord['SR_grade']}'");
+    }
+
+    $updateReminders = $mysqli->query("UPDATE reminders SET forsection = '{$sectionName}' WHERE acadYear = '{$currentSchoolYear}'");
+
+    $findSectionInGrades = $mysqli->query("SELECT * FROM grades WHERE SR_section = '{$sectionName}' AND acadYear = '{$currentSchoolYear}'");
+    $Grades = $findSectionInGrades->fetch_assoc();
+    if (mysqli_num_rows($findSectionInGrades) > 0) {
+        $updateGrades = $mysqli->query("UPDATE grades SET SR_section = '{$sectionName}' WHERE acadYear = '{$currentSchoolYear}' AND SR_gradeLevel = '{$Grades['SR_gradeLevel']}'");
+    }
+
+    $findSectionInBehavior = $mysqli->query("SELECT * FROM behavior WHERE SR_section = '{$sectionName}' AND acadYear = '{$currentSchoolYear}'");
+    $Behavior = $findSectionInBehavior->fetch_assoc();
+    if (mysqli_num_rows($findSectionInBehavior) > 0) {
+        $updateBehavior = $mysqli->query("UPDATE behavior SET SR_section = '{$sectionName}' WHERE acadYear = '{$currentSchoolYear}' AND SR_grade = '{$Behavior['SR_grade']}'");
+    }
+
+    showSweetAlert('Successfully updated sectioname.', 'success');
+
+    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+    $AdminName = $getAdminName->fetch_assoc();
     $AD_action = "UPDATED SECTION NAME OF " . $currentName . " TO " . $sectionName;
     $currentDate = date("Y-m-d");
     $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
@@ -1190,6 +1253,8 @@ if (isset($_POST['deleteSection']) && !empty($_SESSION['AD_number'])) {
     if (mysqli_num_rows($checkSectionInClasslist) == 0) {
         $deleteSectionName = $mysqli->query("DELETE FROM sections WHERE S_name = '{$currentName}' AND acadYear = '{$currentSchoolYear}'");
     }
+    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+    $AdminName = $getAdminName->fetch_assoc();
     $AD_action = "DELETED SECTION " . $currentName;
     $currentDate = date("Y-m-d");
     $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
@@ -1228,6 +1293,8 @@ if (isset($_POST['acadyear']) && !empty($_SESSION['AD_number'])) {
         $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
         header("Refresh:0");
     }
+    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+    $AdminName = $getAdminName->fetch_assoc();
     $AD_action = "CHANGED ACADEMIC YEAR";
     $currentDate = date("Y-m-d");
     $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
@@ -1236,7 +1303,9 @@ if (isset($_POST['acadyear']) && !empty($_SESSION['AD_number'])) {
 if (isset($_POST['Open']) && !empty($_SESSION['AD_number'])) {
     $enableForms = $mysqli->query('UPDATE quartertable SET quarterStatus = "enabled" WHERE quarterTag = "FORMS"');
     $enableCurrentQuarter = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "enabled" WHERE quarterStatus = "current"');
-    header("Refresh:0");
+    // header("Refresh:0");
+    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+    $AdminName = $getAdminName->fetch_assoc();
     $AD_action = "OPENED ENCODING OF GRADES";
     $currentDate = date("Y-m-d");
     $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
@@ -1245,7 +1314,9 @@ if (isset($_POST['Open']) && !empty($_SESSION['AD_number'])) {
 if (isset($_POST['Close']) && !empty($_SESSION['AD_number'])) {
     $disableForms = $mysqli->query('UPDATE quartertable SET quarterStatus = "disabled" WHERE quarterTag = "FORMS"');
     $disableCurrentQuarter = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled" WHERE quarterStatus = "current"');
-    header("Refresh:0");
+    // header("Refresh:0");
+    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+    $AdminName = $getAdminName->fetch_assoc();
     $AD_action = "CLOSED ENCODING OF GRADES";
     $currentDate = date("Y-m-d");
     $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
@@ -1254,7 +1325,9 @@ if (isset($_POST['Close']) && !empty($_SESSION['AD_number'])) {
 if (isset($_POST['enableFirst']) && !empty($_SESSION['AD_number'])) {
     $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
     $enableFirst = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "1"');
-    header("Refresh:0");
+    // header("Refresh:0");
+    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+    $AdminName = $getAdminName->fetch_assoc();
     $AD_action = "OPENED ENCODING OF GRADES FOR FIRST QUARTER";
     $currentDate = date("Y-m-d");
     $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
@@ -1263,7 +1336,9 @@ if (isset($_POST['enableFirst']) && !empty($_SESSION['AD_number'])) {
 if (isset($_POST['enableSecond']) && !empty($_SESSION['AD_number'])) {
     $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
     $enableSecond = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "2"');
-    header("Refresh:0");
+    // header("Refresh:0");
+    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+    $AdminName = $getAdminName->fetch_assoc();
     $AD_action = "OPENED ENCODING OF GRADES FOR SECOND QUARTER";
     $currentDate = date("Y-m-d");
     $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
@@ -1272,7 +1347,9 @@ if (isset($_POST['enableSecond']) && !empty($_SESSION['AD_number'])) {
 if (isset($_POST['enableThird']) && !empty($_SESSION['AD_number'])) {
     $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
     $enableThird = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "3"');
-    header("Refresh:0");
+    // header("Refresh:0");
+    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+    $AdminName = $getAdminName->fetch_assoc();
     $AD_action = "OPENED ENCODING OF GRADES FOR THIRD QUARTER";
     $currentDate = date("Y-m-d");
     $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
@@ -1281,7 +1358,9 @@ if (isset($_POST['enableThird']) && !empty($_SESSION['AD_number'])) {
 if (isset($_POST['enableFourth']) && !empty($_SESSION['AD_number'])) {
     $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
     $enableFourth = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "4"');
-    header("Refresh:0");
+    // header("Refresh:0");
+    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+    $AdminName = $getAdminName->fetch_assoc();
     $AD_action = "OPENED ENCODING OF GRADES FOR FOURTH QUARTER";
     $currentDate = date("Y-m-d");
     $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
