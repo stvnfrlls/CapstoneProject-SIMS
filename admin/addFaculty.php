@@ -271,13 +271,13 @@ if (!isset($_SESSION['AD_number'])) {
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Age <span style="color: red;">*</span></label>
                                   <div class="col-sm-12">
-                                    <input type="number" class="form-control" name="F_age" required>
+                                    <input type="number" class="form-control" name="F_age" id="F_age" required readonly>
                                   </div>
                                 </div>
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Birthdate <span style="color: red;">*</span></label>
                                   <div class="col-sm-12">
-                                    <input type="date" class="form-control" name="F_birthday" required>
+                                    <input type="date" class="form-control" name="F_birthday" id="F_birthday" required onchange="calculateAge()">
                                   </div>
                                 </div>
                                 <div class="col-md-4">
@@ -365,9 +365,8 @@ if (!isset($_SESSION['AD_number'])) {
                 </div>
               </div>
               <div style="text-align: center;">
-                <input type="hidden" name="regFaculty" value="submit">
-                <button type="button" id="regFaculty" class="btn btn-primary me-2">Register</button>
-                <button type="button" class="btn btn-light">Back</button>
+                <button type="submit" name="regFaculty" class="btn btn-primary me-2">Register</button>
+                <button class="btn btn-light">Back</button>
               </div>
             </form>
           </div>
@@ -393,19 +392,26 @@ if (!isset($_SESSION['AD_number'])) {
   </div>
   <!-- Footer End -->
 
-  <!-- Back to Top -->
-  <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
-  <!-- JavaScript Libraries -->
-
-
   <!-- Template Javascript -->
   <script src="../assets/js/main.js"></script>
-
   <script src="../assets/js/admin/vendor.bundle.base.js"></script>
   <script src="../assets/js/admin/off-canvas.js"></script>
 
   <script>
+    function calculateAge() {
+      const F_birthday = document.getElementById("F_birthday").value;
+      const today = new Date();
+      const birthDate = new Date(F_birthday);
+
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+
+      document.getElementById("F_age").value = age;
+    }
     const phoneInput = document.getElementById('F_contact');
     phoneInput.maxLength = 15;
 
@@ -451,29 +457,6 @@ if (!isset($_SESSION['AD_number'])) {
       F_state.value = findCity.state;
       F_postal.value = findCity.zip_code;
     });
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
-  <script>
-    const regFaculty = document.getElementById('regFaculty');
-    const confirmFaculty = document.getElementById('confirmFaculty');
-    regFaculty.addEventListener('click', function() {
-      Swal.fire({
-        title: 'Are you sure you want to register this faculty teacher?',
-        showCancelButton: true,
-        confirmButtonText: 'Yes',
-        cancelButtonText: `No`,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire({
-            title: 'The teacher has been registered successfully!',
-            icon: 'success',
-          }).then(() => {
-            confirmFaculty.submit();
-          });
-        }
-      })
-
-    })
   </script>
 </body>
 

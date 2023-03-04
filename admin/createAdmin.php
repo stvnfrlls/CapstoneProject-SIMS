@@ -194,62 +194,62 @@ if (!isset($_SESSION['AD_number'])) {
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="row">
-                        <form class="form-sample" action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="adminForm">
-                            <div class="col-sm-12">
-                                <div class="home-tab">
-                                    <div class="d-sm-flex align-items-center justify-content-between border-bottom">
-                                        <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                                            <h2 class="fw-bold text-primary text-uppercase">Administrator</h2>
-                                        </div>
+                        <div class="col-sm-12">
+                            <div class="home-tab">
+                                <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                                    <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
+                                        <h2 class="fw-bold text-primary text-uppercase">Administrator</h2>
                                     </div>
-                                    <div class="tab-content tab-content-basic" style="padding-bottom: 0px;">
-                                        <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                                            <div class="col-12 grid-margin">
-                                                <div class="row">
-                                                    <div class="col-lg-8 col-sm-12 grid-margin">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <h4 style="text-align: center">List of Administrators</h4>
-                                                                <div class="table-responsive">
-                                                                    <table class="table table-striped">
-                                                                        <thead>
-                                                                            <tr>
-                                                                                <th>No.</th>
-                                                                                <th>Name</th>
-                                                                                <th>Email Address</th>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody>
-                                                                            <?php
-                                                                            $rowCount = 1;
-                                                                            $getAdminAccountsList = $mysqli->query("SELECT * FROM admin_accounts");
-                                                                            if (mysqli_num_rows($getAdminAccountsList) > 0) {
-                                                                                while ($AdminAccounts = $getAdminAccountsList->fetch_assoc()) { ?>
-                                                                                    <tr>
-                                                                                        <td><?php echo $rowCount; ?></td>
-                                                                                        <td><?php echo $AdminAccounts['AD_name']; ?></td>
-                                                                                        <td><?php echo $AdminAccounts['AD_email']; ?></td>
-                                                                                    </tr>
-                                                                                <?php
-                                                                                    $rowCount++;
-                                                                                }
-                                                                            } else { ?>
+                                </div>
+                                <div class="tab-content tab-content-basic" style="padding-bottom: 0px;">
+                                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                                        <div class="col-12 grid-margin">
+                                            <div class="row">
+                                                <div class="col-lg-8 col-sm-12 grid-margin">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <h4 style="text-align: center">List of Administrators</h4>
+                                                            <div class="table-responsive">
+                                                                <table class="table table-striped">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>No.</th>
+                                                                            <th>Name</th>
+                                                                            <th>Email Address</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <?php
+                                                                        $rowCount = 1;
+                                                                        $getAdminAccountsList = $mysqli->query("SELECT * FROM admin_accounts");
+                                                                        if (mysqli_num_rows($getAdminAccountsList) > 0) {
+                                                                            while ($AdminAccounts = $getAdminAccountsList->fetch_assoc()) { ?>
                                                                                 <tr>
-                                                                                    <td colspan="3" class="text-center">No Admin account registered yet</td>
+                                                                                    <td><?php echo $rowCount; ?></td>
+                                                                                    <td><?php echo $AdminAccounts['AD_name']; ?></td>
+                                                                                    <td><?php echo $AdminAccounts['AD_email']; ?></td>
                                                                                 </tr>
-                                                                            <?php }
-                                                                            ?>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
+                                                                            <?php
+                                                                                $rowCount++;
+                                                                            }
+                                                                        } else { ?>
+                                                                            <tr>
+                                                                                <td colspan="3" class="text-center">No Admin account registered yet</td>
+                                                                            </tr>
+                                                                        <?php }
+                                                                        ?>
+                                                                    </tbody>
+                                                                </table>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                </div>
 
-                                                    <div class="col-lg-4 col-sm-12 grid-margin">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                            <h4 style="text-align: center">Create Administrator</h4>
+                                                <div class="col-lg-4 col-sm-12 grid-margin">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <form class="form-sample" action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="adminForm">
+                                                                <h4 style="text-align: center">Create Administrator</h4>
                                                                 <div class="row" style="padding-bottom: 15px;">
                                                                     <div class="col-md-12">
                                                                         <label class="col-sm-12 col-form-label">Full Name</label>
@@ -263,7 +263,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     <div class="col-md-12">
                                                                         <label class="col-sm-12 col-form-label">Email</label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="text" class="form-control" name="adminEmail" required>
+                                                                            <input type="text" class="form-control" name="adminEmail" required />
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -271,7 +271,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     <div class="col-md-12">
                                                                         <label class="col-sm-12 col-form-label">Enter Password</label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="password" class="form-control" name="adminPassword" required>
+                                                                            <input type="password" class="form-control" name="adminPassword" id="adminPassword" required />
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -279,14 +279,14 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     <div class="col-md-12">
                                                                         <label class="col-sm-12 col-form-label">Confirm Password</label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="password" class="form-control" name="confirmPassword" required>
+                                                                            <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" required />
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div style="text-align: center;">
-                                                                    <button type="button" id="createAdmin" class="btn btn-primary me-2">Create</button>
+                                                                    <button type="hidden" name="addAdmin" class="btn btn-primary me-2">Create</button>
                                                                 </div>
-                                                            </div>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -295,7 +295,7 @@ if (!isset($_SESSION['AD_number'])) {
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -320,40 +320,17 @@ if (!isset($_SESSION['AD_number'])) {
         </div>
     </div>
     <!-- Footer End -->
-                                                                                
+
 
     <!-- JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
 
     <!-- Template Javascript -->
+    <!-- <script src="../assets/login/vendor/jquery/jquery-3.2.1.min.js"></script> -->
     <script src="../assets/js/main.js"></script>
-
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>
     <script src="../assets/js/admin/off-canvas.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
-    <script>
-        const createAdmin = document.getElementById('createAdmin');
-        const adminForm = document.getElementById('adminForm')
-        createAdmin.addEventListener('click', function() {
-            Swal.fire({
-                title: 'Are you sure you want to proceed with this action?',
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: `No`,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        title: 'Form submitted!',
-                        icon: 'success',
-                    }).then(() => {
-                        adminForm.submit();
-                    });
-                }
-            })
-        })
-    </script>
 </body>
 
 </html>
