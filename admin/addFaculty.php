@@ -230,21 +230,7 @@ if (!isset($_SESSION['AD_number'])) {
                             <div class="card-body">
                               <h4 class="card-title">Personal Information</h4>
                               <div class="row" style="padding-bottom: 15px;">
-                                <div class="col-md-4">
-                                  <label class="col-sm-12 col-form-label">Department <span style="color: red;">*</span></label>
-                                  <div class="col-sm-12">
-                                    <select class="form-select" name="F_department" required>
-                                      <option value=""></option>
-                                      <option value="English">English Department</option>
-                                      <option value="Filipino">Filipino Department</option>
-                                      <option value="Mathematics">Mathematics Department</option>
-                                      <option value="Science">Science Department</option>
-                                      <option value="History">History Department</option>
-                                      <option value="Personality Development">Personality Development Department</option>
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="col-md-8">
+                                <div class="col-md-12">
                                   <label class="col-sm-12 col-form-label">Profile Picture</label>
                                   <div class="col-sm-12">
                                     <div class="form-group">
