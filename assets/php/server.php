@@ -1144,9 +1144,9 @@ if (isset($_POST['postAnnouncement']) && !empty($_SESSION['AD_number'])) {
     $author = $_POST['author'];
     $date = $_POST['date'];
     $subject = $_POST['subject'];
-    $message = $_POST['message'];
+    $message = $mysqli->real_escape_string($_POST['message']);
 
-    $CreateAnnouncement = $mysqli->query("INSERT INTO announcement(acadYear, header, author, date, msg) VALUE('{$currentSchoolYear}', '{$subject}', '{$author}', '{$date}', '{$message}')");
+    $CreateAnnouncement = $mysqli->query("INSERT INTO announcement(acadYear, header, author, date, msg) VALUES ('{$currentSchoolYear}', '{$subject}', '{$author}', '{$date}', '{$message}')");
 
     if ($CreateAnnouncement) {
         $sendtoGuardianData = $mysqli->query("SELECT G_email FROM guardian WHERE G_guardianOfStudent 
