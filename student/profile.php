@@ -70,7 +70,7 @@ if (!isset($_SESSION['SR_number'])) {
   <nav class="navbar navbar-expand-lg bg-dark navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
 
     <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-      <span class="navbar-toggler-icon"></span>
+      <span class="fa fa-bars" style="color:white;"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <style>
