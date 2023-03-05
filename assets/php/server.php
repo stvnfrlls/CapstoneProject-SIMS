@@ -411,32 +411,35 @@ if (isset($_POST['addReminders'])) {
     $date = $mysqli->real_escape_string($_POST['date']);
     $dateposted = date("Y/m/d");
 
-    $addReminders = $mysqli->query("INSERT INTO reminders(header, date_posted, author, subject, forsection, msg, deadline) VALUE ('$dateposted', '$author','$subject', '$forsection','$MSG', '$date')");
+    $addReminders = $mysqli->query("INSERT INTO reminders(acadYear, date_posted, author, subject, forsection, msg, deadline) VALUE ('{$currentSchoolYear}', '{$dateposted}', '{$author}','{$subject}', '{$forsection}', '{$MSG}', '{$date}')");
 
     if ($addReminders) {
         $sendtoGuardianData = $mysqli->query("SELECT G_email FROM guardian WHERE G_guardianOfStudent 
                                             IN 
                                             (SELECT SR_number FROM classlist WHERE SR_section = '{$forsection}' AND acadYear = '{$currentSchoolYear}')");
-        while ($sendtoGuardian = $sendtoGuardianData->fetch_assoc()) {
-            $mail->addAddress($sendtoGuardian['G_email']);
-            $mail->Subject = $subject;
-
-            $mail->Body = '<h1>School Annoucement</h1><br>
-                               <p>' . $message . '</p><br>';
-            $mail->send();
-        }
         $sendtoStudentData = $mysqli->query("SELECT SR_email FROM studentrecord WHERE SR_number 
                                             IN 
                                             (SELECT SR_number FROM classlist WHERE SR_section = '{$forsection}' AND acadYear = '{$currentSchoolYear}')");
-        while ($sendtoStudent = $sendtoStudentData->fetch_assoc()) {
-            $mail->addAddress($sendtoStudent['SR_email']);
-            $mail->Subject = $subject;
+        if (mysqli_num_rows($sendtoGuardianData) > 0 && mysqli_num_rows($sendtoStudentData) > 0) {
+            while ($sendtoGuardian = $sendtoGuardianData->fetch_assoc()) {
+                $mail->addAddress($sendtoGuardian['G_email']);
+                $mail->Subject = $subject;
 
-            $mail->Body = '<h1>School Annoucement</h1><br>
+                $mail->Body = '<h1>Reminder</h1><br>
                                <p>' . $message . '</p><br>';
-            $mail->send();
+                $mail->send();
+            }
+            while ($sendtoStudent = $sendtoStudentData->fetch_assoc()) {
+                $mail->addAddress($sendtoStudent['SR_email']);
+                $mail->Subject = $subject;
+
+                $mail->Body = '<h1>Reminder</h1><br>
+                               <p>' . $message . '</p><br>';
+                $mail->send();
+            }
+        } else {
+            showSweetAlert('Reminders posted but not sent to everyone.', 'info');
         }
-        header('Location: ../faculty/reminders.php');
     }
 }
 if (isset($_POST['editReminders'])) {
@@ -450,9 +453,21 @@ if (isset($_POST['editReminders'])) {
     $resultupdateReminder = $mysqli->query($updateReminder);
 
     if ($resultupdateReminder) {
-        header('Location: ../faculty/reminders.php');
+        echo <<<EOT
+            <script>
+                document.addEventListener("DOMContentLoaded", function(event) { 
+                    swal.fire({
+                        text: 'Reminders successfully updated.',
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                    }).then(() => {
+                        window.location.href = '../faculty/reminders';
+                    });
+                });
+            </script>
+        EOT;
     } else {
-        echo "error" . $mysqli->error;
+        showSweetAlert('Failed to update reminder.', 'error');
     }
 }
 if (isset($_POST['attendanceReport']) && isset($_SESSION['F_number'])) {
@@ -477,7 +492,7 @@ if (isset($_POST['regStudent'])) {
     $SR_profile_img = $_FILES['image']['name'];
     $tempname = $_FILES["image"]["tmp_name"];
     $folder = "../assets/img/profile/" . $SR_profile_img;
-    
+
     $S_lname = $mysqli->real_escape_string($_POST['S_lname']);
     $S_fname = $mysqli->real_escape_string($_POST['S_fname']);
     $S_mname    = $mysqli->real_escape_string($_POST['S_mname']);
