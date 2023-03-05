@@ -272,7 +272,15 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Guardian</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0"><?php echo $guardianInfo['G_lname'] .  ", " . $guardianInfo['G_fname'] . " " . substr($guardianInfo['G_mname'], 0, 1) . ". " . $guardianInfo['G_suffix']; ?></p>
+                  <p class="text-muted mb-0">
+                    <?php
+                    if (!isset($guardianInfo['G_lname'])) {
+                      echo "";
+                    } else {
+                      echo $guardianInfo['G_lname'] .  ", " . $guardianInfo['G_fname'] . " " . substr($guardianInfo['G_mname'], 0, 1) . ". " . $guardianInfo['G_suffix'];
+                    }
+                    ?>
+                  </p>
                 </div>
               </div>
               <hr>
@@ -293,7 +301,15 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Guardian Name</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0"><?php echo $guardianInfo['G_lname'] .  ", " . $guardianInfo['G_fname'] . " " . substr($guardianInfo['G_mname'], 0, 1) . ". " . $guardianInfo['G_suffix']; ?></p>
+                  <p class="text-muted mb-0">
+                    <?php
+                    if (!isset($guardianInfo['G_lname'])) {
+                      echo "";
+                    } else {
+                      echo $guardianInfo['G_lname'] .  ", " . $guardianInfo['G_fname'] . " " . substr($guardianInfo['G_mname'], 0, 1) . ". " . $guardianInfo['G_suffix'];
+                    }
+                    ?>
+                  </p>
                 </div>
               </div>
               <hr>
@@ -302,7 +318,15 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Relationship to Student</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0"><?php echo $guardianInfo['G_relationshipStudent'] ?></p>
+                  <p class="text-muted mb-0">
+                    <?php
+                    if (!isset($guardianInfo['G_relationshipStudent'])) {
+                      echo "";
+                    } else {
+                      echo $guardianInfo['G_relationshipStudent'];
+                    }
+                    ?>
+                  </p>
                 </div>
               </div>
               <hr>
@@ -311,7 +335,15 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Email Address</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0"><?php echo $guardianInfo['G_email'] ?></p>
+                  <p class="text-muted mb-0">
+                    <?php
+                    if (!isset($guardianInfo['G_email'])) {
+                      echo "";
+                    } else {
+                      echo $guardianInfo['G_email'];
+                    }
+                    ?>
+                  </p>
                 </div>
               </div>
               <hr>
@@ -320,7 +352,15 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Telephone Number</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0"><?php echo $guardianInfo['G_telephone'] ?></p>
+                  <p class="text-muted mb-0">
+                    <?php
+                    if (!isset($guardianInfo['G_telephone'])) {
+                      echo "";
+                    } else {
+                      echo $guardianInfo['G_telephone'];
+                    }
+                    ?>
+                  </p>
                 </div>
               </div>
               <hr>
@@ -329,7 +369,15 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Phone Number</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0"><?php echo $guardianInfo['G_contact'] ?></p>
+                  <p class="text-muted mb-0">
+                    <?php
+                    if (!isset($guardianInfo['G_contact'])) {
+                      echo "";
+                    } else {
+                      echo $guardianInfo['G_contact'];
+                    }
+                    ?>
+                  </p>
                 </div>
               </div>
               <hr>
@@ -338,7 +386,15 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Address</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0"><?php echo  $guardianInfo['G_address'] .  ", " . $guardianInfo['G_barangay'] . " " . $guardianInfo['G_city'] . ". " . $guardianInfo['G_state'] . " (" . $guardianInfo['G_postal'] . ")" ?></p>
+                  <p class="text-muted mb-0">
+                    <?php
+                    if (!isset($guardianInfo['G_address'])) {
+                      echo "";
+                    } else {
+                      echo $guardianInfo['G_address'] .  ", " . $guardianInfo['G_barangay'] . " " . $guardianInfo['G_city'] . ". " . $guardianInfo['G_state'] . " (" . $guardianInfo['G_postal'] . ")";
+                    }
+                    ?>
+                  </p>
                 </div>
               </div>
             </div>
