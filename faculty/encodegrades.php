@@ -12,19 +12,34 @@ $arrayQuarter = array();
 while ($QuarterData = $getQuarter->fetch_assoc()) {
   $arrayQuarter[] = $QuarterData;
 }
-$FormQuery = $mysqli->query("SELECT quarterStatus FROM quartertable WHERE quarterTag = 'FORMS'");
+
+$getClassList = "SELECT * FROM studentrecord 
+                  INNER JOIN grades
+                  ON studentrecord.SR_number = grades.SR_number
+                  WHERE studentrecord.SR_grade = '{$_GET['Grade']}'
+                  AND studentrecord.SR_section = '{$_GET['Section']}'
+                  AND grades.G_learningArea = '{$_GET['Subject']}'
+                  AND grades.acadYear = '{$currentSchoolYear}'";
+$rungetClassList = $mysqli->query($getClassList);
+$arrayClassList = array();
+
+while ($dataClassList = $rungetClassList->fetch_assoc()) {
+  $arrayClassList[] = $dataClassList;
+}
+
+$FormQuery = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 'FORMS'");
 $FormStatus = $FormQuery->fetch_assoc();
 if ($FormStatus['quarterStatus'] == "enabled") { ?>
   <script>
     var inputElements = document.getElementsByTagName("input");
-    for (var i = 0; i < inputElements.length; i++) {
+    for (var i = 1; i < inputElements.length; i++) {
       inputElements[i].disabled = false;
     }
   </script>
 <?php } else { ?>
   <script>
     var inputElements = document.getElementsByTagName("input");
-    for (var i = 0; i < inputElements.length; i++) {
+    for (var i = 1; i < inputElements.length; i++) {
       inputElements[i].disabled = true;
     }
   </script>
@@ -168,8 +183,8 @@ if ($FormStatus['quarterStatus'] == "enabled") { ?>
                 <div class="tab-content tab-content-basic">
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                     <div style="text-align: right; margin-bottom: 15px">
-                      <button type="button" id="saveGrades" class="btn btn-primary me-2">Save</button>
-                      <a href="" type="button" class="btn btn-light">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
+                      <button id="saveGrades" class="btn btn-primary me-2">Save</button>
+                      <a href="" class="btn btn-light">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
                     </div>
                     <div class="row">
                       <div class="col-12 grid-margin">
@@ -261,7 +276,7 @@ if ($FormStatus['quarterStatus'] == "enabled") { ?>
                                     <tbody>
                                       <?php
                                       if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject'])) {
-                                        $rowCount = 1;
+                                        $rowCount = 0;
                                         $getClassListData = $mysqli->query("SELECT SR_number FROM classlist WHERE SR_grade = '{$_GET['Grade']}' AND SR_section = '{$_GET['Section']}' AND acadYear = '{$currentSchoolYear}'");
                                         while ($Classlist = $getClassListData->fetch_assoc()) { ?>
                                           <tr>
@@ -280,51 +295,51 @@ if ($FormStatus['quarterStatus'] == "enabled") { ?>
                                               <input type="hidden" name="Subject[]" value="<?php echo mysqli_escape_string($mysqli, $_GET['Subject']) ?>">
                                             </td>
                                             <?php
-                                            if ($arrayQuarter['1']['quarterStatus'] == "current" && $arrayQuarter['1']['quarterFormStatus'] == "enabled") { ?>
+                                            $checkQuarter1 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 1 AND quarterFormStatus = 'enabled'");
+                                            if (mysqli_num_rows($checkQuarter1) == 1) { ?>
                                               <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g1 = $arrayClassList[$rowCount]['G_gradesQ1']; ?>" name="G_gradesQ1[]" style="text-align: center; width: 30px;"></td>
-                                            <?php
-                                            } else { ?>
+                                            <?php } else { ?>
                                               <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g1 = $arrayClassList[$rowCount]['G_gradesQ1']; ?>" name="G_gradesQ1[]" style="text-align: center; width: 30px;" disabled></td>
                                             <?php } ?>
 
                                             <?php
-                                            if ($arrayQuarter['2']['quarterStatus'] == "current" && $arrayQuarter['2']['quarterFormStatus'] == "enabled") { ?>
+                                            $checkQuarter2 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 2 AND quarterFormStatus = 'enabled'");
+                                            if (mysqli_num_rows($checkQuarter2) == 1) { ?>
                                               <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g2 = $arrayClassList[$rowCount]['G_gradesQ2']; ?>" name="G_gradesQ2[]" style="text-align: center; width: 30px;"></td>
-                                            <?php
-                                            } else { ?>
+                                            <?php } else { ?>
                                               <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g2 = $arrayClassList[$rowCount]['G_gradesQ2']; ?>" name="G_gradesQ2[]" style="text-align: center; width: 30px;" disabled></td>
                                             <?php } ?>
 
                                             <?php
-                                            if ($arrayQuarter['3']['quarterStatus'] == "current" && $arrayQuarter['3']['quarterFormStatus'] == "enabled") { ?>
+                                            $checkQuarter3 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 3 AND quarterFormStatus = 'enabled'");
+                                            if (mysqli_num_rows($checkQuarter3) == 1) { ?>
                                               <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g3 = $arrayClassList[$rowCount]['G_gradesQ3']; ?>" name="G_gradesQ3[]" style="text-align: center; width: 30px;"></td>
-                                            <?php
-                                            } else { ?>
+                                            <?php } else { ?>
                                               <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g3 = $arrayClassList[$rowCount]['G_gradesQ3']; ?>" name="G_gradesQ3[]" style="text-align: center; width: 30px;" disabled></td>
                                             <?php } ?>
 
                                             <?php
-                                            if ($arrayQuarter['4']['quarterStatus'] == "current" && $arrayQuarter['4']['quarterFormStatus'] == "enabled") { ?>
+                                            $checkQuarter4 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 4 AND quarterFormStatus = 'enabled'");
+                                            if (mysqli_num_rows($checkQuarter4) == 1) { ?>
                                               <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g4 = $arrayClassList[$rowCount]['G_gradesQ4']; ?>" name="G_gradesQ4[]" style="text-align: center; width: 30px;"></td>
-                                            <?php
-                                            } else { ?>
+                                            <?php } else { ?>
                                               <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g4 = $arrayClassList[$rowCount]['G_gradesQ4']; ?>" name="G_gradesQ4[]" style="text-align: center; width: 30px;" disabled></td>
                                             <?php } ?>
 
+
                                             <td class="hatdog">
                                               <?php
-                                              $sum = $g1 + $g2 + $g3 + $g4;
-                                              $average = $sum / 4;
-                                              if ($arrayQuarter['4']['quarterStatus'] == "current" && $arrayQuarter['4']['quarterFormStatus'] == "enabled") {
-                                                $sum = $g1 + $g2 + $g3 + $g4;
+                                              $average = 0;
+                                              if (!empty($g4)) {
+                                                $sum = intval($g1) + intval($g2) + intval($g3) + intval($g4);
                                                 $average = $sum / 4;
-                                                if ($average != 0) {
-                                                  echo round($average);
-                                                }
+                                                echo round($average);
                                               ?>
                                                 <input type="hidden" name="FinalGrade[]" value="<?php echo round($average); ?>">
-                                              <?php }
+                                              <?php
+                                              }
                                               ?>
+
                                             </td>
                                             <td class="hatdog">
                                               <?php
@@ -464,23 +479,6 @@ if ($FormStatus['quarterStatus'] == "enabled") { ?>
       })
     })
   </script>
-  <script>
-    function sweetalert() {
-      Swal.fire({
-        text: 'Encoding of Grades is not yet open',
-        icon: 'error',
-        confirmButtonText: 'OK',
-      }).then((result) => {
-        window.location.replace("./dashboard.php");
-      })
-    }
-  </script>
-  <?php
-  $checkEncodeGradePermission = $mysqli->query("SELECT quarterStatus FROM quartertable WHERE quarterTag = 'FORMS' AND quarterStatus = 'enabled'");
-  if (mysqli_num_rows($checkEncodeGradePermission) == 0) {
-    echo '<script>sweetalert();</script>';
-  }
-  ?>
 </body>
 
 </html>
