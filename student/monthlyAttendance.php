@@ -63,7 +63,7 @@ if (!isset($_SESSION['SR_number'])) {
     <nav class="navbar navbar-expand-lg bg-dark navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
 
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
+            <span class="fa fa-bars" style="color:white;"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <style>
@@ -103,7 +103,7 @@ if (!isset($_SESSION['SR_number'])) {
             <div class="">
                 <div class="row">
                     <div class="col-sm-12 col-lg-10 m-auto">
-                        <div class="home-tab">
+                        <div class="home-tab" style="margin-top: 0px !important;">
                             <div class="d-sm-flex align-items-center justify-content-between">
                                 <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
                                     <h2 class="fw-bold text-primary text-uppercase" style="padding-top: 40px;">Daily Reports</h2>
