@@ -209,22 +209,45 @@ if (!isset($_SESSION['AD_number'])) {
                 </div>
                 <div class="tab-content tab-content-basic">
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                    <div style="text-align: right; margin-bottom: 15px;" >
+                      <a class="btn btn-primary me-2" href="editFaculty.php?F_number=<?php echo $_GET['F_number'] ?>">Edit</a>
+                      <a class="btn btn-primary me-2" href="">Mark as Inactive</a>
+                      <button class="btn btn-light" onclick="location.href='../admin/faculty.php'">Back</button>
+                    </div>
                     <div class="row">
-                      <div class="col-lg-4 col-sm-12 grid-margin" style="margin: auto; margin-bottom: 30px;">
-                        <div class="card">
-                          <div class="card-body">
-                            <h4 class="card-title">Profile</h4>
-                            <div class="row" style="padding-bottom: 15px;">
-                              <div class="col-md-12 col-sm-6" style="text-align: center; margin-bottom: 20px; margin-top: 10px;">
-                                <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluidr" style="width: 150px;">
+                      <div class="col-lg-3 col-sm-12 grid-margin" style="margin-bottom: 30px;">
+                        <div class="row">
+                          <div class="card">
+                            <div class="card-body">
+                              <h4 class="card-title">Profile</h4>
+                              <div class="row" style="padding-bottom: 15px;">
+                                <div class="col-12" style="text-align: center; margin-bottom: 20px; margin-top: 10px;">
+                                  <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluidr" style="width: 150px;">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row" style="padding-top: 15px;">
+                          <div class="card">
+                            <div class="card-body">
+                              <h4 class="card-title">Teaching Status</h4>
+                              <div class="row">
+                                <div class="col-12">
+                                  <div class="progress rounded" style="height: 25px; width: 70px; background-color: red;">
+                                    <p style="font-size: .77rem; margin: 4px 0px 0px 11px; text-align: center; color: white;">inactive</p>
+                                  </div>
+                                  <div class="progress rounded" style="height: 25px; width: 70px; background-color:limegreen">
+                                    <p style="font-size: .77rem; margin: 4px 0px 0px 16px; text-align: center; color: white;">active</p>
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-12 grid-margin">
+
+                      <div class="col-lg-9 col-sm-12 grid-margin">
                         <div class="card">
                           <div class="card-body">
                             <h4 class="card-title">Personal Information</h4>
@@ -347,13 +370,10 @@ if (!isset($_SESSION['AD_number'])) {
                         </div>
                       </div>
                     </div>
+
                   </div>
                 </div>
               </div>
-            </div>
-            <div style="text-align: center;">
-              <a class="btn btn-primary me-2" href="editFaculty.php?F_number=<?php echo $_GET['F_number'] ?>">Edit</a>
-              <button class="btn btn-light">Back</button>
             </div>
           </div>
         </div>
