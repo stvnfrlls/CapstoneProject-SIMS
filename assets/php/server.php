@@ -62,9 +62,11 @@ if (isset($_POST['login-button'])) {
                 }
             }
         } else {
-            $FindAD_number = $mysqli->query("SELECT AD_number FROM admin_accounts WHERE AD_email = '{$email}' AND AD_password = '{$password}'");
+            $FindAD_number = $mysqli->query("SELECT * FROM admin_accounts WHERE AD_email = '{$email}'");
             $getAD_number = $FindAD_number->fetch_assoc();
-
+            if ($email != $getAD_number['AD_password']) {
+                $errors['LoginError'] = "Incorrect Password!";
+            }
             if (empty($getAD_number['AD_number'])) {
                 $errors['LoginError'] = "Account does not exist!";
             } else {
@@ -408,7 +410,7 @@ if (isset($_POST['updateProfile'])) {
     $F_suffix = $mysqli->real_escape_string($_POST['F_suffix']);
 
     $F_age    = $mysqli->real_escape_string($_POST['F_age']);
-    $F_birthday = $mysqli->real_escape_string($_POST['F_birthday']);
+    $F_birthday = $_POST['F_birthday'];
     $F_gender = $mysqli->real_escape_string($_POST['F_gender']);
 
     $F_religion = $mysqli->real_escape_string($_POST['F_religion']);
@@ -536,7 +538,7 @@ if (isset($_POST['regStudent'])) {
     $S_suffix = $mysqli->real_escape_string($_POST['S_suffix']);
 
     $S_age    = $mysqli->real_escape_string($_POST['S_age']);
-    $S_birthday = $mysqli->real_escape_string($_POST['S_birthday']);
+    $S_birthday = $_POST['S_birthday'];
     $S_birthplace = $mysqli->real_escape_string($_POST['S_birthplace']);
     $S_gender = $mysqli->real_escape_string($_POST['S_gender']);
 
@@ -589,8 +591,8 @@ if (isset($_POST['regStudent'])) {
                         SR_citizenship, SR_grade, SR_section, SR_servicetype, SR_address, 
                         SR_barangay, SR_city, SR_state, SR_postal, SR_email)
                         VALUES(
-                        '$SR_profile_img', '$SR_LRN', '$S_lname', '$S_fname', '$S_mname', '$S_suffix',
-                        '$S_age', '$S_birthday', '$S_birthplace', '$S_gender', '$S_religion',
+                        '$SR_profile_img', '$SR_LRN', '$S_fname', '$S_mname', '$S_lname','$S_suffix',
+                        '$S_gender', '$S_age', '$S_birthday', '$S_birthplace', '$S_religion',
                         '$S_citizenship', '$S_grade', '$S_section', '$SR_servicetype', '$S_address', 
                         '$S_barangay', '$S_city', '$S_state', '$S_postal', '$S_email')";
         $RunregStudent = $mysqli->query($regStudent);
@@ -690,7 +692,7 @@ if (isset($_POST['updateInformation']) && !empty($_SESSION['AD_number'])) {
     $S_suffix = $mysqli->real_escape_string($_POST['SR_suffix']);
 
     $S_age    = $mysqli->real_escape_string($_POST['SR_age']);
-    $S_birthday = $mysqli->real_escape_string($_POST['SR_birthday']);
+    $S_birthday = $_POST['SR_birthday'];
     $S_birthplace = $mysqli->real_escape_string($_POST['SR_birthplace']);
     $S_gender = $mysqli->real_escape_string($_POST['SR_gender']);
 
@@ -758,7 +760,7 @@ if (isset($_POST['regFaculty']) && !empty($_SESSION['AD_number'])) {
     $F_mname = $mysqli->real_escape_string($_POST['F_mname']);
     $F_suffix = $mysqli->real_escape_string($_POST['F_suffix']);
     $F_age = $mysqli->real_escape_string($_POST['F_age']);
-    $F_birthday = $mysqli->real_escape_string($_POST['F_birthday']);
+    $F_birthday = $_POST['F_birthday'];
     $F_gender = $mysqli->real_escape_string($_POST['F_gender']);
     $F_religion = $mysqli->real_escape_string($_POST['F_religion']);
     $F_citizenship = $mysqli->real_escape_string($_POST['F_citizenship']);
@@ -830,7 +832,7 @@ if (isset($_POST['editFaculty']) && !empty($_SESSION['AD_number'])) {
     $F_suffix = $mysqli->real_escape_string($_POST['F_suffix']);
 
     $F_age = $mysqli->real_escape_string($_POST['F_age']);
-    $F_birthday = $mysqli->real_escape_string($_POST['F_birthday']);
+    $F_birthday = $_POST['F_birthday'];
     $F_gender = $mysqli->real_escape_string($_POST['F_gender']);
 
     $F_religion = $mysqli->real_escape_string($_POST['F_religion']);
