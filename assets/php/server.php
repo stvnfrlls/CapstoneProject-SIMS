@@ -27,7 +27,7 @@ if (isset($_POST['login-button'])) {
     } else {
         $authAccount = $mysqli->query("SELECT * FROM userdetails WHERE SR_email = '$email'");
 
-        if ($authAccount->num_rows > 0) {
+        if (mysqli_num_rows($authAccount) == 1) {
             $getauthAccount = $authAccount->fetch_assoc();
             $UD_username = $getauthAccount['SR_email'];
             $UD_password = $getauthAccount['SR_password'];
@@ -400,43 +400,54 @@ if (isset($_POST['saveBehavior'])) {
     }
 }
 if (isset($_POST['updateProfile'])) {
-    $F_fname = $mysqli->real_escape_string($_POST['F_fname']);
-    $F_mname    = $mysqli->real_escape_string($_POST['F_mname']);
-    $F_lname = $mysqli->real_escape_string($_POST['F_lname']);
-    $F_suffix = $mysqli->real_escape_string($_POST['F_suffix']);
+    if (isset($_FILES['image'])) {
+        $currentEmail = $_POST['currentEmail'];
+        $F_email = $_POST['F_email'];
+        $F_number = $_POST['F_number'];
+        $newPassword = $_POST['newPassword'];
+        $confirmPassword = $_POST['confirmPassword'];
 
-    $F_age    = $mysqli->real_escape_string($_POST['F_age']);
-    $F_birthday = $_POST['F_birthday'];
-    $F_gender = $mysqli->real_escape_string($_POST['F_gender']);
+        $F_profile_img = $_FILES['image']['name'];
+        $tempname = $_FILES['image']['tmp_name'];
+        $folder = "../assets/img/profile/" . $F_profile_img;
 
-    $F_religion = $mysqli->real_escape_string($_POST['F_religion']);
-    $F_citizenship = $mysqli->real_escape_string($_POST['F_citizenship']);
-
-    $F_address    = $mysqli->real_escape_string($_POST['F_address']);
-    $F_barangay    = $mysqli->real_escape_string($_POST['F_barangay']);
-    $F_city    = $mysqli->real_escape_string($_POST['F_city']);
-    $F_postal    = $mysqli->real_escape_string($_POST['F_postal']);
-
-    $F_contactNumber    = $mysqli->real_escape_string($_POST['F_contact']);
-
-    $updateFaculty = "UPDATE faculty 
-                      SET 
-                        F_fname = '$F_fname', 
-                        F_mname = '$F_mname',
-                        F_lname = '$F_lname',
-                        F_suffix = '$F_suffix',
-                        F_age = '$F_age',
-                        F_birthday = '$F_birthday',
-                        F_gender = '$F_gender',
-                        F_religion = '$F_religion',
-                        F_citizenship = '$F_citizenship',
-                        F_address = '$F_address',
-                        F_barangay = '$F_barangay',
-                        F_city = '$F_city',
-                        F_postal = '$F_postal',
-                        F_contactNumber = '$F_contactNumber'
-                      WHERE F_number = '{$_SESSION['F_number']}'";
-    $resultupdateFaculty = $mysqli->query($updateFaculty);
+        move_uploaded_file($tempname, $folder);
+        if ($confirmPassword != $newPassword) {
+            showSweetAlert('Password does not match', 'error');
+        } else {
+            $mysqli->query("UPDATE userdetails 
+                        SET 
+                        SR_email = '{$F_email}',
+                        SR_password = '{$confirmPassword}'
+                        WHERE SR_email = '{$currentEmail}'");
+            $mysqli->query("UPDATE faculty 
+                        SET 
+                        F_profile_img = '{$F_profile_img}',
+                        F_email = '{$F_email}'
+                        WHERE F_number = '{$F_number}'");
+            showSweetAlert('Successfully updated your information', 'success');
+        }
+    } else {
+        $currentEmail = $_POST['currentEmail'];
+        $F_email = $_POST['F_email'];
+        $F_number = $_POST['F_number'];
+        $newPassword = $_POST['newPassword'];
+        $confirmPassword = $_POST['confirmPassword'];
+        if ($newPassword != $confirmPassword) {
+            showSweetAlert('Password does not match', 'error');
+        } else {
+            $updateUserDetails = $mysqli->query("UPDATE userdetails 
+                                                SET 
+                                                SR_email = '{$F_email}',
+                                                SR_password = '{$confirmPassword}'
+                                                WHERE SR_email = '{$currentEmail}'");
+            $updateStudentRecord = $mysqli->query("UPDATE faculty 
+                                                SET 
+                                                F_email = '{$F_email}'
+                                                WHERE F_email = '{$currentEmail}'");
+            showSweetAlert('Successfully updated your information', 'success');
+        }
+    }
 }
 if (isset($_POST['addReminders'])) {
     $author = $mysqli->real_escape_string($_POST['author']);
@@ -1116,11 +1127,9 @@ if (isset($_POST['updateSchedule']) && !empty($_SESSION['AD_number'])) {
 }
 if (isset($_POST['deleteSchedule']) && !empty($_SESSION['AD_number'])) {
     $assignedFaculty = $_POST['assignedFaculty'];
-    $subjectname = $_POST['subjectname'];
-    $input_start = $_POST['WS_start_time'];
-    $input_end = $_POST['WS_end_time'];
+    $WS_ID = $_POST['WS_ID'];
 
-    $deleteSchedule = $mysqli->query("DELETE FROM workschedule WHERE acadYear = '{$currentSchoolYear}' AND F_number = '{$assignedFaculty}' AND S_subject = '{$subjectname}' AND SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['SectionName']}' AND WS_start_time = '{$input_start}' AND WS_end_time = '{$input_end}'");
+    $deleteSchedule = $mysqli->query("DELETE FROM workschedule WHERE acadYear = '{$currentSchoolYear}' AND WS_ID = '{$WS_ID}'");
     if ($deleteSchedule) {
         // showSweetAlert('Schedule successfully removed.', 'success');
         $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
@@ -1178,18 +1187,28 @@ if (isset($_POST['assignAdvisor']) && !empty($_SESSION['AD_number'])) {
     $section = $_POST['section'];
     $advisor = $_POST['advisor'];
 
-    $assignSectionsAdvisor = $mysqli->query("UPDATE sections SET S_adviser = '{$advisor}' WHERE S_name = '{$section}' AND acadYear = '{$currentSchoolYear}'");
-    $assignClassListAdvisor = $mysqli->query("UPDATE classlist SET F_number = '{$advisor}' WHERE SR_section = '{$section}' AND acadYear = '{$currentSchoolYear}'");
+    $checkIfAssigned = $mysqli->query("SELECT F_number FROM classlist WHERE F_number = '{$advisor}'");
+    if (mysqli_num_rows($checkIfAssigned) == 0) {
+        $checkIfAssigned = $mysqli->query("SELECT S_adviser FROM sections WHERE S_adviser = '{$advisor}'");
+        if (mysqli_num_rows($checkIfAssigned) == 0) {
+            $assignSectionsAdvisor = $mysqli->query("UPDATE sections SET S_adviser = '{$advisor}' WHERE S_name = '{$section}' AND acadYear = '{$currentSchoolYear}'");
+            $assignClassListAdvisor = $mysqli->query("UPDATE classlist SET F_number = '{$advisor}' WHERE SR_section = '{$section}' AND acadYear = '{$currentSchoolYear}'");
 
-    if ($assignSectionsAdvisor && $assignClassListAdvisor) {
-        showSweetAlert('Successfully assigned advisory.', 'success');
+            showSweetAlert('Successfully assigned advisory.', 'success');
+            if ($assignSectionsAdvisor && $assignClassListAdvisor) {
 
-        $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
-        $AdminName = $getAdminName->fetch_assoc();
-        $AD_action = "ASSIGNED ADVISOR FOR SECTION " . $section;
-        $currentDate = date("Y-m-d");
-        $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
-        VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
+                $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+                $AdminName = $getAdminName->fetch_assoc();
+                $AD_action = "ASSIGNED ADVISOR FOR SECTION " . $section;
+                $currentDate = date("Y-m-d");
+                $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
+                                            VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
+            }
+        } else {
+            showSweetAlert('Teacher is already assigned', 'error');
+        }
+    } else {
+        showSweetAlert('Teacher is already assigned', 'error');
     }
 }
 if (isset($_POST['moveUpStatus']) && !empty($_SESSION['AD_number'])) {
@@ -1238,54 +1257,61 @@ if (isset($_POST['changeto']) && !empty($_SESSION['AD_number'])) {
 if (isset($_POST['addSection']) && !empty($_SESSION['AD_number'])) {
     $sectionName = $_POST['sectionName'];
 
-    $addSectionName = $mysqli->query("INSERT INTO sections (acadYear, S_yearLevel, S_name) VALUES ('{$currentSchoolYear}', '{$_GET['Grade']}', '{$sectionName}')");
-    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
-    $AdminName = $getAdminName->fetch_assoc();
-    $AD_action = "ADDED SECTION " . $sectionName;
-    $currentDate = date("Y-m-d");
-    $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
-    VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
+    $checkExistingSection = $mysqli->query("SELECT S_name FROM sections WHERE S_name LIKE '%$sectionName%'");
+    if (mysqli_num_rows($checkExistingSection) == 0) {
+        $addSectionName = $mysqli->query("INSERT INTO sections (acadYear, S_yearLevel, S_name) VALUES ('{$currentSchoolYear}', '{$_GET['Grade']}', '{$sectionName}')");
+        showSweetAlert('Section successfully added', 'success');
+
+        $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+        $AdminName = $getAdminName->fetch_assoc();
+        $AD_action = "ADDED SECTION " . $sectionName;
+        $currentDate = date("Y-m-d");
+        $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
+        VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
+    } else {
+        showSweetAlert('Failed to add Section', 'error');
+    }
 }
 if (isset($_POST['updateSection']) && !empty($_SESSION['AD_number'])) {
     $currentName = $_POST['currentName'];
     $sectionName = $_POST['sectionName'];
 
-    $findSectionInSection = $mysqli->query("SELECT * FROM sections WHERE S_name = '{$sectionName}' AND acadYear = '{$currentSchoolYear}'");
+    $findSectionInSection = $mysqli->query("SELECT * FROM sections WHERE S_name = '{$currentName}' AND acadYear = '{$currentSchoolYear}'");
     $Section = $findSectionInSection->fetch_assoc();
     if (mysqli_num_rows($findSectionInSection) > 0) {
         $updateSectionName = $mysqli->query("UPDATE sections SET S_name = '{$sectionName}' WHERE acadYear = '{$currentSchoolYear}' AND S_yearLevel = '{$Section['S_yearLevel']}'");
-    }
 
-    $findSectionInClasslist = $mysqli->query("SELECT * FROM classlist WHERE SR_section = '{$sectionName}' AND acadYear = '{$currentSchoolYear}'");
-    $Classlist = $findSectionInClasslist->fetch_assoc();
-    if (mysqli_num_rows($findSectionInClasslist) > 0) {
-        $updateClasslistName = $mysqli->query("UPDATE classlist SET SR_section = '{$sectionName}' WHERE acadYear = '{$currentSchoolYear}' AND SR_grade = '{$Classlist['SR_grade']}'");
-    }
+        $findSectionInClasslist = $mysqli->query("SELECT * FROM classlist WHERE SR_section = '{$currentName}' AND acadYear = '{$currentSchoolYear}'");
+        if ($findSectionInClasslist) {
+            $Classlist = $findSectionInClasslist->fetch_assoc();
+            $updateClasslistName = $mysqli->query("UPDATE classlist SET SR_section = '{$sectionName}' WHERE acadYear = '{$currentSchoolYear}' AND SR_grade = '{$Classlist['SR_grade']}'");
 
-    $findSectionInWorkSchedule = $mysqli->query("SELECT * FROM workschedule WHERE SR_section = '{$sectionName}' AND acadYear = '{$currentSchoolYear}'");
-    $WorkSchedule = $findSectionInWorkSchedule->fetch_assoc();
-    if (mysqli_num_rows($findSectionInWorkSchedule) > 0) {
-        $updateWorkSchedule = $mysqli->query("UPDATE workschedule SET SR_section = '{$sectionName}' WHERE acadYear = '{$currentSchoolYear}' AND SR_grade = '{$WorkSchedule['SR_grade']}'");
-    }
+            $findSectionInWorkSchedule = $mysqli->query("SELECT * FROM workschedule WHERE SR_section = '{$currentName}' AND acadYear = '{$currentSchoolYear}'");
+            if ($findSectionInWorkSchedule) {
+                $WorkSchedule = $findSectionInWorkSchedule->fetch_assoc();
+                $updateWorkSchedule = $mysqli->query("UPDATE workschedule SET SR_section = '{$sectionName}' WHERE acadYear = '{$currentSchoolYear}' AND SR_grade = '{$WorkSchedule['SR_grade']}'");
 
-    $findSectionInStudentRecords = $mysqli->query("SELECT * FROM studentrecord WHERE SR_section = '{$sectionName}'");
-    $StudentRecord = $findSectionInStudentRecords->fetch_assoc();
-    if (mysqli_num_rows($findSectionInStudentRecords) > 0) {
-        $updateStudentRecords = $mysqli->query("UPDATE studentrecord SET SR_section = '{$sectionName}' WHERE SR_grade = '{$StudentRecord['SR_grade']}'");
-    }
+                $findSectionInStudentRecords = $mysqli->query("SELECT * FROM studentrecord WHERE SR_section = '{$currentName}'");
+                if ($findSectionInStudentRecords) {
+                    $StudentRecord = $findSectionInStudentRecords->fetch_assoc();
+                    $updateStudentRecords = $mysqli->query("UPDATE studentrecord SET SR_section = '{$sectionName}' WHERE SR_grade = '{$StudentRecord['SR_grade']}'");
 
-    $updateReminders = $mysqli->query("UPDATE reminders SET forsection = '{$sectionName}' WHERE acadYear = '{$currentSchoolYear}'");
+                    $updateReminders = $mysqli->query("UPDATE reminders SET forsection = '{$sectionName}' WHERE acadYear = '{$currentSchoolYear}'");
 
-    $findSectionInGrades = $mysqli->query("SELECT * FROM grades WHERE SR_section = '{$sectionName}' AND acadYear = '{$currentSchoolYear}'");
-    $Grades = $findSectionInGrades->fetch_assoc();
-    if (mysqli_num_rows($findSectionInGrades) > 0) {
-        $updateGrades = $mysqli->query("UPDATE grades SET SR_section = '{$sectionName}' WHERE acadYear = '{$currentSchoolYear}' AND SR_gradeLevel = '{$Grades['SR_gradeLevel']}'");
-    }
+                    $findSectionInGrades = $mysqli->query("SELECT * FROM grades WHERE SR_section = '{$currentName}' AND acadYear = '{$currentSchoolYear}'");
+                    if ($findSectionInGrades) {
+                        $Grades = $findSectionInGrades->fetch_assoc();
+                        $updateGrades = $mysqli->query("UPDATE grades SET SR_section = '{$sectionName}' WHERE acadYear = '{$currentSchoolYear}' AND SR_gradeLevel = '{$Grades['SR_gradeLevel']}'");
 
-    $findSectionInBehavior = $mysqli->query("SELECT * FROM behavior WHERE SR_section = '{$sectionName}' AND acadYear = '{$currentSchoolYear}'");
-    $Behavior = $findSectionInBehavior->fetch_assoc();
-    if (mysqli_num_rows($findSectionInBehavior) > 0) {
-        $updateBehavior = $mysqli->query("UPDATE behavior SET SR_section = '{$sectionName}' WHERE acadYear = '{$currentSchoolYear}' AND SR_grade = '{$Behavior['SR_grade']}'");
+                        $findSectionInBehavior = $mysqli->query("SELECT * FROM behavior WHERE SR_section = '{$currentName}' AND acadYear = '{$currentSchoolYear}'");
+                        if ($findSectionInBehavior) {
+                            $Behavior = $findSectionInBehavior->fetch_assoc();
+                            $updateBehavior = $mysqli->query("UPDATE behavior SET SR_section = '{$sectionName}' WHERE acadYear = '{$currentSchoolYear}' AND SR_grade = '{$Behavior['SR_grade']}'");
+                        }
+                    }
+                }
+            }
+        }
     }
 
     showSweetAlert('Successfully updated sectioname.', 'success');
@@ -1303,6 +1329,7 @@ if (isset($_POST['deleteSection']) && !empty($_SESSION['AD_number'])) {
     $checkSectionInClasslist = $mysqli->query("SELECT * FROM classlist WHERE acadYear = '{$currentSchoolYear}' AND SR_section = '{$currentName}'");
     if (mysqli_num_rows($checkSectionInClasslist) == 0) {
         $deleteSectionName = $mysqli->query("DELETE FROM sections WHERE S_name = '{$currentName}' AND acadYear = '{$currentSchoolYear}'");
+        showSweetAlert('Successfully deleted section', 'success');
     }
     $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
     $AdminName = $getAdminName->fetch_assoc();
