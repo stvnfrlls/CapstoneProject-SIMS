@@ -4,46 +4,38 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['F_number'])) {
   header('Location: ../auth/login.php');
 } else {
-}
+  $getClassList = "SELECT * FROM studentrecord 
+                INNER JOIN grades
+                ON studentrecord.SR_number = grades.SR_number
+                WHERE studentrecord.SR_grade = '{$_GET['Grade']}'
+                AND studentrecord.SR_section = '{$_GET['Section']}'
+                AND grades.G_learningArea = '{$_GET['Subject']}'
+                AND grades.acadYear = '{$currentSchoolYear}'";
+  $getQuarter = $mysqli->query("SELECT * FROM quartertable");
+  $arrayQuarter = array();
 
-$getQuarter = $mysqli->query("SELECT * FROM quartertable");
-$arrayQuarter = array();
+  while ($QuarterData = $getQuarter->fetch_assoc()) {
+    $arrayQuarter[] = $QuarterData;
+  }
 
-while ($QuarterData = $getQuarter->fetch_assoc()) {
-  $arrayQuarter[] = $QuarterData;
-}
-
-$getClassList = "SELECT * FROM studentrecord 
-                  INNER JOIN grades
-                  ON studentrecord.SR_number = grades.SR_number
-                  WHERE studentrecord.SR_grade = '{$_GET['Grade']}'
-                  AND studentrecord.SR_section = '{$_GET['Section']}'
-                  AND grades.G_learningArea = '{$_GET['Subject']}'
-                  AND grades.acadYear = '{$currentSchoolYear}'";
-$rungetClassList = $mysqli->query($getClassList);
-$arrayClassList = array();
-
-while ($dataClassList = $rungetClassList->fetch_assoc()) {
-  $arrayClassList[] = $dataClassList;
-}
-
-$FormQuery = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 'FORMS'");
-$FormStatus = $FormQuery->fetch_assoc();
-if ($FormStatus['quarterStatus'] == "enabled") { ?>
-  <script>
-    var inputElements = document.getElementsByTagName("input");
-    for (var i = 1; i < inputElements.length; i++) {
-      inputElements[i].disabled = false;
-    }
-  </script>
-<?php } else { ?>
-  <script>
-    var inputElements = document.getElementsByTagName("input");
-    for (var i = 1; i < inputElements.length; i++) {
-      inputElements[i].disabled = true;
-    }
-  </script>
+  $FormQuery = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 'FORMS'");
+  $FormStatus = $FormQuery->fetch_assoc();
+  if ($FormStatus['quarterStatus'] == "enabled") { ?>
+    <script>
+      var inputElements = document.getElementsByTagName("input");
+      for (var i = 1; i < inputElements.length; i++) {
+        inputElements[i].disabled = false;
+      }
+    </script>
+  <?php } else { ?>
+    <script>
+      var inputElements = document.getElementsByTagName("input");
+      for (var i = 1; i < inputElements.length; i++) {
+        inputElements[i].disabled = true;
+      }
+    </script>
 <?php }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -276,6 +268,12 @@ if ($FormStatus['quarterStatus'] == "enabled") { ?>
                                     <tbody>
                                       <?php
                                       if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject'])) {
+                                        $rungetClassList = $mysqli->query($getClassList);
+                                        $arrayClassList = array();
+
+                                        while ($dataClassList = $rungetClassList->fetch_assoc()) {
+                                          $arrayClassList[] = $dataClassList;
+                                        }
                                         $rowCount = 0;
                                         $getClassListData = $mysqli->query("SELECT SR_number FROM classlist WHERE SR_grade = '{$_GET['Grade']}' AND SR_section = '{$_GET['Section']}' AND acadYear = '{$currentSchoolYear}'");
                                         while ($Classlist = $getClassListData->fetch_assoc()) { ?>

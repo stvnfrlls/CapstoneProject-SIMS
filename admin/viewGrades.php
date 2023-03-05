@@ -223,8 +223,24 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                                             <td class="hatdog" style="text-align: left;">Student Number: <?php echo $studentData['SR_number']; ?></td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="hatdog" style="text-align: left;">Grade and Section: <?php echo $GradeSectionData['S_yearLevel'] . " - " . $GradeSectionData['S_name']; ?></td>
-                                                            <td class="hatdog" style="text-align: left;">Adviser: <?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1) ?></td>
+                                                            <td class="hatdog" style="text-align: left;">
+                                                                <?php
+                                                                if (isset($GradeSectionData['S_yearLevel']) && isset($GradeSectionData['S_name'])) {
+                                                                    echo "Grade and Section: " . $GradeSectionData['S_yearLevel'] . " - " . $GradeSectionData['S_name'];
+                                                                } else {
+                                                                    echo "Grade and Section: ";
+                                                                }
+                                                                ?>
+                                                            </td>
+                                                            <td class="hatdog" style="text-align: left;">
+                                                                <?php
+                                                                if (isset($FacultyData['F_lname'])) {
+                                                                    echo "Adviser: " . $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1);
+                                                                } else {
+                                                                    echo "Adviser: ";
+                                                                }
+                                                                ?>
+                                                            </td>
                                                         </tr>
                                                     </table>
                                                     <div class="">
@@ -399,8 +415,13 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                                                                 <td rowspan="1" class="hatdog"><?php echo $BehaviorData['CV_valueQ4']; ?>
                                                                                 </td>
                                                                             </tr>
-                                                                    <?php $i++;
+                                                                        <?php $i++;
                                                                         }
+                                                                    } else { ?>
+                                                                        <tr>
+                                                                            <td colspan="6">No information about behavior yet for School Year <?php echo $currentSchoolYear ?></td>
+                                                                        </tr>
+                                                                    <?php
                                                                     }
                                                                     ?>
                                                                 </tbody>
