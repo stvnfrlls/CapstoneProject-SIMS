@@ -773,11 +773,10 @@ if (isset($_POST['regFaculty']) && !empty($_SESSION['AD_number'])) {
         $getFacultyID = $mysqli->query("SELECT F_ID FROM faculty ORDER BY F_ID DESC LIMIT 1");
         $FacultyID = $getFacultyID->fetch_assoc();
 
-        if (mysqli_num_rows($getFacultyID) > 0) {
-            $formatted_FacultyID = sprintf("%05d", ($FacultyID["F_ID"] + 1));
-            $F_number = $year . "-" . $formatted_FacultyID . "-F";
+        $formatted_FacultyID = sprintf("%05d", ($FacultyID["F_ID"] + 1));
+        $F_number = $year . "-" . $formatted_FacultyID . "-F";
 
-            $regFaculty = "INSERT INTO faculty(
+        $regFaculty = "INSERT INTO faculty(
                         F_profile_img, F_number, F_status, F_lname, F_fname, F_mname, F_suffix, 
                         F_age, F_birthday, F_gender, F_religion, F_citizenship, 
                         F_address, F_barangay, F_city, F_state, F_postal, F_contactNumber, F_email)
@@ -785,21 +784,21 @@ if (isset($_POST['regFaculty']) && !empty($_SESSION['AD_number'])) {
                         '{$F_profile_img}', '{$F_number}', '{$F_status}', '{$F_lname}', '{$F_fname}', '{$F_mname}', '{$F_suffix}', 
                         '{$F_age}', '{$F_birthday}', '{$F_gender}', '{$F_religion}', '{$F_citizenship}', 
                         '{$F_address}', '{$F_barangay}', '{$F_city}', '{$F_state}', '{$F_postal}', '{$F_contactNumber}', '{$F_email}')";
-            $resultregFaculty = $mysqli->query($regFaculty);
+        $resultregFaculty = $mysqli->query($regFaculty);
 
-            move_uploaded_file($tempname, $folder);
-            unset($_SESSION['fromAddFaculty']);
-            if ($resultregFaculty) {
-                showSweetAlert('Teacher successfully registered.', 'success');
-                $GenPass = generatePassword();
-                $createStudentLoginCredentials = $mysqli->query("INSERT INTO userdetails(SR_email, SR_password, role)
+        move_uploaded_file($tempname, $folder);
+        unset($_SESSION['fromAddFaculty']);
+        if ($resultregFaculty) {
+            showSweetAlert('Teacher successfully registered.', 'success');
+            $GenPass = generatePassword();
+            $createStudentLoginCredentials = $mysqli->query("INSERT INTO userdetails(SR_email, SR_password, role)
                                                              VALUES ('$F_email', '$GenPass', 'faculty')");
-                $Fullname = $F_lname . ", " . $F_fname . " " . $F_mname . " " . $F_suffix;
+            $Fullname = $F_lname . ", " . $F_fname . " " . $F_mname . " " . $F_suffix;
 
-                $mail->addAddress($F_email);
-                $mail->Subject = 'FACULTY REGISTRATION';
+            $mail->addAddress($F_email);
+            $mail->Subject = 'FACULTY REGISTRATION';
 
-                $mail->Body = '<h1>Registration Complete</h1>
+            $mail->Body = '<h1>Registration Complete</h1>
                            <br>
                            <p>Your login credentials is:</p><br>
                            <b>Email: </b>' . $F_email . '<br>
@@ -807,17 +806,16 @@ if (isset($_POST['regFaculty']) && !empty($_SESSION['AD_number'])) {
                            <br>
                            <strong>IT IS RECOMMENDED TO RESET YOUR PASSWORD</strong><br>
                            <a href="siscdsp.online/auth/login.php">Login now</a>';
-                $mail->send();
-            } else {
-                showSweetAlert('Failed to register teacher.', 'error');
-            }
-            $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
-            $AdminName = $getAdminName->fetch_assoc();
-            $AD_action = "REGISTERED TEACHER - " . $F_number;
-            $currentDate = date("Y-m-d");
-            $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
-        VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
+            $mail->send();
+        } else {
+            showSweetAlert('Failed to register teacher.', 'error');
         }
+        $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+        $AdminName = $getAdminName->fetch_assoc();
+        $AD_action = "REGISTERED TEACHER - " . $F_number;
+        $currentDate = date("Y-m-d");
+        $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
+        VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
     } else {
         showSweetAlert('Email already exist.', 'error');
     }
