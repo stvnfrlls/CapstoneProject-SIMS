@@ -176,73 +176,69 @@ if (isset($_POST['updatePassword'])) {
 
 //Student Process
 if (isset($_POST['editStudentProfile'])) {
-    $SR_fname = $_POST['SR_fname'];
-    $SR_mname = $_POST['SR_mname'];
-    $SR_lname = $_POST['SR_lname'];
-    $SR_suffix = $_POST['SR_suffix'];
-    $SR_age = $_POST['SR_age'];
-    $SR_gender = $_POST['SR_gender'];
-    $SR_birthday = $_POST['SR_birthday'];
-    $SR_birthplace = $_POST['SR_birthplace'];
-    $SR_religion = $_POST['SR_religion'];
-    $SR_citizenship = $_POST['SR_citizenship'];
-    $SR_address = $_POST['SR_address'];
-    $SR_barangay = $_POST['SR_barangay'];
-    $SR_city = $_POST['SR_city'];
-    $SR_state = $_POST['SR_state'];
-    $SR_postal = $_POST['SR_postal'];
+    $currentEmail = $_POST['currentEmail'];
     $SR_email = $_POST['SR_email'];
+    $currentPassword = $_POST['currentPassword'];
+    $newPassword = $_POST['newPassword'];
+    $confirmPassword = $_POST['confirmPassword'];
 
-    $updateStudentInfo = $mysqli->query("UPDATE studentrecord 
-                                        SET 
-                                        SR_fname = '{$SR_fname}', 
-                                        SR_mname = '{$SR_mname}', 
-                                        SR_lname = '{$SR_lname}', 
-                                        SR_suffix = '{$SR_suffix}', 
-                                        SR_gender = '{$SR_gender}', 
-                                        SR_age = '{$SR_age}', 
-                                        SR_birthday = '{$SR_birthday}', 
-                                        SR_birthplace = '{$SR_birthplace}', 
-                                        SR_religion = '{$SR_religion}', 
-                                        SR_citizenship = '{$SR_citizenship}', 
-                                        SR_address = '{$SR_address}', 
-                                        SR_barangay = '{$SR_barangay}', 
-                                        SR_city = '{$SR_city}', 
-                                        SR_state = '{$SR_state}', 
-                                        SR_postal = '{$SR_postal}', 
-                                        SR_email = '{$SR_email}' 
-                                        WHERE SR_number = '{$_POST['SR_number']}'");
+    if (isset($_FILES['image']['name'])) {
+        $SR_profile_img = $_FILES['image']['name'];
+        $tempname = $_FILES["image"]["tmp_name"];
+        $folder = "../assets/img/profile/" . $SR_profile_img;
 
-    $G_lname = $_POST['G_lname'];
-    $G_fname = $_POST['G_fname'];
-    $G_mname = $_POST['G_mname'];
-    $G_suffix = $_POST['G_suffix'];
-    $G_address = $_POST['G_address'];
-    $G_barangay = $_POST['G_barangay'];
-    $G_city = $_POST['G_city'];
-    $G_state = $_POST['G_state'];
-    $G_postal = $_POST['G_postal'];
-    $G_email = $_POST['G_email'];
-    $G_relationshipStudent = $_POST['G_relationshipStudent'];
-    $G_telephone = $_POST['G_telephone'];
-    $G_contact = $_POST['G_contact'];
+        $checkUserData = $mysqli->query("SELECT * FROM userdetails WHERE SR_email = '{$currentEmail}'");
+        $checkExisting = $checkUserData->fetch_assoc();
 
-    $updateGuardianInfo = $mysqli->query("UPDATE guardian 
-                                        SET 
-                                        G_lname= '{$G_lname}', 
-                                        G_fname = '{$G_fname}', 
-                                        G_mname = '{$G_mname}', 
-                                        G_suffix = '{$G_suffix}', 
-                                        G_address = '{$G_address}', 
-                                        G_barangay = '{$G_barangay}', 
-                                        G_city = '{$G_city}', 
-                                        G_state = '{$G_state}', 
-                                        G_postal = '{$G_postal}', 
-                                        G_email = '{$G_email}', 
-                                        G_relationshipStudent = '{$G_relationshipStudent}', 
-                                        G_telephone = '{$G_telephone}', 
-                                        G_contact = '{$G_contact}' 
-                                        WHERE G_guardianOfStudent = '{$_POST['SR_number']}'");
+        if ($currentPassword != $checkExisting['SR_password']) {
+            showSweetAlert('Incorrect Password', 'error');
+        } else {
+            if ($newPasssword != $confirmPassword) {
+                showSweetAlert('Password does not match', 'error');
+            } else {
+                $mysqli->query("UPDATE userdetails 
+                            SET 
+                            SR_profile_img = '{$SR_profile_img}',
+                            SR_email = '{$SR_email}',
+                            SR_password = '{$confirmPassword}',
+                            WHERE SR_email = '{$currentEmail}'");
+                $mysqli->query("UPDATE studentrecord 
+                            SET 
+                            SR_profile_img = '{$SR_profile_img}',
+                            SR_email = '{$SR_email}',
+                            WHERE SR_number = '{$_POST['SR_number']}'");
+                move_uploaded_file($tempname, $folder);
+                showSweetAlert('Successfully updated your information', 'success');
+            }
+        }
+    } else {
+        $currentEmail = $_POST['currentEmail'];
+        $SR_email = $_POST['SR_email'];
+        $currentPassword = $_POST['currentPassword'];
+        $newPassword = $_POST['newPassword'];
+        $confirmPassword = $_POST['confirmPassword'];
+
+        $checkUserData = $mysqli->query("SELECT * FROM userdetails WHERE SR_email = '{$currentEmail}'");
+        $checkExisting = $checkUserData->fetch_assoc();
+
+        if ($currentPassword != $checkExisting['SR_password']) {
+            showSweetAlert('Incorrect Password', 'error');
+        }
+        if ($newPassword != $confirmPassword) {
+            showSweetAlert('Password does not match', 'error');
+        } else {
+            $updateUserDetails = $mysqli->query("UPDATE userdetails 
+                                                SET 
+                                                SR_email = '{$SR_email}',
+                                                SR_password = '{$confirmPassword}'
+                                                WHERE userID = '{$checkExisting['userID']}'");
+            $updateStudentRecord = $mysqli->query("UPDATE studentrecord 
+                                                SET 
+                                                SR_email = '{$SR_email}'
+                                                WHERE SR_number = '{$currentEmail}'");
+            showSweetAlert('Successfully updated your information', 'success');
+        }
+    }
 }
 
 //Faculty Process
@@ -772,14 +768,16 @@ if (isset($_POST['regFaculty']) && !empty($_SESSION['AD_number'])) {
     $F_contactNumber = $mysqli->real_escape_string($_POST['F_contactNumber']);
     $F_email = $mysqli->real_escape_string($_POST['F_email']);
 
-    $getFacultyID = $mysqli->query("SELECT F_ID FROM faculty ORDER BY F_ID DESC LIMIT 1");
-    $FacultyID = $getFacultyID->fetch_assoc();
+    $checkEmail = $mysqli->query("SELECT F_email FROM faculty WHERE F_email = '{$F_email}'");
+    if (mysqli_num_rows($checkEmail) == 0) {
+        $getFacultyID = $mysqli->query("SELECT F_ID FROM faculty ORDER BY F_ID DESC LIMIT 1");
+        $FacultyID = $getFacultyID->fetch_assoc();
 
-    if (mysqli_num_rows($getFacultyID) > 0) {
-        $formatted_FacultyID = sprintf("%05d", ($FacultyID["F_ID"] + 1));
-        $F_number = $year . "-" . $formatted_FacultyID . "-F";
+        if (mysqli_num_rows($getFacultyID) > 0) {
+            $formatted_FacultyID = sprintf("%05d", ($FacultyID["F_ID"] + 1));
+            $F_number = $year . "-" . $formatted_FacultyID . "-F";
 
-        $regFaculty = "INSERT INTO faculty(
+            $regFaculty = "INSERT INTO faculty(
                         F_profile_img, F_number, F_status, F_lname, F_fname, F_mname, F_suffix, 
                         F_age, F_birthday, F_gender, F_religion, F_citizenship, 
                         F_address, F_barangay, F_city, F_state, F_postal, F_contactNumber, F_email)
@@ -787,21 +785,21 @@ if (isset($_POST['regFaculty']) && !empty($_SESSION['AD_number'])) {
                         '{$F_profile_img}', '{$F_number}', '{$F_status}', '{$F_lname}', '{$F_fname}', '{$F_mname}', '{$F_suffix}', 
                         '{$F_age}', '{$F_birthday}', '{$F_gender}', '{$F_religion}', '{$F_citizenship}', 
                         '{$F_address}', '{$F_barangay}', '{$F_city}', '{$F_state}', '{$F_postal}', '{$F_contactNumber}', '{$F_email}')";
-        $resultregFaculty = $mysqli->query($regFaculty);
+            $resultregFaculty = $mysqli->query($regFaculty);
 
-        move_uploaded_file($tempname, $folder);
-        unset($_SESSION['fromAddFaculty']);
-        if ($resultregFaculty) {
-            showSweetAlert('Teacher successfully registered.', 'success');
-            $GenPass = generatePassword();
-            $createStudentLoginCredentials = $mysqli->query("INSERT INTO userdetails(SR_email, SR_password, role)
+            move_uploaded_file($tempname, $folder);
+            unset($_SESSION['fromAddFaculty']);
+            if ($resultregFaculty) {
+                showSweetAlert('Teacher successfully registered.', 'success');
+                $GenPass = generatePassword();
+                $createStudentLoginCredentials = $mysqli->query("INSERT INTO userdetails(SR_email, SR_password, role)
                                                              VALUES ('$F_email', '$GenPass', 'faculty')");
-            $Fullname = $F_lname . ", " . $F_fname . " " . $F_mname . " " . $F_suffix;
+                $Fullname = $F_lname . ", " . $F_fname . " " . $F_mname . " " . $F_suffix;
 
-            $mail->addAddress($F_email);
-            $mail->Subject = 'FACULTY REGISTRATION';
+                $mail->addAddress($F_email);
+                $mail->Subject = 'FACULTY REGISTRATION';
 
-            $mail->Body = '<h1>Registration Complete</h1>
+                $mail->Body = '<h1>Registration Complete</h1>
                            <br>
                            <p>Your login credentials is:</p><br>
                            <b>Email: </b>' . $F_email . '<br>
@@ -809,16 +807,17 @@ if (isset($_POST['regFaculty']) && !empty($_SESSION['AD_number'])) {
                            <br>
                            <strong>IT IS RECOMMENDED TO RESET YOUR PASSWORD</strong><br>
                            <a href="siscdsp.online/auth/login.php">Login now</a>';
-            $mail->send();
-        } else {
-            showSweetAlert('Failed to register teacher.', 'error');
-        }
-        $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
-        $AdminName = $getAdminName->fetch_assoc();
-        $AD_action = "REGISTERED TEACHER - " . $F_number;
-        $currentDate = date("Y-m-d");
-        $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
+                $mail->send();
+            } else {
+                showSweetAlert('Failed to register teacher.', 'error');
+            }
+            $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+            $AdminName = $getAdminName->fetch_assoc();
+            $AD_action = "REGISTERED TEACHER - " . $F_number;
+            $currentDate = date("Y-m-d");
+            $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
         VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
+        }
     } else {
         showSweetAlert('Email already exist.', 'error');
     }

@@ -6,17 +6,6 @@ if (!isset($_SESSION['SR_number'])) {
 } else {
   $getstudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$_SESSION['SR_number']}'");
   $studentInfo = $getstudentInfo->fetch_assoc();
-
-  $Student_Fullname = $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix'];
-
-  $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_name = '{$studentInfo['SR_section']}'");
-  $SectionInfo = $getSectionInfo->fetch_assoc();
-
-  $getAdvisorInfo = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$SectionInfo['S_adviser']}'");
-  $AdvisorInfo = $getAdvisorInfo->fetch_assoc();
-
-  $getguardianInfo = $mysqli->query("SELECT * FROM guardian WHERE G_guardianOfStudent = '{$_SESSION['SR_number']}'");
-  $guardianInfo = $getguardianInfo->fetch_assoc();
 }
 ?>
 <!DOCTYPE html>
@@ -45,6 +34,8 @@ if (!isset($_SESSION['SR_number'])) {
   <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
   <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
   <link href="../assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <link href="../assets/css/sweetAlert.css" rel="stylesheet">
 
   <!-- Customized Bootstrap Stylesheet -->
   <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
@@ -119,7 +110,7 @@ if (!isset($_SESSION['SR_number'])) {
                   </div>
                   <div class="col-sm-9">
                     <div class="input-group">
-                      <input type="file" class="form-control file-upload-info" placeholder="Upload Image">
+                      <input type="file" class="form-control file-upload-info" name="image" placeholder="Upload Image">
                     </div>
                   </div>
                 </div>
@@ -129,17 +120,21 @@ if (!isset($_SESSION['SR_number'])) {
                     <p class="mb-0">Email Address</p>
                   </div>
                   <div class="col-sm-9">
-                    <p class="text-muted mb-0"><input type="text" class="form-control" name="SR_email" value="<?php echo $studentInfo['SR_email'] ?>"></p>
+                    <p class="text-muted mb-0">
+                      <input type="hidden" class="form-control" name="currentEmail" value="<?php echo $studentInfo['SR_email'] ?>">
+                      <input type="email" class="form-control" name="SR_email" value="<?php echo $studentInfo['SR_email'] ?>">
+                    </p>
                   </div>
                 </div>
                 <hr>
                 <div class="row">
                   <div class="col-sm-3" style="padding-top:11px;">
                     <p class="mb-0">Enter Current Password</p>
-                    <input type="hidden" class="form-control" name="SR_number" value="<?php echo $studentInfo['SR_number'] ?>">
                   </div>
                   <div class="col-sm-9">
-                    <p class="text-muted mb-0"><input type="password" class="form-control" name="SR_password"></p>
+                    <p class="text-muted mb-0">
+                      <input type="password" class="form-control" name="currentPassword" required>
+                    </p>
                   </div>
                 </div>
                 <hr>
@@ -148,7 +143,9 @@ if (!isset($_SESSION['SR_number'])) {
                     <p class="mb-0">Enter New Password</p>
                   </div>
                   <div class="col-sm-9">
-                    <p class="text-muted mb-0"><input type="password" class="form-control" name="Confirm_password"></p>
+                    <p class="text-muted mb-0">
+                      <input type="password" class="form-control" name="newPassword" required>
+                    </p>
                   </div>
                 </div>
                 <hr>
@@ -157,54 +154,9 @@ if (!isset($_SESSION['SR_number'])) {
                     <p class="mb-0">Confirm New Password</p>
                   </div>
                   <div class="col-sm-9">
-                    <p class="text-muted mb-0"><input type="password" class="form-control" name="Confirm_password"></p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-10" style="margin: auto;">
-            <div class="card mb-4">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-sm-3" style="padding-top:11px;">
-                    <p class="mb-0">Fetcher Name</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <select id="" class="form-select" required>
-                      <option selected></option>
-
-                      <option>No available fetchers yet</option>
-
-                    </select>
-                  </div>
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col-sm-3" style="padding-top:11px;">
-                    <p class="mb-0">Fetcher Name</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <select id="" class="form-select" required>
-                      <option selected></option>
-                      <option>No available fetchers yet</option>
-
-                    </select>
-                  </div>
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col-sm-3" style="padding-top:11px;">
-                    <p class="mb-0">Fetcher Name</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <select id="" class="form-select" required>
-                      <option selected></option>
-                      <option>No available fetchers yet</option>
-
-                    </select>
+                    <p class="text-muted mb-0">
+                      <input type="password" class="form-control" name="confirmPassword" required>
+                    </p>
                   </div>
                 </div>
               </div>
