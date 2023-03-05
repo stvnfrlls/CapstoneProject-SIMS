@@ -31,14 +31,16 @@
 
     <!-- Template Stylesheet -->
     <link href="assets/css/style.css" rel="stylesheet">
-
+    <link href="../assets/css/admin/style.css" rel="stylesheet">
+    <link href="../assets/css/educ/main.css" rel="stylesheet">
+    <link href="../assets/css/dashboard-user.css" rel="stylesheet">
 </head>
 
 
 <body>
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-        <img class="m-3" href="../index.php" src="assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
+        <img class="m-3" href="../index.php" src="assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
     </nav>
     <!-- Navbar End -->
 
@@ -61,19 +63,21 @@
                 }
             </style>
             <div class="navbar-nav m-auto p-4 p-lg-0 ">
-                <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
+                <a href="index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
                 <a href="" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-item nav-link" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Dashboard <i class="fa fa-caret-down"></i></a>
+                    <a href="#" class="nav-item nav-link" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Menu <i class="fa fa-caret-down"></i></a>
                     <div class="dropdown-menu bg-dark border-0 m-0">
-                        <a href="../student/profile.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Profile</a>
-                        <a href="../student/grades.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Grades</a>
-                        <a href="../student/dailyAttendance.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Attendance</a>
-                        <a href="../student/reminders.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Reminders</a>
-                        <a href="../student/announcement.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">School Announcements</a>
+                    <a href="student/profile.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Dashboard</a>
+                        <a href="student/dashboard.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Profile</a>
+                        <a href="student/grades.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Grades</a>
+                        <a href="student/dailyAttendance.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Attendance</a>
+                        <a href="student/reminders.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Reminders</a>
+                        <a href="student/announcement.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">School Announcements</a>
+                        <a href="auth/login.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Login</a>
                     </div>
                 </div>
-                <a href="" class="nav-item nav-link" style="color: white; font-size: 14px;">Contact Us</a>
+                <a href="" class="nav-item nav-link" style="color: white; font-size: 14px;">Faculty Directory</a>
             </div>
         </div>
     </nav>
@@ -82,13 +86,13 @@
     <!-- Carousel Start -->
     <div class="container-fluid p-0 pb-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="owl-carousel header-carousel position-relative">
-            <div class="owl-carousel-item position-relative" data-dot="<img src='assets/img/carousel-1.jpg'>">
+            <div class="owl-carousel-item position-relative" data-dot="<img src='assets/img/banner_1.jpg'>">
                 <img class="img-fluid" src="assets/img/banner_1.jpg" alt="">
                 <div class="owl-carousel-inner">
                     <div class="container">
                         <div class="row justify-content-start">
                             <div class="col-10 col-lg-8">
-                                <h1 class="display-1 text-white animated slideInDown">Colegio De San Pedro, Inc.</h1>
+                                <h1 style="font-size: 70px;" class="display-1 text-white animated slideInDown">Colegio De San Pedro, Inc.</h1>
                                 <p class="fs-5 fw-medium text-white mb-4 pb-3">"Honing Minds, Transforming Lives"</p>
                                 <a href="auth\login.php" class="btn btn-primary py-3 px-5 animated slideInLeft">Login</a>
                             </div>
@@ -96,13 +100,13 @@
                     </div>
                 </div>
             </div>
-            <div class="owl-carousel-item position-relative" data-dot="<img src='assets/img/carousel-2.jpg'>">
-                <img class="img-fluid" src="assets/img/carousel-2.jpg" alt="">
+            <div class="owl-carousel-item position-relative" data-dot="<img src='assets/img/banner_2.jpg'>">
+                <img class="img-fluid" src="assets/img/banner_2.jpg" alt="">
                 <div class="owl-carousel-inner">
                     <div class="container">
                         <div class="row justify-content-start">
                             <div class="col-10 col-lg-8">
-                                <h1 class="display-1 text-white animated slideInDown">Colegio De San Pedro, Inc.</h1>
+                                <h1 style="font-size: 70px;" class="display-1 text-white animated slideInDown">Colegio De San Pedro, Inc.</h1>
                                 <p class="fs-5 fw-medium text-white mb-4 pb-3">"Honing Minds, Transforming Lives"</p>
                                 <a href="auth\login.php" class="btn btn-primary py-3 px-5 animated slideInLeft">Login</a>
                             </div>
@@ -110,13 +114,13 @@
                     </div>
                 </div>
             </div>
-            <div class="owl-carousel-item position-relative" data-dot="<img src='assets/img/carousel-3.jpg'>">
-                <img class="img-fluid" src="assets/img/carousel-3.jpg" alt="">
+            <div class="owl-carousel-item position-relative" data-dot="<img src='assets/img/banner_1.jpg'>">
+                <img class="img-fluid" src="assets/img/banner_1.jpg" alt="">
                 <div class="owl-carousel-inner">
                     <div class="container">
                         <div class="row justify-content-start">
                             <div class="col-10 col-lg-8">
-                                <h1 class="display-1 text-white animated slideInDown">Colegio De San Pedro, Inc.</h1>
+                                <h1 style="font-size: 70px;" class="display-1 text-white animated slideInDown">Colegio De San Pedro, Inc.</h1>
                                 <p class="fs-5 fw-medium text-white mb-4 pb-3">"Honing Minds, Transforming Lives"</p>
                                 <a href="auth\login.php" class="btn btn-primary py-3 px-5 animated slideInLeft">Login</a>
                             </div>
@@ -136,28 +140,28 @@
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="fact-item text-center bg-light h-100 p-5 pt-0">
                         <div class="fact-icon">
-                            <img src="assets/img/icons/icon-2.png" alt="Icon">
+                            <img src="assets/img/student.png" alt="Icon" width="80px" height="80px">
                         </div>
-                        <h3 class="mb-3">Design Approach</h3>
-                        <p class="mb-0">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet.</p>
+                        <h3 class="mb-3">Student Portal</h3>
+                        <p class="mb-0">Our student portal provides students with easy access to their report card and reminders from teachers, as well as important school announcements.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                     <div class="fact-item text-center bg-light h-100 p-5 pt-0">
                         <div class="fact-icon">
-                            <img src="assets/img/icons/icon-3.png" alt="Icon">
+                            <img src="assets/img/route.png" alt="Icon" width="80px" height="80px">
                         </div>
-                        <h3 class="mb-3">Innovative Solutions</h3>
-                        <p class="mb-0">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet.</p>
+                        <h3 class="mb-3">Attendance Tracker</h3>
+                        <p class="mb-0">Keep track of student attendance with ease using our integrated attendance QR Scanner. Parents can receive daily attendance reports via email, giving them real-time insights into their child's attendance record.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
                     <div class="fact-item text-center bg-light h-100 p-5 pt-0">
                         <div class="fact-icon">
-                            <img src="assets/img/icons/icon-4.png" alt="Icon">
+                            <img src="assets/img/access.png" alt="Icon" width="80px" height="80px">
                         </div>
-                        <h3 class="mb-3">Project Management</h3>
-                        <p class="mb-0">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet.</p>
+                        <h3 class="mb-3">Accessible Anytime & Anywhere</h3>
+                        <p class="mb-0">Our platform is cloud-based, meaning you can access it from anywhere with an internet connection. Whether you're at home or on the go, you'll always have access to your school's records.</p>
                     </div>
                 </div>
             </div>
@@ -172,18 +176,18 @@
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
                     <div class="about-img">
-                        <img class="img-fluid" src="assets/img/about-1.jpg" alt="">
-                        <img class="img-fluid" src="assets/img/about-2.jpg" alt="">
+                        <img class="img-fluid" src="assets/img/banner_2.jpg" alt="">
+                        <img class="img-fluid" src="assets/img/banner_1.jpg" alt="">
                     </div>
                 </div>
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
                     <h4 class="section-title">About Us</h4>
-                    <h1 class="display-5 mb-4">A Creative Architecture Agency For Your Dream Home</h1>
-                    <p>Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet</p>
-                    <p class="mb-4">Stet no et lorem dolor et diam, amet duo ut dolore vero eos. No stet est diam rebum amet diam ipsum. Clita clita labore, dolor duo nonumy clita sit at, sed sit sanctus dolor eos.</p>
+                    <h1 class="display-5 mb-4">Colegio De San Pedro</h1>
+                    <p>Colegio de San Pedro,Inc. was established in 1981. It was originally named Pacita Complex Learning Center, a nursery, kindergarten school. In 1986, it was renamed Colegio de San Pedro,Inc. with complete high school. In 1996, science-oriented curriculum and computer education were offered from Grade I - VI to High School and recognized it as Colegio de San Pedro Special Science High School.</p>
+                    <p class="mb-4">CDSP is now fully recognized by the Department of Education (DepEd), Commission on Higher Education (CHED), and Technical Education Skills Development Autority (TESDA), and graduates of our college computer courses are now gainfully employed, both locally and overseas.</p>
                     <div class="d-flex align-items-center mb-5">
                         <div class="d-flex flex-shrink-0 align-items-center justify-content-center border border-5 border-primary" style="width: 120px; height: 120px;">
-                            <h1 class="display-1 mb-n2" data-toggle="counter-up">25</h1>
+                            <h1 class="display-1 mb-n2" data-toggle="counter-up">42</h1>
                         </div>
                         <div class="ps-4">
                             <h3>Years</h3>
@@ -198,123 +202,9 @@
     </div>
     <!-- About End -->
 
-
-    <!-- Team Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-                <h4 class="section-title">Team Members</h4>
-                <h1 class="display-5 mb-4">We Are Creative Architecture Team For Your Dream Home</h1>
-            </div>
-            <div class="row g-0 team-items">
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="team-item position-relative">
-                        <div class="position-relative">
-                            <img class="img-fluid" src="assets/img/team-1.jpg" alt="">
-                            <div class="team-social text-center">
-                                <a class="btn btn-square" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square" href=""><i class="fab fa-instagram"></i></a>
-                            </div>
-                        </div>
-                        <div class="bg-light text-center p-4">
-                            <h3 class="mt-2">Architect Name</h3>
-                            <span class="text-primary">Designation</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="team-item position-relative">
-                        <div class="position-relative">
-                            <img class="img-fluid" src="assets/img/team-2.jpg" alt="">
-                            <div class="team-social text-center">
-                                <a class="btn btn-square" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square" href=""><i class="fab fa-instagram"></i></a>
-                            </div>
-                        </div>
-                        <div class="bg-light text-center p-4">
-                            <h3 class="mt-2">Architect Name</h3>
-                            <span class="text-primary">Designation</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="team-item position-relative">
-                        <div class="position-relative">
-                            <img class="img-fluid" src="assets/img/team-3.jpg" alt="">
-                            <div class="team-social text-center">
-                                <a class="btn btn-square" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square" href=""><i class="fab fa-instagram"></i></a>
-                            </div>
-                        </div>
-                        <div class="bg-light text-center p-4">
-                            <h3 class="mt-2">Architect Name</h3>
-                            <span class="text-primary">Designation</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
-                    <div class="team-item position-relative">
-                        <div class="position-relative">
-                            <img class="img-fluid" src="assets/img/team-4.jpg" alt="">
-                            <div class="team-social text-center">
-                                <a class="btn btn-square" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square" href=""><i class="fab fa-instagram"></i></a>
-                            </div>
-                        </div>
-                        <div class="bg-light text-center p-4">
-                            <h3 class="mt-2">Architect Name</h3>
-                            <span class="text-primary">Designation</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Team End -->
     <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-body footer mt-5 pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Address</h3>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
-                    <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>di ko alam email</p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Quick Links</h3>
-                    <a class="btn btn-link" href="">Home</a>
-                    <a class="btn btn-link" href="">About Us</a>
-                    <a class="btn btn-link" href="">Academics</a>
-                    <a class="btn btn-link" href="">Admission</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Useful Links</h3>
-                    <a class="btn btn-link" href="">DepEd</a>
-                    <a class="btn btn-link" href="">Pag Asa</a>
-                    <a class="btn btn-link" href="">City of San Pedro</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Newsletter</h3>
-                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                    <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="fc-footer form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid copyright">
+    <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
+        <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
             <div class="container">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
