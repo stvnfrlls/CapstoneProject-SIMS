@@ -297,13 +297,8 @@ if (isset($_POST['encodeGrade'])) {
     $forms_Section = $_POST['Section'];
     $forms_Subject = $_POST['Subject'];
 
-    $forms_G_gradesQ1 = $_POST['G_gradesQ1'];
-    $forms_G_gradesQ2 = $_POST['G_gradesQ2'];
-    $forms_G_gradesQ3 = $_POST['G_gradesQ3'];
-    $forms_G_gradesQ4 = $_POST['G_gradesQ4'];
-    $forms_FinalGrade = $_POST['FinalGrade'];
-
     if (isset($_POST['G_gradesQ1'])) {
+        $forms_G_gradesQ1 = $_POST['G_gradesQ1'];
         foreach ($ids as $i => $id) {
             $SR_number = $forms_SR_number[$i];
             $Grade = $forms_Grade[$i];
@@ -312,10 +307,17 @@ if (isset($_POST['encodeGrade'])) {
 
             $G_gradesQ1 = $forms_G_gradesQ1[$i];
 
-            $mysqli->query("INSERT INTO grades(SR_number, acadYear, SR_gradeLevel, SR_section, G_learningArea, G_gradesQ1)
-                            VALUES ('{$SR_number}', '{$currentSchoolYear}', '{$Grade}', '{$Section}', '{$Subject}', '{$G_gradesQ1}')");
+            $checkIfGraded = $mysqli->query("SELECT * FROM grades WHERE SR_number = '{$SR_number}' AND acadYear = '{$currentSchoolYear}' AND G_learningArea = '{$Subject}'");
+            if (mysqli_num_rows($checkIfGraded) > 0) {
+                $mysqli->query("UPDATE grades SET G_gradesQ1 = '{$G_gradesQ1}' WHERE SR_number = '{$SR_number}' AND SR_section = '{$Section}' AND acadYear = '{$currentSchoolYear}' AND G_learningArea = '{$Subject}'");
+            } else {
+                $mysqli->query("INSERT INTO grades(SR_number, acadYear, SR_gradeLevel, SR_section, G_learningArea, G_gradesQ1)
+                                VALUES ('{$SR_number}', '{$currentSchoolYear}', '{$Grade}', '{$Section}', '{$Subject}', '{$G_gradesQ1}')");
+            }
         }
-    } elseif (isset($_POST['G_gradesQ2']) || isset($_POST['G_gradesQ3']) || isset($_POST['G_gradesQ4'])) {
+    }
+    if (isset($_POST['G_gradesQ2'])) {
+        $forms_G_gradesQ2 = $_POST['G_gradesQ2'];
         foreach ($ids as $i => $id) {
             $SR_number = $forms_SR_number[$i];
             $Grade = $forms_Grade[$i];
@@ -323,12 +325,47 @@ if (isset($_POST['encodeGrade'])) {
             $Subject = $forms_Subject[$i];
 
             $G_gradesQ2 = $forms_G_gradesQ2[$i];
-            $G_gradesQ3 = $forms_G_gradesQ3[$i];
-            $G_gradesQ4 = $forms_G_gradesQ4[$i];
-            $FinalGrade = $forms_FinalGrade[$i];
 
-            $mysqli->query("UPDATE grades SET G_gradesQ2 = '{$G_gradesQ1}', G_gradesQ3 = '{$G_gradesQ1}', G_gradesQ4 = '{$G_gradesQ1}', G_finalgrade = '{$FinalGrade}'
-                            WHERE SR_number = '{$SR_number}' AND acadYear = '{$currentSchoolYear}'");
+            $mysqli->query("UPDATE grades SET G_gradesQ2 = '{$G_gradesQ2}' WHERE SR_number = '{$SR_number}' AND SR_section = '{$Section}' AND acadYear = '{$currentSchoolYear}'");
+        }
+    }
+    if (isset($_POST['G_gradesQ3'])) {
+        $forms_G_gradesQ3 = $_POST['G_gradesQ3'];
+        foreach ($ids as $i => $id) {
+            $SR_number = $forms_SR_number[$i];
+            $Grade = $forms_Grade[$i];
+            $Section = $forms_Section[$i];
+            $Subject = $forms_Subject[$i];
+
+            $G_gradesQ3 = $forms_G_gradesQ3[$i];
+
+            $mysqli->query("UPDATE grades SET G_gradesQ3 = '{$G_gradesQ3}' WHERE SR_number = '{$SR_number}' AND SR_section = '{$Section}' AND acadYear = '{$currentSchoolYear}'");
+        }
+    }
+    if (isset($_POST['G_gradesQ4'])) {
+        $forms_G_gradesQ4 = $_POST['G_gradesQ4'];
+        foreach ($ids as $i => $id) {
+            $SR_number = $forms_SR_number[$i];
+            $Grade = $forms_Grade[$i];
+            $Section = $forms_Section[$i];
+            $Subject = $forms_Subject[$i];
+
+            $G_gradesQ4 = $forms_G_gradesQ4[$i];
+
+            $mysqli->query("UPDATE grades SET G_gradesQ4 = '{$G_gradesQ4}' WHERE SR_number = '{$SR_number}' AND SR_section = '{$Section}' AND acadYear = '{$currentSchoolYear}'");
+        }
+    }
+    if (isset($_POST['FinalGrade'])) {
+        $forms_FinalGrade = $_POST['FinalGrade'];
+        foreach ($ids as $i => $id) {
+            $SR_number = $forms_SR_number[$i];
+            $Grade = $forms_Grade[$i];
+            $Section = $forms_Section[$i];
+            $Subject = $forms_Subject[$i];
+
+            $G_finalgrade = $forms_FinalGrade[$i];
+
+            $mysqli->query("UPDATE grades SET G_finalgrade = '{$G_finalgrade}' WHERE SR_number = '{$SR_number}' AND SR_section = '{$Section}' AND acadYear = '{$currentSchoolYear}'");
         }
     }
 }
@@ -1318,7 +1355,7 @@ if (isset($_POST['acadyear']) && !empty($_SESSION['AD_number'])) {
 if (isset($_POST['Open']) && !empty($_SESSION['AD_number'])) {
     $enableForms = $mysqli->query('UPDATE quartertable SET quarterStatus = "enabled" WHERE quarterTag = "FORMS"');
     $enableCurrentQuarter = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "enabled" WHERE quarterStatus = "current"');
-    // header("Refresh:0");
+    header("Refresh:0");
     $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
     $AdminName = $getAdminName->fetch_assoc();
     $AD_action = "OPENED ENCODING OF GRADES";
@@ -1329,7 +1366,7 @@ if (isset($_POST['Open']) && !empty($_SESSION['AD_number'])) {
 if (isset($_POST['Close']) && !empty($_SESSION['AD_number'])) {
     $disableForms = $mysqli->query('UPDATE quartertable SET quarterStatus = "disabled" WHERE quarterTag = "FORMS"');
     $disableCurrentQuarter = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled" WHERE quarterStatus = "current"');
-    // header("Refresh:0");
+    header("Refresh:0");
     $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
     $AdminName = $getAdminName->fetch_assoc();
     $AD_action = "CLOSED ENCODING OF GRADES";
@@ -1340,7 +1377,7 @@ if (isset($_POST['Close']) && !empty($_SESSION['AD_number'])) {
 if (isset($_POST['enableFirst']) && !empty($_SESSION['AD_number'])) {
     $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
     $enableFirst = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "1"');
-    // header("Refresh:0");
+    header("Refresh:0");
     $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
     $AdminName = $getAdminName->fetch_assoc();
     $AD_action = "OPENED ENCODING OF GRADES FOR FIRST QUARTER";
@@ -1351,7 +1388,7 @@ if (isset($_POST['enableFirst']) && !empty($_SESSION['AD_number'])) {
 if (isset($_POST['enableSecond']) && !empty($_SESSION['AD_number'])) {
     $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
     $enableSecond = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "2"');
-    // header("Refresh:0");
+    header("Refresh:0");
     $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
     $AdminName = $getAdminName->fetch_assoc();
     $AD_action = "OPENED ENCODING OF GRADES FOR SECOND QUARTER";
@@ -1362,7 +1399,7 @@ if (isset($_POST['enableSecond']) && !empty($_SESSION['AD_number'])) {
 if (isset($_POST['enableThird']) && !empty($_SESSION['AD_number'])) {
     $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
     $enableThird = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "3"');
-    // header("Refresh:0");
+    header("Refresh:0");
     $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
     $AdminName = $getAdminName->fetch_assoc();
     $AD_action = "OPENED ENCODING OF GRADES FOR THIRD QUARTER";
@@ -1373,7 +1410,7 @@ if (isset($_POST['enableThird']) && !empty($_SESSION['AD_number'])) {
 if (isset($_POST['enableFourth']) && !empty($_SESSION['AD_number'])) {
     $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
     $enableFourth = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "4"');
-    // header("Refresh:0");
+    header("Refresh:0");
     $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
     $AdminName = $getAdminName->fetch_assoc();
     $AD_action = "OPENED ENCODING OF GRADES FOR FOURTH QUARTER";
@@ -1537,3 +1574,65 @@ function showSweetAlert($message, $type)
   EOT;
 }
 //end functions
+
+// admin dashboard chart data
+$CountKinderPresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
+                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
+                            WHERE studentrecord.SR_grade = 'KINDER' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
+$KinderPresentNow = $CountKinderPresentNow->fetch_assoc();
+$OverallCountofKinder = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = 'KINDER' AND acadYear = '$currentSchoolYear'");
+$AllKinder = $OverallCountofKinder->fetch_assoc();
+
+$CountGrade1PresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
+                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
+                            WHERE studentrecord.SR_grade = '1' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
+$Grade1PresentNow = $CountGrade1PresentNow->fetch_assoc();
+$OverallCountofGrade1 = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = '1' AND acadYear = '$currentSchoolYear'");
+$AllGrade1 = $OverallCountofGrade1->fetch_assoc();
+
+$CountGrade2PresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
+                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
+                            WHERE studentrecord.SR_grade = '2' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
+$Grade2PresentNow = $CountGrade2PresentNow->fetch_assoc();
+$OverallCountofGrade2 = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = '2' AND acadYear = '$currentSchoolYear'");
+$AllGrade2 = $OverallCountofGrade2->fetch_assoc();
+
+$CountGrade3PresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
+                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
+                            WHERE studentrecord.SR_grade = '3' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
+$Grade3PresentNow = $CountGrade3PresentNow->fetch_assoc();
+$OverallCountofGrade3 = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = '3' AND acadYear = '$currentSchoolYear'");
+$AllGrade3 = $OverallCountofGrade3->fetch_assoc();
+
+$CountGrade4PresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
+                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
+                            WHERE studentrecord.SR_grade = '4' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
+$Grade4PresentNow = $CountGrade4PresentNow->fetch_assoc();
+$OverallCountofGrade4 = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = '4' AND acadYear = '$currentSchoolYear'");
+$AllGrade4 = $OverallCountofGrade4->fetch_assoc();
+
+$CountGrade5PresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
+                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
+                            WHERE studentrecord.SR_grade = '5' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
+$Grade5PresentNow = $CountGrade5PresentNow->fetch_assoc();
+$OverallCountofGrade5 = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = '5' AND acadYear = '$currentSchoolYear'");
+$AllGrade5 = $OverallCountofGrade5->fetch_assoc();
+
+$CountGrade6PresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
+                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
+                            WHERE studentrecord.SR_grade = '6' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
+$Grade6PresentNow = $CountGrade6PresentNow->fetch_assoc();
+$OverallCountofGrade6 = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = '6' AND acadYear = '$currentSchoolYear'");
+$AllGrade6 = $OverallCountofGrade6->fetch_assoc();
+
+$AttendancePerGrade[] = $KinderPresentNow['COUNT(studentrecord.SR_number)'];
+$AttendancePerGrade[] = $Grade1PresentNow['COUNT(studentrecord.SR_number)'];
+$AttendancePerGrade[] = $Grade2PresentNow['COUNT(studentrecord.SR_number)'];
+$AttendancePerGrade[] = $Grade3PresentNow['COUNT(studentrecord.SR_number)'];
+$AttendancePerGrade[] = $Grade4PresentNow['COUNT(studentrecord.SR_number)'];
+$AttendancePerGrade[] = $Grade5PresentNow['COUNT(studentrecord.SR_number)'];
+$AttendancePerGrade[] = $Grade6PresentNow['COUNT(studentrecord.SR_number)'];
+
+$arrayAttendancePerGrade = json_encode($AttendancePerGrade);
+echo "<script>var arrayAttendance = " . $arrayAttendancePerGrade . ";</script>";
+// end 
