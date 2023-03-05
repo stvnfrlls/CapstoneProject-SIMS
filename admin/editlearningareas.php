@@ -357,6 +357,7 @@ if (empty($_SESSION['AD_number'])) {
                                                                                     AND S_subject = '{$subjects[$rowCount]['subjectName']}'");
                                               $assignedFaculty = $getAssignedFaculty->fetch_assoc();
                                               ?>
+                                              <input type="hidden" name="WS_ID" value="<?php echo $assignedFaculty['WS_ID']; ?>">
                                               <select class="form-select" name="assignedFaculty" aria-label="Default select example" required>
                                                 <?php
                                                 if (mysqli_num_rows($getAssignedFaculty) > 0) {
@@ -403,8 +404,8 @@ if (empty($_SESSION['AD_number'])) {
                                               <?php
                                               } else {
                                               ?>
-                                                <input type="submit" class="btn btn-primary" name="updateSchedule" id="updateSchedule" value="UPD">
-                                                <input type="submit" class="btn btn-primary" name="deleteSchedule" id="deleteSchedule" value="DEL">
+                                                <!-- <input type="submit" class="btn btn-primary" name="updateSchedule" id="updateSchedule" value="UPD"> -->
+                                                <input type="submit" class="btn btn-primary" name="deleteSchedule" id="deleteSchedule" value="DELETE SCHEDULE">
                                               <?php }
                                               ?>
                                             </td>
@@ -464,64 +465,6 @@ if (empty($_SESSION['AD_number'])) {
   <script src="../assets/js/admin/vendor.bundle.base.js"></script>
   <script src="../assets/js/admin/off-canvas.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
-
-  <script>
-    const AssignScheduleForm = document.getElementById('AssignScheduleForm');
-    const setSchedule = document.getElementById('setSchedule');
-    const updateSchedule = document.getElementById('updateSchedule');
-    const deleteSchedule = document.getElementById('deleteSchedule');
-    setSchedule.addEventListener('click', function() {
-      Swal.fire({
-        title: 'Are you sure you want to proceed with this action?',
-        showCancelButton: true,
-        confirmButtonText: 'Yes',
-        cancelButtonText: `No`,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire({
-            title: 'Form submitted!',
-            icon: 'success',
-          }).then(() => {
-            AssignScheduleForm.submit();
-          });
-        }
-      })
-    })
-    updateSchedule.addEventListener('click', function() {
-      Swal.fire({
-        title: 'Are you sure you want to proceed with this action?',
-        showCancelButton: true,
-        confirmButtonText: 'Yes',
-        cancelButtonText: `No`,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire({
-            title: 'Form submitted!',
-            icon: 'success',
-          }).then(() => {
-            AssignScheduleForm.submit();
-          });
-        }
-      })
-    })
-    deleteSchedule.addEventListener('click', function() {
-      Swal.fire({
-        title: 'Are you sure you want to proceed with this action?',
-        showCancelButton: true,
-        confirmButtonText: 'Yes',
-        cancelButtonText: `No`,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire({
-            title: 'Form submitted!',
-            icon: 'success',
-          }).then(() => {
-            AssignScheduleForm.submit();
-          });
-        }
-      })
-    })
-  </script>
 </body>
 
 </html>
