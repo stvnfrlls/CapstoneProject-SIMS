@@ -4,72 +4,6 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 } else {
-    $quarterArray = array();
-    $quarterStatus = $mysqli->query('SELECT quarterTag, quarterStatus FROM quartertable');
-    while ($quarterData = $quarterStatus->fetch_assoc()) {
-        $quarterArray[] = $quarterData;
-    }
-
-    $CountKinderPresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
-                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
-                            WHERE studentrecord.SR_grade = 'KINDER' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
-    $KinderPresentNow = $CountKinderPresentNow->fetch_assoc();
-    $OverallCountofKinder = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = 'KINDER' AND acadYear = '$currentSchoolYear'");
-    $AllKinder = $OverallCountofKinder->fetch_assoc();
-
-    $CountGrade1PresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
-                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
-                            WHERE studentrecord.SR_grade = '1' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
-    $Grade1PresentNow = $CountGrade1PresentNow->fetch_assoc();
-    $OverallCountofGrade1 = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = '1' AND acadYear = '$currentSchoolYear'");
-    $AllGrade1 = $OverallCountofGrade1->fetch_assoc();
-
-    $CountGrade2PresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
-                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
-                            WHERE studentrecord.SR_grade = '2' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
-    $Grade2PresentNow = $CountGrade2PresentNow->fetch_assoc();
-    $OverallCountofGrade2 = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = '2' AND acadYear = '$currentSchoolYear'");
-    $AllGrade2 = $OverallCountofGrade2->fetch_assoc();
-
-    $CountGrade3PresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
-                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
-                            WHERE studentrecord.SR_grade = '3' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
-    $Grade3PresentNow = $CountGrade3PresentNow->fetch_assoc();
-    $OverallCountofGrade3 = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = '3' AND acadYear = '$currentSchoolYear'");
-    $AllGrade3 = $OverallCountofGrade3->fetch_assoc();
-
-    $CountGrade4PresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
-                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
-                            WHERE studentrecord.SR_grade = '4' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
-    $Grade4PresentNow = $CountGrade4PresentNow->fetch_assoc();
-    $OverallCountofGrade4 = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = '4' AND acadYear = '$currentSchoolYear'");
-    $AllGrade4 = $OverallCountofGrade4->fetch_assoc();
-
-    $CountGrade5PresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
-                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
-                            WHERE studentrecord.SR_grade = '5' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
-    $Grade5PresentNow = $CountGrade5PresentNow->fetch_assoc();
-    $OverallCountofGrade5 = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = '5' AND acadYear = '$currentSchoolYear'");
-    $AllGrade5 = $OverallCountofGrade5->fetch_assoc();
-
-    $CountGrade6PresentNow = $mysqli->query("SELECT COUNT(studentrecord.SR_number) FROM studentrecord 
-                            LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number
-                            WHERE studentrecord.SR_grade = '6' AND attendance.A_date = CURRENT_DATE AND acadYear = '$currentSchoolYear'");
-    $Grade6PresentNow = $CountGrade6PresentNow->fetch_assoc();
-    $OverallCountofGrade6 = $mysqli->query("SELECT COUNT(SR_number) FROM classlist WHERE SR_grade = '6' AND acadYear = '$currentSchoolYear'");
-    $AllGrade6 = $OverallCountofGrade6->fetch_assoc();
-
-    $AttendancePerGrade[] = $KinderPresentNow['COUNT(studentrecord.SR_number)'];
-    $AttendancePerGrade[] = $Grade1PresentNow['COUNT(studentrecord.SR_number)'];
-    $AttendancePerGrade[] = $Grade2PresentNow['COUNT(studentrecord.SR_number)'];
-    $AttendancePerGrade[] = $Grade3PresentNow['COUNT(studentrecord.SR_number)'];
-    $AttendancePerGrade[] = $Grade4PresentNow['COUNT(studentrecord.SR_number)'];
-    $AttendancePerGrade[] = $Grade5PresentNow['COUNT(studentrecord.SR_number)'];
-    $AttendancePerGrade[] = $Grade6PresentNow['COUNT(studentrecord.SR_number)'];
-
-    $arrayAttendancePerGrade = json_encode($AttendancePerGrade);
-    echo "<script>var arrayAttendance = " . $arrayAttendancePerGrade . ";</script>";
-
     $getAdminData = $mysqli->query("SELECT * FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
     $AdminData = $getAdminData->fetch_assoc();
 }
@@ -271,43 +205,51 @@ if (!isset($_SESSION['AD_number'])) {
                                         <div class="row">
                                             <div class="col-12 grid-margin">
                                                 <form id="form-id" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
+                                                    <button type="submit" name="acadyear" class="btn btn-primary m-2">Change School Year</button>
+
                                                     <?php
-                                                    echo '<button type="submit" name="acadyear" class="btn btn-primary m-2">Acad Year: ' . $currentSchoolYear . '</button>';
+                                                    $EncodeStatus = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 'FORMS' AND quarterStatus = 'enabled'");
+                                                    if (mysqli_num_rows($EncodeStatus) > 0) { ?>
+                                                        <button type="submit" name="Close" class="btn btn-primary m-2">Close Forms</button>
+                                                    <?php } else { ?>
+                                                        <button type="submit" name="Open" class="btn btn-secondary m-2">Open Forms</button>
+                                                    <?php } ?>
 
-                                                    if ($quarterArray[0]['quarterStatus'] == 'enabled') {
-                                                        echo '<button type="submit" name="Close" class="btn btn-primary m-2">Close Encoding of Grades</button>';
-                                                    } else {
-                                                        echo '<button type="submit" name="Open" class="btn btn-secondary m-2">Open</button>';
-                                                    }
+                                                    <?php
+                                                    $checkQuarter1 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 1 AND quarterStatus = 'current'");
+                                                    if (mysqli_num_rows($checkQuarter1) > 0) { ?>
+                                                        <button type=" submit" class="btn btn-primary m-2" name="disableQ1">1st Quarter (CURRENT)</button>
+                                                    <?php } else { ?>
+                                                        <button type=" submit" class="btn btn-secondary m-2" name="enableFirst">Enable 1st Quarter</button>
+                                                    <?php } ?>
 
-                                                    if ($quarterArray[1]['quarterTag'] == 1 && $quarterArray[1]['quarterStatus'] == 'current') {
-                                                        echo '<button class="" ">1st Quarter (CURRENT)</button>';
-                                                    } else {
-                                                        echo '<button type="submit" name="enableFirst" class="btn btn-secondary m-2">Enable 1st Quarter</button>';
-                                                    }
+                                                    <?php
+                                                    $checkQuarter2 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 2 AND quarterStatus = 'current'");
+                                                    if (mysqli_num_rows($checkQuarter2) > 0) { ?>
+                                                        <button class="btn btn-primary m-2" name="disableQ2">2nd Quarter (CURRENT)</button>
+                                                    <?php } else { ?>
+                                                        <button type="submit" name="enableSecond" class="btn btn-secondary m-2">Enable 2nd Quarter</button>
+                                                    <?php } ?>
 
-                                                    if ($quarterArray[2]['quarterTag'] == 2 && $quarterArray[2]['quarterStatus'] == 'current') {
-                                                        echo '<button class="btn btn-primary m-2">2nd Quarter (CURRENT)</button>';
-                                                    } else {
-                                                        echo '<button type="submit" name="enableSecond" class="btn btn-secondary m-2">Enable 2nd Quarter</button>';
-                                                    }
+                                                    <?php
+                                                    $checkQuarter3 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 3 AND quarterStatus = 'current'");
+                                                    if (mysqli_num_rows($checkQuarter3) > 0) { ?>
+                                                        <button class="btn btn-primary m-2" name="disableQ3">3rd Quarter (CURRENT)</button>
+                                                    <?php } else { ?>
+                                                        <button type="submit" name="enableThird" class="btn btn-secondary m-2">Enable 3rd Quarter</button>
+                                                    <?php } ?>
 
-                                                    if ($quarterArray[3]['quarterTag'] == 3 && $quarterArray[3]['quarterStatus'] == 'current') {
-                                                        echo '<button class="btn btn-primary m-2">3rd Quarter (CURRENT)</button>';
-                                                    } else {
-                                                        echo '<button type="submit" name="enableThird" class="btn btn-secondary m-2">Enable 3rd Quarter</button>';
-                                                    }
-
-                                                    if ($quarterArray[4]['quarterTag'] == 4 && $quarterArray[4]['quarterStatus'] == 'current') {
-                                                        echo '<button class="btn btn-primary m-2">4th Quarter (CURRENT)</button>';
-                                                    } else {
-                                                        echo '<button type="submit" name="enableFourth" class="btn btn-secondary m-2">Enable 4th Quarter</button>';
-                                                    }
-                                                    ?>
+                                                    <?php
+                                                    $checkQuarter4 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 4 AND quarterStatus = 'current'");
+                                                    if (mysqli_num_rows($checkQuarter4) > 0) { ?>
+                                                        <button class="btn btn-primary m-2" name="disableQ4">4th Quarter (CURRENT)</button>
+                                                    <?php } else { ?>
+                                                        <button type="submit" name="enableFourth" class="btn btn-secondary m-2">Enable 4th Quarter</button>
+                                                    <?php } ?>
                                                 </form>
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        <div class=" row">
                                             <style>
                                                 h3 {
                                                     font-family: "Lato", "san serif";
@@ -481,7 +423,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                     </div>
                                                                                 </li>
                                                                             <?php } ?>
-                                                                            
+
                                                                         <?php } else { ?>
                                                                             <li>
                                                                                 <div class="d-flex justify-content-between">
