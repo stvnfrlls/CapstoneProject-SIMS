@@ -136,7 +136,7 @@ if (!isset($_SESSION['F_number'])) {
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-          <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="editfacultyProfile">
+          <form action="<?php $_SERVER["PHP_SELF"] ?>" enctype="multipart/form-data" method="post" id="editfacultyProfile">
             <div class="row">
               <div class="col-sm-12">
                 <div class="home-tab">
@@ -147,7 +147,7 @@ if (!isset($_SESSION['F_number'])) {
                   </div>
                   <div style="text-align: right; margin-top: 15px">
                     <input type="hidden" name="updateProfile" value="submit">
-                    <button type="button" id="updateProfile" class="btn btn-primary me-2">Save</button>
+                    <button type="submit" name="updateProfile" id="updateProfile" class="btn btn-primary me-2">Save</button>
                     <button type="button" class="btn btn-light" onclick="location.href='../faculty/viewProfile.php'">Back</button>
                   </div>
                   <div class="tab-content tab-content-basic">
@@ -164,7 +164,7 @@ if (!isset($_SESSION['F_number'])) {
                                   <div class="form-group">
                                     <div class="input-group col-xs-12">
                                       <div class="input-group">
-                                        <input type="file" class="form-control file-upload-info" placeholder="Upload Image">
+                                        <input type="file" class="form-control file-upload-info" name="image" accept="image/*" placeholder="Upload Image">
                                       </div>
                                     </div>
                                   </div>
@@ -174,19 +174,21 @@ if (!isset($_SESSION['F_number'])) {
                                 <div class="col-md-4">
                                   <label label class="col-sm-12 col-form-label">Email Address</label>
                                   <div class="col-sm-12">
+                                    <input type="hidden" class="form-control" name="F_number" value="<?php echo $faculty['F_number'] ?>" required>
+                                    <input type="hidden" class="form-control" name="currentEmail" value="<?php echo $faculty['F_email'] ?>" required>
                                     <input type="email" class="form-control" name="F_email" value="<?php echo $faculty['F_email'] ?>" required>
                                   </div>
                                 </div>
                                 <div class="col-md-4">
                                   <label label class="col-sm-12 col-form-label">Change Password</label>
                                   <div class="col-sm-12">
-                                    <input type="email" class="form-control" name="F_email" value="" required>
+                                    <input type="password" class="form-control" name="newPassword" required>
                                   </div>
                                 </div>
                                 <div class="col-md-4">
                                   <label label class="col-sm-12 col-form-label">Confirm Password</label>
                                   <div class="col-sm-12">
-                                    <input type="email" class="form-control" name="F_email" value="" required>
+                                    <input type="password" class="form-control" name="confirmPassword" required>
                                   </div>
                                 </div>
                               </div>
@@ -236,7 +238,7 @@ if (!isset($_SESSION['F_number'])) {
   <script src="../assets/js/admin/file-upload.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
-  <script>
+  <!-- <script>
     const editfacultyProfile = document.getElementById('editfacultyProfile');
     const updateProfile = document.getElementById('updateProfile');
     updateProfile.addEventListener('click', function() {
@@ -262,7 +264,7 @@ if (!isset($_SESSION['F_number'])) {
       })
 
     })
-  </script>
+  </script> -->
 </body>
 
 </html>

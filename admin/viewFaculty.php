@@ -209,7 +209,7 @@ if (!isset($_SESSION['AD_number'])) {
                 </div>
                 <div class="tab-content tab-content-basic">
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                    <div style="text-align: right; margin-bottom: 15px;" >
+                    <div style="text-align: right; margin-bottom: 15px;">
                       <a class="btn btn-primary me-2" href="editFaculty.php?F_number=<?php echo $_GET['F_number'] ?>">Edit</a>
                       <a class="btn btn-primary me-2" href="">Mark as Inactive</a>
                       <button class="btn btn-light" onclick="location.href='../admin/faculty.php'">Back</button>
@@ -222,7 +222,14 @@ if (!isset($_SESSION['AD_number'])) {
                               <h4 class="card-title">Profile</h4>
                               <div class="row" style="padding-bottom: 15px;">
                                 <div class="col-12" style="text-align: center; margin-bottom: 20px; margin-top: 10px;">
-                                  <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluidr" style="width: 150px;">
+                                  <?php
+                                  $profile_path = "../assets/img/profile/" . $getFacultyData['F_profile_img'];
+                                  if (empty($getFacultyData['F_profile_img']) || !file_exists($profile_path)) { ?>
+                                    <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                                  <?php } else { ?>
+                                    <img src="../assets/img/profile/<?php echo $getFacultyData['F_profile_img'] ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                                  <?php }
+                                  ?>
                                 </div>
                               </div>
                             </div>

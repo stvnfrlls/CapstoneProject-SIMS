@@ -124,7 +124,8 @@ if (!isset($_SESSION['SR_number'])) {
                             <div class="row">
                               <div class="col-4">
                                 <?php
-                                if (empty($studentInfo['SR_profile_img'])) { ?>
+                                $profile_path = "../assets/img/profile/" . $studentInfo['SR_profile_img'];
+                                if (empty($studentInfo['SR_profile_img']) || !file_exists($profile_path)) { ?>
                                   <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
                                 <?php } else { ?>
                                   <img src="../assets/img/profile/<?php echo $studentInfo['SR_profile_img'] ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">

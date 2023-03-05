@@ -265,7 +265,14 @@ if (!isset($_SESSION['AD_number'])) {
                                                         <form class="form-sample">
                                                             <div class="row" style="padding-bottom: 15px;">
                                                                 <div class="col-md-6 col-sm-6 col-lg-12" style="text-align: center; margin-bottom: 20px; margin-top: 10px;">
-                                                                    <img src="data:image/jpeg/jpg/gif/jfif;base64, <?php echo base64_encode($getRecord['SR_profile_img']); ?>" class="rounded-circle img-fluid" style="width: 150px;">
+                                                                    <?php
+                                                                    $profile_path = "../assets/img/profile/" . $getRecord['SR_profile_img'];
+                                                                    if (empty($getRecord['SR_profile_img']) || !file_exists($profile_path)) { ?>
+                                                                        <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                                                                    <?php } else { ?>
+                                                                        <img src="../assets/img/profile/<?php echo $getRecord['SR_profile_img'] ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                                                                    <?php }
+                                                                    ?>
                                                                 </div>
                                                             </div>
                                                         </form>

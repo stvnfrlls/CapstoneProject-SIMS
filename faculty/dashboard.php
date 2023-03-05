@@ -150,7 +150,8 @@ if (!isset($_SESSION['F_number'])) {
                                                             <div class="card-body">
                                                                 <div class="row">
                                                                     <?php
-                                                                    if (empty($getFacultyData['F_profile_img'])) { ?>
+                                                                    $profile_path = "../assets/img/profile/" . $getFacultyData['F_profile_img'];
+                                                                    if (empty($getFacultyData['F_profile_img']) || !file_exists($profile_path)) { ?>
                                                                         <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
                                                                     <?php } else { ?>
                                                                         <img src="../assets/img/profile/<?php echo $getFacultyData['F_profile_img'] ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
