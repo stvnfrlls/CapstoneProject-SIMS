@@ -366,7 +366,7 @@ if (empty($_SESSION['AD_number'])) {
                                                 ?>
                                                   <option value="<?php echo $assignedFaculty['F_number'] ?>" selected><?php echo $FacultyName['F_lname'] . ", " . $FacultyName['F_fname'] . " " . substr($FacultyName['F_mname'], 0, 1) . ". " . $FacultyName['F_suffix'] . "." ?></option>
                                                 <?php } else { ?>
-                                                  <option selected>No assigned teacher</option>
+                                                  <option value="">No assigned teacher</option>
                                                 <?php }
                                                 ?>
 
@@ -381,18 +381,18 @@ if (empty($_SESSION['AD_number'])) {
                                             <td>
                                               <?php
                                               if (empty($schedule[$rowCount]['WS_start_time'])) {
-                                                echo '<input type="time" class="form-control" name="WS_start_time">';
+                                                echo '<input type="time" class="form-control" name="WS_start_time" required>';
                                               } else {
-                                                echo '<input type="time" class="form-control" name="WS_start_time" value=' . $schedule[$rowCount]['WS_start_time'] . '>';
+                                                echo '<input type="time" class="form-control" name="WS_start_time" value=' . $schedule[$rowCount]['WS_start_time'] . ' required>';
                                               }
                                               ?>
                                             </td>
                                             <td>
                                               <?php
                                               if (empty($schedule[$rowCount]['WS_start_time'])) {
-                                                echo '<input type="time" class="form-control" name="WS_end_time">';
+                                                echo '<input type="time" class="form-control" name="WS_end_time" required>';
                                               } else {
-                                                echo '<input type="time" class="form-control" name="WS_end_time" value=' . timePlusOneMinute($schedule[$rowCount]['WS_end_time']) . '>';
+                                                echo '<input type="time" class="form-control" name="WS_end_time" value=' . timePlusOneMinute($schedule[$rowCount]['WS_end_time']) . ' required>';
                                               }
                                               ?>
                                             </td>
