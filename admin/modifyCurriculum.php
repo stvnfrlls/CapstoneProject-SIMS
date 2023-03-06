@@ -248,9 +248,9 @@ if (!isset($_SESSION['AD_number'])) {
                                                                             <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="addCurrForm">
                                                                                 <tr>
                                                                                     <td>ADD</td>
-                                                                                    <td><input type="text" name="sbjName" class="form-control"></td>
-                                                                                    <td><input type="number" name="minYearLevel" class="form-control"></td>
-                                                                                    <td><input type="number" name="maxYearLevel" class="form-control"></td>
+                                                                                    <td><input type="text" name="sbjName" class="form-control" required></td>
+                                                                                    <td><input type="number" name="minYearLevel" class="form-control" required></td>
+                                                                                    <td><input type="number" name="maxYearLevel" class="form-control" required></td>
                                                                                     <td><input type="submit" style="color: #ffffff;" class="btn btn-primary" value="ADD SUBJECT" name="addCurr" id="addCurr"></td>
                                                                                 </tr>
                                                                             </form>
@@ -261,9 +261,9 @@ if (!isset($_SESSION['AD_number'])) {
                                                                             <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="addCurrForm">
                                                                                 <tr>
                                                                                     <td>ADD</td>
-                                                                                    <td><input type="text" name="sbjName" class="form-control"></td>
-                                                                                    <td><input type="number" name="minYearLevel" class="form-control"></td>
-                                                                                    <td><input type="number" name="maxYearLevel" class="form-control"></td>
+                                                                                    <td><input type="text" name="sbjName" class="form-control" required></td>
+                                                                                    <td><input type="number" name="minYearLevel" class="form-control" required></td>
+                                                                                    <td><input type="number" name="maxYearLevel" class="form-control" required></td>
                                                                                     <td><input type="submit" style="color: #ffffff;" class="btn btn-primary" value="ADD SUBJECT" name="addCurr" id="addCurr"></td>
                                                                                 </tr>
                                                                             </form>
