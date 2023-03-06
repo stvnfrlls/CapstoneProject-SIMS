@@ -470,24 +470,22 @@ if (isset($_POST['addReminders'])) {
                                             IN 
                                             (SELECT SR_number FROM classlist WHERE SR_section = '{$forsection}' AND acadYear = '{$currentSchoolYear}')");
             if (mysqli_num_rows($sendtoGuardianData) > 0 && mysqli_num_rows($sendtoStudentData) > 0) {
-                while ($sendtoGuardian = $sendtoGuardianData->fetch_assoc()) {
-                    $mail->addAddress($sendtoGuardian['G_email']);
-                    $mail->Subject = $subject;
-
-                    $mail->Body = '<h1>Reminder</h1><br>
-                               <p>' . $MSG . '</p><br>';
-                    $mail->send();
+                $emails = array();
+                while ($StudentData = $sendtoStudentData->fetch_assoc()) {
+                    $emails[] = $StudentData['SR_email'];
                 }
-                while ($sendtoStudent = $sendtoStudentData->fetch_assoc()) {
-                    $mail->addAddress($sendtoStudent['SR_email']);
-                    $mail->Subject = $subject;
-
-                    $mail->Body = '<h1>Reminder</h1><br>
-                               <p>' . $MSG . '</p><br>';
-                    $mail->send();
+                while ($GuardianData = $sendtoGuardianData->fetch_assoc()) {
+                    $emails[] = $GuardianData['G_email'];
                 }
+                foreach ($emails as $email) {
+                    $mail->addAddress($email);
+                }
+                $mail->Subject = $subject;
+                $mail->Body = '<h1>Reminder</h1><br>
+                            <p>' . $MSG . '</p><br>';
+                $mail->send();
             } else {
-                showSweetAlert('No receiver.', 'error');
+                showSweetAlert('No receiver', 'error');
             }
         }
     } else {
@@ -1293,24 +1291,22 @@ if (isset($_POST['postAnnouncement']) && !empty($_SESSION['AD_number'])) {
                                         IN 
                                         (SELECT SR_number FROM classlist WHERE acadYear = '{$currentSchoolYear}')");
         if (mysqli_num_rows($sendtoGuardianData) > 0 && mysqli_num_rows($sendtoStudentData) > 0) {
-            while ($sendtoGuardian = $sendtoGuardianData->fetch_assoc()) {
-                $mail->addAddress($sendtoGuardian['G_email']);
-                $mail->Subject = $subject;
-
-                $mail->Body = '<h1>School Annoucement</h1><br>
+            $emails = array();
+            while ($StudentData = $sendtoStudentData->fetch_assoc()) {
+                $emails[] = $StudentData['SR_email'];
+            }
+            while ($GuardianData = $sendtoGuardianData->fetch_assoc()) {
+                $emails[] = $GuardianData['G_email'];
+            }
+            foreach ($emails as $email) {
+                $mail->addAddress($email);
+            }
+            $mail->Subject = $subject;
+            $mail->Body = '<h1>School Annoucement</h1><br>
                                <p>' . $message . '</p><br>';
-                $mail->send();
-            }
-            while ($sendtoStudent = $sendtoStudentData->fetch_assoc()) {
-                $mail->addAddress($sendtoStudent['SR_email']);
-                $mail->Subject = $subject;
-
-                $mail->Body = '<h1>School Annoucement</h1><br>
-                                <p>' . $message . '</p><br>';
-                $mail->send();
-            }
+            $mail->send();
         } else {
-            showSweetAlert('Announcement posted but not sent to everyone.', 'info');
+            showSweetAlert('No receiver', 'error');
         }
         $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
         $AdminName = $getAdminName->fetch_assoc();
