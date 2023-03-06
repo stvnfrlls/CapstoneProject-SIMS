@@ -4,20 +4,6 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['F_number'])) {
   header('Location: ../auth/login.php');
 } else {
-  $getClassList = "SELECT * FROM studentrecord 
-                INNER JOIN grades
-                ON studentrecord.SR_number = grades.SR_number
-                WHERE studentrecord.SR_grade = '{$_GET['Grade']}'
-                AND studentrecord.SR_section = '{$_GET['Section']}'
-                AND grades.G_learningArea = '{$_GET['Subject']}'
-                AND grades.acadYear = '{$currentSchoolYear}'";
-  $getQuarter = $mysqli->query("SELECT * FROM quartertable");
-  $arrayQuarter = array();
-
-  while ($QuarterData = $getQuarter->fetch_assoc()) {
-    $arrayQuarter[] = $QuarterData;
-  }
-
   $FormQuery = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 'FORMS'");
   $FormStatus = $FormQuery->fetch_assoc();
   if ($FormStatus['quarterStatus'] == "enabled") { ?>
@@ -268,6 +254,19 @@ if (!isset($_SESSION['F_number'])) {
                                     <tbody>
                                       <?php
                                       if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject'])) {
+                                        $getClassList = "SELECT * FROM studentrecord 
+                                                        INNER JOIN grades
+                                                        ON studentrecord.SR_number = grades.SR_number
+                                                        WHERE studentrecord.SR_grade = '{$_GET['Grade']}'
+                                                        AND studentrecord.SR_section = '{$_GET['Section']}'
+                                                        AND grades.G_learningArea = '{$_GET['Subject']}'
+                                                        AND grades.acadYear = '{$currentSchoolYear}'";
+                                        $getQuarter = $mysqli->query("SELECT * FROM quartertable");
+                                        $arrayQuarter = array();
+
+                                        while ($QuarterData = $getQuarter->fetch_assoc()) {
+                                          $arrayQuarter[] = $QuarterData;
+                                        }
                                         $rungetClassList = $mysqli->query($getClassList);
                                         $arrayClassList = array();
 
@@ -369,7 +368,7 @@ if (!isset($_SESSION['F_number'])) {
                                         ?>
                                       <?php } else { ?>
                                         <tr>
-                                          <td class="hatdog" colspan="7">Select a grade section first first</td>
+                                          <td class="hatdog" colspan="7">Select a grade section firs</td>
                                         </tr>
                                       <?php }
                                       ?>
@@ -428,7 +427,7 @@ if (!isset($_SESSION['F_number'])) {
     <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
-  <button id="hatdog"> click hatdog </button>
+
   <!-- Footer Start -->
   <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
     <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
