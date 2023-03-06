@@ -494,16 +494,16 @@ if (!isset($_SESSION['SR_number'])) {
                                                             <tbody>
                                                                 <tr>
                                                                     <td class="hatdog">No. of School Days</td>
-                                                                    <td class="hatdog">22</td>
-                                                                    <td class="hatdog">26</td>
-                                                                    <td class="hatdog">23</td>
-                                                                    <td class="hatdog">16</td>
-                                                                    <td class="hatdog">15</td>
-                                                                    <td class="hatdog">22</td>
-                                                                    <td class="hatdog">27</td>
-                                                                    <td class="hatdog">22</td>
-                                                                    <td class="hatdog">24</td>
-                                                                    <td class="hatdog">26</td>
+                                                                    <td class="hatdog"><?php echo countWeekdays(9, date('Y')) ?></td>
+                                                                    <td class="hatdog"><?php echo countWeekdays(10, date('Y')) ?></td>
+                                                                    <td class="hatdog"><?php echo countWeekdays(11, date('Y')) ?></td>
+                                                                    <td class="hatdog"><?php echo countWeekdays(12, date('Y')) ?></td>
+                                                                    <td class="hatdog"><?php echo countWeekdays(1, date('Y')) ?></td>
+                                                                    <td class="hatdog"><?php echo countWeekdays(2, date('Y')) ?></td>
+                                                                    <td class="hatdog"><?php echo countWeekdays(3, date('Y')) ?></td>
+                                                                    <td class="hatdog"><?php echo countWeekdays(4, date('Y')) ?></td>
+                                                                    <td class="hatdog"><?php echo countWeekdays(5, date('Y')) ?></td>
+                                                                    <td class="hatdog"><?php echo countWeekdays(6, date('Y')) ?></td>
                                                                     <td class="hatdog">223</td>
                                                                 </tr>
                                                                 <tr>

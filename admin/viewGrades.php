@@ -303,12 +303,27 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                                                                 <td class="hatdog">Passed</td>
                                                                             </tr>
                                                                         <?php }
-                                                                    } else { ?>
-                                                                        <tr>
-                                                                            <td colspan="10">No Grades Encoded yet for School Year <?php echo $currentSchoolYear ?></td>
-                                                                        </tr>
+                                                                    } else {
+                                                                        if ($GradeSectionData['S_yearLevel'] == "KINDER") {
+                                                                            $yearLevel = 0;
+                                                                        } else {
+                                                                            $yearLevel = $GradeSectionData['S_yearLevel'];
+                                                                        }
+                                                                        $getLearningAreas = $mysqli->query("SELECT * FROM subjectperyear WHERE minYearLevel <= '{$yearLevel}' AND maxYearLevel >= '{$yearLevel}'");
+                                                                        while ($LearningAreas = $getLearningAreas->fetch_assoc()) { ?>
+                                                                            <tr>
+                                                                                <td class="hatdog"><?php echo $LearningAreas['subjectName'] ?></td>
+                                                                                <td class="hatdog"></td>
+                                                                                <td class="hatdog"></td>
+                                                                                <td class="hatdog"></td>
+                                                                                <td class="hatdog"></td>
+                                                                                <td class="hatdog"></td>
+                                                                                <td class="hatdog"></td>
+                                                                            </tr>
+                                                                        <?php
+                                                                        }
+                                                                        ?>
                                                                     <?php }
-
                                                                     ?>
                                                                 </tbody>
                                                             </table>
@@ -417,10 +432,27 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                                                             </tr>
                                                                         <?php $i++;
                                                                         }
-                                                                    } else { ?>
-                                                                        <tr>
-                                                                            <td colspan="6">No information about behavior yet for School Year <?php echo $currentSchoolYear ?></td>
-                                                                        </tr>
+                                                                    } else {
+                                                                        $getBehaviorLabels = $mysqli->query("SELECT * FROM behavior_category");
+                                                                        $i = 0;
+                                                                        while ($BehaviorLabel = $getBehaviorLabels->fetch_assoc()) { ?>
+                                                                            <tr>
+                                                                                <?php
+                                                                                if ($i % 2 == 0) { ?>
+                                                                                    <td rowspan="2" class="hatdog">
+                                                                                        <?php echo preg_replace('/[0-9]/', '', $BehaviorLabel['core_value_area']); ?>
+                                                                                    </td>
+                                                                                <?php } ?>
+                                                                                <td class="hatdog"><?php echo $BehaviorLabel['core_value_subheading'] ?></td>
+                                                                                <td class="hatdog"></td>
+                                                                                <td class="hatdog"></td>
+                                                                                <td class="hatdog"></td>
+                                                                                <td class="hatdog"></td>
+                                                                            </tr>
+                                                                        <?php
+                                                                            $i++;
+                                                                        }
+                                                                        ?>
                                                                     <?php
                                                                     }
                                                                     ?>
