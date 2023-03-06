@@ -152,7 +152,7 @@ if (!isset($_SESSION['SR_number'])) {
                 while ($Schedule = $getSchedule->fetch_assoc()) { ?>
                   <p class="mb-1" style="font-size: .90rem;"><?php echo $Schedule['S_subject'] ?></p>
                   <div class="progress rounded" style="height: 25px;">
-                    <p style="font-size: .77rem; margin: 5px 0px 0px 7px">MONDAY-FRIDAY (<?php echo $Schedule['WS_start_time'] . " - " . $Schedule['WS_end_time'] ?>)</p>
+                    <p style="font-size: .77rem; margin: 5px 0px 0px 7px">MONDAY-FRIDAY (<?php echo date('H:i A', strtotime($Schedule['WS_start_time']))  . " - " . date('H:i A', strtotime(timePlusOneMinute($Schedule['WS_end_time']))) ?>)</p>
                   </div>
                 <?php }
               } else { ?>
@@ -168,27 +168,26 @@ if (!isset($_SESSION['SR_number'])) {
               <p class="mb-4" style="text-align: center; color:#c02628;">Fetchers</p>
               <div class="accordion-left">
                 <dl class="accordion">
-                  <dt>
-                    <a href="" style="font-size: 15px"> > Ricardo Dalisay</a>
-                  </dt>
-                  <dd>
-                    <h7>Contact Number: 0987 930 4832</h7>
-                    <p>Email Address: juandelacruz@gmail.com</p>
-                  </dd>
-                  <dt>
-                    <a href="" style="font-size: 15px"> > Juan Dela Cruz</a>
-                  </dt>
-                  <dd>
-                    <h7>Contact Number: 0987 930 4832</h7>
-                    <p>Email Address: juandelacruz@gmail.com</p>
-                  </dd>
-                  <dt>
-                    <a href="" style="font-size: 15px"> > Lolong</a>
-                  </dt>
-                  <dd>
-                    <h7>Contact Number: 0987 930 4832</h7>
-                    <p>Email Address: juandelacruz@gmail.com</p>
-                  </dd>
+                  <?php
+                  $getLinkedFetcher = $mysqli->query("SELECT * FROM fetcher_list WHERE FTH_linkedTo = '{$_SESSION['SR_number']}'");
+                  if (mysqli_num_rows($getLinkedFetcher) > 0) {
+                    while ($LinkedFetcher = $getLinkedFetcher->fetch_assoc()) { ?>
+                      <dt>
+                        <?php
+                        $getFetcherData = $mysqli->query("SELECT * FROM fetcher_data WHERE FTH_number = '{$LinkedFetcher['FTH_number']}'");
+                        $FetcherData = $getFetcherData->fetch_assoc();
+                        ?>
+                        <a href="" style="font-size: 15px"> > <?php echo $FetcherData['FTH_name'] ?></a>
+                      </dt>
+                      <dd>
+                        <h7>Contact Number: <?php echo $FetcherData['FTH_contactNo'] ?></h7>
+                        <p>Email Address: <?php echo $FetcherData['FTH_email'] ?></p>
+                      </dd>
+                    <?php }
+                  } else { ?>
+                    <p class="text-center">NO FETCHER ASSIGNED</p>
+                  <?php }
+                  ?>
                 </dl>
               </div>
             </div>
