@@ -190,11 +190,13 @@ if (!isset($_SESSION['F_number'])) {
                                                                                             $getGradeStatus = $mysqli->query("SELECT round(AVG(G_finalgrade)) AS finalgrade FROM grades where SR_number = '{$data['SR_number']}'");
                                                                                             $gradeStatus = $getGradeStatus->fetch_assoc();
 
-                                                                                            if ($gradeStatus >= 75) { ?>
-                                                                                                <td class="tablestyle">Passed</td>
-                                                                                            <?php } else { ?>
-                                                                                                <td class="tablestyle">Fail</td>
-                                                                                            <?php }
+                                                                                            if ($gradeStatus['finalgrade'] == 0 || $gradeStatus['finalgrade'] == null) {
+                                                                                                echo '<td class="tablestyle">No Grades yet</td>';
+                                                                                            } elseif ($gradeStatus['finalgrade'] >= 75) {
+                                                                                                echo '<td class="tablestyle">Passed</td>';
+                                                                                            } else {
+                                                                                                echo '<td class="tablestyle">Fail</td>';
+                                                                                            }
                                                                                             ?>
 
                                                                                             <td class="tablestyle">
