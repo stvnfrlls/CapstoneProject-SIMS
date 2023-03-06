@@ -268,19 +268,19 @@ if (!isset($_SESSION['AD_number'])) {
                                 </div>
                               </div>
                               <div class="row" style="padding-bottom: 15px;">
-                                <div class="col-md-4">
-                                  <label class="col-sm-12 col-form-label">Age <span style="color: red;">*</span></label>
-                                  <div class="col-sm-12">
-                                    <input type="number" class="form-control" name="F_age" id="F_age" required readonly>
-                                  </div>
-                                </div>
-                                <div class="col-md-4">
+                                <div class="col-md-2">
                                   <label class="col-sm-12 col-form-label">Birthdate <span style="color: red;">*</span></label>
                                   <div class="col-sm-12">
                                     <input type="date" class="form-control" name="F_birthday" id="F_birthday" required onchange="calculateAge()">
                                   </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-1">
+                                  <label class="col-sm-12 col-form-label">Age <span style="color: red;">*</span></label>
+                                  <div class="col-sm-12">
+                                    <input type="number" class="form-control" name="F_age" id="F_age" required readonly>
+                                  </div>
+                                </div>
+                                <div class="col-md-2">
                                   <label class="col-sm-12 col-form-label">Gender <span style="color: red;">*</span></label>
                                   <div class="col-sm-12">
                                     <select class="form-select" name="F_gender" required>
@@ -290,15 +290,13 @@ if (!isset($_SESSION['AD_number'])) {
                                     </select>
                                   </div>
                                 </div>
-                              </div>
-                              <div class="row" style="padding-bottom: 15px;">
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Religion <span style="color: red;">*</span></label>
                                   <div class="col-sm-12">
                                     <input type="text" class="form-control" name="F_religion" required>
                                   </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                   <label class="col-sm-12 col-form-label">Citizenship <span style="color: red;">*</span></label>
                                   <div class="col-sm-12">
                                     <input type="text" class="form-control" name="F_citizenship" required>
