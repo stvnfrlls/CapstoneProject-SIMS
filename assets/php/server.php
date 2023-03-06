@@ -488,14 +488,21 @@ if (isset($_POST['addReminders'])) {
         }
     }
 }
-if (isset($_POST['editReminders'])) {
-    $ANC_ID = $mysqli->real_escape_string($_POST['ANC_ID']);
-    $header = $mysqli->real_escape_string($_POST['header']);
+if (isset($_POST['updateReminder'])) {
+    $remindersID = $mysqli->real_escape_string($_GET['ID']);
+    $author = $mysqli->real_escape_string($_POST['author']);
+    $date = $_POST['date'];
+    $forsection = $mysqli->real_escape_string($_POST['forsection']);
+    $subject = $mysqli->real_escape_string($_POST['subject']);
     $MSG = $mysqli->real_escape_string($_POST['MSG']);
 
-    $updateReminder = "UPDATE announcement 
-                       SET header = '$header', body = '$MSG',
-                       WHERE ANC_ID = '$ANC_ID'";
+    $updateReminder = "UPDATE reminders 
+                       SET
+                       subject = '{$subject}', 
+                       forsection = '{$forsection}', 
+                       msg = '{$MSG}', 
+                       deadline = '{$date}'
+                       WHERE reminderID = '{$remindersID}'";
     $resultupdateReminder = $mysqli->query($updateReminder);
 
     if ($resultupdateReminder) {
@@ -507,7 +514,7 @@ if (isset($_POST['editReminders'])) {
                         icon: 'success',
                         confirmButtonText: 'OK',
                     }).then(() => {
-                        window.location.href = '../faculty/reminders';
+                        window.location.href = '../faculty/reminders.php';
                     });
                 });
             </script>
