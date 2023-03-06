@@ -263,7 +263,7 @@ if (!isset($_SESSION['AD_number'])) {
                                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                                         <div class="row">
                                             <div class="col-lg-3 col-sm-12 grid-margin">
-                                                <div class="card">
+                                                <div class="card" style="margin-bottom: 20px;">
                                                     <div class="card-body">
                                                         <h4 class="card-title">Profile</h4>
                                                         <form class="form-sample">
@@ -279,46 +279,41 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     ?>
                                                                 </div>
                                                             </div>
-                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-12 grid-margin">
-                                                        <div class="card" style="height: 280px;" text-align: center;>
-                                                            <div class="card-body">
-                                                                <h4 class="card-title">QR Code</h4>
-                                                                <form class="form-sample">
-                                                                    <div class="row" style="padding-bottom: 15px;">
-                                                                        <div class="col-md-6 col-sm-6 col-lg-12" style="text-align: center; margin-top: 10px;">
-                                                                            <img src="<?php echo "../assets/temp/" . $getRecord['SR_number'] . ".png"; ?>" alt="avatar" class="img-fluid" style="width: 180px;">
-                                                                        </div>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-12 grid-margin">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <h4 class="card-title">Class Information</h4>
+                                                <div class="col-12 grid-margin">
+                                                    <div class="card" style="height: 280px;" text-align: center;>
+                                                        <div class="card-body">
+                                                            <h4 class="card-title">QR Code</h4>
+                                                            <form class="form-sample">
                                                                 <div class="row" style="padding-bottom: 15px;">
-                                                                    <div class="col-12">
-                                                                        <label class="col-sm-12 col-form-label">Grade Level</label>
-                                                                        <div class="col-sm-12">
-                                                                            <select class="form-select form-control" required disabled>
-                                                                                <option selected><?php echo $getRecord['SR_grade'] ?></option>
-                                                                            </select>
-                                                                        </div>
+                                                                    <div class="col-md-6 col-sm-6 col-lg-12" style="text-align: center; margin-top: 10px;">
+                                                                        <img src="<?php echo "../assets/temp/" . $getRecord['SR_number'] . ".png"; ?>" alt="avatar" class="img-fluid" style="width: 180px;">
                                                                     </div>
                                                                 </div>
-                                                                <div class="row" style="padding-bottom: 15px;">
-                                                                    <div class="col-12">
-                                                                        <label label class="col-sm-12 col-form-label">Section</label>
-                                                                        <div class="col-sm-12">
-                                                                            <input type="text" class="form-control" value="<?php echo $getRecord['SR_section'] ?>" readonly>
-                                                                        </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 grid-margin">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <h4 class="card-title">Class Information</h4>
+                                                            <div class="row" style="padding-bottom: 15px;">
+                                                                <div class="col-12">
+                                                                    <label class="col-sm-12 col-form-label">Grade Level</label>
+                                                                    <div class="col-sm-12">
+                                                                        <select class="form-select form-control" required disabled>
+                                                                            <option selected><?php echo $getRecord['SR_grade'] ?></option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" style="padding-bottom: 15px;">
+                                                                <div class="col-12">
+                                                                    <label label class="col-sm-12 col-form-label">Section</label>
+                                                                    <div class="col-sm-12">
+                                                                        <input type="text" class="form-control" value="<?php echo $getRecord['SR_section'] ?>" readonly>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -546,9 +541,10 @@ if (!isset($_SESSION['AD_number'])) {
                     </div>
                 </div>
             </div>
-            <!-- content-wrapper ends -->
         </div>
-        <!-- main-panel ends -->
+        <!-- content-wrapper ends -->
+    </div>
+    <!-- main-panel ends -->
     </div>
     <!-- page-body-wrapper ends -->
     </div>
