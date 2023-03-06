@@ -472,7 +472,7 @@ if (isset($_POST['addReminders'])) {
                 $mail->Subject = $subject;
 
                 $mail->Body = '<h1>Reminder</h1><br>
-                               <p>' . $message . '</p><br>';
+                               <p>' . $MSG . '</p><br>';
                 $mail->send();
             }
             while ($sendtoStudent = $sendtoStudentData->fetch_assoc()) {
@@ -480,7 +480,7 @@ if (isset($_POST['addReminders'])) {
                 $mail->Subject = $subject;
 
                 $mail->Body = '<h1>Reminder</h1><br>
-                               <p>' . $message . '</p><br>';
+                               <p>' . $MSG . '</p><br>';
                 $mail->send();
             }
         } else {
