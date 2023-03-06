@@ -117,7 +117,7 @@ if (!isset($_SESSION['SR_number'])) {
                                                     <a class="posts-title" href="viewannouncement.php?ID=<?php echo $announcement['ANC_ID'] ?>">
                                                         <h3><?php echo $announcement['header'] ?></h3>
                                                     </a>
-                                                    <p class="excert">
+                                                    <p class="excert text-truncate">
                                                         <?php
                                                         if (empty($announcement['msg'])) {
                                                             echo "No Description";
