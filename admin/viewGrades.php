@@ -226,8 +226,24 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                                             <td class="hatdog" style="text-align: left;">Student Number: <?php echo $studentData['SR_number']; ?></td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="hatdog" style="text-align: left;">Grade and Section: <?php echo $GradeSectionData['S_yearLevel'] . " - " . $GradeSectionData['S_name']; ?></td>
-                                                            <td class="hatdog" style="text-align: left;">Adviser: <?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1) ?></td>
+                                                            <td class="hatdog" style="text-align: left;">
+                                                                <?php
+                                                                if (isset($GradeSectionData['S_yearLevel']) && isset($GradeSectionData['S_name'])) {
+                                                                    echo "Grade and Section: " . $GradeSectionData['S_yearLevel'] . " - " . $GradeSectionData['S_name'];
+                                                                } else {
+                                                                    echo "Grade and Section: ";
+                                                                }
+                                                                ?>
+                                                            </td>
+                                                            <td class="hatdog" style="text-align: left;">
+                                                                <?php
+                                                                if (isset($FacultyData['F_lname'])) {
+                                                                    echo "Adviser: " . $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1);
+                                                                } else {
+                                                                    echo "Adviser: ";
+                                                                }
+                                                                ?>
+                                                            </td>
                                                         </tr>
                                                     </table>
                                                     <div class="">
@@ -290,12 +306,27 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                                                                 <td class="hatdog">Passed</td>
                                                                             </tr>
                                                                         <?php }
-                                                                    } else { ?>
-                                                                        <tr>
-                                                                            <td colspan="10">No Grades Encoded yet for School Year <?php echo $currentSchoolYear ?></td>
-                                                                        </tr>
+                                                                    } else {
+                                                                        if ($GradeSectionData['S_yearLevel'] == "KINDER") {
+                                                                            $yearLevel = 0;
+                                                                        } else {
+                                                                            $yearLevel = $GradeSectionData['S_yearLevel'];
+                                                                        }
+                                                                        $getLearningAreas = $mysqli->query("SELECT * FROM subjectperyear WHERE minYearLevel <= '{$yearLevel}' AND maxYearLevel >= '{$yearLevel}'");
+                                                                        while ($LearningAreas = $getLearningAreas->fetch_assoc()) { ?>
+                                                                            <tr>
+                                                                                <td class="hatdog"><?php echo $LearningAreas['subjectName'] ?></td>
+                                                                                <td class="hatdog"></td>
+                                                                                <td class="hatdog"></td>
+                                                                                <td class="hatdog"></td>
+                                                                                <td class="hatdog"></td>
+                                                                                <td class="hatdog"></td>
+                                                                                <td class="hatdog"></td>
+                                                                            </tr>
+                                                                        <?php
+                                                                        }
+                                                                        ?>
                                                                     <?php }
-
                                                                     ?>
                                                                 </tbody>
                                                             </table>
@@ -402,8 +433,30 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                                                                 <td rowspan="1" class="hatdog"><?php echo $BehaviorData['CV_valueQ4']; ?>
                                                                                 </td>
                                                                             </tr>
-                                                                    <?php $i++;
+                                                                        <?php $i++;
                                                                         }
+                                                                    } else {
+                                                                        $getBehaviorLabels = $mysqli->query("SELECT * FROM behavior_category");
+                                                                        $i = 0;
+                                                                        while ($BehaviorLabel = $getBehaviorLabels->fetch_assoc()) { ?>
+                                                                            <tr>
+                                                                                <?php
+                                                                                if ($i % 2 == 0) { ?>
+                                                                                    <td rowspan="2" class="hatdog">
+                                                                                        <?php echo preg_replace('/[0-9]/', '', $BehaviorLabel['core_value_area']); ?>
+                                                                                    </td>
+                                                                                <?php } ?>
+                                                                                <td class="hatdog"><?php echo $BehaviorLabel['core_value_subheading'] ?></td>
+                                                                                <td class="hatdog"></td>
+                                                                                <td class="hatdog"></td>
+                                                                                <td class="hatdog"></td>
+                                                                                <td class="hatdog"></td>
+                                                                            </tr>
+                                                                        <?php
+                                                                            $i++;
+                                                                        }
+                                                                        ?>
+                                                                    <?php
                                                                     }
                                                                     ?>
                                                                 </tbody>

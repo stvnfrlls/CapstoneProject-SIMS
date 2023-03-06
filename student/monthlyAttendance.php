@@ -207,6 +207,8 @@ if (!isset($_SESSION['SR_number'])) {
                                                                         <?php
                                                                         echo '<td class="tabledata">January</td>';
 
+                                                                        echo '<td class="tabledata">' . countWeekdays(1, date('Y')) . '</td>';
+
                                                                         $JAN = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'January' AND acadYear = '{$currentSchoolYear}'");
                                                                         $JANvalue = $JAN->fetch_assoc();
                                                                         echo '<td class="tabledata">' . $JANvalue['COUNT(A_time_IN)'] . '</td>';
@@ -224,6 +226,8 @@ if (!isset($_SESSION['SR_number'])) {
                                                                     <tr>
                                                                         <?php
                                                                         echo '<td class="tabledata">February</td>';
+
+                                                                        echo '<td class="tabledata">' . countWeekdays(2, date('Y')) . '</td>';
 
                                                                         $FEB = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'February' AND acadYear = '{$currentSchoolYear}'");
                                                                         $FEBvalue = $FEB->fetch_assoc();
@@ -243,6 +247,8 @@ if (!isset($_SESSION['SR_number'])) {
                                                                         <?php
                                                                         echo '<td class="tabledata">March</td>';
 
+                                                                        echo '<td class="tabledata">' . countWeekdays(3, date('Y')) . '</td>';
+
                                                                         $MAR = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'March' AND acadYear = '{$currentSchoolYear}'");
                                                                         $MARvalue = $MAR->fetch_assoc();
                                                                         echo '<td class="tabledata">' . $MARvalue['COUNT(A_time_IN)'] . '</td>';
@@ -261,6 +267,8 @@ if (!isset($_SESSION['SR_number'])) {
                                                                         <?php
                                                                         echo '<td class="tabledata">April</td>';
 
+                                                                        echo '<td class="tabledata">' . countWeekdays(4, date('Y')) . '</td>';
+                                                                        
                                                                         $APR = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'April' AND acadYear = '{$currentSchoolYear}'");
                                                                         $APRvalue = $APR->fetch_assoc();
                                                                         echo '<td class="tabledata">' . $APRvalue['COUNT(A_time_IN)'] . '</td>';
@@ -279,6 +287,8 @@ if (!isset($_SESSION['SR_number'])) {
                                                                         <?php
                                                                         echo '<td class="tabledata">May</td>';
 
+                                                                        echo '<td class="tabledata">' . countWeekdays(5, date('Y')) . '</td>';
+                                                                        
                                                                         $MAY = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'May' AND acadYear = '{$currentSchoolYear}'");
                                                                         $MAYvalue = $MAY->fetch_assoc();
                                                                         echo '<td class="tabledata">' . $MAYvalue['COUNT(A_time_IN)'] . '</td>';
@@ -297,6 +307,8 @@ if (!isset($_SESSION['SR_number'])) {
                                                                         <?php
                                                                         echo '<td class="tabledata">June</td>';
 
+                                                                        echo '<td class="tabledata">' . countWeekdays(6, date('Y')) . '</td>';
+                                                                        
                                                                         $JUN = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'June' AND acadYear = '{$currentSchoolYear}'");
                                                                         $JUNvalue = $JUN->fetch_assoc();
                                                                         echo '<td class="tabledata">' . $JUNvalue['COUNT(A_time_IN)'] . '</td>';
@@ -315,6 +327,8 @@ if (!isset($_SESSION['SR_number'])) {
                                                                         <?php
                                                                         echo '<td class="tabledata">July</td>';
 
+                                                                        echo '<td class="tabledata">' . countWeekdays(7, date('Y')) . '</td>';
+                                                                        
                                                                         $JUL = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'July' AND acadYear = '{$currentSchoolYear}'");
                                                                         $JULvalue = $JUL->fetch_assoc();
                                                                         echo '<td class="tabledata">' . $JULvalue['COUNT(A_time_IN)'] . '</td>';
@@ -333,6 +347,8 @@ if (!isset($_SESSION['SR_number'])) {
                                                                         <?php
                                                                         echo '<td class="tabledata">August</td>';
 
+                                                                        echo '<td class="tabledata">' . countWeekdays(8, date('Y')) . '</td>';
+                                                                        
                                                                         $AUG = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'August' AND acadYear = '{$currentSchoolYear}'");
                                                                         $AUGvalue = $AUG->fetch_assoc();
                                                                         echo '<td class="tabledata">' . $AUGvalue['COUNT(A_time_IN)'] . '</td>';
@@ -351,6 +367,8 @@ if (!isset($_SESSION['SR_number'])) {
                                                                         <?php
                                                                         echo '<td class="tabledata">September</td>';
 
+                                                                        echo '<td class="tabledata">' . countWeekdays(9, date('Y')) . '</td>';
+                                                                        
                                                                         $SEP = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'September' AND acadYear = '{$currentSchoolYear}'");
                                                                         $SEPvalue = $SEP->fetch_assoc();
                                                                         echo '<td class="tabledata">' . $SEPvalue['COUNT(A_time_IN)'] . '</td>';
@@ -369,6 +387,8 @@ if (!isset($_SESSION['SR_number'])) {
                                                                         <?php
                                                                         echo '<td class="tabledata">October</td>';
 
+                                                                        echo '<td class="tabledata">' . countWeekdays(10, date('Y')) . '</td>';
+                                                                        
                                                                         $OCT = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'October' AND acadYear = '{$currentSchoolYear}'");
                                                                         $OCTvalue = $OCT->fetch_assoc();
                                                                         echo '<td class="tabledata">' . $OCTvalue['COUNT(A_time_IN)'] . '</td>';
@@ -387,6 +407,8 @@ if (!isset($_SESSION['SR_number'])) {
                                                                         <?php
                                                                         echo '<td class="tabledata">November</td>';
 
+                                                                        echo '<td class="tabledata">' . countWeekdays(11, date('Y')) . '</td>';
+                                                                        
                                                                         $NOV = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'November' AND acadYear = '{$currentSchoolYear}'");
                                                                         $NOVvalue = $NOV->fetch_assoc();
                                                                         echo '<td class="tabledata">' . $NOVvalue['COUNT(A_time_IN)'] . '</td>';
@@ -405,6 +427,8 @@ if (!isset($_SESSION['SR_number'])) {
                                                                         <?php
                                                                         echo '<td class="tabledata">December</td>';
 
+                                                                        echo '<td class="tabledata">' . countWeekdays(12, date('Y')) . '</td>';
+                                                                        
                                                                         $DEC = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'December' AND acadYear = '{$currentSchoolYear}'");
                                                                         $DECvalue = $DEC->fetch_assoc();
                                                                         echo '<td class="tabledata">' . $DECvalue['COUNT(A_time_IN)'] . '</td>';

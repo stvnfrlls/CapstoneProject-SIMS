@@ -223,7 +223,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     </thead>
                                                                     <tbody>
                                                                         <?php
-                                                                        $rowCount = 0;
+                                                                        $rowCount = 1;
                                                                         $dataSubject = $mysqli->query("SELECT subjectName, minYearLevel, maxYearLevel FROM subjectperyear");
                                                                         if (mysqli_num_rows($dataSubject) > 0) {
                                                                             while ($subject = $dataSubject->fetch_assoc()) { ?>
@@ -234,27 +234,36 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                             <?php echo $subject['subjectName']; ?>
                                                                                             <input type="hidden" name="sbjName" value="<?php echo $subject['subjectName'] ?>">
                                                                                         </td>
-                                                                                        <td><input type="number" name="minYearLevel" class="form-control text-center" value="<?php echo $subjects['minYearLevel']; ?>"></td>
-                                                                                        <td><input type="number" name="maxYearLevel" class="form-control text-center" value="<?php echo  $subjects['maxYearLevel']; ?>"></td>
+                                                                                        <td><input type="text" name="minYearLevel" class="form-control text-center" value="<?php echo $subject['minYearLevel']; ?>"></td>
+                                                                                        <td><input type="text" name="maxYearLevel" class="form-control text-center" value="<?php echo  $subject['maxYearLevel']; ?>"></td>
                                                                                         <td>
-                                                                                            <button type="button" style="color: #ffffff;" class="btn btn-primary" value="UPDATE" name="updateCurr" id="updateCurr">
-                                                                                            <button type="button" class="btn btn-secondary" value="DELETE" name="deleteCurr" id="deleteCurr">
+                                                                                            <button style="color: #ffffff;" class="btn btn-primary" value="UPDATE" name="updateCurr" id="updateCurr">Update</button>
+                                                                                            <button class="btn btn-secondary" value="DELETE" name="deleteCurr" id="deleteCurr">Delete</button>
                                                                                         </td>
                                                                                     </tr>
                                                                                 </form>
                                                                             <?php
                                                                                 $rowCount++;
-                                                                            }
-                                                                        } else { ?>
+                                                                            } ?>
+                                                                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="addCurrForm">
+                                                                                <tr>
+                                                                                    <td>ADD</td>
+                                                                                    <td><input type="text" name="sbjName" class="form-control" required></td>
+                                                                                    <td><input type="number" name="minYearLevel" class="form-control" required></td>
+                                                                                    <td><input type="number" name="maxYearLevel" class="form-control" required></td>
+                                                                                    <td><input type="submit" style="color: #ffffff;" class="btn btn-primary" value="ADD SUBJECT" name="addCurr" id="addCurr"></td>
+                                                                                </tr>
+                                                                            </form>
+                                                                        <?php } else { ?>
                                                                             <tr>
                                                                                 <td colspan="5">NO SUBJECTS AVAILABLE</td>
                                                                             </tr>
                                                                             <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="addCurrForm">
                                                                                 <tr>
                                                                                     <td>ADD</td>
-                                                                                    <td><input type="text" name="sbjName" class="form-control"></td>
-                                                                                    <td><input type="number" name="minYearLevel" class="form-control"></td>
-                                                                                    <td><input type="number" name="maxYearLevel" class="form-control"></td>
+                                                                                    <td><input type="text" name="sbjName" class="form-control" required></td>
+                                                                                    <td><input type="number" name="minYearLevel" class="form-control" required></td>
+                                                                                    <td><input type="number" name="maxYearLevel" class="form-control" required></td>
                                                                                     <td><input type="submit" style="color: #ffffff;" class="btn btn-primary" value="ADD SUBJECT" name="addCurr" id="addCurr"></td>
                                                                                 </tr>
                                                                             </form>
@@ -307,7 +316,7 @@ if (!isset($_SESSION['AD_number'])) {
     <script src="../assets/js/admin/off-canvas.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
-    <script>
+    <!-- <script>
         const addCurrForm = document.getElementById('addCurrForm');
         const modifyCurrForm = document.getElementById('modifyCurrForm');
 
@@ -366,7 +375,7 @@ if (!isset($_SESSION['AD_number'])) {
                 }
             })
         })
-    </script>
+    </script> -->
 </body>
 
 </html>

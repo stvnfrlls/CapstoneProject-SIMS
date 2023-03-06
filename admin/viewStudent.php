@@ -6,7 +6,19 @@ if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 } else {
     if (empty($_GET['SR_Number'])) {
-        header('Location: student.php');
+        echo <<<EOT
+            <script>
+                document.addEventListener("DOMContentLoaded", function(event) { 
+                    swal.fire({
+                        text: 'Please select a student first.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                    }).then(() => {
+                        window.location.href = 'student.php';
+                    });
+                });
+            </script>
+        EOT;
     } else {
         $verifySR_number = "SELECT * FROM studentrecord 
                         INNER JOIN guardian
@@ -15,13 +27,29 @@ if (!isset($_SESSION['AD_number'])) {
         $runverifySR_number = $mysqli->query($verifySR_number);
         $getRecord =  $runverifySR_number->fetch_assoc();
 
-        if ($getRecord['SR_number'] == $_GET['SR_Number']) {
-            $tempDir = '../assets/temp/';
-            if (!file_exists($tempDir)) {
-                mkdir($tempDir);
+        if (mysqli_num_rows($runverifySR_number) > 0) {
+            if ($getRecord['SR_number'] == $_GET['SR_Number']) {
+                $tempDir = '../assets/temp/';
+                if (!file_exists($tempDir)) {
+                    mkdir($tempDir);
+                }
+                $qrcode_data = $getRecord['SR_number'];
+                QRcode::png($qrcode_data,  $tempDir . '' . $qrcode_data . '.png', QR_ECLEVEL_L);
             }
-            $qrcode_data = $getRecord['SR_number'];
-            QRcode::png($qrcode_data,  $tempDir . '' . $qrcode_data . '.png', QR_ECLEVEL_L);
+        } else {
+            echo <<<EOT
+            <script>
+                document.addEventListener("DOMContentLoaded", function(event) { 
+                    swal.fire({
+                        text: 'No guardian information found.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                    }).then(() => {
+                        window.location.href = 'student.php';
+                    });
+                });
+            </script>
+            EOT;
         }
     }
 }
@@ -52,6 +80,8 @@ if (!isset($_SESSION['AD_number'])) {
     <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
     <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="../assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="../assets/css/sweetAlert.css" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
@@ -232,19 +262,22 @@ if (!isset($_SESSION['AD_number'])) {
                                 <div class="tab-content tab-content-basic">
                                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                                         <div class="row">
-                                            <div class="col-sm-12 col-lg-3">
-                                                <div class="row">
-                                                    <div class="col-12 grid-margin">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <h4 class="card-title">Profile</h4>
-                                                                <form class="form-sample">
-                                                                    <div class="row" style="padding-bottom: 15px;">
-                                                                        <div class="col-md-6 col-sm-6 col-lg-12" style="text-align: center; margin-bottom: 20px; margin-top: 10px;">
-                                                                            <img src="data:image/jpeg/jpg/gif/jfif;base64, <?php echo base64_encode($getRecord['SR_profile_img']); ?>" class="rounded-circle img-fluid" style="width: 150px;">
-                                                                        </div>
-                                                                    </div>
-                                                                </form>
+                                            <div class="col-lg-3 col-sm-12 grid-margin">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title">Profile</h4>
+                                                        <form class="form-sample">
+                                                            <div class="row" style="padding-bottom: 15px;">
+                                                                <div class="col-md-6 col-sm-6 col-lg-12" style="text-align: center; margin-bottom: 20px; margin-top: 10px;">
+                                                                    <?php
+                                                                    $profile_path = "../assets/img/profile/" . $getRecord['SR_profile_img'];
+                                                                    if (empty($getRecord['SR_profile_img']) || !file_exists($profile_path)) { ?>
+                                                                        <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                                                                    <?php } else { ?>
+                                                                        <img src="../assets/img/profile/<?php echo $getRecord['SR_profile_img'] ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                                                                    <?php }
+                                                                    ?>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>

@@ -215,7 +215,6 @@ if (empty($_SESSION['AD_number'])) {
                                                                         <thead>
                                                                             <tr>
                                                                                 <th>No.</th>
-
                                                                                 <th>ID no.</th>
                                                                                 <th>Name</th>
                                                                                 <th>Contact No.</th>
@@ -266,7 +265,7 @@ if (empty($_SESSION['AD_number'])) {
                                                                     <div class="col-md-12">
                                                                         <label class="col-sm-12 col-form-label">Contact Number</label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="tel" class="form-control" name="FTH_contact" required>
+                                                                            <input type="text" class="form-control" name="FTH_contact" id="phone" required>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -352,6 +351,31 @@ if (empty($_SESSION['AD_number'])) {
                 }
             })
         })
+    </script>
+    <script>
+        const phoneInput = document.getElementById('phone');
+        phoneInput.maxLength = 15;
+
+        phoneInput.addEventListener('input', function(e) {
+            // Get the current input value and remove all non-numeric characters
+            const input = e.target.value.replace(/\D/g, '');
+
+            // Format the input value as a phone number
+            const match = input.match(/^(\d{0,4})(\d{0,3})(\d{0,4})$/);
+            let formatted = '';
+            if (match) {
+                formatted = `(${match[1]})`;
+                if (match[2]) formatted += ` ${match[2]}`;
+                if (match[3]) formatted += `-${match[3]}`;
+            }
+
+            // Update the input field with the formatted value
+            e.target.value = formatted;
+
+            if (input.length >= 15) {
+                e.target.value = formatted.slice(0, 15);
+            }
+        });
     </script>
 </body>
 

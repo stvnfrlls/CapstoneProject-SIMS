@@ -6,8 +6,10 @@ if (!isset($_SESSION['F_number'])) {
 } else {
   $getfacultyinfo = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
   $facultyInfo = $getfacultyinfo->fetch_assoc();
-  $getSubjects = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$_SESSION['F_number']}'");
-  $getGradeSection = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$_SESSION['F_number']}'");
+
+  $getSubjects = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
+
+  $getGradeSection = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
 }
 ?>
 
@@ -165,39 +167,49 @@ if (!isset($_SESSION['F_number'])) {
                                   </div>
                                   <div class="col-md-6">
                                     <div class="form-floating">
-                                      <input type="date" class="form-control" name="date">
+                                      <input type="date" class="form-control" name="date" required>
                                       <label for="email">Deadline</label>
                                     </div>
                                   </div>
                                   <div class="col-6">
                                     <div class="form-floating">
-                                      <select class="form-select" name="subject" id="subject" placeholder="Subject" required>
-                                        <option value=""></option>
-                                        <?php
-                                        while ($subjectInfo = $getSubjects->fetch_assoc()) {
-                                          echo '<option value=' . $subjectInfo['S_subject'] . '>' . $subjectInfo['S_subject'] . '</option>';
-                                        }
-                                        ?>
-                                      </select>
-                                      <label for="subject">Subject</label>
-                                    </div>
-                                  </div>
-                                  <div class="col-6">
-                                    <div class="form-floating">
                                       <select class="form-select" name="forsection" id="forsection" required>
-                                        <option value=""></option>
+                                        <option selected></option>
                                         <?php
-                                        while ($gradesection = $getGradeSection->fetch_assoc()) {
-                                          echo '<option value=' . $gradesection['SR_section'] . '>Grade ' . $gradesection['SR_grade'] . ' - ' . $gradesection['SR_section'] . '</option>';
-                                        }
+                                        if (mysqli_num_rows($getGradeSection) > 0) {
+                                          while ($GradeSection = $getGradeSection->fetch_assoc()) { ?>
+                                            <option value="<?php echo $GradeSection['SR_section'] ?>"><?php echo $GradeSection['SR_section'] . " - " . $GradeSection['S_subject'] . " (" . $GradeSection['WS_start_time'] . " - " . timePlusOneMinute($GradeSection['WS_end_time']) . ")"  ?></option>
+                                          <?php
+                                          }
+                                        } else { ?>
+                                          <option selected>No assigned section</option>
+                                        <?php }
                                         ?>
                                       </select>
                                       <label for="forsection">Grade and Section</label>
                                     </div>
                                   </div>
+                                  <div class="col-6">
+                                    <div class="form-floating">
+                                      <select class="form-select" name="subject" id="subject" placeholder="Subject" required>
+                                        <option selected></option>
+                                        <?php
+                                        if (mysqli_num_rows($getSubjects) > 0) {
+                                          while ($subjects = $getSubjects->fetch_assoc()) { ?>
+                                            <option value="<?php echo $subjects['S_subject'] ?>"><?php echo $subjects['S_subject'] . " - (" . $subjects['WS_start_time'] . " - " . timePlusOneMinute($subjects['WS_end_time']) . ")"  ?></option>
+                                          <?php
+                                          }
+                                        } else { ?>
+                                          <option selected>No subjects available</option>
+                                        <?php }
+                                        ?>
+                                      </select>
+                                      <label for="subject">Subject</label>
+                                    </div>
+                                  </div>
                                   <div class="col-12">
                                     <div class="form-floating">
-                                      <textarea class="form-control" placeholder="Leave a message here" id="message" name="MSG" style="height: 200px"></textarea>
+                                      <textarea class="form-control" placeholder="Leave a message here" id="message" name="MSG" style="height: 200px" required></textarea>
                                       <label for="message">Details</label>
                                     </div>
                                   </div>
@@ -206,11 +218,9 @@ if (!isset($_SESSION['F_number'])) {
                             </div>
                           </div>
                         </div>
-
                       </div>
                     </div>
                   </div>
-
                 </div>
               </div>
               <div style="text-align: center;">
@@ -264,22 +274,20 @@ if (!isset($_SESSION['F_number'])) {
       }).then((result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
+          reminderForm.submit();
           Swal.fire({
             title: 'Successfully saved!',
             icon: 'success',
           }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-              reminderForm.submit();
               window.location.href = '../faculty/reminders.php';
             }
           })
         }
       })
-
     })
   </script>
-
 </body>
 
 </html>

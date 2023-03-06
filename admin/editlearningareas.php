@@ -350,57 +350,49 @@ if (empty($_SESSION['AD_number'])) {
                                             </td>
                                             <td>
                                               <?php
-                                              $getAllFacultyName = "SELECT faculty.F_number, faculty.F_lname, faculty.F_fname, faculty.F_mname, faculty.F_suffix
-                                                                  FROM faculty LEFT JOIN workschedule ON faculty.F_number = workschedule.F_number";
-                                              $runAllFacultyName = $mysqli->query($getAllFacultyName);
-                                              while ($dataAllFacultyName = $runAllFacultyName->fetch_assoc()) {
-                                                $AllFacultyName[] = $dataAllFacultyName;
-                                              }
-                                              $arrayRowCount = 1;
-                                              $arrayCount = count($AllFacultyName); ?>
+                                              $getAssignedFaculty = $mysqli->query("SELECT * FROM workschedule 
+                                                                                    WHERE SR_grade = '{$_GET['GradeLevel']}' 
+                                                                                    AND SR_section = '{$_GET['SectionName']}' 
+                                                                                    AND acadYear = '{$currentSchoolYear}'
+                                                                                    AND S_subject = '{$subjects[$rowCount]['subjectName']}'");
+                                              $assignedFaculty = $getAssignedFaculty->fetch_assoc();
+                                              ?>
+                                              <input type="hidden" name="WS_ID" value="<?php echo $assignedFaculty['WS_ID']; ?>">
                                               <select class="form-select" name="assignedFaculty" aria-label="Default select example" required>
                                                 <?php
-                                                $getFacultyName = $mysqli->query("SELECT F_number, F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$schedule[$rowCount]['F_number']}'");
-                                                while ($dataFacultyName = $getFacultyName->fetch_assoc()) {
-                                                  $FacultyName[] = $dataFacultyName;
-                                                }
-                                                if (empty($schedule[$rowCount]['F_number'])) {
-                                                  echo "<option selected></option>";
-                                                } else {
-                                                  echo "<option selected value=" . $FacultyName[$rowCount]['F_number'] . ">" . $FacultyName[$rowCount]['F_lname'] .  ", " . $FacultyName[$rowCount]['F_fname'] . " " . substr($FacultyName[$rowCount]['F_mname'], 0, 1);
-                                                  "</option";
-                                                }
+                                                if (mysqli_num_rows($getAssignedFaculty) > 0) {
+                                                  $getFacultyName = $mysqli->query("SELECT F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$assignedFaculty['F_number']}'");
+                                                  $FacultyName = $getFacultyName->fetch_assoc();
+                                                ?>
+                                                  <option value="<?php echo $assignedFaculty['F_number'] ?>" selected><?php echo $FacultyName['F_lname'] . ", " . $FacultyName['F_fname'] . " " . substr($FacultyName['F_mname'], 0, 1) . ". " . $FacultyName['F_suffix'] . "." ?></option>
+                                                <?php } else { ?>
+                                                  <option value="">No assigned teacher</option>
+                                                <?php }
                                                 ?>
 
                                                 <?php
-                                                while ($arrayRowCount < $arrayCount) { ?>
-                                                  <option value="<?php echo $AllFacultyName[$arrayRowCount]['F_number']; ?>">
-                                                    <?php
-                                                    echo $AllFacultyName[$arrayRowCount]['F_lname'] . ", " . $AllFacultyName[$arrayRowCount]['F_fname'] . " " . substr($AllFacultyName[$arrayRowCount]['F_mname'], 0, 1);
-                                                    ?>
-                                                  </option>
-                                                <?php $arrayRowCount++;
-                                                }
+                                                $listFacultyData = $mysqli->query("SELECT F_number, F_lname, F_fname, F_mname, F_suffix FROM faculty ORDER BY F_lname");
+                                                while ($listFaculty = $listFacultyData->fetch_assoc()) { ?>
+                                                  <option value="<?php echo $listFaculty['F_number'] ?>"><?php echo $listFaculty['F_lname'] . ", " . $listFaculty['F_fname'] . " " . substr($listFaculty['F_mname'], 0, 1) . ". " . $listFaculty['F_suffix'] . "." ?></option>
+                                                <?php }
                                                 ?>
                                               </select>
-                                              <?php
-                                              ?>
                                             </td>
                                             <td>
                                               <?php
                                               if (empty($schedule[$rowCount]['WS_start_time'])) {
-                                                echo '<input type="time" class="form-control" name="WS_start_time">';
+                                                echo '<input type="time" class="form-control" name="WS_start_time" required>';
                                               } else {
-                                                echo '<input type="time" class="form-control" name="WS_start_time" value=' . $schedule[$rowCount]['WS_start_time'] . '>';
+                                                echo '<input type="time" class="form-control" name="WS_start_time" value=' . $schedule[$rowCount]['WS_start_time'] . ' required>';
                                               }
                                               ?>
                                             </td>
                                             <td>
                                               <?php
                                               if (empty($schedule[$rowCount]['WS_start_time'])) {
-                                                echo '<input type="time" class="form-control" name="WS_end_time">';
+                                                echo '<input type="time" class="form-control" name="WS_end_time" required>';
                                               } else {
-                                                echo '<input type="time" class="form-control" name="WS_end_time" value=' . timePlusOneMinute($schedule[$rowCount]['WS_end_time']) . '>';
+                                                echo '<input type="time" class="form-control" name="WS_end_time" value=' . timePlusOneMinute($schedule[$rowCount]['WS_end_time']) . ' required>';
                                               }
                                               ?>
                                             </td>
@@ -412,8 +404,8 @@ if (empty($_SESSION['AD_number'])) {
                                               <?php
                                               } else {
                                               ?>
-                                                <input type="submit" class="btn btn-primary" name="updateSchedule" id="updateSchedule" value="UPD">
-                                                <input type="submit" class="btn btn-primary" name="deleteSchedule" id="deleteSchedule" value="DEL">
+                                                <!-- <input type="submit" class="btn btn-primary" name="updateSchedule" id="updateSchedule" value="UPD"> -->
+                                                <input type="submit" class="btn btn-primary" name="deleteSchedule" id="deleteSchedule" value="DELETE SCHEDULE">
                                               <?php }
                                               ?>
                                             </td>
@@ -473,64 +465,6 @@ if (empty($_SESSION['AD_number'])) {
   <script src="../assets/js/admin/vendor.bundle.base.js"></script>
   <script src="../assets/js/admin/off-canvas.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
-
-  <script>
-    const AssignScheduleForm = document.getElementById('AssignScheduleForm');
-    const setSchedule = document.getElementById('setSchedule');
-    const updateSchedule = document.getElementById('updateSchedule');
-    const deleteSchedule = document.getElementById('deleteSchedule');
-    setSchedule.addEventListener('click', function() {
-      Swal.fire({
-        title: 'Are you sure you want to proceed with this action?',
-        showCancelButton: true,
-        confirmButtonText: 'Yes',
-        cancelButtonText: `No`,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire({
-            title: 'Form submitted!',
-            icon: 'success',
-          }).then(() => {
-            AssignScheduleForm.submit();
-          });
-        }
-      })
-    })
-    updateSchedule.addEventListener('click', function() {
-      Swal.fire({
-        title: 'Are you sure you want to proceed with this action?',
-        showCancelButton: true,
-        confirmButtonText: 'Yes',
-        cancelButtonText: `No`,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire({
-            title: 'Form submitted!',
-            icon: 'success',
-          }).then(() => {
-            AssignScheduleForm.submit();
-          });
-        }
-      })
-    })
-    deleteSchedule.addEventListener('click', function() {
-      Swal.fire({
-        title: 'Are you sure you want to proceed with this action?',
-        showCancelButton: true,
-        confirmButtonText: 'Yes',
-        cancelButtonText: `No`,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire({
-            title: 'Form submitted!',
-            icon: 'success',
-          }).then(() => {
-            AssignScheduleForm.submit();
-          });
-        }
-      })
-    })
-  </script>
 </body>
 
 </html>

@@ -4,6 +4,23 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 }
+
+$checkQuarter = $mysqli->query("SELECT quarterStatus FROM sis_cdsp.quartertable WHERE quarterStatus = 'current'");
+if (mysqli_num_rows($checkQuarter) > 0) {
+    echo <<<EOT
+            <script>
+                document.addEventListener("DOMContentLoaded", function(event) { 
+                    swal.fire({
+                        text: 'This feature is currently disabled because the school year has already started.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                    }).then(() => {
+                        window.location.href = 'dashboard.php';
+                    });
+                });
+            </script>
+        EOT;
+}
 ?>
 
 <!DOCTYPE html>
@@ -208,7 +225,11 @@ if (!isset($_SESSION['AD_number'])) {
                                                 <button class="btn btn-secondary" style="background-color: #e4e3e3;" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                     <?php
                                                     if (isset($_GET['grade'])) {
-                                                        echo "GR." . $_GET['grade'];
+                                                        if ($_GET['grade'] == 'KINDER') {
+                                                            echo $_GET['grade'];
+                                                        } else {
+                                                            echo "GR." . $_GET['grade'];
+                                                        }
                                                     } else {
                                                         echo "Grade";
                                                     }
@@ -217,7 +238,6 @@ if (!isset($_SESSION['AD_number'])) {
                                                     <i class="fa fa-caret-down"></i>
                                                 </button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                                    <a class="dropdown-item" href="editSection.php">All</a>
                                                     <?php
                                                     $getgradelevel = $mysqli->query("SELECT DISTINCT(S_yearLevel) FROM sections");
                                                     while ($gradeLevel = $getgradelevel->fetch_assoc()) { ?>
@@ -243,15 +263,17 @@ if (!isset($_SESSION['AD_number'])) {
                                                     <i class="fa fa-caret-down"></i>
                                                 </button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                                    <a class="dropdown-item" href="editSection.php">All</a>
+                                                    <a class="dropdown-item" href="editSection.php"></a>
                                                     <?php
-                                                    $getsection = $mysqli->query("SELECT DISTINCT(S_name) FROM sections WHERE acadYear = '{$currentSchoolYear}' AND S_yearLevel = '{$_GET['grade']}' ");
+                                                    if (isset($_GET['grade'])) {
+                                                        $getsection = $mysqli->query("SELECT DISTINCT(S_name) FROM sections WHERE acadYear = '{$currentSchoolYear}' AND S_yearLevel = '{$_GET['grade']}' ");
 
-                                                    while ($section = $getsection->fetch_assoc()) { ?>
-                                                        <a class="dropdown-item" href="editSection.php?grade=<?php echo $_GET['grade'] ?>&section=<?php echo $section['S_name'] ?>">
-                                                            <?php echo $section['S_name'] ?>
-                                                        </a>
+                                                        while ($section = $getsection->fetch_assoc()) { ?>
+                                                            <a class="dropdown-item" href="editSection.php?grade=<?php echo $_GET['grade'] ?>&section=<?php echo $section['S_name'] ?>">
+                                                                <?php echo $section['S_name'] ?>
+                                                            </a>
                                                     <?php }
+                                                    }
                                                     ?>
                                                 </div>
                                             </div>

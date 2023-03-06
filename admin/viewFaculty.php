@@ -13,6 +13,15 @@ if (!isset($_SESSION['AD_number'])) {
     header('Location: faculty.php');
   }
 }
+
+if (isset($_POST['changeStatus'])) {
+  if ($getFacultyData['F_status'] == "inactive") {
+    $changeStatus = $mysqli->query("UPDATE faculty SET F_status = 'active' WHERE F_number = '{$_GET['F_number']}'");
+  } else {
+    $changeStatus = $mysqli->query("UPDATE faculty SET F_status = 'inactive' WHERE F_number = '{$_GET['F_number']}'");
+  }
+  header("Refresh:0");
+}
 ?>
 
 <!DOCTYPE html>
@@ -209,10 +218,18 @@ if (!isset($_SESSION['AD_number'])) {
                 </div>
                 <div class="tab-content tab-content-basic">
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                    <div style="text-align: right; margin-bottom: 15px;" >
-                      <a class="btn btn-primary me-2" href="editFaculty.php?F_number=<?php echo $_GET['F_number'] ?>">Edit</a>
-                      <a class="btn btn-primary me-2" href="">Mark as Inactive</a>
-                      <button class="btn btn-light" onclick="location.href='../admin/faculty.php'">Back</button>
+                    <div style="text-align: right; margin-bottom: 15px;">
+                      <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
+                        <a class="btn btn-primary me-2" href="editFaculty.php?F_number=<?php echo $_GET['F_number'] ?>">Edit</a>
+                        <?php
+                        if ($getFacultyData['F_status'] == "active") { ?>
+                          <button type="submit" name="changeStatus" class="btn btn-primary me-2">Mark as Inactive</button>
+                        <?php } else { ?>
+                          <button type="submit" name="changeStatus" class="btn btn-primary me-2">Mark as Active</button>
+                        <?php }
+                        ?>
+                        <button class="btn btn-light" onclick="location.href='../admin/faculty.php'">Back</button>
+                      </form>
                     </div>
                     <div class="row">
                       <div class="col-lg-3 col-sm-12 grid-margin" style="margin-bottom: 30px;">
@@ -222,7 +239,14 @@ if (!isset($_SESSION['AD_number'])) {
                               <h4 class="card-title">Profile</h4>
                               <div class="row" style="padding-bottom: 15px;">
                                 <div class="col-12" style="text-align: center; margin-bottom: 20px; margin-top: 10px;">
-                                  <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluidr" style="width: 150px;">
+                                  <?php
+                                  $profile_path = "../assets/img/profile/" . $getFacultyData['F_profile_img'];
+                                  if (empty($getFacultyData['F_profile_img']) || !file_exists($profile_path)) { ?>
+                                    <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                                  <?php } else { ?>
+                                    <img src="../assets/img/profile/<?php echo $getFacultyData['F_profile_img'] ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                                  <?php }
+                                  ?>
                                 </div>
                               </div>
                             </div>
@@ -234,12 +258,17 @@ if (!isset($_SESSION['AD_number'])) {
                               <h4 class="card-title">Teaching Status</h4>
                               <div class="row">
                                 <div class="col-12">
-                                  <div class="progress rounded" style="height: 25px; width: 70px; background-color: red;">
-                                    <p style="font-size: .77rem; margin: 4px 0px 0px 11px; text-align: center; color: white;">inactive</p>
-                                  </div>
-                                  <div class="progress rounded" style="height: 25px; width: 70px; background-color:limegreen">
-                                    <p style="font-size: .77rem; margin: 4px 0px 0px 16px; text-align: center; color: white;">active</p>
-                                  </div>
+                                  <?php
+                                  if ($getFacultyData['F_status'] == "active") { ?>
+                                    <div class="progress rounded" style="height: 25px; width: 70px; background-color:limegreen">
+                                      <p style="font-size: .77rem; margin: 4px 0px 0px 16px; text-align: center; color: white;">active</p>
+                                    </div>
+                                  <?php } else { ?>
+                                    <div class="progress rounded" style="height: 25px; width: 70px; background-color: red;">
+                                      <p style="font-size: .77rem; margin: 4px 0px 0px 11px; text-align: center; color: white;">inactive</p>
+                                    </div>
+                                  <?php }
+                                  ?>
                                 </div>
                               </div>
                             </div>

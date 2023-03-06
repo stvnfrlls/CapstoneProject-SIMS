@@ -392,32 +392,35 @@ if (!isset($_SESSION['AD_number'])) {
                                             $getGradeData = $mysqli->query("SELECT * FROM grades 
                                                                             WHERE acadYear = '{$currentSchoolYear}' 
                                                                             AND SR_number = '{$classList['SR_number']}'");
-                                            while ($Grade = $getGradeData->fetch_assoc()) {
-                                              $getQuarterData = $mysqli->query("SELECT quarterTag FROM quartertable WHERE quarterTag = '{$_GET['Quarter']}'");
-                                              $QuarterData = $getQuarterData->fetch_assoc();
-                                              if (mysqli_num_rows($getQuarterData) > 0) {
-                                                if ($QuarterData['quarterTag'] == 1) { ?>
-                                                  <td>
-                                                    <input type="number" maxlength="2" class="form-control text-center" name="grade[]" value="<?php echo $Grade['G_gradesQ1'] ?>">
-                                                  </td>
-                                                <?php } elseif ($QuarterData['quarterTag'] == 2) { ?>
-                                                  <td>
-                                                    <input type="number" maxlength="2" class="form-control text-center" name="grade[]" value="<?php echo $Grade['G_gradesQ2'] ?>">
-                                                  </td>
-                                                <?php } elseif ($QuarterData['quarterTag'] == 3) { ?>
-                                                  <td>
-                                                    <input type="number" maxlength="2" class="form-control text-center" name="grade[]" value="<?php echo $Grade['G_gradesQ3'] ?>">
-                                                  </td>
-                                                <?php } elseif ($QuarterData['quarterTag'] == 4) { ?>
-                                                  <td>
-                                                    <input type="number" maxlength="2" class="form-control text-center" name="grade[]" value="<?php echo $Grade['G_gradesQ4'] ?>">
-                                                  </td>
-                                                <?php } else { ?>
-                                                  <td> Invalid quarter </td>
-                                                <?php } ?>
-                                              <?php } else { ?>
-                                                <td> No quarter found </td>
-                                            <?php }
+                                            if (mysqli_num_rows($getGradeData) > 0) {
+                                              while ($Grade = $getGradeData->fetch_assoc()) {
+                                                $getQuarterData = $mysqli->query("SELECT quarterTag FROM quartertable WHERE quarterTag = '{$_GET['Quarter']}'");
+                                                $QuarterData = $getQuarterData->fetch_assoc();
+                                                if (mysqli_num_rows($getQuarterData) > 0) {
+                                                  if ($QuarterData['quarterTag'] == 1) {
+                                                    echo "<td><input type='number' maxlength='2' class='form-control text-center' name='grade[]' value=" . $Grade['G_gradesQ1'] . "></td>";
+                                                  } elseif ($QuarterData['quarterTag'] == 2) {
+                                                    echo "<td><input type='number' maxlength='2' class='form-control text-center' name='grade[]' value=" . $Grade['G_gradesQ2'] . "></td>";
+                                                  } elseif ($QuarterData['quarterTag'] == 3) {
+                                                    echo "<td><input type='number' maxlength='2' class='form-control text-center' name='grade[]' value=" . $Grade['G_gradesQ3'] . "></td>";
+                                                  } elseif ($QuarterData['quarterTag'] == 4) {
+                                                    echo "<td><input type='number' maxlength='2' class='form-control text-center' name='grade[]' value=" . $Grade['G_gradesQ3'] . "></td>";
+                                                  } else {
+                                                    echo "<td> Invalid quarter </td>";
+                                                  }
+                                                } else {
+                                                  echo "<td> No quarter found </td>";
+                                                }
+                                              }
+                                            } else {
+                                              $Count = 0;
+                                              while ($Count != sizeof($subject_Array)) { ?>
+                                                <td>
+                                                  <input type="number" class="hatdog" name="SR_number[]" readonly>
+                                                </td>
+                                            <?php
+                                                $Count++;
+                                              }
                                             }
                                             ?>
                                           </tr>

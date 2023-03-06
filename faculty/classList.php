@@ -4,7 +4,7 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['F_number'])) {
   header('Location: ../auth/login.php');
 } else {
-  $getWorkSchedule = $mysqli->query("SELECT acadYear, SR_grade, SR_section, S_subject FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
+  $getWorkSchedule = $mysqli->query("SELECT DISTINCT SR_grade, SR_section FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
   $array_GradeSection = array();
   array_unshift($array_GradeSection, null);
 
@@ -183,7 +183,14 @@ if (!isset($_SESSION['F_number'])) {
                                 $GradeSectionRowCount = sizeof($array_GradeSection);
                                 while ($rowCount != $GradeSectionRowCount) { ?>
                                   <a class="dropdown-item" href="<?php echo "classList.php?Grade=" . $array_GradeSection[$rowCount]['SR_grade'] . "&Section=" . $array_GradeSection[$rowCount]['SR_section']; ?>">
-                                    <?php echo "Grade " . $array_GradeSection[$rowCount]['SR_grade'] . "-" . $array_GradeSection[$rowCount]['SR_section'] . " (" . $array_GradeSection[$rowCount]['acadYear'] . ")"; ?>
+                                    <?php
+                                    if ($array_GradeSection[$rowCount]['SR_grade'] == "KINDER") {
+                                      echo $array_GradeSection[$rowCount]['SR_grade'] . "-" . $array_GradeSection[$rowCount]['SR_section'];
+                                    } else {
+                                      echo "Grade " . $array_GradeSection[$rowCount]['SR_grade'] . "-" . $array_GradeSection[$rowCount]['SR_section'];
+                                    }
+
+                                    ?>
                                   </a>
                                 <?php $rowCount++;
                                 }

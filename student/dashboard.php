@@ -124,10 +124,11 @@ if (!isset($_SESSION['SR_number'])) {
                             <div class="row">
                               <div class="col-4">
                                 <?php
-                                if (empty($studentInfo['SR_profile_img'])) { ?>
+                                $profile_path = "../assets/img/profile/" . $studentInfo['SR_profile_img'];
+                                if (empty($studentInfo['SR_profile_img']) || !file_exists($profile_path)) { ?>
                                   <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
                                 <?php } else { ?>
-                                  <img src="../assets/img/<?php echo $studentInfo['SR_profile_img'] ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
+                                  <img src="../assets/img/profile/<?php echo $studentInfo['SR_profile_img'] ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
                                 <?php }
                                 ?>
                               </div>
@@ -363,7 +364,7 @@ if (!isset($_SESSION['SR_number'])) {
                                   <small><i class="far fa-calendar-alt text-primary me-2"></i><?php echo $announcement['date']; ?></small>
                                 </div>
                                 <h4 class="mb-3"><?php echo $announcement['header']; ?></h4>
-                                <p><?php echo $announcement['msg']; ?></p>
+                                <p class="text-truncate"><?php echo $announcement['msg']; ?></p>
                                 <a class="text-uppercase" href="viewannouncement.php?postID=<?php echo $announcement['ANC_ID']; ?>">Read More <i class="bi bi-arrow-right"></i></a>
                               </div>
                             </div>

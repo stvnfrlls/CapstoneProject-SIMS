@@ -269,10 +269,26 @@ if (!isset($_SESSION['SR_number'])) {
                                                                         </td>
                                                                     </tr>
                                                                 <?php }
-                                                            } else { ?>
-                                                                <tr>
-                                                                    <td colspan="10">NO DATA AVAILABLE</td>
-                                                                </tr>
+                                                            } else {
+                                                                if ($GradeSectionData['S_yearLevel'] == "KINDER") {
+                                                                    $yearLevel = 0;
+                                                                } else {
+                                                                    $yearLevel = $GradeSectionData['S_yearLevel'];
+                                                                }
+                                                                $getLearningAreas = $mysqli->query("SELECT * FROM subjectperyear WHERE minYearLevel <= '{$yearLevel}' AND maxYearLevel >= '{$yearLevel}'");
+                                                                while ($LearningAreas = $getLearningAreas->fetch_assoc()) { ?>
+                                                                    <tr>
+                                                                        <td class="hatdog"><?php echo $LearningAreas['subjectName'] ?></td>
+                                                                        <td class="hatdog"></td>
+                                                                        <td class="hatdog"></td>
+                                                                        <td class="hatdog"></td>
+                                                                        <td class="hatdog"></td>
+                                                                        <td class="hatdog"></td>
+                                                                        <td class="hatdog"></td>
+                                                                    </tr>
+                                                                <?php
+                                                                }
+                                                                ?>
                                                             <?php }
                                                             ?>
                                                         </tbody>
@@ -393,10 +409,27 @@ if (!isset($_SESSION['SR_number'])) {
                                                                     </tr>
                                                                 <?php $i++;
                                                                 }
-                                                            } else { ?>
-                                                                <tr>
-                                                                    <td colspan="10">NO DATA AVAILABLE</td>
-                                                                </tr>
+                                                            } else {
+                                                                $getBehaviorLabels = $mysqli->query("SELECT * FROM behavior_category");
+                                                                $i = 0;
+                                                                while ($BehaviorLabel = $getBehaviorLabels->fetch_assoc()) { ?>
+                                                                    <tr>
+                                                                        <?php
+                                                                        if ($i % 2 == 0) { ?>
+                                                                            <td rowspan="2" class="hatdog">
+                                                                                <?php echo preg_replace('/[0-9]/', '', $BehaviorLabel['core_value_area']); ?>
+                                                                            </td>
+                                                                        <?php } ?>
+                                                                        <td class="hatdog"><?php echo $BehaviorLabel['core_value_subheading'] ?></td>
+                                                                        <td class="hatdog"></td>
+                                                                        <td class="hatdog"></td>
+                                                                        <td class="hatdog"></td>
+                                                                        <td class="hatdog"></td>
+                                                                    </tr>
+                                                                <?php
+                                                                    $i++;
+                                                                }
+                                                                ?>
                                                             <?php }
                                                             ?>
                                                         </tbody>
@@ -461,16 +494,16 @@ if (!isset($_SESSION['SR_number'])) {
                                                             <tbody>
                                                                 <tr>
                                                                     <td class="hatdog">No. of School Days</td>
-                                                                    <td class="hatdog">22</td>
-                                                                    <td class="hatdog">26</td>
-                                                                    <td class="hatdog">23</td>
-                                                                    <td class="hatdog">16</td>
-                                                                    <td class="hatdog">15</td>
-                                                                    <td class="hatdog">22</td>
-                                                                    <td class="hatdog">27</td>
-                                                                    <td class="hatdog">22</td>
-                                                                    <td class="hatdog">24</td>
-                                                                    <td class="hatdog">26</td>
+                                                                    <td class="hatdog"><?php echo countWeekdays(9, date('Y')) ?></td>
+                                                                    <td class="hatdog"><?php echo countWeekdays(10, date('Y')) ?></td>
+                                                                    <td class="hatdog"><?php echo countWeekdays(11, date('Y')) ?></td>
+                                                                    <td class="hatdog"><?php echo countWeekdays(12, date('Y')) ?></td>
+                                                                    <td class="hatdog"><?php echo countWeekdays(1, date('Y')) ?></td>
+                                                                    <td class="hatdog"><?php echo countWeekdays(2, date('Y')) ?></td>
+                                                                    <td class="hatdog"><?php echo countWeekdays(3, date('Y')) ?></td>
+                                                                    <td class="hatdog"><?php echo countWeekdays(4, date('Y')) ?></td>
+                                                                    <td class="hatdog"><?php echo countWeekdays(5, date('Y')) ?></td>
+                                                                    <td class="hatdog"><?php echo countWeekdays(6, date('Y')) ?></td>
                                                                     <td class="hatdog">223</td>
                                                                 </tr>
                                                                 <tr>

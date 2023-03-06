@@ -150,10 +150,11 @@ if (!isset($_SESSION['F_number'])) {
                                                             <div class="card-body">
                                                                 <div class="row">
                                                                     <?php
-                                                                    if (empty($getFacultyData['F_profile_img'])) { ?>
+                                                                    $profile_path = "../assets/img/profile/" . $getFacultyData['F_profile_img'];
+                                                                    if (empty($getFacultyData['F_profile_img']) || !file_exists($profile_path)) { ?>
                                                                         <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
                                                                     <?php } else { ?>
-                                                                        <img src="../assets/img/<?php echo $getFacultyData['F_profile_img'] ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
+                                                                        <img src="../assets/img/profile/<?php echo $getFacultyData['F_profile_img'] ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
                                                                     <?php }
                                                                     ?>
                                                                     <div class="col-8" style="align-self: center;">
@@ -245,7 +246,7 @@ if (!isset($_SESSION['F_number'])) {
                                                     </div>
                                                     <div class="row" style="padding: 20px 0px 0px 15px;">
                                                         <div class="col-lg-8 col-sm-12 grid-margin">
-                                                            <div class="card" >
+                                                            <div class="card">
                                                                 <div class="card-body">
                                                                     <div class="row">
                                                                         <div class="section-title section-title-sm position-relative pb-3 mb-4">

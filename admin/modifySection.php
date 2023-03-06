@@ -3,6 +3,22 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 }
+$checkQuarter = $mysqli->query("SELECT quarterStatus FROM sis_cdsp.quartertable WHERE quarterStatus = 'current'");
+if (mysqli_num_rows($checkQuarter) > 0) {
+    echo <<<EOT
+            <script>
+                document.addEventListener("DOMContentLoaded", function(event) { 
+                    swal.fire({
+                        text: 'This feature is currently disabled because the school year has already started.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                    }).then(() => {
+                        window.location.href = 'dashboard.php';
+                    });
+                });
+            </script>
+        EOT;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -269,8 +285,8 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                             <input type="text" class="form-control" name="sectionName" value="<?php echo $sectionData['S_name'] ?>">
                                                                                         </td>
                                                                                         <td>
-                                                                                            <input type="button" style="color: #ffffff;" class="btn btn-primary" value="Change Name" id="updateSection" name="updateSection">
-                                                                                            <input type="button" class="btn btn-secondary" value="DELETE" id="deleteSection" name="deleteSection">
+                                                                                            <input type="submit" style="color: #ffffff;" class="btn btn-primary" value="Change Name" id="updateSection" name="updateSection">
+                                                                                            <input type="submit" class="btn btn-secondary" value="DELETE" id="deleteSection" name="deleteSection">
                                                                                         </td>
                                                                                     </tr>
                                                                                 </form>
@@ -335,7 +351,7 @@ if (!isset($_SESSION['AD_number'])) {
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>
     <script src="../assets/js/admin/off-canvas.js"></script>
 
-    <script>
+    <!-- <script>
         const addSectionForm = document.getElementById('addSectionForm');
         const modifySectionForm = document.getElementById('modifySectionForm');
 
@@ -395,7 +411,7 @@ if (!isset($_SESSION['AD_number'])) {
                 }
             })
         })
-    </script>
+    </script> -->
 </body>
 
 </html>

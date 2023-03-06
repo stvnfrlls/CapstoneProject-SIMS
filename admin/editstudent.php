@@ -228,7 +228,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     <div class="col-sm-12">
                                                                         <div class="form-group">
                                                                             <div class="input-group col-xs-12">
-                                                                                <input type="file" class="form-control file-upload-info" placeholder="Upload Image">
+                                                                                <input type="file" class="form-control file-upload-info" name="image" placeholder="Upload Image" accept="image/*">
                                                                             </div>
                                                                         </div>
                                                                     </div>

@@ -111,7 +111,14 @@ if (!isset($_SESSION['SR_number'])) {
         <div class="col-lg-4">
           <div class="card mb-4">
             <div class="card-body text-center">
-              <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+              <?php
+              $profile_path = "../assets/img/profile/" . $studentInfo['SR_profile_img'];
+              if (empty($studentInfo['SR_profile_img']) || !file_exists($profile_path)) { ?>
+                <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
+              <?php } else { ?>
+                <img src="../assets/img/profile/<?php echo $studentInfo['SR_profile_img'] ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
+              <?php }
+              ?>
               <h5 class="my-3"><?php echo $Student_Fullname ?></h5>
               <p class="text-muted mb-1"><?php echo $studentInfo['SR_number'] ?></p>
               <p class="text-muted mb-4"><?php echo $studentInfo['SR_grade'] . " - " . $studentInfo['SR_section'] ?></p>
@@ -145,7 +152,7 @@ if (!isset($_SESSION['SR_number'])) {
                 while ($Schedule = $getSchedule->fetch_assoc()) { ?>
                   <p class="mb-1" style="font-size: .90rem;"><?php echo $Schedule['S_subject'] ?></p>
                   <div class="progress rounded" style="height: 25px;">
-                    <p style="font-size: .77rem; margin: 5px 0px 0px 7px">MONDAY-FRIDAY (<?php echo $Schedule['WS_start_time'] . " - " . $Schedule['WS_end_time'] ?>)</p>
+                    <p style="font-size: .77rem; margin: 5px 0px 0px 7px">MONDAY-FRIDAY (<?php echo date('H:i A', strtotime($Schedule['WS_start_time']))  . " - " . date('H:i A', strtotime(timePlusOneMinute($Schedule['WS_end_time']))) ?>)</p>
                   </div>
                 <?php }
               } else { ?>
@@ -161,27 +168,26 @@ if (!isset($_SESSION['SR_number'])) {
               <p class="mb-4" style="text-align: center; color:#c02628;">Fetchers</p>
               <div class="accordion-left">
                 <dl class="accordion">
-                  <dt>
-                    <a href="" style="font-size: 15px"> > Ricardo Dalisay</a>
-                  </dt>
-                  <dd>
-                    <h7>Contact Number: 0987 930 4832</h7>
-                    <p>Email Address: juandelacruz@gmail.com</p>
-                  </dd>
-                  <dt>
-                    <a href="" style="font-size: 15px"> > Juan Dela Cruz</a>
-                  </dt>
-                  <dd>
-                    <h7>Contact Number: 0987 930 4832</h7>
-                    <p>Email Address: juandelacruz@gmail.com</p>
-                  </dd>
-                  <dt>
-                    <a href="" style="font-size: 15px"> > Lolong</a>
-                  </dt>
-                  <dd>
-                    <h7>Contact Number: 0987 930 4832</h7>
-                    <p>Email Address: juandelacruz@gmail.com</p>
-                  </dd>
+                  <?php
+                  $getLinkedFetcher = $mysqli->query("SELECT * FROM fetcher_list WHERE FTH_linkedTo = '{$_SESSION['SR_number']}'");
+                  if (mysqli_num_rows($getLinkedFetcher) > 0) {
+                    while ($LinkedFetcher = $getLinkedFetcher->fetch_assoc()) { ?>
+                      <dt>
+                        <?php
+                        $getFetcherData = $mysqli->query("SELECT * FROM fetcher_data WHERE FTH_number = '{$LinkedFetcher['FTH_number']}'");
+                        $FetcherData = $getFetcherData->fetch_assoc();
+                        ?>
+                        <a href="" style="font-size: 15px"> > <?php echo $FetcherData['FTH_name'] ?></a>
+                      </dt>
+                      <dd>
+                        <h7>Contact Number: <?php echo $FetcherData['FTH_contactNo'] ?></h7>
+                        <p>Email Address: <?php echo $FetcherData['FTH_email'] ?></p>
+                      </dd>
+                    <?php }
+                  } else { ?>
+                    <p class="text-center">NO FETCHER ASSIGNED</p>
+                  <?php }
+                  ?>
                 </dl>
               </div>
             </div>
@@ -267,7 +273,15 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Guardian</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0"><?php echo $guardianInfo['G_lname'] .  ", " . $guardianInfo['G_fname'] . " " . substr($guardianInfo['G_mname'], 0, 1) . ". " . $guardianInfo['G_suffix']; ?></p>
+                  <p class="text-muted mb-0">
+                    <?php
+                    if (!isset($guardianInfo['G_lname'])) {
+                      echo "";
+                    } else {
+                      echo $guardianInfo['G_lname'] .  ", " . $guardianInfo['G_fname'] . " " . substr($guardianInfo['G_mname'], 0, 1) . ". " . $guardianInfo['G_suffix'];
+                    }
+                    ?>
+                  </p>
                 </div>
               </div>
               <hr>
@@ -288,7 +302,15 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Guardian Name</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0"><?php echo $guardianInfo['G_lname'] .  ", " . $guardianInfo['G_fname'] . " " . substr($guardianInfo['G_mname'], 0, 1) . ". " . $guardianInfo['G_suffix']; ?></p>
+                  <p class="text-muted mb-0">
+                    <?php
+                    if (!isset($guardianInfo['G_lname'])) {
+                      echo "";
+                    } else {
+                      echo $guardianInfo['G_lname'] .  ", " . $guardianInfo['G_fname'] . " " . substr($guardianInfo['G_mname'], 0, 1) . ". " . $guardianInfo['G_suffix'];
+                    }
+                    ?>
+                  </p>
                 </div>
               </div>
               <hr>
@@ -297,7 +319,15 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Relationship to Student</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0"><?php echo $guardianInfo['G_relationshipStudent'] ?></p>
+                  <p class="text-muted mb-0">
+                    <?php
+                    if (!isset($guardianInfo['G_relationshipStudent'])) {
+                      echo "";
+                    } else {
+                      echo $guardianInfo['G_relationshipStudent'];
+                    }
+                    ?>
+                  </p>
                 </div>
               </div>
               <hr>
@@ -306,7 +336,15 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Email Address</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0"><?php echo $guardianInfo['G_email'] ?></p>
+                  <p class="text-muted mb-0">
+                    <?php
+                    if (!isset($guardianInfo['G_email'])) {
+                      echo "";
+                    } else {
+                      echo $guardianInfo['G_email'];
+                    }
+                    ?>
+                  </p>
                 </div>
               </div>
               <hr>
@@ -315,7 +353,15 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Telephone Number</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0"><?php echo $guardianInfo['G_telephone'] ?></p>
+                  <p class="text-muted mb-0">
+                    <?php
+                    if (!isset($guardianInfo['G_telephone'])) {
+                      echo "";
+                    } else {
+                      echo $guardianInfo['G_telephone'];
+                    }
+                    ?>
+                  </p>
                 </div>
               </div>
               <hr>
@@ -324,7 +370,15 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Phone Number</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0"><?php echo $guardianInfo['G_contact'] ?></p>
+                  <p class="text-muted mb-0">
+                    <?php
+                    if (!isset($guardianInfo['G_contact'])) {
+                      echo "";
+                    } else {
+                      echo $guardianInfo['G_contact'];
+                    }
+                    ?>
+                  </p>
                 </div>
               </div>
               <hr>
@@ -333,7 +387,15 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Address</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0"><?php echo  $guardianInfo['G_address'] .  ", " . $guardianInfo['G_barangay'] . " " . $guardianInfo['G_city'] . ". " . $guardianInfo['G_state'] . " (" . $guardianInfo['G_postal'] . ")" ?></p>
+                  <p class="text-muted mb-0">
+                    <?php
+                    if (!isset($guardianInfo['G_address'])) {
+                      echo "";
+                    } else {
+                      echo $guardianInfo['G_address'] .  ", " . $guardianInfo['G_barangay'] . " " . $guardianInfo['G_city'] . ". " . $guardianInfo['G_state'] . " (" . $guardianInfo['G_postal'] . ")";
+                    }
+                    ?>
+                  </p>
                 </div>
               </div>
             </div>
