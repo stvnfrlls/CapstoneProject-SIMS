@@ -248,12 +248,9 @@ if (isset($_POST['student']) || isset($_POST['fetcher'])) {
     $time = date("H:i A");
 
     $studentID = $_POST['student'];
-    $fetcherID = $_POST['fetcher'];
 
-    if (empty($fetcherID)) {
-        $fetcherID = $studentID;
-    } else {
-        $fetcherID = $fetcherID;
+    if (isset($_POST['fetcher'])) {
+        $fetcherID = $_POST['fetcher'];
     }
 
     $checkAttendance = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$studentID}' AND A_date = '{$date}'");
@@ -274,18 +271,23 @@ if (isset($_POST['student']) || isset($_POST['fetcher'])) {
                        <b>Time: </b>' . $time . '<br>
                        <b>Date: </b>' . $date . '<br>';
         $mail->send();
-    } else if (empty($attendanceData['A_time_OUT']) || empty($attendanceData['A_fetcher_OUT'])) {
-        $timeOUT = $mysqli->query("UPDATE attendance SET A_time_OUT = '{$time}', A_fetcher_OUT = '{$fetcherID}' WHERE SR_number = '{$studentID}'");
-        $mail->addAddress($sendtoGuardian['G_email']);
-        $mail->Subject = 'Attendance: Time Out';
+    } else if (empty($attendanceData['A_time_OUT']) && empty($attendanceData['A_fetcher_OUT'])) {
+        $checkServiceType = $mysqli->query("SELECT SR_servicetype FROM studentrecord WHERE SR_number = '{$studentID}'");
+        $ServiceType = $checkServiceType->fetch_assoc();
+        if ($ServiceType['SR_servicetype'] == 'WITHFETCHER') {
+        } elseif ($ServiceType['SR_servicetype'] == 'NOFETCHER') {
+            $timeOUT = $mysqli->query("UPDATE attendance SET A_time_OUT = '{$time}', A_fetcher_OUT = '{$fetcherID}' WHERE SR_number = '{$studentID}'");
+            $mail->addAddress($sendtoGuardian['G_email']);
+            $mail->Subject = 'Attendance: Time Out';
 
-        $mail->Body = '<h1>Student Timed Out</h1>
+            $mail->Body = '<h1>Student Timed Out</h1>
                        <br>
                        <p>Attendance Detail</p><br>
                        <b>Fetched by: </b>' . $time . '<br>
                        <b>Date: </b>' . $date . '<br>
                        <b>Fetched By: </b>' . $fetcherID . '<br>';
-        $mail->send();
+            $mail->send();
+        }
     }
 }
 if (isset($_POST['encodeGrade'])) {
@@ -454,38 +456,42 @@ if (isset($_POST['addReminders'])) {
     $subject = $mysqli->real_escape_string($_POST['subject']);
     $forsection = $mysqli->real_escape_string($_POST['forsection']);
     $MSG = $mysqli->real_escape_string($_POST['MSG']);
-    $date = $mysqli->real_escape_string($_POST['date']);
+    $date = $_POST['date'];
     $dateposted = date("Y/m/d");
 
-    $addReminders = $mysqli->query("INSERT INTO reminders(acadYear, date_posted, author, subject, forsection, msg, deadline) VALUE ('{$currentSchoolYear}', '{$dateposted}', '{$author}','{$subject}', '{$forsection}', '{$MSG}', '{$date}')");
+    if (!empty($subject) && !empty($forsection) && !empty($MSG) && !empty($date)) {
+        $addReminders = $mysqli->query("INSERT INTO reminders(acadYear, date_posted, author, subject, forsection, msg, deadline) VALUE ('{$currentSchoolYear}', '{$dateposted}', '{$author}','{$subject}', '{$forsection}', '{$MSG}', '{$date}')");
 
-    if ($addReminders) {
-        $sendtoGuardianData = $mysqli->query("SELECT G_email FROM guardian WHERE G_guardianOfStudent 
+        if ($addReminders) {
+            $sendtoGuardianData = $mysqli->query("SELECT G_email FROM guardian WHERE G_guardianOfStudent 
                                             IN 
                                             (SELECT SR_number FROM classlist WHERE SR_section = '{$forsection}' AND acadYear = '{$currentSchoolYear}')");
-        $sendtoStudentData = $mysqli->query("SELECT SR_email FROM studentrecord WHERE SR_number 
+            $sendtoStudentData = $mysqli->query("SELECT SR_email FROM studentrecord WHERE SR_number 
                                             IN 
                                             (SELECT SR_number FROM classlist WHERE SR_section = '{$forsection}' AND acadYear = '{$currentSchoolYear}')");
-        if (mysqli_num_rows($sendtoGuardianData) > 0 && mysqli_num_rows($sendtoStudentData) > 0) {
-            while ($sendtoGuardian = $sendtoGuardianData->fetch_assoc()) {
-                $mail->addAddress($sendtoGuardian['G_email']);
-                $mail->Subject = $subject;
+            if (mysqli_num_rows($sendtoGuardianData) > 0 && mysqli_num_rows($sendtoStudentData) > 0) {
+                while ($sendtoGuardian = $sendtoGuardianData->fetch_assoc()) {
+                    $mail->addAddress($sendtoGuardian['G_email']);
+                    $mail->Subject = $subject;
 
-                $mail->Body = '<h1>Reminder</h1><br>
+                    $mail->Body = '<h1>Reminder</h1><br>
                                <p>' . $MSG . '</p><br>';
-                $mail->send();
-            }
-            while ($sendtoStudent = $sendtoStudentData->fetch_assoc()) {
-                $mail->addAddress($sendtoStudent['SR_email']);
-                $mail->Subject = $subject;
+                    $mail->send();
+                }
+                while ($sendtoStudent = $sendtoStudentData->fetch_assoc()) {
+                    $mail->addAddress($sendtoStudent['SR_email']);
+                    $mail->Subject = $subject;
 
-                $mail->Body = '<h1>Reminder</h1><br>
+                    $mail->Body = '<h1>Reminder</h1><br>
                                <p>' . $MSG . '</p><br>';
-                $mail->send();
+                    $mail->send();
+                }
+            } else {
+                showSweetAlert('No receiver.', 'error');
             }
-        } else {
-            showSweetAlert('Reminders posted but not sent to everyone.', 'info');
         }
+    } else {
+        showSweetAlert('Input is required.', 'error');
     }
 }
 if (isset($_POST['updateReminder'])) {
