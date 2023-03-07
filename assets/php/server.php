@@ -240,6 +240,15 @@ if (isset($_POST['editStudentProfile'])) {
         }
     }
 }
+if (isset($_POST['markAsDone'])) {
+    $remindersID = $mysqli->real_escape_string($_GET['ID']);
+    $SR_number = $_SESSION['SR_number'];
+    $author = $_POST['author'];
+    $viewedDate = date('Y-m-d H:i A');
+
+    $mysqli->query("INSERT INTO reminder_status(reminderID, author, SR_number, viewed_date) VALUES ('{$remindersID}', '{$author}', '{$SR_number}', '{$viewedDate}')");
+    showSweetAlert('Marked as done!', 'success');
+}
 
 //Faculty Process
 if (isset($_POST['student'])) {
@@ -361,35 +370,63 @@ if (isset($_POST['encodeGrade'])) {
 }
 if (isset($_POST['saveBehavior'])) {
     $ids = $_POST['row'];
-    $forms_SR_number = $_GET['viewStudent'];
+    $forms_SR_number = $_GET['ID'];
     $forms_CV_Area = $_POST['CV_Area'];
+    $F_number = $_SESSION['F_number'];
+    $SR_grade = $_POST['SR_grade'];
+    $SR_section = $_POST['SR_section'];
 
-    $forms_CV_valueQ1 = $_POST['CV_valueQ1'];
-    $forms_CV_valueQ2 = $_POST['CV_valueQ2'];
-    $forms_CV_valueQ3 = $_POST['CV_valueQ3'];
-    $forms_CV_valueQ4 = $_POST['CV_valueQ4'];
+    if (isset($_POST['CV_valueQ1'])) {
+        $forms_CV_valueQ1 = $_POST['CV_valueQ1'];
+        foreach ($ids as $i => $id) {
+            $SR_number = $forms_SR_number;
 
-    foreach ($ids as $i => $id) {
-        $SR_number = $forms_SR_number;
-        $CV_Area = $forms_CV_Area[$i];
-        $CV_valueQ1 = $forms_CV_valueQ1[$i];
-        $CV_valueQ2 = $forms_CV_valueQ2[$i];
-        $CV_valueQ3 = $forms_CV_valueQ3[$i];
-        $CV_valueQ4 = $forms_CV_valueQ4[$i];
+            $CV_Area = $forms_CV_Area[$i];
+            $CV_valueQ1 = $forms_CV_valueQ1[$i];
 
-        $check_existing_behaviorData = $mysqli->query("SELECT * FROM behavior WHERE SR_number = '{$SR_number}'");
-        if ($check_existing_behaviorData->num_rows > 0) {
-            $updateBehavior = $mysqli->query("UPDATE behavior SET CV_valueQ1 = '$CV_valueQ1', CV_valueQ2 = '$CV_valueQ2', CV_valueQ3 = '$CV_valueQ3', CV_valueQ4 = '$CV_valueQ4' 
-                                                WHERE SR_number = '$SR_number' AND CV_Area = '$CV_Area'");
-        } else if ($check_existing_behaviorData->num_rows == 0) {
-            $updateBehavior = $mysqli->query("INSERT INTO behavior 
-                                            (SR_number, CV_Area, CV_valueQ1, CV_valueQ2, CV_valueQ3, CV_valueQ4) 
-                                            VALUES 
-                                            ('$SR_number', '$CV_Area', '$CV_valueQ1', '$CV_valueQ2', '$CV_valueQ3', '$CV_valueQ4')");
-        } else {
-            echo "error";
+            $checkIfGraded = $mysqli->query("SELECT * FROM behavior WHERE SR_number = '{$SR_number}' AND acadYear = '{$currentSchoolYear}' AND CV_Area = '{$CV_Area}'");
+            if (mysqli_num_rows($checkIfGraded) > 0) {
+                $mysqli->query("UPDATE behavior SET CV_valueQ1 = '{$CV_valueQ1}' WHERE SR_number = '{$SR_number}' AND CV_Area = '{$CV_Area}'");
+            } else {
+                $mysqli->query("INSERT INTO behavior (F_number, acadYear, SR_number, SR_grade, SR_section, CV_Area, CV_valueQ1)
+                                VALUES('$F_number', '$currentSchoolYear', '$SR_number', '$SR_grade', '$SR_section', '$CV_Area', '$CV_valueQ1')");
+            }
         }
     }
+    if (isset($_POST['CV_valueQ2'])) {
+        $forms_CV_valueQ2 = $_POST['CV_valueQ2'];
+        foreach ($ids as $i => $id) {
+            $SR_number = $forms_SR_number;
+
+            $CV_Area = $forms_CV_Area[$i];
+            $CV_valueQ2 = $forms_CV_valueQ2[$i];
+
+            $mysqli->query("UPDATE behavior SET CV_valueQ2 = '{$CV_valueQ2}' WHERE SR_number = '{$SR_number}' AND CV_Area = '{$CV_Area}'");
+        }
+    }
+    if (isset($_POST['CV_valueQ3'])) {
+        $forms_CV_valueQ3 = $_POST['CV_valueQ3'];
+        foreach ($ids as $i => $id) {
+            $SR_number = $forms_SR_number;
+
+            $CV_Area = $forms_CV_Area[$i];
+            $CV_valueQ3 = $forms_CV_valueQ3[$i];
+
+            $mysqli->query("UPDATE behavior SET CV_valueQ3 = '{$CV_valueQ3}' WHERE SR_number = '{$SR_number}' AND CV_Area = '{$CV_Area}'");
+        }
+    }
+    if (isset($_POST['CV_valueQ4'])) {
+        $forms_CV_valueQ4 = $_POST['CV_valueQ4'];
+        foreach ($ids as $i => $id) {
+            $SR_number = $forms_SR_number;
+
+            $CV_Area = $forms_CV_Area[$i];
+            $CV_valueQ4 = $forms_CV_valueQ4[$i];
+
+            $mysqli->query("UPDATE behavior SET CV_valueQ4 = '{$CV_valueQ4}' WHERE SR_number = '{$SR_number}' AND CV_Area = '{$CV_Area}'");
+        }
+    }
+    showSweetAlert('Encoded student behavior', 'success');
 }
 if (isset($_POST['updateProfile'])) {
     if (isset($_FILES['image'])) {
@@ -522,6 +559,11 @@ if (isset($_POST['updateReminder'])) {
     } else {
         showSweetAlert('Failed to update reminder.', 'error');
     }
+}
+if (isset($_POST['delReminder'])) {
+    $mysqli->query("DELETE FROM reminders WHERE reminderID = '{$_GET['ID']}' AND author = '{$_SESSION['F_number']}'");
+    showSweetAlert('Reminder is successfully deleted', 'success');
+    header('Location: reminders.php');
 }
 if (isset($_POST['attendanceReport']) && isset($_SESSION['F_number'])) {
     $F_number = $_SESSION['F_number'];
