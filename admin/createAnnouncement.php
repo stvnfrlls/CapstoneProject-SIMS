@@ -224,7 +224,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <div class="form-floating">
-                                                                            <input type="email" class="form-control" name="date" value="<?php echo  date('m/d/Y') ?>" readonly>
+                                                                            <input type="date" class="form-control" value="<?php echo date('Y-m-d') ?>" readonly>
                                                                             <label for="email">Date Posted</label>
                                                                         </div>
                                                                     </div>
@@ -237,13 +237,13 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     </div>
                                                                     <div class="col-6">
                                                                         <div class="form-floating">
-                                                                            <input type="date" class="form-control" name="date" value="<?php echo  date('M/d/Y') ?>">
+                                                                            <input type="date" class="form-control" name="date" required>
                                                                             <label for="email">Date of the Event</label>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-12">
                                                                         <div class="form-floating">
-                                                                            <textarea class="form-control" placeholder="Leave a message here" id="message" name="message" style="height: 250px"></textarea>
+                                                                            <textarea class="form-control" placeholder="Leave a message here" id="message" name="message" style="height: 250px" required></textarea>
                                                                             <label for="message">Description</label>
                                                                         </div>
                                                                     </div>
@@ -313,12 +313,7 @@ if (!isset($_SESSION['AD_number'])) {
                 cancelButtonText: `No`,
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Swal.fire({
-                        title: 'Form submitted!',
-                        icon: 'success',
-                    }).then(() => {
-                        form.submit();
-                    });
+                    form.submit();
                 }
             })
         })
