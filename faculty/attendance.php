@@ -154,27 +154,29 @@ if (!isset($_SESSION['F_number'])) {
                     <div class="row">
                       <div class="col-12 grid-margin">
                         <div class="btn-group">
-                          <button class="btn btn-secondary" style="background-color: #e4e3e3;" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            <?php
-                            if (isset($_GET['section']) && isset($_GET['subject'])) {
-                              echo "Section: " . $_GET['section'] . " - " . $_GET['subject'] . "  ";
-                            } else {
-                              echo "Grade - Section : Subject ";
-                            }
-                            ?><i class="fa fa-caret-down"></i>
-                          </button>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                            <?php
-                            $getworkSchedule = $mysqli->query("SELECT S_subject, SR_grade, SR_section FROM workschedule WHERE acadYear = '{$currentSchoolYear}' AND F_number = '{$_SESSION['F_number']}'");
-                            if (mysqli_num_rows($getworkSchedule) > 0) {
-                              while ($workSchedule = $getworkSchedule->fetch_assoc()) { ?>
-                                <a class="dropdown-item" href="attendance.php?section=<?php echo $workSchedule['SR_section'] ?>&subject=<?php echo $workSchedule['S_subject'] ?>">
-                                  <?php echo $workSchedule['SR_grade'] . " - " . $workSchedule['SR_section'] . " - " . $workSchedule['S_subject'] ?>
-                                </a>
-                              <?php }
-                            } else { ?>
-                              <a class="dropdown-item" href="attendance.php">No schedule assigned</a>
-                            <?php } ?>
+                          <div>
+                            <button class="btn btn-secondary" style="background-color: #e4e3e3;" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                              <?php
+                              if (isset($_GET['section']) && isset($_GET['subject'])) {
+                                echo "Section: " . $_GET['section'] . " - " . $_GET['subject'] . "  ";
+                              } else {
+                                echo "Grade - Section : Subject ";
+                              }
+                              ?><i class="fa fa-caret-down"></i>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                              <?php
+                              $getworkSchedule = $mysqli->query("SELECT S_subject, SR_grade, SR_section FROM workschedule WHERE acadYear = '{$currentSchoolYear}' AND F_number = '{$_SESSION['F_number']}'");
+                              if (mysqli_num_rows($getworkSchedule) > 0) {
+                                while ($workSchedule = $getworkSchedule->fetch_assoc()) { ?>
+                                  <a class="dropdown-item" href="attendance.php?section=<?php echo $workSchedule['SR_section'] ?>&subject=<?php echo $workSchedule['S_subject'] ?>">
+                                    <?php echo $workSchedule['SR_grade'] . " - " . $workSchedule['SR_section'] . " - " . $workSchedule['S_subject'] ?>
+                                  </a>
+                                <?php }
+                              } else { ?>
+                                <a class="dropdown-item" href="attendance.php">No schedule assigned</a>
+                              <?php } ?>
+                            </div>
                           </div>
                         </div>
                       </div>

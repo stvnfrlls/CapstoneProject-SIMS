@@ -22,13 +22,13 @@ if (!isset($_SESSION['SR_number'])) {
 
 <head>
     <meta charset="utf-8">
-    <title>Student - Report Card</title>
+    <title>Report Card</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="" name="keywords">
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link href="../assets/img/favicon.png" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -87,7 +87,7 @@ if (!isset($_SESSION['SR_number'])) {
                     <div class="dropdown-menu bg-dark border-0 m-0">
                         <a href="../student/dashboard.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Dashboard</a>
                         <a href="../student/profile.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Profile</a>
-                        <a href="../student/grades.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Grades</a>
+                        <a href="../student/grades.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Report Card</a>
                         <a href="../student/dailyAttendance.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Attendance</a>
                         <a href="../student/reminders.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Reminders</a>
                         <a href="../student/announcement.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">School Announcements</a>
@@ -294,61 +294,61 @@ if (!isset($_SESSION['SR_number'])) {
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                            </div>
-                                        </div>
 
-                                    </div>
-                                </div>
+                                                <div class="row">
+                                                    <div class="col-12" style="float:right;">
+                                                        <table id="ave" class="table text-center" style="margin-top: 20px; margin-bottom: 20px;">
+                                                            <tr>
+                                                                <td class="hatdog">General Average</td>
+                                                                <td class="hatdog">
+                                                                    <?php
+                                                                    $GenAveQuery = $mysqli->query("SELECT round(avg(G_finalgrade)) FROM grades WHERE SR_number = '{$_SESSION['SR_number']}' AND acadYear = '{$currentSchoolYear}'");
+                                                                    $GetgenAve = $GenAveQuery->fetch_assoc();
+                                                                    echo $GetgenAve['round(avg(G_finalgrade))'];
+                                                                    ?>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
 
-                                <div class="row">
-                                    <div class="col-12" style="float:right;">
-                                        <table id="ave" class="table text-center" style="margin-top: 20px; margin-bottom: 20px;">
-                                            <tr>
-                                                <td class="hatdog">General Average</td>
-                                                <td class="hatdog">
-                                                    <?php
-                                                    $GenAveQuery = $mysqli->query("SELECT round(avg(G_finalgrade)) FROM grades WHERE SR_number = '{$_SESSION['SR_number']}' AND acadYear = '{$currentSchoolYear}'");
-                                                    $GetgenAve = $GenAveQuery->fetch_assoc();
-                                                    echo $GetgenAve['round(avg(G_finalgrade))'];
-                                                    ?>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 grid-margin">
+                                                        <div class="container">
+                                                            <div id="remarkshead" class="row fw-bold">
+                                                                <div class="col">Descriptors</div>
+                                                                <div class="col">Grading Scale</div>
+                                                                <div class="col">Remarks</div>
+                                                            </div>
+                                                            <div id="remarks" class="row fw-light">
+                                                                <div class="col">Outstanding</div>
+                                                                <div class="col">90-100</div>
+                                                                <div class="col">Passed</div>
+                                                            </div>
+                                                            <div id="remarks" class="row fw-light">
+                                                                <div class="col">Very Satisfactory</div>
+                                                                <div class="col">85-89</div>
+                                                                <div class="col">Passed</div>
+                                                            </div>
+                                                            <div id="remarks" class="row fw-light">
+                                                                <div class="col">Satisfactory</div>
+                                                                <div class="col">80-84</div>
+                                                                <div class="col">Passed</div>
+                                                            </div>
+                                                            <div id="remarks" class="row fw-light">
+                                                                <div class="col">Fairly Satisfactory</div>
+                                                                <div class="col">75-79</div>
+                                                                <div class="col">Passed</div>
+                                                            </div>
+                                                            <div id="remarks" class="row fw-light">
+                                                                <div class="col">Did Not Meet Expectations</div>
+                                                                <div class="col">Below 75</div>
+                                                                <div class="col">Failed</div>
+                                                            </div>
+                                                        </div>
 
-                                <div class="row">
-                                    <div class=" col-12">
-                                        <div class="container">
-                                            <div id="remarkshead" class="row fw-bold">
-                                                <div class="col">Descriptors</div>
-                                                <div class="col">Grading Scale</div>
-                                                <div class="col">Remarks</div>
-                                            </div>
-                                            <div id="remarks" class="row fw-light">
-                                                <div class="col">Outstanding</div>
-                                                <div class="col">90-100</div>
-                                                <div class="col">Passed</div>
-                                            </div>
-                                            <div id="remarks" class="row fw-light">
-                                                <div class="col">Very Satisfactory</div>
-                                                <div class="col">85-89</div>
-                                                <div class="col">Passed</div>
-                                            </div>
-                                            <div id="remarks" class="row fw-light">
-                                                <div class="col">Satisfactory</div>
-                                                <div class="col">80-84</div>
-                                                <div class="col">Passed</div>
-                                            </div>
-                                            <div id="remarks" class="row fw-light">
-                                                <div class="col">Fairly Satisfactory</div>
-                                                <div class="col">75-79</div>
-                                                <div class="col">Passed</div>
-                                            </div>
-                                            <div id="remarks" class="row fw-light">
-                                                <div class="col">Did Not Meet Expectations</div>
-                                                <div class="col">Below 75</div>
-                                                <div class="col">Failed</div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -435,38 +435,40 @@ if (!isset($_SESSION['SR_number'])) {
                                                         </tbody>
                                                     </table>
                                                 </div>
+
+                                                <div class="row" style="margin-top: 20px;">
+                                                    <div>
+                                                        <div class="container">
+                                                            <div id="remarkshead" class="row fw-bold">
+                                                                <div class="col">Marking</div>
+                                                                <div class="col">Non-Numerical Rating</div>
+                                                            </div>
+                                                            <div id="remarks" class="row fw-light">
+                                                                <div class="col">AO</div>
+                                                                <div class="col">Always Observed</div>
+                                                            </div>
+                                                            <div id="remarks" class="row fw-light">
+                                                                <div class="col">SO</div>
+                                                                <div class="col">Sometimes Observed</div>
+                                                            </div>
+                                                            <div id="remarks" class="row fw-light">
+                                                                <div class="col">RO</div>
+                                                                <div class="col">Rarely Observed</div>
+                                                            </div>
+                                                            <div id="remarks" class="row fw-light">
+                                                                <div class="col">NO</div>
+                                                                <div class="col">Not Observed</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
 
                                     </div>
                                 </div>
 
-                                <div class="row" style="margin-top: 20px;">
-                                    <div>
-                                        <div class="container">
-                                            <div id="remarkshead" class="row fw-bold">
-                                                <div class="col">Marking</div>
-                                                <div class="col">Non-Numerical Rating</div>
-                                            </div>
-                                            <div id="remarks" class="row fw-light">
-                                                <div class="col">AO</div>
-                                                <div class="col">Always Observed</div>
-                                            </div>
-                                            <div id="remarks" class="row fw-light">
-                                                <div class="col">SO</div>
-                                                <div class="col">Sometimes Observed</div>
-                                            </div>
-                                            <div id="remarks" class="row fw-light">
-                                                <div class="col">RO</div>
-                                                <div class="col">Rarely Observed</div>
-                                            </div>
-                                            <div id="remarks" class="row fw-light">
-                                                <div class="col">NO</div>
-                                                <div class="col">Not Observed</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+
 
                                 <div class="row">
                                     <div>
