@@ -154,15 +154,24 @@ if (!isset($_SESSION['F_number'])) {
                             <div style="margin-bottom: 30px;">
                               <div class="btn-group">
                                 <div>
-                                  <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">Academic Year
+                                  <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                                    <?php
+                                    if (isset($_GET['SY'])) {
+                                      echo "School Year: " . $_GET['SY'];
+                                    } else {
+                                      echo "School Year: " . $currentSchoolYear;
+                                    }
+                                    ?>
                                     <i class="fa fa-caret-down"></i>
                                   </button>
                                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                     <?php
                                     $getAcadYears = $mysqli->query("SELECT DISTINCT acadYear FROM classlist WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
-                                    while ($acadYears = $getAcadYears->fetch_assoc()) { ?>
-                                      <a class="dropdown-item" href="classlist.php?SY=<?php echo $acadYears['acadYear'] ?>"><?php echo $acadYears['acadYear'] ?></a>
-                                    <?php }
+                                    while ($acadYears = $getAcadYears->fetch_assoc()) {
+                                      if ($acadYears['acadYear'] != $currentSchoolYear) {
+                                        echo '<a class="dropdown-item" href="student.php?SY=' . $acadYears['acadYear'] . '">' . $acadYears['acadYear'] . '</a>';
+                                      }
+                                    }
                                     ?>
                                   </div>
                                 </div>
@@ -170,7 +179,11 @@ if (!isset($_SESSION['F_number'])) {
                               <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
                                 <?php
                                 if (isset($_GET['Grade']) && isset($_GET['Section'])) {
-                                  echo "Grade " . $_GET['Grade'] . " - " . $_GET['Section'];
+                                  if ($_GET['Grade'] == 'KINDER') {
+                                    echo $_GET['Grade'] . " - " . $_GET['Section'];
+                                  } else {
+                                    echo "Grade " . $_GET['Grade'] . " - " . $_GET['Section'];
+                                  }
                                 } else {
                                   echo "Grade and Section ";
                                 }

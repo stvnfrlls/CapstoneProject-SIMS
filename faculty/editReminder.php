@@ -10,6 +10,9 @@ if (!isset($_SESSION['F_number'])) {
   $getSubjects = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
 
   $getGradeSection = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
+
+  $getReminderInfo = $mysqli->query("SELECT * FROM reminders WHERE reminderID = '{$_GET['ID']}' AND author = '{$_SESSION['F_number']}'");
+  $reminderInfo = $getReminderInfo->fetch_assoc();
 }
 ?>
 
@@ -18,7 +21,7 @@ if (!isset($_SESSION['F_number'])) {
 
 <head>
   <meta charset="utf-8">
-  <title>Faculty - Create Reminder</title>
+  <title>Faculty - Edit Reminder</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta content="" name="keywords">
   <meta content="" name="description">
@@ -167,14 +170,20 @@ if (!isset($_SESSION['F_number'])) {
                                   </div>
                                   <div class="col-md-6">
                                     <div class="form-floating">
-                                      <input type="date" class="form-control" name="date" required>
+                                      <input type="date" class="form-control" name="date" value="<?php echo date('Y-m-d', strtotime($reminderInfo['deadline'])) ?>" required>
                                       <label for="email">Deadline</label>
                                     </div>
                                   </div>
                                   <div class="col-6">
                                     <div class="form-floating">
                                       <select class="form-select" name="forsection" id="forsection" required>
-                                        <option selected></option>
+                                        <?php
+                                        if (!empty($reminderInfo['forsection'])) {
+                                          echo '<option selected>' . $reminderInfo['forsection'] . '</option>';
+                                        } else {
+                                          echo '<option selected></option>';
+                                        }
+                                        ?>
                                         <?php
                                         if (mysqli_num_rows($getGradeSection) > 0) {
                                           while ($GradeSection = $getGradeSection->fetch_assoc()) { ?>
@@ -192,7 +201,13 @@ if (!isset($_SESSION['F_number'])) {
                                   <div class="col-6">
                                     <div class="form-floating">
                                       <select class="form-select" name="subject" id="subject" placeholder="Subject" required>
-                                        <option selected></option>
+                                        <?php
+                                        if (!empty($reminderInfo['subject'])) {
+                                          echo '<option selected>' . $reminderInfo['subject'] . '</option>';
+                                        } else {
+                                          echo '<option selected></option>';
+                                        }
+                                        ?>
                                         <?php
                                         if (mysqli_num_rows($getSubjects) > 0) {
                                           while ($subjects = $getSubjects->fetch_assoc()) { ?>
@@ -209,7 +224,7 @@ if (!isset($_SESSION['F_number'])) {
                                   </div>
                                   <div class="col-12">
                                     <div class="form-floating">
-                                      <textarea class="form-control" placeholder="Leave a message here" id="message" name="MSG" style="height: 200px" required></textarea>
+                                      <textarea class="form-control" id="message" name="MSG" style="height: 200px" required><?php echo $reminderInfo['msg'] ?></textarea>
                                       <label for="message">Details</label>
                                     </div>
                                   </div>
@@ -224,8 +239,8 @@ if (!isset($_SESSION['F_number'])) {
                 </div>
               </div>
               <div style="text-align: center;">
-                <input type="hidden" name="addReminders" value="submit">
-                <button type="button" id="addReminders" class="btn btn-primary me-2">Submit</button>
+                <input type="hidden" name="updateReminder" value="submit">
+                <button type="button" id="updateReminder" class="btn btn-primary me-2">Update Reminder</button>
                 <button type="button" class="btn btn-light">Cancel</button>
               </div>
             </div>
@@ -262,12 +277,12 @@ if (!isset($_SESSION['F_number'])) {
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
   <script>
-    const addReminders = document.getElementById('addReminders');
+    const updateReminder = document.getElementById('updateReminder');
     const reminderForm = document.getElementById('reminderForm');
 
-    addReminders.addEventListener('click', function() {
+    updateReminder.addEventListener('click', function() {
       Swal.fire({
-        title: 'Are you sure you want to create this reminder?',
+        title: 'Are you sure you want to update this reminder?',
         showCancelButton: true,
         confirmButtonText: 'Yes',
         cancelButtonText: `No`,
@@ -275,17 +290,15 @@ if (!isset($_SESSION['F_number'])) {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
           reminderForm.submit();
-          setTimeout(() => {
-            Swal.fire({
-              title: 'Successfully saved!',
-              icon: 'success',
-            }).then((result) => {
-              /* Read more about isConfirmed, isDenied below */
-              if (result.isConfirmed) {
-                window.location.href = '../faculty/reminders.php';
-              }
-            })
-          }, 3000);
+          Swal.fire({
+            title: 'Successfully updated!',
+            icon: 'success',
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              window.location.href = '../faculty/reminders.php';
+            }
+          })
         }
       })
     })

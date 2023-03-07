@@ -156,25 +156,6 @@ if (!isset($_SESSION['F_number'])) {
                                 </div>
                                 <div class="tab-content tab-content-basic">
                                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-
-                                        <div class="row">
-                                            <form class="form-sample">
-                                                <div class="col-12 grid-margin">
-                                                    <div class="row">
-                                                        <div class="col-lg-4" style="margin: auto; text-align:center;">
-                                                            <label class="col-sm-12 col-form-label">Student Number</label>
-                                                            <div class="col-sm-12">
-                                                                <input type="text" class="form-control" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div style="text-align: center; padding-top: 0px;">
-                                                    <input type="button" style="color:#ffffff;" class="btn btn-primary me-2" name="confirm_student" value="Enter">
-                                                </div>
-                                            </form>
-                                        </div>
-
                                         <div class="row">
                                             <div class="col-12 grid-margin">
                                                 <form class="form-sample">

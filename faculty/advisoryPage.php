@@ -165,7 +165,16 @@ if (!isset($_SESSION['F_number'])) {
                           <div class="card-body">
                             <?php
                             if (mysqli_num_rows($getSectionInfo) > 0) { ?>
-                              <h3><?php echo "Grade " . $SectionData['S_yearLevel'] . " - " . $SectionData['S_name']; ?></h3>
+                              <h3>
+                                <?php
+                                if ($SectionData['S_yearLevel'] == 'KINDER') {
+                                  echo $SectionData['S_yearLevel'] . " - " . $SectionData['S_name'];
+                                } else {
+                                  echo "Grade " . $SectionData['S_yearLevel'] . " - " . $SectionData['S_name'];
+                                }
+
+                                ?>
+                              </h3>
                               <p style="margin-bottom: 5px;"><?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1); ?></p>
                               <p style="margin-bottom: 5px;">School Year: <?php echo $currentSchoolYear ?></p>
                             <?php } else { ?>
@@ -188,9 +197,9 @@ if (!isset($_SESSION['F_number'])) {
                                   <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
                                     <?php
                                     if (isset($_GET['SY'])) {
-                                      echo "S.Y. " . $_GET['SY'];
+                                      echo "School Year: " . $_GET['SY'];
                                     } else {
-                                      echo "Academic Year";
+                                      echo "School Year: " . $currentSchoolYear;
                                     }
                                     ?>
                                     <i class="fa fa-caret-down"></i>
@@ -198,9 +207,11 @@ if (!isset($_SESSION['F_number'])) {
                                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                     <?php
                                     $getAcadYear = $mysqli->query("SELECT DISTINCT(acadYear) FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'");
-                                    while ($acadYearData = $getAcadYear->fetch_assoc()) { ?>
-                                      <a class="dropdown-item" href="advisoryPage.php?SY=<?php echo $acadYearData['acadYear'] ?>"><?php echo $acadYearData['acadYear']; ?></a>
-                                    <?php }
+                                    while ($acadYearData = $getAcadYear->fetch_assoc()) {
+                                      if ($acadYearData['acadYear'] != $currentSchoolYear) {
+                                        echo '<a class="dropdown-item" href="advisoryPage.php?SY=' . $acadYearData['acadYear'] . '">' . $acadYearData['acadYear'] . '</a>';
+                                      }
+                                    }
                                     ?>
                                   </div>
                                 </div>

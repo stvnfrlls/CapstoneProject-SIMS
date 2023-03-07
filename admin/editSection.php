@@ -228,12 +228,11 @@ if (mysqli_num_rows($checkQuarter) > 0) {
                                                         if ($_GET['grade'] == 'KINDER') {
                                                             echo $_GET['grade'];
                                                         } else {
-                                                            echo "GR." . $_GET['grade'];
+                                                            echo "Grade " . $_GET['grade'];
                                                         }
                                                     } else {
                                                         echo "Grade";
                                                     }
-
                                                     ?>
                                                     <i class="fa fa-caret-down"></i>
                                                 </button>
@@ -242,8 +241,13 @@ if (mysqli_num_rows($checkQuarter) > 0) {
                                                     $getgradelevel = $mysqli->query("SELECT DISTINCT(S_yearLevel) FROM sections");
                                                     while ($gradeLevel = $getgradelevel->fetch_assoc()) { ?>
                                                         <a class="dropdown-item" href="editSection.php?grade=<?php echo $gradeLevel['S_yearLevel'] ?>">
-                                                            Grade
-                                                            <?php echo $gradeLevel['S_yearLevel'] ?>
+                                                            <?php
+                                                            if ($gradeLevel['S_yearLevel'] == 'KINDER') {
+                                                                echo $gradeLevel['S_yearLevel'];
+                                                            } else {
+                                                                echo "Grade " . $gradeLevel['S_yearLevel'];
+                                                            }
+                                                            ?>
                                                         </a>
                                                     <?php }
                                                     ?>
@@ -338,7 +342,13 @@ if (mysqli_num_rows($checkQuarter) > 0) {
 
                                                                                             </td>
                                                                                             <td class="hatdog">
-                                                                                                <?php echo "Grade " . $ClasslistData['SR_grade'] . " - " . $ClasslistData['SR_section'] ?>
+                                                                                                <?php
+                                                                                                if ($ClasslistData['SR_grade'] == 'KINDER') {
+                                                                                                    echo $ClasslistData['SR_grade'] . " - " . $ClasslistData['SR_section'];
+                                                                                                } else {
+                                                                                                    echo "Grade " . $ClasslistData['SR_grade'] . " - " . $ClasslistData['SR_section'];
+                                                                                                }
+                                                                                                ?>
                                                                                             </td>
                                                                                             <td class="hatdog">
                                                                                                 <?php

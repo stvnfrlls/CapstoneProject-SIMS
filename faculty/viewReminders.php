@@ -148,7 +148,7 @@ if (!isset($_SESSION['F_number'])) {
                 </div>
 
                 <form style="text-align: right; margin-top: 30px; margin-right: 20px;">
-                  <button type="submit" style="color: #ffffff;" class="btn btn-primary me-2">Edit <i class="fa fa-edit" style="font-size: 10px;"></i></button>
+                  <a href="editReminder.php?ID=<?php echo $_GET['ID'] ?>" style="color: #ffffff;" class="btn btn-primary me-2">Edit <i class="fa fa-edit" style="font-size: 10px;"></i></a>
                   <button type="submit" style="color: #ffffff;" class="btn btn-primary me-2">Delete <i class="fa fa-trash" style="font-size: 10px;"></i></button>
                 </form>
 

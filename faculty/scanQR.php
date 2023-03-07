@@ -40,10 +40,6 @@ if (!isset($_SESSION['F_number'])) {
 
     <link href="../assets/img/favicon.png" rel="icon">
 
-    <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/3.3.3/adapter.min.js"></script>
-
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -62,6 +58,9 @@ if (!isset($_SESSION['F_number'])) {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'>
     </link>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/3.3.3/adapter.min.js"></script>
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
@@ -212,142 +211,10 @@ if (!isset($_SESSION['F_number'])) {
                                                     }
                                                 </style>
                                             </form>
-
-                                            <!-- modal para sa timein and out -->
-                                            <div id="myModal1" class="modal">
-                                                <style>
-                                                    @media (max-width: 414px) {
-                                                        .modal-content {
-                                                            width: 90% !important;
-                                                        }
-                                                    }
-
-                                                    @media (max-width: 768px) {
-                                                        .modal-content {
-                                                            width: 90% !important;
-                                                        }
-                                                    }
-
-                                                    @media (max-width: 1024px) {
-                                                        .modal-content {
-                                                            width: 70% !important;
-                                                        }
-                                                    }
-
-                                                    .modal-content {
-                                                        width: 30%;
-                                                    }
-
-                                                    .close1 {
-                                                        color: black;
-                                                        float: right;
-                                                        font-size: 20px;
-                                                        font-weight: normal;
-                                                    }
-                                                </style>
-                                                <!-- Modal content -->
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h2 style="font-family: 'Lato','san-serif'; text-align:center;">Successful!</h2>
-                                                        <span class="close1"><i class="fa fa-times"></i></span>
-                                                    </div>
-                                                    <div class="modal-body" style="text-align: center;">
-                                                        <img src="https://cdn.onlinewebfonts.com/svg/img_2555.png" alt="cookies-img" height="90" width="400" />
-                                                        <p id="modal1Ptag"></p>
-                                                        <div class="row d-flex justify-content-center mb-3">
-                                                            <div class="col text-center form-group form">
-                                                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="qr_form" class="form-horizontal">
-                                                                    <input type="hidden" name="student" id="input1">
-                                                                    <input type="hidden" name="fetcher" id="input2">
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- modal para sa pang verify ng fetcher -->
-
-                                            <div id="myModal2" class="modal" style="display: none;">
-                                                <style>
-                                                    @media (max-width: 414px) {
-                                                        .modal-content {
-                                                            width: 90% !important;
-                                                        }
-                                                    }
-
-                                                    @media (max-width: 768px) {
-                                                        .modal-content {
-                                                            width: 90% !important;
-                                                        }
-                                                    }
-
-                                                    @media (max-width: 1024px) {
-                                                        .modal-content {
-                                                            width: 70% !important;
-                                                        }
-                                                    }
-
-                                                    .modal-content {
-                                                        width: 30%;
-                                                    }
-
-
-                                                    .close2 {
-                                                        color: black;
-                                                        float: right;
-                                                        font-size: 20px;
-                                                        font-weight: normal;
-                                                    }
-                                                </style>
-                                                <!-- Modal content -->
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h2 style="font-family: 'Lato','san-serif'; text-align:center;">Alert!</h2>
-                                                        <span class="close2"><i class="fa fa-times"></i></span>
-                                                    </div>
-                                                    <div class="modal-body" style="text-align: center;">
-                                                        <img src="https://cdn.onlinewebfonts.com/svg/img_2555.png" alt="cookies-img" height="90" width="400" />
-                                                        <p id="modal2Ptag"></p>
-                                                        <div class="row d-flex justify-content-center mb-3">
-                                                            <div class="col text-center form-group form">
-                                                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="qr_form" class="form-horizontal">
-                                                                    <input type="hidden" name="student" id="input1">
-                                                                    <input type="hidden" name="fetcher" id="input2">
-                                                                    <div class="row">
-                                                                        <p>Is there a fetcher?</p>
-                                                                        <div class="col-12">
-                                                                            <input type="checkbox" id="withFetcher">
-                                                                            <label for="a">Yes</label>
-                                                                        </div>
-                                                                        <div class="col-12">
-                                                                            <input type="checkbox" id="noFetcher" onclick="showreasons()">
-                                                                            <label for="a">No</label>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row" id="reason" style="display: none;">
-                                                                        <p>If no, choose your reason.</p>
-                                                                        <div class="col-12">
-                                                                            <input type="checkbox" id="reason1" value="fetcher is sick">
-                                                                            <label for="a">The fetcher is sick.</label>
-                                                                        </div>
-                                                                        <div class="col-12">
-                                                                            <input type="checkbox" id="reason2" value="busy">
-                                                                            <label for="a">The fetcher runs some errand.</label>
-                                                                        </div>
-                                                                        <div class="col-12">
-                                                                            <input type="checkbox" id="reason3" name="a" value="">
-                                                                            <label for="a">Others (Please specify)</label>
-                                                                            <input type="text" name="student" class="form-control" id="reason3Text" required disabled><br>
-                                                                        </div>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="qr_form" class="form-horizontal">
+                                                <input type="hidden" name="student" id="input1">
+                                                <input type="hidden" name="fetcher" id="input2">
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -390,6 +257,8 @@ if (!isset($_SESSION['F_number'])) {
         }
     }
 </script>
+
+<script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
 <script>
     let scanner = new Instascan.Scanner({
         video: document.getElementById('preview')
@@ -398,124 +267,49 @@ if (!isset($_SESSION['F_number'])) {
         if (cameras.length > 0) {
             scanner.start(cameras[0]);
         } else {
-            alert('No Cameras');
+            Swal.fire('No Cameras');
         }
     }).catch((err) => {
         console.error(err);
     });
-    // Get the modal
-    var modal1 = document.getElementById("myModal1");
 
-    // Get the <span> element that closes the modal
-    var span1 = document.getElementsByClassName("close1")[0];
+    scanner.addListener('scan', function(content) {
+        let input = content;
 
-    // When the user clicks on <span> (x), close the modal
-    span1.onclick = function() {
-        modal1.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal1) {
-            modal1.style.display = "none";
-        }
-    }
-    // Get the modal
-    var modal2 = document.getElementById("myModal2");
-
-    // Get the <span> element that closes the modal
-    var span2 = document.getElementsByClassName("close2")[0];
-
-    // When the user clicks on <span> (x), close the modal
-    span2.onclick = function() {
-        modal2.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal2) {
-            modal2.style.display = "none";
-        }
-    }
-    var studentID = document.getElementById('input1').value;
-    var fetcherID = document.getElementById('input2').value;
-
-    scanner.addListener('scan', function(c) {
-        let input = c;
-
-        if (input.includes("SP")) {
+        if (input.includes("FTH")) {
+            Swal.fire('Fetcher code detected');
+            document.getElementById('input2').value = input;
+        } else {
             document.getElementById('input1').value = input;
-
-            if (NOTtimedIN.some(e => e.SR_number === input)) {
-                document.getElementById('modal1Ptag').innerHTML = "marked as present.";
-                modal1.style.display = "block";
-                setTimeout(() => {
-                    document.getElementById("qr_form").submit();
-                }, 3000);
-            } else if (NOTtimedOUT.some(e => e.SR_number === input)) {
-                modal2.style.display = "block";
-
-                if (document.getElementById('withFetcher').checked) {
-                    modal2.style.display = "none";
-                    document.getElementById('modal1Ptag').innerHTML = "Scan Fetcher QR Code";
-                    modal1.style.display = "block";
-                    setTimeout(() => {
-                        modal1.style.display = "none";
-                    }, 3000);;
-                    scanner.addListener('scan', function(d) {
-                        let input2 = d;
-
-                        document.getElementById('input2').value = input2;
-                        document.getElementById('modal1Ptag').innerHTML = "ready to go home.";
-                        modal1.style.display = "block";
-                        setTimeout(() => {
-                            document.getElementById("qr_form").submit();
-                        }, 3000);;
-                    })
-                } else if (document.getElementById('noFetcher').checked) {
-                    if (document.getElementById('reason1').checked) {
-                        modal2.style.display = "none";
-                        document.getElementById('modal1Ptag').innerHTML = "ready to go home.";
-                        modal1.style.display = "block";
-                        setTimeout(() => {
-                            document.getElementById("qr_form").submit();
-                        }, 3000);
-                    } else if (document.getElementById('reason2').checked) {
-                        modal2.style.display = "none";
-                        modal1.style.display = "block";
-                        setTimeout(() => {
-                            document.getElementById("qr_form").submit();
-                        }, 3000);
-                        document.getElementById('modal1Ptag').innerHTML = "ready to go home.";
-                    } else if (document.getElementById('reason3').checked) {
-                        modal2.style.display = "none";
-                        document.getElementById('modal1Ptag').innerHTML = "ready to go home.";
-                        modal1.style.display = "block";
-                        setTimeout(() => {
-                            document.getElementById("qr_form").submit();
-                        }, 3000);
+            if (NOTtimedIN.some(content => content.SR_number === input)) {
+                Swal.fire({
+                    title: 'Mark this student as present?',
+                    confirmButtonText: 'Proceed',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire('Timed in!', '', 'success').then((result) => {
+                            document.getElementById('qr_form').submit();
+                        })
                     }
-                }
-            } else if (!NOTtimedOUT.some(e => e.SR_number === input)) {
-                document.getElementById('modal1Ptag').innerHTML = "student is already out.";
-                modal1.style.display = "block";
-                setTimeout(() => {
-                    modal1.style.display = "none";
-                }, 3000);
+                })
+            } else if (NOTtimedOUT.some(content => content.SR_number === input)) {
+                Swal.fire({
+                    title: 'Student ready to go home?',
+                    confirmButtonText: 'Proceed',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('qr_form').submit();
+                    }
+                })
             }
         }
-    })
+    });
 </script>
-
-
 
 <!-- Template Javascript -->
 <script src="../assets/js/main.js"></script>
 
 <script src="../assets/js/admin/vendor.bundle.base.js"></script>
 <script src="../assets/js/admin/off-canvas.js"></script>
-<script src="../assets/js/admin/file-upload.js"></script>
-
-
 
 </html>

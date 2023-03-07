@@ -4,8 +4,11 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 } else {
-    $anouncementData = $mysqli->query("SELECT * FROM announcement WHERE ANC_ID = '{$_GET['postID']}'");
-    $announcement = $anouncementData->fetch_assoc();
+    $getAnnouncementData = $mysqli->query("SELECT * FROM announcement WHERE ANC_ID = '{$_GET['postID']}'");
+    $announcementData = $getAnnouncementData->fetch_assoc();
+
+    $admin = $mysqli->query("SELECT * FROM admin_accounts WHERE AD_number = '{$announcementData['author']}'");
+    $adminData = $admin->fetch_assoc();
 }
 ?>
 
@@ -14,7 +17,7 @@ if (!isset($_SESSION['AD_number'])) {
 
 <head>
     <meta charset="utf-8">
-    <title>School Announcements</title>
+    <title>Edit School Announcement</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -31,6 +34,9 @@ if (!isset($_SESSION['AD_number'])) {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="../assets/css/sweetAlert.css" rel="stylesheet">
+
 
     <!-- Libraries Stylesheet -->
     <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
@@ -45,7 +51,6 @@ if (!isset($_SESSION['AD_number'])) {
     <link href="../assets/css/form-style.css" rel="stylesheet">
     <link href="../assets/css/admin/style.css" rel="stylesheet">
     <link href="../assets/css/admin/materialdesignicons.min.css" rel="stylesheet">
-    <link href="../assets/css/educ/main.css" rel="stylesheet">
 
 </head>
 
@@ -196,70 +201,71 @@ if (!isset($_SESSION['AD_number'])) {
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="row">
-                        <div class="col-sm-12">
-                            <div class="home-tab">
-                                <div class="d-sm-flex align-items-center justify-content-between border-bottom">
-                                    <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                                        <h2 class="fw-bold text-primary text-uppercase">School Announcements</h2>
+                        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" id="announcementFORM">
+                            <div class="col-sm-12">
+                                <div class="home-tab">
+                                    <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                                        <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
+                                            <h2 class="fw-bold text-primary text-uppercase">Edit Announcement</h2>
+                                        </div>
                                     </div>
-                                </div>
+                                    <div class="tab-content tab-content-basic">
+                                        <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                                            <div class="row">
+                                                <div class="col-12 grid-margin">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="row g-3">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-floating">
+                                                                            <input type="hidden" name="ANC_ID" value="<?php echo $announcementData['ANC_ID'] ?>">
+                                                                            <input type="hidden" name="author" value="<?php echo $adminData['AD_number'] ?>">
+                                                                            <input type="text" class="form-control" id="name" value="<?php echo $adminData['AD_name'] ?>" placeholder="Your Name" readonly>
+                                                                            <label for="name">Your Name</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-floating">
+                                                                            <input type="date" class="form-control" name="date" value="<?php echo $announcementData['date_posted'] ?>" readonly>
+                                                                            <label for="email">Date Posted</label>
+                                                                        </div>
+                                                                    </div>
 
-                                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" style="text-align: right; margin-top: 50px; margin-right: 20px;">
-                                    <a href="editAnnouncement.php?postID=<?php echo $announcement['ANC_ID'] ?>" style="color: #ffffff;" class="btn btn-primary me-2">Edit</a>
-                                    <input type="hidden" name="deleteAnc" value="<?php echo $announcement['ANC_ID'] ?>">
-                                    <button type="submit" name="delAnc" style="color: #ffffff;" class="btn btn-primary me-2">Delete</button>
-                                </form>
-
-                                <section class="course-details-area">
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-lg-8 left-contents">
-                                                <div class="jq-tab-wrapper" id="horizontalTab" style="padding-top: 0px;">
-                                                    <div class="jq-tab-menu">
-                                                        <div class="jq-tab-title active" data-tab="1">About</div>
-
-                                                    </div>
-                                                    <div class="jq-tab-content-wrapper">
-                                                        <div class="jq-tab-content active" data-tab="1">
-                                                            <?php echo $announcement['msg'] ?>
+                                                                    <div class="col-6">
+                                                                        <div class="form-floating">
+                                                                            <input type="text" class="form-control" name="subject" value="<?php echo $announcementData['header'] ?>" id="subject" placeholder="Subject" required>
+                                                                            <label for="subject">Title</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <div class="form-floating">
+                                                                            <input type="date" class="form-control" name="date" value="<?php echo $announcementData['date'] ?>">
+                                                                            <label for="email">Date of the Event</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-12">
+                                                                        <div class="form-floating">
+                                                                            <textarea class="form-control" placeholder="Leave a message here" id="message" name="message" style="height: 250px"></textarea>
+                                                                            <label for="message"><?php echo $announcementData['msg'] ?></label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-4 right-contents">
-                                                <ul>
-                                                    <li>
-                                                        <a class="justify-content-between d-flex" href="#">
-                                                            <p>Title</p>
-                                                            <span class="or"><?php echo $announcement['header'] ?></span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="justify-content-between d-flex" href="#">
-                                                            <p>Posted By</p>
-                                                            <span>
-                                                                <?php
-                                                                $getAuthorName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$announcement['author']}'");
-                                                                $AuthorName = $getAuthorName->fetch_assoc();
-
-                                                                echo $AuthorName['AD_name'];
-                                                                ?>
-                                                            </span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="justify-content-between d-flex" href="#">
-                                                            <p>Date and Time</p>
-                                                            <span><?php echo $announcement['date'] ?></span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
                                         </div>
                                     </div>
-                                </section>
+
+                                </div>
                             </div>
-                        </div>
+                            <div style="text-align: center;">
+                                <button type="submit" id="post_confirmation_modal_button" name="updateAnnouncement" class="btn btn-primary me-2">Post</button>
+                                <button type="button" class="btn btn-light">Back</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <!-- content-wrapper ends -->
@@ -269,7 +275,6 @@ if (!isset($_SESSION['AD_number'])) {
         <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
-
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
         <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
@@ -290,25 +295,37 @@ if (!isset($_SESSION['AD_number'])) {
     <!-- JavaScript Libraries -->
 
 
+
+
     <!-- Template Javascript -->
     <script src="../assets/js/main.js"></script>
 
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>
     <script src="../assets/js/admin/off-canvas.js"></script>
     <script src="../assets/js/admin/file-upload.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+    <script>
+        // const postButton = document.getElementById('post_confirmation_modal_button');
+        // const form = document.getElementById('announcementFORM');
 
-    <script src="../assets/js/educ/vendor/jquery-2.2.4.min.js"></script>
-    <script src="../assets/js/educ/vendor/bootstrap.min.js"></script>
-    <script src="../assets/js/educ/easing.min.js"></script>
-    <script src="../assets/js/educ/hoverIntent.js"></script>
-    <script src="../assets/js/educ/superfish.min.js"></script>
-    <script src="../assets/js/educ/jquery.ajaxchimp.min.js"></script>
-    <script src="../assets/js/educ/jquery.magnific-popup.min.js"></script>
-    <script src="../assets/js/educ/jquery.tabs.min.js"></script>
-    <script src="../assets/js/educ/jquery.nice-select.min.js"></script>
-    <script src="../assets/js/educ/owl.carousel.min.js"></script>
-    <script src="../assets/js/educ/mail-script.js"></script>
-    <script src="../assets/js/educ/main.js"></script>
+        // postButton.addEventListener('click', function(event) {
+        //     Swal.fire({
+        //         title: 'Are you sure you want to proceed with this action?',
+        //         showCancelButton: true,
+        //         confirmButtonText: 'Yes',
+        //         cancelButtonText: `No`,
+        //     }).then((result) => {
+        //         if (result.isConfirmed) {
+        //             Swal.fire({
+        //                 title: 'Form submitted!',
+        //                 icon: 'success',
+        //             }).then(() => {
+        //                 form.submit();
+        //             });
+        //         }
+        //     })
+        // })
+    </script>
 </body>
 
 </html>
