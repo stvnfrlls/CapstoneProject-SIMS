@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require '../assets/fpdf/fpdf.php';
 require_once("../assets/php/server.php");
 
@@ -90,5 +91,6 @@ if (isset($_GET['Grade']) || isset($_GET['Section'])) {
         $pdf->Cell(190, 15, "NO DATA AVAILABLE", 1, 0, 'C');
     }
 
-    $pdf->Output();
+    ob_end_clean();
+    $pdf->Output('I', "Daily Attendance - (" . $_GET['Grade'] . "-" . $_GET['Section'] . ")" . '.pdf');
 }

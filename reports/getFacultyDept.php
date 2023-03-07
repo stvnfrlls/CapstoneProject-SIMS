@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require '../assets/fpdf/fpdf.php';
 require_once("../assets/php/server.php");
 
@@ -73,5 +74,7 @@ if (isset($_GET['department'])) {
         $pdf->Cell(50, 10, $FacultyDept['F_department'] . " Department", 1, 1, 'C');
     }
 
-    $pdf->Output('D', $_GET['department'] . " Department" . '.pdf');
+    ob_end_clean();
+    $pdf->Output();
+    // $pdf->Output('I', $_GET['department'] . " Department" . '.pdf');
 }

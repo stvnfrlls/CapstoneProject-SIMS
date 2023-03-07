@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require '../assets/fpdf/fpdf.php';
 require_once("../assets/php/server.php");
 
@@ -105,5 +106,7 @@ if (isset($_GET['ID']) || isset($_GET['month'])) {
         $pdf->Cell(60, 10, $attendance['A_fetcher_OUT'], 1, 1, 'C');
     }
 
-    $pdf->Output('D', "ATTENDANCE REPORT - " . $studentInfo['SR_lname'] . '.pdf');
+    ob_end_clean();
+    // $pdf->Output();
+    $pdf->Output('I', "ATTENDANCE REPORT - " . $studentInfo['SR_lname'] . '.pdf');
 }
