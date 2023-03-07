@@ -70,7 +70,7 @@ if (!isset($_SESSION['F_number'])) {
   <!-- Template Stylesheet -->
   <link href="../assets/css/style.css" rel="stylesheet">
   <link href="../assets/css/admin/style.css" rel="stylesheet">
-    <link href="../assets/css/admin/style.css.map" rel="stylesheet">
+  <link href="../assets/css/admin/style.css.map" rel="stylesheet">
 
 </head>
 
@@ -214,28 +214,23 @@ if (!isset($_SESSION['F_number'])) {
                                       <p>
                                         <?php echo "NAME: " . $StudentData['SR_lname'] . ", " . $StudentData['SR_fname'] . " " . substr($StudentData['SR_mname'], 0, 1); ?>
                                       </p>
-
                                     </div>
                                     <div class="col-sm-12 col-lg-6">
-
                                       <p><?php echo "STUDENT NUMBER: " . $StudentData['SR_number'] ?></p>
                                       </p>
-
                                     </div>
-
                                   </div>
                                   <div class="row">
                                     <div class="col-sm-12 col-lg-6">
                                       <p>
-                                        Grade and Section: <?php echo $StudentData['SR_grade'] . " - " . $StudentData['SR_section'] ?>
+                                        <?php echo "Grade and Section: " . $StudentData['SR_grade'] . " - " . $StudentData['SR_section'] ?>
                                       </p>
-
                                     </div>
                                     <div class="col-sm-12 col-lg-6">
 
                                       <p>
                                         <?php
-                                          echo "Adviser: " . $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1);
+                                        echo "Adviser: " . $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1);
                                         ?>
                                       </p>
                                     </div>
@@ -276,23 +271,27 @@ if (!isset($_SESSION['F_number'])) {
                                             <td class="hatdog"><?php echo $StudentGrades['G_gradesQ4']; ?></td>
                                             <td class="hatdog">
                                               <?php
-                                              $sum = $StudentGrades['G_gradesQ1'] + $StudentGrades['G_gradesQ2'] + $StudentGrades['G_gradesQ3'] + $StudentGrades['G_gradesQ4'];
-                                              $average = $sum / 4;
-                                              echo round($average);
+                                              if (isset($StudentGrades['G_gradesQ4'])) {
+                                                $sum = $StudentGrades['G_gradesQ1'] + $StudentGrades['G_gradesQ2'] + $StudentGrades['G_gradesQ3'] + $StudentGrades['G_gradesQ4'];
+                                                $average = $sum / 4;
+                                                echo round($average);
+                                              }
                                               ?>
                                             </td>
                                             <td class="hatdog">
                                               <?php
-                                              if ($average >= 90) {
-                                                echo "Outstanding";
-                                              } else if ($average >= 85 || $average <= 89) {
-                                                echo "Very Satisfactory";
-                                              } else if ($average >= 80 || $average <= 84) {
-                                                echo "Satisfactory";
-                                              } else if ($average >= 75 || $average <= 79) {
-                                                echo "Fairly Satisfactory";
-                                              } else if ($average < 75) {
-                                                echo "Did Not Meet Expectations";
+                                              if (isset($StudentGrades['G_gradesQ4'])) {
+                                                if ($average >= 90) {
+                                                  echo "Outstanding";
+                                                } else if ($average >= 85 || $average <= 89) {
+                                                  echo "Very Satisfactory";
+                                                } else if ($average >= 80 || $average <= 84) {
+                                                  echo "Satisfactory";
+                                                } else if ($average >= 75 || $average <= 79) {
+                                                  echo "Fairly Satisfactory";
+                                                } else if ($average < 75) {
+                                                  echo "Did Not Meet Expectations";
+                                                }
                                               }
                                               ?>
                                             </td>
@@ -376,6 +375,9 @@ if (!isset($_SESSION['F_number'])) {
                           <div class="card-body">
                             <h3 style="text-align: center;">CHARACTER BUILDING</h3>
                             <div class="row">
+                              <div class="">
+                                <button type="submit" name="saveBehavior" class="btn btn-primary">Submit</button>
+                              </div>
                               <div class="table-responsive">
                                 <table class="table text-center">
                                   <thead>
@@ -398,7 +400,9 @@ if (!isset($_SESSION['F_number'])) {
                                       while ($BehaviorData = $getBehaviorData->fetch_assoc()) { ?>
                                         <tr>
                                           <input type="hidden" name="row[]" value="<?php echo $i; ?>">
-                                          <input type="hidden" name="CV_Area[]" value="<?php echo $BehaviorData['CV_Area']; ?>">
+                                          <input type="hidden" name="CV_Area[]" value="<?php echo $BehaviorAreasArray[$i]['core_value_area']; ?>">
+                                          <input type="hidden" name="SR_grade" value="<?php echo $StudentData['SR_grade']; ?>">
+                                          <input type="hidden" name="SR_section" value="<?php echo $StudentData['SR_section']; ?>">
                                           <?php if ($i % 2 == 0) { ?>
                                             <td rowspan="2" class="hatdog">
                                               <?php echo preg_replace('/[0-9]/', '', $BehaviorAreasArray[$i]['core_value_area']); ?>
@@ -409,16 +413,44 @@ if (!isset($_SESSION['F_number'])) {
                                             <?php echo $BehaviorAreasArray[$i]['core_value_subheading']; ?>
                                           </td>
                                           <td rowspan="1" class="hatdog">
-                                            <input type="text" class="hatdog" name="CV_valueQ1[]" value="<?php echo $BehaviorData['CV_valueQ1']; ?>" size="2">
+                                            <?php
+                                            $checkQuarter1 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 1 AND quarterFormStatus = 'enabled'");
+                                            if (mysqli_num_rows($checkQuarter1) == 1) {
+                                              echo '<input type="text" class="hatdog" name="CV_valueQ1[]" value="' . $BehaviorData['CV_valueQ1'] . '" size="2">';
+                                            } else {
+                                              echo '<input type="text" class="hatdog" name="CV_valueQ1[]" value="' . $BehaviorData['CV_valueQ1'] . '" size="2" disabled>';
+                                            }
+                                            ?>
                                           </td>
                                           <td rowspan="1" class="hatdog">
-                                            <input type="text" class="hatdog" name="CV_valueQ2[]" value="<?php echo $BehaviorData['CV_valueQ2']; ?>" size="2">
+                                            <?php
+                                            $checkQuarter2 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 2 AND quarterFormStatus = 'enabled'");
+                                            if (mysqli_num_rows($checkQuarter2) == 1) {
+                                              echo '<input type="text" class="hatdog" name="CV_valueQ2[]" value="' . $BehaviorData['CV_valueQ2'] . '" size="2">';
+                                            } else {
+                                              echo '<input type="text" class="hatdog" name="CV_valueQ2[]" value="' . $BehaviorData['CV_valueQ2'] . '" size="2" disabled>';
+                                            }
+                                            ?>
                                           </td>
                                           <td rowspan="1" class="hatdog">
-                                            <input type="text" class="hatdog" name="CV_valueQ3[]" value="<?php echo $BehaviorData['CV_valueQ3']; ?>" size="2">
+                                            <?php
+                                            $checkQuarter3 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 3 AND quarterFormStatus = 'enabled'");
+                                            if (mysqli_num_rows($checkQuarter3) == 1) {
+                                              echo '<input type="text" class="hatdog" name="CV_valueQ3[]" value="' . $BehaviorData['CV_valueQ3'] . '" size="2">';
+                                            } else {
+                                              echo '<input type="text" class="hatdog" name="CV_valueQ3[]" value="' . $BehaviorData['CV_valueQ3'] . '" size="2" disabled>';
+                                            }
+                                            ?>
                                           </td>
                                           <td rowspan="1" class="hatdog">
-                                            <input type="text" class="hatdog" name="CV_valueQ4[]" value="<?php echo $BehaviorData['CV_valueQ4']; ?>" size="2">
+                                            <?php
+                                            $checkQuarter4 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 4 AND quarterFormStatus = 'enabled'");
+                                            if (mysqli_num_rows($checkQuarter4) == 1) {
+                                              echo '<input type="text" class="hatdog" name="CV_valueQ4[]" value="' . $BehaviorData['CV_valueQ4'] . '" size="2">';
+                                            } else {
+                                              echo '<input type="text" class="hatdog" name="CV_valueQ4[]" value="' . $BehaviorData['CV_valueQ4'] . '" size="2" disabled>';
+                                            }
+                                            ?>
                                           </td>
                                         </tr>
                                       <?php $i++;
@@ -428,6 +460,10 @@ if (!isset($_SESSION['F_number'])) {
                                       $i = 0;
                                       while ($BehaviorLabel = $getBehaviorLabels->fetch_assoc()) { ?>
                                         <tr>
+                                          <input type="hidden" name="row[]" value="<?php echo $i; ?>">
+                                          <input type="hidden" name="CV_Area[]" value="<?php echo $BehaviorAreasArray[$i]['core_value_area']; ?>">
+                                          <input type="hidden" name="SR_grade" value="<?php echo $StudentData['SR_grade']; ?>">
+                                          <input type="hidden" name="SR_section" value="<?php echo $StudentData['SR_section']; ?>">
                                           <?php
                                           if ($i % 2 == 0) { ?>
                                             <td rowspan="2" class="hatdog">
@@ -435,16 +471,26 @@ if (!isset($_SESSION['F_number'])) {
                                             </td>
                                           <?php } ?>
                                           <td class="hatdog"><?php echo $BehaviorLabel['core_value_subheading'] ?></td>
-                                          <td class="hatdog"></td>
-                                          <td class="hatdog"></td>
-                                          <td class="hatdog"></td>
-                                          <td class="hatdog"></td>
+                                          <td class="hatdog">
+                                            <?php
+                                            $checkQuarter1 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 1 AND quarterFormStatus = 'enabled'");
+                                            if (mysqli_num_rows($checkQuarter1) == 1) {
+                                              echo '<input type="text" class="hatdog" name="CV_valueQ1[]" size="2">';
+                                            } else {
+                                              echo '<input type="text" class="hatdog" name="CV_valueQ1[]" size="2" disabled>';
+                                            }
+                                            ?>
+                                          </td>
+                                          <td class="hatdog"><input type="text" class="hatdog" name="CV_valueQ2[]" size="2" disabled></td>
+                                          <td class="hatdog"><input type="text" class="hatdog" name="CV_valueQ3[]" size="2" disabled></td>
+                                          <td class="hatdog"><input type="text" class="hatdog" name="CV_valueQ4[]" size="2" disabled></td>
                                         </tr>
                                     <?php
                                         $i++;
                                       }
                                     }
                                     ?>
+
                                   </tbody>
                                 </table>
                               </div>
