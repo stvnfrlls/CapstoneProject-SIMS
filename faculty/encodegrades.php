@@ -169,37 +169,40 @@ if (!isset($_SESSION['F_number'])) {
                         <div class="card">
                           <div class="card-body">
                             <div class="btn-group">
-                              <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                <?php
-                                if (isset($_GET['Grade']) && isset($_GET['Section'])) {
-                                  if ($_GET['Grade'] == "KINDER") {
-                                    echo $_GET['Grade'] . " - " . $_GET['Section'];
-                                  } else {
-                                    echo "Grade " . $_GET['Grade'] . " - " . $_GET['Section'];
-                                  }
-                                } else {
-                                  echo "Grade and Section";
-                                }
-                                ?>
-                                <i class="fa fa-caret-down"></i>
-                              </button>
-                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <?php
-                                $getGradeSectionData = $mysqli->query("SELECT DISTINCT SR_grade, SR_section FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
-                                while ($GradeSection = $getGradeSectionData->fetch_assoc()) { ?>
-                                  <a class="dropdown-item" href="encodegrades.php?Grade=<?php echo $GradeSection['SR_grade'] ?>&Section=<?php echo $GradeSection['SR_section'] ?>">
-                                    <?php
-                                    if ($GradeSection['SR_grade'] == "KINDER") {
-                                      echo $GradeSection['SR_grade'] . " - " . $GradeSection['SR_section'];
+                              <div>
+                                <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                  <?php
+                                  if (isset($_GET['Grade']) && isset($_GET['Section'])) {
+                                    if ($_GET['Grade'] == "KINDER") {
+                                      echo $_GET['Grade'] . " - " . $_GET['Section'];
                                     } else {
-                                      echo "Grade " . $GradeSection['SR_grade'] . " - " . $GradeSection['SR_section'];
+                                      echo "Grade " . $_GET['Grade'] . " - " . $_GET['Section'];
                                     }
-                                    ?>
-                                  </a>
-                                <?php
-                                }
-                                ?>
+                                  } else {
+                                    echo "Grade and Section";
+                                  }
+                                  ?>
+                                  <i class="fa fa-caret-down"></i>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                  <?php
+                                  $getGradeSectionData = $mysqli->query("SELECT DISTINCT SR_grade, SR_section FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
+                                  while ($GradeSection = $getGradeSectionData->fetch_assoc()) { ?>
+                                    <a class="dropdown-item" href="encodegrades.php?Grade=<?php echo $GradeSection['SR_grade'] ?>&Section=<?php echo $GradeSection['SR_section'] ?>">
+                                      <?php
+                                      if ($GradeSection['SR_grade'] == "KINDER") {
+                                        echo $GradeSection['SR_grade'] . " - " . $GradeSection['SR_section'];
+                                      } else {
+                                        echo "Grade " . $GradeSection['SR_grade'] . " - " . $GradeSection['SR_section'];
+                                      }
+                                      ?>
+                                    </a>
+                                  <?php
+                                  }
+                                  ?>
+                                </div>
                               </div>
+
                             </div>
                             <div class="btn-group">
                               <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -220,17 +223,19 @@ if (!isset($_SESSION['F_number'])) {
                                                                         AND acadYear = '{$currentSchoolYear}'
                                                                         AND SR_grade = '{$_GET['Grade']}'
                                                                         AND SR_section = '{$_GET['Section']}'");
-                                  while ($subjects = $getSubjectData->fetch_assoc()) { ?>
-                                    <a class=" dropdown-item" href="encodegrades.php?Grade=<?php echo $_GET['Grade'] ?>&Section=<?php echo $_GET['Section'] ?>&Subject=<?php echo $subjects['S_subject']; ?>">
-                                      <?php echo $subjects['S_subject']; ?>
-                                    </a>
-                                  <?php }
-                                } else { ?>
-                                  <a class=" dropdown-item" href="encodegrades.php"> </a>
-                                <?php
-                                }
-                                ?>
+                                    while ($subjects = $getSubjectData->fetch_assoc()) { ?>
+                                      <a class=" dropdown-item" href="encodegrades.php?Grade=<?php echo $_GET['Grade'] ?>&Section=<?php echo $_GET['Section'] ?>&Subject=<?php echo $subjects['S_subject']; ?>">
+                                        <?php echo $subjects['S_subject']; ?>
+                                      </a>
+                                    <?php }
+                                  } else { ?>
+                                    <a class=" dropdown-item" href="encodegrades.php"> </a>
+                                  <?php
+                                  }
+                                  ?>
+                                </div>
                               </div>
+
                             </div>
 
                             <div class="row">

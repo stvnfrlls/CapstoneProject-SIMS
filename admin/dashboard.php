@@ -450,7 +450,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 <div class="col-lg-12 grid-margin stretch-card">
                                                                     <div class="card">
                                                                         <div class="card-body">
-                                                                            <h4 class="card-title">Student Population</h4>
+                                                                            <h4 class="card-title">Student List</h4>
                                                                             <div class="table-responsive">
                                                                                 <table class="table table-striped">
                                                                                     <thead>
@@ -566,7 +566,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                             <small class="me-3"><i class="far fa-user text-primary me-2"></i><?php echo $announcement['author']; ?></small>
                                                                                             <small><i class="far fa-calendar-alt text-primary me-2"></i><?php echo $announcement['date']; ?></small>
                                                                                         </div>
-                                                                                        <h4 class="mb-3"><?php echo $announcement['header']; ?></h4>
+                                                                                        <h4 class="mb-3" style="text-align: left;"><?php echo $announcement['header']; ?></h4>
                                                                                         <p class="text-truncate"><?php echo $announcement['msg']; ?></p>
                                                                                         <a class="text-uppercase" href="viewannouncement.php?postID=<?php echo $announcement['ANC_ID']; ?>">Read More <i class="bi bi-arrow-right"></i></a>
                                                                                     </div>

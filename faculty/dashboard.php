@@ -158,7 +158,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                     <?php }
                                                                     ?>
                                                                     <div class="col-8" style="align-self: center;">
-                                                                        <h3 style="text-align: left;"><?php echo $getFacultyData['F_lname'] . ", " . $getFacultyData['F_fname'] . " " . substr($getFacultyData['F_mname'], 0, 1) . ". " . $getFacultyData['F_suffix'] . "." ?></h3>
+                                                                        <h3 style="text-align: left;"><?php echo $getFacultyData['F_lname'] . ", " . $getFacultyData['F_fname'] . " " . substr($getFacultyData['F_mname'], 0, 1) . ". " . $getFacultyData['F_suffix'] . "" ?></h3>
                                                                         <p style="margin-bottom: 8px;"><?php echo $getFacultyData['F_number'] ?></p>
                                                                     </div>
                                                                 </div>
@@ -262,7 +262,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                                             <div class="user-details row" style="padding: 10px 0px 0px 10px;">
                                                                                                 <p class="user-name col-lg-6 col-md-6">
                                                                                                     <span class="far fa-user" style="color: #c02628;"></span>
-                                                                                                    <?php echo $getFacultyData['F_lname'] . ", " . $getFacultyData['F_fname'] . " " . substr($getFacultyData['F_mname'], 0, 1) . ". " . $getFacultyData['F_suffix'] . "." ?>
+                                                                                                    <?php echo $getFacultyData['F_lname'] . ", " . $getFacultyData['F_fname'] . " " . substr($getFacultyData['F_mname'], 0, 1) . ". " . $getFacultyData['F_suffix'] . "" ?>
                                                                                                 </p>
                                                                                                 <p class="user-name col-lg-6 col-md-6">
                                                                                                     <span class="fa fa-calendar" style="color: #c02628;"></span>
@@ -272,7 +272,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                                         </div>
                                                                                         <div class="col-lg-12 col-sm-12" style="padding: 0px 10px 10px 10px;">
                                                                                             <a class="posts-title" href="viewReminders.php?ID=<?php echo $remindersData['reminderID'] ?>" style="text-align: left;">
-                                                                                                <h3>Subject: <?php echo $remindersData['subject'] ?></h3>
+                                                                                                <h6>Subject: <?php echo $remindersData['subject'] ?></h6>
                                                                                             </a>
                                                                                             <p class="excert">
                                                                                                 <?php echo $remindersData['msg'] ?>

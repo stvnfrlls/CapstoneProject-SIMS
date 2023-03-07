@@ -73,7 +73,7 @@ require_once __DIR__ . "..\assets\php\server.php";
                     <div class="dropdown-menu bg-dark border-0 m-0">
                         <a href="student/profile.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Dashboard</a>
                         <a href="student/dashboard.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Profile</a>
-                        <a href="student/grades.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Grades</a>
+                        <a href="student/grades.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Report Card</a>
                         <a href="student/dailyAttendance.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Attendance</a>
                         <a href="student/reminders.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Reminders</a>
                         <a href="student/announcement.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">School Announcements</a>

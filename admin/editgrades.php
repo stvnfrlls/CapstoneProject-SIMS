@@ -311,17 +311,15 @@ if (!isset($_SESSION['AD_number'])) {
                         </div>
                       <?php }
                       ?>
-                      <div class="btn-group" style="text-align: center;">
+                      <div style="text-align: right;">
                         <button type="button" class="btn btn-primary" id="confirmChanges" name="saveGrades" value="Save">Save Grades</button>
-                      </div>
-                      <div class="btn-group" style="text-align: center;">
                         <button type="button" class="btn btn-primary" id="confirmChanges" name="releaseGrades" value="Release">Release Grades</button>
                       </div>
                       <div class="row" style="margin-top: 15px;;">
                         <div class="col-lg-12 d-flex flex-column">
-                          <div class="row flex-grow">
-                            <div class="col-md-6 col-lg-12 grid-margin stretch-card">
-                              <div class="card bg-primary card-rounded">
+                          <div class="row">
+                            <div class="col-12 grid-margin">
+                              <div class="card card-rounded">
                                 <div class="table-responsive">
                                   <table class="table">
                                     <thead>
@@ -344,6 +342,17 @@ if (!isset($_SESSION['AD_number'])) {
                                           -webkit-appearance: none;
                                           margin: 0;
                                         }
+
+                                        .cell {
+                                          max-width: 100px;
+                                          /* tweak me please */
+                                          white-space: nowrap;
+                                          overflow: hidden;
+                                        }
+
+                                        .expand-maximum-on-hover:hover {
+                                          max-width: initial;
+                                        }
                                       </style>
                                       <tr>
                                         <th rowspan="2" class="grade_table">Student Name</th>
@@ -364,7 +373,7 @@ if (!isset($_SESSION['AD_number'])) {
                                         if (isset($_GET['Grade'])) {
                                           $subjectHeaderCount = 0;
                                           while ($subjectHeaderCount != sizeof($subject_Array)) {
-                                            echo "<th class='grade_table'>" . $subject_Array[$subjectHeaderCount]['subjectName'] . "</th>";
+                                            echo "<th class='cell expand-maximum-on-hover'>" . $subject_Array[$subjectHeaderCount]['subjectName'] . "</th>";
                                             $subjectHeaderCount++;
                                           }
                                         }
