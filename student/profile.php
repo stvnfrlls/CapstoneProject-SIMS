@@ -150,7 +150,7 @@ if (!isset($_SESSION['SR_number'])) {
               $getSchedule = $mysqli->query("SELECT * FROM workschedule WHERE SR_section = '{$studentInfo['SR_section']}'");
               if (mysqli_num_rows($getSchedule) > 0) {
                 while ($Schedule = $getSchedule->fetch_assoc()) { ?>
-                  <p class="mb-1" style="font-size: .90rem;"><?php echo $Schedule['S_subject'] ?></p>
+                  <p class="mb-1" style="font-size: .90rem; padding-top: 15px"><?php echo $Schedule['S_subject'] ?></p>
                   <div class="progress rounded" style="height: 25px;">
                     <p style="font-size: .77rem; margin: 5px 0px 0px 7px">MONDAY-FRIDAY (<?php echo date('H:i A', strtotime($Schedule['WS_start_time']))  . " - " . date('H:i A', strtotime(timePlusOneMinute($Schedule['WS_end_time']))) ?>)</p>
                   </div>

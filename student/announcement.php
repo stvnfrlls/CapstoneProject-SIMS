@@ -91,7 +91,7 @@ if (!isset($_SESSION['SR_number'])) {
     </nav>
     <!-- Navbar End -->
 
-    <section class="popular-courses-area section-gap courses-page">
+    <section class="popular-courses-area section-gap courses-page" style="padding-top:50px">
         <div class="container">
             <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
                 <h5 class="fw-bold text-primary text-uppercase" style="font-size: 30px; margin-top: 0px;">School Announcements</h5>

@@ -147,9 +147,8 @@ if (!isset($_SESSION['SR_number'])) {
         <div class="container">
             <div class="row d-flex justify-content-center">
                 <div class="menu-content pb-70 col-lg-8">
-                    <div class="title text-center">
-                        <h1 class="mb-10">School Announcements</h1>
-                        <p>more announcements</p>
+                    <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
+                        <h5 class="fw-bold text-primary text-uppercase" style="font-size: 25px; margin-top: 0px;">More School Announcements</h5>
                     </div>
                 </div>
             </div>

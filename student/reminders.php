@@ -128,7 +128,7 @@ if (!isset($_SESSION['SR_number'])) {
                                         <div class="card-body">
                                             <div class="col-lg-12 col-md-9 ">
                                                 <p>Subject: <?php echo $reminders['subject'] ?></p>
-                                                <p class="excert">
+                                                <p class="excert text-truncate">
                                                     <?php
                                                     if (empty($reminders['msg'])) {
                                                         echo "No description";
