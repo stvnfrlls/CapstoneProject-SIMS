@@ -283,7 +283,7 @@ if (empty($_SESSION['AD_number'])) {
                       <?php
                       if (isset($_GET['GradeLevel'])) { ?>
                         <div>
-                          <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
                             <?php if (isset($_GET['SectionName'])) {
                               echo $_GET['SectionName'];
                             } else {
@@ -318,11 +318,11 @@ if (empty($_SESSION['AD_number'])) {
                     <?php
                     }
                     ?>
-                    <div class="row">
+                    <div class="row" style="margin-top: 15px;">
                       <div class="col-lg-12 d-flex flex-column">
                         <div class="row flex-grow">
                           <div class="col-md-6 col-lg-12 grid-margin stretch-card">
-                            <div class="card bg-primary card-rounded">
+                            <div class="card card-rounded">
                               <div class="table-responsive">
                                 <table class="table">
                                   <thead>
