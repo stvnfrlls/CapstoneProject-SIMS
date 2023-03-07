@@ -184,8 +184,6 @@ if (empty($_SESSION['F_number'])) {
                                             <?php
                                             $value = $_GET['ID'];
                                             $index = array_search($value, $studentLink);
-                                            $previous = null;
-                                            $next = null;
 
                                             if ($index !== false) {
                                                 if ($index > 0) {
