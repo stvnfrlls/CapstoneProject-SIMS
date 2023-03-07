@@ -15,6 +15,34 @@ if (!isset($_SESSION['SR_number'])) {
     $getAdvisorInfo = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$SectionInfo['S_adviser']}'");
     $AdvisorInfo = $getAdvisorInfo->fetch_assoc();
   }
+
+  $getReminderNotification = $mysqli->query("SELECT * FROM reminders 
+                                            WHERE forsection = '{$studentInfo['SR_section']}' 
+                                            AND acadYear = '{$currentSchoolYear}'
+                                            AND reminderID 
+                                            NOT IN (SELECT reminderID FROM reminder_status)");
+  if (mysqli_num_rows($getReminderNotification) > 0) {
+    // showSweetAlert('You have ' . mysqli_num_rows($getReminderNotification) . ' unviewed notification', 'info');
+    $reminderCounter = mysqli_num_rows($getReminderNotification);
+    echo <<<EOT
+      <script>
+          document.addEventListener("DOMContentLoaded", function(event) { 
+              swal.fire({
+                  text: 'You have {$reminderCounter} unviewed notification',
+                  showDenyButton: true,
+                  confirmButtonText: 'View reminders',
+                  denyButtonText: 'Not now',
+              }).then((result) => {
+                  if (result.isConfirmed) {
+                    window.location.href = 'reminders.php';
+                  } else {
+                    Swal.fire('View reminders when ready', '', 'info')
+                  }
+              });
+          });
+      </script>
+    EOT;
+  }
 }
 ?>
 <!DOCTYPE html>
@@ -361,7 +389,13 @@ if (!isset($_SESSION['SR_number'])) {
                             <div class="blog-item bg-light rounded overflow-hidden">
                               <div class="p-4">
                                 <div class="d-flex mb-3">
-                                  <small class="me-3"><i class="far fa-user text-primary me-2"></i><?php echo $announcement['author']; ?></small>
+                                  <small class="me-3"><i class="far fa-user text-primary me-2"></i>
+                                    <?php
+                                    $getAuthorInfo = $mysqli->query("SELECT * FROM admin_accounts WHERE AD_number = '{$announcement['author']}'");
+                                    $AuthorInfo = $getAuthorInfo->fetch_assoc();
+                                    echo $AuthorInfo['AD_name']
+                                    ?>
+                                  </small>
                                   <small><i class="far fa-calendar-alt text-primary me-2"></i><?php echo $announcement['date']; ?></small>
                                 </div>
                                 <h4 class="mb-3"><?php echo $announcement['header']; ?></h4>
@@ -373,7 +407,7 @@ if (!isset($_SESSION['SR_number'])) {
                         <?php } ?>
                         <section class="popular-courses-area courses-page">
                           <div style="text-align: center;">
-                            <a href="#" class="primary-btn text-uppercase" style="width: auto;">View More School Announcements</a>
+                            <a href="announcement.php" class="primary-btn text-uppercase" style="width: auto;">View More School Announcements</a>
                           </div>
                         </section>
                       <?php } else { ?>
