@@ -69,9 +69,8 @@ if (!isset($_SESSION['F_number'])) {
 
   <!-- Template Stylesheet -->
   <link href="../assets/css/style.css" rel="stylesheet">
-  <link href="../assets/css/form-style.css" rel="stylesheet">
   <link href="../assets/css/admin/style.css" rel="stylesheet">
-  <link href="../assets/css/admin/materialdesignicons.min.css" rel="stylesheet">
+    <link href="../assets/css/admin/style.css.map" rel="stylesheet">
 
 </head>
 
@@ -207,24 +206,51 @@ if (!isset($_SESSION['F_number'])) {
                             <a href="viewCard.php?ID=<?php echo $previous ?>" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3; text-align:center; font-size: 13px"><i class="fa fa-angle-double-left"></i> Previous</a>
                             <a href="viewCard.php?ID=<?php echo $next ?>" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3; text-align:center; font-size: 13px; float: right;">Next <i class="fa fa-angle-double-right"></i></a>
                           </div>
+                          <div class="row">
+                            <div class="col-sm-12 col-lg-6 grid-margin">
+                              <div class="card">
+                                <div class="card-body" style="text-align: left;">
+                                  <div class="row">
+                                    <div class="col-sm-12 col-lg-6">
+                                      <p>
+                                        <?php echo "NAME: " . $StudentData['SR_lname'] . ", " . $StudentData['SR_fname'] . " " . substr($StudentData['SR_mname'], 0, 1); ?>
+                                      </p>
+
+                                    </div>
+                                    <div class="col-sm-12 col-lg-6">
+
+                                      <p><?php echo "STUDENT NUMBER: " . $StudentData['SR_number'] ?></p>
+                                      </p>
+
+                                    </div>
+
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-sm-12 col-lg-6">
+                                      <p>
+                                        Grade and Section: <?php echo $StudentData['SR_grade'] . " - " . $StudentData['SR_section'] ?>
+                                      </p>
+
+                                    </div>
+                                    <div class="col-sm-12 col-lg-6">
+
+                                      <p>
+                                        <?php
+                                          echo "Adviser: " . $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1);
+                                        ?>
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                           <div class="card">
                             <div class="card-body">
-                              <div class="row" style="--bs-gutter-x: 0px; margin-bottom:20px;">
-                                <table id="head" class="table">
-                                  <tr>
-                                    <td class="hatdog" style="text-align: left;"><?php echo "NAME: " . $StudentData['SR_lname'] . ", " . $StudentData['SR_fname'] . " " . substr($StudentData['SR_mname'], 0, 1); ?></td>
-                                    <td class="hatdog" style="text-align: left;"><?php echo "STUDENT NUMBER: " . $StudentData['SR_number'] ?></td>
-                                  </tr>
-                                  <tr>
-                                    <td class="hatdog" style="text-align: left;">Grade and Section: <?php echo $StudentData['SR_grade'] . " - " . $StudentData['SR_section'] ?></td>
-                                    <td class="hatdog" style="text-align: left;">Adviser: <?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1); ?></td>
-                                  </tr>
-                                </table>
-                              </div>
                               <div class="row">
                                 <div class="table-responsive">
                                   <table class="table text-center">
-                                    <thead>
+                                    <thead style=" background-color: #f4f5f7 !important;">
                                       <tr>
                                         <th rowspan="2" class="hatdog">Learning Areas</th>
                                         <th colspan="4" class="hatdog">Periodic Rating</th>
@@ -238,7 +264,7 @@ if (!isset($_SESSION['F_number'])) {
                                         <td class="hatdog" style="border-color: #FFFFFF;">4</td>
                                       </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody style="  background-color: #f4f5f7 ;">
                                       <?php
                                       $average = null;
                                       if (mysqli_num_rows($rungetStudentGrades) > 0) {

@@ -164,9 +164,6 @@ if (!isset($_SESSION['F_number'])) {
                                                                 <div class="card">
                                                                     <div class="card-body">
                                                                         <div class="col-lg-12 col-md-9 ">
-                                                                            <a class="posts-title" href="viewReminders.php?ID=<?php echo $reminder['reminderID'] ?>">
-                                                                                <h3><?php echo $reminder['msg'] ?></h3>
-                                                                            </a>
                                                                             <p>Subject: <?php echo $reminder['subject'] ?></p>
                                                                             <p class="excert"><?php echo $reminder['msg'] ?></p>
                                                                             <a href="viewReminders.php?ID=<?php echo $reminder['reminderID'] ?>" class="primary-btn">View More</a>

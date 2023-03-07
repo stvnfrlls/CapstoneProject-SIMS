@@ -154,7 +154,7 @@ if (!isset($_SESSION['F_number'])) {
                 <div class="tab-content tab-content-basic">
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                     <div class="row">
-                      <div class="col-lg-4 col-sm-12 grid-margin" style="margin: auto; margin-bottom: 30px;">
+                      <div class="col-lg-3 col-sm-12">
                         <div class="card">
                           <div class="card-body">
                             <h4 class="card-title">Profile Picture</h4>
@@ -175,9 +175,7 @@ if (!isset($_SESSION['F_number'])) {
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-12 grid-margin">
+                      <div class="col-lg-9 col-sm-12 grid-margin">
                         <div class="card">
                           <div class="card-body">
                             <h4 class="card-title">Personal Information</h4>

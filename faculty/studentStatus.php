@@ -153,7 +153,7 @@ if (!isset($_SESSION['F_number'])) {
                                                 <div class="col-lg-12 d-flex flex-column">
                                                     <div class="row flex-grow">
                                                         <div class="col-md-6 col-lg-12 grid-margin stretch-card">
-                                                            <div class="card bg-primary card-rounded">
+                                                            <div class="card card-rounded">
                                                                 <div class="table-responsive">
                                                                     <table class="table">
                                                                         <thead>

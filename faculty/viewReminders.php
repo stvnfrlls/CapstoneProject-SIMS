@@ -155,7 +155,7 @@ if (!isset($_SESSION['F_number'])) {
                 <div class="tab-content tab-content-basic">
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                     <div class="row">
-                      <div class="col-lg-8 col-sm-12 grid-margin">
+                      <div class="col-lg-8 col-sm-12 grid-margin" style="margin:auto;">
                         <div class="card" style="margin-bottom: 25px;">
                           <div class="card-body">
                             <form class="form-sample">
@@ -165,43 +165,9 @@ if (!isset($_SESSION['F_number'])) {
                                   <small><i>Deadline: </i><?php echo $reminderInfo['deadline'] ?></small>
                                 </div>
                               </div>
-                            </form>
-                          </div>
-                        </div>
-                        <div class="card" style="margin-bottom: 25px;">
-                          <div class="card-body">
-                            <form class="form-sample">
                               <div class="row">
                                 <div class="col-12">
-                                  <p><?php echo $reminderInfo['msg'] ?></p>
-                                </div>
-                              </div>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-4 col-sm-12 grid-margin">
-                        <div class="card">
-                          <div class="card-body">
-                            <form class="form-sample">
-                              <div class="row">
-                                <div class="col-12">
-                                  <!-- Recent Post Start -->
-                                  <div class="mb-5 wow slideInUp" data-wow-delay="0.1s">
-                                    <div class="section-title section-title-sm position-relative pb-3 mb-4">
-                                      <h3 class="mb-0">Other Reminders</h3>
-                                    </div>
-                                    <?php
-                                    $getOtherReminder = $mysqli->query("SELECT * FROM reminders WHERE reminderID != '{$_GET['ID']}' AND author = '{$_SESSION['F_number']}'");
-                                    while ($otherReminder = $getOtherReminder->fetch_assoc()) { ?>
-                                      <div class="d-flex rounded overflow-hidden mb-3">
-                                        <img class="img-fluid" src="../assets/img/about-1.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
-                                        <a href="viewReminders.php?ID=<?php echo $otherReminder['reminderID'] ?>" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0"><?php echo $otherReminder['msg'] ?></a>
-                                      </div>
-                                    <?php }
-                                    ?>
-                                  </div>
-                                  <!-- Recent Post End -->
+                                  <p style="padding-top: 30px;"><?php echo $reminderInfo['msg'] ?></p>
                                 </div>
                               </div>
                             </form>
