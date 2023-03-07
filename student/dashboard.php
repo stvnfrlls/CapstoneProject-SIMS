@@ -282,7 +282,11 @@ if (!isset($_SESSION['SR_number'])) {
                       </div>
                       <div class="row" style="margin: auto;">
                         <?php
-                        $getReminderData = $mysqli->query("SELECT * FROM reminders WHERE forsection = '{$studentInfo['SR_section']}' AND acadYear = '{$currentSchoolYear}'");
+                        $getReminderData = $mysqli->query("SELECT * FROM reminders 
+                                                          WHERE forsection = '{$studentInfo['SR_section']}' 
+                                                          AND acadYear = '{$currentSchoolYear}'
+                                                          ORDER BY deadline DESC
+                                                          LIMIT 4");
 
                         if ($getReminderData->num_rows > 0) {
                           while ($reminders = $getReminderData->fetch_assoc()) { ?>
@@ -309,11 +313,8 @@ if (!isset($_SESSION['SR_number'])) {
                                     </p>
                                   </div>
                                   <div class="col-12">
-                                    <a class="posts-title" href="viewreminders.php?rmdID=<?php echo $reminders['reminderID'] ?>">
-                                      <h3><?php echo $reminders['header'] ?></h3>
-                                    </a>
                                     <p>Subject: <?php echo $reminders['subject'] ?></p>
-                                    <p class="excert">
+                                    <p class="text-truncate">
                                       <?php
                                       if (empty($reminders['msg'])) {
                                         echo "No description";
@@ -323,7 +324,7 @@ if (!isset($_SESSION['SR_number'])) {
                                       ?>
                                     </p>
                                     <div class="text-center">
-                                      <a href="viewreminders.php?rmdID=<?php echo $reminders['reminderID'] ?>" class="primary-btn">View More</a>
+                                      <a href="viewreminders.php?ID=<?php echo $reminders['reminderID'] ?>" class="primary-btn">View More</a>
                                     </div>
                                   </div>
                                 </div>
@@ -353,7 +354,7 @@ if (!isset($_SESSION['SR_number'])) {
                         <h3 class="mb-0" style="text-align:left;">School Announcements</h3>
                       </div>
                       <?php
-                      $getAnnouncementData = $mysqli->query("SELECT * FROM announcement");
+                      $getAnnouncementData = $mysqli->query("SELECT * FROM announcement ORDER BY date_posted DESC LIMIT 5");
                       if (mysqli_num_rows($getAnnouncementData) > 0) {
                         while ($announcement = $getAnnouncementData->fetch_assoc()) { ?>
                           <div class="col-lg-12 wow " style="padding-bottom: 5px;">
@@ -365,7 +366,7 @@ if (!isset($_SESSION['SR_number'])) {
                                 </div>
                                 <h4 class="mb-3"><?php echo $announcement['header']; ?></h4>
                                 <p class="text-truncate"><?php echo $announcement['msg']; ?></p>
-                                <a class="text-uppercase" href="viewannouncement.php?postID=<?php echo $announcement['ANC_ID']; ?>">Read More <i class="bi bi-arrow-right"></i></a>
+                                <a class="text-uppercase" href="viewannouncement.php?ID=<?php echo $announcement['ANC_ID']; ?>">Read More <i class="bi bi-arrow-right"></i></a>
                               </div>
                             </div>
                           </div>

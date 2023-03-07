@@ -128,7 +128,14 @@ if (!isset($_SESSION['SR_number'])) {
                         <li>
                             <a class="justify-content-between d-flex" href="#">
                                 <p>Posted By</p>
-                                <span><?php echo $announcement['author'] ?></span>
+                                <span>
+                                    <?php
+                                    $getAuthorName = $mysqli->query("SELECT * FROM admin_accounts WHERE AD_number = '{$announcement['author']}'");
+                                    $authorName = $getAuthorName->fetch_assoc();
+
+                                    echo $authorName['AD_name'];
+                                    ?>
+                                </span>
                             </a>
                         </li>
                         <li>
