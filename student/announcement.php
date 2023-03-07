@@ -143,6 +143,7 @@ if (!isset($_SESSION['SR_number'])) {
     </section>
 
     <!-- Footer Start -->
+    <br>
     <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
         <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
             <div class="container">
