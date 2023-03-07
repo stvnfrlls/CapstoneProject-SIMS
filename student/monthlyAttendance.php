@@ -20,13 +20,13 @@ if (!isset($_SESSION['SR_number'])) {
 
 <head>
     <meta charset="utf-8">
-    <title>Student - Report Card</title>
+    <title>Monthly Attendance</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="" name="keywords">
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link href="../assets/img/favicon.png" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -85,7 +85,7 @@ if (!isset($_SESSION['SR_number'])) {
                     <div class="dropdown-menu bg-dark border-0 m-0">
                         <a href="../student/dashboard.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Dashboard</a>
                         <a href="../student/profile.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Profile</a>
-                        <a href="../student/grades.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Grades</a>
+                        <a href="../student/grades.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Report Card</a>
                         <a href="../student/dailyAttendance.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Attendance</a>
                         <a href="../student/reminders.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Reminders</a>
                         <a href="../student/announcement.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">School Announcements</a>
@@ -106,7 +106,7 @@ if (!isset($_SESSION['SR_number'])) {
                         <div class="home-tab" style="margin-top: 0px !important;">
                             <div class="d-sm-flex align-items-center justify-content-between">
                                 <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                                    <h2 class="fw-bold text-primary text-uppercase" style="padding-top: 40px;">Daily Reports</h2>
+                                    <h2 class="fw-bold text-primary text-uppercase" style="padding-top: 40px;">Daily Attendance</h2>
                                 </div>
                             </div>
                             <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
