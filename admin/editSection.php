@@ -128,7 +128,7 @@ if (mysqli_num_rows($checkQuarter) > 0) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/editgrades.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Finalization of Grades</span>
                         </a>
                     </li>
                     <li class="nav-item">
