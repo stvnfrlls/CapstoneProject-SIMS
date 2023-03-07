@@ -115,7 +115,10 @@ if (!isset($_SESSION['SR_number'])) {
                   </div>
                   <p><?php echo $ReminderInfo['msg'] ?></p>
                   <div class="text-button" style="text-align:right;">
-                    <a href="" style="font-weight: 500;">Mark as done</a>
+                    <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
+                      <input type="hidden" name="author" value="<?php echo $ReminderInfo['author'] ?>">
+                      <button type="submit" name="markAsDone" class="btn btn-primary">Mark as done</button>
+                    </form>
                   </div>
                 </div>
               </div>
@@ -135,14 +138,22 @@ if (!isset($_SESSION['SR_number'])) {
             </div>
             <?php
             $getReminderDataExcept = $mysqli->query("SELECT * FROM reminders WHERE forsection = '{$studentInfo['SR_section']}' AND reminderID != '{$_GET['ID']}'");
-            while ($OtherReminderInfo = $getReminderDataExcept->fetch_assoc()) { ?>
+            if (mysqli_num_rows($getReminderDataExcept) > 0) {
+              while ($OtherReminderInfo = $getReminderDataExcept->fetch_assoc()) { ?>
+                <div class="d-flex rounded overflow-hidden mb-3">
+                  <img class="img-fluid" src="../assets/img/about-1.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
+                  <a href="viewreminders.php?ID=<?php echo $OtherReminderInfo['reminderID'] ?>" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0"><?php echo $OtherReminderInfo['header'] ?></a>
+                </div>
+              <?php }
+            } else { ?>
               <div class="d-flex rounded overflow-hidden mb-3">
                 <img class="img-fluid" src="../assets/img/about-1.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
-                <a href="viewreminders.php?ID=<?php echo $OtherReminderInfo['reminderID'] ?>" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0"><?php echo $OtherReminderInfo['header'] ?></a>
+                <a class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0">
+                  No More Reminders
+                </a>
               </div>
             <?php }
             ?>
-
           </div>
           <!-- Recent Post End -->
 
