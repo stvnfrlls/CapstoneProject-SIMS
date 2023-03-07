@@ -241,7 +241,7 @@ if (!isset($_SESSION['F_number'])) {
               <div style="text-align: center;">
                 <input type="hidden" name="updateReminder" value="submit">
                 <button type="button" id="updateReminder" class="btn btn-primary me-2">Update Reminder</button>
-                <button type="button" class="btn btn-light">Cancel</button>
+                <button type="button" class="btn btn-light" onclick="location.href='../faculty/viewReminders.php'">Cancel</button>
               </div>
             </div>
           </form>

@@ -140,7 +140,7 @@ if (!isset($_SESSION['F_number'])) {
                             <div class="home-tab">
                                 <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                                     <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                                        <h2 class="fw-bold text-primary text-uppercase">Class List</h2>
+                                        <h2 class="fw-bold text-primary text-uppercase">Student Status</h2>
                                     </div>
                                 </div>
                                 <div class="tab-content tab-content-basic">

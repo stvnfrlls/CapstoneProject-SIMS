@@ -70,7 +70,7 @@ if (!isset($_SESSION['F_number'])) {
   <!-- Template Stylesheet -->
   <link href="../assets/css/style.css" rel="stylesheet">
   <link href="../assets/css/admin/style.css" rel="stylesheet">
-    <link href="../assets/css/admin/style.css.map" rel="stylesheet">
+  <link href="../assets/css/admin/style.css.map" rel="stylesheet">
 
 </head>
 
@@ -164,10 +164,17 @@ if (!isset($_SESSION['F_number'])) {
             <div class="col-sm-12">
               <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
                 <div class="home-tab">
-                  <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                  <div class="d-sm-flex align-items-center justify-content-between">
                     <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
                       <h2 class="fw-bold text-primary text-uppercase">STUDENT REPORT CARD</h2>
                     </div>
+                  </div>
+                  <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
+                    <nav class="nav">
+                      <a class="nav-link active ms-0" href="viewStudent.php?ID=<?php echo $_GET['ID'] ?>">Profile</a>
+                      <a class="nav-link" href="viewCard.php?ID=<?php echo $_GET['ID'] ?>"  style="color: #c02628;">Grades</a>
+                    </nav>
+                    <div class="border-bottom"></div>
                   </div>
                   <div class="tab-content tab-content-basic">
                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
@@ -235,7 +242,7 @@ if (!isset($_SESSION['F_number'])) {
 
                                       <p>
                                         <?php
-                                          echo "Adviser: " . $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1);
+                                        echo "Adviser: " . $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1);
                                         ?>
                                       </p>
                                     </div>

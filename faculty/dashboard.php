@@ -174,8 +174,8 @@ if (!isset($_SESSION['F_number'])) {
                                                                 <?php
                                                                 if (mysqli_num_rows($facultySchedule) > 0) {
                                                                     while ($getFacultySchedule = $facultySchedule->fetch_assoc()) { ?>
-                                                                        <p class="mb-1" style="font-size: .90rem;">
-                                                                            <?php echo "Grade " . $getFacultySchedule['SR_grade'] . "-" . $getFacultySchedule['SR_section'] . "(" . $getFacultySchedule['S_subject'] . ")" ?>
+                                                                        <p class="mb-1" style="font-size: 13px; padding-top:15px;">
+                                                                            <?php echo "Grade " . $getFacultySchedule['SR_grade'] . "-" . $getFacultySchedule['SR_section'] . " (" . $getFacultySchedule['S_subject'] . ")" ?>
                                                                         </p>
                                                                         <div class="progress rounded" style="height: 25px;">
                                                                             <p style="font-size: .77rem; margin: 5px 0px 0px 7px">
@@ -274,7 +274,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                                             <a class="posts-title" href="viewReminders.php?ID=<?php echo $remindersData['reminderID'] ?>" style="text-align: left;">
                                                                                                 <h6>Subject: <?php echo $remindersData['subject'] ?></h6>
                                                                                             </a>
-                                                                                            <p class="excert">
+                                                                                            <p class="excert text-truncate">
                                                                                                 <?php echo $remindersData['msg'] ?>
                                                                                             </p>
                                                                                             <a href="viewReminders.php?ID=<?php echo $remindersData['reminderID'] ?>" class="primary-btn">View More</a>
