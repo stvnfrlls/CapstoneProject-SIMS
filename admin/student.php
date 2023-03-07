@@ -204,9 +204,9 @@ if (!isset($_SESSION['AD_number'])) {
                         <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
                           <?php
                           if (isset($_GET['SY'])) {
-                            echo "S.Y " . $_GET['SY'];
+                            echo "School Year: " . $_GET['SY'];
                           } else {
-                            echo "Academic Year";
+                            echo "School Year: " . $currentSchoolYear;
                           }
                           ?>
                           <i class="fa fa-caret-down"></i>
@@ -215,7 +215,9 @@ if (!isset($_SESSION['AD_number'])) {
                           <?php
                           $getstudentbyAcadYear = $mysqli->query("SELECT DISTINCT(acadYear) FROM classlist");
                           while ($byacadYear = $getstudentbyAcadYear->fetch_assoc()) {
-                            echo '<a class="dropdown-item" href="student.php?SY=' . $byacadYear['acadYear'] . '">' . $byacadYear['acadYear'] . '</a>';
+                            if ($byacadYear['acadYear'] != $currentSchoolYear) {
+                              echo '<a class="dropdown-item" href="student.php?SY=' . $byacadYear['acadYear'] . '">' . $byacadYear['acadYear'] . '</a>';
+                            }
                           }
                           ?>
                         </div>
