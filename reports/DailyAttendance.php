@@ -21,10 +21,8 @@ if (isset($_GET['ID'])) {
     $getAttendanceInformation = $mysqli->query("SELECT 
                                             SR_number AS 'Student Number', 
                                             A_date AS 'Date', 
-                                            A_time_IN AS 'Timed In',  
-                                            A_fetcher_IN AS 'Fetcher In', 
+                                            A_time_IN AS 'Timed In',
                                             A_time_OUT AS 'Timed Out', 
-                                            A_fetcher_IN AS 'Fetcher Out' 
                                             FROM attendance WHERE SR_number = '{$_GET['ID']}'");
 
     while ($attendanceData = $getAttendanceInformation->fetch_assoc()) {

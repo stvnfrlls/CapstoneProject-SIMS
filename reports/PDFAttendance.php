@@ -88,7 +88,6 @@ if (isset($_GET['ID']) || isset($_GET['month'])) {
     $pdf->Cell(30, 10, 'Timed In', 1, 0, 'C');
     $pdf->Cell(30, 10, 'Timed Out', 1, 0, 'C');
     $pdf->Cell(30, 10, 'Status', 1, 0, 'C');
-    $pdf->Cell(60, 10, 'Fetched By', 1, 1, 'C');
 
     if (!empty($_GET['month'])) {
         $getAttendance = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = '{$_GET['month']}' ORDER BY A_date");
@@ -103,7 +102,6 @@ if (isset($_GET['ID']) || isset($_GET['month'])) {
         $pdf->Cell(30, 10, $attendance['A_time_IN'], 1, 0, 'C');
         $pdf->Cell(30, 10, $attendance['A_time_OUT'], 1, 0, 'C');
         $pdf->Cell(30, 10, $attendance['A_status'], 1, 0, 'C');
-        $pdf->Cell(60, 10, $attendance['A_fetcher_OUT'], 1, 1, 'C');
     }
 
     ob_end_clean();

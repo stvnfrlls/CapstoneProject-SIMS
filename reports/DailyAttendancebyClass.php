@@ -65,7 +65,6 @@ if (isset($_GET['Grade']) || isset($_GET['Section'])) {
     $pdf->Cell(50, 10, 'Student Name', 1, 0, 'C');
     $pdf->Cell(30, 10, 'Timed In', 1, 0, 'C');
     $pdf->Cell(30, 10, 'Timed Out', 1, 0, 'C');
-    $pdf->Cell(50, 10, 'Fetched By', 1, 0, 'C');
     $pdf->Cell(30, 10, 'Status', 1, 1, 'C');
 
     if (!empty($_GET['Grade']) && !empty($_GET['Section'])) {
@@ -84,7 +83,6 @@ if (isset($_GET['Grade']) || isset($_GET['Section'])) {
             $pdf->Cell(50, 10, $attendance['SR_lname'] .  ", " . $attendance['SR_fname'] . " " . substr($attendance['SR_mname'], 0, 1) . ". " . $attendance['SR_suffix'], 1, 0, 'C');
             $pdf->Cell(30, 10, $attendance['A_time_IN'], 1, 0, 'C');
             $pdf->Cell(30, 10, $attendance['A_time_OUT'], 1, 0, 'C');
-            $pdf->Cell(50, 10, $attendance['A_fetcher_OUT'], 1, 0, 'C');
             $pdf->Cell(30, 10, $attendance['A_status'], 1, 1, 'C');
         }
     } else {

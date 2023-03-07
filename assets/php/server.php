@@ -242,16 +242,12 @@ if (isset($_POST['editStudentProfile'])) {
 }
 
 //Faculty Process
-if (isset($_POST['student']) || isset($_POST['fetcher'])) {
+if (isset($_POST['student'])) {
 
     $date = date("Y-m-d");
     $time = date("H:i A");
 
     $studentID = $_POST['student'];
-
-    if (isset($_POST['fetcher'])) {
-        $fetcherID = $_POST['fetcher'];
-    }
 
     $checkAttendance = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$studentID}' AND A_date = '{$date}'");
     $attendanceData = $checkAttendance->fetch_assoc();
@@ -261,7 +257,7 @@ if (isset($_POST['student']) || isset($_POST['fetcher'])) {
                                         (SELECT SR_number FROM classlist WHERE SR_number = '{$studentID}' AND acadYear = '{$currentSchoolYear}')");
     $sendtoGuardian = $sendtoGuardianData->fetch_assoc();
     if ($checkAttendance->num_rows == 0) {
-        $timeIN = $mysqli->query("INSERT INTO attendance (SR_number, A_date, A_time_IN, A_fetcher_IN) VALUES ('{$studentID}', '{$date}', '{$time}', '{$fetcherID}')");
+        $timeIN = $mysqli->query("INSERT INTO attendance (SR_number, A_date, A_time_IN) VALUES ('{$studentID}', '{$date}', '{$time}')");
         $mail->addAddress($sendtoGuardian['G_email']);
         $mail->Subject = 'Attendance: Time In';
 
@@ -272,19 +268,16 @@ if (isset($_POST['student']) || isset($_POST['fetcher'])) {
                        <b>Date: </b>' . $date . '<br>';
         $mail->send();
     } else if (empty($attendanceData['A_time_OUT']) || $attendanceData['A_time_OUT'] = NULL) {
-        $timeOUT = $mysqli->query("UPDATE attendance SET A_time_OUT = '{$time}', A_fetcher_OUT = '{$fetcherID}' WHERE SR_number = '{$studentID}'");
+        $timeOUT = $mysqli->query("UPDATE attendance SET A_time_OUT = '{$time}' WHERE SR_number = '{$studentID}'");
         $mail->addAddress($sendtoGuardian['G_email']);
         $mail->Subject = 'Attendance: Time Out';
 
         $mail->Body = '<h1>Student Timed Out</h1>
                        <br>
                        <p>Attendance Detail</p><br>
-                       <b>Fetched by: </b>' . $time . '<br>
-                       <b>Date: </b>' . $date . '<br>
-                       <b>Fetched By: </b>' . $fetcherID . '<br>';
+                       <b>Timedout: </b>' . $time . '<br>
+                       <b>Date: </b>' . $date . '<br>';
         $mail->send();
-    } else {
-        echo "ERRPR";
     }
 }
 if (isset($_POST['encodeGrade'])) {
@@ -596,25 +589,15 @@ if (isset($_POST['regStudent'])) {
 
     $checkSR_email = $mysqli->query("SELECT SR_email FROM studentrecord WHERE SR_email = '{$S_email}'");
     if (mysqli_num_rows($checkSR_email) == 0) {
-        if (isset($_POST['Fetcher'])) {
-            $SR_servicetype = "WITHFETCHER";
-        }
-        if (!isset($_POST['Fetcher']) && !isset($_POST['NoFetcher'])) {
-            $SR_servicetype = "NOFETCHER";
-        }
-        if (isset($_POST['NoFetcher'])) {
-            $SR_servicetype = "NOFETCHER";
-        }
-
         $regStudent = "INSERT INTO studentrecord(
                         SR_profile_img, SR_number, SR_fname, SR_mname, SR_lname, SR_suffix, 
                         SR_gender, SR_age, SR_birthday, SR_birthplace, SR_religion, 
-                        SR_citizenship, SR_grade, SR_section, SR_servicetype, SR_address, 
+                        SR_citizenship, SR_grade, SR_section, SR_address, 
                         SR_barangay, SR_city, SR_state, SR_postal, SR_email)
                         VALUES(
                         '$SR_profile_img', '$SR_LRN', '$S_fname', '$S_mname', '$S_lname','$S_suffix',
                         '$S_gender', '$S_age', '$S_birthday', '$S_birthplace', '$S_religion',
-                        '$S_citizenship', '$S_grade', '$S_section', '$SR_servicetype', '$S_address', 
+                        '$S_citizenship', '$S_grade', '$S_section', '$S_address', 
                         '$S_barangay', '$S_city', '$S_state', '$S_postal', '$S_email')";
         $RunregStudent = $mysqli->query($regStudent);
         move_uploaded_file($tempname, $folder);
@@ -658,10 +641,6 @@ if (isset($_POST['regStudent'])) {
             $currentDate = date("Y-m-d");
             $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
             VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
-
-            if ($RunregStudent && $RunregGuardian && $SR_servicetype == "WITHFETCHER") {
-                header('Location: linkFetcher.php?ID=' . $SR_LRN);
-            }
         }
     } else {
         showSweetAlert('Email already exist.', 'error');
@@ -1402,128 +1381,6 @@ if (isset($_POST['deleteCurr']) && !empty($_SESSION['AD_number'])) {
     $currentDate = date("Y-m-d");
     $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
     VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
-}
-if (isset($_POST['createFetcher'])) {
-    $FTH_name = $_POST['FTH_name'];
-    $FTH_contactNo = $_POST['FTH_contact'];
-    $FTH_email = $_POST['FTH_email'];
-
-    $getLastFTH = $mysqli->query("SELECT COUNT(G_ID) FROM fetcher_data");
-    $FTHData = $getLastFTH->fetch_assoc();
-    $Plus1 = $FTHData['COUNT(G_ID)'] + 1;
-    $padding_length = 5;
-    $padding_character = '0';
-    $formatted_number = str_pad($Plus1, $padding_length, $padding_character, STR_PAD_LEFT);
-
-    $FTH_number = date("Y") . "-" . $formatted_number . "-FTH";
-
-    $addFetcher = $mysqli->query("INSERT INTO fetcher_data (FTH_number, FTH_name, FTH_contactNo, FTH_email) 
-                            VALUES ('{$FTH_number}', '{$FTH_name}', '{$FTH_contactNo}', '{$FTH_email}')");
-    if ($addFetcher) {
-        echo <<<EOT
-            <script>
-                document.addEventListener("DOMContentLoaded", function(event) { 
-                    swal.fire({
-                        text: 'Fetcher successfully registered.',
-                        icon: 'success',
-                        confirmButtonText: 'OK',
-                    }).then((result) => {
-                        if (result.isConfirmed){
-                            swal.fire({
-                                text: 'Do you want to add another fetcher?',
-                                icon: 'info',
-                                confirmButtonText: 'Yes',
-                                denyButtonText: 'No',
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = 'linkFetcher.php?ID='.{$_GET['ID']}.';
-                                } else if (result.isDenied) {
-                                    window.location.href = 'addStudent.php;
-                                }
-                            });
-                        }
-                    });
-                });
-            </script>
-        EOT;
-    }
-    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
-    $AdminName = $getAdminName->fetch_assoc();
-    $AD_action = "REGISTERED FETCHER - " . $FTH_number;
-    $currentDate = date("Y-m-d");
-    $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
-    VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
-}
-if (isset($_POST['linktoStudent'])) {
-    $FTH_linkedTo = $mysqli->real_escape_string($_GET['ID']);
-    $FTH_option1 = $_POST['FTH_option1'];
-    $FTH_option2 = $_POST['FTH_option2'];
-    $FTH_option3 = $_POST['FTH_option3'];
-
-    $checkFetcherLimit = $mysqli->query("SELECT COUNT(FTH_number) FROM fetcher_list WHERE FTH_linkedTo = '{$FTH_linkedTo}'");
-    $countFetcher = $checkFetcherLimit->fetch_assoc();
-    if ($countFetcher['COUNT(FTH_number)'] < 4) {
-        if (isset($FTH_option1)) {
-            $addFetcher = $mysqli->query("INSERT INTO fetcher_list (FTH_number, FTH_linkedTo) VALUES ('{$FTH_option1}', '{$FTH_linkedTo}')");
-            if ($addFetcher) {
-                showSweetAlert('Fetcher successfully linked.', 'success');
-            }
-        }
-        if (isset($FTH_option2)) {
-            $addFetcher = $mysqli->query("INSERT INTO fetcher_list (FTH_number, FTH_linkedTo) VALUES ('{$FTH_option2}', '{$FTH_linkedTo}')");
-            if ($addFetcher) {
-                showSweetAlert('Fetcher successfully linked.', 'success');
-            }
-        }
-        if (isset($FTH_option3)) {
-            $addFetcher = $mysqli->query("INSERT INTO fetcher_list (FTH_number, FTH_linkedTo) VALUES ('{$FTH_option3}', '{$FTH_linkedTo}')");
-            if ($addFetcher) {
-                showSweetAlert('Fetcher successfully linked.', 'success');
-            }
-        }
-    } else {
-        showSweetAlert('Student reached the maximum amount of fetcher.', 'error');
-    }
-    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
-    $AdminName = $getAdminName->fetch_assoc();
-    $AD_action = "LINKED FETCHER TO STUDENT - " . $FTH_linkedTo;
-    $currentDate = date("Y-m-d");
-    $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
-    VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
-}
-if (isset($_POST['updateInfoFetcher']) && isset($_POST['FTH_linkedTo'])) {
-    $FTH_name = $_POST['FTH_name'];
-    $FTH_contact = $_POST['FTH_contact'];
-    $FTH_email = $_POST['FTH_email'];
-    $FTH_linkedTo = $_POST['FTH_linkedTo'];
-    $FTH_number = $_POST['FTH_number'];
-
-    $updateFetcher = $mysqli->query("UPDATE fetcher_data SET FTH_name = '{$FTH_name}', FTH_contactNo = '{$FTH_contactNo}', FTH_email = '{$FTH_email}') WHERE FTH_number = '{$FTH_number}'");
-}
-if (isset($_POST['deleteFetcher']) && isset($_POST['FTH_number'])) {
-    $FTH_number = $_POST['FTH_number'];
-
-    $deleteFetcher = $mysqli->query("DELETE FROM fetcher_data WHERE FTH_number = '{$FTH_number}'");
-}
-if (isset($_POST['linkFetcher']) && isset($_POST['FTH_linkedTo'])) {
-    $FTH_name = $_POST['FTH_name'];
-    $FTH_contact = $_POST['FTH_contact'];
-    $FTH_email = $_POST['FTH_email'];
-    $FTH_linkedTo = $_POST['FTH_linkedTo'];
-    $FTH_number = $_POST['FTH_number'];
-
-    $checkFetcherLimit = $mysqli->query("SELECT COUNT(FTH_number) FROM fetcher_data WHERE FTH_linkedTo = '{$FTH_linkedTo}'");
-    $countFetcher = $checkFetcherLimit->fetch_assoc();
-    if ($countFetcher['COUNT(FTH_number)'] < 4) {
-        $linkFetcher = $mysqli->query("INSERT INTO fetcher_data (FTH_number, FTH_name, FTH_contactNo, FTH_email, FTH_linkedTo) 
-                                VALUES ('{$FTH_number}', '{$FTH_name}', '{$FTH_contactNo}', '{$FTH_email}', '{$FTH_linkedTo}')");
-    }
-}
-if (isset($_POST['unlinkFetcher']) && isset($_POST['FTH_linkedTo'])) {
-    $FTH_linkedTo = $_POST['FTH_linkedTo'];
-    $FTH_number = $_POST['FTH_number'];
-
-    $unlinkFetcher = $mysqli->query("DELETE FROM fetcher_list WHERE FTH_number = '{$FTH_number}' WHERE FTH_linkedTo = '{$FTH_linkedTo}'");
 }
 // END
 
