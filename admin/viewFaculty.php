@@ -223,7 +223,7 @@ if (isset($_POST['changeStatus'])) {
                           <button type="submit" name="changeStatus" class="btn btn-primary me-2">Mark as Active</button>
                         <?php }
                         ?>
-                        <button class="btn btn-light" onclick="location.href='../admin/faculty.php'">Back</button>
+                        <a class="btn btn-light" onclick="location.href='../admin/faculty.php'">Back</a>
                       </form>
                     </div>
                     <div class="row">
