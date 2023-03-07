@@ -271,23 +271,20 @@ if (isset($_POST['student']) || isset($_POST['fetcher'])) {
                        <b>Time: </b>' . $time . '<br>
                        <b>Date: </b>' . $date . '<br>';
         $mail->send();
-    } else if (empty($attendanceData['A_time_OUT']) && empty($attendanceData['A_fetcher_OUT'])) {
-        $checkServiceType = $mysqli->query("SELECT SR_servicetype FROM studentrecord WHERE SR_number = '{$studentID}'");
-        $ServiceType = $checkServiceType->fetch_assoc();
-        if ($ServiceType['SR_servicetype'] == 'WITHFETCHER') {
-        } elseif ($ServiceType['SR_servicetype'] == 'NOFETCHER') {
-            $timeOUT = $mysqli->query("UPDATE attendance SET A_time_OUT = '{$time}', A_fetcher_OUT = '{$fetcherID}' WHERE SR_number = '{$studentID}'");
-            $mail->addAddress($sendtoGuardian['G_email']);
-            $mail->Subject = 'Attendance: Time Out';
+    } else if (empty($attendanceData['A_time_OUT']) || $attendanceData['A_time_OUT'] = NULL) {
+        $timeOUT = $mysqli->query("UPDATE attendance SET A_time_OUT = '{$time}', A_fetcher_OUT = '{$fetcherID}' WHERE SR_number = '{$studentID}'");
+        $mail->addAddress($sendtoGuardian['G_email']);
+        $mail->Subject = 'Attendance: Time Out';
 
-            $mail->Body = '<h1>Student Timed Out</h1>
+        $mail->Body = '<h1>Student Timed Out</h1>
                        <br>
                        <p>Attendance Detail</p><br>
                        <b>Fetched by: </b>' . $time . '<br>
                        <b>Date: </b>' . $date . '<br>
                        <b>Fetched By: </b>' . $fetcherID . '<br>';
-            $mail->send();
-        }
+        $mail->send();
+    } else {
+       echo "ERRPR";
     }
 }
 if (isset($_POST['encodeGrade'])) {

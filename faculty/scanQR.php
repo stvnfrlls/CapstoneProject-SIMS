@@ -277,12 +277,11 @@ if (!isset($_SESSION['F_number'])) {
         let input = content;
 
         if (input.includes("FTH")) {
-
-        } else {
+            Swal.fire('Fetcher code detected');
             document.getElementById('input2').value = input;
-            Swal.fire('FTH');
+        } else {
             document.getElementById('input1').value = input;
-            if (NOTtimedIN.some(content => e.SR_number === input)) {
+            if (NOTtimedIN.some(content => content.SR_number === input)) {
                 Swal.fire({
                     title: 'Mark this student as present?',
                     confirmButtonText: 'Proceed',
@@ -293,7 +292,7 @@ if (!isset($_SESSION['F_number'])) {
                         })
                     }
                 })
-            } else if (NOTtimedOUT.some(content => e.SR_number === input)) {
+            } else if (NOTtimedOUT.some(content => content.SR_number === input)) {
                 Swal.fire({
                     title: 'Student ready to go home?',
                     confirmButtonText: 'Proceed',
