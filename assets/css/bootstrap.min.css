@@ -3691,13 +3691,13 @@ textarea.form-control-lg {
 
 .dropdown-item:hover,.dropdown-item:focus {
     color: #1e2125;
-    background-color: #c02628;
+    background-color: #9d9d9d;
 }
 
 .dropdown-item.active,.dropdown-item:active {
     color: #fff;
     text-decoration: none;
-    background-color: #C02628
+    background-color: #9d9d9d
 }
 
 .dropdown-item.disabled,.dropdown-item:disabled {
