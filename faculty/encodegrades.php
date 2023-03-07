@@ -205,7 +205,7 @@ if (!isset($_SESSION['F_number'])) {
                               <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                 <?php
                                 if (isset($_GET['Subject'])) {
-                                  echo $_GET['Grade'];
+                                  echo $_GET['Subject'];
                                 } else {
                                   echo "Subject";
                                 }

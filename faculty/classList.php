@@ -170,7 +170,11 @@ if (!isset($_SESSION['F_number'])) {
                               <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
                                 <?php
                                 if (isset($_GET['Grade']) && isset($_GET['Section'])) {
-                                  echo "Grade " . $_GET['Grade'] . " - " . $_GET['Section'];
+                                  if ($_GET['Grade'] == 'KINDER') {
+                                    echo $_GET['Grade'] . " - " . $_GET['Section'];
+                                  } else {
+                                    echo "Grade " . $_GET['Grade'] . " - " . $_GET['Section'];
+                                  }
                                 } else {
                                   echo "Grade and Section ";
                                 }

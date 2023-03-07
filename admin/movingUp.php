@@ -213,10 +213,15 @@ if (!isset($_SESSION['AD_number'])) {
                                             <div class="btn-group">
                                                 <div>
                                                     <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
-                                                        <?php if (isset($_GET['GradeLevel'])) {
-                                                            echo "Grade " . $_GET['GradeLevel'];
+                                                        <?php
+                                                        if (isset($_GET['GradeLevel'])) {
+                                                            if ($_GET['GradeLevel'] == 'KINDER') {
+                                                                echo $_GET['GradeLevel'];
+                                                            } else {
+                                                                echo "Grade " . $_GET['GradeLevel'];
+                                                            }
                                                         } else {
-                                                            echo "Grade Level";
+                                                            echo "Grade";
                                                         }
                                                         ?>
                                                         <i class='fa fa-caret-down'></i>
@@ -227,7 +232,13 @@ if (!isset($_SESSION['AD_number'])) {
                                                         $gradelevelList = $mysqli->query("SELECT DISTINCT(S_yearLevel) FROM sections WHERE acadYear = '{$currentSchoolYear}'");
                                                         while ($gradelevel = $gradelevelList->fetch_assoc()) { ?>
                                                             <a class="dropdown-item" href="movingUp.php?GradeLevel=<?php echo $gradelevel['S_yearLevel'] ?>">
-                                                                <?php echo "Grade - " . $gradelevel['S_yearLevel']; ?>
+                                                                <?php
+                                                                if ($gradelevel['S_yearLevel'] == 'KINDER') {
+                                                                    echo $gradelevel['S_yearLevel'];
+                                                                } else {
+                                                                    echo "Grade " . $gradelevel['S_yearLevel'];
+                                                                }
+                                                                ?>
                                                             </a>
                                                         <?php } ?>
                                                     </div>
@@ -247,7 +258,6 @@ if (!isset($_SESSION['AD_number'])) {
                                                             <i class='fa fa-caret-down'></i>
                                                         </button>
                                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                            <a class="dropdown-item" href="movingUp.php?GradeLevel=<?php echo $_GET['GradeLevel'] ?>">ALL</a>
                                                             <?php
                                                             $sectionList = $mysqli->query("SELECT DISTINCT(S_name) FROM sections WHERE S_yearLevel = '{$_GET['GradeLevel']}' AND acadYear = '{$currentSchoolYear}'");
                                                             while ($section = $sectionList->fetch_assoc()) { ?>
@@ -314,7 +324,13 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                             <input type="hidden" name="SR_number[]" value="<?php echo $studentInfo['SR_number'] ?>">
                                                                                         </td>
                                                                                         <td class="tablestyle">
-                                                                                            <?php echo "Grade " . $data['SR_grade'] . " - " . $data['SR_section'] ?>
+                                                                                            <?php
+                                                                                            if ($data['SR_grade'] == 'KINDER') {
+                                                                                                echo $data['SR_grade'] . " - " . $data['SR_section'];
+                                                                                            } else {
+                                                                                                echo "Grade " . $data['SR_grade'] . " - " . $data['SR_section'];
+                                                                                            }
+                                                                                            ?>
                                                                                             <input type="hidden" name="Grade[]" value="<?php echo $data['SR_grade'] ?>">
                                                                                             <input type="hidden" name="Section[]" value="<?php echo $data['SR_section'] ?>">
                                                                                         </td>
@@ -365,7 +381,11 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                                         echo '<option value="">Graduation</option>';
                                                                                                     } else {
                                                                                                         while ($listSections = $sections->fetch_assoc()) {
-                                                                                                            echo '<option value="">Grade ' . $listSections['S_yearLevel'] . ' - ' . $listSections['S_name'] . '</option>';
+                                                                                                            if ($listSections['S_yearLevel'] == 'KINDER') {
+                                                                                                                echo '<option value="">Grade ' . $listSections['S_yearLevel'] . " - " . $listSections['S_name'] . '</option>';
+                                                                                                            } else {
+                                                                                                                echo '<option value="">Grade ' . $listSections['S_yearLevel'] . " - " . $listSections['S_name'] . '</option>';
+                                                                                                            }
                                                                                                         }
                                                                                                     }
                                                                                                     ?>

@@ -272,7 +272,11 @@ if (empty($_SESSION['AD_number'])) {
                           while ($gradeData = $rungradeList->fetch_assoc()) { ?>
                             <a class="dropdown-item" href="editlearningareas.php?GradeLevel=<?php echo $gradeData['S_yearLevel'] ?>">
                               <?php
-                              echo "Grade " . $gradeData['S_yearLevel'];
+                              if ($gradeData['S_yearLevel'] == 'KINDER') {
+                                echo $gradeData['S_yearLevel'];
+                              } else {
+                                echo "Grade " . $gradeData['S_yearLevel'];
+                              }
                               ?>
                             </a>
                           <?php } ?>

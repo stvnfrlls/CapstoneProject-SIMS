@@ -194,7 +194,13 @@ if (!isset($_SESSION['F_number'])) {
                                                                                                 <input type="hidden" name="SR_number[]" value="<?php echo $studentInfo['SR_number'] ?>">
                                                                                             </td>
                                                                                             <td class="tablestyle">
-                                                                                                <?php echo "Grade " . $data['SR_grade'] . " - " . $data['SR_section'] ?>
+                                                                                                <?php
+                                                                                                if ($data['SR_grade'] == 'KINDER') {
+                                                                                                    echo $data['SR_grade'] . " - " . $data['SR_section'];
+                                                                                                } else {
+                                                                                                    echo "Grade " . $data['SR_grade'] . " - " . $data['SR_section'];
+                                                                                                }
+                                                                                                ?>
                                                                                                 <input type="hidden" name="Grade[]" value="<?php echo $data['SR_grade'] ?>">
                                                                                                 <input type="hidden" name="Section[]" value="<?php echo $data['SR_section'] ?>">
                                                                                             </td>

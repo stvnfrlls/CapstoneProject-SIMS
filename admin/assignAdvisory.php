@@ -274,7 +274,13 @@ if (!isset($_SESSION['AD_number'])) {
                                             <td class="hatdog"><?php echo $rowCount; ?></td>
                                             <td class="hatdog">
                                               <input type="hidden" name="section" value="<?php echo $AdvisoryData['S_name']; ?>">
-                                              <?php echo "Grade " . $AdvisoryData['S_yearLevel'] . " - " . $AdvisoryData['S_name'] ?>
+                                              <?php
+                                              if ($AdvisoryData['S_yearLevel'] == 'KINDER') {
+                                                echo $AdvisoryData['S_yearLevel'] . " - " . $AdvisoryData['S_name'];
+                                              } else {
+                                                echo "Grade " . $AdvisoryData['S_yearLevel'] . " - " . $AdvisoryData['S_name'];
+                                              }
+                                              ?>
                                             </td>
                                             <td class="hatdog">
                                               <select class="form-select" name="advisor" aria-label="Default select example" required>

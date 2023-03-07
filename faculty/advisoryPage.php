@@ -165,7 +165,16 @@ if (!isset($_SESSION['F_number'])) {
                           <div class="card-body">
                             <?php
                             if (mysqli_num_rows($getSectionInfo) > 0) { ?>
-                              <h3><?php echo "Grade " . $SectionData['S_yearLevel'] . " - " . $SectionData['S_name']; ?></h3>
+                              <h3>
+                                <?php
+                                if ($SectionData['S_yearLevel'] == 'KINDER') {
+                                  echo $SectionData['S_yearLevel'] . " - " . $SectionData['S_name'];
+                                } else {
+                                  echo "Grade " . $SectionData['S_yearLevel'] . " - " . $SectionData['S_name'];
+                                }
+
+                                ?>
+                              </h3>
                               <p style="margin-bottom: 5px;"><?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1); ?></p>
                               <p style="margin-bottom: 5px;">School Year: <?php echo $currentSchoolYear ?></p>
                             <?php } else { ?>

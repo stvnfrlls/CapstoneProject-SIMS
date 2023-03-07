@@ -284,7 +284,7 @@ if (isset($_POST['student']) || isset($_POST['fetcher'])) {
                        <b>Fetched By: </b>' . $fetcherID . '<br>';
         $mail->send();
     } else {
-       echo "ERRPR";
+        echo "ERRPR";
     }
 }
 if (isset($_POST['encodeGrade'])) {
@@ -1410,48 +1410,15 @@ if (isset($_POST['updateSection']) && !empty($_SESSION['AD_number'])) {
     $Section = $findSectionInSection->fetch_assoc();
     if (mysqli_num_rows($findSectionInSection) > 0) {
         $updateSectionName = $mysqli->query("UPDATE sections SET S_name = '{$sectionName}' WHERE acadYear = '{$currentSchoolYear}' AND S_yearLevel = '{$Section['S_yearLevel']}'");
+        showSweetAlert('Successfully updated sectioname.', 'success');
 
-        $findSectionInClasslist = $mysqli->query("SELECT * FROM classlist WHERE SR_section = '{$currentName}' AND acadYear = '{$currentSchoolYear}'");
-        if ($findSectionInClasslist) {
-            $Classlist = $findSectionInClasslist->fetch_assoc();
-            $updateClasslistName = $mysqli->query("UPDATE classlist SET SR_section = '{$sectionName}' WHERE acadYear = '{$currentSchoolYear}' AND SR_grade = '{$Classlist['SR_grade']}'");
-
-            $findSectionInWorkSchedule = $mysqli->query("SELECT * FROM workschedule WHERE SR_section = '{$currentName}' AND acadYear = '{$currentSchoolYear}'");
-            if ($findSectionInWorkSchedule) {
-                $WorkSchedule = $findSectionInWorkSchedule->fetch_assoc();
-                $updateWorkSchedule = $mysqli->query("UPDATE workschedule SET SR_section = '{$sectionName}' WHERE acadYear = '{$currentSchoolYear}' AND SR_grade = '{$WorkSchedule['SR_grade']}'");
-
-                $findSectionInStudentRecords = $mysqli->query("SELECT * FROM studentrecord WHERE SR_section = '{$currentName}'");
-                if ($findSectionInStudentRecords) {
-                    $StudentRecord = $findSectionInStudentRecords->fetch_assoc();
-                    $updateStudentRecords = $mysqli->query("UPDATE studentrecord SET SR_section = '{$sectionName}' WHERE SR_grade = '{$StudentRecord['SR_grade']}'");
-
-                    $updateReminders = $mysqli->query("UPDATE reminders SET forsection = '{$sectionName}' WHERE acadYear = '{$currentSchoolYear}'");
-
-                    $findSectionInGrades = $mysqli->query("SELECT * FROM grades WHERE SR_section = '{$currentName}' AND acadYear = '{$currentSchoolYear}'");
-                    if ($findSectionInGrades) {
-                        $Grades = $findSectionInGrades->fetch_assoc();
-                        $updateGrades = $mysqli->query("UPDATE grades SET SR_section = '{$sectionName}' WHERE acadYear = '{$currentSchoolYear}' AND SR_gradeLevel = '{$Grades['SR_gradeLevel']}'");
-
-                        $findSectionInBehavior = $mysqli->query("SELECT * FROM behavior WHERE SR_section = '{$currentName}' AND acadYear = '{$currentSchoolYear}'");
-                        if ($findSectionInBehavior) {
-                            $Behavior = $findSectionInBehavior->fetch_assoc();
-                            $updateBehavior = $mysqli->query("UPDATE behavior SET SR_section = '{$sectionName}' WHERE acadYear = '{$currentSchoolYear}' AND SR_grade = '{$Behavior['SR_grade']}'");
-                        }
-                    }
-                }
-            }
-        }
+        $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+        $AdminName = $getAdminName->fetch_assoc();
+        $AD_action = "UPDATED SECTION NAME OF " . $currentName . " TO " . $sectionName;
+        $currentDate = date("Y-m-d");
+        $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
+        VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
     }
-
-    showSweetAlert('Successfully updated sectioname.', 'success');
-
-    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
-    $AdminName = $getAdminName->fetch_assoc();
-    $AD_action = "UPDATED SECTION NAME OF " . $currentName . " TO " . $sectionName;
-    $currentDate = date("Y-m-d");
-    $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
-    VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
 }
 if (isset($_POST['deleteSection']) && !empty($_SESSION['AD_number'])) {
     $currentName = $_POST['currentName'];
