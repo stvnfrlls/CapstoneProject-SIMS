@@ -275,15 +275,17 @@ if (!isset($_SESSION['F_number'])) {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
           reminderForm.submit();
-          Swal.fire({
-            title: 'Successfully saved!',
-            icon: 'success',
-          }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-              window.location.href = '../faculty/reminders.php';
-            }
-          })
+          setTimeout(() => {
+            Swal.fire({
+              title: 'Successfully saved!',
+              icon: 'success',
+            }).then((result) => {
+              /* Read more about isConfirmed, isDenied below */
+              if (result.isConfirmed) {
+                window.location.href = '../faculty/reminders.php';
+              }
+            })
+          }, 3000);
         }
       })
     })
