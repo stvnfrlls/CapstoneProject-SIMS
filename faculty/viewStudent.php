@@ -172,13 +172,19 @@ if (empty($_SESSION['F_number'])) {
                                             <h2 class="fw-bold text-primary text-uppercase">STUDENT PROFILE</h2>
                                         </div>
                                     </div>
-                                    <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
-                                        <nav class="nav">
-                                            <a class="nav-link active ms-0" href="viewStudent.php?ID=<?php echo $_GET['ID'] ?>" style="color: #c02628;">Profile</a>
-                                            <a class="nav-link" href="viewCard.php?ID=<?php echo $_GET['ID'] ?>">Grades</a>
-                                        </nav>
-                                        <div class="border-bottom"></div>
-                                    </div>
+                                    <?php
+                                    $CheckPermission = $mysqli->query("SELECT * FROM sections WHERE S_adviser = '{$SectionData['S_adviser']}'");
+                                    if (mysqli_num_rows($CheckPermission) == 1) { ?>
+                                        <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
+                                            <nav class="nav">
+                                                <a class="nav-link active ms-0" href="viewStudent.php?ID=<?php echo $_GET['ID'] ?>" style="color: #c02628;">Profile</a>
+                                                <a class="nav-link" href="viewCard.php?ID=<?php echo $_GET['ID'] ?>">Grades</a>
+                                            </nav>
+                                            <div class="border-bottom"></div>
+                                        </div>
+                                    <?php
+                                    }
+                                    ?>
                                     <div style="text-align:right; margin-top: 15px;">
                                         <div class="col-12">
                                             <?php
