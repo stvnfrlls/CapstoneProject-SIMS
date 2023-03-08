@@ -332,7 +332,7 @@ if (isset($_POST['encodeGrade'])) {
 
             $G_gradesQ2 = $forms_G_gradesQ2[$i];
 
-            $mysqli->query("UPDATE grades SET G_gradesQ2 = '{$G_gradesQ2}' WHERE SR_number = '{$SR_number}' AND SR_section = '{$Section}' AND acadYear = '{$currentSchoolYear}'");
+            $mysqli->query("UPDATE grades SET G_gradesQ2 = '{$G_gradesQ2}' WHERE SR_number = '{$SR_number}' AND SR_section = '{$Section}' AND acadYear = '{$currentSchoolYear}' AND G_learningArea = '{$Subject}'");
         }
     }
     if (isset($_POST['G_gradesQ3'])) {
@@ -345,7 +345,7 @@ if (isset($_POST['encodeGrade'])) {
 
             $G_gradesQ3 = $forms_G_gradesQ3[$i];
 
-            $mysqli->query("UPDATE grades SET G_gradesQ3 = '{$G_gradesQ3}' WHERE SR_number = '{$SR_number}' AND SR_section = '{$Section}' AND acadYear = '{$currentSchoolYear}'");
+            $mysqli->query("UPDATE grades SET G_gradesQ3 = '{$G_gradesQ3}' WHERE SR_number = '{$SR_number}' AND SR_section = '{$Section}' AND acadYear = '{$currentSchoolYear}' AND G_learningArea = '{$Subject}'");
         }
     }
     if (isset($_POST['G_gradesQ4'])) {
@@ -358,7 +358,7 @@ if (isset($_POST['encodeGrade'])) {
 
             $G_gradesQ4 = $forms_G_gradesQ4[$i];
 
-            $mysqli->query("UPDATE grades SET G_gradesQ4 = '{$G_gradesQ4}' WHERE SR_number = '{$SR_number}' AND SR_section = '{$Section}' AND acadYear = '{$currentSchoolYear}'");
+            $mysqli->query("UPDATE grades SET G_gradesQ4 = '{$G_gradesQ4}' WHERE SR_number = '{$SR_number}' AND SR_section = '{$Section}' AND acadYear = '{$currentSchoolYear}' AND G_learningArea = '{$Subject}'");
         }
     }
     if (isset($_POST['FinalGrade'])) {
@@ -371,7 +371,7 @@ if (isset($_POST['encodeGrade'])) {
 
             $G_finalgrade = $forms_FinalGrade[$i];
 
-            $mysqli->query("UPDATE grades SET G_finalgrade = '{$G_finalgrade}' WHERE SR_number = '{$SR_number}' AND SR_section = '{$Section}' AND acadYear = '{$currentSchoolYear}'");
+            $mysqli->query("UPDATE grades SET G_finalgrade = '{$G_finalgrade}' WHERE SR_number = '{$SR_number}' AND SR_section = '{$Section}' AND acadYear = '{$currentSchoolYear}' AND G_learningArea = '{$Subject}'");
         }
     }
 }
@@ -773,43 +773,52 @@ if (isset($_POST['regFaculty']) && !empty($_SESSION['AD_number'])) {
 if (isset($_POST['UpdateGrade']) && !empty($_SESSION['AD_number'])) {
     $ids = $_POST['row'];
     $forms_SR_number = $_POST['SR_number'];
-    $forms_SR_section = $_POST['SR_section'];
-    $forms_G_learningArea = $_POST['G_learningArea'];
+    $forms_SR_Grade = $_GET['Grade'];
+    $forms_SR_Section = $_GET['Section'];
+    $forms_G_learningArea = $_POST['subject'];
 
-    $forms_G_gradesQ1 = $_POST['G_gradesQ1'];
-    $forms_G_gradesQ2 = $_POST['G_gradesQ2'];
-    $forms_G_gradesQ3 = $_POST['G_gradesQ3'];
-    $forms_G_gradesQ4 = $_POST['G_gradesQ4'];
+    $forms_Grade = $_POST['grade'];
 
     foreach ($ids as $i => $id) {
         $SR_number = $forms_SR_number[$i];
-        $SR_section = $forms_SR_section[$i];
         $G_learningArea = $forms_G_learningArea[$i];
-        $G_gradesQ1 = $forms_G_gradesQ1[$i];
-        $G_gradesQ2 = $forms_G_gradesQ2[$i];
-        $G_gradesQ3 = $forms_G_gradesQ3[$i];
-        $G_gradesQ4 = $forms_G_gradesQ4[$i];
+        $Grade = $forms_Grade[$i];
 
-        $updateGrade = "UPDATE grades 
-                        SET 
-                        G_gradesQ1 = '$G_gradesQ1',
-                        G_gradesQ2 = '$G_gradesQ2',
-                        G_gradesQ3 = '$G_gradesQ3',
-                        G_gradesQ4 = '$G_gradesQ4'
-                        WHERE SR_number = '$SR_number'
-                        AND G_learningArea = '$G_learningArea'";
-        $resultupdateGrade = $mysqli->query($updateGrade);
+        if ($_GET['Quarter'] == 1) {
+            $updateGrade = "UPDATE grades 
+                            SET 
+                            G_gradesQ1 = '$Grade'
+                            WHERE SR_number = '$SR_number'
+                            AND G_learningArea = '$G_learningArea'";
+            $resultupdateGrade = $mysqli->query($updateGrade);
+        }
+        if ($_GET['Quarter'] == 2) {
+            $updateGrade = "UPDATE grades 
+                            SET 
+                            G_gradesQ2 = '$Grade'
+                            WHERE SR_number = '$SR_number'
+                            AND G_learningArea = '$G_learningArea'";
+            $resultupdateGrade = $mysqli->query($updateGrade);
+        }
+        if ($_GET['Quarter'] == 3) {
+            $updateGrade = "UPDATE grades 
+                            SET 
+                            G_gradesQ3 = '$Grade'
+                            WHERE SR_number = '$SR_number'
+                            AND G_learningArea = '$G_learningArea'";
+            $resultupdateGrade = $mysqli->query($updateGrade);
+        }
+        if ($_GET['Quarter'] == 4) {
+            $updateGrade = "UPDATE grades 
+                            SET 
+                            G_gradesQ4 = '$Grade'
+                            WHERE SR_number = '$SR_number'
+                            AND G_learningArea = '$G_learningArea'";
+            $resultupdateGrade = $mysqli->query($updateGrade);
+        }
     }
     if ($resultupdateGrade) {
         showSweetAlert('Grades successfully updated.', 'success');
-        $url_components = parse_url($current_url);
-        parse_str($url_components['query'], $params);
-        $param1 = $params['Grade'];
-        $param2 = $params['Section'];
-        $param3 = $params['LearningArea'];
-
-        $url = "../admin/editgrades.php";
-        header("Location: " . $url . "?Grade=" . $param1 . "&Section=" . $param2 . "&LearningArea=" . $param3);
     } else {
         showSweetAlert('Failed to update grades.', 'error');
     }
