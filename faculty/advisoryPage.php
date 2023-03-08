@@ -245,7 +245,7 @@ if (!isset($_SESSION['F_number'])) {
                                           <td class="hatdog"><?php echo $ClassListRow; ?></td>
                                           <td class="hatdog"><?php echo $SectionClassListData['SR_number']; ?></td>
                                           <td class="hatdog">
-                                            <a href="viewCard.php?ID=<?php echo $SectionClassListData['SR_number']; ?>">
+                                            <a href="viewStudent.php?ID=<?php echo $SectionClassListData['SR_number']; ?>">
                                               <?php
                                               $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$SectionClassListData['SR_number']}'");
                                               $studentInfo = $getStudentInfo->fetch_assoc();

@@ -156,12 +156,12 @@ if (!isset($_SESSION['SR_number'])) {
                                 if (empty($studentInfo['SR_profile_img']) || !file_exists($profile_path)) { ?>
                                   <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
                                 <?php } else { ?>
-                                  <img src="../assets/img/profile/<?php echo $studentInfo['SR_profile_img'] ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
+                                  <img src="../assets/img/profile/<?php echo $studentInfo['SR_profile_img'] ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 200px;">
                                 <?php }
                                 ?>
                               </div>
                               <div class="col-8" style="align-self: center;">
-                                <h3 style="margin-bottom: 8px;"><?php echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix']; ?></h3>
+                                <h3 style="margin-bottom: 8px; text-align:left;"><?php echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix']; ?></h3>
                                 <p style="margin-bottom: 2px;"><?php echo $studentInfo['SR_number'] ?></p>
                                 <p style="margin-bottom: 2px;"><?php echo "Grade " . $studentInfo['SR_grade'] . " - " . $studentInfo['SR_section'] ?></p>
                                 <p style="margin-bottom: 2px;">
@@ -342,7 +342,7 @@ if (!isset($_SESSION['SR_number'])) {
                                   </div>
                                   <div class="col-12">
                                     <p>Subject: <?php echo $reminders['subject'] ?></p>
-                                    <p class="text-truncate">
+                                    <p class="excert text-truncate"
                                       <?php
                                       if (empty($reminders['msg'])) {
                                         echo "No description";

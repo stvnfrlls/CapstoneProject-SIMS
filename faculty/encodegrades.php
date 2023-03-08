@@ -170,7 +170,7 @@ if (!isset($_SESSION['F_number'])) {
                           <div class="card-body">
                             <div class="btn-group">
                               <div>
-                                <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e5e7;">
                                   <?php
                                   if (isset($_GET['Grade']) && isset($_GET['Section'])) {
                                     if ($_GET['Grade'] == "KINDER") {
@@ -202,23 +202,23 @@ if (!isset($_SESSION['F_number'])) {
                                   ?>
                                 </div>
                               </div>
-
                             </div>
                             <div class="btn-group">
-                              <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                <?php
-                                if (isset($_GET['Subject'])) {
-                                  echo $_GET['Subject'];
-                                } else {
-                                  echo "Subject";
-                                }
-                                ?>
-                                <i class="fa fa-caret-down"></i>
-                              </button>
-                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                <?php
-                                if (isset($_GET['Grade']) && isset($_GET['Section'])) {
-                                  $getSubjectData = $mysqli->query("SELECT S_subject FROM workschedule 
+                              <div>
+                                <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e5e7;">
+                                  <?php
+                                  if (isset($_GET['Subject'])) {
+                                    echo $_GET['Subject'];
+                                  } else {
+                                    echo "Subject";
+                                  }
+                                  ?>
+                                  <i class="fa fa-caret-down"></i>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                  <?php
+                                  if (isset($_GET['Grade']) && isset($_GET['Section'])) {
+                                    $getSubjectData = $mysqli->query("SELECT S_subject FROM workschedule 
                                                                         WHERE F_number = '{$_SESSION['F_number']}' 
                                                                         AND acadYear = '{$currentSchoolYear}'
                                                                         AND SR_grade = '{$_GET['Grade']}'
@@ -235,9 +235,7 @@ if (!isset($_SESSION['F_number'])) {
                                   ?>
                                 </div>
                               </div>
-
                             </div>
-
                             <div class="row">
                               <div class="table-responsive">
                                 <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="FormGrades">
@@ -373,7 +371,7 @@ if (!isset($_SESSION['F_number'])) {
                                         ?>
                                       <?php } else { ?>
                                         <tr>
-                                          <td class="hatdog" colspan="7">Select a grade section firs</td>
+                                          <td class="hatdog" colspan="7">Select for Grade & Section and Subject first.</td>
                                         </tr>
                                       <?php }
                                       ?>
@@ -416,6 +414,8 @@ if (!isset($_SESSION['F_number'])) {
                               </div>
                             </div>
                           </div>
+
+
                         </div>
                       </div>
                     </div>
@@ -425,11 +425,12 @@ if (!isset($_SESSION['F_number'])) {
             </div>
           </div>
         </div>
-        <!-- content-wrapper ends -->
       </div>
-      <!-- main-panel ends -->
+      <!-- content-wrapper ends -->
     </div>
-    <!-- page-body-wrapper ends -->
+    <!-- main-panel ends -->
+  </div>
+  <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
 

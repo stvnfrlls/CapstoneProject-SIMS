@@ -164,7 +164,6 @@ if (!isset($_SESSION['SR_number'])) {
                             echo '<p>No more announcements</p>';
                         }
                         ?>
-
                     </div>
                 </div>
             </div>

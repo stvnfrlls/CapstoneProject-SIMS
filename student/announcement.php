@@ -91,7 +91,7 @@ if (!isset($_SESSION['SR_number'])) {
     </nav>
     <!-- Navbar End -->
 
-    <section class="popular-courses-area section-gap courses-page">
+    <section class="popular-courses-area section-gap courses-page" style="padding-top:50px">
         <div class="container">
             <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
                 <h5 class="fw-bold text-primary text-uppercase" style="font-size: 30px; margin-top: 0px;">School Announcements</h5>
@@ -151,6 +151,7 @@ if (!isset($_SESSION['SR_number'])) {
     </section>
 
     <!-- Footer Start -->
+    <br>
     <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
         <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
             <div class="container">

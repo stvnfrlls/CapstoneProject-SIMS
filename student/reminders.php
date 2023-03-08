@@ -128,7 +128,7 @@ if (!isset($_SESSION['SR_number'])) {
                                         <div class="card-body">
                                             <div class="col-lg-12 col-md-9 ">
                                                 <p>Subject: <?php echo $reminders['subject'] ?></p>
-                                                <p class="excert">
+                                                <p class="excert text-truncate">
                                                     <?php
                                                     if (empty($reminders['msg'])) {
                                                         echo "No description";
@@ -167,7 +167,7 @@ if (!isset($_SESSION['SR_number'])) {
     </section>
 
     <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
+    <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s" style="margin-top:320px;">
         <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
             <div class="container">
                 <div class="row">

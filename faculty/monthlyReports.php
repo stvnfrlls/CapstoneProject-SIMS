@@ -19,7 +19,7 @@ if (!isset($_SESSION['F_number'])) {
 
 <head>
     <meta charset="utf-8">
-    <title>Monthly Reports</title>
+    <title>Monthly Attendance</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -143,7 +143,7 @@ if (!isset($_SESSION['F_number'])) {
                             <div class="home-tab">
                                 <div class="d-sm-flex align-items-center justify-content-between">
                                     <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                                        <h2 class="fw-bold text-primary text-uppercase">Monthly Reports</h2>
+                                        <h2 class="fw-bold text-primary text-uppercase">Monthly Attendance</h2>
                                     </div>
                                 </div>
                                 <div class="container-xl px-4 mt-4" style="padding-bottom:0px">

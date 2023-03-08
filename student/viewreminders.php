@@ -49,7 +49,6 @@ if (!isset($_SESSION['SR_number'])) {
   <!-- Template Stylesheet -->
   <link href="../assets/css/style.css" rel="stylesheet">
   <link href="../assets/css/dashboard-user.css" rel="stylesheet">
-  <link href="../assets/css/educ/main.css" rel="stylesheet">
 </head>
 
 <body>
