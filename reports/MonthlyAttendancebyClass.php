@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require '../assets/fpdf/fpdf.php';
 require_once("../assets/php/server.php");
 
@@ -109,7 +110,7 @@ if (isset($_GET['month']) && isset($_GET['Grade']) && isset($_GET['Section'])) {
 
             $TARDY = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$AttendanceData['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}' AND A_status = 'TARDY'");
             $TARDYvalue = $TARDY->fetch_assoc();
-            
+
             $pdf->SetFont('Arial', '', 10);
             $pdf->Cell(70, 10, $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'] . " " . substr($AttendanceData['SR_mname'], 0, 1) . ". " . $AttendanceData['SR_suffix'], 1, 0, 'C');
             $pdf->Cell(30, 10, $count_weekdays, 1, 0, 'C');
@@ -121,5 +122,7 @@ if (isset($_GET['month']) && isset($_GET['Grade']) && isset($_GET['Section'])) {
         $pdf->Cell(190, 20, 'No Data', 1, 1, 'C');
     }
 
+    ob_end_clean();
     $pdf->Output();
+    $pdf->Output('I', "Monthly Attendance - " . $_GET['Section'] . " (" . $_GET['Grade'] . "-" . $_GET['Section'] . ")" . '.pdf');
 }

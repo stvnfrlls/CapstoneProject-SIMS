@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require '../assets/fpdf/fpdf.php';
 require_once("../assets/php/server.php");
 
@@ -77,5 +78,6 @@ if (isset($_GET['GradeLevel']) && isset($_GET['section'])) {
         $pdf->Cell(50, 10, "Grade " . $classlist['SR_grade'] . " - " . $classlist['SR_section'], 1, 1, 'C');
     }
 
-    $pdf->Output('D', "Classlist - " . $_GET['GradeLevel'] . " - " . $_GET['section'] . '.pdf');
+    ob_end_clean();
+    $pdf->Output('I', "Classlist - " . $_GET['GradeLevel'] . " - " . $_GET['section'] . '.pdf');
 }

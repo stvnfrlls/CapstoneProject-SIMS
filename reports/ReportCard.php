@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require '../assets/fpdf/fpdf.php';
 require_once("../assets/php/server.php");
 
@@ -93,20 +94,20 @@ if (isset($_GET['ID'])) {
     $pdf->Cell(24, 10, 'Grade/Section:');
 
     $pdf->SetFont('Arial', '', 9);
-    $pdf->Cell(30, 8, $studentInfo['SR_grade'] . " - " . $studentInfo['SR_section'], 'B', '', 'C');
+    $pdf->Cell(50, 8, $studentInfo['SR_grade'] . " - " . $studentInfo['SR_section'], 'B', '', 'C');
     $pdf->Cell(3, 10, '', 0);
 
     $pdf->SetFont('Arial', 'B', 9);
     $pdf->Cell(14, 10, 'Adviser:');
 
     $pdf->SetFont('Arial', '', 9);
-    $pdf->Cell(70, 8, $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'] . " " . substr($AdvisorInfo['F_mname'], 0, 1) . ". " . $AdvisorInfo['F_suffix'], 'B', '', 'C');
+    $pdf->Cell(55, 8, $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'] . " " . substr($AdvisorInfo['F_mname'], 0, 1) . ". " . $AdvisorInfo['F_suffix'], 'B', '', 'C');
 
     $pdf->SetFont('Arial', 'B', 9);
     $pdf->Cell(10, 10, 'LRN:');
 
     $pdf->SetFont('Arial', '', 9);
-    $pdf->Cell(39, 8, '#####-#####-#####', 'B', '', 'C');
+    $pdf->Cell(35, 8, $studentInfo['SR_number'], 'B', '', 'C');
 
     $pdf->Ln(15);
 
@@ -124,28 +125,39 @@ if (isset($_GET['ID'])) {
     $pdf->SetFont('Arial', '', 9);
 
     $getStudentGrades = $mysqli->query("SELECT * FROM grades WHERE SR_number = '{$_GET['ID']}'");
-    while ($studentGrades = $getStudentGrades->fetch_assoc()) {
-        $pdf->Cell(70, 10, $studentGrades['G_learningArea'], 1, 0, 'C');
-        $pdf->Cell(15, 10, $studentGrades['G_gradesQ1'], 1, 0, 'C');
-        $pdf->Cell(15, 10, $studentGrades['G_gradesQ2'], 1, 0, 'C');
-        $pdf->Cell(15, 10, $studentGrades['G_gradesQ3'], 1, 0, 'C');
-        $pdf->Cell(15, 10, $studentGrades['G_gradesQ4'], 1, 0, 'C');
-        $pdf->Cell(30, 10, $studentGrades['G_finalgrade'], 1, 0, 'C');
+    if (mysqli_num_rows($getStudentGrades) > 0) {
+        while ($studentGrades = $getStudentGrades->fetch_assoc()) {
+            $pdf->Cell(70, 10, $studentGrades['G_learningArea'], 1, 0, 'C');
+            $pdf->Cell(15, 10, $studentGrades['G_gradesQ1'], 1, 0, 'C');
+            $pdf->Cell(15, 10, $studentGrades['G_gradesQ2'], 1, 0, 'C');
+            $pdf->Cell(15, 10, $studentGrades['G_gradesQ3'], 1, 0, 'C');
+            $pdf->Cell(15, 10, $studentGrades['G_gradesQ4'], 1, 0, 'C');
+            $pdf->Cell(30, 10, $studentGrades['G_finalgrade'], 1, 0, 'C');
 
-        if ($studentGrades['G_finalgrade'] < 75) {
-            $finalgradeRemarks = "FAILED";
-        } else {
-            $finalgradeRemarks = "PASSSED";
+            if ($studentGrades['G_finalgrade'] < 75) {
+                $finalgradeRemarks = "FAILED";
+            } else {
+                $finalgradeRemarks = "PASSSED";
+            }
+            $pdf->Cell(30, 10, $finalgradeRemarks, 1, 1, 'C');
         }
-        $pdf->Cell(30, 10, $finalgradeRemarks, 1, 1, 'C');
+    } else {
+        if ($studentInfo['SR_grade'] == "KINDER") {
+            $yearLevel = 0;
+        } else {
+            $yearLevel = $studentInfo['SR_grade'];
+        }
+        $getLearningAreas = $mysqli->query("SELECT * FROM subjectperyear WHERE minYearLevel <= '{$yearLevel}' AND maxYearLevel >= '{$yearLevel}'");
+        while ($LearningAreas = $getLearningAreas->fetch_assoc()) {
+            $pdf->Cell(70, 10, $LearningAreas['subjectName'], 1, 0, 'C');
+            $pdf->Cell(15, 10, '', 1, 0, 'C');
+            $pdf->Cell(15, 10, '', 1, 0, 'C');
+            $pdf->Cell(15, 10, '', 1, 0, 'C');
+            $pdf->Cell(15, 10, '', 1, 0, 'C');
+            $pdf->Cell(30, 10, '', 1, 0, 'C');
+            $pdf->Cell(30, 10, '', 1, 1, 'C');
+        }
     }
-
-    $pdf->Cell(70, 10, 'Learning Modality', 1, 0, 'C');
-    $pdf->Cell(15, 10, '##', 1, 0, 'C');
-    $pdf->Cell(15, 10, '##', 1, 0, 'C');
-    $pdf->Cell(15, 10, '##', 1, 0, 'C');
-    $pdf->Cell(15, 10, '##', 1, 0, 'C');
-    $pdf->Cell(60, 10, '', 1, 1, 'C');
 
     $pdf->SetFont('Arial', 'B', 9);
     $pdf->Cell(130, 10, 'GENERAL AVERAGE', 1, 0, 'C');
@@ -154,29 +166,17 @@ if (isset($_GET['ID'])) {
     $GradeAve = $getGradeAve->fetch_assoc();
 
     $pdf->Cell(30, 10, $GradeAve['average'], 1, 0, 'C');
-    if ($GradeAve['average'] < 75) {
-        $genAveRemarks = "FAILED";
-    } else {
+    if ($GradeAve['average'] > 75) {
         $genAveRemarks = "PASSED";
+    } else if ($GradeAve['average'] == 0 || empty($GradeAve['average'])) {
+        $genAveRemarks = "";
+    } else {
+        $genAveRemarks = "FAILED";
     }
 
     $pdf->Cell(30, 10, $genAveRemarks, 1, 1, 'C');
 
-    $pdf->Ln(5);
-
-    $pdf->Cell(70, 10, 'MODE OF LEARNING', 0, 1);
-    $pdf->Cell(55, 10, 'Marking', 1, 0, 'C');
-    $pdf->Cell(45, 10, 'OL', 1, 0, 'C');
-    $pdf->Cell(45, 10, 'ML', 1, 0, 'C');
-    $pdf->Cell(45, 10, 'BL', 1, 1, 'C');
-    $pdf->Cell(55, 10, 'Description', 1, 0, 'C');
-
-    $pdf->SetFont('Arial', '', 9);
-    $pdf->Cell(45, 10, 'Online Learning', 1, 0, 'C');
-    $pdf->Cell(45, 10, 'Modular Learning', 1, 0, 'C');
-    $pdf->Cell(45, 10, 'Blended Learning', 1, 1, 'C');
-
-    $pdf->Ln(100);
+    $pdf->Ln(500);
 
     $pdf->SetFont('Arial', 'B', 9);
     $pdf->Cell(190, 10, 'Character Building', 0, 1, 'C');
@@ -415,5 +415,7 @@ if (isset($_GET['ID'])) {
     $TOTALvalue = $TOTAL->fetch_assoc();
     $pdf->Cell(20, 5, $TOTALvalue['COUNT(A_status)'], 1, 1, 'C');
 
-    $pdf->Output('D', $studentInfo['SR_lname'] . ' - ' . $studentInfo['SR_grade'] . " - " . $studentInfo['SR_section'] . '.pdf');
+    ob_end_clean();
+    // $pdf->Output();
+    $pdf->Output('I', $studentInfo['SR_lname'] . ' - ' . $studentInfo['SR_grade'] . " - " . $studentInfo['SR_section'] . '.pdf');
 }

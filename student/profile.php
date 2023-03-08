@@ -163,35 +163,6 @@ if (!isset($_SESSION['SR_number'])) {
               ?>
             </div>
           </div>
-          <div class="card mb-4 mb-md-0">
-            <div class="card-body">
-              <p class="mb-4" style="text-align: center; color:#c02628;">Fetchers</p>
-              <div class="accordion-left">
-                <dl class="accordion">
-                  <?php
-                  $getLinkedFetcher = $mysqli->query("SELECT * FROM fetcher_list WHERE FTH_linkedTo = '{$_SESSION['SR_number']}'");
-                  if (mysqli_num_rows($getLinkedFetcher) > 0) {
-                    while ($LinkedFetcher = $getLinkedFetcher->fetch_assoc()) { ?>
-                      <dt>
-                        <?php
-                        $getFetcherData = $mysqli->query("SELECT * FROM fetcher_data WHERE FTH_number = '{$LinkedFetcher['FTH_number']}'");
-                        $FetcherData = $getFetcherData->fetch_assoc();
-                        ?>
-                        <a href="" style="font-size: 15px"> > <?php echo $FetcherData['FTH_name'] ?></a>
-                      </dt>
-                      <dd>
-                        <h7>Contact Number: <?php echo $FetcherData['FTH_contactNo'] ?></h7>
-                        <p>Email Address: <?php echo $FetcherData['FTH_email'] ?></p>
-                      </dd>
-                    <?php }
-                  } else { ?>
-                    <p class="text-center">NO FETCHER ASSIGNED</p>
-                  <?php }
-                  ?>
-                </dl>
-              </div>
-            </div>
-          </div>
         </div>
         <div class="col-lg-8">
           <div class="card mb-4">

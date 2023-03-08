@@ -7,7 +7,14 @@ if (!isset($_SESSION['F_number'])) {
   $getfacultyinfo = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
   $facultyInfo = $getfacultyinfo->fetch_assoc();
 
-  $getSubjects = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
+  $getSubjects = $mysqli->query("SELECT S_subject, SR_grade, SR_section, WS_start_time, WS_end_time  FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
+  $subjects_array = array();
+  while ($subjects = $getSubjects->fetch_assoc()) {
+    $subjects_array[] = $subjects;
+  }
+  $subjectList = json_encode($subjects_array);
+
+  echo "<script>var options = " . $subjectList . ";</script>";
 
   $getGradeSection = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
 }
@@ -178,7 +185,15 @@ if (!isset($_SESSION['F_number'])) {
                                         <?php
                                         if (mysqli_num_rows($getGradeSection) > 0) {
                                           while ($GradeSection = $getGradeSection->fetch_assoc()) { ?>
-                                            <option value="<?php echo $GradeSection['SR_section'] ?>"><?php echo $GradeSection['SR_section'] . " - " . $GradeSection['S_subject'] . " (" . $GradeSection['WS_start_time'] . " - " . timePlusOneMinute($GradeSection['WS_end_time']) . ")"  ?></option>
+                                            <option value="<?php echo $GradeSection['SR_section'] ?>">
+                                              <?php
+                                              if ($GradeSection['SR_grade'] == 'KINDER') {
+                                                $gradeLabel = $GradeSection['SR_grade'] . ' - ' . $GradeSection['SR_section'];
+                                              } else {
+                                                $gradeLabel = 'Grade ' . $GradeSection['SR_grade'] . ' - ' . $GradeSection['SR_section'];
+                                              }
+                                              echo $gradeLabel . " (" . $GradeSection['WS_start_time'] . " - " . timePlusOneMinute($GradeSection['WS_end_time']) . ")"  ?>
+                                            </option>
                                           <?php
                                           }
                                         } else { ?>
@@ -191,18 +206,8 @@ if (!isset($_SESSION['F_number'])) {
                                   </div>
                                   <div class="col-6">
                                     <div class="form-floating">
-                                      <select class="form-select" name="subject" id="subject" placeholder="Subject" required>
+                                      <select class="form-select" name="subject" id="subject" onchange="getSubjects()" required>
                                         <option selected></option>
-                                        <?php
-                                        if (mysqli_num_rows($getSubjects) > 0) {
-                                          while ($subjects = $getSubjects->fetch_assoc()) { ?>
-                                            <option value="<?php echo $subjects['S_subject'] ?>"><?php echo $subjects['S_subject'] . " - (" . $subjects['WS_start_time'] . " - " . timePlusOneMinute($subjects['WS_end_time']) . ")"  ?></option>
-                                          <?php
-                                          }
-                                        } else { ?>
-                                          <option selected>No subjects available</option>
-                                        <?php }
-                                        ?>
                                       </select>
                                       <label for="subject">Subject</label>
                                     </div>
@@ -259,6 +264,25 @@ if (!isset($_SESSION['F_number'])) {
   <script src="../assets/js/admin/vendor.bundle.base.js"></script>
   <script src="../assets/js/admin/off-canvas.js"></script>
   <script src="../assets/js/admin/file-upload.js"></script>
+
+  <script>
+    const forsection = document.getElementById("forsection");
+    const subject = document.getElementById("subject");
+
+    forsection.addEventListener('change', function() {
+      const selected_grade = this.value;
+      const filteredData = options.filter(function(item) {
+        return item.SR_section === selected_grade;
+      });
+      subject.innerHTML = "";
+      filteredData.forEach(function(item) {
+        const option = document.createElement("option");
+        option.value = item.S_subject;
+        option.text = item.S_subject;
+        subject.add(option);
+      });
+    })
+  </script>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
   <script>

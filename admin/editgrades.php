@@ -28,7 +28,6 @@ if (!isset($_SESSION['AD_number'])) {
     }
   }
 }
-// var_dump($_POST);
 ?>
 
 <!DOCTYPE html>
@@ -121,12 +120,7 @@ if (!isset($_SESSION['AD_number'])) {
               <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="../admin/createFetcher.php">
-              <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
-            </a>
-          </li>
+
           <li class="nav-item">
             <a class="nav-link" href="../admin/student.php">
               <i class=""></i>
@@ -312,7 +306,7 @@ if (!isset($_SESSION['AD_number'])) {
                       <?php }
                       ?>
                       <div style="text-align: right;">
-                        <button type="button" class="btn btn-primary" id="confirmChanges" name="saveGrades" value="Save">Save Grades</button>
+                        <button type="submit" class="btn btn-primary" id="confirmChanges" name="UpdateGrade" value="Save">Save Grades</button>
                         <button type="button" class="btn btn-primary" id="confirmChanges" name="releaseGrades" value="Release">Release Grades</button>
                       </div>
                       <div class="row" style="margin-top: 15px;;">
@@ -382,54 +376,70 @@ if (!isset($_SESSION['AD_number'])) {
                                     </thead>
                                     <tbody>
                                       <?php
-                                      if (isset($_GET['Grade']) && isset($_GET['Section'])) {
-                                        $getClassList = $mysqli->query(
-                                          "SELECT * FROM studentrecord 
-                                          WHERE SR_number IN (
-                                              SELECT SR_number FROM classlist 
-                                              WHERE SR_grade = '{$_GET['Grade']}' 
-                                              AND SR_section = '{$_GET['Section']}' 
-                                              AND acadYear = '{$currentSchoolYear}')"
-                                        );
+                                      if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Quarter'])) {
+                                        $getClassList = $mysqli->query("SELECT * FROM studentrecord 
+                                                                        WHERE SR_number IN (
+                                                                        SELECT SR_number FROM classlist 
+                                                                        WHERE SR_grade = '{$_GET['Grade']}' 
+                                                                        AND SR_section = '{$_GET['Section']}' 
+                                                                        AND acadYear = '{$currentSchoolYear}')");
                                         while ($classList = $getClassList->fetch_assoc()) { ?>
                                           <tr>
                                             <td>
                                               <?php echo $classList['SR_lname'] .  ", " . $classList['SR_fname'] . " " . substr($classList['SR_mname'], 0, 1) . ". " . $classList['SR_suffix']; ?>
-                                              <input type="hidden" name="SR_number[]" value=" <?php echo $classList['SR_number'] ?>">
                                             </td>
                                             <?php
-                                            $getGradeData = $mysqli->query("SELECT * FROM grades 
-                                                                            WHERE acadYear = '{$currentSchoolYear}' 
-                                                                            AND SR_number = '{$classList['SR_number']}'");
-                                            if (mysqli_num_rows($getGradeData) > 0) {
-                                              while ($Grade = $getGradeData->fetch_assoc()) {
-                                                $getQuarterData = $mysqli->query("SELECT quarterTag FROM quartertable WHERE quarterTag = '{$_GET['Quarter']}'");
-                                                $QuarterData = $getQuarterData->fetch_assoc();
-                                                if (mysqli_num_rows($getQuarterData) > 0) {
-                                                  if ($QuarterData['quarterTag'] == 1) {
-                                                    echo "<td><input type='number' maxlength='2' class='form-control text-center' name='grade[]' value=" . $Grade['G_gradesQ1'] . "></td>";
-                                                  } elseif ($QuarterData['quarterTag'] == 2) {
-                                                    echo "<td><input type='number' maxlength='2' class='form-control text-center' name='grade[]' value=" . $Grade['G_gradesQ2'] . "></td>";
-                                                  } elseif ($QuarterData['quarterTag'] == 3) {
-                                                    echo "<td><input type='number' maxlength='2' class='form-control text-center' name='grade[]' value=" . $Grade['G_gradesQ3'] . "></td>";
-                                                  } elseif ($QuarterData['quarterTag'] == 4) {
-                                                    echo "<td><input type='number' maxlength='2' class='form-control text-center' name='grade[]' value=" . $Grade['G_gradesQ3'] . "></td>";
-                                                  } else {
-                                                    echo "<td> Invalid quarter </td>";
-                                                  }
-                                                } else {
-                                                  echo "<td> No quarter found </td>";
+                                            $subjectHeaderCount = 0;
+                                            while ($subjectHeaderCount != sizeof($subject_Array)) {
+                                              if ($_GET['Quarter'] == 1) {
+                                                $getGradeData = $mysqli->query("SELECT G_gradesQ1, G_learningArea FROM grades 
+                                                                                WHERE acadYear = '{$currentSchoolYear}' 
+                                                                                AND SR_number = '{$classList['SR_number']}'
+                                                                                AND G_learningArea = '{$subject_Array[$subjectHeaderCount]['subjectName']}'");
+                                                $Grade = $getGradeData->fetch_assoc();
+                                                if (isset($Grade['G_gradesQ1'])) {
+                                                  $gradeHolder = $Grade['G_gradesQ1'];
+                                                }
+                                              } else if ($_GET['Quarter'] == 2) {
+                                                $getGradeData = $mysqli->query("SELECT G_gradesQ2, G_learningArea FROM grades 
+                                                                                WHERE acadYear = '{$currentSchoolYear}' 
+                                                                                AND SR_number = '{$classList['SR_number']}'
+                                                                                AND G_learningArea = '{$subject_Array[$subjectHeaderCount]['subjectName']}'");
+                                                $Grade = $getGradeData->fetch_assoc();
+                                                if (isset($Grade['G_gradesQ2'])) {
+                                                  $gradeHolder = $Grade['G_gradesQ2'];
+                                                }
+                                              } else if ($_GET['Quarter'] == 3) {
+                                                $getGradeData = $mysqli->query("SELECT G_gradesQ3, G_learningArea FROM grades 
+                                                                                WHERE acadYear = '{$currentSchoolYear}' 
+                                                                                AND SR_number = '{$classList['SR_number']}'
+                                                                                AND G_learningArea = '{$subject_Array[$subjectHeaderCount]['subjectName']}'");
+                                                $Grade = $getGradeData->fetch_assoc();
+                                                if (isset($Grade['G_gradesQ3'])) {
+                                                  $gradeHolder = $Grade['G_gradesQ3'];
+                                                }
+                                              } else if ($_GET['Quarter'] == 4) {
+                                                $getGradeData = $mysqli->query("SELECT G_gradesQ4, G_learningArea FROM grades 
+                                                                                WHERE acadYear = '{$currentSchoolYear}' 
+                                                                                AND SR_number = '{$classList['SR_number']}'
+                                                                                AND G_learningArea = '{$subject_Array[$subjectHeaderCount]['subjectName']}'");
+                                                $Grade = $getGradeData->fetch_assoc();
+                                                if (isset($Grade['G_gradesQ4'])) {
+                                                  $gradeHolder = $Grade['G_gradesQ4'];
                                                 }
                                               }
-                                            } else {
-                                              $Count = 0;
-                                              while ($Count != sizeof($subject_Array)) { ?>
-                                                <td>
-                                                  <input type="number" class="hatdog" name="SR_number[]" readonly>
-                                                </td>
-                                            <?php
-                                                $Count++;
+                                              if (!empty($gradeHolder)) {
+                                                echo "<input type='hidden' name='row[]' value='" .  $subjectHeaderCount . "'>";
+                                                echo "<input type='hidden' name='subject[]' value='" .  $Grade['G_learningArea'] . "'>";
+                                                echo "<input type='hidden' name='SR_number[]' value = '" . $classList['SR_number'] . "'>";
+                                                echo "<td class='cell expand-maximum-on-hover'><input type='number' maxlength='2' class='form-control text-center' name='grade[]' value='" . $gradeHolder . "'></td>";
+                                              } else {
+                                                echo "<input type='hidden' name='row[]' value='" .  $subjectHeaderCount . "'>";
+                                                echo "<input type='hidden' name='subject[]'>";
+                                                echo "<input type='hidden' name='SR_number[]'>";
+                                                echo "<td class='cell expand-maximum-on-hover'><input type='number' maxlength='2' class='form-control text-center' name='grade[]'></td>";
                                               }
+                                              $subjectHeaderCount++;
                                             }
                                             ?>
                                           </tr>

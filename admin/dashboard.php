@@ -95,12 +95,7 @@ if (!isset($_SESSION['AD_number'])) {
                             <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/createFetcher.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
-                        </a>
-                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
@@ -441,7 +436,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     </div>
                                                                     <ul class="bullet-line-list">
                                                                         <?php
-                                                                        $getLoggedData = $mysqli->query("SELECT * FROM admin_logs WHERE acadYear = '{$currentSchoolYear}' ORDER BY logDate LIMIT 5 ");
+                                                                        $getLoggedData = $mysqli->query("SELECT * FROM admin_logs WHERE acadYear = '{$currentSchoolYear}' ORDER BY logDate DESC LIMIT 4");
                                                                         if (mysqli_num_rows($getLoggedData) > 0) {
                                                                             while ($LoggedData = $getLoggedData->fetch_assoc()) { ?>
                                                                                 <li>
@@ -451,7 +446,13 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                     </div>
                                                                                 </li>
                                                                             <?php } ?>
-
+                                                                            <div class="list align-items-center pt-3">
+                                                                                <div class="wrapper w-100">
+                                                                                    <p class="mb-0">
+                                                                                        <a href="../admin/auditTrail.php" class="fw-bold text-primary">Show all <i class="fa fa-arrow-right ms-2"></i></a>
+                                                                                    </p>
+                                                                                </div>
+                                                                            </div>
                                                                         <?php } else { ?>
                                                                             <li>
                                                                                 <div class="d-flex justify-content-between">

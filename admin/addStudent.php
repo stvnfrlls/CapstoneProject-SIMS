@@ -126,12 +126,7 @@ if (!isset($_SESSION['AD_number'])) {
                             <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/createFetcher.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
-                        </a>
-                    </li>
+ 
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
@@ -480,25 +475,6 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 <label label class="col-sm-12 col-form-label">Contact Number <span style="color: red;">*</span></label>
                                                                 <div class="col-sm-12">
                                                                     <input type="text" class="form-control" name="G_contact" id="phone" required>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="row" style="padding-bottom: 15px;">
-                                                            <div class="col-md-2">
-                                                                <div class="col-sm-12">
-                                                                    <label class="form-check-label" for="option1">
-                                                                        <input type="checkbox" class="form-check-input" id="option1" name="Fetcher" onclick="handleCheckboxClick(this)">
-                                                                        With Fetcher
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <div class="col-sm-12">
-                                                                    <label class="form-check-label" for="option2">
-                                                                        <input type="checkbox" class="form-check-input" id="option2" name="NoFetcher" onclick="handleCheckboxClick(this)">
-                                                                        Without Fetcher
-                                                                    </label>
                                                                 </div>
                                                             </div>
                                                         </div>

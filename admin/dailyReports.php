@@ -101,12 +101,7 @@ if (!isset($_SESSION['AD_number'])) {
               <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="../admin/createFetcher.php">
-              <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
-            </a>
-          </li>
+ 
           <li class="nav-item">
             <a class="nav-link" href="../admin/student.php">
               <i class=""></i>
@@ -287,7 +282,6 @@ if (!isset($_SESSION['AD_number'])) {
                                       <th>Name</th>
                                       <th>Time In</th>
                                       <th>Time Out</th>
-                                      <th>Fetched by</th>
                                       <th>Remarks</th>
                                     </tr>
                                   </thead>
@@ -316,7 +310,7 @@ if (!isset($_SESSION['AD_number'])) {
                                     $rowCount = 1;
                                     $dateNow = date("Y-m-d");
                                     if (isset($_GET['Grade']) && isset($_GET['Section'])) {
-                                      $getDailyAttendanceData = $mysqli->query("SELECT DISTINCT SR_lname, SR_fname, SR_mname, SR_suffix, attendance.SR_number, attendance.A_time_IN, attendance.A_time_OUT, attendance.A_fetcher_OUT, attendance.A_status 
+                                      $getDailyAttendanceData = $mysqli->query("SELECT DISTINCT SR_lname, SR_fname, SR_mname, SR_suffix, attendance.SR_number, attendance.A_time_IN, attendance.A_time_OUT, attendance.A_status 
                                                                             FROM attendance 
                                                                             LEFT JOIN studentrecord ON attendance.SR_number = studentrecord.SR_number 
                                                                             WHERE acadYear = '{$currentSchoolYear}' 
@@ -330,7 +324,6 @@ if (!isset($_SESSION['AD_number'])) {
                                             <td class="tabledata"><?php echo $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'] . " " . substr($AttendanceData['SR_mname'], 0, 1) . ". " . $AttendanceData['SR_suffix']; ?></td>
                                             <td class="tabledata"><?php echo $AttendanceData['A_time_IN']; ?></td>
                                             <td class="tabledata"><?php echo $AttendanceData['A_time_OUT']; ?></td>
-                                            <td class="tabledata"><?php echo $AttendanceData['A_fetcher_OUT']; ?></td>
                                             <td class="tabledata"><?php echo $AttendanceData['A_status']; ?></td>
                                           </tr>
                                         <?php $rowCount++;

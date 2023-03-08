@@ -128,7 +128,14 @@ if (!isset($_SESSION['SR_number'])) {
                         <li>
                             <a class="justify-content-between d-flex" href="#">
                                 <p>Posted By</p>
-                                <span><?php echo $announcement['author'] ?></span>
+                                <span>
+                                    <?php
+                                    $getAuthorName = $mysqli->query("SELECT * FROM admin_accounts WHERE AD_number = '{$announcement['author']}'");
+                                    $authorName = $getAuthorName->fetch_assoc();
+
+                                    echo $authorName['AD_name'];
+                                    ?>
+                                </span>
                             </a>
                         </li>
                         <li>
@@ -147,28 +154,37 @@ if (!isset($_SESSION['SR_number'])) {
         <div class="container">
             <div class="row d-flex justify-content-center">
                 <div class="menu-content pb-70 col-lg-8">
-                    <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
-                        <h5 class="fw-bold text-primary text-uppercase" style="font-size: 25px; margin-top: 0px;">More School Announcements</h5>
+                    <div class="title text-center">
+                        <h1 class="mb-10">School Announcements</h1>
+                        <?php
+                        $getOtherAnnouncementData = $mysqli->query("SELECT * FROM announcement WHERE ANC_ID != '{$_GET['ID']}'");
+                        if (mysqli_num_rows($getOtherAnnouncementData) > 0) {
+                            echo '<p>more announcements</p>';
+                        } else {
+                            echo '<p>No more announcements</p>';
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <?php
-                $getOtherAnnouncementData = $mysqli->query("SELECT * FROM announcement WHERE ANC_ID != '{$_GET['ID']}'");
-                while ($OtherAnnouncement = $getOtherAnnouncementData->fetch_assoc()) { ?>
-                    <div class="single-popular-carusel col-lg-3 col-md-6">
-                        <div class="details">
-                            <a href="viewannouncement.php?ID=<?php echo $OtherAnnouncement['ANC_ID'] ?>">
-                                <h4><?php echo $OtherAnnouncement['header'] ?></h4>
-                            </a>
-                            <div class="d-flex mb-3">
-                                <small class="me-3"><i class="far fa-user text-primary me-2"></i><?php echo $OtherAnnouncement['author'] ?></small>
-                                <small><i class="far fa-calendar-alt text-primary me-2"></i><?php echo $OtherAnnouncement['date'] ?></small>
+                if (mysqli_num_rows($getOtherAnnouncementData) > 0) {
+                    while ($OtherAnnouncement = $getOtherAnnouncementData->fetch_assoc()) { ?>
+                        <div class="single-popular-carusel col-lg-3 col-md-6">
+                            <div class="details">
+                                <a href="viewannouncement.php?ID=<?php echo $OtherAnnouncement['ANC_ID'] ?>">
+                                    <h4><?php echo $OtherAnnouncement['header'] ?></h4>
+                                </a>
+                                <div class="d-flex mb-3">
+                                    <small class="me-3"><i class="far fa-user text-primary me-2"></i><?php echo $OtherAnnouncement['author'] ?></small>
+                                    <small><i class="far fa-calendar-alt text-primary me-2"></i><?php echo $OtherAnnouncement['date'] ?></small>
+                                </div>
+                                <p><?php echo $OtherAnnouncement['msg'] ?></p>
                             </div>
-                            <p><?php echo $OtherAnnouncement['msg'] ?></p>
                         </div>
-                    </div>
                 <?php }
+                }
                 ?>
             </div>
         </div>

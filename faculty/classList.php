@@ -169,7 +169,7 @@ if (!isset($_SESSION['F_number'])) {
                                     $getAcadYears = $mysqli->query("SELECT DISTINCT acadYear FROM classlist WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
                                     while ($acadYears = $getAcadYears->fetch_assoc()) {
                                       if ($acadYears['acadYear'] != $currentSchoolYear) {
-                                        echo '<a class="dropdown-item" href="student.php?SY=' . $acadYears['acadYear'] . '">' . $acadYears['acadYear'] . '</a>';
+                                        echo '<a class="dropdown-item" href="classlist.php?SY=' . $acadYears['acadYear'] . '">' . $acadYears['acadYear'] . '</a>';
                                       }
                                     }
                                     ?>
@@ -242,9 +242,9 @@ if (!isset($_SESSION['F_number'])) {
                                       <?php
                                     } else {
                                       if (isset($_GET['SY'])) {
-                                        $getClassList = $mysqli->query("SELECT * FROM classlist WHERE SR_grade = '{$_GET['Grade']}' AND acadYear = '{$_GET['SY']}'");
+                                        $getClassList = $mysqli->query("SELECT * FROM classlist WHERE SR_grade = '{$_GET['Grade']}' AND SR_section = '{$_GET['Section']}' AND acadYear = '{$_GET['SY']}'");
                                       } else {
-                                        $getClassList = $mysqli->query("SELECT * FROM classlist WHERE SR_grade = '{$_GET['Grade']}' AND acadYear = '{$currentSchoolYear}'");
+                                        $getClassList = $mysqli->query("SELECT * FROM classlist WHERE SR_grade = '{$_GET['Grade']}' AND SR_section = '{$_GET['Section']}' AND acadYear = '{$currentSchoolYear}'");
                                       }
 
                                       if (mysqli_num_rows($getClassList) > 0) {
