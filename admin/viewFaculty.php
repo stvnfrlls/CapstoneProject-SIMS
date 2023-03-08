@@ -111,12 +111,7 @@ if (isset($_POST['changeStatus'])) {
               <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="../admin/createFetcher.php">
-              <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
-            </a>
-          </li>
+
           <li class="nav-item">
             <a class="nav-link" href="../admin/student.php">
               <i class=""></i>
@@ -228,7 +223,7 @@ if (isset($_POST['changeStatus'])) {
                           <button type="submit" name="changeStatus" class="btn btn-primary me-2">Mark as Active</button>
                         <?php }
                         ?>
-                        <button class="btn btn-light" onclick="location.href='../admin/faculty.php'">Back</button>
+                        <a class="btn btn-light" onclick="location.href='../admin/faculty.php'">Back</a>
                       </form>
                     </div>
                     <div class="row">

@@ -113,12 +113,7 @@ if (mysqli_num_rows($checkQuarter) > 0) {
                             <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/createFetcher.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
-                        </a>
-                    </li>
+ 
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
@@ -376,9 +371,9 @@ if (mysqli_num_rows($checkQuarter) > 0) {
                                                                                                 <div style="text-align: center;">
                                                                                                     <?php
                                                                                                     if (mysqli_num_rows($getSection) == 0) { ?>
-                                                                                                        <button type="button" class="btn btn-secondary" disabled>Update</button>
+                                                                                                        <button type="submit" class="btn btn-secondary" disabled>Update</button>
                                                                                                     <?php } else { ?>
-                                                                                                        <button type="button" class="btn btn-primary" name="changeSection" id="changeSection">Update</button>
+                                                                                                        <button type="submit" class="btn btn-primary" name="changeSection" id="changeSection">Update</button>
                                                                                                     <?php }
                                                                                                     ?>
                                                                                                 </div>
@@ -448,25 +443,25 @@ if (mysqli_num_rows($checkQuarter) > 0) {
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
     <script>
-        const changeSectionForm = document.getElementById('changeSectionForm');
-        const changeSection = document.getElementById('changeSection');
-        changeSection.addEventListener('click', function() {
-            Swal.fire({
-                title: 'Are you sure you want to proceed with this action?',
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: `No`,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        title: 'Form submitted!',
-                        icon: 'success',
-                    }).then(() => {
-                        changeSectionForm.submit();
-                    });
-                }
-            })
-        })
+        // const changeSectionForm = document.getElementById('changeSectionForm');
+        // const changeSection = document.getElementById('changeSection');
+        // changeSection.addEventListener('click', function() {
+        //     Swal.fire({
+        //         title: 'Are you sure you want to proceed with this action?',
+        //         showCancelButton: true,
+        //         confirmButtonText: 'Yes',
+        //         cancelButtonText: `No`,
+        //     }).then((result) => {
+        //         if (result.isConfirmed) {
+        //             Swal.fire({
+        //                 title: 'Form submitted!',
+        //                 icon: 'success',
+        //             }).then(() => {
+        //                 changeSectionForm.submit();
+        //             });
+        //         }
+        //     })
+        // })
     </script>
 </body>
 

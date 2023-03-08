@@ -15,6 +15,34 @@ if (!isset($_SESSION['SR_number'])) {
     $getAdvisorInfo = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$SectionInfo['S_adviser']}'");
     $AdvisorInfo = $getAdvisorInfo->fetch_assoc();
   }
+
+  $getReminderNotification = $mysqli->query("SELECT * FROM reminders 
+                                            WHERE forsection = '{$studentInfo['SR_section']}' 
+                                            AND acadYear = '{$currentSchoolYear}'
+                                            AND reminderID 
+                                            NOT IN (SELECT reminderID FROM reminder_status)");
+  if (mysqli_num_rows($getReminderNotification) > 0) {
+    // showSweetAlert('You have ' . mysqli_num_rows($getReminderNotification) . ' unviewed notification', 'info');
+    $reminderCounter = mysqli_num_rows($getReminderNotification);
+    echo <<<EOT
+      <script>
+          document.addEventListener("DOMContentLoaded", function(event) { 
+              swal.fire({
+                  text: 'You have {$reminderCounter} unviewed notification',
+                  showDenyButton: true,
+                  confirmButtonText: 'View reminders',
+                  denyButtonText: 'Not now',
+              }).then((result) => {
+                  if (result.isConfirmed) {
+                    window.location.href = 'reminders.php';
+                  } else {
+                    Swal.fire('View reminders when ready', '', 'info')
+                  }
+              });
+          });
+      </script>
+    EOT;
+  }
 }
 ?>
 <!DOCTYPE html>
@@ -282,7 +310,11 @@ if (!isset($_SESSION['SR_number'])) {
                       </div>
                       <div class="row" style="margin: auto;">
                         <?php
-                        $getReminderData = $mysqli->query("SELECT * FROM reminders WHERE forsection = '{$studentInfo['SR_section']}' AND acadYear = '{$currentSchoolYear}'");
+                        $getReminderData = $mysqli->query("SELECT * FROM reminders 
+                                                          WHERE forsection = '{$studentInfo['SR_section']}' 
+                                                          AND acadYear = '{$currentSchoolYear}'
+                                                          ORDER BY deadline DESC
+                                                          LIMIT 4");
 
                         if ($getReminderData->num_rows > 0) {
                           while ($reminders = $getReminderData->fetch_assoc()) { ?>
@@ -310,7 +342,7 @@ if (!isset($_SESSION['SR_number'])) {
                                   </div>
                                   <div class="col-12">
                                     <p>Subject: <?php echo $reminders['subject'] ?></p>
-                                    <p class="excert text-truncate">
+                                    <p class="excert text-truncate"
                                       <?php
                                       if (empty($reminders['msg'])) {
                                         echo "No description";
@@ -320,7 +352,7 @@ if (!isset($_SESSION['SR_number'])) {
                                       ?>
                                     </p>
                                     <div class="text-center">
-                                      <a href="viewreminders.php?rmdID=<?php echo $reminders['reminderID'] ?>" class="primary-btn">View More</a>
+                                      <a href="viewreminders.php?ID=<?php echo $reminders['reminderID'] ?>" class="primary-btn">View More</a>
                                     </div>
                                   </div>
                                 </div>
@@ -350,26 +382,32 @@ if (!isset($_SESSION['SR_number'])) {
                         <h3 class="mb-0" style="text-align:left;">School Announcements</h3>
                       </div>
                       <?php
-                      $getAnnouncementData = $mysqli->query("SELECT * FROM announcement");
+                      $getAnnouncementData = $mysqli->query("SELECT * FROM announcement ORDER BY date_posted DESC LIMIT 5");
                       if (mysqli_num_rows($getAnnouncementData) > 0) {
                         while ($announcement = $getAnnouncementData->fetch_assoc()) { ?>
                           <div class="col-lg-12 wow " style="padding-bottom: 5px;">
                             <div class="blog-item bg-light rounded overflow-hidden">
                               <div class="p-4">
                                 <div class="d-flex mb-3">
-                                  <small class="me-3"><i class="far fa-user text-primary me-2"></i><?php echo $announcement['author']; ?></small>
+                                  <small class="me-3"><i class="far fa-user text-primary me-2"></i>
+                                    <?php
+                                    $getAuthorInfo = $mysqli->query("SELECT * FROM admin_accounts WHERE AD_number = '{$announcement['author']}'");
+                                    $AuthorInfo = $getAuthorInfo->fetch_assoc();
+                                    echo $AuthorInfo['AD_name']
+                                    ?>
+                                  </small>
                                   <small><i class="far fa-calendar-alt text-primary me-2"></i><?php echo $announcement['date']; ?></small>
                                 </div>
                                 <h4 class="mb-3"><?php echo $announcement['header']; ?></h4>
                                 <p class="text-truncate"><?php echo $announcement['msg']; ?></p>
-                                <a class="text-uppercase" href="viewannouncement.php?postID=<?php echo $announcement['ANC_ID']; ?>">Read More <i class="bi bi-arrow-right"></i></a>
+                                <a class="text-uppercase" href="viewannouncement.php?ID=<?php echo $announcement['ANC_ID']; ?>">Read More <i class="bi bi-arrow-right"></i></a>
                               </div>
                             </div>
                           </div>
                         <?php } ?>
                         <section class="popular-courses-area courses-page">
                           <div style="text-align: center;">
-                            <a href="#" class="primary-btn text-uppercase" style="width: auto;">View More School Announcements</a>
+                            <a href="announcement.php" class="primary-btn text-uppercase" style="width: auto;">View More School Announcements</a>
                           </div>
                         </section>
                       <?php } else { ?>

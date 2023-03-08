@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require '../assets/fpdf/fpdf.php';
 require_once("../assets/php/server.php");
 
@@ -150,5 +151,6 @@ if (isset($_GET['ID'])) {
     $pdf->Cell(60, 10, $JUNvalue['COUNT(A_time_IN)'], 1, 0, 'C');
     $pdf->Cell(60, 10, $JUNvalue['COUNT(A_time_IN)'], 1, 1, 'C');
 
-    $pdf->Output('D', "Monthly Attendance - " . $studentInfo['SR_lname'] . " (" . $studentInfo['SR_grade'] . "-" . $studentInfo['SR_section'] . ")" . '.pdf');
+    ob_end_clean();
+    $pdf->Output('I', "Monthly Attendance - " . $studentInfo['SR_lname'] . " (" . $studentInfo['SR_grade'] . "-" . $studentInfo['SR_section'] . ")" . '.pdf');
 }
