@@ -408,7 +408,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     </div>
                                                                     <ul class="bullet-line-list">
                                                                         <?php
-                                                                        $getLoggedData = $mysqli->query("SELECT * FROM admin_logs WHERE acadYear = '{$currentSchoolYear}' ORDER BY logDate LIMIT 5 ");
+                                                                        $getLoggedData = $mysqli->query("SELECT * FROM admin_logs WHERE acadYear = '{$currentSchoolYear}' ORDER BY logDate DESC LIMIT 4");
                                                                         if (mysqli_num_rows($getLoggedData) > 0) {
                                                                             while ($LoggedData = $getLoggedData->fetch_assoc()) { ?>
                                                                                 <li>
