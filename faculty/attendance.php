@@ -246,7 +246,7 @@ if (!isset($_SESSION['F_number'])) {
                                                 <?php
 
                                                 ?>
-                                                <td><input type="date" class="form-control" name="RP_reportDate"></td>
+                                                <td><input type="date" class="form-control" name="RP_reportDate" required></td>
                                                 <td>
                                                   <?php
                                                   $getSubjectStartTime = $mysqli->query("SELECT WS_start_time FROM workschedule 
@@ -258,15 +258,16 @@ if (!isset($_SESSION['F_number'])) {
                                                   <input type="time" class="form-control" name="RP_reportTime" value="<?php echo $SubjectStartTime['WS_start_time'] ?>" readonly>
                                                 </td>
                                                 <td>
-                                                  <select name="RP_attendanceReport" class="form-select">
-                                                    <option></option>
-                                                    <option value="Absent">Absent</option>
-                                                    <option value="Excused">Excused</option>
-                                                    <option value="Cutting">Cutting</option>
+                                                  <select name="RP_attendanceReport" class="form-select" required>
+                                                    <option selected></option>
+                                                    <option value="LATE">Late</option>
+                                                    <option value="ABSENT">Absent</option>
+                                                    <option value="EXCUSED">Excused</option>
+                                                    <option value="CUTTING">Skip Class</option>
                                                   </select>
                                                 </td>
                                                 <td>
-                                                  <button type="button" class="btn btn-primary" id="attendanceReportButton">SUBMIT</button>
+                                                  <button type="submit" class="btn btn-primary" name="attendanceReportButton">SUBMIT</button>
                                                 </td>
                                               </tr>
                                             </form>
@@ -334,7 +335,7 @@ if (!isset($_SESSION['F_number'])) {
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>
     <script src="../assets/js/admin/off-canvas.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
     <script>
       const attendanceReportForm = document.getElementById('attendanceReportForm');
       const attendanceReportButton = document.getElementById('attendanceReportButton');
@@ -355,7 +356,7 @@ if (!isset($_SESSION['F_number'])) {
           }
         })
       })
-    </script>
+    </script> -->
 </body>
 
 </html>

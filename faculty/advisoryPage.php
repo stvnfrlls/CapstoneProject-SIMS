@@ -191,89 +191,89 @@ if (!isset($_SESSION['F_number'])) {
                       <div class="col-12 grid-margin">
                         <div class="card">
                           <div class="card-body">
-                            <form class="form-sample" action="confirmfaculty.php" method="POST">
-                              <div class="btn-group" style="margin-bottom: 15px;">
-                                <div>
-                                  <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
-                                    <?php
-                                    if (isset($_GET['SY'])) {
-                                      echo "School Year: " . $_GET['SY'];
-                                    } else {
-                                      echo "School Year: " . $currentSchoolYear;
+                            <div class="btn-group" style="margin-bottom: 15px;">
+                              <div>
+                                <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                                  <?php
+                                  if (isset($_GET['SY'])) {
+                                    echo "School Year: " . $_GET['SY'];
+                                  } else {
+                                    echo "School Year: " . $currentSchoolYear;
+                                  }
+                                  ?>
+                                  <i class="fa fa-caret-down"></i>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                  <?php
+                                  $getAcadYear = $mysqli->query("SELECT DISTINCT(acadYear) FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'");
+                                  while ($acadYearData = $getAcadYear->fetch_assoc()) {
+                                    if ($acadYearData['acadYear'] != $currentSchoolYear) {
+                                      echo '<a class="dropdown-item" href="advisoryPage.php?SY=' . $acadYearData['acadYear'] . '">' . $acadYearData['acadYear'] . '</a>';
                                     }
-                                    ?>
-                                    <i class="fa fa-caret-down"></i>
-                                  </button>
-                                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <?php
-                                    $getAcadYear = $mysqli->query("SELECT DISTINCT(acadYear) FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'");
-                                    while ($acadYearData = $getAcadYear->fetch_assoc()) {
-                                      if ($acadYearData['acadYear'] != $currentSchoolYear) {
-                                        echo '<a class="dropdown-item" href="advisoryPage.php?SY=' . $acadYearData['acadYear'] . '">' . $acadYearData['acadYear'] . '</a>';
-                                      }
-                                    }
-                                    ?>
-                                  </div>
+                                  }
+                                  ?>
                                 </div>
                               </div>
-                              <div class="btn-group" style="float: right;">
-                                <a href="" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
-                              </div>
-                              <div class="table-responsive">
-                                <table class="table">
-                                  <thead>
-                                    <style>
-                                      .hatdog {
-                                        border: 1px solid #ffffff;
-                                        text-align: center;
-                                        vertical-align: middle;
-                                        height: 30px;
-                                        color: #000000;
-                                      }
-                                    </style>
-                                    <tr>
-                                      <th class="hatdog">No.</th>
-                                      <th class="hatdog">Student Number</th>
-                                      <th class="hatdog">Student Name</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <?php
-                                    if (mysqli_num_rows($getSectionInfo) > 0) {
-                                      while ($SectionClassListData = $getSectionClassList->fetch_assoc()) { ?>
-                                        <tr>
-                                          <td class="hatdog"><?php echo $ClassListRow; ?></td>
-                                          <td class="hatdog"><?php echo $SectionClassListData['SR_number']; ?></td>
-                                          <td class="hatdog">
-                                            <a href="viewStudent.php?ID=<?php echo $SectionClassListData['SR_number']; ?>">
-                                              <?php
-                                              $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$SectionClassListData['SR_number']}'");
-                                              $studentInfo = $getStudentInfo->fetch_assoc();
-
-                                              echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix'];
-                                              ?>
-                                            </a>
-                                          </td>
-                                        </tr>
-                                      <?php $ClassListRow++;
-                                      }
-                                    } else { ?>
+                            </div>
+                            <div class="btn-group" style="float: right;">
+                              <a href="" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
+                            </div>
+                            <div class="btn-group mx-2" style="float: right;">
+                              <a href="advisoryAttendance.php" style="margin-right: 0px;" class="btn btn-primary">Check Advisory Attendance</a>
+                            </div>
+                            <div class="table-responsive">
+                              <table class="table">
+                                <thead>
+                                  <style>
+                                    .hatdog {
+                                      border: 1px solid #ffffff;
+                                      text-align: center;
+                                      vertical-align: middle;
+                                      height: 30px;
+                                      color: #000000;
+                                    }
+                                  </style>
+                                  <tr>
+                                    <th class="hatdog">No.</th>
+                                    <th class="hatdog">Student Number</th>
+                                    <th class="hatdog">Student Name</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <?php
+                                  if (mysqli_num_rows($getSectionInfo) > 0) {
+                                    while ($SectionClassListData = $getSectionClassList->fetch_assoc()) { ?>
                                       <tr>
-                                        <td class="hatdog" colspan="3">NO DATA</td>
+                                        <td class="hatdog"><?php echo $ClassListRow; ?></td>
+                                        <td class="hatdog"><?php echo $SectionClassListData['SR_number']; ?></td>
+                                        <td class="hatdog">
+                                          <a href="viewStudent.php?ID=<?php echo $SectionClassListData['SR_number']; ?>">
+                                            <?php
+                                            $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$SectionClassListData['SR_number']}'");
+                                            $studentInfo = $getStudentInfo->fetch_assoc();
+
+                                            echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix'];
+                                            ?>
+                                          </a>
+                                        </td>
                                       </tr>
-                                    <?php }
-                                    ?>
-                                  </tbody>
-                                </table>
-                              </div>
-                            </form>
+                                    <?php $ClassListRow++;
+                                    }
+                                  } else { ?>
+                                    <tr>
+                                      <td class="hatdog" colspan="3">NO DATA</td>
+                                    </tr>
+                                  <?php }
+                                  ?>
+                                </tbody>
+                              </table>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-
               </div>
             </div>
           </div>
