@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require '../assets/fpdf/fpdf.php';
 require_once("../assets/php/server.php");
 
@@ -7,7 +8,7 @@ if (isset($_GET['month']) && isset($_GET['Grade']) && isset($_GET['Section'])) {
     {
         function Header()
         {
-            $mysqli = new mysqli("localhost", "u952901270_admin0326", "giTG^W3y", "u952901270_sis_cdsp");
+            $mysqli = new mysqli("localhost", "root", "", "sis_cdsp");
             $getAcadYear = $mysqli->query("SELECT * FROM acad_year");
             $acadYear_Data = $getAcadYear->fetch_assoc();
             //Logo Image
@@ -56,6 +57,17 @@ if (isset($_GET['month']) && isset($_GET['Grade']) && isset($_GET['Section'])) {
         }
     }
 
+    // $getstudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$_GET['ID']}'");
+    // $studentInfo = $getstudentInfo->fetch_assoc();
+
+    // $Student_Fullname = $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix'];
+
+    // $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_name = '{$studentInfo['SR_section']}'");
+    // $SectionInfo = $getSectionInfo->fetch_assoc();
+
+    // $getAdvisorInfo = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$SectionInfo['S_adviser']}'");
+    // $AdvisorInfo = $getAdvisorInfo->fetch_assoc();
+
     $pdf = new PDF('P', 'mm', 'A4');
     $pdf->AddPage();
     $pdf->SetAutoPageBreak(true, 20);
@@ -98,7 +110,7 @@ if (isset($_GET['month']) && isset($_GET['Grade']) && isset($_GET['Section'])) {
 
             $TARDY = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$AttendanceData['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}' AND A_status = 'TARDY'");
             $TARDYvalue = $TARDY->fetch_assoc();
-            
+
             $pdf->SetFont('Arial', '', 10);
             $pdf->Cell(70, 10, $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'] . " " . substr($AttendanceData['SR_mname'], 0, 1) . ". " . $AttendanceData['SR_suffix'], 1, 0, 'C');
             $pdf->Cell(30, 10, $count_weekdays, 1, 0, 'C');
@@ -110,5 +122,7 @@ if (isset($_GET['month']) && isset($_GET['Grade']) && isset($_GET['Section'])) {
         $pdf->Cell(190, 20, 'No Data', 1, 1, 'C');
     }
 
+    ob_end_clean();
     $pdf->Output();
+    $pdf->Output('I', "Monthly Attendance - " . $_GET['Section'] . " (" . $_GET['Grade'] . "-" . $_GET['Section'] . ")" . '.pdf');
 }

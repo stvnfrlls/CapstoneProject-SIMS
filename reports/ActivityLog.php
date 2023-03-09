@@ -3,7 +3,7 @@ ob_start();
 require '../assets/fpdf/fpdf.php';
 require_once("../assets/php/server.php");
 
-if (isset($_GET['GradeLevel']) && isset($_GET['section'])) {
+if (isset($_GET['start_date']) && isset($_GET['end_date'])) {
 
     class PDF extends FPDF
     {
@@ -46,7 +46,7 @@ if (isset($_GET['GradeLevel']) && isset($_GET['section'])) {
             // Line break
             $this->Ln(5);
             $this->SetFont('Arial', 'B', 12);
-            $this->Cell(190, 10, 'Classlist', 0, 0, 'C');
+            $this->Cell(190, 10, 'Logged Details', 0, 0, 'C');
             $this->Ln(15);
         }
         function Footer()
@@ -65,19 +65,18 @@ if (isset($_GET['GradeLevel']) && isset($_GET['section'])) {
     $pdf->SetAutoPageBreak(true, 20);
 
     $pdf->SetFont('Arial', 'B', 10);
-    $pdf->Cell(50, 10, 'Student Number', 1, 0, 'C');
-    $pdf->Cell(90, 10, 'Student Name', 1, 0, 'C');
-    $pdf->Cell(50, 10, 'Grade and Section', 1, 1, 'C');
+    $pdf->Cell(40, 10, 'Account Name', 1, 0, 'C');
+    $pdf->Cell(40, 10, 'Date Time', 1, 0, 'C');
+    $pdf->Cell(110, 10, 'Action', 1, 1, 'C');
 
-    $ClasslistData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['section']}'");
-    while ($classlist = $ClasslistData->fetch_assoc()) {
-
+    $LoggedData = $mysqli->query("SELECT * FROM admin_logs WHERE logDate BETWEEN '{$_GET['start_date']}' AND '{$_GET['end_date']}'");
+    while ($Log = $LoggedData->fetch_assoc()) {
         $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(50, 10, $classlist['SR_number'], 1, 0, 'C');
-        $pdf->Cell(90, 10, $classlist['SR_lname'] .  ", " . $classlist['SR_fname'] . " " . substr($classlist['SR_mname'], 0, 1) . ". " . $classlist['SR_suffix'], 1, 0, 'C');
-        $pdf->Cell(50, 10, "Grade " . $classlist['SR_grade'] . " - " . $classlist['SR_section'], 1, 1, 'C');
+        $pdf->Cell(40, 10, $Log['AD_name'], 1, 0, 'C');
+        $pdf->Cell(40, 10, $Log['logDate'], 1, 0, 'C');
+        $pdf->Cell(110, 10, $Log['AD_action'], 1, 1, 'C');
     }
 
     ob_end_clean();
-    $pdf->Output('I', "Classlist - " . $_GET['GradeLevel'] . " - " . $_GET['section'] . '.pdf');
+    $pdf->Output('I', "Classlist - " . $_GET['start_date'] . " - " . $_GET['end_date'] . '.pdf');
 }
