@@ -19,7 +19,7 @@ if (!isset($_SESSION['F_number'])) {
 
 <head>
     <meta charset="utf-8">
-    <title>Monthly Reports</title>
+    <title>Monthly Attendance</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -84,12 +84,6 @@ if (!isset($_SESSION['F_number'])) {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../faculty/createReminder.php">
-                            <i class=""></i>
-                            <span class="menu-title">Create Reminders</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="../faculty/reminders.php">
                             <i class=""></i>
                             <span class="menu-title">Reminders</span>
@@ -106,7 +100,7 @@ if (!isset($_SESSION['F_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../faculty/advisoryPage.php">
                             <i class=""></i>
-                            <span class="menu-title">Advisory</span>
+                            <span class="menu-title">Advisory Class</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -149,37 +143,19 @@ if (!isset($_SESSION['F_number'])) {
                             <div class="home-tab">
                                 <div class="d-sm-flex align-items-center justify-content-between">
                                     <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                                        <h2 class="fw-bold text-primary text-uppercase">Monthly Reports</h2>
+                                        <h2 class="fw-bold text-primary text-uppercase">Monthly Attendance</h2>
                                     </div>
                                 </div>
                                 <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
                                     <nav class="nav">
-                                        <a class="nav-link" href="../faculty/dailyReports.php" target="__blank">Daily</a>
-                                        <a class="nav-link active ms-0" href="../faculty/monthlyReports.php" target="__blank" style="color: #c02628;">Monthly</a>
+                                        <a class="nav-link" href="dailyReports.php">Daily</a>
+                                        <a class="nav-link active ms-0" href="monthlyReports.php" style="color: #c02628;">Monthly</a>
+                                        <a class="nav-link" href="attendance.php">Attendance Report</a>
                                     </nav>
                                     <div class="border-bottom"></div>
                                 </div>
                                 <div class="tab-content tab-content-basic">
                                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-
-                                        <div class="row">
-                                            <form class="form-sample">
-                                                <div class="col-12 grid-margin">
-                                                    <div class="row">
-                                                        <div class="col-lg-4" style="margin: auto; text-align:center;">
-                                                            <label class="col-sm-12 col-form-label">Student Number</label>
-                                                            <div class="col-sm-12">
-                                                                <input type="text" class="form-control" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div style="text-align: center; padding-top: 0px;">
-                                                    <input type="button" style="color:#ffffff;" class="btn btn-primary me-2" name="confirm_student" value="Enter">
-                                                </div>
-                                            </form>
-                                        </div>
-
                                         <div class="row">
                                             <div class="col-12 grid-margin">
                                                 <form class="form-sample">
@@ -410,44 +386,7 @@ if (!isset($_SESSION['F_number'])) {
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Address</h3>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
-                    <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>customerservice@cdsp.edu.ph</p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Quick Links</h3>
-                    <a class="btn btn-link" href="">Home</a>
-                    <a class="btn btn-link" href="">About Us</a>
-                    <a class="btn btn-link" href="">Academics</a>
-                    <a class="btn btn-link" href="">Admission</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Useful Links</h3>
-                    <a class="btn btn-link" href="">DepEd</a>
-                    <a class="btn btn-link" href="">Pag Asa</a>
-                    <a class="btn btn-link" href="">City of San Pedro</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Newsletter</h3>
-                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                    <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid copyright">
+        <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
             <div class="container">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">

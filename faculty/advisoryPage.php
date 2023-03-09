@@ -5,8 +5,7 @@ if (!isset($_SESSION['F_number'])) {
   header('Location: ../auth/login.php');
 } else {
   $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'");
-  $rowCount = $getSectionInfo->num_rows;
-  if ($rowCount > 0) {
+  if (mysqli_num_rows($getSectionInfo) > 0) {
     $ClassListRow = 1;
 
     $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'");
@@ -20,8 +19,6 @@ if (!isset($_SESSION['F_number'])) {
     } else {
       $getSectionClassList = $mysqli->query("SELECT * FROM classlist WHERE SR_section = '{$SectionData['S_name']}' AND acadYear = '{$currentSchoolYear}'");
     }
-  } else {
-    header('Location: dashboard.php');
   }
 }
 ?>
@@ -53,6 +50,9 @@ if (!isset($_SESSION['F_number'])) {
   <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
   <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
   <link href="../assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <link href="../assets/css/sweetAlert.css" rel="stylesheet">
 
   <!-- Customized Bootstrap Stylesheet -->
   <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
@@ -95,12 +95,6 @@ if (!isset($_SESSION['F_number'])) {
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../faculty/createReminder.php">
-              <i class=""></i>
-              <span class="menu-title">Create Reminders</span>
-            </a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="../faculty/reminders.php">
               <i class=""></i>
               <span class="menu-title">Reminders</span>
@@ -117,7 +111,7 @@ if (!isset($_SESSION['F_number'])) {
           <li class="nav-item">
             <a class="nav-link" href="../faculty/advisoryPage.php">
               <i class=""></i>
-              <span class="menu-title">Advisory</span>
+              <span class="menu-title">Advisory Class</span>
             </a>
           </li>
           <li class="nav-item">
@@ -169,9 +163,26 @@ if (!isset($_SESSION['F_number'])) {
                       <div class="  col-sm-12  col-lg-4 grid-margin">
                         <div class="card">
                           <div class="card-body">
-                            <h3><?php echo "Grade " . $SectionData['S_yearLevel'] . " - " . $SectionData['S_name']; ?></h3>
-                            <p style="margin-bottom: 5px;"><?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1); ?></p>
-                            <p style="margin-bottom: 5px;">School Year: 2022-2023</p>
+                            <?php
+                            if (mysqli_num_rows($getSectionInfo) > 0) { ?>
+                              <h3>
+                                <?php
+                                if ($SectionData['S_yearLevel'] == 'KINDER') {
+                                  echo $SectionData['S_yearLevel'] . " - " . $SectionData['S_name'];
+                                } else {
+                                  echo "Grade " . $SectionData['S_yearLevel'] . " - " . $SectionData['S_name'];
+                                }
+
+                                ?>
+                              </h3>
+                              <p style="margin-bottom: 5px;"><?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1); ?></p>
+                              <p style="margin-bottom: 5px;">School Year: <?php echo $currentSchoolYear ?></p>
+                            <?php } else { ?>
+                              <h3>NO DATA</h3>
+                              <p style="margin-bottom: 5px;">NO DATA</p>
+                              <p style="margin-bottom: 5px;">School Year: NO DATA</p>
+                            <?php }
+                            ?>
                           </div>
                         </div>
                       </div>
@@ -180,58 +191,63 @@ if (!isset($_SESSION['F_number'])) {
                       <div class="col-12 grid-margin">
                         <div class="card">
                           <div class="card-body">
-                            <form class="form-sample" action="confirmfaculty.php" method="POST">
-                              <div class="btn-group" style="margin-bottom: 15px;">
-                                <div>
-                                  <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
-                                    <?php
-                                    if (isset($_GET['SY'])) {
-                                      echo "S.Y. " . $_GET['SY'];
-                                    } else {
-                                      echo "Academic Year";
+                            <div class="btn-group" style="margin-bottom: 15px;">
+                              <div>
+                                <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                                  <?php
+                                  if (isset($_GET['SY'])) {
+                                    echo "School Year: " . $_GET['SY'];
+                                  } else {
+                                    echo "School Year: " . $currentSchoolYear;
+                                  }
+                                  ?>
+                                  <i class="fa fa-caret-down"></i>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                  <?php
+                                  $getAcadYear = $mysqli->query("SELECT DISTINCT(acadYear) FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'");
+                                  while ($acadYearData = $getAcadYear->fetch_assoc()) {
+                                    if ($acadYearData['acadYear'] != $currentSchoolYear) {
+                                      echo '<a class="dropdown-item" href="advisoryPage.php?SY=' . $acadYearData['acadYear'] . '">' . $acadYearData['acadYear'] . '</a>';
                                     }
-                                    ?>
-                                    <i class="fa fa-caret-down"></i>
-                                  </button>
-                                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <?php
-                                    $getAcadYear = $mysqli->query("SELECT DISTINCT(acadYear) FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'");
-                                    while ($acadYearData = $getAcadYear->fetch_assoc()) { ?>
-                                      <a class="dropdown-item" href="advisoryPage.php?SY=<?php echo $acadYearData['acadYear'] ?>"><?php echo $acadYearData['acadYear']; ?></a>
-                                    <?php }
-                                    ?>
-                                  </div>
+                                  }
+                                  ?>
                                 </div>
                               </div>
-                              <div class="btn-group" style="float: right;">
-                                <a href="" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
-                              </div>
-                              <div class="table-responsive">
-                                <table class="table">
-                                  <thead>
-                                    <style>
-                                      .hatdog {
-                                        border: 1px solid #ffffff;
-                                        text-align: center;
-                                        vertical-align: middle;
-                                        height: 30px;
-                                        color: #000000;
-                                      }
-                                    </style>
-                                    <tr>
-                                      <th class="hatdog">No.</th>
-                                      <th class="hatdog">Student Number</th>
-                                      <th class="hatdog">Student Name</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <?php
+                            </div>
+                            <div class="btn-group" style="float: right;">
+                              <a href="" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
+                            </div>
+                            <div class="btn-group mx-2" style="float: right;">
+                              <a href="advisoryAttendance.php" style="margin-right: 0px;" class="btn btn-primary">Check Advisory Attendance</a>
+                            </div>
+                            <div class="table-responsive">
+                              <table class="table">
+                                <thead>
+                                  <style>
+                                    .hatdog {
+                                      border: 1px solid #ffffff;
+                                      text-align: center;
+                                      vertical-align: middle;
+                                      height: 30px;
+                                      color: #000000;
+                                    }
+                                  </style>
+                                  <tr>
+                                    <th class="hatdog">No.</th>
+                                    <th class="hatdog">Student Number</th>
+                                    <th class="hatdog">Student Name</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <?php
+                                  if (mysqli_num_rows($getSectionInfo) > 0) {
                                     while ($SectionClassListData = $getSectionClassList->fetch_assoc()) { ?>
                                       <tr>
                                         <td class="hatdog"><?php echo $ClassListRow; ?></td>
                                         <td class="hatdog"><?php echo $SectionClassListData['SR_number']; ?></td>
                                         <td class="hatdog">
-                                          <a href="viewCard.php?ID=<?php echo $SectionClassListData['SR_number']; ?>">
+                                          <a href="viewStudent.php?ID=<?php echo $SectionClassListData['SR_number']; ?>">
                                             <?php
                                             $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$SectionClassListData['SR_number']}'");
                                             $studentInfo = $getStudentInfo->fetch_assoc();
@@ -243,18 +259,21 @@ if (!isset($_SESSION['F_number'])) {
                                       </tr>
                                     <?php $ClassListRow++;
                                     }
-                                    ?>
-                                  </tbody>
-                                </table>
-                              </div>
-                            </form>
+                                  } else { ?>
+                                    <tr>
+                                      <td class="hatdog" colspan="3">NO DATA</td>
+                                    </tr>
+                                  <?php }
+                                  ?>
+                                </tbody>
+                              </table>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-
               </div>
             </div>
           </div>
@@ -269,44 +288,7 @@ if (!isset($_SESSION['F_number'])) {
 
   <!-- Footer Start -->
   <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
-    <div class="container py-5">
-      <div class="row g-5">
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Address</h3>
-          <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
-          <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
-          <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>customerservice@cdsp.edu.ph</p>
-          <div class="d-flex pt-2">
-            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
-            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
-            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
-            <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Quick Links</h3>
-          <a class="btn btn-link" href="">Home</a>
-          <a class="btn btn-link" href="">About Us</a>
-          <a class="btn btn-link" href="">Academics</a>
-          <a class="btn btn-link" href="">Admission</a>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Useful Links</h3>
-          <a class="btn btn-link" href="">DepEd</a>
-          <a class="btn btn-link" href="">Pag Asa</a>
-          <a class="btn btn-link" href="">City of San Pedro</a>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Newsletter</h3>
-          <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-          <div class="position-relative mx-auto" style="max-width: 400px;">
-            <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-            <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="container-fluid copyright">
+    <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
       <div class="container">
         <div class="row">
           <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
@@ -324,7 +306,24 @@ if (!isset($_SESSION['F_number'])) {
 
   <script src="../assets/js/admin/vendor.bundle.base.js"></script>
   <script src="../assets/js/admin/off-canvas.js"></script>
-  <script src="../assets/js/admin/file-upload.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+  <script>
+    function sweetalert() {
+      Swal.fire({
+        text: 'No advisory class assigned',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      }).then((result) => {
+        window.location.replace("./dashboard.php");
+      })
+    }
+  </script>
+  <?php
+  $checkAdvisoryPermission = $mysqli->query("SELECT * FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'");
+  if (mysqli_num_rows($checkAdvisoryPermission) == 0) {
+    echo '<script>sweetalert();</script>';
+  }
+  ?>
 </body>
 
 

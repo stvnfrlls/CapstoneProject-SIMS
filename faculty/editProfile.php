@@ -82,12 +82,6 @@ if (!isset($_SESSION['F_number'])) {
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../faculty/createReminder.php">
-              <i class=""></i>
-              <span class="menu-title">Create Reminders</span>
-            </a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="../faculty/reminders.php">
               <i class=""></i>
               <span class="menu-title">Reminders</span>
@@ -104,7 +98,7 @@ if (!isset($_SESSION['F_number'])) {
           <li class="nav-item">
             <a class="nav-link" href="../faculty/advisoryPage.php">
               <i class=""></i>
-              <span class="menu-title">Advisory</span>
+              <span class="menu-title">Advisory Class</span>
             </a>
           </li>
           <li class="nav-item">
@@ -142,7 +136,7 @@ if (!isset($_SESSION['F_number'])) {
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-          <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="editfacultyProfile">
+          <form action="<?php $_SERVER["PHP_SELF"] ?>" enctype="multipart/form-data" method="post" id="editfacultyProfile">
             <div class="row">
               <div class="col-sm-12">
                 <div class="home-tab">
@@ -153,203 +147,48 @@ if (!isset($_SESSION['F_number'])) {
                   </div>
                   <div style="text-align: right; margin-top: 15px">
                     <input type="hidden" name="updateProfile" value="submit">
-                    <button type="button" id="updateProfile" class="btn btn-primary me-2">Save</button>
-                    <button type="button" class="btn btn-light">Back</button>
+                    <button type="submit" name="updateProfile" id="updateProfile" class="btn btn-primary me-2">Save</button>
+                    <button type="button" class="btn btn-light" onclick="location.href='../faculty/viewProfile.php'">Back</button>
                   </div>
                   <div class="tab-content tab-content-basic">
                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+
                       <div class="row">
                         <div class="col-12 grid-margin">
                           <div class="card">
                             <div class="card-body">
-                              <h4 class="card-title">Personal Information</h4>
+                              <h4 class="card-title">Edit Information</h4>
+                              <div class="row">
+                                <label class="col-sm-12 col-form-label">Profile Picture</label>
+                                <div class="col-sm-12">
+                                  <div class="form-group">
+                                    <div class="input-group col-xs-12">
+                                      <div class="input-group">
+                                        <input type="file" class="form-control file-upload-info" name="image" accept="image/*" placeholder="Upload Image">
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
                               <div class="row">
                                 <div class="col-md-4">
                                   <label label class="col-sm-12 col-form-label">Email Address</label>
                                   <div class="col-sm-12">
+                                    <input type="hidden" class="form-control" name="F_number" value="<?php echo $faculty['F_number'] ?>" required>
+                                    <input type="hidden" class="form-control" name="currentEmail" value="<?php echo $faculty['F_email'] ?>" required>
                                     <input type="email" class="form-control" name="F_email" value="<?php echo $faculty['F_email'] ?>" required>
                                   </div>
                                 </div>
                                 <div class="col-md-4">
                                   <label label class="col-sm-12 col-form-label">Change Password</label>
                                   <div class="col-sm-12">
-                                    <input type="email" class="form-control" name="F_email" value="" required>
+                                    <input type="password" class="form-control" name="newPassword" required>
                                   </div>
                                 </div>
                                 <div class="col-md-4">
                                   <label label class="col-sm-12 col-form-label">Confirm Password</label>
                                   <div class="col-sm-12">
-                                    <input type="email" class="form-control" name="F_email" value="" required>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-12 grid-margin">
-                          <div class="card">
-                            <div class="card-body">
-                              <h4 class="card-title">Personal Information</h4>
-                              <div class="row" style="padding-bottom: 15px;">
-                                <div class="col-md-4">
-                                  <label class="col-sm-12 col-form-label">Department</label>
-                                  <div class="col-sm-12">
-                                    <select class="form-select" name="F_department" required>
-                                      <option selected><?php echo $faculty['F_department'] ?></option>
-                                      <option value="English">English Department</option>
-                                      <option value="Filipino">Filipino Department</option>
-                                      <option value="Mathematics">Mathematics Department</option>
-                                      <option value="Science">Science Department</option>
-                                      <option value="History">History Department</option>
-                                      <option value="Personality Development">Personality Development Department</option>
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="col-md-8">
-                                  <label class="col-sm-12 col-form-label">Profile Picture</label>
-                                  <div class="col-sm-12">
-                                    <div class="form-group">
-                                      <div class="input-group col-xs-12">
-                                        <div class="input-group">
-                                          <input type="file" class="form-control file-upload-info" placeholder="Upload Image">
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div class="row" style="padding-bottom: 15px;">
-                                <div class="col-md-4">
-                                  <label class="col-sm-12 col-form-label">Last Name</label>
-                                  <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="F_lname" value="<?php echo $faculty['F_lname'] ?>" required>
-                                  </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                  <label class="col-sm-12 col-form-label">First Name</label>
-                                  <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="F_fname" value="<?php echo $faculty['F_fname'] ?>" required>
-                                  </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                  <label class="col-sm-12 col-form-label">Middle Name</label>
-                                  <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="F_mname" value="<?php echo $faculty['F_mname'] ?>">
-                                  </div>
-                                </div>
-
-                                <div class="col-md-1">
-                                  <label class="col-sm-12 col-form-label">Suffix</label>
-                                  <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="F_suffix" value="<?php echo $faculty['F_suffix'] ?>">
-                                  </div>
-
-                                </div>
-
-                                <div class="row" style="padding-bottom: 15px;">
-
-                                  <div class="col-md-4">
-                                    <label class="col-sm-12 col-form-label">Age</label>
-                                    <div class="col-sm-12">
-                                      <input type="number" class="form-control" name="F_age" value="<?php echo $faculty['F_age'] ?>" required>
-                                    </div>
-                                  </div>
-
-                                  <div class="col-md-4">
-                                    <label class="col-sm-12 col-form-label">Birthdate</label>
-                                    <div class="col-sm-12">
-                                      <input type="date" class="form-control" name="F_birthday" value="<?php echo $faculty['F_birthday'] ?>" required>
-                                    </div>
-                                  </div>
-
-                                  <div class="col-md-4">
-                                    <label class="col-sm-12 col-form-label">Gender</label>
-                                    <div class="col-sm-12">
-                                      <select class="form-select" name="F_gender" required>
-                                        <option selected><?php echo $faculty['F_gender'] ?></option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="NA">Prefer not to say</option>
-                                      </select>
-                                    </div>
-                                  </div>
-
-                                </div>
-
-                                <div class="row" style="padding-bottom: 15px;">
-                                  <div class="col-md-4">
-
-                                    <label class="col-sm-12 col-form-label">Religion</label>
-                                    <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="F_religion" value="<?php echo $faculty['F_religion'] ?>">
-                                    </div>
-
-                                  </div>
-                                  <div class="col-md-4">
-
-                                    <label class="col-sm-12 col-form-label">Citizenship</label>
-                                    <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="F_citizenship" value="<?php echo $faculty['F_citizenship'] ?>">
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <h4 class="card-title">Address</h4>
-                                <div class="row" style="padding-bottom: 15px;">
-
-                                  <div class="col-md-6">
-                                    <label label class="col-sm-12 col-form-label">Address</label>
-                                    <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="F_address" value="<?php echo $faculty['F_address'] ?>" required>
-                                    </div>
-                                  </div>
-
-                                  <div class="col-md-3">
-                                    <label label class="col-sm-12 col-form-label">Barangay</label>
-                                    <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="F_barangay" value="<?php echo $faculty['F_barangay'] ?>" required>
-                                    </div>
-                                  </div>
-
-                                  <div class="col-md-3">
-                                    <label label class="col-sm-12 col-form-label">City</label>
-                                    <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="F_city" value="<?php echo $faculty['F_city'] ?>" required>
-                                    </div>
-                                  </div>
-
-                                </div>
-
-                                <div class="row" style="padding-bottom: 15px;">
-
-                                  <div class="col-md-4">
-                                    <label label class="col-sm-12 col-form-label">State</label>
-                                    <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="F_state" value="<?php echo $faculty['F_state'] ?>" required>
-                                    </div>
-                                  </div>
-
-                                  <div class="col-md-4">
-                                    <label label class="col-sm-12 col-form-label">Postal Code</label>
-                                    <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="F_postal" value="<?php echo $faculty['F_postal'] ?>" required>
-                                    </div>
-                                  </div>
-
-                                </div>
-
-                                <div class="row" style="padding-bottom: 15px;">
-
-                                  <div class="col-md-6">
-                                    <label label class="col-sm-12 col-form-label">Contact Number</label>
-                                    <div class="col-sm-12">
-                                      <input type="text" class="form-control" name="F_contact" value="<?php echo $faculty['F_contactNumber'] ?>" required>
-                                    </div>
+                                    <input type="password" class="form-control" name="confirmPassword" required>
                                   </div>
                                 </div>
                               </div>
@@ -359,10 +198,8 @@ if (!isset($_SESSION['F_number'])) {
                       </div>
                     </div>
                   </div>
-
                 </div>
               </div>
-
             </div>
           </form>
         </div>
@@ -373,47 +210,10 @@ if (!isset($_SESSION['F_number'])) {
     <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
-  <button id="hatdog"> click hatdog </button>
+
   <!-- Footer Start -->
   <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
-    <div class="container py-5">
-      <div class="row g-5">
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Address</h3>
-          <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
-          <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
-          <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>customerservice@cdsp.edu.ph</p>
-          <div class="d-flex pt-2">
-            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
-            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
-            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
-            <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Quick Links</h3>
-          <a class="btn btn-link" href="">Home</a>
-          <a class="btn btn-link" href="">About Us</a>
-          <a class="btn btn-link" href="">Academics</a>
-          <a class="btn btn-link" href="">Admission</a>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Useful Links</h3>
-          <a class="btn btn-link" href="">DepEd</a>
-          <a class="btn btn-link" href="">Pag Asa</a>
-          <a class="btn btn-link" href="">City of San Pedro</a>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Newsletter</h3>
-          <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-          <div class="position-relative mx-auto" style="max-width: 400px;">
-            <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-            <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="container-fluid copyright">
+    <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
       <div class="container">
         <div class="row">
           <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
@@ -425,8 +225,7 @@ if (!isset($_SESSION['F_number'])) {
   </div>
   <!-- Footer End -->
 
-  <!-- Back to Top -->
-  <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
 
   <!-- JavaScript Libraries -->
 
@@ -439,7 +238,7 @@ if (!isset($_SESSION['F_number'])) {
   <script src="../assets/js/admin/file-upload.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
-  <script>
+  <!-- <script>
     const editfacultyProfile = document.getElementById('editfacultyProfile');
     const updateProfile = document.getElementById('updateProfile');
     updateProfile.addEventListener('click', function() {
@@ -465,7 +264,7 @@ if (!isset($_SESSION['F_number'])) {
       })
 
     })
-  </script>
+  </script> -->
 </body>
 
 </html>

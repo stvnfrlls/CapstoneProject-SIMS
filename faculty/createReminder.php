@@ -6,8 +6,17 @@ if (!isset($_SESSION['F_number'])) {
 } else {
   $getfacultyinfo = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
   $facultyInfo = $getfacultyinfo->fetch_assoc();
-  $getSubjects = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$_SESSION['F_number']}'");
-  $getGradeSection = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$_SESSION['F_number']}'");
+
+  $getSubjects = $mysqli->query("SELECT S_subject, SR_grade, SR_section, WS_start_time, WS_end_time  FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
+  $subjects_array = array();
+  while ($subjects = $getSubjects->fetch_assoc()) {
+    $subjects_array[] = $subjects;
+  }
+  $subjectList = json_encode($subjects_array);
+
+  echo "<script>var options = " . $subjectList . ";</script>";
+
+  $getGradeSection = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
 }
 ?>
 
@@ -84,12 +93,6 @@ if (!isset($_SESSION['F_number'])) {
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../faculty/createReminder.php">
-              <i class=""></i>
-              <span class="menu-title">Create Reminders</span>
-            </a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="../faculty/reminders.php">
               <i class=""></i>
               <span class="menu-title">Reminders</span>
@@ -106,7 +109,7 @@ if (!isset($_SESSION['F_number'])) {
           <li class="nav-item">
             <a class="nav-link" href="../faculty/advisoryPage.php">
               <i class=""></i>
-              <span class="menu-title">Advisory</span>
+              <span class="menu-title">Advisory Class</span>
             </a>
           </li>
           <li class="nav-item">
@@ -171,39 +174,47 @@ if (!isset($_SESSION['F_number'])) {
                                   </div>
                                   <div class="col-md-6">
                                     <div class="form-floating">
-                                      <input type="date" class="form-control" name="date">
+                                      <input type="date" class="form-control" name="date" required>
                                       <label for="email">Deadline</label>
                                     </div>
                                   </div>
                                   <div class="col-6">
                                     <div class="form-floating">
-                                      <select class="form-select" name="subject" id="subject" placeholder="Subject" required>
-                                        <option value=""></option>
-                                        <?php
-                                        while ($subjectInfo = $getSubjects->fetch_assoc()) {
-                                          echo '<option value=' . $subjectInfo['S_subject'] . '>' . $subjectInfo['S_subject'] . '</option>';
-                                        }
-                                        ?>
-                                      </select>
-                                      <label for="subject">Subject</label>
-                                    </div>
-                                  </div>
-                                  <div class="col-6">
-                                    <div class="form-floating">
                                       <select class="form-select" name="forsection" id="forsection" required>
-                                        <option value=""></option>
+                                        <option selected></option>
                                         <?php
-                                        while ($gradesection = $getGradeSection->fetch_assoc()) {
-                                          echo '<option value=' . $gradesection['SR_section'] . '>Grade ' . $gradesection['SR_grade'] . ' - ' . $gradesection['SR_section'] . '</option>';
-                                        }
+                                        if (mysqli_num_rows($getGradeSection) > 0) {
+                                          while ($GradeSection = $getGradeSection->fetch_assoc()) { ?>
+                                            <option value="<?php echo $GradeSection['SR_section'] ?>">
+                                              <?php
+                                              if ($GradeSection['SR_grade'] == 'KINDER') {
+                                                $gradeLabel = $GradeSection['SR_grade'] . ' - ' . $GradeSection['SR_section'];
+                                              } else {
+                                                $gradeLabel = 'Grade ' . $GradeSection['SR_grade'] . ' - ' . $GradeSection['SR_section'];
+                                              }
+                                              echo $gradeLabel . " (" . $GradeSection['WS_start_time'] . " - " . timePlusOneMinute($GradeSection['WS_end_time']) . ")"  ?>
+                                            </option>
+                                          <?php
+                                          }
+                                        } else { ?>
+                                          <option selected>No assigned section</option>
+                                        <?php }
                                         ?>
                                       </select>
                                       <label for="forsection">Grade and Section</label>
                                     </div>
                                   </div>
+                                  <div class="col-6">
+                                    <div class="form-floating">
+                                      <select class="form-select" name="subject" id="subject" onchange="getSubjects()" required>
+                                        <option selected></option>
+                                      </select>
+                                      <label for="subject">Subject</label>
+                                    </div>
+                                  </div>
                                   <div class="col-12">
                                     <div class="form-floating">
-                                      <textarea class="form-control" placeholder="Leave a message here" id="message" name="MSG" style="height: 200px"></textarea>
+                                      <textarea class="form-control" placeholder="Leave a message here" id="message" name="MSG" style="height: 200px" required></textarea>
                                       <label for="message">Details</label>
                                     </div>
                                   </div>
@@ -212,11 +223,9 @@ if (!isset($_SESSION['F_number'])) {
                             </div>
                           </div>
                         </div>
-
                       </div>
                     </div>
                   </div>
-
                 </div>
               </div>
               <div style="text-align: center;">
@@ -237,44 +246,7 @@ if (!isset($_SESSION['F_number'])) {
 
   <!-- Footer Start -->
   <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
-    <div class="container py-5">
-      <div class="row g-5">
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Address</h3>
-          <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
-          <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
-          <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>customerservice@cdsp.edu.ph</p>
-          <div class="d-flex pt-2">
-            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
-            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
-            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
-            <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Quick Links</h3>
-          <a class="btn btn-link" href="">Home</a>
-          <a class="btn btn-link" href="">About Us</a>
-          <a class="btn btn-link" href="">Academics</a>
-          <a class="btn btn-link" href="">Admission</a>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Useful Links</h3>
-          <a class="btn btn-link" href="">DepEd</a>
-          <a class="btn btn-link" href="">Pag Asa</a>
-          <a class="btn btn-link" href="">City of San Pedro</a>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Newsletter</h3>
-          <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-          <div class="position-relative mx-auto" style="max-width: 400px;">
-            <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-            <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="container-fluid copyright">
+    <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
       <div class="container">
         <div class="row">
           <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
@@ -293,6 +265,25 @@ if (!isset($_SESSION['F_number'])) {
   <script src="../assets/js/admin/off-canvas.js"></script>
   <script src="../assets/js/admin/file-upload.js"></script>
 
+  <script>
+    const forsection = document.getElementById("forsection");
+    const subject = document.getElementById("subject");
+
+    forsection.addEventListener('change', function() {
+      const selected_grade = this.value;
+      const filteredData = options.filter(function(item) {
+        return item.SR_section === selected_grade;
+      });
+      subject.innerHTML = "";
+      filteredData.forEach(function(item) {
+        const option = document.createElement("option");
+        option.value = item.S_subject;
+        option.text = item.S_subject;
+        subject.add(option);
+      });
+    })
+  </script>
+
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
   <script>
     const addReminders = document.getElementById('addReminders');
@@ -307,22 +298,22 @@ if (!isset($_SESSION['F_number'])) {
       }).then((result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
-          Swal.fire({
-            title: 'Successfully saved!',
-            icon: 'success',
-          }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-              reminderForm.submit();
-              window.location.href = '../faculty/reminders.php';
-            }
-          })
+          reminderForm.submit();
+          setTimeout(() => {
+            Swal.fire({
+              title: 'Successfully saved!',
+              icon: 'success',
+            }).then((result) => {
+              /* Read more about isConfirmed, isDenied below */
+              if (result.isConfirmed) {
+                window.location.href = '../faculty/reminders.php';
+              }
+            })
+          }, 3000);
         }
       })
-
     })
   </script>
-
 </body>
 
 </html>

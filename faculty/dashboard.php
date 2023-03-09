@@ -78,12 +78,6 @@ if (!isset($_SESSION['F_number'])) {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../faculty/createReminder.php">
-                            <i class=""></i>
-                            <span class="menu-title">Create Reminders</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="../faculty/reminders.php">
                             <i class=""></i>
                             <span class="menu-title">Reminders</span>
@@ -100,7 +94,7 @@ if (!isset($_SESSION['F_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../faculty/advisoryPage.php">
                             <i class=""></i>
-                            <span class="menu-title">Advisory</span>
+                            <span class="menu-title">Advisory Class</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -155,13 +149,17 @@ if (!isset($_SESSION['F_number'])) {
                                                         <div class="card">
                                                             <div class="card-body">
                                                                 <div class="row">
-                                                                    <div class="col-4">
-                                                                        <img src="../assets/img/profile.jpg" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
-                                                                    </div>
+                                                                    <?php
+                                                                    $profile_path = "../assets/img/profile/" . $getFacultyData['F_profile_img'];
+                                                                    if (empty($getFacultyData['F_profile_img']) || !file_exists($profile_path)) { ?>
+                                                                        <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
+                                                                    <?php } else { ?>
+                                                                        <img src="../assets/img/profile/<?php echo $getFacultyData['F_profile_img'] ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
+                                                                    <?php }
+                                                                    ?>
                                                                     <div class="col-8" style="align-self: center;">
-                                                                        <h3 style="text-align: left;"><?php echo $getFacultyData['F_lname'] . ", " . $getFacultyData['F_fname'] . " " . substr($getFacultyData['F_mname'], 0, 1) . ". " . $getFacultyData['F_suffix'] . "." ?></h3>
+                                                                        <h3 style="text-align: left;"><?php echo $getFacultyData['F_lname'] . ", " . $getFacultyData['F_fname'] . " " . substr($getFacultyData['F_mname'], 0, 1) . ". " . $getFacultyData['F_suffix'] . "" ?></h3>
                                                                         <p style="margin-bottom: 8px;"><?php echo $getFacultyData['F_number'] ?></p>
-                                                                        <p style="margin-bottom: 8px;"><?php echo $getFacultyData['F_department'] . " Department" ?></p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -174,22 +172,29 @@ if (!isset($_SESSION['F_number'])) {
                                                             <div class="card-body">
                                                                 <p class="mb-4" style="text-align: center; color:#c02628;">Schedule For Today</p>
                                                                 <?php
-
-                                                                while ($getFacultySchedule = $facultySchedule->fetch_assoc()) { ?>
-                                                                    <p class="mb-1" style="font-size: .90rem;">
-                                                                        <?php echo "Grade " . $getFacultySchedule['SR_grade'] . "-" . $getFacultySchedule['SR_section'] . "(" . $getFacultySchedule['S_subject'] . ")" ?>
-                                                                    </p>
+                                                                if (mysqli_num_rows($facultySchedule) > 0) {
+                                                                    while ($getFacultySchedule = $facultySchedule->fetch_assoc()) { ?>
+                                                                        <p class="mb-1" style="font-size: 13px; padding-top:15px;">
+                                                                            <?php echo "Grade " . $getFacultySchedule['SR_grade'] . "-" . $getFacultySchedule['SR_section'] . " (" . $getFacultySchedule['S_subject'] . ")" ?>
+                                                                        </p>
+                                                                        <div class="progress rounded" style="height: 25px;">
+                                                                            <p style="font-size: .77rem; margin: 5px 0px 0px 7px">
+                                                                                <?php
+                                                                                $start = date('H:i A', strtotime($getFacultySchedule['WS_start_time']));
+                                                                                $end = date('H:i A', strtotime(timeRoundUp($getFacultySchedule['WS_end_time'])));
+                                                                                echo $start . " - " . $end;
+                                                                                ?>
+                                                                            </p>
+                                                                        </div>
+                                                                    <?php
+                                                                    }
+                                                                } else { ?>
                                                                     <div class="progress rounded" style="height: 25px;">
-                                                                        <p style="font-size: .77rem; margin: 5px 0px 0px 7px">
-                                                                            <?php
-                                                                            $start = date('H:i A', strtotime($getFacultySchedule['WS_start_time']));
-                                                                            $end = date('H:i A', strtotime(timeRoundUp($getFacultySchedule['WS_end_time'])));
-                                                                            echo $start . " - " . $end;
-                                                                            ?>
+                                                                        <p class="text-center" style="font-size: .77rem; margin: 5px 0px 0px 7px">
+                                                                            NO ASSIGNED SCHEDULE YET
                                                                         </p>
                                                                     </div>
-                                                                <?php
-                                                                }
+                                                                <?php }
                                                                 ?>
                                                             </div>
                                                         </div>
@@ -224,69 +229,22 @@ if (!isset($_SESSION['F_number'])) {
                                                                     <div class="col-6" style="align-self: center;">
                                                                         <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
                                                                             <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:40px; color:#c02628;">
+                                                                                <?php
+                                                                                $currentDate = date("Y-m-d");
+                                                                                $getAttendanceCountToday = $mysqli->query("SELECT COUNT(SR_number) FROM attendance WHERE A_date = '{$currentDate}' AND SR_number IN (SELECT SR_number FROM classlist WHERE F_number = '{$_SESSION['F_number']}')");
+                                                                                $AttendanceCountToday = $getAttendanceCountToday->fetch_assoc();
 
+                                                                                echo $AttendanceCountToday['COUNT(SR_number)'];
+                                                                                ?>
                                                                             </h1>
                                                                         </div>
                                                                         <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center" style="font-size: 20px; padding-top: 10px; text-align:center;">Attendance Taken Today</h3>
-
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-12">
-                                                        <div class="row" style="padding-top: 20px;">
-                                                            <div class="col-sm-12 col-lg-3 grid-margin">
-                                                                <div class="card">
-                                                                    <div class="card-body">
-                                                                        <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
-                                                                            <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-user"></i></h1>
-                                                                        </div>
-                                                                        <a href="../faculty/viewProfile.php">
-                                                                            <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Profile</h3>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-12 col-lg-3 grid-margin">
-                                                                <div class="card">
-                                                                    <div class="card-body">
-                                                                        <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
-                                                                            <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-book"></i></h1>
-                                                                        </div>
-                                                                        <a href="../faculty/viewProfile.php">
-                                                                            <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Subjects</h3>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-12 col-lg-3 grid-margin">
-                                                                <div class="card">
-                                                                    <div class="card-body">
-                                                                        <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
-                                                                            <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-bullhorn"></i></h1>
-                                                                        </div>
-                                                                        <a href="../faculty/encodeGrades.php">
-                                                                            <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Grades</h3>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-12 col-lg-3 grid-margin">
-                                                                <div class="card">
-                                                                    <div class="card-body">
-                                                                        <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
-                                                                            <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-exclamation"></i></h1>
-                                                                        </div>
-                                                                        <a href="../faculty/reminders.php">
-                                                                            <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Reminders</h3>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
+                                                    <div class="row" style="padding: 20px 0px 0px 15px;">
                                                         <div class="col-lg-8 col-sm-12 grid-margin">
                                                             <div class="card">
                                                                 <div class="card-body">
@@ -296,74 +254,91 @@ if (!isset($_SESSION['F_number'])) {
                                                                         </div>
                                                                         <?php
                                                                         $getPostedReminders = $mysqli->query("SELECT * FROM reminders WHERE author = '{$_SESSION['F_number']}'");
-
-                                                                        while ($remindersData = $getPostedReminders->fetch_assoc()) { ?>
-                                                                            <div class="col-12" style="padding-bottom: 15px;">
-                                                                                <div class="single-post bg-light">
-                                                                                    <div class="col-lg-12  col-md-12 meta-details">
-                                                                                        <div class="user-details row" style="padding: 10px 0px 0px 10px;">
-                                                                                            <p class="user-name col-lg-6 col-md-6">
-                                                                                                <span class="far fa-user" style="color: #c02628;"></span>
-                                                                                                <?php echo $getFacultyData['F_lname'] . ", " . $getFacultyData['F_fname'] . " " . substr($getFacultyData['F_mname'], 0, 1) . ". " . $getFacultyData['F_suffix'] . "." ?>
+                                                                        if (mysqli_num_rows($getPostedReminders) > 0) {
+                                                                            while ($remindersData = $getPostedReminders->fetch_assoc()) { ?>
+                                                                                <div class="col-12" style="padding-bottom: 15px;">
+                                                                                    <div class="single-post bg-light">
+                                                                                        <div class="col-lg-12  col-md-12 meta-details">
+                                                                                            <div class="user-details row" style="padding: 10px 0px 0px 10px;">
+                                                                                                <p class="user-name col-lg-6 col-md-6">
+                                                                                                    <span class="far fa-user" style="color: #c02628;"></span>
+                                                                                                    <?php echo $getFacultyData['F_lname'] . ", " . $getFacultyData['F_fname'] . " " . substr($getFacultyData['F_mname'], 0, 1) . ". " . $getFacultyData['F_suffix'] . "" ?>
+                                                                                                </p>
+                                                                                                <p class="user-name col-lg-6 col-md-6">
+                                                                                                    <span class="fa fa-calendar" style="color: #c02628;"></span>
+                                                                                                    <?php echo $remindersData['date_posted'] ?>
+                                                                                                </p>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-lg-12 col-sm-12" style="padding: 0px 10px 10px 10px;">
+                                                                                            <a class="posts-title" href="viewReminders.php?ID=<?php echo $remindersData['reminderID'] ?>" style="text-align: left;">
+                                                                                                <h6>Subject: <?php echo $remindersData['subject'] ?></h6>
+                                                                                            </a>
+                                                                                            <p class="excert text-truncate">
+                                                                                                <?php echo $remindersData['msg'] ?>
                                                                                             </p>
-                                                                                            <p class="user-name col-lg-6 col-md-6">
-                                                                                                <span class="fa fa-calendar" style="color: #c02628;"></span>
-                                                                                                <?php echo $remindersData['date_posted'] ?>
-                                                                                            </p>
+                                                                                            <a href="viewReminders.php?ID=<?php echo $remindersData['reminderID'] ?>" class="primary-btn">View More</a>
                                                                                         </div>
                                                                                     </div>
+                                                                                </div>
+                                                                            <?php
+                                                                            } ?>
+                                                                            <div style="text-align: center;">
+                                                                                <a href="#" class="btn btn-primary text-uppercase" style="width: auto; color:#fff;">View More Announcements</a>
+                                                                            </div>
+                                                                        <?php
+                                                                        } else { ?>
+                                                                            <div class="col-12" style="padding-bottom: 15px;">
+                                                                                <div class="single-post bg-light">
                                                                                     <div class="col-lg-12 col-sm-12" style="padding: 0px 10px 10px 10px;">
-                                                                                        <a class="posts-title" href="blog-single.html" style="text-align: left;">
-                                                                                            <h3>Subject: <?php echo $remindersData['subject'] ?></h3>
-                                                                                        </a>
-                                                                                        <p class="excert">
-                                                                                            <?php echo $remindersData['msg'] ?>
-                                                                                        </p>
-                                                                                        <a href="blog-single.html" class="primary-btn">View More</a>
+                                                                                        <div class="posts-title" style="text-align: center;">
+                                                                                            <h3>NO REMINDERS YET</h3>
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                        <?php
-                                                                        }
+                                                                        <?php }
                                                                         ?>
-                                                                        <div style="text-align: center;">
-                                                                            <a href="#" class="btn btn-primary text-uppercase" style="width: auto; color:#fff;">View More Announcements</a>
-                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-4 col-sm-12 grid-margin">
+                                                        <div class="col-lg-4 col-sm-12" style="padding-right: 0px;">
                                                             <div class="card">
                                                                 <div class="card-body">
                                                                     <div class="row">
                                                                         <div class="section-title section-title-sm position-relative pb-3 mb-4">
                                                                             <h3 style="text-align:left;">Notifs</h3>
                                                                         </div>
-                                                                        <div class="border-bottom">
-                                                                            <p><a href="#"> Steven Frilles </a> <span>has marked your reminder as done.</span></span></p>
-                                                                        </div>
-                                                                        <div class="border-bottom">
-                                                                            <p style="padding-top: 10px;"><a href="#"> Steven Frilles </a> <span>has marked your reminder as done.</span></span></p>
-                                                                        </div>
-                                                                        <div class="border-bottom">
-                                                                            <p style="padding-top: 10px;"><a href="#"> Steven Frilles </a> <span>has marked your reminder as done.</span></span></p>
-                                                                        </div>
-                                                                        <div class="border-bottom">
-                                                                            <p style="padding-top: 10px;"><a href="#"> Steven Frilles </a> <span>has marked your reminder as done.</span></span></p>
-                                                                        </div>
-                                                                        <div class="border-bottom">
-                                                                            <p style="padding-top: 10px;"><a href="#"> Steven Frilles </a> <span>has marked your reminder as done.</span></span></p>
-                                                                        </div>
+                                                                        <?php
+                                                                        $getreminderNotifs = $mysqli->query("SELECT * FROM reminder_status WHERE author = '{$_SESSION['F_number']}' AND viewed_date IS NOT NULL ORDER BY viewed_date DESC");
+                                                                        if (mysqli_num_rows($getreminderNotifs) > 0) {
+                                                                            while ($reminderNotifs = $getreminderNotifs->fetch_assoc()) {
+                                                                                $getStudentName = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$reminderNotifs['SR_number']}'");
+                                                                                $studentName = $getStudentName->fetch_assoc(); ?>
+                                                                                <div class="border-bottom">
+                                                                                    <p>
+                                                                                        <?php echo $studentName['SR_lname'] .  ", " . $studentName['SR_fname'] ?>
+                                                                                        <span>has viewed your reminder.</span><br>
+                                                                                        <?php echo $reminderNotifs['viewed_date'] ?>
+                                                                                    </p>
+                                                                                </div>
+                                                                            <?php }
+                                                                        } else { ?>
+                                                                            <div>
+                                                                                <p class="text-center">
+                                                                                    <span>NO UPDATES YET</span>
+                                                                                </p>
+                                                                            </div>
+                                                                        <?php }
+                                                                        ?>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -382,44 +357,7 @@ if (!isset($_SESSION['F_number'])) {
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Address</h3>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
-                    <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>customerservice@cdsp.edu.ph</p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Quick Links</h3>
-                    <a class="btn btn-link" href="">Home</a>
-                    <a class="btn btn-link" href="">About Us</a>
-                    <a class="btn btn-link" href="">Academics</a>
-                    <a class="btn btn-link" href="">Admission</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Useful Links</h3>
-                    <a class="btn btn-link" href="">DepEd</a>
-                    <a class="btn btn-link" href="">Pag Asa</a>
-                    <a class="btn btn-link" href="">City of San Pedro</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Newsletter</h3>
-                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                    <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid copyright">
+        <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
             <div class="container">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
@@ -431,32 +369,7 @@ if (!isset($_SESSION['F_number'])) {
     </div>
     <!-- Footer End -->
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/lib/wow/wow.min.js"></script>
-    <script src="../assets/lib/easing/easing.min.js"></script>
-    <script src="../assets/lib/waypoints/waypoints.min.js"></script>
-    <script src="../assets/lib/counterup/counterup.min.js"></script>
-    <script src="../assets/lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="../assets/lib/tempusdominus/js/moment.min.js"></script>
-    <script src="../assets/lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="../assets/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
-    <script src="../assets/js/main.js"></script>
-
-    <!-- Javascript -->
-    <script src="../assets/vendor/jquery/jquery.min.js"></script>
-    <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <script src="../assets/js/eduwell/isotope.min.js"></script>
-    <script src="../assets/js/eduwell/owl-carousel.js"></script>
-    <script src="../assets/js/eduwell/lightbox.js"></script>
-    <script src="../assets/js/eduwell/tabs.js"></script>
-    <script src="../assets/js/eduwell/video.js"></script>
-    <script src="../assets/js/eduwell/slick-slider.js"></script>
-    <script src="../assets/js/eduwell/custom.js"></script>
-    <script src="../assets/js/startup/main.js"></script>
 
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>

@@ -9,16 +9,17 @@ if (!isset($_SESSION['AD_number'])) {
   if (isset($_POST['confirm_faculty'])) {
     header('Location: confirmfaculty.php');
   } else {
-    $cityprovreg = $mysqli->query('SELECT * FROM cityprovregion');
     $array_cityprovreg = array();
+
+    $cityprovreg = $mysqli->query('SELECT * FROM cityprovregion');
 
     while ($cityprovreg_data = $cityprovreg->fetch_assoc()) {
       $array_cityprovreg[] = $cityprovreg_data;
     }
 
-    $json = json_encode($array_cityprovreg);
+    $student = json_encode($array_cityprovreg);
 
-    echo "<script>var cityprov = " . $json . ";</script>";
+    echo "<script>var cityprov = " . $student . ";</script>";
   }
 }
 ?>
@@ -115,12 +116,7 @@ if (!isset($_SESSION['AD_number'])) {
               <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="../admin/createFetcher.php">
-              <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
-            </a>
-          </li>
+           
           <li class="nav-item">
             <a class="nav-link" href="../admin/student.php">
               <i class=""></i>
@@ -130,7 +126,7 @@ if (!isset($_SESSION['AD_number'])) {
           <li class="nav-item">
             <a class="nav-link" href="../admin/editgrades.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
+              <span class="menu-title" style="color: #b9b9b9;">Finalization of Grades</span>
             </a>
           </li>
           <li class="nav-item">
@@ -213,7 +209,7 @@ if (!isset($_SESSION['AD_number'])) {
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
-            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="confirmFaculty">
+            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="confirmFaculty" enctype="multipart/form-data">
               <div class="col-sm-12">
                 <div class="home-tab">
                   <div class="d-sm-flex align-items-center justify-content-between border-bottom">
@@ -229,26 +225,12 @@ if (!isset($_SESSION['AD_number'])) {
                             <div class="card-body">
                               <h4 class="card-title">Personal Information</h4>
                               <div class="row" style="padding-bottom: 15px;">
-                                <div class="col-md-4">
-                                  <label class="col-sm-12 col-form-label">Department <span style="color: red;">*</span></label>
-                                  <div class="col-sm-12">
-                                    <select class="form-select" name="F_department" required>
-                                      <option value=""></option>
-                                      <option value="English">English Department</option>
-                                      <option value="Filipino">Filipino Department</option>
-                                      <option value="Mathematics">Mathematics Department</option>
-                                      <option value="Science">Science Department</option>
-                                      <option value="History">History Department</option>
-                                      <option value="Personality Development">Personality Development Department</option>
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="col-md-8">
+                                <div class="col-md-12">
                                   <label class="col-sm-12 col-form-label">Profile Picture</label>
                                   <div class="col-sm-12">
                                     <div class="form-group">
                                       <div class="input-group col-xs-12">
-                                        <input type="file" class="form-control file-upload-info" placeholder="Upload Image">
+                                        <input type="file" class="form-control file-upload-info" name="image" placeholder="Upload Image" accept="image/*">
                                       </div>
                                     </div>
                                   </div>
@@ -281,38 +263,35 @@ if (!isset($_SESSION['AD_number'])) {
                                 </div>
                               </div>
                               <div class="row" style="padding-bottom: 15px;">
-                                <div class="col-md-4">
-                                  <label class="col-sm-12 col-form-label">Age <span style="color: red;">*</span></label>
-                                  <div class="col-sm-12">
-                                    <input type="number" class="form-control" name="F_age" required>
-                                  </div>
-                                </div>
-                                <div class="col-md-4">
+                                <div class="col-md-2">
                                   <label class="col-sm-12 col-form-label">Birthdate <span style="color: red;">*</span></label>
                                   <div class="col-sm-12">
-                                    <input type="date" class="form-control" name="F_birthday" required>
+                                    <input type="date" class="form-control" name="F_birthday" id="F_birthday" required onchange="calculateAge()">
                                   </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-1">
+                                  <label class="col-sm-12 col-form-label">Age <span style="color: red;">*</span></label>
+                                  <div class="col-sm-12">
+                                    <input type="number" class="form-control" name="F_age" id="F_age" required readonly>
+                                  </div>
+                                </div>
+                                <div class="col-md-2">
                                   <label class="col-sm-12 col-form-label">Gender <span style="color: red;">*</span></label>
                                   <div class="col-sm-12">
                                     <select class="form-select" name="F_gender" required>
                                       <option selected></option>
                                       <option value="Male">Male</option>
                                       <option value="Female">Female</option>
-                                      <option value="NA">Prefer not to say</option>
                                     </select>
                                   </div>
                                 </div>
-                              </div>
-                              <div class="row" style="padding-bottom: 15px;">
                                 <div class="col-md-4">
                                   <label class="col-sm-12 col-form-label">Religion <span style="color: red;">*</span></label>
                                   <div class="col-sm-12">
                                     <input type="text" class="form-control" name="F_religion" required>
                                   </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                   <label class="col-sm-12 col-form-label">Citizenship <span style="color: red;">*</span></label>
                                   <div class="col-sm-12">
                                     <input type="text" class="form-control" name="F_citizenship" required>
@@ -336,7 +315,7 @@ if (!isset($_SESSION['AD_number'])) {
                                 <div class="col-md-3">
                                   <label label class="col-sm-12 col-form-label">City <span style="color: red;">*</span></label>
                                   <div class="col-sm-12">
-                                    <select name="city" class="form-select" name="F_city" id="city" required>
+                                    <select class="form-select" name="F_city" id="F_city" required>
                                       <option selected></option>
                                     </select>
                                   </div>
@@ -346,15 +325,13 @@ if (!isset($_SESSION['AD_number'])) {
                                 <div class="col-md-4">
                                   <label label class="col-sm-12 col-form-label">State <span style="color: red;">*</span></label>
                                   <div class="col-sm-12">
-                                    <select class="form-select" name="F_state" id="province" required>
-                                      <option selected></option>
-                                    </select>
+                                    <input type="text" class="form-control" name="F_state" id="F_state" required readonly>
                                   </div>
                                 </div>
                                 <div class="col-md-4">
                                   <label label class="col-sm-12 col-form-label">Postal Code <span style="color: red;">*</span></label>
                                   <div class="col-sm-12">
-                                    <input type="number" id="postal" class="form-control" name="F_postal" required readonly>
+                                    <input type="number" id="F_postal" class="form-control" name="F_postal" required readonly>
                                   </div>
                                 </div>
                               </div>
@@ -362,7 +339,7 @@ if (!isset($_SESSION['AD_number'])) {
                                 <div class="col-md-6">
                                   <label label class="col-sm-12 col-form-label">Contact Number <span style="color: red;">*</span></label>
                                   <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="F_contact" required>
+                                    <input type="text" class="form-control" name="F_contactNumber" id="F_contact" required>
                                   </div>
                                 </div>
                                 <div class="col-md-6">
@@ -381,9 +358,8 @@ if (!isset($_SESSION['AD_number'])) {
                 </div>
               </div>
               <div style="text-align: center;">
-                <input type="hidden" name="regFaculty" value="submit">
-                <button type="button" id="regFaculty" class="btn btn-primary me-2">Register</button>
-                <button type="button" class="btn btn-light">Back</button>
+                <button type="submit" name="regFaculty" class="btn btn-primary me-2">Register</button>
+                <button class="btn btn-light">Back</button>
               </div>
             </form>
           </div>
@@ -409,67 +385,71 @@ if (!isset($_SESSION['AD_number'])) {
   </div>
   <!-- Footer End -->
 
-  <!-- Back to Top -->
-  <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
-  <!-- JavaScript Libraries -->
-
-
   <!-- Template Javascript -->
   <script src="../assets/js/main.js"></script>
-
   <script src="../assets/js/admin/vendor.bundle.base.js"></script>
   <script src="../assets/js/admin/off-canvas.js"></script>
 
   <script>
-    const city = document.getElementById('city');
-    const province = document.getElementById('province');
-    const postal = document.getElementById('postal');
+    function calculateAge() {
+      const F_birthday = document.getElementById("F_birthday").value;
+      const today = new Date();
+      const birthDate = new Date(F_birthday);
+
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+
+      document.getElementById("F_age").value = age;
+    }
+    const phoneInput = document.getElementById('F_contact');
+    phoneInput.maxLength = 15;
+
+    phoneInput.addEventListener('input', function(e) {
+      // Get the current input value and remove all non-numeric characters
+      const input = e.target.value.replace(/\D/g, '');
+
+      // Format the input value as a phone number
+      const match = input.match(/^(\d{0,4})(\d{0,3})(\d{0,4})$/);
+      let formatted = '';
+      if (match) {
+        formatted = `(${match[1]})`;
+        if (match[2]) formatted += ` ${match[2]}`;
+        if (match[3]) formatted += `-${match[3]}`;
+      }
+
+      // Update the input field with the formatted value
+      e.target.value = formatted;
+
+      if (input.length >= 15) {
+        e.target.value = formatted.slice(0, 15);
+      }
+    });
+  </script>
+
+  <script>
+    const F_city = document.getElementById('F_city');
+    const F_state = document.getElementById('F_state');
+    const F_postal = document.getElementById('F_postal');
 
     for (let i = 0; i < cityprov.length; i++) {
       const option = document.createElement('option');
       option.value = cityprov[i].city;
       option.text = cityprov[i].city;
-      city.add(option);
+      F_city.add(option);
     }
 
-    city.addEventListener("change", function() {
-      const cityValue = this.value;
+    F_city.addEventListener("change", function() {
+      const F_CityValue = this.value;
       const findCity = cityprov.find(function(element) {
-        return element.city == cityValue;
+        return element.city == F_CityValue;
       });
-      const option = document.createElement("option");
-      option.value = findCity.province;
-      option.text = findCity.province;
-      province.replaceChildren(option);
-
-      postal.value = findCity.zip_code;
+      F_state.value = findCity.state;
+      F_postal.value = findCity.zip_code;
     });
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
-  <script>
-    const regFaculty = document.getElementById('regFaculty');
-    const confirmFaculty = document.getElementById('confirmFaculty');
-    regFaculty.addEventListener('click', function() {
-      Swal.fire({
-        title: 'Are you sure you want to register this faculty teacher?',
-        showCancelButton: true,
-        confirmButtonText: 'Yes',
-        cancelButtonText: `No`,
-      }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-          Swal.fire({
-            title: 'The teacher has been registered successfully!',
-            icon: 'success',
-          }).then(() => {
-            // Add your function here
-            confirmFaculty.submit();
-          });
-        }
-      })
-
-    })
   </script>
 </body>
 

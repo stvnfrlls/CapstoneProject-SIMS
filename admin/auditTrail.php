@@ -3,7 +3,6 @@ require_once("../assets/php/server.php");
 
 if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
-} else {
 }
 ?>
 <!DOCTYPE html>
@@ -93,12 +92,7 @@ if (!isset($_SESSION['AD_number'])) {
                             <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/createFetcher.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
-                        </a>
-                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
@@ -108,7 +102,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/editgrades.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Finalization of Grades</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -198,92 +192,95 @@ if (!isset($_SESSION['AD_number'])) {
                                         <h2 class="fw-bold text-primary text-uppercase">Activity History</h2>
                                     </div>
                                 </div>
-                                <div class="tab-content tab-content-basic">
-                                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                                        <div class="btn-group">
-                                            <div>
-                                                <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
-                                                    <?php
-                                                    if (isset($_GET['ID'])) {
-                                                        echo $_GET['ID'];
-                                                    } else {
-                                                        echo "Name";
-                                                    }
-                                                    ?>
-                                                    <i class="fa fa-caret-down"></i>
-                                                </button>
-                                                <?php
-                                                $getLoggedNames = $mysqli->query("SELECT DISTINCT AD_number, AD_name FROM admin_logs WHERE acadYear = '{$currentSchoolYear}'");
-                                                if (mysqli_num_rows($getLoggedNames) > 0) { ?>
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <form action="../reports/ActivityLog.php" method="get">
+                                    <div class="tab-content tab-content-basic">
+                                        <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                                            <div class="btn-group">
+                                                <div>
+                                                    <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
                                                         <?php
-                                                        while ($LoggedNames = $getLoggedNames->fetch_assoc()) { ?>
-                                                            <a class="dropdown-item" href="auditTrail.php?ID=<?php echo $LoggedNames['AD_number'] ?>"><?php echo $LoggedNames['AD_name'] ?></a>
-                                                        <?php }
+                                                        if (isset($_GET['ID'])) {
+                                                            $getAD_name = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_GET['ID']}'");
+                                                            $AD_name = $getAD_name->fetch_assoc();
+                                                            echo $AD_name['AD_name'];
+                                                        } else {
+                                                            echo "Name";
+                                                        }
                                                         ?>
+                                                        <i class="fa fa-caret-down"></i>
+                                                    </button>
+                                                    <?php
+                                                    $getLoggedNames = $mysqli->query("SELECT DISTINCT AD_number, AD_name FROM admin_logs WHERE acadYear = '{$currentSchoolYear}'");
+                                                    if (mysqli_num_rows($getLoggedNames) > 0) { ?>
+                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                            <?php
+                                                            while ($LoggedNames = $getLoggedNames->fetch_assoc()) { ?>
+                                                                <a class="dropdown-item" href="auditTrail.php?ID=<?php echo $LoggedNames['AD_number'] ?>"><?php echo $LoggedNames['AD_name'] ?></a>
+                                                            <?php }
+                                                            ?>
+                                                        </div>
+                                                    <?php }
+                                                    ?>
                                                 </div>
-                                                <?php }
-                                                ?>
                                             </div>
-                                        </div>
-                                        <div class="btn-group">
-                                            <div>
-                                                <input type="date" class="form-control" name="date" value="">
+                                            <div class="btn-group mx-2" style="float: right;">
+                                                <div class="mx-1">
+                                                    <input type="date" class="form-control" name="start_date" required>
+                                                </div>
+                                                <div class="mx-1">
+                                                    <input type="date" class="form-control" name="end_date" required>
+                                                </div>
+                                                <button type="submit" href="advisoryConcern.php" style="margin-right: 0px;" class="btn btn-primary mx-2">Get records</button>
                                             </div>
-                                        </div>
-                                        <div class="btn-group">
-                                            <div>
-                                                <input type="date" class="form-control" name="date" value="">
-                                            </div>
-                                        </div>
+                                            <div class="row" style="margin-top: 15px;">
+                                                <div class="col-12 grid-margin">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div class="table-responsive">
+                                                                <table class="table table-striped">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Full Name</th>
+                                                                            <th>Date and Time</th>
+                                                                            <th>Action</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <?php
+                                                                        if (isset($_GET['ID'])) {
+                                                                            $GetLogs = $mysqli->query("SELECT * FROM admin_logs WHERE AD_number = '{$_GET['ID']}' AND acadYear = '{$currentSchoolYear}' ORDER BY logDate DESC LIMIT 20");
+                                                                        } else {
+                                                                            $GetLogs = $mysqli->query("SELECT * FROM admin_logs WHERE acadYear = '{$currentSchoolYear}' ORDER BY logID DESC LIMIT 20");
+                                                                        }
+                                                                        ?>
+                                                                        <?php
+                                                                        if (mysqli_num_rows($GetLogs) > 0) {
+                                                                            while ($LogData = $GetLogs->fetch_assoc()) { ?>
+                                                                                <tr>
+                                                                                    <td><?php echo $LogData['AD_name'] ?></td>
+                                                                                    <td><?php echo $LogData['logDate'] ?></td>
+                                                                                    <td><?php echo $LogData['AD_action'] ?></td>
+                                                                                </tr>
+                                                                            <?php  } ?>
+                                                                        <?php
+                                                                        } else { ?>
+                                                                            <tr>
+                                                                                <td colspan="3" class="text-center">No Logged Action</td>
+                                                                            </tr>
+                                                                        <?php }
 
-                                        <div class="row" style="margin-top: 15px;">
-                                            <div class="col-12 grid-margin">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <div class="table-responsive">
-                                                            <table class="table table-striped">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>Full Name</th>
-                                                                        <th>Date and Time</th>
-                                                                        <th>Action</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <?php
-                                                                    if (isset($_GET['ID'])) {
-                                                                        $GetLogs = $mysqli->query("SELECT * FROM admin_logs WHERE AD_number = '{$_GET['ID']}' AND acadYear = '{$currentSchoolYear}'");
-                                                                    } else {
-                                                                        $GetLogs = $mysqli->query("SELECT * FROM admin_logs WHERE acadYear = '{$currentSchoolYear}'");
-                                                                    }
-                                                                    ?>
-                                                                    <?php
-                                                                    if (mysqli_num_rows($GetLogs) > 0) {
-                                                                        while ($LogData = $GetLogs->fetch_assoc()) { ?>
-                                                                    <tr>
-                                                                                <td><?php echo $LogData['AD_name'] ?></td>
-                                                                                <td><?php echo $LogData['logDate'] ?></td>
-                                                                                <td><?php echo $LogData['AD_action'] ?></td>
-                                                                    </tr>
-                                                                        <?php  } ?>
-                                                                    <?php
-                                                                    } else { ?>
-                                                                    <tr>
-                                                                            <td colspan="3" class="text-center">No Logged Action</td>
-                                                                    </tr>
-                                                                    <?php }
-
-                                                                    ?>
-                                                                </tbody>
-                                                            </table>
+                                                                        ?>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </form>
+
                             </div>
                         </div>
 

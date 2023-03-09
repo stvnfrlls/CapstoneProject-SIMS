@@ -79,6 +79,9 @@ if (empty($_SESSION['AD_number'])) {
   <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
   <link href="../assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
 
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <link href="../assets/css/sweetAlert.css" rel="stylesheet">
+
   <!-- Customized Bootstrap Stylesheet -->
   <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
@@ -139,12 +142,7 @@ if (empty($_SESSION['AD_number'])) {
               <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="../admin/createFetcher.php">
-              <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
-            </a>
-          </li>
+
           <li class="nav-item">
             <a class="nav-link" href="../admin/student.php">
               <i class=""></i>
@@ -154,7 +152,7 @@ if (empty($_SESSION['AD_number'])) {
           <li class="nav-item">
             <a class="nav-link" href="../admin/editgrades.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
+              <span class="menu-title" style="color: #b9b9b9;">Finalization of Grades</span>
             </a>
           </li>
           <li class="nav-item">
@@ -269,7 +267,11 @@ if (empty($_SESSION['AD_number'])) {
                           while ($gradeData = $rungradeList->fetch_assoc()) { ?>
                             <a class="dropdown-item" href="editlearningareas.php?GradeLevel=<?php echo $gradeData['S_yearLevel'] ?>">
                               <?php
-                              echo "Grade " . $gradeData['S_yearLevel'];
+                              if ($gradeData['S_yearLevel'] == 'KINDER') {
+                                echo $gradeData['S_yearLevel'];
+                              } else {
+                                echo "Grade " . $gradeData['S_yearLevel'];
+                              }
                               ?>
                             </a>
                           <?php } ?>
@@ -280,7 +282,7 @@ if (empty($_SESSION['AD_number'])) {
                       <?php
                       if (isset($_GET['GradeLevel'])) { ?>
                         <div>
-                          <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
                             <?php if (isset($_GET['SectionName'])) {
                               echo $_GET['SectionName'];
                             } else {
@@ -315,11 +317,11 @@ if (empty($_SESSION['AD_number'])) {
                     <?php
                     }
                     ?>
-                    <div class="row">
+                    <div class="row" style="margin-top: 15px;">
                       <div class="col-lg-12 d-flex flex-column">
                         <div class="row flex-grow">
                           <div class="col-md-6 col-lg-12 grid-margin stretch-card">
-                            <div class="card bg-primary card-rounded">
+                            <div class="card card-rounded">
                               <div class="table-responsive">
                                 <table class="table">
                                   <thead>
@@ -329,7 +331,6 @@ if (empty($_SESSION['AD_number'])) {
                                       <th>Assigned Professor</th>
                                       <th>Start Time</th>
                                       <th>End Time</th>
-                                      <th>Room</th>
                                       <th>Action</th>
                                     </tr>
                                   </thead>
@@ -339,7 +340,7 @@ if (empty($_SESSION['AD_number'])) {
                                     if (isset($_GET['GradeLevel']) && isset($_GET['SectionName'])) {
                                       $subjectRowCount = sizeof($subjects);
                                       while ($rowCount != $subjectRowCount) { ?>
-                                        <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
+                                        <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="AssignScheduleForm">
                                           <tr>
                                             <td><?php echo $rowCount; ?></td>
                                             <td>
@@ -348,79 +349,63 @@ if (empty($_SESSION['AD_number'])) {
                                             </td>
                                             <td>
                                               <?php
-                                              $getAllFacultyName = "SELECT faculty.F_number, faculty.F_lname, faculty.F_fname, faculty.F_mname, faculty.F_suffix
-                                                                  FROM faculty LEFT JOIN workschedule ON faculty.F_number = workschedule.F_number";
-                                              $runAllFacultyName = $mysqli->query($getAllFacultyName);
-                                              while ($dataAllFacultyName = $runAllFacultyName->fetch_assoc()) {
-                                                $AllFacultyName[] = $dataAllFacultyName;
-                                              }
-                                              $arrayRowCount = 1;
-                                              $arrayCount = count($AllFacultyName); ?>
+                                              $getAssignedFaculty = $mysqli->query("SELECT * FROM workschedule 
+                                                                                    WHERE SR_grade = '{$_GET['GradeLevel']}' 
+                                                                                    AND SR_section = '{$_GET['SectionName']}' 
+                                                                                    AND acadYear = '{$currentSchoolYear}'
+                                                                                    AND S_subject = '{$subjects[$rowCount]['subjectName']}'");
+                                              $assignedFaculty = $getAssignedFaculty->fetch_assoc();
+                                              ?>
+                                              <input type="hidden" name="WS_ID" value="<?php echo $assignedFaculty['WS_ID']; ?>">
                                               <select class="form-select" name="assignedFaculty" aria-label="Default select example" required>
                                                 <?php
-                                                $getFacultyName = $mysqli->query("SELECT F_number, F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$schedule[$rowCount]['F_number']}'");
-                                                while ($dataFacultyName = $getFacultyName->fetch_assoc()) {
-                                                  $FacultyName[] = $dataFacultyName;
-                                                }
-                                                if (empty($schedule[$rowCount]['F_number'])) {
-                                                  echo "<option selected></option>";
-                                                } else {
-                                                  echo "<option selected value=" . $FacultyName[$rowCount]['F_number'] . ">" . $FacultyName[$rowCount]['F_lname'] .  ", " . $FacultyName[$rowCount]['F_fname'] . " " . substr($FacultyName[$rowCount]['F_mname'], 0, 1);
-                                                  "</option";
-                                                }
+                                                if (mysqli_num_rows($getAssignedFaculty) > 0) {
+                                                  $getFacultyName = $mysqli->query("SELECT F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$assignedFaculty['F_number']}'");
+                                                  $FacultyName = $getFacultyName->fetch_assoc();
+                                                ?>
+                                                  <option value="<?php echo $assignedFaculty['F_number'] ?>" selected><?php echo $FacultyName['F_lname'] . ", " . $FacultyName['F_fname'] . " " . substr($FacultyName['F_mname'], 0, 1) . ". " . $FacultyName['F_suffix'] . "." ?></option>
+                                                <?php } else { ?>
+                                                  <option value="">No assigned teacher</option>
+                                                <?php }
                                                 ?>
 
                                                 <?php
-                                                while ($arrayRowCount < $arrayCount) { ?>
-                                                  <option value="<?php echo $AllFacultyName[$arrayRowCount]['F_number']; ?>">
-                                                    <?php
-                                                    echo $AllFacultyName[$arrayRowCount]['F_lname'] . ", " . $AllFacultyName[$arrayRowCount]['F_fname'] . " " . substr($AllFacultyName[$arrayRowCount]['F_mname'], 0, 1);
-                                                    ?>
-                                                  </option>
-                                                <?php $arrayRowCount++;
-                                                }
+                                                $listFacultyData = $mysqli->query("SELECT F_number, F_lname, F_fname, F_mname, F_suffix FROM faculty ORDER BY F_lname");
+                                                while ($listFaculty = $listFacultyData->fetch_assoc()) { ?>
+                                                  <option value="<?php echo $listFaculty['F_number'] ?>"><?php echo $listFaculty['F_lname'] . ", " . $listFaculty['F_fname'] . " " . substr($listFaculty['F_mname'], 0, 1) . ". " . $listFaculty['F_suffix'] . "." ?></option>
+                                                <?php }
                                                 ?>
                                               </select>
-                                              <?php
-                                              ?>
                                             </td>
                                             <td>
                                               <?php
                                               if (empty($schedule[$rowCount]['WS_start_time'])) {
-                                                echo '<input type="time" class="form-control" name="WS_start_time">';
+                                                echo '<input type="time" class="form-control" name="WS_start_time" required>';
                                               } else {
-                                                echo '<input type="time" class="form-control" name="WS_start_time" value=' . $schedule[$rowCount]['WS_start_time'] . '>';
+                                                echo '<input type="time" class="form-control" name="WS_start_time" value=' . $schedule[$rowCount]['WS_start_time'] . ' required>';
                                               }
                                               ?>
                                             </td>
                                             <td>
                                               <?php
                                               if (empty($schedule[$rowCount]['WS_start_time'])) {
-                                                echo '<input type="time" class="form-control" name="WS_end_time">';
+                                                echo '<input type="time" class="form-control" name="WS_end_time" required>';
                                               } else {
-                                                echo '<input type="time" class="form-control" name="WS_end_time" value=' . $schedule[$rowCount]['WS_end_time'] . '>';
-                                              }
-                                              ?>
-                                            </td>
-                                            <td>
-                                              <?php
-                                              if (empty($schedule[$rowCount]['WS_start_time'])) {
-                                                echo '<input type="text" class="form-control" size="4" name="WS_room">';
-                                              } else {
-                                                echo '<input type="text" class="form-control" size="4" name="WS_room">';
+                                                echo '<input type="time" class="form-control" name="WS_end_time" value=' . timePlusOneMinute($schedule[$rowCount]['WS_end_time']) . ' required>';
                                               }
                                               ?>
                                             </td>
                                             <td>
 
                                               <?php
-                                              if (empty($schedule[$rowCount]['F_number'])) {
-                                                echo '<input type="submit" class="btn btn-primary" name="setSchedule" value="SET">';
-                                                echo '<input type="submit" class="btn btn-primary" name="deleteSchedule" value="DEL">';
+                                              if (empty($schedule[$rowCount]['F_number'])) { ?>
+                                                <input type="submit" class="btn btn-primary" name="setSchedule" id="setSchedule" value="SET">
+                                              <?php
                                               } else {
-                                                echo '<input type="submit" class="btn btn-primary" name="updateSchedule" value="UPD">';
-                                                echo '<input type="submit" class="btn btn-primary" name="deleteSchedule" value="DEL">';
-                                              }
+                                              ?>
+                                                <!-- <input type="submit" class="btn btn-primary" name="updateSchedule" id="updateSchedule" value="UPD"> -->
+                                                <input type="submit" class="btn btn-primary" name="deleteSchedule" id="deleteSchedule" value="DELETE SCHEDULE">
+                                              <?php }
                                               ?>
                                             </td>
                                           </tr>
@@ -478,6 +463,7 @@ if (empty($_SESSION['AD_number'])) {
   <script src="../assets/js/main.js"></script>
   <script src="../assets/js/admin/vendor.bundle.base.js"></script>
   <script src="../assets/js/admin/off-canvas.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
 </body>
 
 </html>

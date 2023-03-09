@@ -3,36 +3,6 @@ require_once("../assets/php/server.php");
 
 if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
-} else {
-    $gradeList = "SELECT DISTINCT S_yearLevel FROM sections";
-    $rungradeList = $mysqli->query($gradeList);
-
-    if (isset($_GET['GradeLevel'])) {
-        $current_url = $_SERVER["REQUEST_URI"];
-        $sectionList = "SELECT S_name FROM sections WHERE S_yearLevel = '{$_GET['GradeLevel']}'";
-        $runsectionList = $mysqli->query($sectionList);
-    }
-
-    if (isset($_GET['GradeLevel'])) {
-        $subjects     = array();
-        array_unshift($subjects, null);
-
-        if ($_GET['GradeLevel'] == "KINDER") {
-            $getSubject = "SELECT subjectName, minYearLevel, maxYearLevel FROM subjectperyear
-                  WHERE minYearLevel = '0' 
-                  AND maxYearLevel >= '0'";
-        } else {
-            $getSubject = "SELECT subjectName, minYearLevel, maxYearLevel FROM subjectperyear
-                  WHERE minYearLevel <= '{$_GET['GradeLevel']}' 
-                  AND maxYearLevel >= '{$_GET['GradeLevel']}'";
-        }
-    } else {
-        $getSubject = "SELECT subjectName, minYearLevel, maxYearLevel FROM subjectperyear";
-    }
-    $rungetSubject = $mysqli->query($getSubject);
-    while ($dataSubject = $rungetSubject->fetch_assoc()) {
-        $subjects[] = $dataSubject;
-    }
 }
 ?>
 
@@ -62,6 +32,9 @@ if (!isset($_SESSION['AD_number'])) {
     <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
     <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="../assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="../assets/css/sweetAlert.css" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
@@ -123,12 +96,7 @@ if (!isset($_SESSION['AD_number'])) {
                             <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/createFetcher.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
-                        </a>
-                    </li>
+ 
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
@@ -138,7 +106,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/editgrades.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Finalization of Grades</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -236,7 +204,7 @@ if (!isset($_SESSION['AD_number'])) {
                                             <div class="col-lg-12 d-flex flex-column">
                                                 <div class="row flex-grow">
                                                     <div class="col-md-6 col-lg-12 grid-margin stretch-card">
-                                                        <div class="card bg-primary card-rounded">
+                                                        <div class="card card-rounded">
                                                             <div class="table-responsive">
                                                                 <table class="table">
                                                                     <thead>
@@ -251,62 +219,47 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     <tbody>
                                                                         <?php
                                                                         $rowCount = 1;
-                                                                        $subjectRowCount = sizeof($subjects);
-                                                                        if (isset($_GET['GradeLevel'])) {
-                                                                            while ($rowCount != $subjectRowCount) { ?>
-                                                                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
+                                                                        $dataSubject = $mysqli->query("SELECT subjectName, minYearLevel, maxYearLevel FROM subjectperyear");
+                                                                        if (mysqli_num_rows($dataSubject) > 0) {
+                                                                            while ($subject = $dataSubject->fetch_assoc()) { ?>
+                                                                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="modifyCurrForm">
                                                                                     <tr>
                                                                                         <td><?php echo $rowCount; ?></td>
                                                                                         <td>
-                                                                                            <?php echo $subjects[$rowCount]['subjectName']; ?>
-                                                                                            <input type="hidden" name="sbjName" value="<?php echo $subjects[$rowCount]['subjectName'] ?>">
+                                                                                            <?php echo $subject['subjectName']; ?>
+                                                                                            <input type="hidden" name="sbjName" value="<?php echo $subject['subjectName'] ?>">
                                                                                         </td>
-                                                                                        <td><input type="number" name="minYearLevel" class="form-control text-center" value="<?php echo $subjects[$rowCount]['minYearLevel']; ?>"></td>
-                                                                                        <td><input type="number" name="maxYearLevel" class="form-control text-center" value="<?php echo  $subjects[$rowCount]['maxYearLevel']; ?>"></td>
+                                                                                        <td><input type="text" name="minYearLevel" class="form-control text-center" value="<?php echo $subject['minYearLevel']; ?>"></td>
+                                                                                        <td><input type="text" name="maxYearLevel" class="form-control text-center" value="<?php echo  $subject['maxYearLevel']; ?>"></td>
                                                                                         <td>
-                                                                                            <input type="submit" style="color: #ffffff;" class="btn btn-primary" value="UPDATE" name="updateCurr">
-                                                                                            <input type="submit" class="btn btn-secondary" value="DELETE" name="deleteCurr">
+                                                                                            <button style="color: #ffffff;" class="btn btn-primary" value="UPDATE" name="updateCurr" id="updateCurr">Update</button>
+                                                                                            <button class="btn btn-secondary" value="DELETE" name="deleteCurr" id="deleteCurr">Delete</button>
                                                                                         </td>
                                                                                     </tr>
                                                                                 </form>
-                                                                            <?php $rowCount++;
+                                                                            <?php
+                                                                                $rowCount++;
                                                                             } ?>
-                                                                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
+                                                                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="addCurrForm">
                                                                                 <tr>
                                                                                     <td>ADD</td>
-                                                                                    <td><input type="text" class="form-control"></td>
-                                                                                    <td><input type="number" class="form-control"></td>
-                                                                                    <td><input type="number" class="form-control"></td>
-                                                                                    <td><?php echo '<input type="submit" style="color: #ffffff;" class="btn btn-primary" value="ADD">'; ?></td>
+                                                                                    <td><input type="text" name="sbjName" class="form-control" required></td>
+                                                                                    <td><input type="number" name="minYearLevel" class="form-control" required></td>
+                                                                                    <td><input type="number" name="maxYearLevel" class="form-control" required></td>
+                                                                                    <td><input type="submit" style="color: #ffffff;" class="btn btn-primary" value="ADD SUBJECT" name="addCurr" id="addCurr"></td>
                                                                                 </tr>
                                                                             </form>
-                                                                            <?php
-                                                                        } else {
-                                                                            while ($rowCount != $subjectRowCount) { ?>
-                                                                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
-                                                                                    <tr>
-                                                                                        <td><?php echo $rowCount; ?></td>
-                                                                                        <td>
-                                                                                            <?php echo $subjects[$rowCount]['subjectName']; ?>
-                                                                                            <input type="hidden" name="sbjName" value="<?php echo $subjects[$rowCount]['subjectName'] ?>">
-                                                                                        </td>
-                                                                                        <td><input type="number" name="minYearLevel" class="form-control text-center" value="<?php echo $subjects[$rowCount]['minYearLevel']; ?>"></td>
-                                                                                        <td><input type="number" name="maxYearLevel" class="form-control text-center" value="<?php echo  $subjects[$rowCount]['maxYearLevel']; ?>"></td>
-                                                                                        <td>
-                                                                                            <input type="submit" style="color: #ffffff;" class="btn btn-primary" value="UPDATE" name="updateCurr">
-                                                                                            <input type="submit" class="btn btn-secondary" value="DELETE" name="deleteCurr">
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </form>
-                                                                            <?php $rowCount++;
-                                                                            } ?>
-                                                                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
+                                                                        <?php } else { ?>
+                                                                            <tr>
+                                                                                <td colspan="5">NO SUBJECTS AVAILABLE</td>
+                                                                            </tr>
+                                                                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="addCurrForm">
                                                                                 <tr>
                                                                                     <td>ADD</td>
-                                                                                    <td><input type="text" name="sbjName" class="form-control"></td>
-                                                                                    <td><input type="number" name="minYearLevel" class="form-control"></td>
-                                                                                    <td><input type="number" name="maxYearLevel" class="form-control"></td>
-                                                                                    <td><input type="submit" style="color: #ffffff;" class="btn btn-primary" value="ADD" name="addSubject"></td>
+                                                                                    <td><input type="text" name="sbjName" class="form-control" required></td>
+                                                                                    <td><input type="number" name="minYearLevel" class="form-control" required></td>
+                                                                                    <td><input type="number" name="maxYearLevel" class="form-control" required></td>
+                                                                                    <td><input type="submit" style="color: #ffffff;" class="btn btn-primary" value="ADD SUBJECT" name="addCurr" id="addCurr"></td>
                                                                                 </tr>
                                                                             </form>
                                                                         <?php }
@@ -356,6 +309,68 @@ if (!isset($_SESSION['AD_number'])) {
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>
     <script src="../assets/js/admin/off-canvas.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+    <!-- <script>
+        const addCurrForm = document.getElementById('addCurrForm');
+        const modifyCurrForm = document.getElementById('modifyCurrForm');
+
+        const addCurr = document.getElementById('addCurr');
+        const updateCurr = document.getElementById('updateCurr');
+        const deleteCurr = document.getElementById('deleteCurr');
+
+        addCurr.addEventListener('click', function(event) {
+            Swal.fire({
+                title: 'Are you sure you want to add this subject?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: `No`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Subject added successfully!',
+                        icon: 'success',
+                    }).then(() => {
+                        addCurrForm.submit();
+                    });
+                }
+            })
+        })
+        updateCurr.addEventListener('click', function(event) {
+            Swal.fire({
+                title: 'Are you sure you want to update this subject?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: `No`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Subject updated successfully!',
+                        icon: 'success',
+                    }).then(() => {
+                        modifyCurrForm.submit();
+                    });
+                }
+            })
+        })
+        deleteCurr.addEventListener('click', function(event) {
+            Swal.fire({
+                title: 'Are you sure you want to delete this subject?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: `No`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Subject deleted successfully!',
+                        icon: 'success',
+                    }).then(() => {
+                        modifyCurrForm.submit();
+                    });
+                }
+            })
+        })
+    </script> -->
 </body>
 
 </html>

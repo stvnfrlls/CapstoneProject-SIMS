@@ -30,7 +30,7 @@ if (!isset($_SESSION['F_number'])) {
 
 <head>
     <meta charset="utf-8">
-    <title>Daily Reports</title>
+    <title>Daily Attendance</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -95,12 +95,6 @@ if (!isset($_SESSION['F_number'])) {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../faculty/createReminder.php">
-                            <i class=""></i>
-                            <span class="menu-title">Create Reminders</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="../faculty/reminders.php">
                             <i class=""></i>
                             <span class="menu-title">Reminders</span>
@@ -117,7 +111,7 @@ if (!isset($_SESSION['F_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../faculty/advisoryPage.php">
                             <i class=""></i>
-                            <span class="menu-title">Advisory</span>
+                            <span class="menu-title">Advisory Class</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -160,97 +154,22 @@ if (!isset($_SESSION['F_number'])) {
                             <div class="home-tab">
                                 <div class="d-sm-flex align-items-center justify-content-between">
                                     <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                                        <h2 class="fw-bold text-primary text-uppercase">Daily Reports</h2>
+                                        <h2 class="fw-bold text-primary text-uppercase">Daily Attendance</h2>
                                     </div>
                                 </div>
                                 <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
                                     <nav class="nav">
                                         <a class="nav-link active ms-0" href="dailyReports.php" style="color: #c02628;">Daily</a>
-                                        <a class="nav-link" href="monthlyReports.php" >Monthly</a>
+                                        <a class="nav-link" href="monthlyReports.php">Monthly</a>
+                                        <a class="nav-link" href="attendance.php">Attendance Report</a>
                                     </nav>
                                     <div class="border-bottom"></div>
                                 </div>
                                 <div class="tab-content tab-content-basic">
                                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-
-                                        <!--    <div class="row">
-                                            <form action="" method="post">
-                                                <div class="col-12 grid-margin autocomplete">
-                                                    <div class="row">
-                                                        <div class="col-lg-4" style="margin: auto; text-align:center;">
-                                                            <label class="col-sm-12 col-form-label">Student Number</label>
-                                                            <style>
-                                                                /*the container must be positioned relative:*/
-                                                                .autocomplete {
-                                                                    position: relative;
-                                                                    display: inline-block;
-                                                                }
-
-                                                                input {
-                                                                    border: 1px solid transparent;
-                                                                    background-color: #f1f1f1;
-                                                                    padding: 10px;
-                                                                    font-size: 16px;
-                                                                }
-
-                                                                input[type=text] {
-                                                                    background-color: #f1f1f1;
-                                                                    width: 100%;
-                                                                }
-
-                                                                input[type=submit] {
-                                                                    background-color: DodgerBlue;
-                                                                    color: #fff;
-                                                                    cursor: pointer;
-                                                                }
-
-                                                                .autocomplete-items {
-                                                                    position: absolute;
-                                                                    border: 1px solid #d4d4d4;
-                                                                    border-bottom: none;
-                                                                    border-top: none;
-                                                                    z-index: 99;
-                                                                    /*position the autocomplete items to be the same width as the container:*/
-                                                                    top: 100%;
-                                                                    left: 0;
-                                                                    right: 0;
-                                                                }
-
-                                                                .autocomplete-items div {
-                                                                    padding: 10px;
-                                                                    cursor: pointer;
-                                                                    background-color: #fff;
-                                                                    border-bottom: 1px solid #d4d4d4;
-                                                                }
-
-                                                                /*when hovering an item:*/
-                                                                .autocomplete-items div:hover {
-                                                                    background-color: #e9e9e9;
-                                                                }
-
-                                                                /*when navigating through the items using the arrow keys:*/
-                                                                .autocomplete-active {
-                                                                    background-color: DodgerBlue !important;
-                                                                    color: #ffffff;
-                                                                }
-                                                            </style>
-                                                            <div class="col-sm-12">
-                                                                <input id="myInput" type="text" class="form-control" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div style="text-align: center; padding-top: 0px;">
-                                                    <input type="button" style="color:#ffffff;" class="btn btn-primary me-2" name="findStudent" value="Enter">
-                                                </div>
-                                            </form>
-                                        </div>
-
-                                                            -->
-
                                         <div class="btn-group">
                                             <div>
-                                                <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
                                                     <?php
                                                     if (isset($_GET['Grade'])) {
                                                         if ($_GET['Grade'] == "KINDER") {
@@ -327,16 +246,35 @@ if (!isset($_SESSION['F_number'])) {
                                                                             <th>Name</th>
                                                                             <th>Time In</th>
                                                                             <th>Time Out</th>
-                                                                            <th>Fetched by</th>
                                                                             <th>Remarks</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
+                                                                        <style>
+                                                                            input[type='number'] {
+                                                                                width: 50px;
+                                                                            }
+
+                                                                            /* Chrome, Safari, Edge, Opera */
+                                                                            input::-webkit-outer-spin-button,
+                                                                            input::-webkit-inner-spin-button {
+                                                                                -webkit-appearance: none;
+                                                                                margin: 0;
+                                                                            }
+
+                                                                            .tabledata {
+                                                                                border: 1px solid #ffffff;
+                                                                                text-align: center;
+                                                                                vertical-align: middle;
+                                                                                height: 30px;
+                                                                                color: #000000;
+                                                                            }
+                                                                        </style>
                                                                         <?php
                                                                         $rowCount = 1;
                                                                         $dateNow = date("Y-m-d");
                                                                         if (isset($_GET['Grade']) && isset($_GET['Section'])) {
-                                                                            $getDailyAttendanceData = $mysqli->query("SELECT DISTINCT SR_lname, SR_fname, SR_mname, SR_suffix, attendance.SR_number, attendance.A_time_IN, attendance.A_time_OUT, attendance.A_fetcher_OUT, attendance.A_status 
+                                                                            $getDailyAttendanceData = $mysqli->query("SELECT DISTINCT SR_lname, SR_fname, SR_mname, SR_suffix, attendance.SR_number, attendance.A_time_IN, attendance.A_time_OUT, attendance.A_status 
                                                                             FROM attendance 
                                                                             LEFT JOIN studentrecord ON attendance.SR_number = studentrecord.SR_number 
                                                                             WHERE acadYear = '{$currentSchoolYear}' 
@@ -350,7 +288,6 @@ if (!isset($_SESSION['F_number'])) {
                                                                                         <td class="tabledata"><?php echo $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'] . " " . substr($AttendanceData['SR_mname'], 0, 1) . ". " . $AttendanceData['SR_suffix']; ?></td>
                                                                                         <td class="tabledata"><?php echo $AttendanceData['A_time_IN']; ?></td>
                                                                                         <td class="tabledata"><?php echo $AttendanceData['A_time_OUT']; ?></td>
-                                                                                        <td class="tabledata"><?php echo $AttendanceData['A_fetcher_OUT']; ?></td>
                                                                                         <td class="tabledata"><?php echo $AttendanceData['A_status']; ?></td>
                                                                                     </tr>
                                                                                 <?php $rowCount++;
@@ -390,44 +327,7 @@ if (!isset($_SESSION['F_number'])) {
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Address</h3>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
-                    <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>customerservice@cdsp.edu.ph</p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Quick Links</h3>
-                    <a class="btn btn-link" href="">Home</a>
-                    <a class="btn btn-link" href="">About Us</a>
-                    <a class="btn btn-link" href="">Academics</a>
-                    <a class="btn btn-link" href="">Admission</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Useful Links</h3>
-                    <a class="btn btn-link" href="">DepEd</a>
-                    <a class="btn btn-link" href="">Pag Asa</a>
-                    <a class="btn btn-link" href="">City of San Pedro</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Newsletter</h3>
-                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                    <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid copyright">
+        <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
             <div class="container">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">

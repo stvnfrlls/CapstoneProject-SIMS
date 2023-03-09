@@ -96,12 +96,7 @@ if (!isset($_SESSION['AD_number'])) {
                             <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/createFetcher.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
-                        </a>
-                    </li>
+ 
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
@@ -111,7 +106,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/editgrades.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Finalization of Grades</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -213,10 +208,15 @@ if (!isset($_SESSION['AD_number'])) {
                                             <div class="btn-group">
                                                 <div>
                                                     <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
-                                                        <?php if (isset($_GET['GradeLevel'])) {
-                                                            echo "Grade " . $_GET['GradeLevel'];
+                                                        <?php
+                                                        if (isset($_GET['GradeLevel'])) {
+                                                            if ($_GET['GradeLevel'] == 'KINDER') {
+                                                                echo $_GET['GradeLevel'];
+                                                            } else {
+                                                                echo "Grade " . $_GET['GradeLevel'];
+                                                            }
                                                         } else {
-                                                            echo "Grade Level";
+                                                            echo "Grade";
                                                         }
                                                         ?>
                                                         <i class='fa fa-caret-down'></i>
@@ -227,7 +227,13 @@ if (!isset($_SESSION['AD_number'])) {
                                                         $gradelevelList = $mysqli->query("SELECT DISTINCT(S_yearLevel) FROM sections WHERE acadYear = '{$currentSchoolYear}'");
                                                         while ($gradelevel = $gradelevelList->fetch_assoc()) { ?>
                                                             <a class="dropdown-item" href="movingUp.php?GradeLevel=<?php echo $gradelevel['S_yearLevel'] ?>">
-                                                                <?php echo "Grade - " . $gradelevel['S_yearLevel']; ?>
+                                                                <?php
+                                                                if ($gradelevel['S_yearLevel'] == 'KINDER') {
+                                                                    echo $gradelevel['S_yearLevel'];
+                                                                } else {
+                                                                    echo "Grade " . $gradelevel['S_yearLevel'];
+                                                                }
+                                                                ?>
                                                             </a>
                                                         <?php } ?>
                                                     </div>
@@ -247,7 +253,6 @@ if (!isset($_SESSION['AD_number'])) {
                                                             <i class='fa fa-caret-down'></i>
                                                         </button>
                                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                            <a class="dropdown-item" href="movingUp.php?GradeLevel=<?php echo $_GET['GradeLevel'] ?>">ALL</a>
                                                             <?php
                                                             $sectionList = $mysqli->query("SELECT DISTINCT(S_name) FROM sections WHERE S_yearLevel = '{$_GET['GradeLevel']}' AND acadYear = '{$currentSchoolYear}'");
                                                             while ($section = $sectionList->fetch_assoc()) { ?>
@@ -264,7 +269,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                 <div class="col-lg-12 d-flex flex-column">
                                                     <div class="row flex-grow">
                                                         <div class="col-md-6 col-lg-12 grid-margin stretch-card">
-                                                            <div class="card bg-primary card-rounded">
+                                                            <div class="card card-rounded">
                                                                 <div class="table-responsive">
                                                                     <table class="table">
                                                                         <thead>
@@ -314,7 +319,13 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                             <input type="hidden" name="SR_number[]" value="<?php echo $studentInfo['SR_number'] ?>">
                                                                                         </td>
                                                                                         <td class="tablestyle">
-                                                                                            <?php echo "Grade " . $data['SR_grade'] . " - " . $data['SR_section'] ?>
+                                                                                            <?php
+                                                                                            if ($data['SR_grade'] == 'KINDER') {
+                                                                                                echo $data['SR_grade'] . " - " . $data['SR_section'];
+                                                                                            } else {
+                                                                                                echo "Grade " . $data['SR_grade'] . " - " . $data['SR_section'];
+                                                                                            }
+                                                                                            ?>
                                                                                             <input type="hidden" name="Grade[]" value="<?php echo $data['SR_grade'] ?>">
                                                                                             <input type="hidden" name="Section[]" value="<?php echo $data['SR_section'] ?>">
                                                                                         </td>
@@ -336,11 +347,11 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                             <?php
                                                                                             if ($getAvgGrade['finalgrade'] >= 75) { ?>
                                                                                                 <select class="form-select" name="studentStatus[]" aria-label="Default select example">
-                                                                                                <option value=""></option>
-                                                                                                <option value="Dropped">Dropped</option>
-                                                                                                <option value="MovingUp">Moving Up</option>
-                                                                                                <option value="Transferring">Transferring</option>
-                                                                                            </select>
+                                                                                                    <option value=""></option>
+                                                                                                    <option value="Dropped">Dropped</option>
+                                                                                                    <option value="MovingUp">Moving Up</option>
+                                                                                                    <option value="Transferring">Transferring</option>
+                                                                                                </select>
                                                                                             <?php
                                                                                             } else { ?>
                                                                                                 <select class="form-select" name="studentStatus" aria-label="Default select example" disabled>
@@ -365,7 +376,11 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                                         echo '<option value="">Graduation</option>';
                                                                                                     } else {
                                                                                                         while ($listSections = $sections->fetch_assoc()) {
-                                                                                                            echo '<option value="">Grade ' . $listSections['S_yearLevel'] . ' - ' . $listSections['S_name'] . '</option>';
+                                                                                                            if ($listSections['S_yearLevel'] == 'KINDER') {
+                                                                                                                echo '<option value="">Grade ' . $listSections['S_yearLevel'] . " - " . $listSections['S_name'] . '</option>';
+                                                                                                            } else {
+                                                                                                                echo '<option value="">Grade ' . $listSections['S_yearLevel'] . " - " . $listSections['S_name'] . '</option>';
+                                                                                                            }
                                                                                                         }
                                                                                                     }
                                                                                                     ?>
@@ -452,8 +467,9 @@ if (!isset($_SESSION['AD_number'])) {
                     Swal.fire({
                         title: 'Successfully changed!',
                         icon: 'success',
-                    })
-                    updateStatusForm.submit();
+                    }).then(() => {
+                        updateStatusForm.submit();
+                    });
                 }
             })
 

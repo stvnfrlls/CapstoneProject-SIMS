@@ -98,12 +98,7 @@ if (!isset($_SESSION['AD_number'])) {
                             <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/createFetcher.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
-                        </a>
-                    </li>
+ 
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
@@ -113,7 +108,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/editgrades.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Finalization of Grades</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -209,33 +204,51 @@ if (!isset($_SESSION['AD_number'])) {
                                 <section class="post-content-area" style="background-color: #f4f5f7;">
                                     <div class="container">
                                         <?php
-                                        while ($announcement = $announcementData->fetch_assoc()) { ?>
+                                        if (mysqli_num_rows($announcementData) > 0) {
+                                            while ($announcement = $announcementData->fetch_assoc()) { ?>
+                                                <div class="row col-lg-10" style="padding-top: 15px;">
+                                                    <div class="col-lg-10 posts-list" style="margin-left: auto;">
+                                                        <div class="single-post row">
+                                                            <div class="col-lg-3  col-md-3 meta-details">
+                                                                <div class="user-details row" style="margin-top: 40px;">
+                                                                    <p class="user-name col-lg-12 col-md-12 col-6"><span class="far fa-user" style="color: #c02628;"> </span><a> <?php echo $admin['AD_name'] ?></a> </p>
+                                                                    <p class="date col-lg-12 col-md-12 col-6"><span class="fa fa-calendar" style="color: #c02628;"> </span><a> <?php echo $announcement['date'] ?></a> </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-9">
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <div class="col-lg-12 col-md-9 ">
+                                                                            <a class="posts-title" href="../admin/viewAnnouncement.php?postID=<?php echo $announcement['ANC_ID'] ?>">
+                                                                                <h3><?php echo $announcement['header'] ?></h3>
+                                                                            </a>
+                                                                            <p class="excert">
+                                                                                <?php
+                                                                                if (empty($announcement['msg'])) {
+                                                                                    echo "No Description";
+                                                                                } else {
+                                                                                    echo $announcement['msg'];
+                                                                                }
+                                                                                ?>
+                                                                            </p>
+                                                                            <button type="button" onclick="location.href='../admin/viewAnnouncement.php?postID=<?php echo $announcement['ANC_ID'] ?>'" class=" btn btn-primary me-2" name="">View More</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <?php }
+                                        } else { ?>
                                             <div class="row col-lg-10" style="padding-top: 15px;">
                                                 <div class="col-lg-10 posts-list" style="margin-left: auto;">
                                                     <div class="single-post row">
-                                                        <div class="col-lg-3  col-md-3 meta-details">
-                                                            <div class="user-details row" style="margin-top: 40px;">
-                                                                <p class="user-name col-lg-12 col-md-12 col-6"><span class="far fa-user" style="color: #c02628;"> </span><a> <?php echo $admin['AD_name'] ?></a> </p>
-                                                                <p class="date col-lg-12 col-md-12 col-6"><span class="fa fa-calendar" style="color: #c02628;"> </span><a> <?php echo $announcement['date'] ?></a> </p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-9">
+                                                        <div class="col-lg-12">
                                                             <div class="card">
                                                                 <div class="card-body">
-                                                                    <div class="col-lg-12 col-md-9 ">
-                                                                        <a class="posts-title" href="../admin/viewAnnouncement.php?postID=<?php echo $announcement['ANC_ID'] ?>">
-                                                                            <h3><?php echo $announcement['header'] ?></h3>
-                                                                        </a>
-                                                                        <p class="excert">
-                                                                            <?php
-                                                                            if (empty($announcement['msg'])) {
-                                                                                echo "No Description";
-                                                                            } else {
-                                                                                echo $announcement['msg'];
-                                                                            }
-                                                                            ?>
-                                                                        </p>
-                                                                        <button type="button" onclick="location.href='../admin/viewAnnouncement.php?postID=<?php echo $announcement['ANC_ID'] ?>'" class=" btn btn-primary me-2" name="">View More</button>
+                                                                    <div class="col-lg-12 col-md-9 text-center">
+                                                                        <h3>NO ANNOUNCEMENT YET</h3>
                                                                     </div>
                                                                 </div>
                                                             </div>

@@ -92,12 +92,7 @@ if (!isset($_SESSION['AD_number'])) {
               <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="../admin/createFetcher.php">
-              <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
-            </a>
-          </li>
+
           <li class="nav-item">
             <a class="nav-link" href="../admin/student.php">
               <i class=""></i>
@@ -107,7 +102,7 @@ if (!isset($_SESSION['AD_number'])) {
           <li class="nav-item">
             <a class="nav-link" href="../admin/editgrades.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
+              <span class="menu-title" style="color: #b9b9b9;">Finalization of Grades</span>
             </a>
           </li>
           <li class="nav-item">
@@ -204,9 +199,9 @@ if (!isset($_SESSION['AD_number'])) {
                         <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
                           <?php
                           if (isset($_GET['SY'])) {
-                            echo "S.Y " . $_GET['SY'];
+                            echo "School Year: " . $_GET['SY'];
                           } else {
-                            echo "Academic Year";
+                            echo "School Year: " . $currentSchoolYear;
                           }
                           ?>
                           <i class="fa fa-caret-down"></i>
@@ -215,7 +210,9 @@ if (!isset($_SESSION['AD_number'])) {
                           <?php
                           $getstudentbyAcadYear = $mysqli->query("SELECT DISTINCT(acadYear) FROM classlist");
                           while ($byacadYear = $getstudentbyAcadYear->fetch_assoc()) {
-                            echo '<a class="dropdown-item" href="student.php?SY=' . $byacadYear['acadYear'] . '">' . $byacadYear['acadYear'] . '</a>';
+                            if ($byacadYear['acadYear'] != $currentSchoolYear) {
+                              echo '<a class="dropdown-item" href="student.php?SY=' . $byacadYear['acadYear'] . '">' . $byacadYear['acadYear'] . '</a>';
+                            }
                           }
                           ?>
                         </div>
@@ -224,10 +221,15 @@ if (!isset($_SESSION['AD_number'])) {
                     <div class="btn-group">
                       <div>
                         <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
-                          <?php if (isset($_GET['GradeLevel'])) {
-                            echo "Grade " . $_GET['GradeLevel'];
+                          <?php
+                          if (isset($_GET['GradeLevel'])) {
+                            if ($_GET['GradeLevel'] == 'KINDER') {
+                              echo $_GET['GradeLevel'];
+                            } else {
+                              echo "Grade " . $_GET['GradeLevel'];
+                            }
                           } else {
-                            echo "Grade Level";
+                            echo "Grade ";
                           }
                           ?>
                           <i class="fa fa-caret-down"></i>
@@ -240,11 +242,23 @@ if (!isset($_SESSION['AD_number'])) {
                           while ($sectionData = $runsectionList->fetch_assoc()) {
                             if (isset($_GET['SY'])) { ?>
                               <a class="dropdown-item" href="student.php?SY=<?php echo $_GET['SY'] ?>&GradeLevel=<?php echo $sectionData['S_yearLevel'] ?>">
-                                <?php echo "Grade - " . $sectionData['S_yearLevel']; ?>
+                                <?php
+                                if ($sectionData['S_yearLevel'] == 'KINDER') {
+                                  echo $sectionData['S_yearLevel'];
+                                } else {
+                                  echo "Grade " . $sectionData['S_yearLevel'];
+                                }
+                                ?>
                               </a>
                             <?php } else { ?>
                               <a class="dropdown-item" href="student.php?GradeLevel=<?php echo $sectionData['S_yearLevel'] ?>">
-                                <?php echo "Grade - " . $sectionData['S_yearLevel']; ?>
+                                <?php
+                                if ($sectionData['S_yearLevel'] == 'KINDER') {
+                                  echo $sectionData['S_yearLevel'];
+                                } else {
+                                  echo "Grade " . $sectionData['S_yearLevel'];
+                                }
+                                ?>
                               </a>
                             <?php }
                             ?>
@@ -297,7 +311,7 @@ if (!isset($_SESSION['AD_number'])) {
                       <div class="col-lg-12 d-flex flex-column">
                         <div class="row flex-grow">
                           <div class="col-12 grid-margin stretch-card">
-                            <div class="card bg-primary card-rounded">
+                            <div class="card card-rounded">
                               <div class="table-responsive">
                                 <table class="table">
                                   <thead>
@@ -340,7 +354,15 @@ if (!isset($_SESSION['AD_number'])) {
                                         <tr>
                                           <td class="tablestyle"><?php echo $rowCount ?></td>
                                           <td class="tablestyle"><?php echo $data['SR_number'] ?></td>
-                                          <td class="tablestyle"><?php echo "Grade " . $data['SR_grade'] . " - " . $data['SR_section'] . " (" . $data['acadYear'] . ")" ?></td>
+                                          <td class="tablestyle">
+                                            <?php
+                                            if ($data['SR_grade'] == 'KINDER') {
+                                              echo $data['SR_grade'] . " - " . $data['SR_section'] . " (" . $data['acadYear'] . ")";
+                                            } else {
+                                              echo "Grade " . $data['SR_grade'] . " - " . $data['SR_section'] . " (" . $data['acadYear'] . ")";
+                                            }
+                                            ?>
+                                          </td>
                                           <td class="tablestyle">
                                             <a href="viewStudent.php?SR_Number=<?php echo $data['SR_number'] ?>">
                                               <?php
@@ -381,31 +403,31 @@ if (!isset($_SESSION['AD_number'])) {
   </div>
   <!-- container-scroller -->
 
-    <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
-      <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-              &copy; <a href="#">Colegio De San Pedro</a>, All Right Reserved.
-            </div>
+  <!-- Footer Start -->
+  <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
+    <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+            &copy; <a href="#">Colegio De San Pedro</a>, All Right Reserved.
           </div>
         </div>
       </div>
     </div>
-    <!-- Footer End -->
+  </div>
+  <!-- Footer End -->
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+  <!-- Back to Top -->
+  <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
-    <!-- JavaScript Libraries -->
+  <!-- JavaScript Libraries -->
 
 
-    <!-- Template Javascript -->
-    <script src="../assets/js/main.js"></script>
+  <!-- Template Javascript -->
+  <script src="../assets/js/main.js"></script>
 
-    <script src="../assets/js/admin/vendor.bundle.base.js"></script>
-    <script src="../assets/js/admin/off-canvas.js"></script>
+  <script src="../assets/js/admin/vendor.bundle.base.js"></script>
+  <script src="../assets/js/admin/off-canvas.js"></script>
 </body>
 
 </html>

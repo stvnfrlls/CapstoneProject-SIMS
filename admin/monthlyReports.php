@@ -101,12 +101,7 @@ if (!isset($_SESSION['AD_number'])) {
               <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="../admin/createFetcher.php">
-              <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
-            </a>
-          </li>
+
           <li class="nav-item">
             <a class="nav-link" href="../admin/student.php">
               <i class=""></i>
@@ -116,7 +111,7 @@ if (!isset($_SESSION['AD_number'])) {
           <li class="nav-item">
             <a class="nav-link" href="../admin/editgrades.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
+              <span class="menu-title" style="color: #b9b9b9;">Finalization of Grades</span>
             </a>
           </li>
           <li class="nav-item">
@@ -428,9 +423,7 @@ if (!isset($_SESSION['AD_number'])) {
                                       <tr>
                                         <td colspan="6" class="tabledata">Select grade level and section first</td>
                                       </tr>
-                                    <?php }
-                                    ?>
-
+                                    <?php } ?>
                                   </tbody>
                                 </table>
                               </div>

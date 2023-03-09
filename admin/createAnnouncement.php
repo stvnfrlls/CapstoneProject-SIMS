@@ -100,12 +100,7 @@ if (!isset($_SESSION['AD_number'])) {
                             <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/createFetcher.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
-                        </a>
-                    </li>
+ 
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
@@ -115,7 +110,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/editgrades.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Finalization of Grades</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -212,7 +207,6 @@ if (!isset($_SESSION['AD_number'])) {
                                                 <div class="col-12 grid-margin">
                                                     <div class="card">
                                                         <div class="card-body">
-                                                            <h4 class="card-title">Create Reminders</h4>
                                                             <div class="row">
                                                                 <div class="row g-3">
                                                                     <div class="col-md-6">
@@ -225,8 +219,8 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <div class="form-floating">
-                                                                            <input type="email" class="form-control" name="date" value="<?php echo  date('m/d/Y') ?>" readonly>
-                                                                            <label for="email">Date of the Event</label>
+                                                                            <input type="date" class="form-control" value="<?php echo date('Y-m-d') ?>" readonly>
+                                                                            <label for="email">Date Posted</label>
                                                                         </div>
                                                                     </div>
 
@@ -238,13 +232,13 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     </div>
                                                                     <div class="col-6">
                                                                         <div class="form-floating">
-                                                                            <input type="date" class="form-control" name="date" value="<?php echo  date('M/d/Y') ?>">
+                                                                            <input type="date" class="form-control" name="date" required>
                                                                             <label for="email">Date of the Event</label>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-12">
                                                                         <div class="form-floating">
-                                                                            <textarea class="form-control" placeholder="Leave a message here" id="message" name="message" style="height: 250px"></textarea>
+                                                                            <textarea class="form-control" placeholder="Leave a message here" id="message" name="message" style="height: 250px" required></textarea>
                                                                             <label for="message">Description</label>
                                                                         </div>
                                                                     </div>
@@ -308,12 +302,11 @@ if (!isset($_SESSION['AD_number'])) {
 
         postButton.addEventListener('click', function(event) {
             Swal.fire({
-                title: 'Are you sure you want to create this announcement?',
+                title: 'Are you sure you want to proceed with this action?',
                 showCancelButton: true,
                 confirmButtonText: 'Yes',
                 cancelButtonText: `No`,
             }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     form.submit();
                 }

@@ -46,6 +46,9 @@ if (!isset($_SESSION['AD_number'])) {
     <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="../assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
 
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="../assets/css/sweetAlert.css" rel="stylesheet">
+
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
@@ -106,12 +109,7 @@ if (!isset($_SESSION['AD_number'])) {
                             <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/createFetcher.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
-                        </a>
-                    </li>
+ 
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
@@ -121,7 +119,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/editgrades.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Finalization of Grades</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -225,7 +223,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     <div class="col-sm-12">
                                                                         <div class="form-group">
                                                                             <div class="input-group col-xs-12">
-                                                                                <input type="file" class="form-control file-upload-info" placeholder="Upload Image">
+                                                                                <input type="file" class="form-control file-upload-info" name="image" placeholder="Upload Image" accept="image/*">
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -530,22 +528,21 @@ if (!isset($_SESSION['AD_number'])) {
         const updateInformation = document.getElementById('updateInformation');
         updateInformation.addEventListener('click', function() {
             Swal.fire({
-                title: 'Are you sure you want to save your changes?',
+                title: 'Are you sure you want to proceed with this action?',
                 showCancelButton: true,
                 confirmButtonText: 'Yes',
                 cancelButtonText: `No`,
             }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     Swal.fire({
-                        title: 'Successfully changed!',
+                        title: 'Form submitted!',
                         icon: 'success',
-                    })
-                    editstudentform.submit();
-                    window.location.href = '../admin/student.php';
+                    }).then(() => {
+                        editstudentform.submit();
+                        window.location.href = '../admin/student.php';
+                    });
                 }
             })
-
         })
     </script>
 </body>

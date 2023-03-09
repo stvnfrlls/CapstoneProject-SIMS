@@ -99,12 +99,7 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                             <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/createFetcher.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
-                        </a>
-                    </li>
+ 
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
@@ -114,7 +109,7 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/editgrades.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Finalization of Grades</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -211,11 +206,14 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                     </nav>
                                     <div class="border-bottom"></div>
                                 </div>
+                                <div style="text-align: right; margin-top: 20px">
+                                    <a href="../reports/ReportCard.php?ID=<?php echo  $studentData['SR_number'] ?>" class="btn btn-light" style=" text-align:center; font-size: 13px">Print <i class="fa fa-print" style="font-size: 12px;"></i></a>
+                                    <button class="btn btn-light" onclick="location.href='../admin/viewStudent.php'">Back</button>
+                                </div>
                                 <div class="tab-content tab-content-basic">
                                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                                         <div class="row">
                                             <div class="row">
-                                                <h2 class="text-uppercase text-center" style="padding-top: 40px;">Report Card</h2>
                                                 <div class="col m-3">
                                                     <table id="head" class="table" style="margin-bottom:20px;">
                                                         <tr>
@@ -223,8 +221,24 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                                             <td class="hatdog" style="text-align: left;">Student Number: <?php echo $studentData['SR_number']; ?></td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="hatdog" style="text-align: left;">Grade and Section: <?php echo $GradeSectionData['S_yearLevel'] . " - " . $GradeSectionData['S_name']; ?></td>
-                                                            <td class="hatdog" style="text-align: left;">Adviser: <?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1) ?></td>
+                                                            <td class="hatdog" style="text-align: left;">
+                                                                <?php
+                                                                if (isset($GradeSectionData['S_yearLevel']) && isset($GradeSectionData['S_name'])) {
+                                                                    echo "Grade and Section: " . $GradeSectionData['S_yearLevel'] . " - " . $GradeSectionData['S_name'];
+                                                                } else {
+                                                                    echo "Grade and Section: ";
+                                                                }
+                                                                ?>
+                                                            </td>
+                                                            <td class="hatdog" style="text-align: left;">
+                                                                <?php
+                                                                if (isset($FacultyData['F_lname'])) {
+                                                                    echo "Adviser: " . $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1);
+                                                                } else {
+                                                                    echo "Adviser: ";
+                                                                }
+                                                                ?>
+                                                            </td>
                                                         </tr>
                                                     </table>
                                                     <div class="">
@@ -287,12 +301,27 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                                                                 <td class="hatdog">Passed</td>
                                                                             </tr>
                                                                         <?php }
-                                                                    } else { ?>
-                                                                        <tr>
-                                                                            <td colspan="10">No Grades Encoded yet for School Year <?php echo $currentSchoolYear ?></td>
-                                                                        </tr>
+                                                                    } else {
+                                                                        if ($GradeSectionData['S_yearLevel'] == "KINDER") {
+                                                                            $yearLevel = 0;
+                                                                        } else {
+                                                                            $yearLevel = $GradeSectionData['S_yearLevel'];
+                                                                        }
+                                                                        $getLearningAreas = $mysqli->query("SELECT * FROM subjectperyear WHERE minYearLevel <= '{$yearLevel}' AND maxYearLevel >= '{$yearLevel}'");
+                                                                        while ($LearningAreas = $getLearningAreas->fetch_assoc()) { ?>
+                                                                            <tr>
+                                                                                <td class="hatdog"><?php echo $LearningAreas['subjectName'] ?></td>
+                                                                                <td class="hatdog"></td>
+                                                                                <td class="hatdog"></td>
+                                                                                <td class="hatdog"></td>
+                                                                                <td class="hatdog"></td>
+                                                                                <td class="hatdog"></td>
+                                                                                <td class="hatdog"></td>
+                                                                            </tr>
+                                                                        <?php
+                                                                        }
+                                                                        ?>
                                                                     <?php }
-
                                                                     ?>
                                                                 </tbody>
                                                             </table>
@@ -399,8 +428,30 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                                                                 <td rowspan="1" class="hatdog"><?php echo $BehaviorData['CV_valueQ4']; ?>
                                                                                 </td>
                                                                             </tr>
-                                                                    <?php $i++;
+                                                                        <?php $i++;
                                                                         }
+                                                                    } else {
+                                                                        $getBehaviorLabels = $mysqli->query("SELECT * FROM behavior_category");
+                                                                        $i = 0;
+                                                                        while ($BehaviorLabel = $getBehaviorLabels->fetch_assoc()) { ?>
+                                                                            <tr>
+                                                                                <?php
+                                                                                if ($i % 2 == 0) { ?>
+                                                                                    <td rowspan="2" class="hatdog">
+                                                                                        <?php echo preg_replace('/[0-9]/', '', $BehaviorLabel['core_value_area']); ?>
+                                                                                    </td>
+                                                                                <?php } ?>
+                                                                                <td class="hatdog"><?php echo $BehaviorLabel['core_value_subheading'] ?></td>
+                                                                                <td class="hatdog"></td>
+                                                                                <td class="hatdog"></td>
+                                                                                <td class="hatdog"></td>
+                                                                                <td class="hatdog"></td>
+                                                                            </tr>
+                                                                        <?php
+                                                                            $i++;
+                                                                        }
+                                                                        ?>
+                                                                    <?php
                                                                     }
                                                                     ?>
                                                                 </tbody>
@@ -430,19 +481,126 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                                             </div>
                                                         </div>
                                                     </div>
+
+                                                    <div class="">
+                                                        <div class="table-responsive">
+                                                            <table class="table text-center">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="hatdog" style="border-color: #FFFFFF;"></th>
+                                                                        <th class="hatdog" style="border-color: #FFFFFF;">SEP</th>
+                                                                        <th class="hatdog" style="border-color: #FFFFFF;">OCT</th>
+                                                                        <th class="hatdog" style="border-color: #FFFFFF;">NOV</th>
+                                                                        <th class="hatdog" style="border-color: #FFFFFF;">DEC</th>
+                                                                        <th class="hatdog" style="border-color: #FFFFFF;">JAN</th>
+                                                                        <th class="hatdog" style="border-color: #FFFFFF;">FEB</th>
+                                                                        <th class="hatdog" style="border-color: #FFFFFF;">MAR</th>
+                                                                        <th class="hatdog" style="border-color: #FFFFFF;">APR</th>
+                                                                        <th class="hatdog" style="border-color: #FFFFFF;">MAY</th>
+                                                                        <th class="hatdog" style="border-color: #FFFFFF;">JUN</th>
+                                                                        <th class="hatdog" style="border-color: #FFFFFF;">TOTAL</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="hatdog">No. of School Days</td>
+                                                                        <td class="hatdog">22</td>
+                                                                        <td class="hatdog">26</td>
+                                                                        <td class="hatdog">23</td>
+                                                                        <td class="hatdog">16</td>
+                                                                        <td class="hatdog">15</td>
+                                                                        <td class="hatdog">22</td>
+                                                                        <td class="hatdog">27</td>
+                                                                        <td class="hatdog">22</td>
+                                                                        <td class="hatdog">24</td>
+                                                                        <td class="hatdog">26</td>
+                                                                        <td class="hatdog">223</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="hatdog">No. of Days Present</td>
+                                                                        <?php
+                                                                        $SEP = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['SR_Number']}' AND MONTHNAME(A_date) = 'September' AND acadYear = '{$currentSchoolYear}'");
+                                                                        $SEPvalue = $SEP->fetch_assoc();
+                                                                        echo '<td class="hatdog">' . $SEPvalue['COUNT(A_time_IN)'] . '</td>';
+                                                                        $OCT = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['SR_Number']}' AND MONTHNAME(A_date) = 'October' AND acadYear = '{$currentSchoolYear}'");
+                                                                        $OCTvalue = $OCT->fetch_assoc();
+                                                                        echo '<td class="hatdog">' . $OCTvalue['COUNT(A_time_IN)'] . '</td>';
+                                                                        $NOV = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['SR_Number']}' AND MONTHNAME(A_date) = 'November' AND acadYear = '{$currentSchoolYear}'");
+                                                                        $NOVvalue = $NOV->fetch_assoc();
+                                                                        echo '<td class="hatdog">' . $NOVvalue['COUNT(A_time_IN)'] . '</td>';
+                                                                        $DEC = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['SR_Number']}' AND MONTHNAME(A_date) = 'December' AND acadYear = '{$currentSchoolYear}'");
+                                                                        $DECvalue = $DEC->fetch_assoc();
+                                                                        echo '<td class="hatdog">' . $DECvalue['COUNT(A_time_IN)'] . '</td>';
+                                                                        $JAN = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['SR_Number']}' AND MONTHNAME(A_date) = 'January' AND acadYear = '{$currentSchoolYear}'");
+                                                                        $JANvalue = $JAN->fetch_assoc();
+                                                                        echo '<td class="hatdog">' . $JANvalue['COUNT(A_time_IN)'] . '</td>';
+                                                                        $FEB = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['SR_Number']}' AND MONTHNAME(A_date) = 'February' AND acadYear = '{$currentSchoolYear}'");
+                                                                        $FEBvalue = $FEB->fetch_assoc();
+                                                                        echo '<td class="hatdog">' . $FEBvalue['COUNT(A_time_IN)'] . '</td>';
+                                                                        $MAR = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['SR_Number']}' AND MONTHNAME(A_date) = 'March' AND acadYear = '{$currentSchoolYear}'");
+                                                                        $MARvalue = $MAR->fetch_assoc();
+                                                                        echo '<td class="hatdog">' . $MARvalue['COUNT(A_time_IN)'] . '</td>';
+                                                                        $APR = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['SR_Number']}' AND MONTHNAME(A_date) = 'April' AND acadYear = '{$currentSchoolYear}'");
+                                                                        $APRvalue = $APR->fetch_assoc();
+                                                                        echo '<td class="hatdog">' . $APRvalue['COUNT(A_time_IN)'] . '</td>';
+                                                                        $MAY = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['SR_Number']}' AND MONTHNAME(A_date) = 'May' AND acadYear = '{$currentSchoolYear}'");
+                                                                        $MAYvalue = $MAY->fetch_assoc();
+                                                                        echo '<td class="hatdog">' . $MAYvalue['COUNT(A_time_IN)'] . '</td>';
+                                                                        $JUN = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['SR_Number']}' AND MONTHNAME(A_date) = 'June' AND acadYear = '{$currentSchoolYear}'");
+                                                                        $JUNvalue = $JUN->fetch_assoc();
+                                                                        echo '<td class="hatdog">' . $JUNvalue['COUNT(A_time_IN)'] . '</td>';
+                                                                        $TOTAL = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['SR_Number']}' AND acadYear = '{$currentSchoolYear}'");
+                                                                        $TOTALvalue = $TOTAL->fetch_assoc();
+                                                                        echo '<td class="hatdog">' . $TOTALvalue['COUNT(A_time_IN)'] . '</td>';
+                                                                        ?>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="hatdog">No. of Days Absent</td>
+                                                                        <?php
+                                                                        $SEP = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['SR_Number']}' AND MONTHNAME(A_date) = 'September' AND A_status = 'ABSENT'");
+                                                                        $SEPvalue = $SEP->fetch_assoc();
+                                                                        echo '<td class="hatdog">' . $SEPvalue['COUNT(A_time_IN)'] . '</td>';
+                                                                        $OCT = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['SR_Number']}' AND MONTHNAME(A_date) = 'October' AND A_status = 'ABSENT'");
+                                                                        $OCTvalue = $OCT->fetch_assoc();
+                                                                        echo '<td class="hatdog">' . $OCTvalue['COUNT(A_time_IN)'] . '</td>';
+                                                                        $NOV = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['SR_Number']}' AND MONTHNAME(A_date) = 'November' AND A_status = 'ABSENT'");
+                                                                        $NOVvalue = $NOV->fetch_assoc();
+                                                                        echo '<td class="hatdog">' . $NOVvalue['COUNT(A_time_IN)'] . '</td>';
+                                                                        $DEC = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['SR_Number']}' AND MONTHNAME(A_date) = 'December' AND A_status = 'ABSENT'");
+                                                                        $DECvalue = $DEC->fetch_assoc();
+                                                                        echo '<td class="hatdog">' . $DECvalue['COUNT(A_time_IN)'] . '</td>';
+                                                                        $JAN = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['SR_Number']}' AND MONTHNAME(A_date) = 'January' AND A_status = 'ABSENT'");
+                                                                        $JANvalue = $JAN->fetch_assoc();
+                                                                        echo '<td class="hatdog">' . $JANvalue['COUNT(A_time_IN)'] . '</td>';
+                                                                        $FEB = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['SR_Number']}' AND MONTHNAME(A_date) = 'February' AND A_status = 'ABSENT'");
+                                                                        $FEBvalue = $FEB->fetch_assoc();
+                                                                        echo '<td class="hatdog">' . $FEBvalue['COUNT(A_time_IN)'] . '</td>';
+                                                                        $MAR = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['SR_Number']}' AND MONTHNAME(A_date) = 'March' AND A_status = 'ABSENT'");
+                                                                        $MARvalue = $MAR->fetch_assoc();
+                                                                        echo '<td class="hatdog">' . $MARvalue['COUNT(A_time_IN)'] . '</td>';
+                                                                        $APR = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['SR_Number']}' AND MONTHNAME(A_date) = 'April' AND A_status = 'ABSENT'");
+                                                                        $APRvalue = $APR->fetch_assoc();
+                                                                        echo '<td class="hatdog">' . $APRvalue['COUNT(A_time_IN)'] . '</td>';
+                                                                        $MAY = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['SR_Number']}' AND MONTHNAME(A_date) = 'May' AND A_status = 'ABSENT'");
+                                                                        $MAYvalue = $MAY->fetch_assoc();
+                                                                        echo '<td class="hatdog">' . $MAYvalue['COUNT(A_time_IN)'] . '</td>';
+                                                                        $JUN = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['SR_Number']}' AND MONTHNAME(A_date) = 'June' AND A_status = 'ABSENT'");
+                                                                        $JUNvalue = $JUN->fetch_assoc();
+                                                                        echo '<td class="hatdog">' . $JUNvalue['COUNT(A_time_IN)'] . '</td>';
+                                                                        $TOTALLATE = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['SR_Number']}' AND A_status = 'ABSENT' ");
+                                                                        $TOTALLATEvalue = $TOTALLATE->fetch_assoc();
+                                                                        echo '<td class="hatdog">' . $TOTALLATEvalue['COUNT(A_time_IN)'] . '</td>';
+                                                                        ?>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div style="text-align: center;">
-                                <?php
-                                if (mysqli_num_rows($studentGrades) > 0) { ?>
-                                    <a href="../reports/ReportCard.php?ID=<?php echo $_GET['SR_Number'] ?>" class="btn btn-primary me-2">Print</a>
-                                <?php }
-                                ?>
-                                <button class="btn btn-light">Back</button>
                             </div>
                         </div>
                     </div>

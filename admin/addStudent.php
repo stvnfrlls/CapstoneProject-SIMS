@@ -126,12 +126,7 @@ if (!isset($_SESSION['AD_number'])) {
                             <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/createFetcher.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
-                        </a>
-                    </li>
+ 
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
@@ -141,7 +136,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/editgrades.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Finalization of Grades</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -226,7 +221,7 @@ if (!isset($_SESSION['AD_number'])) {
                 <div class="content-wrapper">
                     <div class="row">
                         <div class="col-sm-12">
-                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="confirmStudent">
+                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="confirmStudent" enctype="multipart/form-data">
                                 <div class="home-tab">
                                     <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                                         <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
@@ -241,12 +236,20 @@ if (!isset($_SESSION['AD_number'])) {
                                                         <div class="card-body">
                                                             <div class="row" style="padding-bottom: 15px;">
                                                                 <h4 class="card-title">Personal Information</h4>
-                                                                <div class="col-md-12">
-                                                                    <label class="col-sm-12 col-form-label">Profile Picture</label>
-                                                                    <div class="col-sm-12">
+                                                                <div class="row">
+                                                                    <div class="col-sm-6">
+                                                                        <label class="col-sm-6 col-form-label">Learners Reference Number <span style="color: red;">*</span></label>
                                                                         <div class="form-group">
                                                                             <div class="input-group col-xs-12">
-                                                                                <input type="file" class="form-control file-upload-info" placeholder="Upload Image">
+                                                                                <input type="number" maxlength="12" class="form-control" id="LRN" name="LRN" required>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <label class="col-sm-6 col-form-label">Profile Picture</label>
+                                                                        <div class="form-group">
+                                                                            <div class="input-group col-xs-12">
+                                                                                <input type="file" class="form-control file-upload-info" name="image" placeholder="Upload Image" accept="image/*">
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -281,18 +284,19 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 </div>
 
                                                                 <div class="row" style="padding-bottom: 15px;">
-                                                                    <div class="col-md-1">
-                                                                        <label label class="col-sm-12 col-form-label">Age <span style="color: red;">*</span></label>
-                                                                        <div class="col-sm-12">
-                                                                            <input type="number" class="form-control" name="S_age" required>
-                                                                        </div>
-                                                                    </div>
                                                                     <div class="col-md-4">
                                                                         <label label class="col-sm-12 col-form-label">Birthdate <span style="color: red;">*</span></label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="date" class="form-control" name="S_birthday" required>
+                                                                            <input type="date" class="form-control" name="S_birthday" id="S_birthday" required onchange="calculateAge()">
                                                                         </div>
                                                                     </div>
+                                                                    <div class="col-md-1">
+                                                                        <label label class="col-sm-12 col-form-label">Age <span style="color: red;">*</span></label>
+                                                                        <div class="col-sm-12">
+                                                                            <input type="number" class="form-control" maxlength="2" name="S_age" id="S_age" required readonly>
+                                                                        </div>
+                                                                    </div>
+
                                                                     <div class="col-md-4">
                                                                         <label label class="col-sm-12 col-form-label">Birthplace <span style="color: red;">*</span></label>
                                                                         <div class="col-sm-12">
@@ -306,7 +310,6 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                 <option selected></option>
                                                                                 <option value="Male">Male</option>
                                                                                 <option value="Female">Female</option>
-                                                                                <option value="NA">Prefer not to say</option>
                                                                             </select>
                                                                         </div>
                                                                     </div>
@@ -355,9 +358,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     <div class="col-md-4">
                                                                         <label label class="col-sm-12 col-form-label">State <span style="color: red;">*</span></label>
                                                                         <div class="col-sm-12">
-                                                                            <select id="province" class="form-select" name="S_state" required>
-                                                                                <option selected></option>
-                                                                            </select>
+                                                                            <input type="text" class="form-control" id="state" name="S_state" required readonly>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-4">
@@ -423,7 +424,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                             <div class="col-md-3">
                                                                 <label label class="col-sm-12 col-form-label">Barangay <span style="color: red;">*</span></label>
                                                                 <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" name="G_barangay" required>
+                                                                    <input type="text" class="form-control" id="G_barangay" name="G_barangay" required>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
@@ -440,9 +441,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                             <div class="col-md-4">
                                                                 <label label class="col-sm-12 col-form-label">State <span style="color: red;">*</span></label>
                                                                 <div class="col-sm-12">
-                                                                    <select id="G_state" class="form-select" name="G_state" required>
-                                                                        <option selected></option>
-                                                                    </select>
+                                                                    <input type="text" class="form-control" id="G_state" name="G_state" required readonly>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4">
@@ -467,105 +466,15 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <label label class="col-sm-12 col-form-label">Telephone Number <span style="color: red;">*</span></label>
+                                                                <label label class="col-sm-12 col-form-label">Telephone Number</label>
                                                                 <div class="col-sm-12">
-                                                                    <input type="number" class="form-control" name="G_telephone" required>
+                                                                    <input type="number" class="form-control" name="G_telephone">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label label class="col-sm-12 col-form-label">Contact Number <span style="color: red;">*</span></label>
                                                                 <div class="col-sm-12">
-                                                                    <input type="number" class="form-control" name="G_contact" required>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-
-                                                        <div class="row" style="padding-bottom: 15px;">
-                                                            <div class="col-md-2">
-                                                                <div class="col-sm-12">
-                                                                    <label class="form-check-label" for="option1">
-                                                                        <input type="checkbox" class="form-check-input" id="option1" name="Fetcher" onclick="handleCheckboxClick(this)">
-                                                                        With Fetcher
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <div class="col-sm-12">
-                                                                    <label class="form-check-label" for="option2">
-                                                                        <input type="checkbox" class="form-check-input" id="option2" name="NoFetcher" onclick="handleCheckboxClick(this)">
-                                                                        Without Fetcher
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div id="additionalInputs" style="display: none;">
-                                                            <?php
-                                                            $FetcherData_Array = array();
-                                                            $getFetcherList = $mysqli->query("SELECT * FROM fetcher_data");
-                                                            while ($FetcherData = $getFetcherList->fetch_assoc()) {
-                                                                $FetcherData_Array[] = $FetcherData;
-                                                            }
-                                                            $i = 0;
-                                                            ?>
-                                                            <div class="row" style="padding-bottom: 15px;">
-                                                                <div class="col-md-4">
-                                                                    <label label class="col-sm-12 col-form-label">Fetcher Name </span></label>
-                                                                    <div class="col-sm-12">
-                                                                        <select id="" class="form-select" name="FTH_option1" required>
-                                                                            <option selected></option>
-                                                                            <?php
-                                                                            $FTH_option1 = 0;
-                                                                            if (sizeof($FetcherData_Array) > 0) {
-                                                                                while ($FTH_option1 != sizeof($FetcherData_Array)) { ?>
-                                                                                    <option value="<?php echo $FetcherData_Array[$FTH_option1]['FTH_number'] ?>"><?php echo $FetcherData_Array[$FTH_option1]['FTH_name'] ?></option>
-                                                                                <?php $FTH_option1++;
-                                                                                }
-                                                                            } else { ?>
-                                                                                <option>No available fetchers yet</option>
-                                                                            <?php }
-                                                                            ?>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <label label class="col-sm-12 col-form-label">Fetcher Name</span></label>
-                                                                    <div class="col-sm-12">
-                                                                        <select id="" class="form-select" name="FTH_option2" required>
-                                                                            <option selected></option>
-                                                                            <?php
-                                                                            $FTH_option2 = 0;
-                                                                            if (sizeof($FetcherData_Array) > 0) {
-                                                                                while ($FTH_option2 != sizeof($FetcherData_Array)) { ?>
-                                                                                    <option value="<?php echo $FetcherData_Array[$FTH_option2]['FTH_number'] ?>"><?php echo $FetcherData_Array[$FTH_option2]['FTH_name'] ?></option>
-                                                                                <?php $FTH_option2++;
-                                                                                }
-                                                                            } else { ?>
-                                                                                <option>No available fetchers yet</option>
-                                                                            <?php }
-                                                                            ?>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <label label class="col-sm-12 col-form-label">Fetcher Name</span></label>
-                                                                    <div class="col-sm-12">
-                                                                        <select id="" class="form-select" name="FTH_option3" required>
-                                                                            <option selected></option>
-                                                                            <?php
-                                                                            $FTH_option3 = 0;
-                                                                            if (sizeof($FetcherData_Array) > 0) {
-                                                                                while ($FTH_option3 != sizeof($FetcherData_Array)) { ?>
-                                                                                    <option value="<?php echo $FetcherData_Array[$FTH_option3]['FTH_number'] ?>"><?php echo $FetcherData_Array[$FTH_option3]['FTH_name'] ?></option>
-                                                                                <?php $FTH_option3++;
-                                                                                }
-                                                                            } else { ?>
-                                                                                <option>No available fetchers yet</option>
-                                                                            <?php }
-                                                                            ?>
-                                                                        </select>
-                                                                    </div>
+                                                                    <input type="text" class="form-control" name="G_contact" id="phone" required>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -578,35 +487,39 @@ if (!isset($_SESSION['AD_number'])) {
                                             <div class="col-lg-8 col-sm-12 grid-margin" style="margin: auto;">
                                                 <div class="card">
                                                     <div class="card-body">
+                                                        <?php
+                                                        $GradeSection_Array = array();
+                                                        $getGradesSection = $mysqli->query("SELECT DISTINCT S_yearLevel, S_name FROM sections WHERE acadYear = '{$currentSchoolYear}'");
+                                                        while ($GradeSection = $getGradesSection->fetch_assoc()) {
+                                                            $GradeSection_Array[] = $GradeSection;
+                                                        }
+                                                        $GradeLevel_only = array();
+                                                        $getGradeLevel_only = $mysqli->query("SELECT DISTINCT S_yearLevel FROM sections WHERE acadYear = '{$currentSchoolYear}'");
+                                                        while ($GradeLevel_Data = $getGradeLevel_only->fetch_assoc()) {
+                                                            $GradeLevel_only[] = $GradeLevel_Data;
+                                                        }
+
+                                                        $gradesection_toJS = json_encode($GradeSection_Array);
+                                                        $GradeLevel_only_toJS = json_encode($GradeLevel_only);
+
+                                                        echo "<script>var GradeLevel_only = " . $GradeLevel_only_toJS . ";</script>";
+                                                        echo "<script>var gradeSection = " . $gradesection_toJS . ";</script>";
+                                                        ?>
                                                         <h4 class="card-title">Class Information</h4>
                                                         <div class="row" style="padding-bottom: 15px;">
                                                             <div class="col-md-6">
                                                                 <label class="col-sm-12 col-form-label">Grade Level <span style="color: red;">*</span></label>
                                                                 <div class="col-sm-12">
-                                                                    <select class="form-select" id="gradelevel" name="S_gradelevel" required>
+                                                                    <select class="form-select" id="grade" name="S_gradelevel" required>
                                                                         <option selected></option>
-                                                                        <option value="KINDER">KINDER</option>
-                                                                        <option value="1">1</option>
-                                                                        <option value="2">2</option>
-                                                                        <option value="3">3</option>
-                                                                        <option value="4">4</option>
-                                                                        <option value="5">5</option>
-                                                                        <option value="6">6</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <label label class="col-sm-12 col-form-label">Section <span style="color: red;">*</span></label>
                                                                 <div class="col-sm-12">
-                                                                    <select class="form-select" id="SectionName" name="S_section" required>
+                                                                    <select class="form-select" id="section" name="S_section" required>
                                                                         <option selected></option>
-                                                                        <?php
-                                                                        $sectionData = $mysqli->query("SELECT * FROM sections");
-
-                                                                        while ($sections = $sectionData->fetch_assoc()) {
-                                                                            echo '<option value=' . $sections['S_name'] . '>' . $sections['S_yearLevel'] . ' - ' . $sections['S_name'] . '</option>';
-                                                                        }
-                                                                        ?>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -652,9 +565,107 @@ if (!isset($_SESSION['AD_number'])) {
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
     <!-- JavaScript Libraries -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/admin/vendor.bundle.base.js"></script>
+    <script src="../assets/js/admin/off-canvas.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            //called when key is pressed in textbox
+            $("#LRN").keypress(function(e) {
+
+                var maxlengthNumber = parseInt($('#LRN').attr('maxlength'));
+                var inputValueLength = $('#LRN').val().length + 1;
+                if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+
+                    return false;
+                }
+                if (maxlengthNumber < inputValueLength) {
+                    return false;
+                }
+            });
+        });
+        $(document).ready(function() {
+            //called when key is pressed in textbox
+            $("#S_age").keypress(function(e) {
+
+                var maxlengthNumber = parseInt($('#S_age').attr('maxlength'));
+                var inputValueLength = $('#S_age').val().length + 1;
+                if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+
+                    return false;
+                }
+                if (maxlengthNumber < inputValueLength) {
+                    return false;
+                }
+            });
+        });
+    </script>
+    <script>
+        function calculateAge() {
+            const S_birthday = document.getElementById("S_birthday").value;
+            const today = new Date();
+            const birthDate = new Date(S_birthday);
+
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+
+            document.getElementById("S_age").value = age;
+        }
+        const phoneInput = document.getElementById('phone');
+        phoneInput.maxLength = 15;
+
+        phoneInput.addEventListener('input', function(e) {
+            // Get the current input value and remove all non-numeric characters
+            const input = e.target.value.replace(/\D/g, '');
+
+            // Format the input value as a phone number
+            const match = input.match(/^(\d{0,4})(\d{0,3})(\d{0,4})$/);
+            let formatted = '';
+            if (match) {
+                formatted = `(${match[1]})`;
+                if (match[2]) formatted += ` ${match[2]}`;
+                if (match[3]) formatted += `-${match[3]}`;
+            }
+
+            // Update the input field with the formatted value
+            e.target.value = formatted;
+
+            if (input.length >= 15) {
+                e.target.value = formatted.slice(0, 15);
+            }
+        });
+
+        const grade = document.getElementById('grade');
+        const section = document.getElementById('section');
+        for (let i = 0; i < GradeLevel_only.length; i++) {
+            const option = document.createElement('option');
+            option.value = GradeLevel_only[i].S_yearLevel;
+            option.text = GradeLevel_only[i].S_yearLevel;
+            grade.add(option);
+        }
+
+        grade.addEventListener("change", function() {
+            const gradeValue = this.value;
+            const filteredData = gradeSection.filter(function(item) {
+                return item.S_yearLevel === gradeValue;
+            });
+            section.innerHTML = "";
+            filteredData.forEach(function(item) {
+                const option = document.createElement("option");
+                option.value = item.S_name;
+                option.text = item.S_name;
+                section.add(option);
+            });
+        });
+    </script>
     <script>
         const city = document.getElementById('city');
-        const province = document.getElementById('province');
+        const state = document.getElementById('state');
         const postal = document.getElementById('postal');
 
         for (let i = 0; i < cityprov.length; i++) {
@@ -666,20 +677,16 @@ if (!isset($_SESSION['AD_number'])) {
 
         city.addEventListener("change", function() {
             const cityValue = this.value;
-            const findCity = cityprov.find(function(element) {
+            const findcity = cityprov.find(function(element) {
                 return element.city == cityValue;
             });
-            const option = document.createElement("option");
-            option.value = findCity.province;
-            option.text = findCity.province;
-            province.replaceChildren(option);
-
-            postal.value = findCity.zip_code;
+            state.value = findcity.state;
+            postal.value = findcity.zip_code;
         });
     </script>
     <script>
         const g_city = document.getElementById('G_city');
-        const g_province = document.getElementById('G_state');
+        const g_state = document.getElementById('G_state');
         const g_postal = document.getElementById('G_postal');
 
         for (let i = 0; i < g_cityprov.length; i++) {
@@ -690,25 +697,16 @@ if (!isset($_SESSION['AD_number'])) {
         }
 
         g_city.addEventListener("change", function() {
-            const g_cityValue = this.value;
+            const g_CityValue = this.value;
             const g_findCity = g_cityprov.find(function(element) {
-                return element.city == g_cityValue;
+                return element.city == g_CityValue;
             });
-            const option1 = document.createElement("option");
-            option1.value = g_findCity.province;
-            option1.text = g_findCity.province;
-            g_province.replaceChildren(option1);
-
+            g_state.value = g_findCity.state;
             g_postal.value = g_findCity.zip_code;
         });
     </script>
 
     <!-- Template Javascript -->
-    <script src="../assets/js/main.js"></script>
-
-    <script src="../assets/js/admin/vendor.bundle.base.js"></script>
-    <script src="../assets/js/admin/off-canvas.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
     <script>
         const confirmStudent = document.getElementById('confirmStudent');
         const regStudent = document.getElementById('regStudent');
@@ -719,38 +717,25 @@ if (!isset($_SESSION['AD_number'])) {
                 confirmButtonText: 'Yes',
                 cancelButtonText: `No`,
             }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                    Swal.fire({
-                        title: 'The student has been registered successfully!',
-                        icon: 'success',
-                    }).then(() => {
-                        // Add your function here
-                        confirmStudent.submit();
-                    });
+                    confirmStudent.submit();
                 }
-            })
-
-        })
+            });
+        });
     </script>
 
     <script>
         function handleCheckboxClick(clickedCheckbox) {
             const option1Checkbox = document.getElementById('option1');
             const option2Checkbox = document.getElementById('option2');
-            const additionalInputs = document.getElementById('additionalInputs');
 
             if (clickedCheckbox === option1Checkbox) {
                 if (clickedCheckbox.checked) {
-                    additionalInputs.style.display = 'block';
                     option2Checkbox.checked = false;
-                } else {
-                    additionalInputs.style.display = 'none';
                 }
             } else if (clickedCheckbox === option2Checkbox) {
                 if (clickedCheckbox.checked) {
                     option1Checkbox.checked = false;
-                    additionalInputs.style.display = 'none';
                 }
             }
         }

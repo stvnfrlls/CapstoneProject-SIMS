@@ -109,12 +109,6 @@ if (empty($_SESSION['F_number'])) {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../faculty/createReminder.php">
-                            <i class=""></i>
-                            <span class="menu-title">Create Reminders</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="../faculty/reminders.php">
                             <i class=""></i>
                             <span class="menu-title">Reminders</span>
@@ -131,7 +125,7 @@ if (empty($_SESSION['F_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../faculty/advisoryPage.php">
                             <i class=""></i>
-                            <span class="menu-title">Advisory</span>
+                            <span class="menu-title">Advisory Class</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -178,20 +172,24 @@ if (empty($_SESSION['F_number'])) {
                                             <h2 class="fw-bold text-primary text-uppercase">STUDENT PROFILE</h2>
                                         </div>
                                     </div>
-                                    <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
-                                        <nav class="nav">
-                                            <a class="nav-link active ms-0" href="viewStudent.php?ID=<?php echo $_GET['ID'] ?>" style="color: #c02628;">Profile</a>
-                                            <a class="nav-link" href="viewCard.php?ID=<?php echo $_GET['ID'] ?>">Grades</a>
-                                        </nav>
-                                        <div class="border-bottom"></div>
-                                    </div>
+                                    <?php
+                                    $CheckPermission = $mysqli->query("SELECT * FROM sections WHERE S_adviser = '{$SectionData['S_adviser']}'");
+                                    if (mysqli_num_rows($CheckPermission) == 1) { ?>
+                                        <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
+                                            <nav class="nav">
+                                                <a class="nav-link active ms-0" href="viewStudent.php?ID=<?php echo $_GET['ID'] ?>" style="color: #c02628;">Profile</a>
+                                                <a class="nav-link" href="viewCard.php?ID=<?php echo $_GET['ID'] ?>">Grades</a>
+                                            </nav>
+                                            <div class="border-bottom"></div>
+                                        </div>
+                                    <?php
+                                    }
+                                    ?>
                                     <div style="text-align:right; margin-top: 15px;">
                                         <div class="col-12">
                                             <?php
                                             $value = $_GET['ID'];
                                             $index = array_search($value, $studentLink);
-                                            $previous = null;
-                                            $next = null;
 
                                             if ($index !== false) {
                                                 if ($index > 0) {
@@ -209,22 +207,20 @@ if (empty($_SESSION['F_number'])) {
                                     <div class="tab-content tab-content-basic">
                                         <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                                             <div class="row">
-                                                <div class="col-lg-3 col-sm-12 grid-margin">
-                                                    <div class="card">
+                                                <div class="col-lg-3 col-sm-12">
+                                                    <div class="card" style="margin-bottom: 15px;">
                                                         <div class="card-body">
                                                             <h4 class="card-title">Profile</h4>
                                                             <form class="form-sample">
                                                                 <div class="row" style="padding-bottom: 15px;">
                                                                     <div class="col-md-6 col-sm-6 col-lg-12" style="text-align: center; margin-bottom: 20px; margin-top: 10px;">
-                                                                        <img src="../assets/img/profile.jpg" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                                                                        <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
                                                                     </div>
                                                                 </div>
                                                             </form>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-lg-3 col-sm-12 grid-margin">
-                                                    <div class="card" style="height: 280px;" text-align: center;>
+                                                    <div class="card" style="height: 280px; margin-bottom: 15px;">
                                                         <div class="card-body">
                                                             <h4 class="card-title">QR Code</h4>
                                                             <form class="form-sample">
@@ -236,9 +232,7 @@ if (empty($_SESSION['F_number'])) {
                                                             </form>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-lg-6 col-sm-12 grid-margin">
-                                                    <div class="card">
+                                                    <div class="card" style="margin-bottom: 15px;">
                                                         <div class="card-body">
                                                             <h4 class="card-title">Class Information</h4>
                                                             <div class="row" style="padding-bottom: 15px;">
@@ -263,31 +257,11 @@ if (empty($_SESSION['F_number'])) {
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="row" style="padding-bottom: 15px;">
-                                                                <div class="col-md-6">
-                                                                    <label label class="col-sm-12 col-form-label" style="color:white;"> .</label>
-                                                                    <div class="col-sm-12">
-                                                                        <select class="form-select form-control" readonly>
-                                                                            <option></option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <label label class="col-sm-12 col-form-label" style="color:white;"> .</label>
-                                                                    <div class="col-sm-12">
-                                                                        <select class="form-select form-control" readonly>
-                                                                            <option></option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-12 grid-margin">
-                                                    <div class="card">
+                                                <div class="col-lg-9 col-sm-12">
+                                                    <div class="card" style="margin-bottom: 15px;">
                                                         <div class="card-body">
                                                             <h4 class="card-title">Personal Information</h4>
                                                             <!-- next row -->
@@ -405,98 +379,93 @@ if (empty($_SESSION['F_number'])) {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- next row -->
-                                        <div class="row">
-                                            <div class="col-lg-12 col-sm-12 grid-margin">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <h4 class="card-title">Contact Person</h4>
-                                                        <div class="row" style="padding-bottom: 15px;">
-                                                            <div class="col-md-4">
-                                                                <label class="col-sm-12 col-form-label">Last Name</label>
-                                                                <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" name="G_lname" value="<?php echo $getRecord['G_lname'] ?>" readonly>
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <h4 class="card-title">Contact Person</h4>
+                                                            <div class="row" style="padding-bottom: 15px;">
+                                                                <div class="col-md-4">
+                                                                    <label class="col-sm-12 col-form-label">Last Name</label>
+                                                                    <div class="col-sm-12">
+                                                                        <input type="text" class="form-control" name="G_lname" value="<?php echo $getRecord['G_lname'] ?>" readonly>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <label class="col-sm-12 col-form-label">First Name</label>
+                                                                    <div class="col-sm-12">
+                                                                        <input type="text" class="form-control" name="G_fname" value="<?php echo $getRecord['G_fname'] ?>" readonly>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <label class="col-sm-12 col-form-label">Middle Name</label>
+                                                                    <div class="col-sm-12">
+                                                                        <input type="text" class="form-control" name="G_mname" value="<?php echo $getRecord['G_mname'] ?>" readonly>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-1">
+                                                                    <label class="col-sm-12 col-form-label">Suffix</label>
+                                                                    <div class="col-sm-12">
+                                                                        <input type="text" class="form-control" name="G_suffix" value="<?php echo $getRecord['G_suffix'] ?>" readonly>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-4">
-                                                                <label class="col-sm-12 col-form-label">First Name</label>
-                                                                <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" name="G_fname" value="<?php echo $getRecord['G_fname'] ?>" readonly>
+                                                            <div class="row" style="padding-bottom: 15px;">
+                                                                <div class="col-md-6">
+                                                                    <label label class="col-sm-12 col-form-label">Address</label>
+                                                                    <div class="col-sm-12">
+                                                                        <input type="text" class="form-control" name="G_address" value="<?php echo $getRecord['G_address'] ?>" readonly>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <label label class="col-sm-12 col-form-label">Barangay</label>
+                                                                    <div class="col-sm-12">
+                                                                        <input type="text" class="form-control" name="G_barangay" value="<?php echo $getRecord['G_barangay'] ?>" readonly>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <label label class="col-sm-12 col-form-label">City</label>
+                                                                    <div class="col-sm-12">
+                                                                        <input type="text" class="form-control" name="G_city" value="<?php echo $getRecord['G_city'] ?>" readonly>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-3">
-                                                                <label class="col-sm-12 col-form-label">Middle Name</label>
-                                                                <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" name="G_mname" value="<?php echo $getRecord['G_mname'] ?>" readonly>
+                                                            <div class="row" style="padding-bottom: 15px;">
+                                                                <div class="col-md-4">
+                                                                    <label label class="col-sm-12 col-form-label">State</label>
+                                                                    <div class="col-sm-12">
+                                                                        <input type="text" class="form-control" name="G_state" value="<?php echo $getRecord['G_state'] ?>" readonly>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <label label class="col-sm-12 col-form-label">Postal Code</label>
+                                                                    <div class="col-sm-12">
+                                                                        <input type="text" class="form-control" name="G_postal" value="<?php echo $getRecord['G_postal'] ?>" readonly>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <label label class="col-sm-12 col-form-label">Email Address</label>
+                                                                    <div class="col-sm-12">
+                                                                        <input type="text" class="form-control" name="G_email" value="<?php echo $getRecord['G_email'] ?>" readonly>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-1">
-                                                                <label class="col-sm-12 col-form-label">Suffix</label>
-                                                                <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" name="G_suffix" value="<?php echo $getRecord['G_suffix'] ?>" readonly>
+                                                            <div class="row" style="padding-bottom: 15px;">
+                                                                <div class="col-md-4">
+                                                                    <label label class="col-sm-12 col-form-label">Relationship to Student</label>
+                                                                    <div class="col-sm-12">
+                                                                        <input type="text" class="form-control" name="G_relationshipStudent" value="<?php echo $getRecord['G_relationshipStudent'] ?>" readonly>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row" style="padding-bottom: 15px;">
-                                                            <div class="col-md-6">
-                                                                <label label class="col-sm-12 col-form-label">Address</label>
-                                                                <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" name="G_address" value="<?php echo $getRecord['G_address'] ?>" readonly>
+                                                                <div class="col-md-4">
+                                                                    <label label class="col-sm-12 col-form-label">Telephone Number</label>
+                                                                    <div class="col-sm-12">
+                                                                        <input type="text" class="form-control" name="G_telephone" value="<?php echo $getRecord['G_telephone'] ?>" readonly>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <label label class="col-sm-12 col-form-label">Barangay</label>
-                                                                <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" name="G_barangay" value="<?php echo $getRecord['G_barangay'] ?>" readonly>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <label label class="col-sm-12 col-form-label">City</label>
-                                                                <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" name="G_city" value="<?php echo $getRecord['G_city'] ?>" readonly>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row" style="padding-bottom: 15px;">
-                                                            <div class="col-md-4">
-                                                                <label label class="col-sm-12 col-form-label">State</label>
-                                                                <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" name="G_state" value="<?php echo $getRecord['G_state'] ?>" readonly>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label label class="col-sm-12 col-form-label">Postal Code</label>
-                                                                <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" name="G_postal" value="<?php echo $getRecord['G_postal'] ?>" readonly>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label label class="col-sm-12 col-form-label">Email Address</label>
-                                                                <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" name="G_email" value="<?php echo $getRecord['G_email'] ?>" readonly>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row" style="padding-bottom: 15px;">
-                                                            <div class="col-md-4">
-                                                                <label label class="col-sm-12 col-form-label">Relationship to Student</label>
-                                                                <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" name="G_relationshipStudent" value="<?php echo $getRecord['G_relationshipStudent'] ?>" readonly>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label label class="col-sm-12 col-form-label">Telephone Number</label>
-                                                                <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" name="G_telephone" value="<?php echo $getRecord['G_telephone'] ?>" readonly>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label label class="col-sm-12 col-form-label">Contact Number</label>
-                                                                <div class="col-sm-12">
-                                                                    <input type="text" class="form-control" name="G_contact" value="<?php echo $getRecord['G_contact'] ?>" readonly>
+                                                                <div class="col-md-4">
+                                                                    <label label class="col-sm-12 col-form-label">Contact Number</label>
+                                                                    <div class="col-sm-12">
+                                                                        <input type="text" class="form-control" name="G_contact" value="<?php echo $getRecord['G_contact'] ?>" readonly>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -504,6 +473,7 @@ if (empty($_SESSION['F_number'])) {
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </form>
@@ -520,44 +490,7 @@ if (empty($_SESSION['F_number'])) {
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Address</h3>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
-                    <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>customerservice@cdsp.edu.ph</p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Quick Links</h3>
-                    <a class="btn btn-link" href="">Home</a>
-                    <a class="btn btn-link" href="">About Us</a>
-                    <a class="btn btn-link" href="">Academics</a>
-                    <a class="btn btn-link" href="">Admission</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Useful Links</h3>
-                    <a class="btn btn-link" href="">DepEd</a>
-                    <a class="btn btn-link" href="">Pag Asa</a>
-                    <a class="btn btn-link" href="">City of San Pedro</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Newsletter</h3>
-                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                    <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid copyright">
+        <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
             <div class="container">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">

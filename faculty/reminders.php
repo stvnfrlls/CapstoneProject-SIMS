@@ -76,12 +76,6 @@ if (!isset($_SESSION['F_number'])) {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../faculty/createReminder.php">
-                            <i class=""></i>
-                            <span class="menu-title">Create Reminders</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="../faculty/reminders.php">
                             <i class=""></i>
                             <span class="menu-title">Reminders</span>
@@ -98,7 +92,7 @@ if (!isset($_SESSION['F_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../faculty/advisoryPage.php">
                             <i class=""></i>
-                            <span class="menu-title">Advisory</span>
+                            <span class="menu-title">Advisory Class</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -170,12 +164,9 @@ if (!isset($_SESSION['F_number'])) {
                                                                 <div class="card">
                                                                     <div class="card-body">
                                                                         <div class="col-lg-12 col-md-9 ">
-                                                                            <a class="posts-title" href="viewReminders.php?ID=<?php echo $reminder['reminderID'] ?>">
-                                                                                <h3><?php echo $reminder['msg'] ?></h3>
-                                                                            </a>
                                                                             <p>Subject: <?php echo $reminder['subject'] ?></p>
-                                                                            <p class="excert"><?php echo $reminder['msg'] ?></p>
-                                                                            <a href="viewReminders.php?ID=<?php echo $reminder['reminderID'] ?>" class="primary-btn">View More</a>
+                                                                            <p class="excert text-truncate"><?php echo $reminder['msg'] ?></p>
+                                                                            <a href="viewReminders.php?ID=<?php echo $reminder['reminderID'] ?>" class="btn btn-primary">View More</a>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -214,44 +205,7 @@ if (!isset($_SESSION['F_number'])) {
 
         <!-- Footer Start -->
         <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
-            <div class="container py-5">
-                <div class="row g-5">
-                    <div class="col-lg-3 col-md-6">
-                        <h3 class="text-light mb-4">Address</h3>
-                        <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
-                        <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
-                        <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>customerservice@cdsp.edu.ph</p>
-                        <div class="d-flex pt-2">
-                            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
-                            <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <h3 class="text-light mb-4">Quick Links</h3>
-                        <a class="btn btn-link" href="">Home</a>
-                        <a class="btn btn-link" href="">About Us</a>
-                        <a class="btn btn-link" href="">Academics</a>
-                        <a class="btn btn-link" href="">Admission</a>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <h3 class="text-light mb-4">Useful Links</h3>
-                        <a class="btn btn-link" href="">DepEd</a>
-                        <a class="btn btn-link" href="">Pag Asa</a>
-                        <a class="btn btn-link" href="">City of San Pedro</a>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <h3 class="text-light mb-4">Newsletter</h3>
-                        <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                        <div class="position-relative mx-auto" style="max-width: 400px;">
-                            <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                            <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="container-fluid copyright">
+            <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">

@@ -33,6 +33,9 @@ if (!isset($_SESSION['verifyEmailData']) && !isset($_POST['submitOTP'])) {
     <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="../assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
 
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="../assets/css/sweetAlert.css" rel="stylesheet">
+
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
@@ -74,16 +77,18 @@ if (!isset($_SESSION['verifyEmailData']) && !isset($_POST['submitOTP'])) {
                 <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
                 <a href="" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-item nav-link" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Dashboard <i class="fa fa-caret-down"></i></a>
+                    <a href="#" class="nav-item nav-link" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Menu <i class="fa fa-caret-down"></i></a>
                     <div class="dropdown-menu bg-dark border-0 m-0">
+                        <a href="../student/dashboard.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Dashboard</a>
                         <a href="../student/profile.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Profile</a>
-                        <a href="../student/grades.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Grades</a>
+                        <a href="../student/grades.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Report Card</a>
                         <a href="../student/dailyAttendance.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Attendance</a>
                         <a href="../student/reminders.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Reminders</a>
                         <a href="../student/announcement.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">School Announcements</a>
+                        <a href="../auth/login.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Login</a>
                     </div>
                 </div>
-                <a href="" class="nav-item nav-link" style="color: white; font-size: 14px;">Contact Us</a>
+                <a href="" class="nav-item nav-link" style="color: white; font-size: 14px;">Faculty Directory</a>
             </div>
         </div>
     </nav>
@@ -92,42 +97,23 @@ if (!isset($_SESSION['verifyEmailData']) && !isset($_POST['submitOTP'])) {
     <div class="limiter">
         <div class="container-login100">
             <div class="wrap-login100">
-                <form class="login100-form validate-form" method="post" action="<?php $_SERVER["PHP_SELF"] ?>">
+                <form class="login100-form validate-form" method="post" action="<?php $_SERVER["PHP_SELF"] ?>" id="form">
                     <span class="login100-form-title p-b-43">
                         Forget Password
                     </span>
-                    <?php
-                    if (count($errors) > 0) {
-                    ?>
-                        <div class="alert alert-danger text-center">
-                            <?php
-                            foreach ($errors as $showerror) {
-                                echo $showerror;
-                            }
-                            ?>
-                        </div>
-                    <?php
-                    }
-                    ?>
-                    <div class="form-group validate-input" data-validate="Password is required">
-                        <input style="font-size: 13px;" class="form-control form-control-lg" id="exampleInputEmail1" type="password" name="newPasssword" placeholder="Email Address">
-
+                    <div class="form-group validate-input">
+                        <input style="font-size: 13px;" class="form-control form-control-lg" id="password" type="password" name="newPasssword" placeholder="New password" required>
                     </div>
-
-
-                    <div class="form-group validate-input" data-validate="Password is required">
-                        <input style="font-size: 13px;" class="form-control form-control-lg" id="exampleInputEmail1" type="password" name="confirmPassword" placeholder="Email Address">
-
+                    <div class="form-group validate-input">
+                        <input style="font-size: 13px;" class="form-control form-control-lg" id="confirm_password" type="password" name="confirmPassword" placeholder="Confirm password" required>
                     </div>
-
                     <div class="container-login100-form-btn">
-                        <button type="submit" class="login100-form-btn" name="updatePassword">
+                        <input type="hidden" name="updatePassword" value="updatePassword">
+                        <button type="button" class="login100-form-btn" id="submitBTN">
                             Update Password
                         </button>
                     </div>
-
                 </form>
-
                 <div class="login100-more" style="background-image: url('../assets/img/banner_1.jpg');">
                 </div>
             </div>
@@ -136,44 +122,7 @@ if (!isset($_SESSION['verifyEmailData']) && !isset($_POST['submitOTP'])) {
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Address</h3>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
-                    <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>customerservice@cdsp.edu.ph</p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Quick Links</h3>
-                    <a class="btn btn-link" href="">Home</a>
-                    <a class="btn btn-link" href="">About Us</a>
-                    <a class="btn btn-link" href="">Academics</a>
-                    <a class="btn btn-link" href="">Admission</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Useful Links</h3>
-                    <a class="btn btn-link" href="">DepEd</a>
-                    <a class="btn btn-link" href="">Pag Asa</a>
-                    <a class="btn btn-link" href="">City of San Pedro</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Newsletter</h3>
-                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                    <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid copyright">
+        <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
             <div class="container">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
@@ -199,7 +148,72 @@ if (!isset($_SESSION['verifyEmailData']) && !isset($_POST['submitOTP'])) {
 
     <!-- Template Javascript -->
     <script src="../assets/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+    <script>
+        const passwordInput = document.getElementById("password");
+        const confirmPasswordInput = document.getElementById("confirm_password");
+        const form = document.getElementById("form");
+        const submitBTN = document.getElementById("submitBTN");
 
+        submitBTN.addEventListener('click', function() {
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+
+            if (password !== confirmPassword) {
+                Swal.fire({
+                    icon: 'error',
+                    text: 'Passwords do not match'
+                })
+                return false;
+            }
+
+            // Check if password meets criteria
+            const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            if (!regex.test(password)) {
+                let errorMessages = [];
+
+                if (password.length < 8) {
+                    errorMessages.push("Password must be at least 8 characters long.");
+                }
+
+                const uppercaseRegex = /[A-Z]/;
+                if (!uppercaseRegex.test(password)) {
+                    errorMessages.push("Password must include at least one uppercase letter.");
+                }
+
+                const numberRegex = /\d/;
+                if (!numberRegex.test(password)) {
+                    errorMessages.push("Password must include at least one number.");
+                }
+
+                const specialCharRegex = /[@$!%*?&]/;
+                if (!specialCharRegex.test(password)) {
+                    errorMessages.push("Password must include at least one special character.");
+                }
+
+                let errorMessageHtml = "<ul>";
+                for (const errorMessage of errorMessages) {
+                    errorMessageHtml += `<li>${errorMessage}</li>`;
+                }
+                errorMessageHtml += "</ul>";
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Weak Password',
+                    html: `Password does not meet criteria:<br>${errorMessageHtml}`
+                }).then((result) => {
+                    return false;
+                })
+            }
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Password meets criteria.'
+            }).then((result) => {
+                form.submit();
+            })
+        })
+    </script>
 </body>
 
 </html>

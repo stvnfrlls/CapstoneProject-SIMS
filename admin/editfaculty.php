@@ -105,12 +105,7 @@ if (!isset($_SESSION['AD_number'])) {
               <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="../admin/createFetcher.php">
-              <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
-            </a>
-          </li>
+          
           <li class="nav-item">
             <a class="nav-link" href="../admin/student.php">
               <i class=""></i>
@@ -120,7 +115,7 @@ if (!isset($_SESSION['AD_number'])) {
           <li class="nav-item">
             <a class="nav-link" href="../admin/editgrades.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
+              <span class="menu-title" style="color: #b9b9b9;">Finalization of Grades</span>
             </a>
           </li>
           <li class="nav-item">
@@ -219,26 +214,12 @@ if (!isset($_SESSION['AD_number'])) {
                             <div class="card-body">
                               <h4 class="card-title">Personal Information</h4>
                               <div class="row" style="padding-bottom: 15px;">
-                                <div class="col-md-4">
-                                  <label class="col-sm-12 col-form-label">Department <span style="color: red;">*</span></label>
-                                  <div class="col-sm-12">
-                                    <select class="form-select" name="F_department" required>
-                                      <option selected><?php echo $getFacultyData['F_department'] ?></option>
-                                      <option value="English">English Department</option>
-                                      <option value="Filipino">Filipino Department</option>
-                                      <option value="Mathematics">Mathematics Department</option>
-                                      <option value="Science">Science Department</option>
-                                      <option value="History">History Department</option>
-                                      <option value="Personality Development">Personality Development Department</option>
-                                    </select>
-                                  </div>
-                                </div>
                                 <div class="col-md-8">
                                   <label class="col-sm-12 col-form-label">Profile Picture</label>
                                   <div class="col-sm-12">
                                     <div class="form-group">
                                       <div class="input-group col-xs-12">
-                                        <input type="file" class="form-control file-upload-info" placeholder="Upload Image">
+                                        <input type="file" class="form-control file-upload-info" name="image" placeholder="Upload Image" accept="image/*">
                                         <input type="hidden" name="F_number" value="<?php echo $_GET['F_number']; ?>">
                                       </div>
                                     </div>
@@ -421,22 +402,20 @@ if (!isset($_SESSION['AD_number'])) {
     const editFaculty = document.getElementById('editFaculty');
     editFaculty.addEventListener('click', function() {
       Swal.fire({
-        title: 'Are you sure you want to save your changes?',
+        title: 'Are you sure you want to proceed with this action?',
         showCancelButton: true,
         confirmButtonText: 'Yes',
         cancelButtonText: `No`,
       }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
           Swal.fire({
-            title: 'Successfully changed!',
+            title: 'Form submitted!',
             icon: 'success',
-          })
-          editfacultyform.submit();
-          window.location.href = '../admin/faculty.php';
+          }).then(() => {
+            editfacultyform.submit();
+          });
         }
       })
-
     })
   </script>
 </body>

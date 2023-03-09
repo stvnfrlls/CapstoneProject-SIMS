@@ -4,6 +4,23 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 }
+
+$checkQuarter = $mysqli->query("SELECT quarterStatus FROM sis_cdsp.quartertable WHERE quarterStatus = 'current'");
+if (mysqli_num_rows($checkQuarter) > 0) {
+    echo <<<EOT
+            <script>
+                document.addEventListener("DOMContentLoaded", function(event) { 
+                    swal.fire({
+                        text: 'This feature is currently disabled because the school year has already started.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                    }).then(() => {
+                        window.location.href = 'dashboard.php';
+                    });
+                });
+            </script>
+        EOT;
+}
 ?>
 
 <!DOCTYPE html>
@@ -96,12 +113,7 @@ if (!isset($_SESSION['AD_number'])) {
                             <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/createFetcher.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
-                        </a>
-                    </li>
+ 
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
@@ -111,7 +123,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/editgrades.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Finalization of Grades</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -208,22 +220,29 @@ if (!isset($_SESSION['AD_number'])) {
                                                 <button class="btn btn-secondary" style="background-color: #e4e3e3;" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                     <?php
                                                     if (isset($_GET['grade'])) {
-                                                        echo "GR." . $_GET['grade'];
+                                                        if ($_GET['grade'] == 'KINDER') {
+                                                            echo $_GET['grade'];
+                                                        } else {
+                                                            echo "Grade " . $_GET['grade'];
+                                                        }
                                                     } else {
                                                         echo "Grade";
                                                     }
-
                                                     ?>
                                                     <i class="fa fa-caret-down"></i>
                                                 </button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                                    <a class="dropdown-item" href="editSection.php">All</a>
                                                     <?php
                                                     $getgradelevel = $mysqli->query("SELECT DISTINCT(S_yearLevel) FROM sections");
                                                     while ($gradeLevel = $getgradelevel->fetch_assoc()) { ?>
                                                         <a class="dropdown-item" href="editSection.php?grade=<?php echo $gradeLevel['S_yearLevel'] ?>">
-                                                            Grade
-                                                            <?php echo $gradeLevel['S_yearLevel'] ?>
+                                                            <?php
+                                                            if ($gradeLevel['S_yearLevel'] == 'KINDER') {
+                                                                echo $gradeLevel['S_yearLevel'];
+                                                            } else {
+                                                                echo "Grade " . $gradeLevel['S_yearLevel'];
+                                                            }
+                                                            ?>
                                                         </a>
                                                     <?php }
                                                     ?>
@@ -243,15 +262,17 @@ if (!isset($_SESSION['AD_number'])) {
                                                     <i class="fa fa-caret-down"></i>
                                                 </button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                                    <a class="dropdown-item" href="editSection.php">All</a>
+                                                    <a class="dropdown-item" href="editSection.php"></a>
                                                     <?php
-                                                    $getsection = $mysqli->query("SELECT DISTINCT(S_name) FROM sections WHERE acadYear = '{$currentSchoolYear}' AND S_yearLevel = '{$_GET['grade']}' ");
+                                                    if (isset($_GET['grade'])) {
+                                                        $getsection = $mysqli->query("SELECT DISTINCT(S_name) FROM sections WHERE acadYear = '{$currentSchoolYear}' AND S_yearLevel = '{$_GET['grade']}' ");
 
-                                                    while ($section = $getsection->fetch_assoc()) { ?>
-                                                        <a class="dropdown-item" href="editSection.php?grade=<?php echo $_GET['grade'] ?>&section=<?php echo $section['S_name'] ?>">
-                                                            <?php echo $section['S_name'] ?>
-                                                        </a>
+                                                        while ($section = $getsection->fetch_assoc()) { ?>
+                                                            <a class="dropdown-item" href="editSection.php?grade=<?php echo $_GET['grade'] ?>&section=<?php echo $section['S_name'] ?>">
+                                                                <?php echo $section['S_name'] ?>
+                                                            </a>
                                                     <?php }
+                                                    }
                                                     ?>
                                                 </div>
                                             </div>
@@ -260,7 +281,7 @@ if (!isset($_SESSION['AD_number'])) {
                                             <div class="col-lg-12 d-flex flex-column">
                                                 <div class="row flex-grow">
                                                     <div class="col-md-6 col-lg-12 grid-margin stretch-card">
-                                                        <div class="card bg-primary card-rounded">
+                                                        <div class="card card-rounded">
                                                             <div class="table-responsive">
                                                                 <table class="table">
                                                                     <thead>
@@ -301,25 +322,31 @@ if (!isset($_SESSION['AD_number'])) {
                                                                             if (mysqli_num_rows($getClasslistData) > 0) {
                                                                                 while ($ClasslistData = $getClasslistData->fetch_assoc()) { ?>
                                                                                     <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="changeSectionForm">
-                                                                                <tr>
-                                                                                    <td class="hatdog"><?php echo $rowCount; ?></td>
-                                                                                    <td class="hatdog">
+                                                                                        <tr>
+                                                                                            <td class="hatdog"><?php echo $rowCount; ?></td>
+                                                                                            <td class="hatdog">
                                                                                                 <?php echo $ClasslistData['SR_number'] ?>
                                                                                                 <input type="hidden" name="SR_number" value="<?php echo $ClasslistData['SR_number'] ?>">
-                                                                                    </td>
-                                                                                    <td class="hatdog">
+                                                                                            </td>
+                                                                                            <td class="hatdog">
                                                                                                 <?php
                                                                                                 $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$ClasslistData['SR_number']}'");
                                                                                                 $studentInfo = $getStudentInfo->fetch_assoc();
                                                                                                 echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix'];
                                                                                                 ?>
 
-                                                                                    </td>
-                                                                                    <td class="hatdog">
-                                                                                                <?php echo "Grade " . $ClasslistData['SR_grade'] . " - " . $ClasslistData['SR_section'] ?>
-                                                                                    </td>
-                                                                                    <td class="hatdog">
-                                                                                            <?php
+                                                                                            </td>
+                                                                                            <td class="hatdog">
+                                                                                                <?php
+                                                                                                if ($ClasslistData['SR_grade'] == 'KINDER') {
+                                                                                                    echo $ClasslistData['SR_grade'] . " - " . $ClasslistData['SR_section'];
+                                                                                                } else {
+                                                                                                    echo "Grade " . $ClasslistData['SR_grade'] . " - " . $ClasslistData['SR_section'];
+                                                                                                }
+                                                                                                ?>
+                                                                                            </td>
+                                                                                            <td class="hatdog">
+                                                                                                <?php
                                                                                                 $getSection = $mysqli->query("SELECT S_name FROM sections 
                                                                                                 WHERE S_name != '{$_GET['section']}' 
                                                                                                 AND S_yearLevel = '{$_GET['grade']}'
@@ -334,9 +361,9 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                                         <?php
                                                                                                         while ($Section = $getSection->fetch_assoc()) {
                                                                                                             echo "<option value=" . $Section['S_name'] . ">" . $Section['S_name'] .  "</option>";
-                                                                                            }
+                                                                                                        }
                                                                                                         ?>
-                                                                                        </select>
+                                                                                                    </select>
                                                                                                 <?php }
                                                                                                 ?>
                                                                                             </td>
@@ -344,17 +371,17 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                                 <div style="text-align: center;">
                                                                                                     <?php
                                                                                                     if (mysqli_num_rows($getSection) == 0) { ?>
-                                                                                                        <button type="button" class="btn btn-secondary" disabled>Update</button>
+                                                                                                        <button type="submit" class="btn btn-secondary" disabled>Update</button>
                                                                                                     <?php } else { ?>
-                                                                                                        <button type="button" class="btn btn-primary" id="changeSection">Update</button>
+                                                                                                        <button type="submit" class="btn btn-primary" name="changeSection" id="changeSection">Update</button>
                                                                                                     <?php }
                                                                                                     ?>
                                                                                                 </div>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </form>
-                                                                        <?php $rowCount++;
-                                                                        }
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </form>
+                                                                                <?php $rowCount++;
+                                                                                }
                                                                             } else { ?>
                                                                                 <tr>
                                                                                     <td colspan="6">No Student Found</td>
@@ -387,7 +414,7 @@ if (!isset($_SESSION['AD_number'])) {
         <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
-    <button id="hatdog"> click hatdog </button>
+
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
         <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
@@ -416,24 +443,25 @@ if (!isset($_SESSION['AD_number'])) {
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
     <script>
-        const myButton = document.getElementById('hatdog');
-        hatdog.addEventListener('click', function() {
-            Swal.fire({
-                title: 'Are you sure you want save your changes?',
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: `No`,
-            }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        title: 'Successfully changed!',
-                        icon: 'success',
-                    })
-                }
-            })
-
-        })
+        // const changeSectionForm = document.getElementById('changeSectionForm');
+        // const changeSection = document.getElementById('changeSection');
+        // changeSection.addEventListener('click', function() {
+        //     Swal.fire({
+        //         title: 'Are you sure you want to proceed with this action?',
+        //         showCancelButton: true,
+        //         confirmButtonText: 'Yes',
+        //         cancelButtonText: `No`,
+        //     }).then((result) => {
+        //         if (result.isConfirmed) {
+        //             Swal.fire({
+        //                 title: 'Form submitted!',
+        //                 icon: 'success',
+        //             }).then(() => {
+        //                 changeSectionForm.submit();
+        //             });
+        //         }
+        //     })
+        // })
     </script>
 </body>
 

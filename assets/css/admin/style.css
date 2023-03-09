@@ -10890,8 +10890,8 @@ textarea.form-control-lg {
 }
 
 .form-check-input:checked {
-  background-color: #0d6efd;
-  border-color: #0d6efd;
+  background-color: #c02628;
+  border-color: #c02628;
 }
 
 .form-check-input:checked[type="checkbox"] {
@@ -12355,22 +12355,7 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
   font-size: 12px !important;
 }
 
-.dropdown-item:hover, .dropdown-item:focus {
-  color: #1e2125;
-  background-color: #eaeaf1;
-}
 
-.dropdown-item.active, .dropdown-item:active {
-  color: #fff;
-  text-decoration: none;
-  background-color: #0d6efd;
-}
-
-.dropdown-item.disabled, .dropdown-item:disabled {
-  color: #adb5bd;
-  pointer-events: none;
-  background-color: transparent;
-}
 
 .dropdown-menu.show {
   display: block;
@@ -12397,23 +12382,7 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
   border-color: rgba(0, 0, 0, 0.15);
 }
 
-.dropdown-menu-dark .dropdown-item {
-  color: #dee2e6;
-}
 
-.dropdown-menu-dark .dropdown-item:hover, .dropdown-menu-dark .dropdown-item:focus {
-  color: #fff;
-  background-color: rgba(255, 255, 255, 0.15);
-}
-
-.dropdown-menu-dark .dropdown-item.active, .dropdown-menu-dark .dropdown-item:active {
-  color: #fff;
-  background-color: #0d6efd;
-}
-
-.dropdown-menu-dark .dropdown-item.disabled, .dropdown-menu-dark .dropdown-item:disabled {
-  color: #adb5bd;
-}
 
 .dropdown-menu-dark .dropdown-divider {
   border-color: rgba(0, 0, 0, 0.15);
@@ -15118,6 +15087,10 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
     left: 0;
     z-index: 1030;
   }
+
+  .home-tab{
+    margin-top: 100px !important; 
+  }
 }
 
 @media (max-width: 768px) {
@@ -15129,6 +15102,10 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
     z-index: 1030;
   }
 
+  .home-tab{
+    margin-top: 100px !important;
+  }
+
 }
 
 @media (max-width: 992px) {
@@ -15138,6 +15115,10 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
     right: 0;
     left: 0;
     z-index: 1030;
+  }
+
+  .home-tab{
+    margin-top: 100px !important;
   }
 }
 .fixed-bottom {
@@ -17830,7 +17811,7 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
     padding-left: 3rem !important;
   }
   .py-lg-0 {
-    padding-top: 0 !important;
+    padding-top: 1px !important;
     padding-bottom: 0 !important;
   }
   .py-lg-1 {
@@ -20853,7 +20834,6 @@ code {
 
 .btn-secondary:hover, .btn-secondary:focus {
   background: #d8d8d8;
-  color: #ffffff;
 }
 
 .btn-secondary.btn-social-icon-text {
@@ -28200,6 +28180,7 @@ div.tagsinput span.tag a {
   .main-panel {
     margin-left: 0;
     width: 100%;
+
   }
 }
 

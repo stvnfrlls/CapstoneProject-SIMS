@@ -98,12 +98,7 @@ if (!isset($_SESSION['AD_number'])) {
                             <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/createFetcher.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
-                        </a>
-                    </li>
+ 
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
@@ -113,7 +108,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/editgrades.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Finalization of Grades</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -204,9 +199,10 @@ if (!isset($_SESSION['AD_number'])) {
                                     </div>
                                 </div>
 
-                                <form style="text-align: right; margin-top: 50px; margin-right: 20px;">
-                                    <button type="submit" style="color: #ffffff;" class="btn btn-primary me-2">Edit</button>
-                                    <button type="submit" style="color: #ffffff;" class="btn btn-primary me-2">Delete</button>
+                                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" style="text-align: right; margin-top: 50px; margin-right: 20px;">
+                                    <a href="editAnnouncement.php?postID=<?php echo $announcement['ANC_ID'] ?>" style="color: #ffffff;" class="btn btn-primary me-2">Edit</a>
+                                    <input type="hidden" name="deleteAnc" value="<?php echo $announcement['ANC_ID'] ?>">
+                                    <button type="submit" name="delAnc" style="color: #ffffff;" class="btn btn-primary me-2">Delete</button>
                                 </form>
 
                                 <section class="course-details-area">
@@ -215,15 +211,12 @@ if (!isset($_SESSION['AD_number'])) {
                                             <div class="col-lg-8 left-contents">
                                                 <div class="jq-tab-wrapper" id="horizontalTab" style="padding-top: 0px;">
                                                     <div class="jq-tab-menu">
-                                                        <div class="jq-tab-title active" data-tab="1">Description</div>
+                                                        <div class="jq-tab-title active" data-tab="1">About</div>
 
                                                     </div>
                                                     <div class="jq-tab-content-wrapper">
                                                         <div class="jq-tab-content active" data-tab="1">
-                                                            When you enter into any new area of science, you almost always find yourself with a baffling new language of technical terms to learn before you can converse with the experts. This is certainly true in astronomy both in terms of terms that refer to the cosmos and terms that describe the tools of the trade, the most prevalent being the telescope.
-                                                            <br>
-                                                            <br>
-                                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodoconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.
+                                                            <?php echo $announcement['msg'] ?>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -239,7 +232,14 @@ if (!isset($_SESSION['AD_number'])) {
                                                     <li>
                                                         <a class="justify-content-between d-flex" href="#">
                                                             <p>Posted By</p>
-                                                            <span><?php echo $announcement['author'] ?></span>
+                                                            <span>
+                                                                <?php
+                                                                $getAuthorName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$announcement['author']}'");
+                                                                $AuthorName = $getAuthorName->fetch_assoc();
+
+                                                                echo $AuthorName['AD_name'];
+                                                                ?>
+                                                            </span>
                                                         </a>
                                                     </li>
                                                     <li>

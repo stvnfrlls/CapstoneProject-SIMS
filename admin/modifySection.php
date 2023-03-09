@@ -3,6 +3,22 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 }
+$checkQuarter = $mysqli->query("SELECT quarterStatus FROM sis_cdsp.quartertable WHERE quarterStatus = 'current'");
+if (mysqli_num_rows($checkQuarter) > 0) {
+    echo <<<EOT
+            <script>
+                document.addEventListener("DOMContentLoaded", function(event) { 
+                    swal.fire({
+                        text: 'This feature is currently disabled because the school year has already started.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                    }).then(() => {
+                        window.location.href = 'dashboard.php';
+                    });
+                });
+            </script>
+        EOT;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,6 +46,9 @@ if (!isset($_SESSION['AD_number'])) {
     <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
     <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="../assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="../assets/css/sweetAlert.css" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
@@ -91,12 +110,7 @@ if (!isset($_SESSION['AD_number'])) {
                             <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/createFetcher.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
-                        </a>
-                    </li>
+ 
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
@@ -106,7 +120,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/editgrades.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Finalization of Grades</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -210,9 +224,14 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     <div>
                                                                         <button class="btn btn-secondary" style="background-color: #e4e3e3;" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                                             <?php
-                                                                            if (isset($_GET['Grade'])) {
+                                                                            if (isset($_GET['Grade']) && $_GET['Grade'] == 'KINDER') {
+                                                                                echo $_GET['Grade'];
+                                                                            }
+
+                                                                            if (isset($_GET['Grade']) && $_GET['Grade'] != 'KINDER') {
                                                                                 echo "Grade " . $_GET['Grade'];
-                                                                            } else {
+                                                                            }
+                                                                            if (!isset($_GET['Grade'])) {
                                                                                 echo "Grade";
                                                                             }
                                                                             ?>
@@ -220,9 +239,17 @@ if (!isset($_SESSION['AD_number'])) {
                                                                         </button>
                                                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
                                                                             <?php
-                                                                            $getGradeLevelList = $mysqli->query("SELECT DISTINCT(S_yearLevel) FROM sections");
+                                                                            $getGradeLevelList = $mysqli->query("SELECT gradeLevel FROM grade_level ORDER BY gradeID");
                                                                             while ($gradeLevel = $getGradeLevelList->fetch_assoc()) { ?>
-                                                                                <a class="dropdown-item" href="modifySection.php?Grade=<?php echo $gradeLevel['S_yearLevel'] ?>">Grade <?php echo $gradeLevel['S_yearLevel'] ?></a>
+                                                                                <a class="dropdown-item" href="modifySection.php?Grade=<?php echo $gradeLevel['gradeLevel'] ?>">
+                                                                                    <?php
+                                                                                    if ($gradeLevel['gradeLevel'] == 'KINDER') {
+                                                                                        echo $gradeLevel['gradeLevel'];
+                                                                                    } else {
+                                                                                        echo "Grade " . $gradeLevel['gradeLevel'];
+                                                                                    }
+                                                                                    ?>
+                                                                                </a>
                                                                             <?php }
                                                                             ?>
                                                                         </div>
@@ -245,31 +272,31 @@ if (!isset($_SESSION['AD_number'])) {
                                                                             $getSectionData = $mysqli->query("SELECT DISTINCT S_name FROM sections WHERE acadYear = '{$currentSchoolYear}' AND S_yearLevel = '{$_GET['Grade']}'");
                                                                             $rowCount = 1;
                                                                             while ($sectionData = $getSectionData->fetch_assoc()) { ?>
-                                                                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
-                                                                            <tr>
+                                                                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="modifySectionForm">
+                                                                                    <tr>
                                                                                         <td><?php echo $rowCount ?></td>
-                                                                                <td>
+                                                                                        <td>
                                                                                             <input type="hidden" class="form-control" name="currentName" value="<?php echo $sectionData['S_name'] ?>">
                                                                                             <input type="text" class="form-control" name="sectionName" value="<?php echo $sectionData['S_name'] ?>">
                                                                                         </td>
                                                                                         <td>
-                                                                                            <input type="submit" style="color: #ffffff;" class="btn btn-primary" value="Change Name" name="updateSection">
-                                                                                            <input type="submit" class="btn btn-secondary" value="DELETE" name="deleteSection">
-                                                                                </td>
-                                                                            </tr>
-                                                                        </form>
+                                                                                            <input type="submit" style="color: #ffffff;" class="btn btn-primary" value="Change Name" id="updateSection" name="updateSection">
+                                                                                            <input type="submit" class="btn btn-secondary" value="DELETE" id="deleteSection" name="deleteSection">
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </form>
                                                                             <?php $rowCount++;
                                                                             } ?>
-                                                                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
-                                                                            <tr>
-                                                                                <td>ADD</td>
+                                                                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="addSectionForm">
+                                                                                <tr>
+                                                                                    <td>ADD</td>
                                                                                     <td><input type="text" class="form-control" name="sectionName"></td>
-                                                                                    <td><input type="submit" style="color: #ffffff;" class="btn btn-primary" value="ADD" name="addSection"></td>
-                                                                            </tr>
-                                                                        </form>
+                                                                                    <td><input type="submit" style="color: #ffffff;" class="btn btn-primary" value="ADD" name="addSection" id="addSection"></td>
+                                                                                </tr>
+                                                                            </form>
                                                                         <?php } else { ?>
                                                                             <tr>
-                                                                                <td colspan="3">Select a Grade level first</td>
+                                                                                <td colspan="4">Select a Grade level first</td>
                                                                             </tr>
                                                                         <?php }
                                                                         ?>
@@ -318,6 +345,68 @@ if (!isset($_SESSION['AD_number'])) {
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>
     <script src="../assets/js/admin/off-canvas.js"></script>
+
+    <!-- <script>
+        const addSectionForm = document.getElementById('addSectionForm');
+        const modifySectionForm = document.getElementById('modifySectionForm');
+
+        const addSection = document.getElementById('addSection');
+        const updateSection = document.getElementById('updateSection');
+        const deleteSection = document.getElementById('deleteSection');
+        addSection.addEventListener('click', function(event) {
+            Swal.fire({
+                title: 'Are you sure you want to add this section?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: `No`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Section added successfully!',
+                        icon: 'success',
+                    }).then(() => {
+                        addSectionForm.submit();
+                    });
+                }
+            })
+        })
+
+        updateSection.addEventListener('click', function(event) {
+            Swal.fire({
+                title: 'Are you sure you want to update this section?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: `No`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Section updated successfully!',
+                        icon: 'success',
+                    }).then(() => {
+                        modifySectionForm.submit();
+                    });
+                }
+            })
+        })
+
+        deleteSection.addEventListener('click', function(event) {
+            Swal.fire({
+                title: 'Are you sure you want to delete this section?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: `No`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Section deleted successfully!',
+                        icon: 'success',
+                    }).then(() => {
+                        modifySectionForm.submit();
+                    });
+                }
+            })
+        })
+    </script> -->
 </body>
 
 </html>

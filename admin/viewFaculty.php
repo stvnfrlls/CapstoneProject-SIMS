@@ -13,6 +13,15 @@ if (!isset($_SESSION['AD_number'])) {
     header('Location: faculty.php');
   }
 }
+
+if (isset($_POST['changeStatus'])) {
+  if ($getFacultyData['F_status'] == "inactive") {
+    $changeStatus = $mysqli->query("UPDATE faculty SET F_status = 'active' WHERE F_number = '{$_GET['F_number']}'");
+  } else {
+    $changeStatus = $mysqli->query("UPDATE faculty SET F_status = 'inactive' WHERE F_number = '{$_GET['F_number']}'");
+  }
+  header("Refresh:0");
+}
 ?>
 
 <!DOCTYPE html>
@@ -102,12 +111,7 @@ if (!isset($_SESSION['AD_number'])) {
               <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="../admin/createFetcher.php">
-              <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Register Fetcher</span>
-            </a>
-          </li>
+
           <li class="nav-item">
             <a class="nav-link" href="../admin/student.php">
               <i class=""></i>
@@ -117,7 +121,7 @@ if (!isset($_SESSION['AD_number'])) {
           <li class="nav-item">
             <a class="nav-link" href="../admin/editgrades.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Encode Grades</span>
+              <span class="menu-title" style="color: #b9b9b9;">Finalization of Grades</span>
             </a>
           </li>
           <li class="nav-item">
@@ -209,38 +213,65 @@ if (!isset($_SESSION['AD_number'])) {
                 </div>
                 <div class="tab-content tab-content-basic">
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                    <div style="text-align: right; margin-bottom: 15px;">
+                      <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
+                        <a class="btn btn-primary me-2" href="editFaculty.php?F_number=<?php echo $_GET['F_number'] ?>">Edit</a>
+                        <?php
+                        if ($getFacultyData['F_status'] == "active") { ?>
+                          <button type="submit" name="changeStatus" class="btn btn-primary me-2">Mark as Inactive</button>
+                        <?php } else { ?>
+                          <button type="submit" name="changeStatus" class="btn btn-primary me-2">Mark as Active</button>
+                        <?php }
+                        ?>
+                        <a class="btn btn-light" onclick="location.href='../admin/faculty.php'">Back</a>
+                      </form>
+                    </div>
                     <div class="row">
-                      <div class="col-lg-4 col-sm-12 grid-margin" style="margin: auto; margin-bottom: 30px;">
-                        <div class="card">
-                          <div class="card-body">
-                            <h4 class="card-title">Profile</h4>
-                            <div class="row" style="padding-bottom: 15px;">
-                              <div class="col-md-12 col-sm-6" style="text-align: center; margin-bottom: 20px; margin-top: 10px;">
-                                <img src="../assets/img/profile.jpg" alt="avatar" class="rounded-circle img-fluidr" style="width: 150px;">
+                      <div class="col-lg-3 col-sm-12 grid-margin" style="margin-bottom: 30px;">
+                        <div class="row">
+                          <div class="card">
+                            <div class="card-body">
+                              <h4 class="card-title">Profile</h4>
+                              <div class="row" style="padding-bottom: 15px;">
+                                <div class="col-12" style="text-align: center; margin-bottom: 20px; margin-top: 10px;">
+                                  <?php
+                                  $profile_path = "../assets/img/profile/" . $getFacultyData['F_profile_img'];
+                                  if (empty($getFacultyData['F_profile_img']) || !file_exists($profile_path)) { ?>
+                                    <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                                  <?php } else { ?>
+                                    <img src="../assets/img/profile/<?php echo $getFacultyData['F_profile_img'] ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                                  <?php }
+                                  ?>
+                                </div>
                               </div>
                             </div>
-                            <div class="row" style="padding-bottom: 15px;">
-                              <div class="col-12">
-                                <label class="col-sm-12 col-form-label">Department</label>
-                                <div class="col-sm-12">
-                                  <select class="form-select" name="F_department" disabled>
-                                    <option selected><?php echo $getFacultyData['F_department'] ?></option>
-                                    <option value="English">English Department</option>
-                                    <option value="Filipino">Filipino Department</option>
-                                    <option value="Mathematics">Mathematics Department</option>
-                                    <option value="Science">Science Department</option>
-                                    <option value="History">History Department</option>
-                                    <option value="Personality Development">Personality Development Department</option>
-                                  </select>
+                          </div>
+                        </div>
+                        <div class="row" style="padding-top: 15px;">
+                          <div class="card">
+                            <div class="card-body">
+                              <h4 class="card-title">Teaching Status</h4>
+                              <div class="row">
+                                <div class="col-12">
+                                  <?php
+                                  if ($getFacultyData['F_status'] == "active") { ?>
+                                    <div class="progress rounded" style="height: 25px; width: 70px; background-color:limegreen">
+                                      <p style="font-size: .77rem; margin: 4px 0px 0px 16px; text-align: center; color: white;">active</p>
+                                    </div>
+                                  <?php } else { ?>
+                                    <div class="progress rounded" style="height: 25px; width: 70px; background-color: red;">
+                                      <p style="font-size: .77rem; margin: 4px 0px 0px 11px; text-align: center; color: white;">inactive</p>
+                                    </div>
+                                  <?php }
+                                  ?>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-12 grid-margin">
+
+                      <div class="col-lg-9 col-sm-12 grid-margin">
                         <div class="card">
                           <div class="card-body">
                             <h4 class="card-title">Personal Information</h4>
@@ -363,13 +394,10 @@ if (!isset($_SESSION['AD_number'])) {
                         </div>
                       </div>
                     </div>
+
                   </div>
                 </div>
               </div>
-            </div>
-            <div style="text-align: center;">
-              <a class="btn btn-primary me-2" href="editFaculty.php?F_number=<?php echo $_GET['F_number'] ?>">Edit</a>
-              <button class="btn btn-light">Back</button>
             </div>
           </div>
         </div>

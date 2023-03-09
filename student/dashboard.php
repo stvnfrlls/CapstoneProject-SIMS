@@ -1,5 +1,6 @@
 <?php
 require_once("../assets/php/server.php");
+include('../assets/phpqrcode/qrlib.php');
 
 if (!isset($_SESSION['SR_number'])) {
   header('Location: ../auth/login.php');
@@ -14,6 +15,34 @@ if (!isset($_SESSION['SR_number'])) {
     $getAdvisorInfo = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$SectionInfo['S_adviser']}'");
     $AdvisorInfo = $getAdvisorInfo->fetch_assoc();
   }
+
+  $getReminderNotification = $mysqli->query("SELECT * FROM reminders 
+                                            WHERE forsection = '{$studentInfo['SR_section']}' 
+                                            AND acadYear = '{$currentSchoolYear}'
+                                            AND reminderID 
+                                            NOT IN (SELECT reminderID FROM reminder_status)");
+  if (mysqli_num_rows($getReminderNotification) > 0) {
+    // showSweetAlert('You have ' . mysqli_num_rows($getReminderNotification) . ' unviewed notification', 'info');
+    $reminderCounter = mysqli_num_rows($getReminderNotification);
+    echo <<<EOT
+      <script>
+          document.addEventListener("DOMContentLoaded", function(event) { 
+              swal.fire({
+                  text: 'You have {$reminderCounter} unviewed notification',
+                  showDenyButton: true,
+                  confirmButtonText: 'View reminders',
+                  denyButtonText: 'Not now',
+              }).then((result) => {
+                  if (result.isConfirmed) {
+                    window.location.href = 'reminders.php';
+                  } else {
+                    Swal.fire('View reminders when ready', '', 'info')
+                  }
+              });
+          });
+      </script>
+    EOT;
+  }
 }
 ?>
 <!DOCTYPE html>
@@ -21,13 +50,13 @@ if (!isset($_SESSION['SR_number'])) {
 
 <head>
   <meta charset="utf-8">
-  <title>Student - Dashboard</title>
+  <title>Dashboard</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta content="" name="keywords">
   <meta content="" name="description">
 
   <!-- Favicon -->
-  <link href="img/favicon.ico" rel="icon">
+  <link href="../assets/img/favicon.png" rel="icon">
 
   <!-- Google Web Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,6 +72,9 @@ if (!isset($_SESSION['SR_number'])) {
   <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
   <link href="../assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
 
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <link href="../assets/css/sweetAlert.css" rel="stylesheet">
+
   <!-- Customized Bootstrap Stylesheet -->
   <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
@@ -50,21 +82,20 @@ if (!isset($_SESSION['SR_number'])) {
   <link href="../assets/css/style.css" rel="stylesheet">
   <link href="../assets/css/dashboard-user.css" rel="stylesheet">
   <link href="../assets/css/admin/style.css" rel="stylesheet">
-  <link href="../assets/css/educ/main.css" rel="stylesheet">
 </head>
 
 <body>
   <!-- Navbar Start -->
   <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
-    <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:400px;" alt="Icon">
+    <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
   </nav>
   <!-- Navbar End -->
 
   <!-- Navbar Start -->
-  <nav class="navbar navbar-expand-lg bg-dark navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
+  <nav class="navbar navbar-expand-lg bg-dark sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
 
     <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-      <span class="navbar-toggler-icon"></span>
+      <span class="fa fa-bars" style="color: white;"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <style>
@@ -82,16 +113,18 @@ if (!isset($_SESSION['SR_number'])) {
         <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
         <a href="" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
         <div class="nav-item dropdown">
-          <a href="#" class="nav-item nav-link" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Dashboard <i class="fa fa-caret-down"></i></a>
+          <a href="#" class="nav-item nav-link" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Menu <i class="fa fa-caret-down"></i></a>
           <div class="dropdown-menu bg-dark border-0 m-0">
+            <a href="../student/dashboard.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Dashboard</a>
             <a href="../student/profile.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Profile</a>
-            <a href="../student/grades.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Grades</a>
+            <a href="../student/grades.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Report Card</a>
             <a href="../student/dailyAttendance.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Attendance</a>
             <a href="../student/reminders.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Reminders</a>
             <a href="../student/announcement.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">School Announcements</a>
+            <a href="../auth/logout.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Logout</a>
           </div>
         </div>
-        <a href="" class="nav-item nav-link" style="color: white; font-size: 14px;">Contact Us</a>
+        <a href="" class="nav-item nav-link" style="color: white; font-size: 14px;">Faculty Directory</a>
       </div>
     </div>
   </nav>
@@ -100,7 +133,7 @@ if (!isset($_SESSION['SR_number'])) {
   <div class="content-wrapper">
     <div class="row">
       <div class="col-sm-12 col-lg-12">
-        <div class="home-tab">
+        <div class="home-tab" style="margin-top: 0px !important;">
 
           <div class="tab-content tab-content-basic">
             <div class="tab-pane fade show active" id="overview">
@@ -118,10 +151,17 @@ if (!isset($_SESSION['SR_number'])) {
                           <div class="card-body">
                             <div class="row">
                               <div class="col-4">
-                                <img src="../assets/img/profile.jpg" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
+                                <?php
+                                $profile_path = "../assets/img/profile/" . $studentInfo['SR_profile_img'];
+                                if (empty($studentInfo['SR_profile_img']) || !file_exists($profile_path)) { ?>
+                                  <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
+                                <?php } else { ?>
+                                  <img src="../assets/img/profile/<?php echo $studentInfo['SR_profile_img'] ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 200px;">
+                                <?php }
+                                ?>
                               </div>
                               <div class="col-8" style="align-self: center;">
-                                <h3 style="margin-bottom: 8px;"><?php echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix']; ?></h3>
+                                <h3 style="margin-bottom: 8px; text-align:left;"><?php echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix']; ?></h3>
                                 <p style="margin-bottom: 2px;"><?php echo $studentInfo['SR_number'] ?></p>
                                 <p style="margin-bottom: 2px;"><?php echo "Grade " . $studentInfo['SR_grade'] . " - " . $studentInfo['SR_section'] ?></p>
                                 <p style="margin-bottom: 2px;">
@@ -129,7 +169,7 @@ if (!isset($_SESSION['SR_number'])) {
                                   if (!empty($SectionInfo['S_adviser'])) {
                                     echo $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'] . " " . substr($AdvisorInfo['F_mname'], 0, 1) . ". " . $AdvisorInfo['F_suffix'];
                                   } else {
-                                    echo "Advisor not yet Assigned";
+                                    echo "Advisor not yet assigned";
                                   }
                                   ?>
                                 </p>
@@ -215,7 +255,7 @@ if (!isset($_SESSION['SR_number'])) {
                           <a href="../student/profile.php">
                             <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Profile</h3>
                           </a>
-                          <p class="d-flex flex-shrink-0 text-center">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
+                          <p class="d-flex flex-shrink-0 text-center">Information about the user's account or identity.</p>
                         </div>
                       </div>
                     </div>
@@ -225,10 +265,12 @@ if (!isset($_SESSION['SR_number'])) {
                           <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
                             <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-qrcode"></i></h1>
                           </div>
-                          <a href="">
+                          <!-- <a id="viewQR"> -->
+                          <a onclick="openImage()">
+
                             <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">QR Code</h3>
                           </a>
-                          <p class="d-flex flex-shrink-0 text-center">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
+                          <p class="d-flex flex-shrink-0 text-center">A digital code that can be scanned for information.</p>
                         </div>
                       </div>
                     </div>
@@ -241,7 +283,7 @@ if (!isset($_SESSION['SR_number'])) {
                           <a href="../student/dailyAttendance.php">
                             <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Attendance</h3>
                           </a>
-                          <p class="d-flex flex-shrink-0 text-center">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
+                          <p class="d-flex flex-shrink-0 text-center">Record of user's presence/absence in class/work.</p>
                         </div>
                       </div>
                     </div>
@@ -254,13 +296,12 @@ if (!isset($_SESSION['SR_number'])) {
                           <a href="../student/grades.php">
                             <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Grades</h3>
                           </a>
-                          <p class="d-flex flex-shrink-0 text-center">Amet justo dolor lorem kasd amet magna sea stet eos vero lorem ipsum dolore sed</p>
+                          <p class="d-flex flex-shrink-0 text-center">Evaluation of a user's performance or achievement.</p>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div class="row">
-
                     <div class="row">
                       <div class="col-lg-6 offset-lg-3" style="margin-top: 30px;">
                         <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
@@ -269,7 +310,11 @@ if (!isset($_SESSION['SR_number'])) {
                       </div>
                       <div class="row" style="margin: auto;">
                         <?php
-                        $getReminderData = $mysqli->query("SELECT * FROM reminders WHERE forsection = '{$studentInfo['SR_section']}' AND acadYear = '{$currentSchoolYear}'");
+                        $getReminderData = $mysqli->query("SELECT * FROM reminders 
+                                                          WHERE forsection = '{$studentInfo['SR_section']}' 
+                                                          AND acadYear = '{$currentSchoolYear}'
+                                                          ORDER BY deadline DESC
+                                                          LIMIT 4");
 
                         if ($getReminderData->num_rows > 0) {
                           while ($reminders = $getReminderData->fetch_assoc()) { ?>
@@ -296,11 +341,8 @@ if (!isset($_SESSION['SR_number'])) {
                                     </p>
                                   </div>
                                   <div class="col-12">
-                                    <a class="posts-title" href="viewreminders.php?rmdID=<?php echo $reminders['reminderID'] ?>">
-                                      <h3><?php echo $reminders['header'] ?></h3>
-                                    </a>
                                     <p>Subject: <?php echo $reminders['subject'] ?></p>
-                                    <p class="excert">
+                                    <p class="excert text-truncate"
                                       <?php
                                       if (empty($reminders['msg'])) {
                                         echo "No description";
@@ -310,7 +352,7 @@ if (!isset($_SESSION['SR_number'])) {
                                       ?>
                                     </p>
                                     <div class="text-center">
-                                      <a href="viewreminders.php?rmdID=<?php echo $reminders['reminderID'] ?>" class="primary-btn">View More</a>
+                                      <a href="viewreminders.php?ID=<?php echo $reminders['reminderID'] ?>" class="primary-btn">View More</a>
                                     </div>
                                   </div>
                                 </div>
@@ -339,31 +381,45 @@ if (!isset($_SESSION['SR_number'])) {
                       <div class="section-title section-title-sm position-relative pb-3 mb-4">
                         <h3 class="mb-0" style="text-align:left;">School Announcements</h3>
                       </div>
-
                       <?php
-                      $getAnnouncementData = $mysqli->query("SELECT * FROM announcement");
-
-                      while ($announcement = $getAnnouncementData->fetch_assoc()) { ?>
+                      $getAnnouncementData = $mysqli->query("SELECT * FROM announcement ORDER BY date_posted DESC LIMIT 5");
+                      if (mysqli_num_rows($getAnnouncementData) > 0) {
+                        while ($announcement = $getAnnouncementData->fetch_assoc()) { ?>
+                          <div class="col-lg-12 wow " style="padding-bottom: 5px;">
+                            <div class="blog-item bg-light rounded overflow-hidden">
+                              <div class="p-4">
+                                <div class="d-flex mb-3">
+                                  <small class="me-3"><i class="far fa-user text-primary me-2"></i>
+                                    <?php
+                                    $getAuthorInfo = $mysqli->query("SELECT * FROM admin_accounts WHERE AD_number = '{$announcement['author']}'");
+                                    $AuthorInfo = $getAuthorInfo->fetch_assoc();
+                                    echo $AuthorInfo['AD_name']
+                                    ?>
+                                  </small>
+                                  <small><i class="far fa-calendar-alt text-primary me-2"></i><?php echo $announcement['date']; ?></small>
+                                </div>
+                                <h4 class="mb-3"><?php echo $announcement['header']; ?></h4>
+                                <p class="text-truncate"><?php echo $announcement['msg']; ?></p>
+                                <a class="text-uppercase" href="viewannouncement.php?ID=<?php echo $announcement['ANC_ID']; ?>">Read More <i class="bi bi-arrow-right"></i></a>
+                              </div>
+                            </div>
+                          </div>
+                        <?php } ?>
+                        <section class="popular-courses-area courses-page">
+                          <div style="text-align: center;">
+                            <a href="announcement.php" class="primary-btn text-uppercase" style="width: auto;">View More School Announcements</a>
+                          </div>
+                        </section>
+                      <?php } else { ?>
                         <div class="col-lg-12 wow " style="padding-bottom: 5px;">
                           <div class="blog-item bg-light rounded overflow-hidden">
-                            <div class="p-4">
-                              <div class="d-flex mb-3">
-                                <small class="me-3"><i class="far fa-user text-primary me-2"></i><?php echo $announcement['author']; ?></small>
-                                <small><i class="far fa-calendar-alt text-primary me-2"></i><?php echo $announcement['date']; ?></small>
-                              </div>
-                              <h4 class="mb-3"><?php echo $announcement['header']; ?></h4>
-                              <p><?php echo $announcement['msg']; ?></p>
-                              <a class="text-uppercase" href="viewannouncement.php?postID=<?php echo $announcement['ANC_ID']; ?>">Read More <i class="bi bi-arrow-right"></i></a>
+                            <div class="p-4 text-center">
+                              <h4>NO ANNOUNCEMENT YET</h4>
                             </div>
                           </div>
                         </div>
                       <?php }
                       ?>
-                      <section class="popular-courses-area courses-page">
-                        <div style="text-align: center;">
-                          <a href="#" class="primary-btn text-uppercase" style="width: auto;">View More School Announcements</a>
-                        </div>
-                      </section>
                     </div>
                   </div>
                 </div>
@@ -377,44 +433,7 @@ if (!isset($_SESSION['SR_number'])) {
 
   <!-- Footer Start -->
   <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
-    <div class="container py-5">
-      <div class="row g-5">
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Address</h3>
-          <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
-          <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
-          <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>di ko alam email</p>
-          <div class="d-flex pt-2">
-            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
-            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
-            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
-            <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Quick Links</h3>
-          <a class="btn btn-link" href="">Home</a>
-          <a class="btn btn-link" href="">About Us</a>
-          <a class="btn btn-link" href="">Academics</a>
-          <a class="btn btn-link" href="">Admission</a>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Useful Links</h3>
-          <a class="btn btn-link" href="">DepEd</a>
-          <a class="btn btn-link" href="">Pag Asa</a>
-          <a class="btn btn-link" href="">City of San Pedro</a>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Newsletter</h3>
-          <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-          <div class="position-relative mx-auto" style="max-width: 400px;">
-            <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-            <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="container-fluid copyright">
+    <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
       <div class="container">
         <div class="row">
           <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
@@ -446,15 +465,39 @@ if (!isset($_SESSION['SR_number'])) {
   <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/js/admin/dashboard.js"></script>
 
-  <script src="../assets/js/eduwell/isotope.min.js"></script>
-  <script src="../assets/js/eduwell/owl-carousel.js"></script>
-  <script src="../assets/js/eduwell/lightbox.js"></script>
-  <script src="../assets/js/eduwell/tabs.js"></script>
-  <script src="../assets/js/eduwell/video.js"></script>
-  <script src="../assets/js/eduwell/slick-slider.js"></script>
-  <script src="../assets/js/eduwell/custom.js"></script>
-  <script src="../assets/js/startup/main.js"></script>
+  <?php
+  $getQRData = $mysqli->query("SELECT SR_number FROM studentrecord WHERE SR_number = '{$_SESSION['SR_number']}'");
+  if (mysqli_num_rows($getQRData) == 1) {
+    $QRData =  $getQRData->fetch_assoc();
 
+    $tempDir = '../assets/temp/';
+    if (!file_exists($tempDir)) {
+      mkdir($tempDir);
+    }
+    $qrcode_data = $QRData['SR_number'];
+    QRcode::png($qrcode_data,  $tempDir . '' . $qrcode_data . '.png', QR_ECLEVEL_L);
+  }
+  ?>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+  <!-- <script>
+    const viewQR = document.querySelector("#viewQR");
+
+    viewQR.addEventListener("click", function() {
+      Swal.fire({
+        imageUrl: '<?php echo "../assets/temp/" . $QRData['SR_number'] . ".png"; ?>',
+      })
+    });
+  </script> -->
+  <script>
+    function openImage() {
+      var width = window.innerWidth * 0.8; // calculate the width of the new window
+      var height = window.innerHeight * 0.8; // calculate the height of the new window
+      var left = (window.innerWidth - width) / 2; // calculate the horizontal position of the new window
+      var top = (window.innerHeight - height) / 2; // calculate the vertical position of the new window
+      var features = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top; // specify the features of the new window
+      var image = window.open("<?php echo "../assets/temp/" . $QRData['SR_number'] . ".png"; ?>", "Image", features); // open the new window and display the image inside it
+    }
+  </script>
 </body>
 
 </html>

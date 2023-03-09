@@ -4,7 +4,7 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['F_number'])) {
   header('Location: ../auth/login.php');
 } else {
-  $getWorkSchedule = $mysqli->query("SELECT acadYear, SR_grade, SR_section, S_subject FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
+  $getWorkSchedule = $mysqli->query("SELECT DISTINCT SR_grade, SR_section FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
   $array_GradeSection = array();
   array_unshift($array_GradeSection, null);
 
@@ -83,12 +83,6 @@ if (!isset($_SESSION['F_number'])) {
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../faculty/createReminder.php">
-              <i class=""></i>
-              <span class="menu-title">Create Reminders</span>
-            </a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="../faculty/reminders.php">
               <i class=""></i>
               <span class="menu-title">Reminders</span>
@@ -105,7 +99,7 @@ if (!isset($_SESSION['F_number'])) {
           <li class="nav-item">
             <a class="nav-link" href="../faculty/advisoryPage.php">
               <i class=""></i>
-              <span class="menu-title">Advisory</span>
+              <span class="menu-title">Advisory Class</span>
             </a>
           </li>
           <li class="nav-item">
@@ -160,15 +154,24 @@ if (!isset($_SESSION['F_number'])) {
                             <div style="margin-bottom: 30px;">
                               <div class="btn-group">
                                 <div>
-                                  <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">Academic Year
+                                  <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                                    <?php
+                                    if (isset($_GET['SY'])) {
+                                      echo "School Year: " . $_GET['SY'];
+                                    } else {
+                                      echo "School Year: " . $currentSchoolYear;
+                                    }
+                                    ?>
                                     <i class="fa fa-caret-down"></i>
                                   </button>
                                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                     <?php
                                     $getAcadYears = $mysqli->query("SELECT DISTINCT acadYear FROM classlist WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
-                                    while ($acadYears = $getAcadYears->fetch_assoc()) { ?>
-                                      <a class="dropdown-item" href="classlist.php?SY=<?php echo $acadYears['acadYear'] ?>"><?php echo $acadYears['acadYear'] ?></a>
-                                    <?php }
+                                    while ($acadYears = $getAcadYears->fetch_assoc()) {
+                                      if ($acadYears['acadYear'] != $currentSchoolYear) {
+                                        echo '<a class="dropdown-item" href="classlist.php?SY=' . $acadYears['acadYear'] . '">' . $acadYears['acadYear'] . '</a>';
+                                      }
+                                    }
                                     ?>
                                   </div>
                                 </div>
@@ -176,7 +179,11 @@ if (!isset($_SESSION['F_number'])) {
                               <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
                                 <?php
                                 if (isset($_GET['Grade']) && isset($_GET['Section'])) {
-                                  echo "Grade " . $_GET['Grade'] . " - " . $_GET['Section'];
+                                  if ($_GET['Grade'] == 'KINDER') {
+                                    echo $_GET['Grade'] . " - " . $_GET['Section'];
+                                  } else {
+                                    echo "Grade " . $_GET['Grade'] . " - " . $_GET['Section'];
+                                  }
                                 } else {
                                   echo "Grade and Section ";
                                 }
@@ -189,7 +196,14 @@ if (!isset($_SESSION['F_number'])) {
                                 $GradeSectionRowCount = sizeof($array_GradeSection);
                                 while ($rowCount != $GradeSectionRowCount) { ?>
                                   <a class="dropdown-item" href="<?php echo "classList.php?Grade=" . $array_GradeSection[$rowCount]['SR_grade'] . "&Section=" . $array_GradeSection[$rowCount]['SR_section']; ?>">
-                                    <?php echo "Grade " . $array_GradeSection[$rowCount]['SR_grade'] . "-" . $array_GradeSection[$rowCount]['SR_section'] . " (" . $array_GradeSection[$rowCount]['acadYear'] . ")"; ?>
+                                    <?php
+                                    if ($array_GradeSection[$rowCount]['SR_grade'] == "KINDER") {
+                                      echo $array_GradeSection[$rowCount]['SR_grade'] . "-" . $array_GradeSection[$rowCount]['SR_section'];
+                                    } else {
+                                      echo "Grade " . $array_GradeSection[$rowCount]['SR_grade'] . "-" . $array_GradeSection[$rowCount]['SR_section'];
+                                    }
+
+                                    ?>
                                   </a>
                                 <?php $rowCount++;
                                 }
@@ -228,9 +242,9 @@ if (!isset($_SESSION['F_number'])) {
                                       <?php
                                     } else {
                                       if (isset($_GET['SY'])) {
-                                        $getClassList = $mysqli->query("SELECT * FROM classlist WHERE SR_grade = '{$_GET['Grade']}' AND acadYear = '{$_GET['SY']}'");
+                                        $getClassList = $mysqli->query("SELECT * FROM classlist WHERE SR_grade = '{$_GET['Grade']}' AND SR_section = '{$_GET['Section']}' AND acadYear = '{$_GET['SY']}'");
                                       } else {
-                                        $getClassList = $mysqli->query("SELECT * FROM classlist WHERE SR_grade = '{$_GET['Grade']}' AND acadYear = '{$currentSchoolYear}'");
+                                        $getClassList = $mysqli->query("SELECT * FROM classlist WHERE SR_grade = '{$_GET['Grade']}' AND SR_section = '{$_GET['Section']}' AND acadYear = '{$currentSchoolYear}'");
                                       }
 
                                       if (mysqli_num_rows($getClassList) > 0) {
@@ -283,44 +297,7 @@ if (!isset($_SESSION['F_number'])) {
 
   <!-- Footer Start -->
   <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
-    <div class="container py-5">
-      <div class="row g-5">
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Address</h3>
-          <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Phase 1A, Pacita Complex 1, San Pedro City, Laguna 4023</p>
-          <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+63 919 065 6576</p>
-          <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>customerservice@cdsp.edu.ph</p>
-          <div class="d-flex pt-2">
-            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-twitter"></i></a>
-            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-facebook-f"></i></a>
-            <a class="btn btn-square btn-outline-body me-1" href=""><i class="fab fa-youtube"></i></a>
-            <a class="btn btn-square btn-outline-body me-0" href=""><i class="fab fa-linkedin-in"></i></a>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Quick Links</h3>
-          <a class="btn btn-link" href="">Home</a>
-          <a class="btn btn-link" href="">About Us</a>
-          <a class="btn btn-link" href="">Academics</a>
-          <a class="btn btn-link" href="">Admission</a>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Useful Links</h3>
-          <a class="btn btn-link" href="">DepEd</a>
-          <a class="btn btn-link" href="">Pag Asa</a>
-          <a class="btn btn-link" href="">City of San Pedro</a>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <h3 class="text-light mb-4">Newsletter</h3>
-          <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-          <div class="position-relative mx-auto" style="max-width: 400px;">
-            <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-            <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="container-fluid copyright">
+    <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
       <div class="container">
         <div class="row">
           <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
