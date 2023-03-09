@@ -311,15 +311,16 @@ if (!isset($_SESSION['F_number'])) {
                                                                             <h3 style="text-align:left;">Notifs</h3>
                                                                         </div>
                                                                         <?php
-                                                                        $getreminderNotifs = $mysqli->query("SELECT * FROM reminder_status WHERE author = '{$_SESSION['F_number']}' AND rmd_status IS NOT NULL ORDER BY viewed_date DESC");
+                                                                        $getreminderNotifs = $mysqli->query("SELECT * FROM reminder_status WHERE author = '{$_SESSION['F_number']}' AND viewed_date IS NOT NULL ORDER BY viewed_date DESC");
                                                                         if (mysqli_num_rows($getreminderNotifs) > 0) {
                                                                             while ($reminderNotifs = $getreminderNotifs->fetch_assoc()) {
                                                                                 $getStudentName = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$reminderNotifs['SR_number']}'");
                                                                                 $studentName = $getStudentName->fetch_assoc(); ?>
                                                                                 <div class="border-bottom">
                                                                                     <p>
-                                                                                        <?php echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] ?>
-                                                                                        <span>has viewed your reminder.</span></span>
+                                                                                        <?php echo $studentName['SR_lname'] .  ", " . $studentName['SR_fname'] ?>
+                                                                                        <span>has viewed your reminder.</span><br>
+                                                                                        <?php echo $reminderNotifs['viewed_date'] ?>
                                                                                     </p>
                                                                                 </div>
                                                                             <?php }

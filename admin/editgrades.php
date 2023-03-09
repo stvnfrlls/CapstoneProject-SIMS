@@ -430,12 +430,17 @@ if (!isset($_SESSION['AD_number'])) {
                                               }
                                               if (!empty($gradeHolder)) {
                                                 echo "<input type='hidden' name='row[]' value='" .  $subjectHeaderCount . "'>";
-                                                echo "<input type='hidden' name='subject[]' value='" .  $Grade['G_learningArea'] . "'>";
                                                 echo "<input type='hidden' name='SR_number[]' value = '" . $classList['SR_number'] . "'>";
-                                                echo "<td class='cell expand-maximum-on-hover'><input type='number' maxlength='2' class='form-control text-center' name='grade[]' value='" . $gradeHolder . "'></td>";
+                                                if (isset($Grade['G_learningArea'])) {
+                                                  echo "<input type='hidden' name='subject[]' value='" .  $Grade['G_learningArea'] . "'>";
+                                                  echo "<td class='cell expand-maximum-on-hover'><input type='number' maxlength='2' class='form-control text-center' name='grade[]' value='" . $gradeHolder . "'></td>";
+                                                } else {
+                                                  echo "<input type='hidden' name='subject[]'>";
+                                                  echo "<td class='cell expand-maximum-on-hover'><input type='number' maxlength='2' class='form-control text-center' name='grade[]'></td>";
+                                                }
                                               } else {
                                                 echo "<input type='hidden' name='row[]' value='" .  $subjectHeaderCount . "'>";
-                                                echo "<input type='hidden' name='subject[]'>";
+                                                echo "<input type='hidden' name='subject[]' value='" .  $Grade['G_learningArea'] . "'>";
                                                 echo "<input type='hidden' name='SR_number[]'>";
                                                 echo "<td class='cell expand-maximum-on-hover'><input type='number' maxlength='2' class='form-control text-center' name='grade[]'></td>";
                                               }

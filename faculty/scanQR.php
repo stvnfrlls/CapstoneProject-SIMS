@@ -245,18 +245,6 @@ if (!isset($_SESSION['F_number'])) {
     <!-- Footer End -->
 
 </body>
-<script>
-    function showreasons() {
-        var checkBox = document.getElementById("noFetcher");
-        var reason = document.getElementById("reason");
-
-        if (checkBox.checked == true) {
-            reason.style.display = "block";
-        } else {
-            reason.style.display = "none";
-        }
-    }
-</script>
 
 <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
 <script>
@@ -291,7 +279,7 @@ if (!isset($_SESSION['F_number'])) {
                             document.getElementById('qr_form').submit();
                         })
                     }
-                })
+                });
             } else if (NOTtimedOUT.some(content => content.SR_number === input)) {
                 Swal.fire({
                     title: 'Student ready to go home?',
@@ -301,6 +289,11 @@ if (!isset($_SESSION['F_number'])) {
                         document.getElementById('qr_form').submit();
                     }
                 })
+            } else {
+                Swal.fire({
+                    title: 'Student already timed out',
+                    confirmButtonText: 'Proceed',
+                });
             }
         }
     });
