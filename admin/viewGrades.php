@@ -99,7 +99,7 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                             <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
                         </a>
                     </li>
- 
+
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
@@ -213,35 +213,54 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                 <div class="tab-content tab-content-basic">
                                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                                         <div class="row">
-                                            <div class="row">
-                                                <div class="col m-3">
-                                                    <table id="head" class="table" style="margin-bottom:20px;">
-                                                        <tr>
-                                                            <td class="hatdog" style="text-align: left;">Name: <?php echo $studentData['SR_lname'] . ", " . $studentData['SR_fname'] . " " . substr($studentData['SR_mname'], 0, 1) ?></td>
-                                                            <td class="hatdog" style="text-align: left;">Student Number: <?php echo $studentData['SR_number']; ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="hatdog" style="text-align: left;">
-                                                                <?php
-                                                                if (isset($GradeSectionData['S_yearLevel']) && isset($GradeSectionData['S_name'])) {
-                                                                    echo "Grade and Section: " . $GradeSectionData['S_yearLevel'] . " - " . $GradeSectionData['S_name'];
-                                                                } else {
-                                                                    echo "Grade and Section: ";
-                                                                }
-                                                                ?>
-                                                            </td>
-                                                            <td class="hatdog" style="text-align: left;">
-                                                                <?php
-                                                                if (isset($FacultyData['F_lname'])) {
-                                                                    echo "Adviser: " . $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1);
-                                                                } else {
-                                                                    echo "Adviser: ";
-                                                                }
-                                                                ?>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                    <div class="">
+                                            <div class="col-sm-12 col-lg-8 grid-margin">
+                                                <div class="card">
+                                                    <div class="card-body" style="text-align: left;">
+                                                        <div class="row">
+                                                            <div class="col-sm-12 col-lg-6">
+                                                                <p>
+                                                                    Name: <?php echo $studentData['SR_lname'] . ", " . $studentData['SR_fname'] . " " . substr($studentData['SR_mname'], 0, 1) ?>
+                                                                </p>
+                                                            </div>
+                                                            <div class="col-sm-12 col-lg-6">
+                                                                <p>Student Number: <?php echo $studentData['SR_number']; ?>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-12 col-lg-6">
+                                                                <p>
+                                                                    <?php
+                                                                    if (isset($GradeSectionData['S_yearLevel']) && isset($GradeSectionData['S_name'])) {
+                                                                        echo "Grade and Section: " . $GradeSectionData['S_yearLevel'] . " - " . $GradeSectionData['S_name'];
+                                                                    } else {
+                                                                        echo "Grade and Section: ";
+                                                                    }
+                                                                    ?>
+                                                                </p>
+                                                            </div>
+                                                            <div class="col-sm-12 col-lg-6">
+
+                                                                <p>
+                                                                    <?php
+                                                                    if (isset($FacultyData['F_lname'])) {
+                                                                        echo "Adviser: " . $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1);
+                                                                    } else {
+                                                                        echo "Adviser: ";
+                                                                    }
+                                                                    ?>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="card grid-margin">
+                                                    <div class="card-body">
                                                         <div class="table-responsive">
                                                             <table class="table text-center">
                                                                 <thead>
@@ -373,7 +392,11 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                                         </div>
                                                     </div>
 
-                                                    <div class="">
+
+                                                </div>
+
+                                                <div class="card grid-margin">
+                                                    <div class="card-body">
                                                         <div class="table-responsive">
                                                             <table class="table text-center" style="margin-top: 30px;">
                                                                 <thead>
@@ -481,8 +504,10 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                                             </div>
                                                         </div>
                                                     </div>
+                                                </div>
 
-                                                    <div class="">
+                                                <div class="card grid-margin">
+                                                    <div class="card-body">
                                                         <div class="table-responsive">
                                                             <table class="table text-center">
                                                                 <thead>
@@ -599,6 +624,7 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
