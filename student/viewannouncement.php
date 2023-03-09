@@ -140,7 +140,7 @@ if (!isset($_SESSION['SR_number'])) {
                         </li>
                         <li>
                             <a class="justify-content-between d-flex" href="#">
-                                <p>Date and Time</p>
+                                <p>Date of the Event</p>
                                 <span><?php echo $announcement['date'] ?></span>
                             </a>
                         </li>
@@ -153,13 +153,15 @@ if (!isset($_SESSION['SR_number'])) {
     <section class="popular-courses-area section-gap courses-page">
         <div class="container">
             <div class="row d-flex justify-content-center">
-                <div class="menu-content pb-70 col-lg-8">
+                <div class="menu-content">
                     <div class="title text-center">
-                        <h1 class="mb-10">School Announcements</h1>
+                        <div class="section-title section-title-sm position-relative pb-3 mb-4">
+                            <h1 style="color: #c02628">More School Announcements</h1>
+                        </div>
                         <?php
                         $getOtherAnnouncementData = $mysqli->query("SELECT * FROM announcement WHERE ANC_ID != '{$_GET['ID']}'");
                         if (mysqli_num_rows($getOtherAnnouncementData) > 0) {
-                            echo '<p>more announcements</p>';
+                            echo '<p></p>';
                         } else {
                             echo '<p>No more announcements</p>';
                         }
@@ -172,16 +174,21 @@ if (!isset($_SESSION['SR_number'])) {
                 if (mysqli_num_rows($getOtherAnnouncementData) > 0) {
                     while ($OtherAnnouncement = $getOtherAnnouncementData->fetch_assoc()) { ?>
                         <div class="single-popular-carusel col-lg-3 col-md-6">
-                            <div class="details">
-                                <a href="viewannouncement.php?ID=<?php echo $OtherAnnouncement['ANC_ID'] ?>">
-                                    <h4><?php echo $OtherAnnouncement['header'] ?></h4>
-                                </a>
-                                <div class="d-flex mb-3">
-                                    <small class="me-3"><i class="far fa-user text-primary me-2"></i><?php echo $OtherAnnouncement['author'] ?></small>
-                                    <small><i class="far fa-calendar-alt text-primary me-2"></i><?php echo $OtherAnnouncement['date'] ?></small>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="details">
+                                        <a href="viewannouncement.php?ID=<?php echo $OtherAnnouncement['ANC_ID'] ?>">
+                                            <h4><?php echo $OtherAnnouncement['header'] ?></h4>
+                                        </a>
+                                        <div class="d-flex mb-3">
+                                            <small class="me-3"><i class="far fa-user text-primary me-2"></i><?php echo $OtherAnnouncement['author'] ?></small>
+                                            <small><i class="far fa-calendar-alt text-primary me-2"></i><?php echo $OtherAnnouncement['date'] ?></small>
+                                        </div>
+                                        <p class="text-truncate"><?php echo $OtherAnnouncement['msg'] ?></p>
+                                    </div>
                                 </div>
-                                <p><?php echo $OtherAnnouncement['msg'] ?></p>
                             </div>
+
                         </div>
                 <?php }
                 }

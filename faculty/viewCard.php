@@ -213,7 +213,7 @@ if (!isset($_SESSION['F_number'])) {
                             <a href="viewCard.php?ID=<?php echo $next ?>" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3; text-align:center; font-size: 13px; float: right;">Next <i class="fa fa-angle-double-right"></i></a>
                           </div>
                           <div class="row">
-                            <div class="col-sm-12 col-lg-6 grid-margin">
+                            <div class="col-sm-12 col-lg-8 grid-margin">
                               <div class="card">
                                 <div class="card-body" style="text-align: left;">
                                   <div class="row">

@@ -376,7 +376,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-12 col-lg-6 grid-margin">
+                                            <div class="col-sm-12 col-lg-6 grid-margin" >
                                                 <div class="row">
                                                     <div class="col-sm-12 col-lg-4 grid-margin" style="align-content:space-between;">
                                                         <div class="card" style="height: 200px">
