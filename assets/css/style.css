@@ -708,15 +708,16 @@ table tr:nth-child(odd) {
 }
 
 #remarkshead{
-  width: 65%;
+  width: 75%;
   color:black;
   font-size:15px;
 }
 
 #remarks{
-  width: 65%;
+  width: 75%;
   color:black;
   font-size:14px;
+  text-align: left;
 }
 
 #ave{
