@@ -178,7 +178,7 @@ if (empty($_SESSION['F_number'])) {
                                         <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
                                             <nav class="nav">
                                                 <a class="nav-link active ms-0" href="viewStudent.php?ID=<?php echo $_GET['ID'] ?>" style="color: #c02628;">Profile</a>
-                                                <a class="nav-link" href="viewCard.php?ID=<?php echo $_GET['ID'] ?>">Grades</a>
+                                                <a class="nav-link" href="viewCard.php?ID=<?php echo $_GET['ID'] ?>">Report Card</a>
                                             </nav>
                                             <div class="border-bottom"></div>
                                         </div>
@@ -502,8 +502,6 @@ if (empty($_SESSION['F_number'])) {
     </div>
     <!-- Footer End -->
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
     <!-- JavaScript Libraries -->
 
