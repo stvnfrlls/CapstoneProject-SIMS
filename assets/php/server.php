@@ -950,7 +950,7 @@ if (isset($_POST['addCurr']) && !empty($_SESSION['AD_number'])) {
             }
             $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
             $AdminName = $getAdminName->fetch_assoc();
-            $AD_action = "added subject " . $subjectName . " WITH MIN LEVEL " . $minYearLevel . " AND " . $maxYearLevel;
+            $AD_action = "added subject " . $_POST['AddsbjName'] . " WITH MIN LEVEL " . $minYearLevel . " AND " . $maxYearLevel;
             $currentDate = date('Y-m-d H:i:s');
             $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
                                     VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
