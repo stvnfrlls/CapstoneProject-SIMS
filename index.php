@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "..\assets\php\server.php";
+require_once __DIR__ . "/assets/php/server.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -97,17 +97,7 @@ require_once __DIR__ . "..\assets\php\server.php";
                             <div class="col-10 col-lg-8">
                                 <h1 style="font-size: 70px;" class="display-1 text-white animated slideInDown">Colegio De San Pedro, Inc.</h1>
                                 <p class="fs-5 fw-medium text-white mb-4 pb-3">"Honing Minds, Transforming Lives"</p>
-                                <?php
-                                if (isset($_SESSION['SR_number'])) {
-                                    echo '<a href="student\dashboard.php" class="btn btn-primary py-3 px-5 animated slideInLeft">Dashboard</a>';
-                                } elseif (isset($_SESSION['F_number'])) {
-                                    echo '<a href="faculty\dashboard.php" class="btn btn-primary py-3 px-5 animated slideInLeft">Dashboard</a>';
-                                } elseif (isset($_SESSION['AD_number'])) {
-                                    echo '<a href="admin\dashboard.php" class="btn btn-primary py-3 px-5 animated slideInLeft">Dashboard</a>';
-                                } else {
-                                    echo '<a href="auth\login.php" class="btn btn-primary py-3 px-5 animated slideInLeft">Login</a>';
-                                }
-                                ?>
+                                <a href="auth\login.php" class="btn btn-primary py-3 px-5 animated slideInLeft">Login</a>
                             </div>
                         </div>
                     </div>
@@ -121,17 +111,7 @@ require_once __DIR__ . "..\assets\php\server.php";
                             <div class="col-10 col-lg-8">
                                 <h1 style="font-size: 70px;" class="display-1 text-white animated slideInDown">Colegio De San Pedro, Inc.</h1>
                                 <p class="fs-5 fw-medium text-white mb-4 pb-3">"Honing Minds, Transforming Lives"</p>
-                                <?php
-                                if (isset($_SESSION['SR_number'])) {
-                                    echo '<a href="student\dashboard.php" class="btn btn-primary py-3 px-5 animated slideInLeft">Dashboard</a>';
-                                } elseif (isset($_SESSION['F_number'])) {
-                                    echo '<a href="faculty\dashboard.php" class="btn btn-primary py-3 px-5 animated slideInLeft">Dashboard</a>';
-                                } elseif (isset($_SESSION['AD_number'])) {
-                                    echo '<a href="admin\dashboard.php" class="btn btn-primary py-3 px-5 animated slideInLeft">Dashboard</a>';
-                                } else {
-                                    echo '<a href="auth\login.php" class="btn btn-primary py-3 px-5 animated slideInLeft">Login</a>';
-                                }
-                                ?>
+                                <a href="auth\login.php" class="btn btn-primary py-3 px-5 animated slideInLeft">Login</a>
                             </div>
                         </div>
                     </div>
@@ -145,17 +125,7 @@ require_once __DIR__ . "..\assets\php\server.php";
                             <div class="col-10 col-lg-8">
                                 <h1 style="font-size: 70px;" class="display-1 text-white animated slideInDown">Colegio De San Pedro, Inc.</h1>
                                 <p class="fs-5 fw-medium text-white mb-4 pb-3">"Honing Minds, Transforming Lives"</p>
-                                <?php
-                                if (isset($_SESSION['SR_number'])) {
-                                    echo '<a href="student\dashboard.php" class="btn btn-primary py-3 px-5 animated slideInLeft">Dashboard</a>';
-                                } elseif (isset($_SESSION['F_number'])) {
-                                    echo '<a href="faculty\dashboard.php" class="btn btn-primary py-3 px-5 animated slideInLeft">Dashboard</a>';
-                                } elseif (isset($_SESSION['AD_number'])) {
-                                    echo '<a href="admin\dashboard.php" class="btn btn-primary py-3 px-5 animated slideInLeft">Dashboard</a>';
-                                } else {
-                                    echo '<a href="auth\login.php" class="btn btn-primary py-3 px-5 animated slideInLeft">Login</a>';
-                                }
-                                ?>
+                                <a href="auth\login.php" class="btn btn-primary py-3 px-5 animated slideInLeft">Login</a>
                             </div>
                         </div>
                     </div>

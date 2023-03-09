@@ -137,11 +137,21 @@ if (!isset($_SESSION['F_number'])) {
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="home-tab">
-                                <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                                <div class="d-sm-flex align-items-center justify-content-between">
                                     <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
                                         <h2 class="fw-bold text-primary text-uppercase">Advisory Concerns</h2>
                                         <p>DATE: <?php echo date('D M-d-Y') ?></p>
                                     </div>
+                                </div>
+                                <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
+                                    <nav class="nav">
+                                        <a class="nav-link" href="dailyReports.php">Daily</a>
+                                        <a class="nav-link" href="monthlyReports.php">Monthly</a>
+                                        <a class="nav-link" href="attendance.php">Attendance Report</a>
+                                        <a class="nav-link" href="advisoryAttendance.php">Advisory Attendance</a>
+                                        <a class="nav-link active ms-0" href="advisoryConcern.php" style="color: #c02628;">Advisory Concern</a>
+                                    </nav>
+                                    <div class="border-bottom"></div>
                                 </div>
                                 <div class="tab-content tab-content-basic" style="padding-bottom: 0px;">
                                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
@@ -150,13 +160,6 @@ if (!isset($_SESSION['F_number'])) {
                                                 <div class="col-lg-8 col-sm-12 grid-margin">
                                                     <div class="card">
                                                         <div class="card-body">
-                                                            <div class="btn-group" style="margin-bottom: 15px;">
-                                                                <div>
-                                                                    <a href="advisoryAttendance.php" class="btn btn-secondary" style="background-color: #e4e3e3; margin-right: 0px;">
-                                                                        Go back
-                                                                    </a>
-                                                                </div>
-                                                            </div>
                                                             <h4 style="text-align: center">Attendance Concern</h4>
                                                             <div class="table-responsive">
                                                                 <table class="table table-striped">

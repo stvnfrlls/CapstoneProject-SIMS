@@ -96,7 +96,7 @@ if (!isset($_SESSION['AD_number'])) {
               <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
             </a>
           </li>
- 
+
           <li class="nav-item">
             <a class="nav-link" href="../admin/student.php">
               <i class=""></i>
@@ -295,9 +295,9 @@ if (!isset($_SESSION['AD_number'])) {
                                                   </option>
                                                 <?php }
                                                 ?>
-
+                                                <option></option>
                                                 <?php
-                                                $getFacultyData = $mysqli->query("SELECT * FROM faculty WHERE F_number NOT IN (SELECT F_number FROM sections WHERE F_number = '{$AdvisoryData['S_adviser']}')");
+                                                $getFacultyData = $mysqli->query("SELECT * FROM faculty WHERE F_number NOT IN (SELECT F_number FROM sections WHERE F_number = '{$AdvisoryData['S_adviser']}') ORDER BY F_lname");
 
                                                 while ($FacultyData = $getFacultyData->fetch_assoc()) { ?>
                                                   <option value="<?php echo $FacultyData['F_number'] ?>"><?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1) . ". " . $FacultyData['F_suffix'] . "." ?></option>
