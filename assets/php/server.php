@@ -934,18 +934,17 @@ if (isset($_POST['releaseGrades']) && !empty($_SESSION['AD_number'])) {
     }
 }
 if (isset($_POST['addCurr']) && !empty($_SESSION['AD_number'])) {
-    $subjectName = $mysqli->real_escape_string($_POST['sbjName']);
     $minYearLevel = $mysqli->real_escape_string($_POST['minYearLevel']);
     $maxYearLevel = $mysqli->real_escape_string($_POST['maxYearLevel']);
 
-    if ($subject = "" || empty($subject)) {
+    if (empty($_POST['AddsbjName'])) {
         showSweetAlert('No subject name inputted', 'error');
     } else {
-        $checkIfsubjectExist = $mysqli->query("SELECT subjectName FROM subjectperyear WHERE subjectName LIKE '%$subjectName%'");
-        if (mysqli_num_rows($checkIfsubjectExist) > 0) {
+        $checkIfsubjectExist = $mysqli->query("SELECT subjectName FROM subjectperyear WHERE subjectName LIKE '{$_POST['AddsbjName']}'");
+        if (mysqli_num_rows($checkIfsubjectExist) >= 1) {
             showSweetAlert('Subject name already exist.', 'error');
         } else {
-            $addSubject = $mysqli->query("INSERT INTO subjectperyear(subjectName, minYearLevel, maxYearLevel) VALUES('{$subjectName}','{$minYearLevel}','{$maxYearLevel}')");
+            $addSubject = $mysqli->query("INSERT INTO subjectperyear(subjectName, minYearLevel, maxYearLevel) VALUES('{$_POST['AddsbjName']}','{$minYearLevel}','{$maxYearLevel}')");
             if ($addSubject) {
                 showSweetAlert('Subject added successfully.', 'success');
             }
