@@ -429,11 +429,7 @@ if (mysqli_num_rows($checkQuarter) > 0) {
     </div>
     <!-- Footer End -->
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
-
-
+ 
     <!-- Template Javascript -->
     <script src="../assets/js/main.js"></script>
 
