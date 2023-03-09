@@ -203,11 +203,11 @@ if (!isset($_SESSION['AD_number'])) {
                                                 <form id="form-id" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
                                                     <div class="row">
                                                         <div class="col-lg-3 col-sm-12">
-                                                            <div class="card" style="text-align:center;">
-                                                                <div class="card-body">
+                                                            <div class="card" style="text-align:center; padding-right: 0px; padding-left: 0px;">
+                                                                <div class="card-body" style="padding-right: 0px; padding-left: 0px;">
                                                                     <h3 style="font-size: 18px;">School Year: 2022-2023</h3>
-                                                                    <p>Colegio De San Pero</p>
-                                                                    <button type="submit" name="acadyear" class="btn btn-primary m-2">Start S.Y. 2023-2024</button>
+                                                                    <p>Colegio De San Pedro</p>
+                                                                    <button type="submit" name="acadyear" class="btn btn-primary m-2" style="width: 170px">Start S.Y. 2023-2024</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -235,7 +235,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     <?php
                                                                     $checkQuarter1 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 1 AND quarterStatus = 'current'");
                                                                     if (mysqli_num_rows($checkQuarter1) > 0) { ?>
-                                                                        <button type=" submit" class="btn btn-primary m-2" name="disableQ1">1st Quarter (ongoing)</button>
+                                                                        <button type=" submit" class="btn btn-primary m-2" name="disableQ1">1st Quarter</button>
                                                                     <?php } else { ?>
                                                                         <button type=" submit" class="btn btn-secondary m-2" name="enableFirst">1st Quarter</button>
                                                                     <?php } ?>
@@ -243,7 +243,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     <?php
                                                                     $checkQuarter2 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 2 AND quarterStatus = 'current'");
                                                                     if (mysqli_num_rows($checkQuarter2) > 0) { ?>
-                                                                        <button class="btn btn-primary m-2" name="disableQ2" style="font-size:12px;">2nd Quarter (ongoing)</button>
+                                                                        <button class="btn btn-primary m-2" name="disableQ2" style="font-size:12px;">2nd Quarter</button>
                                                                     <?php } else { ?>
                                                                         <button type="submit" name="enableSecond" class="btn btn-secondary m-2">2nd Quarter</button>
                                                                     <?php } ?>
@@ -252,7 +252,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     <?php
                                                                     $checkQuarter3 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 3 AND quarterStatus = 'current'");
                                                                     if (mysqli_num_rows($checkQuarter3) > 0) { ?>
-                                                                        <button class="btn btn-primary m-2" name="disableQ3">3rd Quarter (ongoing)</button>
+                                                                        <button class="btn btn-primary m-2" name="disableQ3">3rd Quarter</button>
                                                                     <?php } else { ?>
                                                                         <button type="submit" name="enableThird" class="btn btn-secondary m-2">3rd Quarter</button>
                                                                     <?php } ?>
@@ -260,7 +260,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     <?php
                                                                     $checkQuarter4 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 4 AND quarterStatus = 'current'");
                                                                     if (mysqli_num_rows($checkQuarter4) > 0) { ?>
-                                                                        <button class="btn btn-primary m-2" name="disableQ4">4th Quarter (ongoing)</button>
+                                                                        <button class="btn btn-primary m-2" name="disableQ4">4th Quarter</button>
                                                                     <?php } else { ?>
                                                                         <button type="submit" name="enableFourth" class="btn btn-secondary m-2">4th Quarter</button>
                                                                     <?php } ?>
@@ -272,18 +272,18 @@ if (!isset($_SESSION['AD_number'])) {
                                                 </form>
                                             </div>
                                         </div>
-                                        <div class=" row">
+                                        <div class="row" >
                                             <style>
                                                 h3 {
                                                     font-family: "Lato", "san serif";
                                                 }
                                             </style>
-                                            <div class="col-sm-12 col-lg-6 grid-margin" style="padding-bottom:20px;">
+                                            <div class="col-sm-12 col-lg-6 grid-margin" style="padding-bottom: 0px;">
                                                 <div class="card">
                                                     <div class="card-body">
                                                         <div class="row">
                                                             <h3 style="font-size: 20px; padding-bottom: 20px; text-align:center;">Today's Average Attendance</h3>
-                                                            <canvas class="my-auto" id="doughnutChart" height="200"></canvas>
+                                                            <canvas class="my-auto" id="doughnutChart" height="252"></canvas>
                                                             <div id="doughnut-chart-legend" class="mt-5 text-center"></div>
                                                         </div>
                                                         <div class="row" style="margin: auto; padding-top:15px;">
@@ -350,14 +350,16 @@ if (!isset($_SESSION['AD_number'])) {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-12 col-lg-6 grid-margin">
+                                            <div class="col-sm-12 col-lg-6 grid-margin" >
                                                 <div class="row">
-                                                    <div class="col-sm-12 col-lg-4 grid-margin" style="padding-bottom:20px;">
-
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <div class="row">
+                                                    <div class="col-sm-12 col-lg-4 grid-margin" style="align-content:space-between;">
+                                                        <div class="card" style="height: 200px">
+                                                            <div class="card-body" style="align-content:space-between;display: grid; grid-template-columns: 1fr;">
+                                                                <div>
                                                                     <h3 style="font-size: 20px; padding-bottom: 20px; text-align:left;">Total No. of Students</h3>
+                                                                </div>
+                                                                <div class="row">
+
                                                                     <div class="d-flex flex-shrink-0">
                                                                         <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628; padding-bottom:15px;">
                                                                             <?php
@@ -376,13 +378,16 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 </div>
                                                             </div>
                                                         </div>
-
                                                     </div>
-                                                    <div class="col-sm-12 col-lg-4 grid-margin" style="padding-bottom:20px;">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <div class="row">
+                                                    <div class="col-sm-12 col-lg-4 grid-margin">
+                                                        <div class="card" style="height: 200px">
+                                                            <div class="card-body" style="align-content:space-between;display: grid; grid-template-columns: 1fr;">
+                                                                <div>
                                                                     <h3 style="font-size: 20px; text-align:left;">Total No. of Faculty Teachers</h3>
+                                                                </div>
+                                                                <div class="row" style="align-content:space-between;">
+
+
                                                                     <div class="d-flex flex-shrink-0">
                                                                         <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628; padding-bottom:15px;">
                                                                             <?php
@@ -402,11 +407,14 @@ if (!isset($_SESSION['AD_number'])) {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-12 col-lg-4 grid-margin" style="padding-bottom:20px;">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <div class="row">
+                                                    <div class="col-sm-12 col-lg-4 grid-margin">
+                                                        <div class="card" style="height: 200px">
+                                                            <div class="card-body" style="align-content:space-between;display: grid; grid-template-columns: 1fr; ">
+                                                                <div>
                                                                     <h3 style="font-size: 20px; text-align:left;">Total No. of Students Added Today</h3>
+                                                                </div>
+                                                                <div class="row">
+
                                                                     <div class="d-flex flex-shrink-0">
                                                                         <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:30px; color:#c02628; padding-bottom:15px;">
                                                                             <?php
@@ -436,7 +444,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     </div>
                                                                     <ul class="bullet-line-list">
                                                                         <?php
-                                                                        $getLoggedData = $mysqli->query("SELECT * FROM admin_logs WHERE acadYear = '{$currentSchoolYear}' ORDER BY logDate DESC LIMIT 4");
+                                                                        $getLoggedData = $mysqli->query("SELECT * FROM admin_logs WHERE acadYear = '{$currentSchoolYear}' ORDER BY logDate DESC LIMIT 3");
                                                                         if (mysqli_num_rows($getLoggedData) > 0) {
                                                                             while ($LoggedData = $getLoggedData->fetch_assoc()) { ?>
                                                                                 <li>
@@ -476,7 +484,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                     <div class="row flex-grow">
                                                         <div class="col-sm-12 col-lg-8 grid-margin">
                                                             <div class="row">
-                                                                <div class="col-lg-12 grid-margin stretch-card">
+                                                                <div class="col-lg-12 grid-margin" style="padding-right:0px">
                                                                     <div class="card">
                                                                         <div class="card-body">
                                                                             <h4 class="card-title">Student List</h4>
@@ -525,7 +533,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-lg-12 grid-margin stretch-card">
+                                                                <div class="col-lg-12 grid-margin" style="padding-right:0px">
                                                                     <div class="card">
                                                                         <div class="card-body">
                                                                             <h4 class="card-title">Faculty List</h4>
@@ -575,7 +583,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-sm-12 col-lg-4">
+                                                        <div class="col-sm-12 col-lg-4" style="padding-right:0px">
                                                             <div class="card">
                                                                 <div class="card-body">
 
