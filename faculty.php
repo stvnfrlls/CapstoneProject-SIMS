@@ -1,3 +1,6 @@
+<?php
+require_once __DIR__ . "/assets/php/server.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -86,7 +89,7 @@
     <!-- Page Header Start -->
     <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
-            <h1 style="font-size:50px"class="display-1 text-white animated slideInDown">Faculty Directory</h1>
+            <h1 style="font-size:50px" class="display-1 text-white animated slideInDown">Faculty Directory</h1>
         </div>
     </div>
     <!-- Page Header End -->
