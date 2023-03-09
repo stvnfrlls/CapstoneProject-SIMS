@@ -322,7 +322,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                         <h4 class="card-title">Personal Information</h4>
                                                         <!-- next row -->
                                                         <div class="row" style="padding-bottom: 15px;">
-                                                            <div class="col-md-4">
+                                                            <div class="col-md-3">
                                                                 <label class="col-sm-12 col-form-label">Last Name</label>
                                                                 <div class="col-sm-12">
                                                                     <input type="text" class="form-control" value="<?php echo $getRecord['SR_lname'] ?>" readonly>
@@ -340,7 +340,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     <input type="text" class="form-control" value="<?php echo $getRecord['SR_mname'] ?>" readonly>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-1">
+                                                            <div class="col-md-2">
                                                                 <label class="col-sm-12 col-form-label">Suffix</label>
                                                                 <div class="col-sm-12">
                                                                     <input type="text" class="form-control" value="<?php echo $getRecord['SR_suffix'] ?>" readonly>
@@ -348,13 +348,13 @@ if (!isset($_SESSION['AD_number'])) {
                                                             </div>
                                                         </div>
                                                         <div class="row" style="padding-bottom: 15px;">
-                                                            <div class="col-md-1">
+                                                            <div class="col-md-2">
                                                                 <label label class="col-sm-12 col-form-label">Age</label>
                                                                 <div class="col-sm-12">
                                                                     <input type="text" class="form-control" value="<?php echo $getRecord['SR_age'] ?>" readonly>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-4">
+                                                            <div class="col-md-3">
                                                                 <label label class="col-sm-12 col-form-label">Birthdate</label>
                                                                 <div class="col-sm-12">
                                                                     <input type="date" class="form-control fullwidth" id="firstName" value="<?php echo $getRecord['SR_birthday'] ?>" required readonly>
@@ -440,7 +440,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                     <div class="card-body">
                                                         <h4 class="card-title">Contact Person</h4>
                                                         <div class="row" style="padding-bottom: 15px;">
-                                                            <div class="col-md-4">
+                                                            <div class="col-md-3">
                                                                 <label class="col-sm-12 col-form-label">Last Name</label>
                                                                 <div class="col-sm-12">
                                                                     <input type="text" class="form-control" name="G_lname" value="<?php echo $getRecord['G_lname'] ?>" readonly>
@@ -458,7 +458,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     <input type="text" class="form-control" name="G_mname" value="<?php echo $getRecord['G_mname'] ?>" readonly>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-1">
+                                                            <div class="col-md-2">
                                                                 <label class="col-sm-12 col-form-label">Suffix</label>
                                                                 <div class="col-sm-12">
                                                                     <input type="text" class="form-control" name="G_suffix" value="<?php echo $getRecord['G_suffix'] ?>" readonly>
