@@ -262,7 +262,7 @@ if (!isset($_SESSION['F_number'])) {
 
             if (!backCamera) {
                 // If there's no back camera, use the first available camera
-                backCamera = cameras[1];
+                backCamera = cameras[0];
             }
 
             scanner.start(backCamera);

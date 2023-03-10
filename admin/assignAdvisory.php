@@ -203,15 +203,31 @@ if (!isset($_SESSION['AD_number'])) {
                       <div class="col-lg-2 col-sm-6">
                         <div>
                           <button class="btn btn-secondary" style="background-color: #e4e3e3;" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            Grade <i class="fa fa-caret-down"></i>
+                            <?php
+                            if (isset($_GET['grade'])) {
+                              if ($_GET['grade'] == "KINDER") {
+                                echo $_GET['grade'];
+                              } else {
+                                echo "Grade " . $_GET['grade'];
+                              }
+                            } else {
+                              echo "Grade";
+                            }
+
+                            ?>
+                            <i class="fa fa-caret-down"></i>
                           </button>
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
                             <?php
                             $getgradelevel = $mysqli->query("SELECT DISTINCT(S_yearLevel) FROM sections");
 
-                            while ($gradeLevel = $getgradelevel->fetch_assoc()) { ?>
-                              <a class="dropdown-item" href="assignAdvisory.php?grade=<?php echo $gradeLevel['S_yearLevel'] ?>">Grade <?php echo $gradeLevel['S_yearLevel'] ?></a>
-                            <?php }
+                            while ($gradeLevel = $getgradelevel->fetch_assoc()) {
+                              if ($gradeLevel['S_yearLevel'] == "KINDER") {
+                                echo '<a class="dropdown-item" href="assignAdvisory.php?grade=' . $gradeLevel['S_yearLevel'] . '">' . $gradeLevel['S_yearLevel'] . '</a>';
+                              } else {
+                                echo '<a class="dropdown-item" href="assignAdvisory.php?grade=' . $gradeLevel['S_yearLevel'] . '">Grade ' . $gradeLevel['S_yearLevel'] . '</a>';
+                              }
+                            }
                             ?>
                           </div>
                         </div>
