@@ -357,9 +357,9 @@ if (!isset($_SESSION['AD_number'])) {
                                           <td class="tablestyle">
                                             <?php
                                             if ($data['SR_grade'] == 'KINDER') {
-                                              echo $data['SR_grade'] . " - " . $data['SR_section'] . " (" . $data['acadYear'] . ")";
+                                              echo $data['SR_grade'] . " - " . $data['SR_section'];
                                             } else {
-                                              echo "Grade " . $data['SR_grade'] . " - " . $data['SR_section'] . " (" . $data['acadYear'] . ")";
+                                              echo "Grade " . $data['SR_grade'] . " - " . $data['SR_section'];
                                             }
                                             ?>
                                           </td>
