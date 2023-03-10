@@ -200,8 +200,8 @@ if (empty($_SESSION['F_number'])) {
                                                 }
                                             }
                                             ?>
-                                            <a href="viewstudent.php?ID=<?php echo $previous ?>" class="btn btn-primary"><i class="fa fa-angle-double-left"></i>Previous </a>
-                                            <a href="viewstudent.php?ID=<?php echo $next ?>" class="btn btn-primary">Next <i class="fa fa-angle-double-right"></i></a>
+                                            <a href="viewStudent.php?ID=<?php echo $previous ?>" class="btn btn-primary"><i class="fa fa-angle-double-left"></i>Previous </a>
+                                            <a href="viewStudent.php?ID=<?php echo $next ?>" class="btn btn-primary">Next <i class="fa fa-angle-double-right"></i></a>
                                         </div>
                                     </div>
                                     <div class="tab-content tab-content-basic">

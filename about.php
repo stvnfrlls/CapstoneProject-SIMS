@@ -1,3 +1,6 @@
+<?php
+require_once __DIR__ . "/assets/php/server.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -196,7 +199,7 @@
             <div class="row g-4">
                 <div class="col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="service-item d-flex position-relative text-center h-100">
-                        <img class="bg-img" src="assets/img/banner_1.jpg" alt="" >
+                        <img class="bg-img" src="assets/img/banner_1.jpg" alt="">
                         <div class="service-text p-5">
                             <img class="mb-4" src="assets/img/service.png" alt="Icon" width="100">
                             <h3 class="mb-3">Service</h3>

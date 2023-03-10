@@ -162,6 +162,8 @@ if (!isset($_SESSION['F_number'])) {
                                         <a class="nav-link active ms-0" href="dailyReports.php" style="color: #c02628;">Daily</a>
                                         <a class="nav-link" href="monthlyReports.php">Monthly</a>
                                         <a class="nav-link" href="attendance.php">Attendance Report</a>
+                                        <a class="nav-link" href="advisoryAttendance.php">Advisory Attendance</a>
+                                        <a class="nav-link" href="advisoryConcern.php">Advisory Concern</a>
                                     </nav>
                                     <div class="border-bottom"></div>
                                 </div>

@@ -507,11 +507,11 @@ if (isset($_POST['addReminders'])) {
             if (mysqli_num_rows($sendtoGuardianData) > 0) {
                 while ($GuardianData = $sendtoGuardianData->fetch_assoc()) {
                     $mail->addAddress($GuardianData['G_email']);
-                    $mail->Subject = $subject;
-                    $mail->Body = '<h1>Reminders</h1><br>
-                                   <p>' . $MSG . '</p><br>';
-                    $mail->send();
                 }
+                $mail->Subject = $subject;
+                $mail->Body = '<h1>Reminders</h1><br>
+                                   <p>' . $MSG . '</p><br>';
+                $mail->send();
                 showSweetAlert('Reminders sent!', 'success');
             } else {
                 showSweetAlert('No receiver', 'error');
@@ -519,11 +519,11 @@ if (isset($_POST['addReminders'])) {
             if (mysqli_num_rows($sendtoStudentData) > 0) {
                 while ($StudentData = $sendtoStudentData->fetch_assoc()) {
                     $mail->addAddress($StudentData['SR_email']);
-                    $mail->Subject = $subject;
-                    $mail->Body = '<h1>Reminders</h1><br>
-                                   <p>' . $MSG . '</p><br>';
-                    $mail->send();
                 }
+                $mail->Subject = $subject;
+                $mail->Body = '<h1>Reminders</h1><br>
+                                   <p>' . $MSG . '</p><br>';
+                $mail->send();
                 showSweetAlert('Reminders sent!', 'success');
             } else {
                 showSweetAlert('No receiver', 'error');
@@ -934,18 +934,17 @@ if (isset($_POST['releaseGrades']) && !empty($_SESSION['AD_number'])) {
     }
 }
 if (isset($_POST['addCurr']) && !empty($_SESSION['AD_number'])) {
-    $subjectName = $mysqli->real_escape_string($_POST['sbjName']);
     $minYearLevel = $mysqli->real_escape_string($_POST['minYearLevel']);
     $maxYearLevel = $mysqli->real_escape_string($_POST['maxYearLevel']);
 
-    if ($subject = "" || empty($subject)) {
+    if (empty($_POST['AddsbjName'])) {
         showSweetAlert('No subject name inputted', 'error');
     } else {
-        $checkIfsubjectExist = $mysqli->query("SELECT subjectName FROM subjectperyear WHERE subjectName LIKE '%$subjectName%'");
-        if (mysqli_num_rows($checkIfsubjectExist) > 0) {
+        $checkIfsubjectExist = $mysqli->query("SELECT subjectName FROM subjectperyear WHERE subjectName LIKE '{$_POST['AddsbjName']}'");
+        if (mysqli_num_rows($checkIfsubjectExist) >= 1) {
             showSweetAlert('Subject name already exist.', 'error');
         } else {
-            $addSubject = $mysqli->query("INSERT INTO subjectperyear(subjectName, minYearLevel, maxYearLevel) VALUES('{$subjectName}','{$minYearLevel}','{$maxYearLevel}')");
+            $addSubject = $mysqli->query("INSERT INTO subjectperyear(subjectName, minYearLevel, maxYearLevel) VALUES('{$_POST['AddsbjName']}','{$minYearLevel}','{$maxYearLevel}')");
             if ($addSubject) {
                 showSweetAlert('Subject added successfully.', 'success');
             }
@@ -1048,11 +1047,11 @@ if (isset($_POST['postAnnouncement']) && !empty($_SESSION['AD_number'])) {
             if (mysqli_num_rows($sendtoGuardianData) > 0) {
                 while ($GuardianData = $sendtoGuardianData->fetch_assoc()) {
                     $mail->addAddress($GuardianData['G_email']);
-                    $mail->Subject = $subject;
-                    $mail->Body = '<h1>School Annoucement</h1><br>
-                                   <p>' . $message . '</p><br>';
-                    $mail->send();
                 }
+                $mail->Subject = $subject;
+                $mail->Body = '<h1>School Annoucement</h1><br>
+                                   <p>' . $message . '</p><br>';
+                $mail->send();
                 showSweetAlert('Annoucement sent!', 'success');
             } else {
                 showSweetAlert('No receiver', 'error');
@@ -1060,11 +1059,11 @@ if (isset($_POST['postAnnouncement']) && !empty($_SESSION['AD_number'])) {
             if (mysqli_num_rows($sendtoStudentData) > 0) {
                 while ($StudentData = $sendtoStudentData->fetch_assoc()) {
                     $mail->addAddress($StudentData['SR_email']);
-                    $mail->Subject = $subject;
-                    $mail->Body = '<h1>School Annoucement</h1><br>
-                                   <p>' . $message . '</p><br>';
-                    $mail->send();
                 }
+                $mail->Subject = $subject;
+                $mail->Body = '<h1>School Annoucement</h1><br>
+                                   <p>' . $message . '</p><br>';
+                $mail->send();
                 showSweetAlert('Annoucement sent!', 'success');
             } else {
                 showSweetAlert('No receiver', 'error');

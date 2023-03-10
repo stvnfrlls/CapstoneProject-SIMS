@@ -377,14 +377,16 @@ if (!isset($_SESSION['F_number'])) {
                     </div>
 
                     <div class="row">
+                      <div class="mb-2">
+                        <div class="btn-group" style="float: right;">
+                          <button type="submit" name="saveBehavior" class="btn btn-primary">Submit</button>
+                        </div>
+                      </div>
                       <div class="col-12 grid-margin">
                         <div class="card">
                           <div class="card-body">
                             <h3 style="text-align: center;">CHARACTER BUILDING</h3>
                             <div class="row">
-                              <div class="">
-                                <button type="submit" name="saveBehavior" class="btn btn-primary">Submit</button>
-                              </div>
                               <div class="table-responsive">
                                 <table class="table text-center">
                                   <thead>
@@ -497,7 +499,6 @@ if (!isset($_SESSION['F_number'])) {
                                       }
                                     }
                                     ?>
-
                                   </tbody>
                                 </table>
                               </div>

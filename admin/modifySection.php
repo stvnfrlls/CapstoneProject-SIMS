@@ -3,7 +3,7 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 }
-$checkQuarter = $mysqli->query("SELECT quarterStatus FROM sis_cdsp.quartertable WHERE quarterStatus = 'current'");
+$checkQuarter = $mysqli->query("SELECT quarterStatus FROM quartertable WHERE quarterStatus = 'current'");
 if (mysqli_num_rows($checkQuarter) > 0) {
     echo <<<EOT
             <script>

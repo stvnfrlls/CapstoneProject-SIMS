@@ -96,7 +96,7 @@ if (!isset($_SESSION['AD_number'])) {
                             <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
                         </a>
                     </li>
- 
+
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
@@ -229,8 +229,8 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                             <?php echo $subject['subjectName']; ?>
                                                                                             <input type="hidden" name="sbjName" value="<?php echo $subject['subjectName'] ?>">
                                                                                         </td>
-                                                                                        <td><input type="text" name="minYearLevel" class="form-control text-center" value="<?php echo $subject['minYearLevel']; ?>"></td>
-                                                                                        <td><input type="text" name="maxYearLevel" class="form-control text-center" value="<?php echo  $subject['maxYearLevel']; ?>"></td>
+                                                                                        <td><input type="text" name="minYearLevel" class="form-control text-center" value="<?php echo $subject['minYearLevel']; ?>" required></td>
+                                                                                        <td><input type="text" name="maxYearLevel" class="form-control text-center" value="<?php echo  $subject['maxYearLevel']; ?>" required></td>
                                                                                         <td>
                                                                                             <button style="color: #ffffff;" class="btn btn-primary" value="UPDATE" name="updateCurr" id="updateCurr">Update</button>
                                                                                             <button class="btn btn-secondary" value="DELETE" name="deleteCurr" id="deleteCurr">Delete</button>
@@ -243,10 +243,10 @@ if (!isset($_SESSION['AD_number'])) {
                                                                             <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="addCurrForm">
                                                                                 <tr>
                                                                                     <td>ADD</td>
-                                                                                    <td><input type="text" name="sbjName" class="form-control" required></td>
+                                                                                    <td><input type="text" name="AddsbjName" class="form-control" required></td>
                                                                                     <td><input type="number" name="minYearLevel" class="form-control" required></td>
                                                                                     <td><input type="number" name="maxYearLevel" class="form-control" required></td>
-                                                                                    <td><input type="submit" style="color: #ffffff;" class="btn btn-primary" value="ADD SUBJECT" name="addCurr" id="addCurr"></td>
+                                                                                    <td><input style="color: #ffffff;" class="btn btn-primary" value="ADD SUBJECT" name="addCurr" id="addCurr"></td>
                                                                                 </tr>
                                                                             </form>
                                                                         <?php } else { ?>
@@ -307,7 +307,7 @@ if (!isset($_SESSION['AD_number'])) {
     <script src="../assets/js/admin/off-canvas.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
-    <!-- <script>
+    <script>
         const addCurrForm = document.getElementById('addCurrForm');
         const modifyCurrForm = document.getElementById('modifyCurrForm');
 
@@ -316,57 +316,15 @@ if (!isset($_SESSION['AD_number'])) {
         const deleteCurr = document.getElementById('deleteCurr');
 
         addCurr.addEventListener('click', function(event) {
-            Swal.fire({
-                title: 'Are you sure you want to add this subject?',
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: `No`,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        title: 'Subject added successfully!',
-                        icon: 'success',
-                    }).then(() => {
-                        addCurrForm.submit();
-                    });
-                }
-            })
+            addCurrForm.submit();
         })
         updateCurr.addEventListener('click', function(event) {
-            Swal.fire({
-                title: 'Are you sure you want to update this subject?',
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: `No`,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        title: 'Subject updated successfully!',
-                        icon: 'success',
-                    }).then(() => {
-                        modifyCurrForm.submit();
-                    });
-                }
-            })
+            modifyCurrForm.submit();
         })
         deleteCurr.addEventListener('click', function(event) {
-            Swal.fire({
-                title: 'Are you sure you want to delete this subject?',
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: `No`,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        title: 'Subject deleted successfully!',
-                        icon: 'success',
-                    }).then(() => {
-                        modifyCurrForm.submit();
-                    });
-                }
-            })
+            modifyCurrForm.submit();
         })
-    </script> -->
+    </script>
 </body>
 
 </html>

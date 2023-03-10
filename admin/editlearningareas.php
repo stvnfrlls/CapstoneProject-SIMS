@@ -364,8 +364,10 @@ if (empty($_SESSION['AD_number'])) {
                                                   $FacultyName = $getFacultyName->fetch_assoc();
                                                 ?>
                                                   <option value="<?php echo $assignedFaculty['F_number'] ?>" selected><?php echo $FacultyName['F_lname'] . ", " . $FacultyName['F_fname'] . " " . substr($FacultyName['F_mname'], 0, 1) . ". " . $FacultyName['F_suffix'] . "." ?></option>
+                                                  <option></option>
                                                 <?php } else { ?>
-                                                  <option value="">No assigned teacher</option>
+                                                  <option selected>Available Teachers</option>
+                                                  <option></option>
                                                 <?php }
                                                 ?>
 
