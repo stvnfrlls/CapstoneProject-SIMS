@@ -146,6 +146,8 @@ if (!isset($_SESSION['F_number'])) {
                     <a class="nav-link" href="dailyReports.php">Daily</a>
                     <a class="nav-link" href="monthlyReports.php">Monthly</a>
                     <a class="nav-link active ms-0" href="attendance.php" style="color: #c02628;">Attendance Report</a>
+                    <a class="nav-link" href="advisoryAttendance.php">Advisory Attendance</a>
+                    <a class="nav-link" href="advisoryConcern.php">Advisory Concern</a>
                   </nav>
                   <div class="border-bottom"></div>
                 </div>
@@ -170,7 +172,13 @@ if (!isset($_SESSION['F_number'])) {
                               if (mysqli_num_rows($getworkSchedule) > 0) {
                                 while ($workSchedule = $getworkSchedule->fetch_assoc()) { ?>
                                   <a class="dropdown-item" href="attendance.php?section=<?php echo $workSchedule['SR_section'] ?>&subject=<?php echo $workSchedule['S_subject'] ?>">
-                                    <?php echo $workSchedule['SR_grade'] . " - " . $workSchedule['SR_section'] . " - " . $workSchedule['S_subject'] ?>
+                                    <?php
+                                    if ($workSchedule['SR_grade'] == "KINDER") {
+                                      echo $workSchedule['SR_grade'] . " - " . $workSchedule['SR_section'] . " - " . $workSchedule['S_subject'];
+                                    } else {
+                                      echo "Grade " . $workSchedule['SR_grade'] . " - " . $workSchedule['SR_section'] . " - " . $workSchedule['S_subject'];
+                                    }
+                                    ?>
                                   </a>
                                 <?php }
                               } else { ?>
@@ -194,7 +202,7 @@ if (!isset($_SESSION['F_number'])) {
                                         <th>Student Name</th>
                                         <th>Date</th>
                                         <th>Time</th>
-                                        <th>Attendance</th>
+                                        <th>Status</th>
                                         <th>Action</th>
                                       </tr>
                                     </thead>

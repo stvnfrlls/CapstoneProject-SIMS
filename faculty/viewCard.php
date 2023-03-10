@@ -184,9 +184,9 @@ if (!isset($_SESSION['F_number'])) {
                             <div>
                               <?php
                               if (mysqli_num_rows($rungetStudentGrades) > 0) { ?>
-                                <a href="../reports/ReportCard.php?ID=<?php echo $_GET['ID'] ?>" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3; text-align:center; font-size: 13px">Print <i class="fa fa-print" style="font-size: 12px;"></i></a>
+                                <a href="../reports/ReportCard.php?ID=<?php echo $_GET['ID'] ?>" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3; text-align:center; font-size: 13px">Downlaod <i class="fa fa-print" style="font-size: 12px;"></i></a>
                               <?php } else { ?>
-                                <a href="viewCard.php?ID=<?php echo $_GET['ID'] ?>" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3; text-align:center; font-size: 13px">Print <i class="fa fa-print" style="font-size: 12px;"></i></a>
+                                <a href="viewCard.php?ID=<?php echo $_GET['ID'] ?>" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3; text-align:center; font-size: 13px">Download <i class="fa fa-print" style="font-size: 12px;"></i></a>
                               <?php }
                               ?>
 

@@ -203,24 +203,6 @@ if (!isset($_SESSION['AD_number'])) {
                 </div>
                 <div class="tab-content tab-content-basic">
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                    <!-- <div class="row">
-                      <form class="form-sample">
-                        <div class="col-12 grid-margin">
-                          <div class="row">
-                            <div class="col-lg-4" style="margin: auto; text-align:center;">
-                              <label class="col-sm-12 col-form-label">Student Number</label>
-                              <div class="col-sm-12">
-                                <input type="text" class="form-control" />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div style="text-align: center; padding-top: 0px;">
-                          <input type="button" style="color:#ffffff;" class="btn btn-primary me-2" name="confirm_student" value="Enter">
-                        </div>
-                      </form>
-                    </div> -->
-
                     <div class="row">
                       <div class="col-12 grid-margin">
                         <div class="btn-group">
@@ -311,13 +293,12 @@ if (!isset($_SESSION['AD_number'])) {
                         <?php
                         if (isset($_GET['month']) && isset($_GET['Grade']) && isset($_GET['Section'])) { ?>
                           <div class="btn-group" style="float: right;">
-                            <a href="../reports/MonthlyAttendancebyClass.php?month=<?php echo $_GET['month'] ?>&Grade=<?php echo $_GET['Grade'] ?>&Section=<?php echo $_GET['Section'] ?>" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
+                            <a href="../reports/MonthlyAttendancebyClass.php?month=<?php echo $_GET['month'] ?>&Grade=<?php echo $_GET['Grade'] ?>&Section=<?php echo $_GET['Section'] ?>" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
                           </div>
                         <?php }
                         ?>
                       </div>
                     </div>
-
 
                     <div class="row">
                       <div class="col-lg-12 d-flex flex-column">
@@ -416,7 +397,7 @@ if (!isset($_SESSION['AD_number'])) {
                                         <?php }
                                       } else { ?>
                                         <tr>
-                                          <td colspan="6" class="tabledata">NO ATTENDANCE TODAY <?php echo $dateNow ?></td>
+                                          <td colspan="6" class="tabledata">NO ATTENDANCE THE MONTH OF <?php echo $_GET['month'] ?></td>
                                         </tr>
                                       <?php }
                                     } else { ?>

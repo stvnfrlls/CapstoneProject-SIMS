@@ -164,7 +164,7 @@ if (!isset($_SESSION['SR_number'])) {
                                     </div>
 
                                     <div class="btn-group" style="margin: auto;">
-                                        <a href="../reports/MonthlyAttendance.php?ID=<?php echo $_SESSION['SR_number'] ?>" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3;">Print <i class="fa fa-print" style="font-size: 12px;"></i></a>
+                                        <a href="../reports/MonthlyAttendance.php?ID=<?php echo $_SESSION['SR_number'] ?>" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3;">Download <i class="fa fa-print" style="font-size: 12px;"></i></a>
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-lg-12 d-flex flex-column">

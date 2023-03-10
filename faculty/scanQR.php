@@ -249,11 +249,23 @@ if (!isset($_SESSION['F_number'])) {
 <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
 <script>
     let scanner = new Instascan.Scanner({
-        video: document.getElementById('preview')
+        video: document.getElementById('preview'),
+        mirror: false,
+        facingMode: {
+            exact: 'environment'
+        } // Use the back camera
     });
     Instascan.Camera.getCameras().then((cameras) => {
         if (cameras.length > 0) {
-            scanner.start(cameras[0]);
+            // Look for a camera with the specified facing mode
+            let backCamera = cameras.find((camera) => camera.name.indexOf('back') !== -1);
+
+            if (!backCamera) {
+                // If there's no back camera, use the first available camera
+                backCamera = cameras[1];
+            }
+
+            scanner.start(backCamera);
         } else {
             Swal.fire('No Cameras');
         }
@@ -291,8 +303,8 @@ if (!isset($_SESSION['F_number'])) {
                 })
             } else {
                 Swal.fire({
-                    title: 'Student already timed out',
-                    confirmButtonText: 'Proceed',
+                    title: 'The student has left for home',
+                    confirmButtonText: 'OK',
                 });
             }
         }

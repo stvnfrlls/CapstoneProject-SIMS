@@ -303,7 +303,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <?php
                     if (isset($_GET['GradeLevel']) && isset($_GET['section'])) { ?>
                       <div class="btn-group" style="float: right;">
-                        <a href="../reports/getClasslist.php?GradeLevel=<?php echo $_GET['GradeLevel'] ?>&section=<?php echo $_GET['section'] ?>" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
+                        <a href="../reports/getClasslist.php?GradeLevel=<?php echo $_GET['GradeLevel'] ?>&section=<?php echo $_GET['section'] ?>" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
                       </div>
                     <?php }
                     ?>

@@ -207,7 +207,7 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                     <div class="border-bottom"></div>
                                 </div>
                                 <div style="text-align: right; margin-top: 20px">
-                                    <a href="../reports/ReportCard.php?ID=<?php echo  $studentData['SR_number'] ?>" class="btn btn-light" style=" text-align:center; font-size: 13px">Print <i class="fa fa-print" style="font-size: 12px;"></i></a>
+                                    <a href="../reports/ReportCard.php?ID=<?php echo  $studentData['SR_number'] ?>" class="btn btn-light" style=" text-align:center; font-size: 13px">Download <i class="fa fa-print" style="font-size: 12px;"></i></a>
                                     <button class="btn btn-light" onclick="location.href='../admin/viewStudent.php'">Back</button>
                                 </div>
                                 <div class="tab-content tab-content-basic">

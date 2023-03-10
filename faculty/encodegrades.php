@@ -162,7 +162,7 @@ if (!isset($_SESSION['F_number'])) {
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                     <div style="text-align: right; margin-bottom: 15px">
                       <button id="saveGrades" class="btn btn-primary me-2">Save</button>
-                      <a href="" class="btn btn-light">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
+                      <a href="" class="btn btn-light">Download <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
                     </div>
                     <div class="row">
                       <div class="col-12 grid-margin">

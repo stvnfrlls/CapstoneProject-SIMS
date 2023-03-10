@@ -193,7 +193,7 @@ if (!isset($_SESSION['F_number'])) {
                                   <tr>
                                     <th>No.</th>
                                     <th>Student Name</th>
-                                    <th>Attendance</th>
+                                    <th>Time In</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                   </tr>
