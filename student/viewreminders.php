@@ -143,7 +143,7 @@ if (!isset($_SESSION['SR_number'])) {
                 if (mysqli_num_rows($getReminderDataExcept) > 0) {
                   while ($OtherReminderInfo = $getReminderDataExcept->fetch_assoc()) { ?>
                     <div class="d-flex rounded overflow-hidden mb-3">
-                      <a href="viewreminders.php?ID=<?php echo $OtherReminderInfo['reminderID'] ?>" class="h5 fw-semi-bold d-flex align-items-center px-3 mb-0"><?php echo $OtherReminderInfo['header'] ?></a>
+                      <a href="viewreminders.php?ID=<?php echo $OtherReminderInfo['reminderID'] ?>" class="h5 fw-semi-bold d-flex align-items-center px-3 mb-0"><?php echo $OtherReminderInfo['msg'] ?></a>
                     </div>
                   <?php }
                 } else { ?>
