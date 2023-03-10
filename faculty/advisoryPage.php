@@ -218,9 +218,6 @@ if (!isset($_SESSION['F_number'])) {
                             <div class="btn-group" style="float: right;">
                               <a href="" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
                             </div>
-                            <div class="btn-group mx-2" style="float: right;">
-                              <a href="advisoryAttendance.php" style="margin-right: 0px;" class="btn btn-primary">Check Advisory Attendance</a>
-                            </div>
                             <div class="table-responsive">
                               <table class="table">
                                 <thead>
