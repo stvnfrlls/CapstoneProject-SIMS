@@ -54,7 +54,8 @@ if (isset($_POST['login-button'])) {
 
                     $_SESSION['SR_number'] = $getSR_Number['SR_number'];
                     header('Location: ../student/dashboard.php');
-                } elseif ($UD_role == "faculty") {
+                }
+                if ($UD_role == "faculty") {
                     $FindF_number = $mysqli->query("SELECT F_number FROM faculty WHERE F_email = '{$UD_username}'");
                     $getF_number = $FindF_number->fetch_assoc();
 
@@ -68,11 +69,11 @@ if (isset($_POST['login-button'])) {
             if ($email != $getAD_number['AD_password']) {
                 $errors['LoginError'] = "Incorrect Password!";
             }
-            if (empty($getAD_number['AD_number'])) {
-                $errors['LoginError'] = "Account does not exist!";
-            } else {
+            if (!empty($getAD_number['AD_number'])) {
                 $_SESSION['AD_number'] = $getAD_number['AD_number'];
                 header('Location: ../admin/dashboard.php');
+            } else {
+                $errors['LoginError'] = "Account does not exist!";
             }
         }
     }
@@ -148,7 +149,7 @@ if (isset($_POST['updatePassword'])) {
         if (strcmp($datacOldPassword['SR_password'], $confirmPassword) == 0) {
             $errors['samePassword'] = "Password is the same with the old password.";
         } else {
-            $updatePassword = "UPDATE userdetails SET SR_password = '$confirmPassword' WHERE SR_email = '{$_SESSION['verifyEmailData']}'";
+            $updatePassword = "UPDATE userdetails SET SR_password = '$confirmPassword', OTP = NULL WHERE SR_email = '{$_SESSION['verifyEmailData']}'";
             $ResultupdatePassword = $mysqli->query($updatePassword);
 
             if ($ResultupdatePassword) {
