@@ -243,43 +243,44 @@ if (!isset($_SESSION['AD_number'])) {
                           </div>
                         </div>
                       </div>
-                  </div>
-                  <?php
-                  if (isset($_GET['Grade'])) { ?>
-                    <div class="btn-group">
                       <?php
                       if (isset($_GET['Grade'])) { ?>
-                        <div>
-                          <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            <?php if (isset($_GET['Section'])) {
-                              echo $_GET['Section'];
-                            } else {
-                              echo "Section";
-                            }
-                            ?>
-                            <i class="fa fa-caret-down"></i>
-                          </button>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <?php
-                            while ($sectionData = $runsectionList->fetch_assoc()) {
-                              if (isset($_GET['date'])) {
-                                echo '<a class="dropdown-item" href="dailyReports.php?date=' . $_GET['date'] . '&Grade=' . $_GET['Grade'] . '&Section=' . $sectionData['S_name'] . '">' . $sectionData['S_name'] . ' </a>';
-                              } else {
-                                echo '<a class="dropdown-item" href="dailyReports.php?Grade=' . $_GET['Grade'] . '&Section=' . $sectionData['S_name'] . '">' . $sectionData['S_name'] . '</a>';
-                              }
-                            } ?>
-                          </div>
+                        <div class="btn-group">
+                          <?php
+                          if (isset($_GET['Grade'])) { ?>
+                            <div>
+                              <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <?php if (isset($_GET['Section'])) {
+                                  echo $_GET['Section'];
+                                } else {
+                                  echo "Section";
+                                }
+                                ?>
+                                <i class="fa fa-caret-down"></i>
+                              </button>
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <?php
+                                while ($sectionData = $runsectionList->fetch_assoc()) {
+                                  if (isset($_GET['date'])) {
+                                    echo '<a class="dropdown-item" href="dailyReports.php?date=' . $_GET['date'] . '&Grade=' . $_GET['Grade'] . '&Section=' . $sectionData['S_name'] . '">' . $sectionData['S_name'] . ' </a>';
+                                  } else {
+                                    echo '<a class="dropdown-item" href="dailyReports.php?Grade=' . $_GET['Grade'] . '&Section=' . $sectionData['S_name'] . '">' . $sectionData['S_name'] . '</a>';
+                                  }
+                                } ?>
+                              </div>
+                            </div>
+                          <?php } ?>
                         </div>
-                      <?php } ?>
-                    </div>
-                    <?php
-                    if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['date'])) { ?>
-                      <div class="btn-group" style="float: right;">
-                        <a href="../reports/DailyAttendancebyClass.php?Grade=<?php echo $_GET['Grade'] . "&Section=" . $_GET['Section']; ?>" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
-                      </div>
-                  <?php }
-                  }
-                  ?>
+                        <?php
+                        if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['date'])) { ?>
+                          <div class="btn-group" style="float: right;">
+                            <a href="../reports/DailyAttendancebyClass.php?Grade=<?php echo $_GET['Grade'] . "&Section=" . $_GET['Section']; ?>" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
+                          </div>
+                      <?php }
+                      }
+                      ?>
+                  </div>
+
                   </form>
                   <div class="row" style="margin-top: 15px;">
                     <div class="col-lg-12 d-flex flex-column">
