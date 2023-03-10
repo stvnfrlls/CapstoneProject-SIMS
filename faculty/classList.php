@@ -169,7 +169,7 @@ if (!isset($_SESSION['F_number'])) {
                                     $getAcadYears = $mysqli->query("SELECT DISTINCT acadYear FROM classlist WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
                                     while ($acadYears = $getAcadYears->fetch_assoc()) {
                                       if ($acadYears['acadYear'] != $currentSchoolYear) {
-                                        echo '<a class="dropdown-item" href="classlist.php?SY=' . $acadYears['acadYear'] . '">' . $acadYears['acadYear'] . '</a>';
+                                        echo '<a class="dropdown-item" href="classList.php?SY=' . $acadYears['acadYear'] . '">' . $acadYears['acadYear'] . '</a>';
                                       }
                                     }
                                     ?>
@@ -258,7 +258,7 @@ if (!isset($_SESSION['F_number'])) {
                                               $getstudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$dataClassList['SR_number']}'");
                                               $studentInfo = $getstudentInfo->fetch_assoc();
                                               ?>
-                                              <a href="viewstudent.php?ID=<?php echo $studentInfo['SR_number'] ?>">
+                                              <a href="viewStudent.php?ID=<?php echo $studentInfo['SR_number'] ?>">
                                                 <?php echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix']; ?>
                                               </a>
                                             </td>
