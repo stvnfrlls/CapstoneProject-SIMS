@@ -203,7 +203,19 @@ if (!isset($_SESSION['AD_number'])) {
                       <div class="col-lg-2 col-sm-6">
                         <div>
                           <button class="btn btn-secondary" style="background-color: #e4e3e3;" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            Grade <i class="fa fa-caret-down"></i>
+                            <?php
+                            if (isset($_GET['grade'])) {
+                              if ($_GET['grade'] == "KINDER") {
+                                echo $_GET['grade'];
+                              } else {
+                                echo "Grade " . $_GET['grade'];
+                              }
+                            } else {
+                              echo "Grade";
+                            }
+
+                            ?>
+                            <i class="fa fa-caret-down"></i>
                           </button>
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
                             <?php
