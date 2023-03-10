@@ -102,7 +102,12 @@ if (!isset($_SESSION['SR_number'])) {
             <div class="row col-lg-10">
                 <div class="col-lg-10 posts-list" style="margin-left: auto;">
                     <?php
-                    $getReminderData = $mysqli->query("SELECT * FROM reminders WHERE forsection = '{$studentInfo['SR_section']}' AND acadYear = '{$currentSchoolYear}'");
+                    $getReminderData = $mysqli->query("SELECT * FROM reminders
+                                                       WHERE forsection = '{$studentInfo['SR_section']}' 
+                                                       AND acadYear = '{$currentSchoolYear}' 
+                                                       AND reminderID 
+                                                       NOT IN (SELECT reminderID FROM reminder_status
+                                                               WHERE SR_number = '{$_SESSION['SR_number']}')");
                     if ($getReminderData->num_rows > 0) {
                         while ($reminders = $getReminderData->fetch_assoc()) { ?>
                             <div class="single-post row">
