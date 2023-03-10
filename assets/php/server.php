@@ -567,19 +567,51 @@ if (isset($_POST['delReminder'])) {
     showSweetAlert('Reminder is successfully deleted', 'success');
     header('Location: reminders.php');
 }
-if (isset($_POST['attendanceReport']) && isset($_SESSION['F_number'])) {
-    $F_number = $_SESSION['F_number'];
-    $subjectName = $_GET['subject'];
-    $SR_number = $_POST['SR_number'];
-    $SR_grade = $_GET['SR_grade'];
-    $SR_section = $_GET['SR_section'];
+if (isset($_POST['attendanceReportButton']) && isset($_SESSION['F_number'])) {
+    $SR_number = $mysqli->real_escape_string($_POST['SR_number']);
+    $Subject = $mysqli->real_escape_string($_GET['subject']);
+    $SR_grade = $mysqli->real_escape_string($_POST['SR_grade']);
+    $SR_section = $mysqli->real_escape_string($_POST['SR_section']);
     $RP_reportDate = $_POST['RP_reportDate'];
     $RP_reportTime = $_POST['RP_reportTime'];
-    $RP_attendanceReport = $_POST['RP_attendanceReport'];
+    $RP_attendanceReport = $mysqli->real_escape_string($_POST['RP_attendanceReport']);
     $reportID = rand(1000, 9999);
 
-    $reportAttendanceIssue = $mysqli->query("INSERT INTO attendance_student_report(reportID, F_number, subjectName, SR_number, SR_grade, SR_section, RP_reportDate, RP_reportTime, RP_attendanceReport)
-                                            VALUES('{$reportID}', '{$F_number}', '{$subjectName}', '{$SR_number}', '{$SR_grade}', '{$SR_section}', '{$RP_reportDate}', '{$RP_reportTime}', '{$RP_attendanceReport}')");
+    $checkForDuplicateReport = $mysqli->query("SELECT * FROM attendance_student_report 
+                                               WHERE SR_number = '{$SR_number}' 
+                                               AND subjectName = '{$Subject}' 
+                                               AND RP_reportDate = '{$RP_reportDate}'");
+    if (mysqli_num_rows($checkForDuplicateReport) == 1) {
+        showSweetAlert('Report already exist', 'error');
+    } else {
+        $reportAttendanceIssue = $mysqli->query("INSERT INTO attendance_student_report(reportID, F_number, subjectName, SR_number, SR_grade, SR_section, RP_reportDate, RP_reportTime, RP_attendanceReport)
+                                            VALUES('{$reportID}', '{$_SESSION['F_number']}', '{$Subject}', '{$SR_number}', '{$SR_grade}', '{$SR_section}', '{$RP_reportDate}', '{$RP_reportTime}', '{$RP_attendanceReport}')");
+        if ($reportAttendanceIssue) {
+            $emailGuardian = $mysqli->query("SELECT G_email FROM guardian WHERE G_guardianOfStudent = '{$SR_number}'");
+            if (mysqli_num_rows($emailGuardian) > 0) {
+                $G_email = $emailGuardian->fetch_assoc();
+
+                $getFullname = $mysqli->query("SELECT SR_fname, SR_mname, SR_lname, SR_suffix FROM studentrecord WHERE SR_number = '{$SR_number}'");
+                if (mysqli_num_rows($getFullname) > 0) {
+                    $name = $getFullname->fetch_assoc();
+                    $FullName = $name['SR_lname'] .  ", " . $name['SR_fname'] . " " . substr($name['SR_mname'], 0, 1) . ". " . $name['SR_suffix'];
+                }
+                $mail->addAddress($G_email['G_email']);
+                $mail->Subject = 'ISSUE: ATTENDANCE';
+
+                $mail->Body = '<h1>A professor has reported your child, ' . $FullName . '</h1>
+                           <br>
+                           <p>Your child was reported to be ' . $RP_attendanceReport . ' on ' . $RP_reportDate . '</p>
+                           <p>Please contact your child(s) advisor about this issue.</p><br>
+                           <br>';
+                $mail->send();
+            } else {
+                showSweetAlert('No Guardian Email saved', 'error');
+            }
+        } else {
+            showSweetAlert('Unable to process your request now. ' . mysqli_error($conn), 'error');
+        }
+    }
 }
 if (isset($_POST['updateAttendanceStatus']) && isset($_SESSION['F_number'])) {
     $SR_number = $mysqli->real_escape_string($_POST['SR_number']);
@@ -597,10 +629,29 @@ if (isset($_POST['updateAttendanceStatus']) && isset($_SESSION['F_number'])) {
                                        AND A_date = '{$A_date}'");
         showSweetAlert('Successfully updated attendance', 'success');
     } else {
-        $manualAttendance = $mysqli->query("INSERT INTO attendance(acadYear, SR_number, A_date, A_status)
-                                            VALUES ('{$currentSchoolYear}', '{$SR_number}', '{$A_date}', '{$AttendanceStatus}')");
-        //add email code here
-        showSweetAlert('Attendance manually added', 'success');
+        $emailGuardian = $mysqli->query("SELECT G_email FROM guardian WHERE G_guardianOfStudent = '{$SR_number}'");
+        if (mysqli_num_rows($emailGuardian) > 0) {
+            $manualAttendance = $mysqli->query("INSERT INTO attendance(acadYear, SR_number, A_date, A_status)
+                                                VALUES ('{$currentSchoolYear}', '{$SR_number}', '{$A_date}', '{$AttendanceStatus}')");
+            $getFullname = $mysqli->query("SELECT SR_fname, SR_mname, SR_lname, SR_suffix FROM studentrecord WHERE SR_number = '{$SR_number}'");
+            if (mysqli_num_rows($getFullname) > 0) {
+                $G_email = $emailGuardian->fetch_assoc();
+                $name = $getFullname->fetch_assoc();
+                $FullName = $name['SR_lname'] .  ", " . $name['SR_fname'] . " " . substr($name['SR_mname'], 0, 1) . ". " . $name['SR_suffix'];
+                $mail->addAddress($G_email['G_email']);
+                $mail->Subject = 'ATTENDANCE UPDATE';
+
+                $mail->Body = '<h1>A professor has reported your child, ' . $FullName . '</h1>
+                                <br>
+                                <p>Your child was reported to be ' . $AttendanceStatus . ' on ' . $A_date . '</p>
+                                <p>Please contact your child(s) advisor about this issue.</p><br>
+                                <br>';
+                $mail->send();
+                showSweetAlert('Attendance manually added', 'success');
+            }
+        } else {
+            showSweetAlert('No Guardian Email saved', 'error');
+        }
     }
 }
 if (isset($_POST['resolveIssue']) && isset($_SESSION['F_number'])) {
@@ -629,28 +680,6 @@ if (isset($_POST['resolveIssue']) && isset($_SESSION['F_number'])) {
                         AND RP_reportDate = '{$A_date}' 
                         AND RP_attendanceReport = '{$AttendanceStatus}'");
         showSweetAlert('Attendance manually added', 'success');
-    }
-}
-if (isset($_POST['attendanceReportButton']) && isset($_SESSION['F_number'])) {
-    $SR_number = $mysqli->real_escape_string($_POST['SR_number']);
-    $Subject = $mysqli->real_escape_string($_GET['subject']);
-    $SR_grade = $mysqli->real_escape_string($_POST['SR_grade']);
-    $SR_section = $mysqli->real_escape_string($_POST['SR_section']);
-    $RP_reportDate = $_POST['RP_reportDate'];
-    $RP_reportTime = $_POST['RP_reportTime'];
-    $RP_attendanceReport = $mysqli->real_escape_string($_POST['RP_attendanceReport']);
-    $reportID = rand(1000, 9999);
-
-    $checkForDuplicateReport = $mysqli->query("SELECT * FROM attendance_student_report 
-                                               WHERE SR_number = '{$SR_number}' 
-                                               AND subjectName = '{$Subject}' 
-                                               AND RP_reportDate = '{$RP_reportDate}'");
-    if (mysqli_num_rows($checkForDuplicateReport) == 1) {
-        showSweetAlert('Report already exist', 'error');
-    } else {
-        $submitRequest = $mysqli->query("INSERT INTO attendance_student_report(reportID, F_number, subjectName, SR_number, SR_grade, SR_section, RP_reportDate, RP_reportTime, RP_attendanceReport)
-                                        VALUES('{$reportID}', '{$_SESSION['F_number']}', '{$Subject}', '{$SR_number}', '{$SR_grade}', '{$SR_section}', '{$RP_reportDate}', '{$RP_reportTime}', '{$RP_attendanceReport}')");
-        showSweetAlert('Report submitted', 'success');
     }
 }
 //End
@@ -695,7 +724,7 @@ if (isset($_POST['regStudent'])) {
     $G_state    = $mysqli->real_escape_string($_POST['G_state']);
     $G_postal    = $mysqli->real_escape_string($_POST['G_postal']);
 
-    $G_email    = $mysqli->real_escape_string($_POST['G_email']);
+    $G_email    = $_POST['G_email'];
 
     $G_relationshipStudent = $mysqli->real_escape_string($_POST['G_relationshipStudent']);
     $G_telephone    = $mysqli->real_escape_string($_POST['G_telephone']);
