@@ -209,50 +209,56 @@ if (!isset($_SESSION['SR_number'])) {
                                                                     <tr>
                                                                         <td class="hatdog"><?php echo $studentGradesData['G_learningArea']; ?></td>
                                                                         <?php
-                                                                        if ($studentGradesData['G_gradesQ1']) { ?>
-                                                                            <td class="hatdog"><?php echo $studentGradesData['G_gradesQ1']; ?></td>
-                                                                        <?php
-                                                                        } else { ?>
-                                                                            <td class="hatdog"></td>
-                                                                        <?php } ?>
-
-                                                                        <?php
-                                                                        if ($studentGradesData['G_gradesQ2']) { ?>
-                                                                            <td class="hatdog"><?php echo $studentGradesData['G_gradesQ2']; ?></td>
-                                                                        <?php
-                                                                        } else { ?>
-                                                                            <td class="hatdog"></td>
-                                                                        <?php } ?>
-
-                                                                        <?php
-                                                                        if ($studentGradesData['G_gradesQ3']) { ?>
-                                                                            <td class="hatdog"><?php echo $studentGradesData['G_gradesQ3']; ?></td>
-                                                                        <?php
-                                                                        } else { ?>
-                                                                            <td class="hatdog"></td>
-                                                                        <?php } ?>
-
-                                                                        <?php
-                                                                        if ($studentGradesData['G_gradesQ4']) { ?>
-                                                                            <td class="hatdog"><?php echo $studentGradesData['G_gradesQ4']; ?></td>
-                                                                        <?php
-                                                                        } else { ?>
-                                                                            <td class="hatdog"></td>
-                                                                        <?php } ?>
-
-                                                                        <td class="hatdog">
-                                                                            <?php
-                                                                            if (empty($studentGradesData['G_finalgrade'])) {
-                                                                                $sum = $studentGradesData['G_gradesQ1'] + $studentGradesData['G_gradesQ2'] + $studentGradesData['G_gradesQ3'] + $studentGradesData['G_gradesQ4'];
-                                                                                $average = $sum / 4;
-                                                                                echo round($average);
+                                                                        $getquarterTag1 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 1 AND gradeStatus = 'visible'");
+                                                                        if (mysqli_num_rows($getquarterTag1) > 0) {
+                                                                            if ($studentGradesData['G_gradesQ1']) {
+                                                                                echo '<td class="hatdog">' . $studentGradesData['G_gradesQ1'] . '</td>';
                                                                             } else {
-                                                                                echo $studentGradesData['G_finalgrade'];
+                                                                                echo '<td class="hatdog"></td>';
                                                                             }
-                                                                            ?>
-                                                                        </td>
-                                                                        <td class="hatdog">
-                                                                            <?php
+                                                                        } else {
+                                                                            echo '<td class="hatdog"></td>';
+                                                                        }
+
+                                                                        $getquarterTag2 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 2 AND gradeStatus = 'visible'");
+                                                                        if (mysqli_num_rows($getquarterTag2) > 0) {
+                                                                            if ($studentGradesData['G_gradesQ2']) {
+                                                                                echo '<td class="hatdog">' . $studentGradesData['G_gradesQ2'] . '</td>';
+                                                                            } else {
+                                                                                echo '<td class="hatdog"></td>';
+                                                                            }
+                                                                        } else {
+                                                                            echo '<td class="hatdog"></td>';
+                                                                        }
+
+                                                                        $getquarterTag3 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 3 AND gradeStatus = 'visible'");
+                                                                        if (mysqli_num_rows($getquarterTag3) > 0) {
+                                                                            if ($studentGradesData['G_gradesQ3']) {
+                                                                                echo '<td class="hatdog">' . $studentGradesData['G_gradesQ3'] . '</td>';
+                                                                            } else {
+                                                                                echo '<td class="hatdog"></td>';
+                                                                            }
+                                                                        } else {
+                                                                            echo '<td class="hatdog"></td>';
+                                                                        }
+
+                                                                        $getquarterTag4 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 4 AND gradeStatus = 'visible'");
+                                                                        if (mysqli_num_rows($getquarterTag4) > 0) {
+                                                                            if ($studentGradesData['G_gradesQ4']) {
+                                                                                echo '<td class="hatdog">' . $studentGradesData['G_gradesQ4'] . '</td>';
+                                                                            } else {
+                                                                                echo '<td class="hatdog"></td>';
+                                                                            }
+                                                                        } else {
+                                                                            echo '<td class="hatdog"></td>';
+                                                                        }
+                                                                        ?>
+
+                                                                        <?php
+                                                                        if (!empty($studentGradesData['G_finalgrade'])) {
+                                                                            $sum = $studentGradesData['G_gradesQ1'] + $studentGradesData['G_gradesQ2'] + $studentGradesData['G_gradesQ3'] + $studentGradesData['G_gradesQ4'];
+                                                                            $average = $sum / 4;
+
                                                                             $average = $studentGradesData['G_finalgrade'];
                                                                             if ($average >= 90) {
                                                                                 echo "Outstanding";
@@ -265,8 +271,14 @@ if (!isset($_SESSION['SR_number'])) {
                                                                             } else if ($average < 75) {
                                                                                 echo "Did Not Meet Expectations";
                                                                             }
-                                                                            ?>
-                                                                        </td>
+
+                                                                            echo '<td class="hatdog">' . round($average) . '</td>';
+                                                                            echo '<td class="hatdog">' . $average . '</td>';
+                                                                        } else {
+                                                                            echo '<td class="hatdog"></td>';
+                                                                            echo '<td class="hatdog"></td>';
+                                                                        }
+                                                                        ?>
                                                                     </tr>
                                                                 <?php }
                                                             } else {
@@ -300,18 +312,15 @@ if (!isset($_SESSION['SR_number'])) {
                                                         <table id="ave" class="table text-center" style="margin-top: 20px; margin-bottom: 20px;">
                                                             <tr>
                                                                 <td class="hatdog">General Average</td>
-                                                                <td class="hatdog">
-                                                                    <?php
-                                                                    $GenAveQuery = $mysqli->query("SELECT round(avg(G_finalgrade)) FROM grades WHERE SR_number = '{$_SESSION['SR_number']}' AND acadYear = '{$currentSchoolYear}'");
-                                                                    $GetgenAve = $GenAveQuery->fetch_assoc();
-                                                                    echo $GetgenAve['round(avg(G_finalgrade))'];
-                                                                    ?>
-                                                                </td>
+                                                                <?php
+                                                                $GenAveQuery = $mysqli->query("SELECT round(avg(G_finalgrade)) FROM grades WHERE SR_number = '{$_SESSION['SR_number']}' AND acadYear = '{$currentSchoolYear}'");
+                                                                $GetgenAve = $GenAveQuery->fetch_assoc();
+                                                                echo '<td class="hatdog">' . $GetgenAve['round(avg(G_finalgrade))'] . '</td>';
+                                                                ?>
                                                             </tr>
                                                         </table>
                                                     </div>
                                                 </div>
-
                                                 <div class="row">
                                                     <div class="col-12 grid-margin">
                                                         <div class="container">
@@ -351,7 +360,6 @@ if (!isset($_SESSION['SR_number'])) {
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
 
@@ -398,14 +406,51 @@ if (!isset($_SESSION['SR_number'])) {
                                                                         <td rowspan="1" class="hatdog">
                                                                             <?php echo $BehaviorAreasArray[$i]['core_value_subheading']; ?>
                                                                         </td>
-                                                                        <td rowspan="1" class="hatdog"><?php echo $BehaviorData['CV_valueQ1']; ?>
-                                                                        </td>
-                                                                        <td rowspan="1" class="hatdog"><?php echo $BehaviorData['CV_valueQ2']; ?>
-                                                                        </td>
-                                                                        <td rowspan="1" class="hatdog"><?php echo $BehaviorData['CV_valueQ3']; ?>
-                                                                        </td>
-                                                                        <td rowspan="1" class="hatdog"><?php echo $BehaviorData['CV_valueQ4']; ?>
-                                                                        </td>
+                                                                        <?php
+                                                                        $getquarterTag1 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 1 AND gradeStatus = 'visible'");
+                                                                        if (mysqli_num_rows($getquarterTag1) > 0) {
+                                                                            if ($BehaviorData['CV_valueQ1']) {
+                                                                                echo '<td rowspan="1" class="hatdog">' . $BehaviorData['CV_valueQ1'] . '</td>';
+                                                                            } else {
+                                                                                echo '<td rowspan="1" class="hatdog"></td>';
+                                                                            }
+                                                                        } else {
+                                                                            echo '<td rowspan="1" class="hatdog"></td>';
+                                                                        }
+
+                                                                        $getquarterTag2 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 2 AND gradeStatus = 'visible'");
+                                                                        if (mysqli_num_rows($getquarterTag2) > 0) {
+                                                                            if ($BehaviorData['CV_valueQ2']) {
+                                                                                echo '<td rowspan="1" class="hatdog">' . $BehaviorData['CV_valueQ2'] . '</td>';
+                                                                            } else {
+                                                                                echo '<td rowspan="1" class="hatdog"></td>';
+                                                                            }
+                                                                        } else {
+                                                                            echo '<td rowspan="1" class="hatdog"></td>';
+                                                                        }
+
+                                                                        $getquarterTag3 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 3 AND gradeStatus = 'visible'");
+                                                                        if (mysqli_num_rows($getquarterTag3) > 0) {
+                                                                            if ($BehaviorData['CV_valueQ3']) {
+                                                                                echo '<td rowspan="1" class="hatdog">' . $BehaviorData['CV_valueQ3'] . '</td>';
+                                                                            } else {
+                                                                                echo '<td rowspan="1" class="hatdog"></td>';
+                                                                            }
+                                                                        } else {
+                                                                            echo '<td rowspan="1" class="hatdog"></td>';
+                                                                        }
+
+                                                                        $getquarterTag4 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 4 AND gradeStatus = 'visible'");
+                                                                        if (mysqli_num_rows($getquarterTag4) > 0) {
+                                                                            if ($BehaviorData['CV_valueQ4']) {
+                                                                                echo '<td rowspan="1" class="hatdog">' . $BehaviorData['CV_valueQ4'] . '</td>';
+                                                                            } else {
+                                                                                echo '<td rowspan="1" class="hatdog"></td>';
+                                                                            }
+                                                                        } else {
+                                                                            echo '<td rowspan="1" class="hatdog"></td>';
+                                                                        }
+                                                                        ?>
                                                                     </tr>
                                                                 <?php $i++;
                                                                 }

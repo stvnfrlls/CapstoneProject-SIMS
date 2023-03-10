@@ -905,34 +905,13 @@ if (isset($_POST['UpdateGrade']) && !empty($_SESSION['AD_number'])) {
     VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
 }
 if (isset($_POST['releaseGrades']) && !empty($_SESSION['AD_number'])) {
-    $grade =  $_GET['Grade'];
-    $section = $_GET['Section'];
+    $quarter = $_GET['Quarter'];
 
-    $getUnreleasedGrades = $mysqli->query("SELECT * FROM grades WHERE SR_gradeLevel = '{$grade}' AND SR_section = '{$section}' AND acadYear = '{$currentSchoolYear}'");
-    while ($Grades = $getUnreleasedGrades->fetch_assoc()) {
-        $checkIfexisting = $mysqli->query("SELECT * FROM student_grades WHERE SR_gradeLevel = '{$grade}' AND SR_section = '{$section}' AND acadYear = '{$currentSchoolYear}'");
-        if (mysqli_num_rows($checkIfexisting) > 0) {
-            $updateIfexistingUnreleasedGrades = $mysqli->query("UPDATE student_grades 
-                                                            SET G_gradesQ1 = '{$Grades['G_gradesQ1']}', 
-                                                                G_gradesQ2 = '{$Grades['G_gradesQ2']}', 
-                                                                G_gradesQ3 = '{$Grades['G_gradesQ3']}', 
-                                                                G_gradesQ4 = '{$Grades['G_gradesQ4']}', 
-                                                                G_finalgrade = '{$Grades['G_finalgrade']}'
-                                                            WHERE
-                                                            SR_number = '{$Grades['SR_number']}' AND
-                                                            acadYear = '{$Grades['acadYear']}' AND
-                                                            SR_gradeLevel = '{$Grades['SR_gradeLevel']}' AND 
-                                                            SR_section = '{$Grades['SR_section']}' AND
-                                                            G_learningArea = '{$Grades['G_learningArea']}'");
-            // showSweetAlert('Grades successfully updated.', 'success');
-        } else if (mysqli_num_rows($checkIfexisting) == 0) {
-            $insertUnreleasedGrades = $mysqli->query("INSERT INTO student_grades(SR_number, acadYear, SR_gradeLevel, SR_section, G_learningArea, G_gradesQ1, G_gradesQ2, G_gradesQ3, G_gradesQ4, G_finalgrade)
-                                                      VALUES('{$Grades['SR_number']}', '{$Grades['acadYear']}', '{$Grades['SR_gradeLevel']}', '{$Grades['SR_section']}', '{$Grades['G_learningArea']}', 
-                                                             '{$Grades['G_gradesQ1']}', '{$Grades['G_gradesQ2']}', '{$Grades['G_gradesQ3']}', '{$Grades['G_gradesQ4']}', '{$Grades['G_finalgrade']}')");
-            showSweetAlert('Grades successfully published.', 'success');
-        } else {
-            showSweetAlert('Failed to publish grades.', 'error');
-        }
+    $changeGradeStatus = $mysqli->query("UPDATE quartertable SET gradeStatus = 'visible' WHERE quarterTag = '{$quarter}'");
+    if ($changeGradeStatus) {
+        showSweetAlert('Grades successfully published.', 'success');
+    } else {
+        showSweetAlert('Failed to publish grades.', 'error');
     }
 }
 if (isset($_POST['addCurr']) && !empty($_SESSION['AD_number'])) {
