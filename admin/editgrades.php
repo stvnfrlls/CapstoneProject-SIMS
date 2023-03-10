@@ -276,7 +276,7 @@ if (!isset($_SESSION['AD_number'])) {
                                 if ($_GET['Grade'] == "KINDER") {
                                   echo $_GET['Grade'] . " - " . $_GET['Section'];
                                 } else {
-                                  echo "GR." . $_GET['Grade'] . " - " . $_GET['Section'];
+                                  echo "Grade " . $_GET['Grade'] . " - " . $_GET['Section'];
                                 }
                               } else {
                                 echo "Grade and Section";
