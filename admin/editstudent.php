@@ -539,7 +539,6 @@ if (!isset($_SESSION['AD_number'])) {
                         icon: 'success',
                     }).then(() => {
                         editstudentform.submit();
-                        window.location.href = '../admin/student.php';
                     });
                 }
             })
