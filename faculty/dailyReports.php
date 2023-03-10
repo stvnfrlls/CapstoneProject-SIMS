@@ -177,7 +177,7 @@ if (!isset($_SESSION['F_number'])) {
                                             </div>
                                             <div class="btn-group">
                                                 <div>
-                                                    <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                    <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
                                                         <?php
                                                         if (isset($_GET['Grade']) && isset($_GET['Section'])) {
                                                             if ($_GET['Grade'] == "KINDER") {
@@ -326,9 +326,7 @@ if (!isset($_SESSION['F_number'])) {
     </div>
     <!-- Footer End -->
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
+ 
     <!-- JavaScript Libraries -->
     <script>
         function autocomplete(inp, arr) {

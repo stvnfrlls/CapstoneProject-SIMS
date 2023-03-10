@@ -187,29 +187,38 @@ if (!isset($_SESSION['F_number'])) {
                                                     </div>
                                                     <div class="btn-group">
                                                         <div>
-                                                            <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                            <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
                                                                 <?php
                                                                 if (isset($_GET['Grade']) && isset($_GET['Section'])) {
                                                                     if ($_GET['Grade'] == "KINDER") {
                                                                         echo  $_GET['Grade'] . "-" . $_GET['Section'];
                                                                     } else {
-                                                                        echo  "Grade " . $_GET['Grade'] . "-" . $_GET['Section'];
+                                                                        echo "Grade ";
                                                                     }
-                                                                } else {
-                                                                    echo "Grade and Section";
-                                                                }
-                                                                ?>
-                                                                <i class="fa fa-caret-down"></i>
-                                                            </button>
-                                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                                <?php
-                                                                while ($gradeData = $GradeSectionFromWorkSchedule->fetch_assoc()) {
-                                                                    if (isset($_GET['month'])) {
-                                                                        if ($gradeData['SR_grade'] == "KINDER") {
-                                                                            echo '<a class="dropdown-item" href="monthlyReports.php?month=' . $_GET['month'] . '&Grade=' . $gradeData['SR_grade'] . '&Section=' . $gradeData['SR_section'] . '">' . $gradeData['SR_grade'] . '-' . $gradeData['SR_section'] . '</a>';
-                                                                        } else {
-                                                                            echo '<a class="dropdown-item" href="monthlyReports.php?month=' . $_GET['month'] . '&Grade=' . $gradeData['SR_grade'] . '&Section=' . $gradeData['SR_section'] . '">Grade ' . $gradeData['SR_grade'] . '-' . $gradeData['SR_section'] . ' </a>';
-                                                                        }
+                                                                    ?>
+                                                                    <i class="fa fa-caret-down"></i>
+                                                                </button>
+                                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                                    <?php
+                                                                    while ($gradeData = $rungradeList->fetch_assoc()) { ?>
+                                                                        <a class="dropdown-item" href="monthlyReports.php?month=<?php echo $_GET['month'] ?>&Grade=<?php echo $gradeData['S_yearLevel'] ?>">
+                                                                            <?php
+                                                                            echo "Grade " . $gradeData['S_yearLevel'];
+                                                                            ?>
+                                                                        </a>
+                                                                    <?php } ?>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    <?php }
+                                                    ?>
+                                                    <div class="btn-group">
+                                                        <?php
+                                                        if (isset($_GET['Grade'])) { ?>
+                                                            <div>
+                                                                <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                                    <?php if (isset($_GET['Section'])) {
+                                                                        echo $_GET['Section'];
                                                                     } else {
                                                                         if ($gradeData['SR_grade'] == "KINDER") {
                                                                             echo '<a class="dropdown-item" href="monthlyReports.php?Grade=' . $gradeData['SR_grade'] . '&Section=' . $gradeData['SR_section'] . '">' . $gradeData['SR_grade'] . '-' . $gradeData['SR_section'] . '</a>';
@@ -375,11 +384,7 @@ if (!isset($_SESSION['F_number'])) {
     </div>
     <!-- Footer End -->
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
-    <!-- JavaScript Libraries -->
-
+ 
 
     <!-- Template Javascript -->
     <script src="../assets/js/main.js"></script>
