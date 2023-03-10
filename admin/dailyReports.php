@@ -245,7 +245,7 @@ if (!isset($_SESSION['AD_number'])) {
                       </div>
                   </div>
                   <?php
-                  if (isset($_GET['Grade']) && isset($_GET['Section'])) { ?>
+                  if (isset($_GET['Grade'])) { ?>
                     <div class="btn-group">
                       <?php
                       if (isset($_GET['Grade'])) { ?>
