@@ -583,9 +583,10 @@ if (isset($_POST['attendanceReport']) && isset($_SESSION['F_number'])) {
     $RP_reportDate = $_POST['RP_reportDate'];
     $RP_reportTime = $_POST['RP_reportTime'];
     $RP_attendanceReport = $_POST['RP_attendanceReport'];
+    $reportID = rand(1000, 9999);
 
-    $reportAttendanceIssue = $mysqli->query("INSERT INTO attendance_student_report(F_number, subjectName, SR_number, SR_grade, SR_section, RP_reportDate, RP_reportTime, RP_attendanceReport)
-                                            VALUES('{$F_number}', '{$subjectName}', '{$SR_number}', '{$SR_grade}', '{$SR_section}', '{$RP_reportDate}', '{$RP_reportTime}', '{$RP_attendanceReport}')");
+    $reportAttendanceIssue = $mysqli->query("INSERT INTO attendance_student_report(reportID, F_number, subjectName, SR_number, SR_grade, SR_section, RP_reportDate, RP_reportTime, RP_attendanceReport)
+                                            VALUES('{$reportID}', '{$F_number}', '{$subjectName}', '{$SR_number}', '{$SR_grade}', '{$SR_section}', '{$RP_reportDate}', '{$RP_reportTime}', '{$RP_attendanceReport}')");
 }
 if (isset($_POST['updateAttendanceStatus']) && isset($_SESSION['F_number'])) {
     $SR_number = $mysqli->real_escape_string($_POST['SR_number']);
@@ -610,9 +611,8 @@ if (isset($_POST['updateAttendanceStatus']) && isset($_SESSION['F_number'])) {
     }
 }
 if (isset($_POST['resolveIssue']) && isset($_SESSION['F_number'])) {
-    $SR_number = $mysqli->real_escape_string($_POST['SR_number']);
+    $SR_number = $mysqli->real_escape_string($_POST['studentName']);
     $AttendanceStatus = $mysqli->real_escape_string($_POST['A_status']);
-    $A_date = date('Y-m-d', $_POST['A_date']);
 
     $checkAttendance = $mysqli->query("SELECT * FROM attendance 
                                        WHERE SR_number = '{$SR_number}'
@@ -646,6 +646,7 @@ if (isset($_POST['attendanceReportButton']) && isset($_SESSION['F_number'])) {
     $RP_reportDate = $_POST['RP_reportDate'];
     $RP_reportTime = $_POST['RP_reportTime'];
     $RP_attendanceReport = $mysqli->real_escape_string($_POST['RP_attendanceReport']);
+    $reportID = rand(1000, 9999);
 
     $checkForDuplicateReport = $mysqli->query("SELECT * FROM attendance_student_report 
                                                WHERE SR_number = '{$SR_number}' 
@@ -654,8 +655,8 @@ if (isset($_POST['attendanceReportButton']) && isset($_SESSION['F_number'])) {
     if (mysqli_num_rows($checkForDuplicateReport) == 1) {
         showSweetAlert('Report already exist', 'error');
     } else {
-        $submitRequest = $mysqli->query("INSERT INTO attendance_student_report(F_number, subjectName, SR_number, SR_grade, SR_section, RP_reportDate, RP_reportTime, RP_attendanceReport)
-                                        VALUES('{$_SESSION['F_number']}', '{$Subject}', '{$SR_number}', '{$SR_grade}', '{$SR_section}', '{$RP_reportDate}', '{$RP_reportTime}', '{$RP_attendanceReport}')");
+        $submitRequest = $mysqli->query("INSERT INTO attendance_student_report(reportID, F_number, subjectName, SR_number, SR_grade, SR_section, RP_reportDate, RP_reportTime, RP_attendanceReport)
+                                        VALUES('{$reportID}', '{$_SESSION['F_number']}', '{$Subject}', '{$SR_number}', '{$SR_grade}', '{$SR_section}', '{$RP_reportDate}', '{$RP_reportTime}', '{$RP_attendanceReport}')");
         showSweetAlert('Report submitted', 'success');
     }
 }
