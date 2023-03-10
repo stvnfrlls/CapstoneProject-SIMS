@@ -49,6 +49,7 @@ if (!isset($_SESSION['SR_number'])) {
   <!-- Template Stylesheet -->
   <link href="../assets/css/style.css" rel="stylesheet">
   <link href="../assets/css/dashboard-user.css" rel="stylesheet">
+  <link href="../assets/css/admin/style.css" rel="stylesheet">
 </head>
 
 <body>
@@ -105,8 +106,8 @@ if (!isset($_SESSION['SR_number'])) {
         <div class="col-lg-8">
           <div class="row g-5">
 
-            <div class="blog-item bg-light rounded overflow-hidden">
-              <div class="p-4">
+            <div class="card">
+              <div class="card-body">
                 <div class="right-content">
                   <div class="d-flex mb-3">
                     <small class="me-3">Subject: <?php echo $ReminderInfo['subject'] ?></small>
@@ -135,24 +136,25 @@ if (!isset($_SESSION['SR_number'])) {
             <div class="section-title section-title-sm position-relative pb-3 mb-4">
               <h3 class="mb-0" style="text-align:left;">Other Reminders</h3>
             </div>
-            <?php
-            $getReminderDataExcept = $mysqli->query("SELECT * FROM reminders WHERE forsection = '{$studentInfo['SR_section']}' AND reminderID != '{$_GET['ID']}'");
-            if (mysqli_num_rows($getReminderDataExcept) > 0) {
-              while ($OtherReminderInfo = $getReminderDataExcept->fetch_assoc()) { ?>
-                <div class="d-flex rounded overflow-hidden mb-3">
-                  <img class="img-fluid" src="../assets/img/about-1.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
-                  <a href="viewreminders.php?ID=<?php echo $OtherReminderInfo['reminderID'] ?>" class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0"><?php echo $OtherReminderInfo['header'] ?></a>
-                </div>
-              <?php }
-            } else { ?>
-              <div class="d-flex rounded overflow-hidden mb-3">
-                <img class="img-fluid" src="../assets/img/about-1.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
-                <a class="h5 fw-semi-bold d-flex align-items-center bg-light px-3 mb-0">
-                  No More Reminders
-                </a>
+            <div class="card">
+              <div class="card-body">
+                <?php
+                $getReminderDataExcept = $mysqli->query("SELECT * FROM reminders WHERE forsection = '{$studentInfo['SR_section']}' AND reminderID != '{$_GET['ID']}'");
+                if (mysqli_num_rows($getReminderDataExcept) > 0) {
+                  while ($OtherReminderInfo = $getReminderDataExcept->fetch_assoc()) { ?>
+                    <div class="d-flex rounded overflow-hidden mb-3">
+                      <a href="viewreminders.php?ID=<?php echo $OtherReminderInfo['reminderID'] ?>" class="h5 fw-semi-bold d-flex align-items-center px-3 mb-0"><?php echo $OtherReminderInfo['msg'] ?></a>
+                    </div>
+                  <?php }
+                } else { ?>
+                  <a class="h5 fw-semi-bold d-flex align-items-center px-3 mb-0">
+                    No More Reminders
+                  </a>
+                <?php }
+                ?>
               </div>
-            <?php }
-            ?>
+            </div>
+
           </div>
           <!-- Recent Post End -->
 
@@ -170,7 +172,7 @@ if (!isset($_SESSION['SR_number'])) {
   <!-- Blog End -->
 
   <!-- Footer Start -->
-  <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
+  <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s" style="margin-top: 200px;">
     <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
       <div class="container">
         <div class="row">

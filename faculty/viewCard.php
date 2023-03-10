@@ -172,7 +172,7 @@ if (!isset($_SESSION['F_number'])) {
                   <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
                     <nav class="nav">
                       <a class="nav-link active ms-0" href="viewStudent.php?ID=<?php echo $_GET['ID'] ?>">Profile</a>
-                      <a class="nav-link" href="viewCard.php?ID=<?php echo $_GET['ID'] ?>"  style="color: #c02628;">Grades</a>
+                      <a class="nav-link" href="viewCard.php?ID=<?php echo $_GET['ID'] ?>" style="color: #c02628;">Grades</a>
                     </nav>
                     <div class="border-bottom"></div>
                   </div>
@@ -184,9 +184,9 @@ if (!isset($_SESSION['F_number'])) {
                             <div>
                               <?php
                               if (mysqli_num_rows($rungetStudentGrades) > 0) { ?>
-                                <a href="../reports/ReportCard.php?ID=<?php echo $_GET['ID'] ?>" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3; text-align:center; font-size: 13px">Print <i class="fa fa-print" style="font-size: 12px;"></i></a>
+                                <a href="../reports/ReportCard.php?ID=<?php echo $_GET['ID'] ?>" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3; text-align:center; font-size: 13px">Downlaod <i class="fa fa-print" style="font-size: 12px;"></i></a>
                               <?php } else { ?>
-                                <a href="viewCard.php?ID=<?php echo $_GET['ID'] ?>" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3; text-align:center; font-size: 13px">Print <i class="fa fa-print" style="font-size: 12px;"></i></a>
+                                <a href="viewCard.php?ID=<?php echo $_GET['ID'] ?>" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3; text-align:center; font-size: 13px">Download <i class="fa fa-print" style="font-size: 12px;"></i></a>
                               <?php }
                               ?>
 
@@ -213,7 +213,7 @@ if (!isset($_SESSION['F_number'])) {
                             <a href="viewCard.php?ID=<?php echo $next ?>" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3; text-align:center; font-size: 13px; float: right;">Next <i class="fa fa-angle-double-right"></i></a>
                           </div>
                           <div class="row">
-                            <div class="col-sm-12 col-lg-6 grid-margin">
+                            <div class="col-sm-12 col-lg-8 grid-margin">
                               <div class="card">
                                 <div class="card-body" style="text-align: left;">
                                   <div class="row">
@@ -377,14 +377,16 @@ if (!isset($_SESSION['F_number'])) {
                     </div>
 
                     <div class="row">
+                      <div class="mb-2">
+                        <div class="btn-group" style="float: right;">
+                          <button type="submit" name="saveBehavior" class="btn btn-primary">Submit</button>
+                        </div>
+                      </div>
                       <div class="col-12 grid-margin">
                         <div class="card">
                           <div class="card-body">
                             <h3 style="text-align: center;">CHARACTER BUILDING</h3>
                             <div class="row">
-                              <div class="">
-                                <button type="submit" name="saveBehavior" class="btn btn-primary">Submit</button>
-                              </div>
                               <div class="table-responsive">
                                 <table class="table text-center">
                                   <thead>
@@ -497,7 +499,6 @@ if (!isset($_SESSION['F_number'])) {
                                       }
                                     }
                                     ?>
-
                                   </tbody>
                                 </table>
                               </div>

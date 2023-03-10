@@ -16,7 +16,7 @@ if (!isset($_SESSION['F_number'])) {
 
   echo "<script>var options = " . $subjectList . ";</script>";
 
-  $getGradeSection = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
+  $getGradeSection = $mysqli->query("SELECT DISTINCT SR_grade, SR_section FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
 }
 ?>
 
@@ -192,7 +192,7 @@ if (!isset($_SESSION['F_number'])) {
                                               } else {
                                                 $gradeLabel = 'Grade ' . $GradeSection['SR_grade'] . ' - ' . $GradeSection['SR_section'];
                                               }
-                                              echo $gradeLabel . " (" . $GradeSection['WS_start_time'] . " - " . timePlusOneMinute($GradeSection['WS_end_time']) . ")"  ?>
+                                              echo $gradeLabel ?>
                                             </option>
                                           <?php
                                           }

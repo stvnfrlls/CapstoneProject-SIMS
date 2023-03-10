@@ -242,40 +242,55 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     $checkQuarterStatus = $mysqli->query("SELECT * FROM quartertable WHERE quarterStatus = 'current'");
                                                                     if (mysqli_num_rows($checkQuarterStatus) == 0) {
                                                                         echo '<p>Ongoing period: </p>';
+                                                                    } else {
+                                                                        $currentQuarter = $checkQuarterStatus->fetch_assoc();
+                                                                        if ($currentQuarter['quarterTag'] == 1) {
+                                                                            echo '<p>Ongoing period: 1st Quarter</p>';
+                                                                        }
+                                                                        if ($currentQuarter['quarterTag'] == 2) {
+                                                                            echo '<p>Ongoing period: 2nd Quarter</p>';
+                                                                        }
+                                                                        if ($currentQuarter['quarterTag'] == 3) {
+                                                                            echo '<p>Ongoing period: 3rd Quarter</p>';
+                                                                        }
+                                                                        if ($currentQuarter['quarterTag'] == 4) {
+                                                                            echo '<p>Ongoing period: 4th Quarter</p>';
+                                                                        }
                                                                     }
                                                                     ?>
                                                                     <?php
                                                                     $checkQuarter1 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 1 AND quarterStatus = 'current'");
                                                                     if (mysqli_num_rows($checkQuarter1) > 0) { ?>
-                                                                        <p>Ongoing period: 1st Quarter</p>
-                                                                        <button type=" submit" class="btn btn-primary m-2" name="disableQ1">1st Quarter (ongoing)</button>
+                                                                        <button type=" submit" class="btn btn-primary m-2" name="disableQ1">1st Quarter</button>
                                                                     <?php } else { ?>
                                                                         <button type=" submit" class="btn btn-secondary m-2" name="enableFirst">1st Quarter</button>
                                                                     <?php } ?>
+
                                                                     <?php
                                                                     $checkQuarter2 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 2 AND quarterStatus = 'current'");
                                                                     if (mysqli_num_rows($checkQuarter2) > 0) { ?>
-                                                                        <p>Ongoing period: 2nd Quarter</p>
-                                                                        <button class="btn btn-primary m-2" name="disableQ2" style="font-size:12px;">2nd Quarter (ongoing)</button>
+                                                                        <button class="btn btn-primary m-2" name="disableQ2" style="font-size:12px;">2nd Quarter</button>
                                                                     <?php } else { ?>
                                                                         <button type="submit" name="enableSecond" class="btn btn-secondary m-2">2nd Quarter</button>
                                                                     <?php } ?>
+
+
                                                                     <?php
                                                                     $checkQuarter3 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 3 AND quarterStatus = 'current'");
                                                                     if (mysqli_num_rows($checkQuarter3) > 0) { ?>
-                                                                        <p>Ongoing period: 3rd Quarter</p>
-                                                                        <button class="btn btn-primary m-2" name="disableQ3">3rd Quarter (ongoing)</button>
+                                                                        <button class="btn btn-primary m-2" name="disableQ3">3rd Quarter</button>
                                                                     <?php } else { ?>
                                                                         <button type="submit" name="enableThird" class="btn btn-secondary m-2">3rd Quarter</button>
                                                                     <?php } ?>
+
                                                                     <?php
                                                                     $checkQuarter4 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 4 AND quarterStatus = 'current'");
                                                                     if (mysqli_num_rows($checkQuarter4) > 0) { ?>
-                                                                        <p>Ongoing period: 4th Quarter</p>
-                                                                        <button class="btn btn-primary m-2" name="disableQ4">4th Quarter (ongoing)</button>
+                                                                        <button class="btn btn-primary m-2" name="disableQ4">4th Quarter</button>
                                                                     <?php } else { ?>
                                                                         <button type="submit" name="enableFourth" class="btn btn-secondary m-2">4th Quarter</button>
                                                                     <?php } ?>
+
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -283,7 +298,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                 </form>
                                             </div>
                                         </div>
-                                        <div class="row" >
+                                        <div class="row">
                                             <style>
                                                 h3 {
                                                     font-family: "Lato", "san serif";
@@ -362,7 +377,6 @@ if (!isset($_SESSION['AD_number'])) {
                                                 </div>
                                             </div>
                                             <div class="col-sm-12 col-lg-6 grid-margin" >
-
                                                 <div class="row">
                                                     <div class="col-sm-12 col-lg-4 grid-margin" style="align-content:space-between;">
                                                         <div class="card" style="height: 200px">

@@ -276,7 +276,7 @@ if (!isset($_SESSION['AD_number'])) {
                                 if ($_GET['Grade'] == "KINDER") {
                                   echo $_GET['Grade'] . " - " . $_GET['Section'];
                                 } else {
-                                  echo "GR." . $_GET['Grade'] . " - " . $_GET['Section'];
+                                  echo "Grade " . $_GET['Grade'] . " - " . $_GET['Section'];
                                 }
                               } else {
                                 echo "Grade and Section";
@@ -440,7 +440,11 @@ if (!isset($_SESSION['AD_number'])) {
                                                 }
                                               } else {
                                                 echo "<input type='hidden' name='row[]' value='" .  $subjectHeaderCount . "'>";
-                                                echo "<input type='hidden' name='subject[]' value='" .  $Grade['G_learningArea'] . "'>";
+                                                if (isset($Grade['G_learningArea'])) {
+                                                  echo "<input type='hidden' name='subject[]' value='" .  $Grade['G_learningArea'] . "'>";
+                                                } else {
+                                                  echo "<input type='hidden' name='subject[]' value='" .  $subject_Array[$subjectHeaderCount]['subjectName'] . "'>";
+                                                }
                                                 echo "<input type='hidden' name='SR_number[]'>";
                                                 echo "<td class='cell expand-maximum-on-hover'><input type='number' maxlength='2' class='form-control text-center' name='grade[]'></td>";
                                               }

@@ -7,7 +7,7 @@ if (!isset($_SESSION['F_number'])) {
     $facultyData = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
     $getFacultyData = $facultyData->fetch_assoc();
 
-    $facultySchedule = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$_SESSION['F_number']}'");
+    $facultySchedule = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' ORDER BY WS_start_time ASC");
 }
 ?>
 <!DOCTYPE html>
@@ -180,8 +180,8 @@ if (!isset($_SESSION['F_number'])) {
                                                                         <div class="progress rounded" style="height: 25px;">
                                                                             <p style="font-size: .77rem; margin: 5px 0px 0px 7px">
                                                                                 <?php
-                                                                                $start = date('H:i A', strtotime($getFacultySchedule['WS_start_time']));
-                                                                                $end = date('H:i A', strtotime(timeRoundUp($getFacultySchedule['WS_end_time'])));
+                                                                                $start = date('h:i A', strtotime($getFacultySchedule['WS_start_time']));
+                                                                                $end = date('h:i A', strtotime(timeRoundUp($getFacultySchedule['WS_end_time'])));
                                                                                 echo $start . " - " . $end;
                                                                                 ?>
                                                                             </p>

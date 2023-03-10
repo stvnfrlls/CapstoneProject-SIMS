@@ -171,29 +171,29 @@ if (!isset($_SESSION['F_number'])) {
                     <p>DATE: <?php echo date('D M-d-Y') ?></p>
                   </div>
                 </div>
+                <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
+                  <nav class="nav">
+                    <a class="nav-link" href="dailyReports.php">Daily</a>
+                    <a class="nav-link" href="monthlyReports.php">Monthly</a>
+                    <a class="nav-link" href="attendance.php">Attendance Report</a>
+                    <a class="nav-link active ms-0" href="advisoryAttendance.php" style="color: #c02628;">Advisory Attendance</a>
+                    <a class="nav-link" href="advisoryConcern.php">Advisory Concern</a>
+                  </nav>
+                  <div class="border-bottom"></div>
+                </div>
                 <div class="tab-content tab-content-basic">
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                     <div class="row">
                       <div class="col-lg-12 d-flex flex-column">
                         <div class="row flex-grow">
                           <div class="col-12 grid-margind">
-                            <div class="btn-group" style="margin-bottom: 15px;">
-                              <div>
-                                <a href="advisoryPage.php" class="btn btn-secondary" style="background-color: #e4e3e3; margin-right: 0px;">
-                                  Go back
-                                </a>
-                              </div>
-                            </div>
-                            <div class="btn-group mx-2" style="float: right;">
-                              <a href="advisoryConcern.php" style="margin-right: 0px;" class="btn btn-primary">Advisory Concerns</a>
-                            </div>
                             <div class="table-responsive">
                               <table class="table">
                                 <thead>
                                   <tr>
                                     <th>No.</th>
                                     <th>Student Name</th>
-                                    <th>Attendance</th>
+                                    <th>Time In</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                   </tr>
