@@ -257,15 +257,8 @@ if (isset($_POST['student'])) {
 
     $studentID = $_POST['student'];
 
-    $late_threshold = strtotime('07:28 AM');
     $date = date("Y-m-d");
     $time = date("h:i A");
-
-    if (strtotime($time) > $late_threshold) {
-        $A_status = "LATE";
-    } else {
-        $A_status = "PRESENT";
-    }
 
     $checkAttendance = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$studentID}' AND A_date = '{$date}'");
     $attendanceData = $checkAttendance->fetch_assoc();
@@ -275,7 +268,7 @@ if (isset($_POST['student'])) {
                                         (SELECT SR_number FROM classlist WHERE SR_number = '{$studentID}' AND acadYear = '{$currentSchoolYear}')");
     $sendtoGuardian = $sendtoGuardianData->fetch_assoc();
     if ($checkAttendance->num_rows == 0) {
-        $timeIN = $mysqli->query("INSERT INTO attendance (acadYear, SR_number, A_date, A_time_IN, A_status) VALUES ('{$currentSchoolYear}', '{$studentID}', '{$date}', '{$time}', '{$A_status}')");
+        $timeIN = $mysqli->query("INSERT INTO attendance (acadYear, SR_number, A_date, A_time_IN) VALUES ('{$currentSchoolYear}', '{$studentID}', '{$date}', '{$time}')");
         $mail->addAddress($sendtoGuardian['G_email']);
         $mail->Subject = 'Attendance: Time In';
 
