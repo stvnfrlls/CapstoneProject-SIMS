@@ -231,7 +231,7 @@ if (!isset($_SESSION['F_number'])) {
                                         <?php
                                         if (isset($_GET['Grade']) && isset($_GET['Section'])) { ?>
                                             <div class="btn-group" style="float: right;">
-                                                <a href="../reports/DailyAttendancebyClass.php?Grade=<?php echo $_GET['Grade'] . "&Section=" . $_GET['Section']; ?>" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
+                                                <a href="../reports/DailyAttendancebyClass.php?Grade=<?php echo $_GET['Grade'] . "&Section=" . $_GET['Section']; ?>" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
                                             </div>
                                         <?php }
                                         ?>
