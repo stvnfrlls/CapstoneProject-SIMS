@@ -307,7 +307,7 @@ if (!isset($_SESSION['AD_number'])) {
                       ?>
                       <div style="text-align: right;">
                         <button type="submit" class="btn btn-primary" id="confirmChanges" name="UpdateGrade" value="Save">Save Grades</button>
-                        <button type="button" class="btn btn-primary" id="confirmChanges" name="releaseGrades" value="Release">Release Grades</button>
+                        <button type="submit" class="btn btn-primary" id="confirmChanges" name="releaseGrades" value="Release">Release Grades</button>
                       </div>
                       <div class="row" style="margin-top: 15px;;">
                         <div class="col-lg-12 d-flex flex-column">

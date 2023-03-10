@@ -280,7 +280,6 @@ if (!isset($_SESSION['AD_number'])) {
                       }
                       ?>
                   </div>
-
                   </form>
                   <div class="row" style="margin-top: 15px;">
                     <div class="col-lg-12 d-flex flex-column">
@@ -377,7 +376,6 @@ if (!isset($_SESSION['AD_number'])) {
                         </div>
                       </div>
                     </div>
-                  </div>
                 </div>
               </div>
             </div>
