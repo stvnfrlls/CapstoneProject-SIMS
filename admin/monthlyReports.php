@@ -293,10 +293,7 @@ if (!isset($_SESSION['AD_number'])) {
                         <?php
                         if (isset($_GET['month']) && isset($_GET['Grade']) && isset($_GET['Section'])) { ?>
                           <div class="btn-group" style="float: right;">
-                            <a href="../reports/MonthlyAttendancebyClass.php?month=<?php echo $_GET['month'] ?>&Grade=<?php echo $_GET['Grade'] ?>&Section=<?php echo $_GET['Section'] ?>" style="margin-right: 0px;" class="btn btn-primary">
-                              Print
-                              <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i>
-                            </a>
+                            <a href="../reports/MonthlyAttendancebyClass.php?month=<?php echo $_GET['month'] ?>&Grade=<?php echo $_GET['Grade'] ?>&Section=<?php echo $_GET['Section'] ?>" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
                           </div>
                         <?php }
                         ?>

@@ -211,13 +211,14 @@ if (!isset($_SESSION['F_number'])) {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <?php
-                                            if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['date'])) { ?>
-                                                <div class="btn-group" style="float: right;">
-                                                    <a class="btn btn-primary" href="../reports/DailyAttendancebyClass.php?Grade=<?php echo $_GET['Grade'] . "&Section=" . $_GET['Section']; ?>" style="margin-right: 0px;">Print <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
-                                                </div>
-                                            <?php }
-                                            ?>
+                                        </div>
+                                        <?php
+                                        if (isset($_GET['Grade']) && isset($_GET['Section'])) { ?>
+                                            <div class="btn-group" style="float: right;">
+                                                <a href="../reports/DailyAttendancebyClass.php?Grade=<?php echo $_GET['Grade'] . "&Section=" . $_GET['Section']; ?>" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
+                                            </div>
+                                        <?php }
+                                        ?>
                                         </form>
                                         <div class="row" style="margin-top: 15px;">
                                             <div class="col-lg-12 d-flex flex-column">
