@@ -221,9 +221,13 @@ if (!isset($_SESSION['AD_number'])) {
                             <?php
                             $getgradelevel = $mysqli->query("SELECT DISTINCT(S_yearLevel) FROM sections");
 
-                            while ($gradeLevel = $getgradelevel->fetch_assoc()) { ?>
-                              <a class="dropdown-item" href="assignAdvisory.php?grade=<?php echo $gradeLevel['S_yearLevel'] ?>">Grade <?php echo $gradeLevel['S_yearLevel'] ?></a>
-                            <?php }
+                            while ($gradeLevel = $getgradelevel->fetch_assoc()) {
+                              if ($gradeLevel['S_yearLevel'] == "KINDER") {
+                                echo '<a class="dropdown-item" href="assignAdvisory.php?grade=' . $gradeLevel['S_yearLevel'] . '">' . $gradeLevel['S_yearLevel'] . '</a>';
+                              } else {
+                                echo '<a class="dropdown-item" href="assignAdvisory.php?grade=' . $gradeLevel['S_yearLevel'] . '">Grade ' . $gradeLevel['S_yearLevel'] . '</a>';
+                              }
+                            }
                             ?>
                           </div>
                         </div>
