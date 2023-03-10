@@ -211,7 +211,6 @@ if (!isset($_SESSION['SR_number'])) {
                                                                         <th>Date</th>
                                                                         <th>Time In</th>
                                                                         <th>Time Out</th>
-                                                                        <th>Fetched By</th>
                                                                         <th>Remarks</th>
                                                                     </tr>
                                                                 </thead>
