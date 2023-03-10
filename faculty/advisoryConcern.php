@@ -3,6 +3,31 @@ require_once("../assets/php/server.php");
 
 if (!isset($_SESSION['F_number'])) {
     header('Location: ../auth/login.php');
+} else {
+    $rowCount = 0;
+    $getAdvisoryClassData = $mysqli->query("SELECT SR_number, SR_grade, SR_section FROM classlist 
+                                            WHERE F_number = '{$_SESSION['F_number']}' 
+                                            AND acadYear = '{$currentSchoolYear}'");
+    $advisoryClass = $getAdvisoryClassData->fetch_assoc();
+    $getAttendanceConcern = $mysqli->query("SELECT * FROM attendance_student_report
+                                            INNER JOIN studentrecord 
+                                            ON attendance_student_report.SR_number = studentrecord.SR_number
+                                            WHERE attendance_student_report.SR_section = '{$advisoryClass['SR_section']}'
+                                            ORDER BY RP_reportDate DESC");
+    $AttendanceConcern_Storage = array();
+    while ($AttendanceConcern = $getAttendanceConcern->fetch_assoc()) {
+        $AttendanceConcern_Storage[] = $AttendanceConcern;
+    }
+
+    $StudentNames_Storage = array();
+    $getAllStudentName = $mysqli->query("SELECT * FROM studentrecord");
+    while ($AllStudentName = $getAllStudentName->fetch_assoc()) {
+        $StudentNames[] = $AllStudentName;
+    }
+    $StudentName = json_encode($StudentNames_Storage);
+    echo "<script>var StudentName = " . $StudentName . ";</script>";
+    $AttendanceConcern = json_encode($AttendanceConcern_Storage);
+    echo "<script>var AttendanceConcern = " . $AttendanceConcern . ";</script>";
 }
 ?>
 
@@ -165,8 +190,8 @@ if (!isset($_SESSION['F_number'])) {
                                                                 <table class="table table-striped">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th>No.</th>
-                                                                            <th>Name</th>
+                                                                            <th>ID</th>
+                                                                            <th>Student Name</th>
                                                                             <th>Subject Name</th>
                                                                             <th>Date and Time</th>
                                                                             <th>Reported As</th>
@@ -174,29 +199,27 @@ if (!isset($_SESSION['F_number'])) {
                                                                     </thead>
                                                                     <tbody>
                                                                         <?php
-                                                                        $rowCount = 1;
-                                                                        $getAdvisoryClassData = $mysqli->query("SELECT SR_number, SR_grade, SR_section FROM classlist 
-                                                                                                                WHERE F_number = '{$_SESSION['F_number']}' 
-                                                                                                                AND acadYear = '{$currentSchoolYear}'");
-                                                                        $advisoryClass = $getAdvisoryClassData->fetch_assoc();
-                                                                        $getAttendanceConcern = $mysqli->query("SELECT * FROM attendance_student_report 
-                                                                                                                WHERE SR_section = '{$advisoryClass['SR_section']}' 
-                                                                                                                ORDER BY RP_reportDate DESC");
                                                                         if (mysqli_num_rows($getAttendanceConcern) > 0) {
-                                                                            while ($AttendanceConcern = $getAttendanceConcern->fetch_assoc()) { ?>
+                                                                            while ($rowCount != sizeof($AttendanceConcern_Storage)) { ?>
                                                                                 <tr>
-                                                                                    <td><?php echo $rowCount; ?></td>
-                                                                                    <td><?php echo $AttendanceConcern['SR_number']; ?></td>
-                                                                                    <td><?php echo $AttendanceConcern['subjectName']; ?></td>
-                                                                                    <td><?php echo $AttendanceConcern['RP_reportDate'] . ' - ' . $AttendanceConcern['RP_reportTime']; ?></td>
-                                                                                    <td><?php echo $AttendanceConcern['RP_attendanceReport']; ?></td>
+                                                                                    <td><?php echo $AttendanceConcern_Storage[$rowCount]['reportID']; ?></td>
+                                                                                    <td>
+                                                                                        <?php
+                                                                                        $getStudentName = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$AttendanceConcern_Storage[$rowCount]['SR_number']}'");
+                                                                                        $studentInfo = $getStudentName->fetch_assoc();
+                                                                                        echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix']
+                                                                                        ?>
+                                                                                    </td>
+                                                                                    <td><?php echo $AttendanceConcern_Storage[$rowCount]['subjectName']; ?></td>
+                                                                                    <td><?php echo $AttendanceConcern_Storage[$rowCount]['RP_reportDate'] . ' - ' . $AttendanceConcern_Storage[$rowCount]['RP_reportTime']; ?></td>
+                                                                                    <td><?php echo $AttendanceConcern_Storage[$rowCount]['RP_attendanceReport']; ?></td>
                                                                                 </tr>
                                                                             <?php
                                                                                 $rowCount++;
                                                                             }
                                                                         } else { ?>
                                                                             <tr>
-                                                                                <td colspan="5" class="text-center">Reported students yet</td>
+                                                                                <td colspan="5" class="text-center">No reported students yet</td>
                                                                             </tr>
                                                                         <?php }
                                                                         ?>
@@ -214,28 +237,25 @@ if (!isset($_SESSION['F_number'])) {
                                                                 <h4 style="text-align: center">Resolve Issue</h4>
                                                                 <div class="row" style="padding-bottom: 15px;">
                                                                     <div class="col-md-12">
-                                                                        <label class="col-sm-12 col-form-label">Student Name</label>
+                                                                        <label class="col-sm-12 col-form-label">Report ID</label>
                                                                         <div class="col-sm-12">
-                                                                            <select class="form-select" name="SR_number" required>
-                                                                                <option value="">1</option>
-                                                                                <option value="">2</option>
-                                                                                <option value="">3</option>
-                                                                                <option value="">4</option>
+                                                                            <select class="form-select" name="reportID" id="reportID" required>
+                                                                                <option>Select ID from the table</option>
                                                                             </select>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="row" style="padding-bottom: 15px;">
                                                                     <div class="col-md-12">
-                                                                        <label class="col-sm-12 col-form-label">Report Date</label>
+                                                                        <label class="col-sm-12 col-form-label">Student Name</label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="date" class="form-control" name="A_date" required>
+                                                                            <input type="text" class="form-control" name="studentName" id="studentName" readonly>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="row" style="padding-bottom: 15px;">
                                                                     <div class="col-md-12">
-                                                                        <label class="col-sm-12 col-form-label">Student Name</label>
+                                                                        <label class="col-sm-12 col-form-label">Attendance Status</label>
                                                                         <div class="col-sm-12">
                                                                             <select class="form-select" name="A_status" required>
                                                                                 <option selected></option>
@@ -295,6 +315,27 @@ if (!isset($_SESSION['F_number'])) {
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>
     <script src="../assets/js/admin/off-canvas.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+
+    <script>
+        const reportID = document.getElementById('reportID');
+        const studentName = document.getElementById('studentName');
+
+        for (let i = 0; i < AttendanceConcern.length; i++) {
+            const option = document.createElement('option');
+            option.value = AttendanceConcern[i].reportID;
+            option.text = AttendanceConcern[i].reportID;
+            reportID.add(option);
+        }
+
+        reportID.addEventListener("change", function() {
+            const reportIDValue = this.value;
+            const findReportID = AttendanceConcern.find(function(element) {
+                return element.reportID == reportIDValue;
+            });
+            studentName.value = findReportID.SR_lname + ", " + findReportID.SR_fname
+        })
+    </script>
+
     <script>
         function sweetalert() {
             Swal.fire({
