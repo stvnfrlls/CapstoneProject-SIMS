@@ -126,7 +126,7 @@ if (!isset($_SESSION['AD_number'])) {
                             <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
                         </a>
                     </li>
- 
+
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
@@ -370,7 +370,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     <div class="col-md-4">
                                                                         <label label class="col-sm-12 col-form-label">Email Address <span style="color: red;">*</span></label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="email" class="form-control" name="S_email" required>
+                                                                            <input type="email" class="form-control" name="S_email" id="S_email" required>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -453,7 +453,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                             <div class="col-md-4">
                                                                 <label label class="col-sm-12 col-form-label">Email Address <span style="color: red;">*</span></label>
                                                                 <div class="col-sm-12">
-                                                                    <input type="email" class="form-control" name="G_email" required>
+                                                                    <input type="email" class="form-control" name="G_email" id="G_email" required>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -708,17 +708,28 @@ if (!isset($_SESSION['AD_number'])) {
     <script>
         const confirmStudent = document.getElementById('confirmStudent');
         const regStudent = document.getElementById('regStudent');
+        const S_email = document.getElementById('S_email');
+        const G_email = document.getElementById('G_email');
+
         regStudent.addEventListener('click', function() {
-            Swal.fire({
-                title: 'Are you sure you want to register this student?',
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: `No`,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    confirmStudent.submit();
-                }
-            });
+            if (S_email.value.trim() === "" && G_email.value.trim() === "") {
+                swal.fire({
+                    text: 'Email fields is empty!',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                });
+            } else {
+                Swal.fire({
+                    title: 'Are you sure you want to register this student?',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: `No`,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        confirmStudent.submit();
+                    }
+                });
+            }
         });
     </script>
 
