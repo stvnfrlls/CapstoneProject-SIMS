@@ -316,7 +316,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                     <tr>
                                                                                         <td class="tablestyle">
                                                                                             <?php echo $rowCount ?>
-                                                                                            <input type="hiddent" name="ids[]" value="<?php echo $rowCount ?>">
+                                                                                            <input type="hidden" name="ids[]" value="<?php echo $rowCount ?>">
                                                                                         </td>
                                                                                         <td class="tablestyle">
                                                                                             <?php
