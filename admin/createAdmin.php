@@ -74,7 +74,7 @@ if (!isset($_SESSION['AD_number'])) {
 
     <div class="container-scroller">
         <div class="container-fluid page-body-wrapper">
-            <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
                 <ul class="nav">
                     <li class="nav-item" style="text-align:center; font-size: 20px; color: #b9b9b9; margin-top:20px;">ADMIN</li>
                     <!-- line 1 -->
@@ -94,7 +94,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/createAdmin.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Create Admin</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Admin Account</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -230,9 +230,10 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 <table class="table table-striped">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th>No.</th>
-                                                                            <th>Name</th>
-                                                                            <th>Email Address</th>
+                                                                            <th class="text-center">Name</th>
+                                                                            <th class="text-center">Email Address</th>
+                                                                            <th class="text-center">Password</th>
+                                                                            <th class="text-center">Action</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
@@ -242,9 +243,13 @@ if (!isset($_SESSION['AD_number'])) {
                                                                         if (mysqli_num_rows($getAdminAccountsList) > 0) {
                                                                             while ($AdminAccounts = $getAdminAccountsList->fetch_assoc()) { ?>
                                                                                 <tr>
-                                                                                    <td><?php echo $rowCount; ?></td>
                                                                                     <td><?php echo $AdminAccounts['AD_name']; ?></td>
-                                                                                    <td><?php echo $AdminAccounts['AD_email']; ?></td>
+                                                                                    <td><input type="text" class="form-control" value="<?php echo $AdminAccounts['AD_email']; ?>"></td>
+                                                                                    <td><input type="text" class="form-control" value="<?php echo $AdminAccounts['AD_password']; ?>"></td>
+                                                                                    <td>
+                                                                                        <input type="submit" class="btn btn-primary" value="Update">
+                                                                                        <input type="submit" class="btn btn-primary" value="Delete">
+                                                                                    </td>
                                                                                 </tr>
                                                                             <?php
                                                                                 $rowCount++;

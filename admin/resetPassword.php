@@ -94,7 +94,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/createAdmin.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Create Admin</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Admin Account</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -250,9 +250,10 @@ if (!isset($_SESSION['AD_number'])) {
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="row">
+                                                                    <div class="row" style="float: right;">
                                                                         <div class="col-md-12">
-                                                                            <input type="submit" class="btn btn-primary" name="checkCredentials" required>
+                                                                            <input type="submit" class="btn btn-primary" name="checkCredentials">
+                                                                            <input type="submit" class="btn btn-secondary" name="checkCredentials" value="Cancel">
                                                                         </div>
                                                                     </div>
                                                                 </div>

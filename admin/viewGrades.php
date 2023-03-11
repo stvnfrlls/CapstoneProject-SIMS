@@ -82,7 +82,7 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/createAdmin.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Create Admin</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Admin Account</span>
                         </a>
                     </li>
                     <li class="nav-item">
