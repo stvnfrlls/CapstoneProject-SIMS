@@ -97,6 +97,12 @@ if (mysqli_num_rows($checkQuarter) > 0) {
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="../admin/resetPassword.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Reset Password</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="../admin/announcement.php">
                             <i class=""></i>
                             <span class="menu-title" style="color: #b9b9b9;">School Announcements</span>
@@ -110,7 +116,7 @@ if (mysqli_num_rows($checkQuarter) > 0) {
                             <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
                         </a>
                     </li>
- 
+
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>

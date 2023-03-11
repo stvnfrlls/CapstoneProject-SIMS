@@ -88,6 +88,12 @@ if (!isset($_SESSION['AD_number'])) {
             </a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="../admin/resetPassword.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Reset Password</span>
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="../admin/announcement.php">
               <i class=""></i>
               <span class="menu-title" style="color: #b9b9b9;">School Announcements</span>
@@ -376,17 +382,17 @@ if (!isset($_SESSION['AD_number'])) {
                         </div>
                       </div>
                     </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <!-- content-wrapper ends -->
       </div>
-      <!-- content-wrapper ends -->
+      <!-- main-panel ends -->
     </div>
-    <!-- main-panel ends -->
-  </div>
-  <!-- page-body-wrapper ends -->
+    <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
 

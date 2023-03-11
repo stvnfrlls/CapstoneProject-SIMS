@@ -3,14 +3,31 @@ require_once("../assets/php/server.php");
 
 if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
+} else {
+    if ($_SESSION['AD_number'] != "5UP3R4DM1N") {
+        echo <<<EOT
+            <script>
+                document.addEventListener("DOMContentLoaded", function(event) { 
+                    swal.fire({
+                        text: 'Your account is not allowed for this feature.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                    }).then(() => {
+                        window.location.href = 'dashboard.php';
+                    });
+                });
+            </script>
+        EOT;
+    }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
-    <title>Activity History</title>
+    <title>Account Recovery</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -27,6 +44,9 @@ if (!isset($_SESSION['AD_number'])) {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="../assets/css/sweetAlert.css" rel="stylesheet">
+
     <!-- Libraries Stylesheet -->
     <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
     <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
@@ -36,10 +56,9 @@ if (!isset($_SESSION['AD_number'])) {
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="../assets/css/dashboard-admin.css" rel="stylesheet">
+
     <link href="../assets/css/admin/style.css" rel="stylesheet">
     <link href="../assets/css/admin/style.css.map" rel="stylesheet">
-
 
 </head>
 
@@ -188,6 +207,7 @@ if (!isset($_SESSION['AD_number'])) {
                 </ul>
             </nav>
             <!-- partial -->
+
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="row">
@@ -195,110 +215,97 @@ if (!isset($_SESSION['AD_number'])) {
                             <div class="home-tab">
                                 <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                                     <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                                        <h2 class="fw-bold text-primary text-uppercase">Activity History</h2>
+                                        <h2 class="fw-bold text-primary text-uppercase">Account Recovery</h2>
                                     </div>
                                 </div>
-                                <form action="../reports/ActivityLog.php" method="get">
-                                    <div class="tab-content tab-content-basic">
-                                        <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
-                                            <div class="btn-group">
-                                                <div>
-                                                    <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
-                                                        <?php
-                                                        if (isset($_GET['ID'])) {
-                                                            $getAD_name = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_GET['ID']}'");
-                                                            $AD_name = $getAD_name->fetch_assoc();
-                                                            echo $AD_name['AD_name'];
-                                                        } else {
-                                                            echo "Name";
-                                                        }
-                                                        ?>
-                                                        <i class="fa fa-caret-down"></i>
-                                                    </button>
-                                                    <?php
-                                                    $getLoggedNames = $mysqli->query("SELECT DISTINCT AD_number, AD_name FROM admin_logs WHERE acadYear = '{$currentSchoolYear}'");
-                                                    if (mysqli_num_rows($getLoggedNames) > 0) { ?>
-                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                            <?php
-                                                            while ($LoggedNames = $getLoggedNames->fetch_assoc()) { ?>
-                                                                <a class="dropdown-item" href="auditTrail.php?ID=<?php echo $LoggedNames['AD_number'] ?>"><?php echo $LoggedNames['AD_name'] ?></a>
-                                                            <?php }
-                                                            ?>
-                                                        </div>
-                                                    <?php }
-                                                    ?>
-                                                </div>
-                                            </div>
-                                            <div class="btn-group mx-2" style="float: right;">
-                                                <div class="mx-1">
-                                                    <input type="date" class="form-control" name="start_date" required>
-                                                </div>
-                                                <div class="mx-1">
-                                                    <input type="date" class="form-control" name="end_date" required>
-                                                </div>
-                                                <button type="submit" href="advisoryConcern.php" style="margin-right: 0px;" class="btn btn-primary mx-2">Get records</button>
-                                            </div>
-                                            <div class="row" style="margin-top: 15px;">
-                                                <div class="col-12 grid-margin">
+                                <div class="tab-content tab-content-basic" style="padding-bottom: 0px;">
+                                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                                        <div class="col-12 grid-margin">
+                                            <div class="row">
+                                                <div class="col-lg-8 col-sm-12 grid-margin">
                                                     <div class="card">
                                                         <div class="card-body">
-                                                            <div class="table-responsive">
-                                                                <table class="table table-striped">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>Full Name</th>
-                                                                            <th>Date and Time</th>
-                                                                            <th>Action</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <?php
-                                                                        if (isset($_GET['ID'])) {
-                                                                            $GetLogs = $mysqli->query("SELECT * FROM admin_logs WHERE AD_number = '{$_GET['ID']}' AND acadYear = '{$currentSchoolYear}' ORDER BY logDate DESC LIMIT 20");
-                                                                        } else {
-                                                                            $GetLogs = $mysqli->query("SELECT * FROM admin_logs WHERE acadYear = '{$currentSchoolYear}' ORDER BY logID DESC LIMIT 20");
-                                                                        }
-                                                                        ?>
-                                                                        <?php
-                                                                        if (mysqli_num_rows($GetLogs) > 0) {
-                                                                            while ($LogData = $GetLogs->fetch_assoc()) { ?>
-                                                                                <tr>
-                                                                                    <td><?php echo $LogData['AD_name'] ?></td>
-                                                                                    <td><?php echo $LogData['logDate'] ?></td>
-                                                                                    <td><?php echo $LogData['AD_action'] ?></td>
-                                                                                </tr>
-                                                                            <?php  } ?>
-                                                                        <?php
-                                                                        } else { ?>
-                                                                            <tr>
-                                                                                <td colspan="3" class="text-center">No Logged Action</td>
-                                                                            </tr>
-                                                                        <?php }
-
-                                                                        ?>
-                                                                    </tbody>
-                                                                </table>
+                                                            <h4 style="text-align: center">Enter User Information</h4>
+                                                            <div class="row">
+                                                                <div class="col-lg-12 col-sm-12 grid-margin">
+                                                                    <div class="row" style="padding-bottom: 15px;">
+                                                                        <div class="col-md-12">
+                                                                            <label class="col-sm-12 col-form-label">Identification No. (LRN OR FACULTY ID)<span style="color: red;">*</span></label>
+                                                                            <div class="col-sm-12">
+                                                                                <input type="text" class="form-control" name="IdNo" required>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row" style="padding-bottom: 15px;">
+                                                                        <div class="col-md-6">
+                                                                            <label class="col-sm-12 col-form-label">Last Name <span style="color: red;">*</span></label>
+                                                                            <div class="col-sm-12">
+                                                                                <input type="text" class="form-control" name="userLname" required>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <label class="col-sm-12 col-form-label">First Name <span style="color: red;">*</span></label>
+                                                                            <div class="col-sm-12">
+                                                                                <input type="text" class="form-control" name="userFname" required>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <input type="submit" class="btn btn-primary" name="checkCredentials" required>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-4 col-sm-12 grid-margin">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <form class="form-sample" action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="adminForm">
+                                                                <h4 style="text-align: center; padding-bottom: 11px;">Login Credentials</h4>
+                                                                <div class="row" style="padding-bottom: 12px;">
+                                                                    <div class="col-md-12">
+                                                                        <label class="col-sm-12 col-form-label">Email Address</label>
+                                                                        <div class="col-sm-12">
+                                                                            <input type="text" class="form-control" name="adminName" required />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row" style="padding-bottom: 17px;">
+                                                                    <div class="col-md-12">
+                                                                        <label class="col-sm-12 col-form-label">Password</label>
+                                                                        <div class="col-sm-12">
+                                                                            <input type="email" class="form-control" name="adminEmail" disabled />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div style="text-align: center;">
+                                                                    <button type="submit" name="addAdmin" class="btn btn-primary me-2">Update</button>
+                                                                </div>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </form>
-
+                                </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
-                <!-- content-wrapper ends -->
             </div>
-            <!-- main-panel ends -->
         </div>
-        <!-- page-body-wrapper ends -->
+    </div>
+    <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
+
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
         <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
@@ -312,15 +319,17 @@ if (!isset($_SESSION['AD_number'])) {
         </div>
     </div>
     <!-- Footer End -->
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+
+    <!-- Template Javascript -->
+    <!-- <script src="../assets/login/vendor/jquery/jquery-3.2.1.min.js"></script> -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/admin/vendor.bundle.base.js"></script>
+    <script src="../assets/js/admin/off-canvas.js"></script>
 </body>
-
-<!-- Template Javascript -->
-<script src="../assets/js/main.js"></script>
-
-<script src="../assets/js/admin/vendor.bundle.base.js"></script>
-<script src="../assets/js/admin/off-canvas.js"></script>
-<script src="../assets/js/admin/progressbar.min.js"></script>
-<script src="../assets/js/admin/Chart.min.js"></script>
-
 
 </html>

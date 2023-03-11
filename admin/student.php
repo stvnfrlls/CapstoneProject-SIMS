@@ -79,6 +79,12 @@ if (!isset($_SESSION['AD_number'])) {
             </a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="../admin/resetPassword.php">
+              <i class=""></i>
+              <span class="menu-title" style="color: #b9b9b9;">Reset Password</span>
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="../admin/announcement.php">
               <i class=""></i>
               <span class="menu-title" style="color: #b9b9b9;">School Announcements</span>

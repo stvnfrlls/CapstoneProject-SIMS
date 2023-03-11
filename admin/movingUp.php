@@ -83,6 +83,12 @@ if (!isset($_SESSION['AD_number'])) {
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="../admin/resetPassword.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Reset Password</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="../admin/announcement.php">
                             <i class=""></i>
                             <span class="menu-title" style="color: #b9b9b9;">School Announcements</span>
@@ -96,7 +102,7 @@ if (!isset($_SESSION['AD_number'])) {
                             <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
                         </a>
                     </li>
- 
+
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
@@ -308,7 +314,10 @@ if (!isset($_SESSION['AD_number'])) {
                                                                             if ($numrows >= 1) {
                                                                                 while ($data = $resultListofStudents->fetch_assoc()) { ?>
                                                                                     <tr>
-                                                                                        <td class="tablestyle"><?php echo $rowCount ?></td>
+                                                                                        <td class="tablestyle">
+                                                                                            <?php echo $rowCount ?>
+                                                                                            <input type="hiddent" name="ids[]" value="<?php echo $rowCount ?>">
+                                                                                        </td>
                                                                                         <td class="tablestyle">
                                                                                             <?php
                                                                                             $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$data['SR_number']}'");
