@@ -480,9 +480,9 @@ if (!isset($_SESSION['AD_number'])) {
                                                                         if (mysqli_num_rows($getLoggedData) > 0) {
                                                                             while ($LoggedData = $getLoggedData->fetch_assoc()) { ?>
                                                                                 <li>
-                                                                                    <div class="d-flex justify-content-between">
+                                                                                    <div>
                                                                                         <div style="text-align: left;"><span class="text-light-green"><?php echo $LoggedData['AD_name'] ?></span><?php echo " - " . $LoggedData['AD_action'] ?></div>
-                                                                                        <p><?php echo $LoggedData['logDate'] ?></p>
+                                                                                        <p><?php echo date('(h:i A) | M/d/Y', strtotime($LoggedData['logDate'])) ?></p>
                                                                                     </div>
                                                                                 </li>
                                                                             <?php } ?>
