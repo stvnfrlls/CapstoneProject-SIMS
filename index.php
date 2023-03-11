@@ -87,7 +87,7 @@ require_once __DIR__ . "/assets/php/server.php";
     <!-- Navbar End -->
 
     <!-- Carousel Start -->
-    <div class="container-fluid p-0 pb-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container-fluid p-0 pb-5 wow fadeIn" data-wow-delay="2s">
         <div class="owl-carousel header-carousel position-relative">
             <div class="owl-carousel-item position-relative" data-dot="<img src='assets/img/banner_1.jpg'>">
                 <img class="img-fluid" src="assets/img/banner_1.jpg" alt="">
