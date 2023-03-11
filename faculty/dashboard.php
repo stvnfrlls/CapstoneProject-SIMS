@@ -245,7 +245,7 @@ if (!isset($_SESSION['F_number'])) {
                                                         </div>
                                                     </div>
                                                     <div class="row" style="padding: 20px 0px 0px 15px;">
-                                                        <div class="col-lg-8 col-sm-12 grid-margin">
+                                                        <div class="col-lg-6 col-sm-12 grid-margin" style="padding-right: 0px;">
                                                             <div class="card">
                                                                 <div class="card-body">
                                                                     <div class="row">
@@ -284,7 +284,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                             <?php
                                                                             } ?>
                                                                             <div style="text-align: center;">
-                                                                                <a href="#" class="btn btn-primary text-uppercase" style="width: auto; color:#fff;">View More Announcements</a>
+                                                                                <a href="../faculty/reminders.php" class="btn btn-primary text-uppercase" style="width: auto; color:#fff;">View More Reminders</a>
                                                                             </div>
                                                                         <?php
                                                                         } else { ?>
@@ -303,36 +303,51 @@ if (!isset($_SESSION['F_number'])) {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-4 col-sm-12" style="padding-right: 0px;">
+                                                        <div class="col-lg-6 col-sm-12 grid-margin" style="padding-right: 0px;">
                                                             <div class="card">
                                                                 <div class="card-body">
-                                                                    <div class="row">
-                                                                        <div class="section-title section-title-sm position-relative pb-3 mb-4">
-                                                                            <h3 style="text-align:left;">Notifs</h3>
-                                                                        </div>
-                                                                        <?php
-                                                                        $getreminderNotifs = $mysqli->query("SELECT * FROM reminder_status WHERE author = '{$_SESSION['F_number']}' AND viewed_date IS NOT NULL ORDER BY viewed_date DESC");
-                                                                        if (mysqli_num_rows($getreminderNotifs) > 0) {
-                                                                            while ($reminderNotifs = $getreminderNotifs->fetch_assoc()) {
-                                                                                $getStudentName = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$reminderNotifs['SR_number']}'");
-                                                                                $studentName = $getStudentName->fetch_assoc(); ?>
-                                                                                <div class="border-bottom">
-                                                                                    <p>
-                                                                                        <?php echo $studentName['SR_lname'] .  ", " . $studentName['SR_fname'] ?>
-                                                                                        <span>has viewed your reminder.</span><br>
-                                                                                        <?php echo $reminderNotifs['viewed_date'] ?>
-                                                                                    </p>
-                                                                                </div>
-                                                                            <?php }
-                                                                        } else { ?>
-                                                                            <div>
-                                                                                <p class="text-center">
-                                                                                    <span>NO UPDATES YET</span>
-                                                                                </p>
-                                                                            </div>
-                                                                        <?php }
-                                                                        ?>
+                                                                    <div class="section-title section-title-sm position-relative pb-3 mb-4">
+                                                                        <h3 class="mb-0" style="text-align:left;">School Announcements</h3>
                                                                     </div>
+                                                                    <?php
+                                                                    $getAnnouncementData = $mysqli->query("SELECT * FROM announcement ORDER BY date_posted DESC LIMIT 5");
+                                                                    if (mysqli_num_rows($getAnnouncementData) > 0) {
+                                                                        while ($announcement = $getAnnouncementData->fetch_assoc()) { ?>
+                                                                            <div class="col-lg-12 wow " style="padding-bottom: 5px;">
+                                                                                <div class="blog-item bg-light rounded overflow-hidden">
+                                                                                    <div class="p-4">
+                                                                                        <div class="d-flex mb-3">
+                                                                                            <small class="me-3"><i class="far fa-user text-primary me-2"></i>
+                                                                                                <?php
+                                                                                                $getAuthorInfo = $mysqli->query("SELECT * FROM admin_accounts WHERE AD_number = '{$announcement['author']}'");
+                                                                                                $AuthorInfo = $getAuthorInfo->fetch_assoc();
+                                                                                                echo $AuthorInfo['AD_name']
+                                                                                                ?>
+                                                                                            </small>
+                                                                                            <small><i class="far fa-calendar-alt text-primary me-2"></i><?php echo $announcement['date']; ?></small>
+                                                                                        </div>
+                                                                                        <h4 class="mb-3"><?php echo $announcement['header']; ?></h4>
+                                                                                        <p class="text-truncate"><?php echo $announcement['msg']; ?></p>
+                                                                                        <a class="text-uppercase" href="viewannouncement.php?ID=<?php echo $announcement['ANC_ID']; ?>">Read More <i class="bi bi-arrow-right"></i></a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        <?php } ?>
+                                                                        <section class="popular-courses-area courses-page">
+                                                                            <div style="text-align: center;">
+                                                                                <a href="../faculty/announcement.php" class="btn btn-primary text-uppercase" style="width: auto; color:#fff;">View More Announcements</a>
+                                                                            </div>
+                                                                        </section>
+                                                                    <?php } else { ?>
+                                                                        <div class="col-lg-12 wow " style="padding-bottom: 5px;">
+                                                                            <div class="blog-item bg-light rounded overflow-hidden">
+                                                                                <div class="p-4 text-center">
+                                                                                    <h4>NO ANNOUNCEMENT YET</h4>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    <?php }
+                                                                    ?>
                                                                 </div>
                                                             </div>
                                                         </div>
