@@ -78,7 +78,13 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/createAdmin.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Create Admin</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Admin Account</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/resetPassword.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Reset Password</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -376,7 +382,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-12 col-lg-6 grid-margin" >
+                                            <div class="col-sm-12 col-lg-6 grid-margin">
                                                 <div class="row">
                                                     <div class="col-sm-12 col-lg-4 grid-margin" style="align-content:space-between;">
                                                         <div class="card" style="height: 200px">
@@ -474,9 +480,9 @@ if (!isset($_SESSION['AD_number'])) {
                                                                         if (mysqli_num_rows($getLoggedData) > 0) {
                                                                             while ($LoggedData = $getLoggedData->fetch_assoc()) { ?>
                                                                                 <li>
-                                                                                    <div class="d-flex justify-content-between">
+                                                                                    <div>
                                                                                         <div style="text-align: left;"><span class="text-light-green"><?php echo $LoggedData['AD_name'] ?></span><?php echo " - " . $LoggedData['AD_action'] ?></div>
-                                                                                        <p><?php echo $LoggedData['logDate'] ?></p>
+                                                                                        <p><?php echo date('(h:i A) | M/d/Y', strtotime($LoggedData['logDate'])) ?></p>
                                                                                     </div>
                                                                                 </li>
                                                                             <?php } ?>

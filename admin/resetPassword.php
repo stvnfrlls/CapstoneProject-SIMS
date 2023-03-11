@@ -4,11 +4,21 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 } else {
-    $getAnnouncementData = $mysqli->query("SELECT * FROM announcement WHERE ANC_ID = '{$_GET['postID']}'");
-    $announcementData = $getAnnouncementData->fetch_assoc();
-
-    $admin = $mysqli->query("SELECT * FROM admin_accounts WHERE AD_number = '{$announcementData['author']}'");
-    $adminData = $admin->fetch_assoc();
+    if ($_SESSION['AD_number'] != "5UP3R4DM1N") {
+        echo <<<EOT
+            <script>
+                document.addEventListener("DOMContentLoaded", function(event) { 
+                    swal.fire({
+                        text: 'Your account is not allowed for this feature.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                    }).then(() => {
+                        window.location.href = 'dashboard.php';
+                    });
+                });
+            </script>
+        EOT;
+    }
 }
 ?>
 
@@ -17,7 +27,7 @@ if (!isset($_SESSION['AD_number'])) {
 
 <head>
     <meta charset="utf-8">
-    <title>Edit School Announcement</title>
+    <title>Account Recovery</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -37,7 +47,6 @@ if (!isset($_SESSION['AD_number'])) {
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <link href="../assets/css/sweetAlert.css" rel="stylesheet">
 
-
     <!-- Libraries Stylesheet -->
     <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
     <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
@@ -47,10 +56,9 @@ if (!isset($_SESSION['AD_number'])) {
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="../assets/css/style.css" rel="stylesheet">
-    <link href="../assets/css/form-style.css" rel="stylesheet">
+
     <link href="../assets/css/admin/style.css" rel="stylesheet">
-    <link href="../assets/css/admin/materialdesignicons.min.css" rel="stylesheet">
+    <link href="../assets/css/admin/style.css.map" rel="stylesheet">
 
 </head>
 
@@ -199,56 +207,53 @@ if (!isset($_SESSION['AD_number'])) {
                 </ul>
             </nav>
             <!-- partial -->
+
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="row">
-                        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" id="announcementFORM">
-                            <div class="col-sm-12">
-                                <div class="home-tab">
-                                    <div class="d-sm-flex align-items-center justify-content-between border-bottom">
-                                        <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                                            <h2 class="fw-bold text-primary text-uppercase">Edit Announcement</h2>
-                                        </div>
+                        <div class="col-sm-12">
+                            <div class="home-tab">
+                                <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                                    <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
+                                        <h2 class="fw-bold text-primary text-uppercase">Account Recovery</h2>
                                     </div>
-                                    <div class="tab-content tab-content-basic">
-                                        <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                                </div>
+                                <div class="tab-content tab-content-basic" style="padding-bottom: 0px;">
+                                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                                        <div class="col-12 grid-margin">
                                             <div class="row">
-                                                <div class="col-12 grid-margin">
+                                                <div class="col-lg-8 col-sm-12 grid-margin">
                                                     <div class="card">
                                                         <div class="card-body">
+                                                            <h4 style="text-align: center">Enter User Information</h4>
                                                             <div class="row">
-                                                                <div class="row g-3">
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-floating">
-                                                                            <input type="hidden" name="ANC_ID" value="<?php echo $announcementData['ANC_ID'] ?>">
-                                                                            <input type="hidden" name="author" value="<?php echo $adminData['AD_number'] ?>">
-                                                                            <input type="text" class="form-control" id="name" value="<?php echo $adminData['AD_name'] ?>" placeholder="Your Name" readonly>
-                                                                            <label for="name">Your Name</label>
+                                                                <div class="col-lg-12 col-sm-12 grid-margin">
+                                                                    <div class="row" style="padding-bottom: 15px;">
+                                                                        <div class="col-md-12">
+                                                                            <label class="col-sm-12 col-form-label">Identification No. (LRN OR FACULTY ID)<span style="color: red;">*</span></label>
+                                                                            <div class="col-sm-12">
+                                                                                <input type="text" class="form-control" name="IdNo" required>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-floating">
-                                                                            <input type="date" class="form-control" name="date" value="<?php echo $announcementData['date_posted'] ?>" readonly>
-                                                                            <label for="email">Date Posted</label>
+                                                                    <div class="row" style="padding-bottom: 15px;">
+                                                                        <div class="col-md-6">
+                                                                            <label class="col-sm-12 col-form-label">Last Name <span style="color: red;">*</span></label>
+                                                                            <div class="col-sm-12">
+                                                                                <input type="text" class="form-control" name="userLname" required>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <label class="col-sm-12 col-form-label">First Name <span style="color: red;">*</span></label>
+                                                                            <div class="col-sm-12">
+                                                                                <input type="text" class="form-control" name="userFname" required>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-
-                                                                    <div class="col-6">
-                                                                        <div class="form-floating">
-                                                                            <input type="text" class="form-control" name="subject" value="<?php echo $announcementData['header'] ?>" id="subject" placeholder="Subject" required>
-                                                                            <label for="subject">Title</label>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        <div class="form-floating">
-                                                                            <input type="date" class="form-control" name="date" value="<?php echo $announcementData['date'] ?>">
-                                                                            <label for="email">Date of the Event</label>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-12">
-                                                                        <div class="form-floating">
-                                                                            <textarea class="form-control" placeholder="Leave a message here" id="message" name="message" style="height: 250px"></textarea>
-                                                                            <label for="message"><?php echo $announcementData['msg'] ?></label>
+                                                                    <div class="row" style="float: right;">
+                                                                        <div class="col-md-12">
+                                                                            <input type="submit" class="btn btn-primary" name="checkCredentials">
+                                                                            <input type="submit" class="btn btn-secondary" name="checkCredentials" value="Cancel">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -256,26 +261,52 @@ if (!isset($_SESSION['AD_number'])) {
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                <div class="col-lg-4 col-sm-12 grid-margin">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <form class="form-sample" action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="adminForm">
+                                                                <h4 style="text-align: center; padding-bottom: 11px;">Login Credentials</h4>
+                                                                <div class="row" style="padding-bottom: 12px;">
+                                                                    <div class="col-md-12">
+                                                                        <label class="col-sm-12 col-form-label">Email Address</label>
+                                                                        <div class="col-sm-12">
+                                                                            <input type="text" class="form-control" name="adminName" required />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row" style="padding-bottom: 17px;">
+                                                                    <div class="col-md-12">
+                                                                        <label class="col-sm-12 col-form-label">Password</label>
+                                                                        <div class="col-sm-12">
+                                                                            <input type="email" class="form-control" name="adminEmail" disabled />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div style="text-align: center;">
+                                                                    <button type="submit" name="addAdmin" class="btn btn-primary me-2">Update</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
-                            <div style="text-align: center;">
-                                <button type="submit" id="post_confirmation_modal_button" name="updateAnnouncement" class="btn btn-primary me-2">Post</button>
-                                <button type="button" class="btn btn-light" onclick="location.href='../admin/announcement.php'">Back</button>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
-                <!-- content-wrapper ends -->
             </div>
-            <!-- main-panel ends -->
         </div>
-        <!-- page-body-wrapper ends -->
+    </div>
+    <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
+
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
         <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
@@ -291,36 +322,15 @@ if (!isset($_SESSION['AD_number'])) {
     <!-- Footer End -->
 
 
+    <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
 
     <!-- Template Javascript -->
+    <!-- <script src="../assets/login/vendor/jquery/jquery-3.2.1.min.js"></script> -->
     <script src="../assets/js/main.js"></script>
-
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>
     <script src="../assets/js/admin/off-canvas.js"></script>
-    <script src="../assets/js/admin/file-upload.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
-    <script>
-        // const postButton = document.getElementById('post_confirmation_modal_button');
-        // const form = document.getElementById('announcementFORM');
-
-        // postButton.addEventListener('click', function(event) {
-        //     Swal.fire({
-        //         title: 'Are you sure you want to proceed with this action?',
-        //         showCancelButton: true,
-        //         confirmButtonText: 'Yes',
-        //         cancelButtonText: `No`,
-        //     }).then((result) => {
-        //         if (result.isConfirmed) {
-        //             Swal.fire({
-        //                 title: 'Form submitted!',
-        //                 icon: 'success',
-        //             }).then(() => {
-        //                 form.submit();
-        //             });
-        //         }
-        //     })
-        // })
-    </script>
 </body>
 
 </html>
