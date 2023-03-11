@@ -6,7 +6,7 @@ if (!isset($_SESSION['AD_number'])) {
 } else {
     $adminData = $mysqli->query("SELECT * FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
     $admin = $adminData->fetch_assoc();
-    $announcementData = $mysqli->query("SELECT * FROM announcement WHERE author = '{$_SESSION['AD_number']}'");
+    $announcementData = $mysqli->query("SELECT * FROM announcement ORDER BY date_posted DESC");
 }
 ?>
 
