@@ -1261,6 +1261,43 @@ if (isset($_POST['addSection']) && !empty($_SESSION['AD_number'])) {
 //End
 
 // OPTIONAL
+if (isset($_POST['updateAdminDetails']) && !empty($_SESSION['AD_number'])) {
+    $AD_number = $_POST['AD_number'];
+    $current_email = $_POST['current_email'];
+    $AD_email = $_POST['AD_email'];
+    $AD_password = $_POST['AD_password'];
+
+    if ($current_email === $AD_email) {
+        $updateAdminAccount = $mysqli->query("UPDATE admin_accounts SET AD_password = '{$AD_password}' WHERE AD_number = '{$AD_number}'");
+
+        if ($updateAdminAccount) {
+            showSweetAlert('Login password updated', 'success');
+        }
+    } else if ($current_email != $AD_email) {
+        $checkForDuplicate = $mysqli->query("SELECT * FROM admin_accounts WHERE AD_email = '{$AD_email}'");
+        if (mysqli_num_rows($checkForDuplicate) == 0) {
+            $updateAdminAccount = $mysqli->query("UPDATE admin_accounts 
+                                            SET AD_email = '{$AD_email}', AD_password = '{$AD_password}' 
+                                            WHERE AD_number = '{$AD_number}'");
+            if ($updateAdminAccount) {
+                showSweetAlert('Login credentials updated', 'success');
+            }
+        } else {
+            showSweetAlert('Email already exist', 'error');
+        }
+    }
+}
+if (isset($_POST['deleteAdminDetails']) && !empty($_SESSION['AD_number'])) {
+    $AD_number = $_POST['AD_number'];
+    $AD_email = $_POST['AD_email'];
+    $AD_password = $_POST['AD_password'];
+
+    $updateAdminAccount = $mysqli->query("DELETE FROM admin_accounts WHERE AD_number = '{$AD_number}'");
+
+    if ($updateAdminAccount) {
+        showSweetAlert('Account deleted', 'success');
+    }
+}
 if (isset($_POST['updateAnnouncement']) && !empty($_SESSION['AD_number'])) {
     $author = $mysqli->real_escape_string($_POST['author']);
     $subject = $mysqli->real_escape_string($_POST['subject']);
