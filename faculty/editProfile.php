@@ -7,7 +7,6 @@ if (!isset($_SESSION['F_number'])) {
   $facultyInformation = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
   $faculty = $facultyInformation->fetch_assoc();
 }
-var_dump($_POST);
 ?>
 
 <!DOCTYPE html>
