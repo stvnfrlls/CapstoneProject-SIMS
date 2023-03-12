@@ -754,7 +754,7 @@ if (isset($_POST['resolveIssue']) && isset($_SESSION['F_number'])) {
 //End
 
 //Admin Process
-if (isset($_POST['regStudent'])) {
+if (isset($_POST['regStudent']) && !empty($_SESSION['AD_number'])) {
     $SR_LRN = $mysqli->real_escape_string($_POST['LRN']);
 
     $SR_profile_img = $_FILES['image']['name'];
@@ -1261,6 +1261,94 @@ if (isset($_POST['addSection']) && !empty($_SESSION['AD_number'])) {
 //End
 
 // OPTIONAL
+if (isset($_POST['resetPassword']) && !empty($_SESSION['AD_number'])) {
+    $storedID = $_POST['storedID'];
+    $currentEmail = $_POST['currentEmail'];
+    $userEmail = $_POST['userEmail'];
+    $GenPass = generatePassword();
+
+    $isStudent = $mysqli->query("SELECT SR_number FROM studentrecord WHERE SR_number = '{$storedID}'");
+    if (mysqli_num_rows($isStudent) != 1) {
+        $isFaculty = $mysqli->query("SELECT F_number FROM faculty WHERE F_number = '{$storedID}'");
+        if (mysqli_num_rows($isFaculty) != 1) {
+            $updateUserDetails = $mysqli->query("UPDATE userdetails SET SR_email = '{$userEmail}', SR_password = '{$GenPass}' WHERE SR_email = '{$currentEmail}'");
+            $updateStudentRecord = $mysqli->query("UPDATE faculty SET F_email = '{$userEmail}' WHERE F_number = '{$storedID}'");
+
+            $mail->addAddress($userEmail);
+            $mail->Subject = 'ACCOUNT RECOVERY';
+
+            $mail->Body = '<h1>Account recovery successful!</h1>
+                            <br>
+                            <p>Your new login credentials is:</p><br>
+                            <b>Email: </b>' . $userEmail . '<br>
+                            <b>Password: </b>' . $GenPass . '<br>
+                            <br>';
+            $mail->send();
+        } else {
+            showSweetAlert('ERROR', 'error');
+        }
+    } else {
+        $updateUserDetails = $mysqli->query("UPDATE userdetails SET SR_email = '{$userEmail}', SR_password = '{$GenPass}' WHERE SR_email = '{$currentEmail}'");
+        $updateStudentRecord = $mysqli->query("UPDATE studentrecord SET SR_email = '{$userEmail}' WHERE SR_number = '{$storedID}'");
+
+        if ($updateUserDetails && $updateStudentRecord) {
+            $mail->addAddress($userEmail);
+            $mail->Subject = 'ACCOUNT RECOVERY';
+
+            $mail->Body = '<h1>Account recovery successful!</h1>
+                            <br>
+                            <p>Your new login credentials is:</p><br>
+                            <b>Email: </b>' . $userEmail . '<br>
+                            <b>Password: </b>' . $GenPass . '<br>
+                            <br>';
+            $mail->send();
+        }
+    }
+
+    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+    $AdminName = $getAdminName->fetch_assoc();
+    $AD_action = "change login credentials of " . $currentEmail . " to " . $userEmail;
+    $currentDate = date('Y-m-d H:i:s');
+    $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
+            VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
+}
+if (isset($_POST['updateAdminDetails']) && !empty($_SESSION['AD_number'])) {
+    $AD_number = $_POST['AD_number'];
+    $current_email = $_POST['current_email'];
+    $AD_email = $_POST['AD_email'];
+    $AD_password = $_POST['AD_password'];
+
+    if ($current_email === $AD_email) {
+        $updateAdminAccount = $mysqli->query("UPDATE admin_accounts SET AD_password = '{$AD_password}' WHERE AD_number = '{$AD_number}'");
+
+        if ($updateAdminAccount) {
+            showSweetAlert('Login password updated', 'success');
+        }
+    } else if ($current_email != $AD_email) {
+        $checkForDuplicate = $mysqli->query("SELECT * FROM admin_accounts WHERE AD_email = '{$AD_email}'");
+        if (mysqli_num_rows($checkForDuplicate) == 0) {
+            $updateAdminAccount = $mysqli->query("UPDATE admin_accounts 
+                                            SET AD_email = '{$AD_email}', AD_password = '{$AD_password}' 
+                                            WHERE AD_number = '{$AD_number}'");
+            if ($updateAdminAccount) {
+                showSweetAlert('Login credentials updated', 'success');
+            }
+        } else {
+            showSweetAlert('Email already exist', 'error');
+        }
+    }
+}
+if (isset($_POST['deleteAdminDetails']) && !empty($_SESSION['AD_number'])) {
+    $AD_number = $_POST['AD_number'];
+    $AD_email = $_POST['AD_email'];
+    $AD_password = $_POST['AD_password'];
+
+    $updateAdminAccount = $mysqli->query("DELETE FROM admin_accounts WHERE AD_number = '{$AD_number}'");
+
+    if ($updateAdminAccount) {
+        showSweetAlert('Account deleted', 'success');
+    }
+}
 if (isset($_POST['updateAnnouncement']) && !empty($_SESSION['AD_number'])) {
     $author = $mysqli->real_escape_string($_POST['author']);
     $subject = $mysqli->real_escape_string($_POST['subject']);

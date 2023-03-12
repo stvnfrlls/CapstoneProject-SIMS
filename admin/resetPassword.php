@@ -19,6 +19,23 @@ if (!isset($_SESSION['AD_number'])) {
             </script>
         EOT;
     }
+
+    $studentArray = array();
+    $isStudent = $mysqli->query("SELECT SR_number, SR_fname, SR_mname, SR_lname, SR_email FROM studentrecord");
+    while ($studentData = $isStudent->fetch_assoc()) {
+        $studentArray[] = $studentData;
+    }
+
+    $facultyArray = array();
+    $isFaculty = $mysqli->query("SELECT F_number, F_fname, F_mname, F_lname, F_email FROM faculty");
+    while ($facultyData = $isFaculty->fetch_assoc()) {
+        $facultyArray[] = $facultyData;
+    }
+
+    $student = json_encode($studentArray);
+    echo "<script>var student = " . $student . ";</script>";
+    $faculty = json_encode($facultyArray);
+    echo "<script>var faculty = " . $faculty . ";</script>";
 }
 ?>
 
@@ -225,39 +242,35 @@ if (!isset($_SESSION['AD_number'])) {
                                                 <div class="col-lg-8 col-sm-12 grid-margin">
                                                     <div class="card">
                                                         <div class="card-body">
-                                                            <h4 style="text-align: center">Enter User Information</h4>
-                                                            <div class="row">
-                                                                <div class="col-lg-12 col-sm-12 grid-margin">
-                                                                    <div class="row" style="padding-bottom: 15px;">
-                                                                        <div class="col-md-12">
-                                                                            <label class="col-sm-12 col-form-label">Identification No. (LRN OR FACULTY ID)<span style="color: red;">*</span></label>
-                                                                            <div class="col-sm-12">
-                                                                                <input type="text" class="form-control" name="IdNo" required>
+                                                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="checkCredentialsForm">
+                                                                <h4 style="text-align: center">Enter User Information</h4>
+                                                                <div class="row">
+                                                                    <div class="col-lg-12 col-sm-12 grid-margin">
+                                                                        <div class="row" style="padding-bottom: 15px;">
+                                                                            <div class="col-md-12">
+                                                                                <label class="col-sm-12 col-form-label">Identification No. (LRN OR FACULTY ID)<span style="color: red;">*</span></label>
+                                                                                <div class="col-sm-12">
+                                                                                    <input type="text" class="form-control" name="IdNo" id="IdNo" required>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                    <div class="row" style="padding-bottom: 15px;">
-                                                                        <div class="col-md-6">
-                                                                            <label class="col-sm-12 col-form-label">Last Name <span style="color: red;">*</span></label>
-                                                                            <div class="col-sm-12">
-                                                                                <input type="text" class="form-control" name="userLname" required>
+                                                                        <div class="row" style="padding-bottom: 15px;">
+                                                                            <div class="col-md-6">
+                                                                                <label class="col-sm-12 col-form-label">Last Name <span style="color: red;">*</span></label>
+                                                                                <div class="col-sm-12">
+                                                                                    <input type="text" class="form-control" name="userLname" id="userLname" readonly>
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="col-md-6">
-                                                                            <label class="col-sm-12 col-form-label">First Name <span style="color: red;">*</span></label>
-                                                                            <div class="col-sm-12">
-                                                                                <input type="text" class="form-control" name="userFname" required>
+                                                                            <div class="col-md-6">
+                                                                                <label class="col-sm-12 col-form-label">First Name <span style="color: red;">*</span></label>
+                                                                                <div class="col-sm-12">
+                                                                                    <input type="text" class="form-control" name="userFname" id="userFname" readonly>
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="row" style="float: right;">
-                                                                        <div class="col-md-12">
-                                                                            <input type="submit" class="btn btn-primary" name="checkCredentials">
-                                                                            <input type="submit" class="btn btn-secondary" name="checkCredentials" value="Cancel">
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -266,25 +279,19 @@ if (!isset($_SESSION['AD_number'])) {
                                                     <div class="card">
                                                         <div class="card-body">
                                                             <form class="form-sample" action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="adminForm">
-                                                                <h4 style="text-align: center; padding-bottom: 11px;">Login Credentials</h4>
-                                                                <div class="row" style="padding-bottom: 12px;">
+                                                                <h4 style="text-align: center; padding-bottom: 11px;">Update Login Credentials</h4>
+                                                                <div class="row" style="padding-bottom: 20px;">
                                                                     <div class="col-md-12">
                                                                         <label class="col-sm-12 col-form-label">Email Address</label>
                                                                         <div class="col-sm-12">
-                                                                            <input type="text" class="form-control" name="adminName" required />
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row" style="padding-bottom: 17px;">
-                                                                    <div class="col-md-12">
-                                                                        <label class="col-sm-12 col-form-label">Password</label>
-                                                                        <div class="col-sm-12">
-                                                                            <input type="email" class="form-control" name="adminEmail" disabled />
+                                                                            <input type="hidden" name="storedID" id="storedID">
+                                                                            <input type="hidden" name="currentEmail" id="currentEmail">
+                                                                            <input type="text" class="form-control" name="userEmail" id="userEmail" disabled required />
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div style="text-align: center;">
-                                                                    <button type="submit" name="addAdmin" class="btn btn-primary me-2">Update</button>
+                                                                    <button type="submit" name="resetPassword" id="resetPassword" class="btn btn-primary me-2" disabled>Generate new password</button>
                                                                 </div>
                                                             </form>
                                                         </div>
@@ -331,6 +338,70 @@ if (!isset($_SESSION['AD_number'])) {
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>
     <script src="../assets/js/admin/off-canvas.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+    <script>
+        const IdNo = document.getElementById('IdNo');
+        const userLname = document.getElementById('userLname');
+        const userFname = document.getElementById('userFname');
+        const checkCredentials = document.getElementById('checkCredentials');
+        const userEmail = document.getElementById('userEmail');
+        const resetPassword = document.getElementById('resetPassword');
+        const currentEmail = document.getElementById('currentEmail');
+        const storedID = document.getElementById('storedID');
+
+        IdNo.addEventListener("change", function() {
+            const IdNoValue = this.value;
+
+            const studentInfo = student.find(function(element) {
+                return element.SR_number == IdNoValue;
+            });
+
+            const facultyInfo = faculty.find(function(element) {
+                return element.F_number == IdNoValue;
+            });
+
+            if (studentInfo == null) {
+                if (facultyInfo == null) {
+                    swal.fire({
+                        text: 'No data matched',
+                        icon: 'error'
+                    }).then((result) => {
+                        IdNo.value = '';
+                    });
+                } else {
+                    swal.fire({
+                        text: 'Information matched with Faculty data stored in the database',
+                        icon: 'success'
+                    }).then((result) => {
+                        userLname.value = facultyInfo.F_lname;
+                        userFname.value = facultyInfo.F_fname;
+                        userEmail.value = facultyInfo.F_email;
+                        currentEmail.value = facultyInfo.F_email;
+                        storedID.value = facultyInfo.F_number;
+                        if (userEmail.disabled && userEmail.value != '') {
+                            userEmail.removeAttribute('disabled');
+                            resetPassword.removeAttribute('disabled');
+                        }
+                    });
+                }
+            } else {
+                swal.fire({
+                    text: 'Information matched with Student data stored in the database',
+                    icon: 'success'
+                }).then((result) => {
+                    userLname.value = studentInfo.SR_lname;
+                    userFname.value = studentInfo.SR_fname;
+                    userEmail.value = studentInfo.SR_email;
+                    currentEmail.value = studentInfo.SR_email;
+                    storedID.value = studentInfo.SR_number;
+                    if (userEmail.disabled && userEmail.value != '') {
+                        userEmail.removeAttribute('disabled');
+                        resetPassword.removeAttribute('disabled');
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>
