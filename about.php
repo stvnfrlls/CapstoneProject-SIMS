@@ -32,8 +32,6 @@
     <!-- Template Stylesheet -->
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="../assets/css/admin/style.css" rel="stylesheet">
-    <link href="../assets/css/educ/main.css" rel="stylesheet">
-    <link href="../assets/css/dashboard-user.css" rel="stylesheet">
 </head>
 
 
