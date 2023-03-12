@@ -221,7 +221,7 @@ if (isset($_POST['changeStatus'])) {
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                     <div style="text-align: right; margin-bottom: 15px;">
                       <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
-                        <a class="btn btn-primary me-2" href="editFaculty.php?F_number=<?php echo $_GET['F_number'] ?>">Edit</a>
+                        <a class="btn btn-primary me-2" href="editfaculty.php?F_number=<?php echo $_GET['F_number'] ?>">Edit</a>
                         <?php
                         if ($getFacultyData['F_status'] == "active") { ?>
                           <button type="submit" name="changeStatus" class="btn btn-primary me-2">Mark as Inactive</button>
