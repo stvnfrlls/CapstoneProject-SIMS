@@ -15,9 +15,19 @@ if (!isset($_SESSION['F_number'])) {
     $FacultyData = $getFacultyName->fetch_assoc();
 
     if (isset($_GET['SY'])) {
-      $getSectionClassList = $mysqli->query("SELECT * FROM classlist WHERE SR_section = '{$SectionData['S_name']}' AND acadYear = '{$_GET['SY']}'");
+      $getSectionClassList = $mysqli->query("SELECT * FROM classlist 
+                                            LEFT JOIN studentrecord 
+                                            ON classlist.SR_number = studentrecord.SR_number
+                                            WHERE classlist.SR_section = '{$SectionData['S_name']}' 
+                                            AND classlist.acadYear = '{$_GET['SY']}' 
+                                            ORDER BY studentrecord.SR_lname");
     } else {
-      $getSectionClassList = $mysqli->query("SELECT * FROM classlist WHERE SR_section = '{$SectionData['S_name']}' AND acadYear = '{$currentSchoolYear}'");
+      $getSectionClassList = $mysqli->query("SELECT * FROM classlist 
+                                            LEFT JOIN studentrecord 
+                                            ON classlist.SR_number = studentrecord.SR_number
+                                            WHERE classlist.SR_section = '{$SectionData['S_name']}' 
+                                            AND classlist.acadYear = '{$currentSchoolYear}'
+                                            ORDER BY studentrecord.SR_lname");
     }
   }
 }
