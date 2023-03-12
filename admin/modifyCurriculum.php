@@ -3,6 +3,25 @@ require_once("../assets/php/server.php");
 
 if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
+} else {
+    $checkQuarter = $mysqli->query("SELECT quarterStatus FROM quartertable WHERE quarterStatus = 'current'");
+    if (mysqli_num_rows($checkQuarter) > 0) {
+        echo <<<EOT
+            <script>
+                document.addEventListener("DOMContentLoaded", function(event) { 
+                    swal.fire({
+                        text: 'This feature is currently disabled because the school year has already started.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                    }).then(() => {
+                        window.location.href = 'dashboard.php';
+                    });
+                });
+            </script>
+        EOT;
+    } else {
+        # code...
+    }
 }
 ?>
 
@@ -79,7 +98,13 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/createAdmin.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Create Admin</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Admin Account</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/resetPassword.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Reset Password</span>
                         </a>
                     </li>
                     <li class="nav-item">

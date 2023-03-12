@@ -79,7 +79,13 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/createAdmin.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Create Admin</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Admin Account</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/resetPassword.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Reset Password</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -96,7 +102,7 @@ if (!isset($_SESSION['AD_number'])) {
                             <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
                         </a>
                     </li>
- 
+
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
@@ -197,14 +203,15 @@ if (!isset($_SESSION['AD_number'])) {
                                     </div>
                                 </div>
                                 <div class="tab-content tab-content-basic">
-                                    <div class="btn-group" style="float: right;">
-                                        <div>
-                                            <button type="button" id="updateStatus" class="btn btn-primary">Update</button>
-                                            <button type="button" style="margin-right: 0px;" class="btn btn-light">Back</button>
-                                        </div>
-                                    </div>
+
                                     <form action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST" id="updateStatusForm">
                                         <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                                            <div class="btn-group" style="float: right;">
+                                                <div>
+                                                    <button type="button" id="updateStatus" class="btn btn-primary">Update</button>
+                                                    <button type="button" style="margin-right: 0px;" class="btn btn-light">Back</button>
+                                                </div>
+                                            </div>
                                             <div class="btn-group">
                                                 <div>
                                                     <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
@@ -308,7 +315,10 @@ if (!isset($_SESSION['AD_number'])) {
                                                                             if ($numrows >= 1) {
                                                                                 while ($data = $resultListofStudents->fetch_assoc()) { ?>
                                                                                     <tr>
-                                                                                        <td class="tablestyle"><?php echo $rowCount ?></td>
+                                                                                        <td class="tablestyle">
+                                                                                            <?php echo $rowCount ?>
+                                                                                            <input type="hidden" name="ids[]" value="<?php echo $rowCount ?>">
+                                                                                        </td>
                                                                                         <td class="tablestyle">
                                                                                             <?php
                                                                                             $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$data['SR_number']}'");

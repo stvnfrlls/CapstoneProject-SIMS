@@ -75,7 +75,13 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/createAdmin.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Create Admin</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Admin Account</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/resetPassword.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Reset Password</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -258,7 +264,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                             while ($LogData = $GetLogs->fetch_assoc()) { ?>
                                                                                 <tr>
                                                                                     <td><?php echo $LogData['AD_name'] ?></td>
-                                                                                    <td><?php echo $LogData['logDate'] ?></td>
+                                                                                    <td><?php echo date('(h:i A) | M/d/Y', strtotime($LogData['logDate'])) ?></td>
                                                                                     <td><?php echo $LogData['AD_action'] ?></td>
                                                                                 </tr>
                                                                             <?php  } ?>

@@ -4,9 +4,38 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 } else {
-    $adminData = $mysqli->query("SELECT * FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
-    $admin = $adminData->fetch_assoc();
-    $announcementData = $mysqli->query("SELECT * FROM announcement ORDER BY date_posted DESC");
+    if ($_SESSION['AD_number'] != "5UP3R4DM1N") {
+        echo <<<EOT
+            <script>
+                document.addEventListener("DOMContentLoaded", function(event) { 
+                    swal.fire({
+                        text: 'Your account is not allowed for this feature.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                    }).then(() => {
+                        window.location.href = 'dashboard.php';
+                    });
+                });
+            </script>
+        EOT;
+    }
+
+    $studentArray = array();
+    $isStudent = $mysqli->query("SELECT SR_number, SR_fname, SR_mname, SR_lname, SR_email FROM studentrecord");
+    while ($studentData = $isStudent->fetch_assoc()) {
+        $studentArray[] = $studentData;
+    }
+
+    $facultyArray = array();
+    $isFaculty = $mysqli->query("SELECT F_number, F_fname, F_mname, F_lname, F_email FROM faculty");
+    while ($facultyData = $isFaculty->fetch_assoc()) {
+        $facultyArray[] = $facultyData;
+    }
+
+    $student = json_encode($studentArray);
+    echo "<script>var student = " . $student . ";</script>";
+    $faculty = json_encode($facultyArray);
+    echo "<script>var faculty = " . $faculty . ";</script>";
 }
 ?>
 
@@ -15,7 +44,7 @@ if (!isset($_SESSION['AD_number'])) {
 
 <head>
     <meta charset="utf-8">
-    <title>School Announcements</title>
+    <title>Account Recovery</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -32,6 +61,8 @@ if (!isset($_SESSION['AD_number'])) {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="../assets/css/sweetAlert.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
     <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
@@ -42,10 +73,9 @@ if (!isset($_SESSION['AD_number'])) {
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="../assets/css/style.css" rel="stylesheet">
-    <link href="../assets/css/form-style.css" rel="stylesheet">
+
     <link href="../assets/css/admin/style.css" rel="stylesheet">
-    <link href="../assets/css/admin/materialdesignicons.min.css" rel="stylesheet">
+    <link href="../assets/css/admin/style.css.map" rel="stylesheet">
 
 </head>
 
@@ -194,6 +224,7 @@ if (!isset($_SESSION['AD_number'])) {
                 </ul>
             </nav>
             <!-- partial -->
+
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="row">
@@ -201,81 +232,85 @@ if (!isset($_SESSION['AD_number'])) {
                             <div class="home-tab">
                                 <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                                     <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                                        <h2 class="fw-bold text-primary text-uppercase">School Announcements</h2>
+                                        <h2 class="fw-bold text-primary text-uppercase">Account Recovery</h2>
                                     </div>
                                 </div>
-                                <div style="text-align: right; margin-top: 30px; margin-right: 20px;">
-                                    <button type="button" onclick="location.href='../admin/createAnnouncement.php'" style="color: #ffffff;" class="btn btn-primary me-2">Create <i class="fa fa-plus" style="font-size: 10px;"></i></button>
-                                </div>
-                                <section class="post-content-area" style="background-color: #f4f5f7;">
-                                    <div class="container">
-                                        <?php
-                                        if (mysqli_num_rows($announcementData) > 0) {
-                                            while ($announcement = $announcementData->fetch_assoc()) { ?>
-                                                <div class="row col-lg-10" style="padding-top: 15px;">
-                                                    <div class="col-lg-10 posts-list" style="margin-left: auto;">
-                                                        <div class="single-post row">
-                                                            <div class="col-lg-3  col-md-3 meta-details">
-                                                                <div class="user-details row" style="margin-top: 40px;">
-                                                                    <p class="user-name col-lg-12 col-md-12 col-6"><span class="far fa-user" style="color: #c02628;"> </span><a> <?php echo $admin['AD_name'] ?></a> </p>
-                                                                    <p class="date col-lg-12 col-md-12 col-6"><span class="fa fa-calendar" style="color: #c02628;"> </span><a> <?php echo $announcement['date'] ?></a> </p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-9">
-                                                                <div class="card">
-                                                                    <div class="card-body">
-                                                                        <div class="col-lg-12 col-md-9 ">
-                                                                            <a class="posts-title" href="../admin/viewAnnouncement.php?postID=<?php echo $announcement['ANC_ID'] ?>">
-                                                                                <h3><?php echo $announcement['header'] ?></h3>
-                                                                            </a>
-                                                                            <p class="excert">
-                                                                                <?php
-                                                                                if (empty($announcement['msg'])) {
-                                                                                    echo "No Description";
-                                                                                } else {
-                                                                                    echo $announcement['msg'];
-                                                                                }
-                                                                                ?>
-                                                                            </p>
-                                                                            <button type="button" onclick="location.href='../admin/viewAnnouncement.php?postID=<?php echo $announcement['ANC_ID'] ?>'" class=" btn btn-primary me-2" name="">View More</button>
+                                <div class="tab-content tab-content-basic" style="padding-bottom: 0px;">
+                                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                                        <div class="col-12 grid-margin">
+                                            <div class="row">
+                                                <div class="col-lg-8 col-sm-12 grid-margin">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="checkCredentialsForm">
+                                                                <h4 style="text-align: center">Enter User Information</h4>
+                                                                <div class="row">
+                                                                    <div class="col-lg-12 col-sm-12 grid-margin">
+                                                                        <div class="row" style="padding-bottom: 15px;">
+                                                                            <div class="col-md-12">
+                                                                                <label class="col-sm-12 col-form-label">Identification No. (LRN OR FACULTY ID)<span style="color: red;">*</span></label>
+                                                                                <div class="col-sm-12">
+                                                                                    <input type="text" class="form-control" name="IdNo" id="IdNo" required>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row" style="padding-bottom: 15px;">
+                                                                            <div class="col-md-6">
+                                                                                <label class="col-sm-12 col-form-label">Last Name <span style="color: red;">*</span></label>
+                                                                                <div class="col-sm-12">
+                                                                                    <input type="text" class="form-control" name="userLname" id="userLname" readonly>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <label class="col-sm-12 col-form-label">First Name <span style="color: red;">*</span></label>
+                                                                                <div class="col-sm-12">
+                                                                                    <input type="text" class="form-control" name="userFname" id="userFname" readonly>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            <?php }
-                                        } else { ?>
-                                            <div class="row col-lg-10" style="padding-top: 15px;">
-                                                <div class="col-lg-10 posts-list" style="margin-left: auto;">
-                                                    <div class="single-post row">
-                                                        <div class="col-lg-12">
-                                                            <div class="card">
-                                                                <div class="card-body">
-                                                                    <div class="col-lg-12 col-md-9 text-center">
-                                                                        <h3>NO ANNOUNCEMENT YET</h3>
+
+                                                <div class="col-lg-4 col-sm-12 grid-margin">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <form class="form-sample" action="<?php $_SERVER["PHP_SELF"] ?>" method="POST" id="adminForm">
+                                                                <h4 style="text-align: center; padding-bottom: 11px;">Update Login Credentials</h4>
+                                                                <div class="row" style="padding-bottom: 20px;">
+                                                                    <div class="col-md-12">
+                                                                        <label class="col-sm-12 col-form-label">Email Address</label>
+                                                                        <div class="col-sm-12">
+                                                                            <input type="hidden" name="storedID" id="storedID">
+                                                                            <input type="hidden" name="currentEmail" id="currentEmail">
+                                                                            <input type="text" class="form-control" name="userEmail" id="userEmail" disabled required />
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
+                                                                <div style="text-align: center;">
+                                                                    <button type="submit" name="resetPassword" id="resetPassword" class="btn btn-primary me-2" disabled>Generate new password</button>
+                                                                </div>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        <?php }
-                                        ?>
+                                        </div>
                                     </div>
-                                </section>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!-- content-wrapper ends -->
                 </div>
-                <!-- main-panel ends -->
             </div>
-            <!-- main-panel ends -->
         </div>
-        <!-- page-body-wrapper ends -->
+    </div>
+    <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
 
@@ -295,12 +330,78 @@ if (!isset($_SESSION['AD_number'])) {
 
 
     <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
 
     <!-- Template Javascript -->
+    <!-- <script src="../assets/login/vendor/jquery/jquery-3.2.1.min.js"></script> -->
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>
     <script src="../assets/js/admin/off-canvas.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+    <script>
+        const IdNo = document.getElementById('IdNo');
+        const userLname = document.getElementById('userLname');
+        const userFname = document.getElementById('userFname');
+        const checkCredentials = document.getElementById('checkCredentials');
+        const userEmail = document.getElementById('userEmail');
+        const resetPassword = document.getElementById('resetPassword');
+        const currentEmail = document.getElementById('currentEmail');
+        const storedID = document.getElementById('storedID');
 
+        IdNo.addEventListener("change", function() {
+            const IdNoValue = this.value;
+
+            const studentInfo = student.find(function(element) {
+                return element.SR_number == IdNoValue;
+            });
+
+            const facultyInfo = faculty.find(function(element) {
+                return element.F_number == IdNoValue;
+            });
+
+            if (studentInfo == null) {
+                if (facultyInfo == null) {
+                    swal.fire({
+                        text: 'No data matched',
+                        icon: 'error'
+                    }).then((result) => {
+                        IdNo.value = '';
+                    });
+                } else {
+                    swal.fire({
+                        text: 'Information matched with Faculty data stored in the database',
+                        icon: 'success'
+                    }).then((result) => {
+                        userLname.value = facultyInfo.F_lname;
+                        userFname.value = facultyInfo.F_fname;
+                        userEmail.value = facultyInfo.F_email;
+                        currentEmail.value = facultyInfo.F_email;
+                        storedID.value = facultyInfo.F_number;
+                        if (userEmail.disabled && userEmail.value != '') {
+                            userEmail.removeAttribute('disabled');
+                            resetPassword.removeAttribute('disabled');
+                        }
+                    });
+                }
+            } else {
+                swal.fire({
+                    text: 'Information matched with Student data stored in the database',
+                    icon: 'success'
+                }).then((result) => {
+                    userLname.value = studentInfo.SR_lname;
+                    userFname.value = studentInfo.SR_fname;
+                    userEmail.value = studentInfo.SR_email;
+                    currentEmail.value = studentInfo.SR_email;
+                    storedID.value = studentInfo.SR_number;
+                    if (userEmail.disabled && userEmail.value != '') {
+                        userEmail.removeAttribute('disabled');
+                        resetPassword.removeAttribute('disabled');
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

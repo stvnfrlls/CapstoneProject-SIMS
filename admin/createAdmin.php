@@ -94,7 +94,13 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/createAdmin.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Create Admin</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Admin Account</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/resetPassword.php">
+                            <i class=""></i>
+                            <span class="menu-title" style="color: #b9b9b9;">Reset Password</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -111,7 +117,7 @@ if (!isset($_SESSION['AD_number'])) {
                             <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
                         </a>
                     </li>
- 
+
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/student.php">
                             <i class=""></i>
@@ -224,9 +230,10 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 <table class="table table-striped">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th>No.</th>
-                                                                            <th>Name</th>
-                                                                            <th>Email Address</th>
+                                                                            <th class="text-center">Name</th>
+                                                                            <th class="text-center">Email Address</th>
+                                                                            <th class="text-center">Password</th>
+                                                                            <th class="text-center">Action</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
@@ -235,11 +242,32 @@ if (!isset($_SESSION['AD_number'])) {
                                                                         $getAdminAccountsList = $mysqli->query("SELECT * FROM admin_accounts");
                                                                         if (mysqli_num_rows($getAdminAccountsList) > 0) {
                                                                             while ($AdminAccounts = $getAdminAccountsList->fetch_assoc()) { ?>
-                                                                                <tr>
-                                                                                    <td><?php echo $rowCount; ?></td>
-                                                                                    <td><?php echo $AdminAccounts['AD_name']; ?></td>
-                                                                                    <td><?php echo $AdminAccounts['AD_email']; ?></td>
-                                                                                </tr>
+                                                                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="modifyAdmin">
+                                                                                    <tr>
+                                                                                        <td><?php echo $AdminAccounts['AD_name']; ?></td>
+                                                                                        <td>
+                                                                                            <input type="hidden" name="AD_number" value="<?php echo $AdminAccounts['AD_number'] ?>">
+                                                                                            <input type="hidden" name="current_email" value="<?php echo $AdminAccounts['AD_email'] ?>">
+                                                                                            <input type="email" class="form-control" name="AD_email" value="<?php echo $AdminAccounts['AD_email']; ?>" required>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="password" class="form-control" name="AD_password" value="<?php echo $AdminAccounts['AD_password']; ?>" required>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="hidden" id="updateTag" name="updateAdminDetails" value="updateAdminDetails" disabled>
+                                                                                            <input type="hidden" id="deleteTag" name="deleteAdminDetails" value="deleteAdminDetails" disabled>
+                                                                                            <?php
+                                                                                            if ($AdminAccounts['AD_number'] != "5UP3R4DM1N") {
+                                                                                                echo '<input type="submit" class="btn btn-primary" id="updateAdminDetails" name="updateAdminDetails" value="Update">';
+                                                                                                echo '<input type="submit" class="btn btn-primary" id="deleteAdminDetails" name="deleteAdminDetails" value="Delete">';
+                                                                                            } else {
+                                                                                                echo '<input type="submit" class="btn btn-primary" id="updateAdminDetails" name="updateAdminDetails" value="Update" disabled>';
+                                                                                                echo '<input type="submit" class="btn btn-primary" id="deleteAdminDetails" name="deleteAdminDetails" value="Delete" disabled>';
+                                                                                            }
+                                                                                            ?>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </form>
                                                                             <?php
                                                                                 $rowCount++;
                                                                             }
@@ -294,7 +322,8 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     </div>
                                                                 </div>
                                                                 <div style="text-align: center;">
-                                                                    <button type="submit" name="addAdmin" class="btn btn-primary me-2">Create</button>
+                                                                    <!-- <input type="hidden" id="addAdminTag" name="addAdmin" value="addAdmin" disabled> -->
+                                                                    <button type="submit" id="addAdmin" name="addAdmin" class="btn btn-primary me-2">Create</button>
                                                                 </div>
                                                             </form>
                                                         </div>
@@ -341,6 +370,60 @@ if (!isset($_SESSION['AD_number'])) {
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>
     <script src="../assets/js/admin/off-canvas.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+    <script>
+        const modifyAdmin = document.getElementById('modifyAdmin');
+        const updateAdminDetails = document.getElementById('updateAdminDetails');
+        const deleteAdminDetails = document.getElementById('deleteAdminDetails');
+        const updateTag = document.getElementById('updateTag');
+        const deleteTag = document.getElementById('deleteTag');
+
+        updateAdminDetails.addEventListener("submit", function() {
+            if (updateTag.disabled) {
+                updateTag.removeAttribute('disabled');
+                if (!updateTag.disabled) {
+                    Swal.fire({
+                        title: 'Are you sure you want to proceed with this action?',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes',
+                        cancelButtonText: `No`,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: 'Form submitted!',
+                                icon: 'success',
+                            }).then(() => {
+                                modifyAdmin.submit();
+                            });
+                        }
+                    })
+                }
+            }
+        });
+
+        deleteAdminDetails.addEventListener("submit", function() {
+            if (deleteTag.disabled) {
+                deleteTag.removeAttribute('disabled');
+                if (!deleteTag.disabled) {
+                    Swal.fire({
+                        title: 'Are you sure you want to proceed with this action?',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes',
+                        cancelButtonText: `No`,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: 'Form submitted!',
+                                icon: 'success',
+                            }).then(() => {
+                                modifyAdmin.submit();
+                            });
+                        }
+                    })
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>

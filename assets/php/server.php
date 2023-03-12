@@ -27,23 +27,11 @@ if (isset($_POST['login-button'])) {
         $errors['NoInputs'] = "Please enter your login credentials.";
     } else {
         $authAccount = $mysqli->query("SELECT * FROM userdetails WHERE SR_email = '$email'");
-
         if (mysqli_num_rows($authAccount) == 1) {
             $getauthAccount = $authAccount->fetch_assoc();
             $UD_username = $getauthAccount['SR_email'];
             $UD_password = $getauthAccount['SR_password'];
             $UD_role = $getauthAccount['role'];
-
-            $userDetails = $mysqli->query("SELECT SR_number, SR_fname, SR_lname FROM studentrecord WHERE SR_email = '$UD_username'");
-
-            if ($userDetails->num_rows > 0) {
-                $getuserDetails = $userDetails->fetch_assoc();
-                $SR_fname = $getuserDetails['SR_fname'];
-                $SR_lname = $getuserDetails['SR_lname'];
-
-                $_SESSION['SR_name'] = $SR_lname . ', ' . $SR_fname;
-                $_SESSION['SR_number'] = $getuserDetails['SR_number'];
-            }
 
             if ($password != $UD_password) {
                 $errors['PasswordError'] = "Incorrect Password!";
@@ -65,13 +53,17 @@ if (isset($_POST['login-button'])) {
             }
         } else {
             $FindAD_number = $mysqli->query("SELECT * FROM admin_accounts WHERE AD_email = '{$email}'");
-            $getAD_number = $FindAD_number->fetch_assoc();
-            if ($email != $getAD_number['AD_password']) {
-                $errors['LoginError'] = "Incorrect Password!";
-            }
-            if (!empty($getAD_number['AD_number'])) {
-                $_SESSION['AD_number'] = $getAD_number['AD_number'];
-                header('Location: ../admin/dashboard.php');
+            if (mysqli_num_rows($FindAD_number) > 0) {
+                $getAD_number = $FindAD_number->fetch_assoc();
+                if ($email != $getAD_number['AD_password']) {
+                    $errors['LoginError'] = "Incorrect Password!";
+                }
+                if (!empty($getAD_number['AD_number'])) {
+                    $_SESSION['AD_number'] = $getAD_number['AD_number'];
+                    header('Location: ../admin/dashboard.php');
+                } else {
+                    $errors['LoginError'] = "Account does not exist!";
+                }
             } else {
                 $errors['LoginError'] = "Account does not exist!";
             }
@@ -101,18 +93,18 @@ if (isset($_POST['verifyEmail'])) {
                 $mail->Subject = 'Password Change Request';
 
                 $mail->Body = '<p>We have received a request to change the password for your email account. 
-                            Your one-time password (OTP) code is: <strong>' . $otp . '</strong>.</p>
-                            <p>If you did not initiate this request, please ignore this email. 
-                            However, we recommend that you change your password as soon as possible to ensure the security of your account. 
-                            <br>
-                            If you have any questions or concerns, please contact our customer support team. </p>
-                            <br>
-                            <br>
-                            <p>Thank you for using CDSP SIS.</p>
-                            <br>
-                            <strong>Best regards, </strong><br>
-                            <strong>CDSP Admin Office</strong>
-                            <br>';
+                                Your one-time password (OTP) code is: <strong>' . $otp . '</strong>.</p>
+                                <p>If you did not initiate this request, please ignore this email. 
+                                However, we recommend that you change your password as soon as possible to ensure the security of your account. 
+                                <br>
+                                If you have any questions or concerns, please contact our customer support team. </p>
+                                <br>
+                                <br>
+                                <p>Thank you for using CDSP SIS.</p>
+                                <br>
+                                <strong>Best regards, </strong><br>
+                                <strong>CDSP Admin Office</strong>
+                                <br>';
                 if ($mail->send()) {
                     header('Location: ../auth/otp.php');
                 }
@@ -254,7 +246,6 @@ if (isset($_POST['markAsDone'])) {
 
 //Faculty Process
 if (isset($_POST['student'])) {
-
     $studentID = $_POST['student'];
 
     $date = date("Y-m-d");
@@ -267,7 +258,7 @@ if (isset($_POST['student'])) {
                                         IN 
                                         (SELECT SR_number FROM classlist WHERE SR_number = '{$studentID}' AND acadYear = '{$currentSchoolYear}')");
     $sendtoGuardian = $sendtoGuardianData->fetch_assoc();
-    if ($checkAttendance->num_rows == 0) {
+    if (mysqli_num_rows($checkAttendance) == 0) {
         $timeIN = $mysqli->query("INSERT INTO attendance (acadYear, SR_number, A_date, A_time_IN) VALUES ('{$currentSchoolYear}', '{$studentID}', '{$date}', '{$time}')");
         $mail->addAddress($sendtoGuardian['G_email']);
         $mail->Subject = 'Attendance: Time In';
@@ -369,6 +360,7 @@ if (isset($_POST['encodeGrade'])) {
             $mysqli->query("UPDATE grades SET G_finalgrade = '{$G_finalgrade}' WHERE SR_number = '{$SR_number}' AND SR_section = '{$Section}' AND acadYear = '{$currentSchoolYear}' AND G_learningArea = '{$Subject}'");
         }
     }
+    showSweetAlert('Successfully encoded grades', 'success');
 }
 if (isset($_POST['saveBehavior'])) {
     $ids = $_POST['row'];
@@ -495,21 +487,21 @@ if (isset($_POST['addReminders'])) {
             $sendtoGuardianData = $mysqli->query("SELECT G_email FROM guardian WHERE G_guardianOfStudent 
                                             IN 
                                             (SELECT SR_number FROM classlist WHERE SR_section = '{$forsection}' AND acadYear = '{$currentSchoolYear}')");
-            $sendtoStudentData = $mysqli->query("SELECT SR_email FROM studentrecord WHERE SR_number 
-                                            IN 
-                                            (SELECT SR_number FROM classlist WHERE SR_section = '{$forsection}' AND acadYear = '{$currentSchoolYear}')");
-            if (mysqli_num_rows($sendtoGuardianData) > 0) {
-                while ($GuardianData = $sendtoGuardianData->fetch_assoc()) {
-                    $mail->addAddress($GuardianData['G_email']);
-                }
-                $mail->Subject = $subject;
-                $mail->Body = '<h1>Reminders</h1><br>
-                                   <p>' . $MSG . '</p><br>';
-                $mail->send();
-                showSweetAlert('Reminders sent!', 'success');
-            } else {
-                showSweetAlert('No receiver', 'error');
-            }
+            // $sendtoStudentData = $mysqli->query("SELECT SR_email FROM studentrecord WHERE SR_number 
+            //                                 IN 
+            //                                 (SELECT SR_number FROM classlist WHERE SR_section = '{$forsection}' AND acadYear = '{$currentSchoolYear}')");
+            // if (mysqli_num_rows($sendtoGuardianData) > 0) {
+            //     while ($GuardianData = $sendtoGuardianData->fetch_assoc()) {
+            //         $mail->addAddress($GuardianData['G_email']);
+            //     }
+            //     $mail->Subject = $subject;
+            //     $mail->Body = '<h1>Reminders</h1><br>
+            //                       <p>' . $MSG . '</p><br>';
+            //     $mail->send();
+            //     showSweetAlert('Reminders sent!', 'success');
+            // } else {
+            //     showSweetAlert('No receiver', 'error');
+            // }
             if (mysqli_num_rows($sendtoStudentData) > 0) {
                 while ($StudentData = $sendtoStudentData->fetch_assoc()) {
                     $mail->addAddress($StudentData['SR_email']);
@@ -524,7 +516,7 @@ if (isset($_POST['addReminders'])) {
             }
         }
     } else {
-        showSweetAlert('Input is required.', 'error');
+        showSweetAlert('Required input is empty.', 'error');
     }
 }
 if (isset($_POST['updateReminder'])) {
@@ -556,19 +548,34 @@ if (isset($_POST['updateReminder'])) {
                         window.location.href = '../faculty/reminders.php';
                     });
                 });
-            </script>
-        EOT;
+            </script> 
+EOT;
     } else {
         showSweetAlert('Failed to update reminder.', 'error');
     }
 }
 if (isset($_POST['delReminder'])) {
-    $mysqli->query("DELETE FROM reminders WHERE reminderID = '{$_GET['ID']}' AND author = '{$_SESSION['F_number']}'");
-    showSweetAlert('Reminder is successfully deleted', 'success');
-    header('Location: reminders.php');
+    $delReminders = $mysqli->query("DELETE FROM reminders WHERE reminderID = '{$_GET['ID']}' AND author = '{$_SESSION['F_number']}'");
+    if ($delReminders) {
+        echo <<<EOT
+        <script>
+                document.addEventListener("DOMContentLoaded", function(event) { 
+                    swal.fire({
+                        text: 'Reminders successfully deleted.',
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                    }).then(() => {
+                        window.location.href = '../faculty/reminders.php';
+                    });
+                });
+            </script>
+EOT;
+    } else {
+        showSweetAlert('Failed to update reminder.', 'error');
+    }
 }
 if (isset($_POST['attendanceReportButton']) && isset($_SESSION['F_number'])) {
-    $SR_number = $mysqli->real_escape_string($_POST['SR_number']);
+    $SR_number = $_POST['SR_number'];
     $Subject = $mysqli->real_escape_string($_GET['subject']);
     $SR_grade = $mysqli->real_escape_string($_POST['SR_grade']);
     $SR_section = $mysqli->real_escape_string($_POST['SR_section']);
@@ -614,7 +621,7 @@ if (isset($_POST['attendanceReportButton']) && isset($_SESSION['F_number'])) {
     }
 }
 if (isset($_POST['updateAttendanceStatus']) && isset($_SESSION['F_number'])) {
-    $SR_number = $mysqli->real_escape_string($_POST['SR_number']);
+    $SR_number = $_POST['SR_number'];
     $AttendanceStatus = $mysqli->real_escape_string($_POST['AttendanceStatus']);
     $A_date = date('Y-m-d');
 
@@ -627,7 +634,27 @@ if (isset($_POST['updateAttendanceStatus']) && isset($_SESSION['F_number'])) {
                                        WHERE SR_number = '{$SR_number}'
                                        AND acadYear = '{$currentSchoolYear}' 
                                        AND A_date = '{$A_date}'");
-        showSweetAlert('Successfully updated attendance', 'success');
+        $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord 
+                                        LEFT JOIN guardian 
+                                        ON studentrecord.SR_number = guardian.G_guardianOfStudent
+                                        WHERE studentrecord.SR_number = '{$SR_number}'");
+        $studentData = $getStudentInfo->fetch_assoc();
+        if (mysqli_num_rows($getStudentInfo) > 0) {
+            $FullName = $studentData['SR_lname'] .  ", " . $studentData['SR_fname'];
+
+            $mail->addAddress($studentData['G_email']);
+            $mail->Subject = 'ATTENDANCE UPDATE';
+
+            $mail->Body = '<h1>A professor has updated your child, ' . $FullName . '</h1>
+                                <br>
+                                <p>Your child was reported to be ' . $AttendanceStatus . ' on ' . $A_date . '</p>
+                                <p>Please contact your child(s) advisor about this issue.</p><br>
+                                <br>';
+            $mail->send();
+            showSweetAlert('Successfully updated attendance', 'success');
+        } else {
+            showSweetAlert('No guardian email detected', 'error');
+        }
     } else {
         $emailGuardian = $mysqli->query("SELECT G_email FROM guardian WHERE G_guardianOfStudent = '{$SR_number}'");
         if (mysqli_num_rows($emailGuardian) > 0) {
@@ -637,7 +664,7 @@ if (isset($_POST['updateAttendanceStatus']) && isset($_SESSION['F_number'])) {
             if (mysqli_num_rows($getFullname) > 0) {
                 $G_email = $emailGuardian->fetch_assoc();
                 $name = $getFullname->fetch_assoc();
-                $FullName = $name['SR_lname'] .  ", " . $name['SR_fname'] . " " . substr($name['SR_mname'], 0, 1) . ". " . $name['SR_suffix'];
+                $FullName = $name['SR_lname'] .  ", " . $name['SR_fname'];
                 $mail->addAddress($G_email['G_email']);
                 $mail->Subject = 'ATTENDANCE UPDATE';
 
@@ -655,7 +682,7 @@ if (isset($_POST['updateAttendanceStatus']) && isset($_SESSION['F_number'])) {
     }
 }
 if (isset($_POST['resolveIssue']) && isset($_SESSION['F_number'])) {
-    $SR_number = $mysqli->real_escape_string($_POST['studentName']);
+    $SR_number = $_POST['studentName'];
     $AttendanceStatus = $mysqli->real_escape_string($_POST['A_status']);
 
     $checkAttendance = $mysqli->query("SELECT * FROM attendance 
@@ -663,7 +690,7 @@ if (isset($_POST['resolveIssue']) && isset($_SESSION['F_number'])) {
                                        AND acadYear = '{$currentSchoolYear}' 
                                        AND A_date = '{$A_date}'");
     if (mysqli_num_rows($checkAttendance) > 0) {
-        $updateAttendace = $mysqli->query("UPDATE attendance SET A_status = '{$AttendanceStatus}' 
+        $mysqli->query("UPDATE attendance SET A_status = '{$AttendanceStatus}' 
                                        WHERE SR_number = '{$SR_number}'
                                        AND acadYear = '{$currentSchoolYear}' 
                                        AND A_date = '{$A_date}'");
@@ -671,7 +698,28 @@ if (isset($_POST['resolveIssue']) && isset($_SESSION['F_number'])) {
                         WHERE SR_number = '{$SR_number}'
                         AND RP_reportDate = '{$A_date}' 
                         AND RP_attendanceReport = '{$AttendanceStatus}'");
-        showSweetAlert('Successfully updated attendance', 'success');
+
+        $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord 
+                                        LEFT JOIN guardian 
+                                        ON studentrecord.SR_number = guardian.G_guardianOfStudent
+                                        WHERE studentrecord.SR_number = '{$SR_number}'");
+        $studentData = $getStudentInfo->fetch_assoc();
+        if (mysqli_num_rows($getStudentInfo) > 0) {
+            $FullName = $studentData['SR_lname'] .  ", " . $studentData['SR_fname'];
+
+            $mail->addAddress($studentData['G_email']);
+            $mail->Subject = 'ATTENDANCE UPDATE';
+
+            $mail->Body = '<h1>A professor has resolve your child, ' . $FullName . ' attendance status</h1>
+                                <br>
+                                <p>Your child is now ' . $AttendanceStatus . ' on ' . $A_date . '</p>
+                                <p>Please contact your child(s) advisor about this issue.</p><br>
+                                <br>';
+            $mail->send();
+            showSweetAlert('Successfully updated attendance', 'success');
+        } else {
+            showSweetAlert('No guardian email detected', 'error');
+        }
     } else {
         $manualAttendance = $mysqli->query("INSERT INTO attendance(acadYear, SR_number, A_date, A_status)
                                             VALUES ('{$currentSchoolYear}', '{$SR_number}', '{$A_date}', '{$AttendanceStatus}')");
@@ -679,13 +727,34 @@ if (isset($_POST['resolveIssue']) && isset($_SESSION['F_number'])) {
                         WHERE SR_number = '{$SR_number}'
                         AND RP_reportDate = '{$A_date}' 
                         AND RP_attendanceReport = '{$AttendanceStatus}'");
-        showSweetAlert('Attendance manually added', 'success');
+
+        $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord 
+                                        LEFT JOIN guardian 
+                                        ON studentrecord.SR_number = guardian.G_guardianOfStudent
+                                        WHERE studentrecord.SR_number = '{$SR_number}'");
+        $studentData = $getStudentInfo->fetch_assoc();
+        if (mysqli_num_rows($getStudentInfo) > 0) {
+            $FullName = $studentData['SR_lname'] .  ", " . $studentData['SR_fname'];
+
+            $mail->addAddress($studentData['G_email']);
+            $mail->Subject = 'ATTENDANCE UPDATE';
+
+            $mail->Body = '<h1>A professor has resolve your child, ' . $FullName . ' attendance status</h1>
+                            <br>
+                            <p>Your child is now ' . $AttendanceStatus . ' on ' . $A_date . '</p>
+                            <p>Please contact your child(s) advisor about this issue.</p><br>
+                            <br>';
+            $mail->send();
+            showSweetAlert('Attendance manually added', 'success');
+        } else {
+            showSweetAlert('No guardian email detected', 'error');
+        }
     }
 }
 //End
 
 //Admin Process
-if (isset($_POST['regStudent'])) {
+if (isset($_POST['regStudent']) && !empty($_SESSION['AD_number'])) {
     $SR_LRN = $mysqli->real_escape_string($_POST['LRN']);
 
     $SR_profile_img = $_FILES['image']['name'];
@@ -991,7 +1060,7 @@ if (isset($_POST['addAdmin']) && !empty($_SESSION['AD_number'])) {
             $AD_action = "added " . $adminName . " as an administrator.";
             $currentDate = date('Y-m-d H:i:s');
             $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
-        VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
+                                        VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
         }
     } else {
         showSweetAlert('Password do not match.', 'error');
@@ -1060,21 +1129,21 @@ if (isset($_POST['postAnnouncement']) && !empty($_SESSION['AD_number'])) {
             $sendtoGuardianData = $mysqli->query("SELECT G_email FROM guardian WHERE G_guardianOfStudent 
                                         IN 
                                         (SELECT SR_number FROM classlist WHERE acadYear = '{$currentSchoolYear}')");
-            $sendtoStudentData = $mysqli->query("SELECT SR_email FROM studentrecord WHERE SR_number 
-                                        IN 
-                                        (SELECT SR_number FROM classlist WHERE acadYear = '{$currentSchoolYear}')");
-            if (mysqli_num_rows($sendtoGuardianData) > 0) {
-                while ($GuardianData = $sendtoGuardianData->fetch_assoc()) {
-                    $mail->addAddress($GuardianData['G_email']);
-                }
-                $mail->Subject = $subject;
-                $mail->Body = '<h1>School Annoucement</h1><br>
-                                   <p>' . $message . '</p><br>';
-                $mail->send();
-                showSweetAlert('Annoucement sent!', 'success');
-            } else {
-                showSweetAlert('No receiver', 'error');
-            }
+            // $sendtoStudentData = $mysqli->query("SELECT SR_email FROM studentrecord WHERE SR_number 
+            //                             IN 
+            //                             (SELECT SR_number FROM classlist WHERE acadYear = '{$currentSchoolYear}')");
+            // if (mysqli_num_rows($sendtoGuardianData) > 0) {
+            //     while ($GuardianData = $sendtoGuardianData->fetch_assoc()) {
+            //         $mail->addAddress($GuardianData['G_email']);
+            //     }
+            //     $mail->Subject = $subject;
+            //     $mail->Body = '<h1>School Annoucement</h1><br>
+            //                       <p>' . $message . '</p><br>';
+            //     $mail->send();
+            //     showSweetAlert('Annoucement sent!', 'success');
+            // } else {
+            //     showSweetAlert('No receiver', 'error');
+            // }
             if (mysqli_num_rows($sendtoStudentData) > 0) {
                 while ($StudentData = $sendtoStudentData->fetch_assoc()) {
                     $mail->addAddress($StudentData['SR_email']);
@@ -1127,6 +1196,7 @@ if (isset($_POST['assignAdvisor']) && !empty($_SESSION['AD_number'])) {
     }
 }
 if (isset($_POST['moveUpStatus']) && !empty($_SESSION['AD_number'])) {
+    $ids = $_POST['ids'];
     $FormsSR_number = $_POST['SR_number'];
     $FormsGrade = $_POST['Grade'];
     $FormsSection = $_POST['Section'];
@@ -1191,6 +1261,94 @@ if (isset($_POST['addSection']) && !empty($_SESSION['AD_number'])) {
 //End
 
 // OPTIONAL
+if (isset($_POST['resetPassword']) && !empty($_SESSION['AD_number'])) {
+    $storedID = $_POST['storedID'];
+    $currentEmail = $_POST['currentEmail'];
+    $userEmail = $_POST['userEmail'];
+    $GenPass = generatePassword();
+
+    $isStudent = $mysqli->query("SELECT SR_number FROM studentrecord WHERE SR_number = '{$storedID}'");
+    if (mysqli_num_rows($isStudent) != 1) {
+        $isFaculty = $mysqli->query("SELECT F_number FROM faculty WHERE F_number = '{$storedID}'");
+        if (mysqli_num_rows($isFaculty) != 1) {
+            $updateUserDetails = $mysqli->query("UPDATE userdetails SET SR_email = '{$userEmail}', SR_password = '{$GenPass}' WHERE SR_email = '{$currentEmail}'");
+            $updateStudentRecord = $mysqli->query("UPDATE faculty SET F_email = '{$userEmail}' WHERE F_number = '{$storedID}'");
+
+            $mail->addAddress($userEmail);
+            $mail->Subject = 'ACCOUNT RECOVERY';
+
+            $mail->Body = '<h1>Account recovery successful!</h1>
+                            <br>
+                            <p>Your new login credentials is:</p><br>
+                            <b>Email: </b>' . $userEmail . '<br>
+                            <b>Password: </b>' . $GenPass . '<br>
+                            <br>';
+            $mail->send();
+        } else {
+            showSweetAlert('ERROR', 'error');
+        }
+    } else {
+        $updateUserDetails = $mysqli->query("UPDATE userdetails SET SR_email = '{$userEmail}', SR_password = '{$GenPass}' WHERE SR_email = '{$currentEmail}'");
+        $updateStudentRecord = $mysqli->query("UPDATE studentrecord SET SR_email = '{$userEmail}' WHERE SR_number = '{$storedID}'");
+
+        if ($updateUserDetails && $updateStudentRecord) {
+            $mail->addAddress($userEmail);
+            $mail->Subject = 'ACCOUNT RECOVERY';
+
+            $mail->Body = '<h1>Account recovery successful!</h1>
+                            <br>
+                            <p>Your new login credentials is:</p><br>
+                            <b>Email: </b>' . $userEmail . '<br>
+                            <b>Password: </b>' . $GenPass . '<br>
+                            <br>';
+            $mail->send();
+        }
+    }
+
+    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+    $AdminName = $getAdminName->fetch_assoc();
+    $AD_action = "change login credentials of " . $currentEmail . " to " . $userEmail;
+    $currentDate = date('Y-m-d H:i:s');
+    $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
+            VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
+}
+if (isset($_POST['updateAdminDetails']) && !empty($_SESSION['AD_number'])) {
+    $AD_number = $_POST['AD_number'];
+    $current_email = $_POST['current_email'];
+    $AD_email = $_POST['AD_email'];
+    $AD_password = $_POST['AD_password'];
+
+    if ($current_email === $AD_email) {
+        $updateAdminAccount = $mysqli->query("UPDATE admin_accounts SET AD_password = '{$AD_password}' WHERE AD_number = '{$AD_number}'");
+
+        if ($updateAdminAccount) {
+            showSweetAlert('Login password updated', 'success');
+        }
+    } else if ($current_email != $AD_email) {
+        $checkForDuplicate = $mysqli->query("SELECT * FROM admin_accounts WHERE AD_email = '{$AD_email}'");
+        if (mysqli_num_rows($checkForDuplicate) == 0) {
+            $updateAdminAccount = $mysqli->query("UPDATE admin_accounts 
+                                            SET AD_email = '{$AD_email}', AD_password = '{$AD_password}' 
+                                            WHERE AD_number = '{$AD_number}'");
+            if ($updateAdminAccount) {
+                showSweetAlert('Login credentials updated', 'success');
+            }
+        } else {
+            showSweetAlert('Email already exist', 'error');
+        }
+    }
+}
+if (isset($_POST['deleteAdminDetails']) && !empty($_SESSION['AD_number'])) {
+    $AD_number = $_POST['AD_number'];
+    $AD_email = $_POST['AD_email'];
+    $AD_password = $_POST['AD_password'];
+
+    $updateAdminAccount = $mysqli->query("DELETE FROM admin_accounts WHERE AD_number = '{$AD_number}'");
+
+    if ($updateAdminAccount) {
+        showSweetAlert('Account deleted', 'success');
+    }
+}
 if (isset($_POST['updateAnnouncement']) && !empty($_SESSION['AD_number'])) {
     $author = $mysqli->real_escape_string($_POST['author']);
     $subject = $mysqli->real_escape_string($_POST['subject']);
@@ -1788,7 +1946,7 @@ function showSweetAlert($message, $type)
         });
       });
     </script>
-  EOT;
+EOT;
 }
 
 function countWeekdays($month, $year)
