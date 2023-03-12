@@ -211,7 +211,6 @@ if (!isset($_SESSION['SR_number'])) {
                                                                         <th>Date</th>
                                                                         <th>Time In</th>
                                                                         <th>Time Out</th>
-                                                                        <th>Fetched By</th>
                                                                         <th>Remarks</th>
                                                                     </tr>
                                                                 </thead>
@@ -241,21 +240,35 @@ if (!isset($_SESSION['SR_number'])) {
                                                                     if (isset($_GET['month'])) {
                                                                         $getAttendanceInformation = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}'");
                                                                     } else {
-                                                                        $getAttendanceInformation = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND acadYear = '{$currentSchoolYear}'");
+                                                                        $getAttendanceInformation = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND acadYear = '{$currentSchoolYear}' ORDER BY A_date DESC");
                                                                     }
                                                                     $attendanceCount = $getAttendanceInformation->num_rows;
                                                                     if ($attendanceCount == 0) { ?>
                                                                         <tr>
-                                                                            <td class="tabledata" colspan="10">No Data Available</td>
+                                                                            <td class="tabledata" colspan="10">No recorded attendance</td>
                                                                         </tr>
                                                                         <?php
                                                                     } else {
                                                                         while ($attendance = $getAttendanceInformation->fetch_assoc()) { ?>
                                                                             <tr>
                                                                                 <td class="tabledata"><?php echo $rowCount; ?></td>
-                                                                                <td class="tabledata"><?php echo $attendance['A_date'] ?></td>
-                                                                                <td class="tabledata"><?php echo $attendance['A_time_IN']; ?></td>
-                                                                                <td class="tabledata"><?php echo $attendance['A_time_OUT']; ?></td>
+                                                                                <td class="tabledata">
+                                                                                    <?php echo date('(D) m-d-Y', strtotime($attendance['A_date'])) ?>
+                                                                                </td>
+                                                                                <td class="tabledata">
+                                                                                    <?php
+                                                                                    if (isset($attendance['A_time_IN']) || $attendance['A_time_IN'] != '') {
+                                                                                        echo date('h:i A', strtotime($attendance['A_time_IN']));
+                                                                                    }
+                                                                                    ?>
+                                                                                </td>
+                                                                                <td class="tabledata">
+                                                                                    <?php
+                                                                                    if (isset($attendance['A_time_OUT']) || $attendance['A_time_OUT'] != '') {
+                                                                                        echo date('h:i A', strtotime($attendance['A_time_OUT']));
+                                                                                    }
+                                                                                    ?>
+                                                                                </td>
                                                                                 <td class="tabledata"><?php echo $attendance['A_status']; ?></td>
                                                                             </tr>
                                                                     <?php $rowCount++;
