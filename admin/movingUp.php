@@ -203,14 +203,15 @@ if (!isset($_SESSION['AD_number'])) {
                                     </div>
                                 </div>
                                 <div class="tab-content tab-content-basic">
-                                    <div class="btn-group" style="float: right;">
-                                        <div>
-                                            <button type="button" id="updateStatus" class="btn btn-primary">Update</button>
-                                            <button type="button" style="margin-right: 0px;" class="btn btn-light">Back</button>
-                                        </div>
-                                    </div>
+
                                     <form action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST" id="updateStatusForm">
                                         <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                                            <div class="btn-group" style="float: right;">
+                                                <div>
+                                                    <button type="button" id="updateStatus" class="btn btn-primary">Update</button>
+                                                    <button type="button" style="margin-right: 0px;" class="btn btn-light">Back</button>
+                                                </div>
+                                            </div>
                                             <div class="btn-group">
                                                 <div>
                                                     <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
