@@ -487,21 +487,21 @@ if (isset($_POST['addReminders'])) {
             $sendtoGuardianData = $mysqli->query("SELECT G_email FROM guardian WHERE G_guardianOfStudent 
                                             IN 
                                             (SELECT SR_number FROM classlist WHERE SR_section = '{$forsection}' AND acadYear = '{$currentSchoolYear}')");
-            $sendtoStudentData = $mysqli->query("SELECT SR_email FROM studentrecord WHERE SR_number 
-                                            IN 
-                                            (SELECT SR_number FROM classlist WHERE SR_section = '{$forsection}' AND acadYear = '{$currentSchoolYear}')");
-            if (mysqli_num_rows($sendtoGuardianData) > 0) {
-                while ($GuardianData = $sendtoGuardianData->fetch_assoc()) {
-                    $mail->addAddress($GuardianData['G_email']);
-                }
-                $mail->Subject = $subject;
-                $mail->Body = '<h1>Reminders</h1><br>
-                                   <p>' . $MSG . '</p><br>';
-                $mail->send();
-                showSweetAlert('Reminders sent!', 'success');
-            } else {
-                showSweetAlert('No receiver', 'error');
-            }
+            // $sendtoStudentData = $mysqli->query("SELECT SR_email FROM studentrecord WHERE SR_number 
+            //                                 IN 
+            //                                 (SELECT SR_number FROM classlist WHERE SR_section = '{$forsection}' AND acadYear = '{$currentSchoolYear}')");
+            // if (mysqli_num_rows($sendtoGuardianData) > 0) {
+            //     while ($GuardianData = $sendtoGuardianData->fetch_assoc()) {
+            //         $mail->addAddress($GuardianData['G_email']);
+            //     }
+            //     $mail->Subject = $subject;
+            //     $mail->Body = '<h1>Reminders</h1><br>
+            //                       <p>' . $MSG . '</p><br>';
+            //     $mail->send();
+            //     showSweetAlert('Reminders sent!', 'success');
+            // } else {
+            //     showSweetAlert('No receiver', 'error');
+            // }
             if (mysqli_num_rows($sendtoStudentData) > 0) {
                 while ($StudentData = $sendtoStudentData->fetch_assoc()) {
                     $mail->addAddress($StudentData['SR_email']);
@@ -548,8 +548,8 @@ if (isset($_POST['updateReminder'])) {
                         window.location.href = '../faculty/reminders.php';
                     });
                 });
-            </script>
-        EOT;
+            </script> 
+EOT;
     } else {
         showSweetAlert('Failed to update reminder.', 'error');
     }
@@ -558,7 +558,7 @@ if (isset($_POST['delReminder'])) {
     $delReminders = $mysqli->query("DELETE FROM reminders WHERE reminderID = '{$_GET['ID']}' AND author = '{$_SESSION['F_number']}'");
     if ($delReminders) {
         echo <<<EOT
-            <script>
+        <script>
                 document.addEventListener("DOMContentLoaded", function(event) { 
                     swal.fire({
                         text: 'Reminders successfully deleted.',
@@ -569,7 +569,7 @@ if (isset($_POST['delReminder'])) {
                     });
                 });
             </script>
-        EOT;
+EOT;
     } else {
         showSweetAlert('Failed to update reminder.', 'error');
     }
@@ -1129,21 +1129,21 @@ if (isset($_POST['postAnnouncement']) && !empty($_SESSION['AD_number'])) {
             $sendtoGuardianData = $mysqli->query("SELECT G_email FROM guardian WHERE G_guardianOfStudent 
                                         IN 
                                         (SELECT SR_number FROM classlist WHERE acadYear = '{$currentSchoolYear}')");
-            $sendtoStudentData = $mysqli->query("SELECT SR_email FROM studentrecord WHERE SR_number 
-                                        IN 
-                                        (SELECT SR_number FROM classlist WHERE acadYear = '{$currentSchoolYear}')");
-            if (mysqli_num_rows($sendtoGuardianData) > 0) {
-                while ($GuardianData = $sendtoGuardianData->fetch_assoc()) {
-                    $mail->addAddress($GuardianData['G_email']);
-                }
-                $mail->Subject = $subject;
-                $mail->Body = '<h1>School Annoucement</h1><br>
-                                   <p>' . $message . '</p><br>';
-                $mail->send();
-                showSweetAlert('Annoucement sent!', 'success');
-            } else {
-                showSweetAlert('No receiver', 'error');
-            }
+            // $sendtoStudentData = $mysqli->query("SELECT SR_email FROM studentrecord WHERE SR_number 
+            //                             IN 
+            //                             (SELECT SR_number FROM classlist WHERE acadYear = '{$currentSchoolYear}')");
+            // if (mysqli_num_rows($sendtoGuardianData) > 0) {
+            //     while ($GuardianData = $sendtoGuardianData->fetch_assoc()) {
+            //         $mail->addAddress($GuardianData['G_email']);
+            //     }
+            //     $mail->Subject = $subject;
+            //     $mail->Body = '<h1>School Annoucement</h1><br>
+            //                       <p>' . $message . '</p><br>';
+            //     $mail->send();
+            //     showSweetAlert('Annoucement sent!', 'success');
+            // } else {
+            //     showSweetAlert('No receiver', 'error');
+            // }
             if (mysqli_num_rows($sendtoStudentData) > 0) {
                 while ($StudentData = $sendtoStudentData->fetch_assoc()) {
                     $mail->addAddress($StudentData['SR_email']);
@@ -1946,7 +1946,7 @@ function showSweetAlert($message, $type)
         });
       });
     </script>
-  EOT;
+EOT;
 }
 
 function countWeekdays($month, $year)
