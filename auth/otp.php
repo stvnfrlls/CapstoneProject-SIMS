@@ -69,7 +69,7 @@ require_once("../assets/php/server.php");
             </style>
             <div class="navbar-nav m-auto p-4 p-lg-0 ">
                 <a href="../index.php" class="nav-item nav-link active" style="color: white; font-size: 14px;">Home</a>
-                <a href="" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
+                <a href="../about.php" class="nav-item nav-link" style="color: white; font-size: 14px;">About Us</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-item nav-link" data-bs-toggle="dropdown" style="color: white; font-size: 14px;">Menu <i class="fa fa-caret-down"></i></a>
                     <div class="dropdown-menu bg-dark border-0 m-0">
@@ -82,7 +82,7 @@ require_once("../assets/php/server.php");
                         <a href="../auth/login.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Login</a>
                     </div>
                 </div>
-                <a href="" class="nav-item nav-link" style="color: white; font-size: 14px;">Faculty Directory</a>
+                <a href="../faculty.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Faculty Directory</a>
             </div>
         </div>
     </nav>

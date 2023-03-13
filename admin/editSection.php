@@ -102,7 +102,7 @@ if (mysqli_num_rows($checkQuarter) > 0) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/resetPassword.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Reset Password</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Account Recovery</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -189,13 +189,13 @@ if (mysqli_num_rows($checkQuarter) > 0) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/dailyReports.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Daily Reports</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Daily Attendance</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/monthlyReports.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Monthly Reports</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Monthly Attendance</span>
                         </a>
                     </li>
                     <!-- line 5 -->
@@ -435,11 +435,7 @@ if (mysqli_num_rows($checkQuarter) > 0) {
     </div>
     <!-- Footer End -->
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
-
-
+ 
     <!-- Template Javascript -->
     <script src="../assets/js/main.js"></script>
 

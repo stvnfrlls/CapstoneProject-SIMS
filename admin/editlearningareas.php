@@ -131,7 +131,7 @@ if (empty($_SESSION['AD_number'])) {
           <li class="nav-item">
             <a class="nav-link" href="../admin/resetPassword.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Reset Password</span>
+              <span class="menu-title" style="color: #b9b9b9;">Account Recovery</span>
             </a>
           </li>
           <li class="nav-item">
@@ -218,13 +218,13 @@ if (empty($_SESSION['AD_number'])) {
           <li class="nav-item">
             <a class="nav-link" href="../admin/dailyReports.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Daily Reports</span>
+              <span class="menu-title" style="color: #b9b9b9;">Daily Attendance</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="../admin/monthlyReports.php">
               <i class=""></i>
-              <span class="menu-title" style="color: #b9b9b9;">Monthly Reports</span>
+              <span class="menu-title" style="color: #b9b9b9;">Monthly Attendance</span>
             </a>
           </li>
           <!-- line 5 -->
@@ -254,7 +254,7 @@ if (empty($_SESSION['AD_number'])) {
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                     <div class="btn-group">
                       <div>
-                        <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
                           <?php
                           if (isset($_GET['GradeLevel'])) {
                             if ($_GET['GradeLevel'] == "KINDER") {
@@ -462,11 +462,7 @@ if (empty($_SESSION['AD_number'])) {
   </div>
   <!-- Footer End -->
 
-  <!-- Back to Top -->
-  <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
-  <!-- JavaScript Libraries -->
-
+ 
   <!-- Template Javascript -->
   <script src="../assets/js/main.js"></script>
   <script src="../assets/js/admin/vendor.bundle.base.js"></script>

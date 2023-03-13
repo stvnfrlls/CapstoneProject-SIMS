@@ -1,21 +1,21 @@
 <?php
 require_once("../assets/php/server.php");
 
-if (!isset($_SESSION['AD_number'])) {
+if (!isset($_SESSION['F_number'])) {
     header('Location: ../auth/login.php');
 } else {
-    $adminData = $mysqli->query("SELECT * FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
-    $admin = $adminData->fetch_assoc();
-    $announcementData = $mysqli->query("SELECT * FROM announcement ORDER BY date_posted DESC");
+    $facultyData = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
+    $getFacultyData = $facultyData->fetch_assoc();
+
+    $facultySchedule = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' ORDER BY WS_start_time ASC");
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
-    <title>School Announcements</title>
+    <title>Faculty - Dashboard</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -32,7 +32,6 @@ if (!isset($_SESSION['AD_number'])) {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
-
     <!-- Libraries Stylesheet -->
     <link href="../assets/lib/animate/animate.min.css" rel="stylesheet">
     <link href="../assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
@@ -43,12 +42,11 @@ if (!isset($_SESSION['AD_number'])) {
 
     <!-- Template Stylesheet -->
     <link href="../assets/css/style.css" rel="stylesheet">
-    <link href="../assets/css/form-style.css" rel="stylesheet">
     <link href="../assets/css/admin/style.css" rel="stylesheet">
-
 </head>
 
 <body>
+    <!-- Navbar Start -->
     <nav class="fixed-top align-items-top">
         <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
             <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
@@ -57,137 +55,75 @@ if (!isset($_SESSION['AD_number'])) {
             </button>
         </nav>
     </nav>
+    <!-- Navbar End -->
 
     <div class="container-scroller">
         <div class="container-fluid page-body-wrapper">
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
                 <ul class="nav">
-                    <li class="nav-item" style="text-align:center; font-size: 20px; color: #b9b9b9; margin-top:20px;">ADMIN</li>
+                    <li class="nav-item" style="text-align:center; font-size: 20px; color: #b9b9b9; margin-top:20px;">FACULTY</li>
                     <!-- line 1 -->
-                    <li class="nav-item nav-category" style="color: #b9b9b9;">Menu</li>
+                    <li class="nav-item nav-category">Profile</li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../admin/dashboard.php">
+                        <a class="nav-link" href="../faculty/dashboard.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Dashboard</span>
+                            <span class="menu-title">Dashboard</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../admin/auditTrail.php">
+                        <a class="nav-link" href="../faculty/viewProfile.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Activity History</span>
+                            <span class="menu-title">View Profile</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../admin/createAdmin.php">
+                        <a class="nav-link" href="../faculty/reminders.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Admin Account</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/resetPassword.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Account Recovery</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/announcement.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">School Announcements</span>
+                            <span class="menu-title">Reminders</span>
                         </a>
                     </li>
                     <!-- line 2 -->
-                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Student Records</li>
+                    <li class="nav-item nav-category">Menu</li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../admin/addStudent.php">
+                        <a class="nav-link" href="../faculty/scanQR.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Register Student</span>
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/student.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Student Information</span>
+                            <span class="menu-title">Scan QR</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../admin/editgrades.php">
+                        <a class="nav-link" href="../faculty/advisoryPage.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Finalization of Grades</span>
+                            <span class="menu-title">Advisory Class</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../admin/editSection.php">
+                        <a class="nav-link" href="../faculty/classList.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Change Student Section</span>
+                            <span class="menu-title">Class List</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../admin/movingUp.php">
+                        <a class="nav-link" href="../faculty/encodegrades.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Status</span>
-                        </a>
-                    </li>
-                    <!-- line 3 -->
-                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Faculty</li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/addFaculty.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Register Faculty</span>
+                            <span class="menu-title">Encode Grades</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../admin/faculty.php">
+                        <a class="nav-link" href="../faculty/studentStatus.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Faculty Records</span>
+                            <span class="menu-title">Student Status</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../admin/assignAdvisory.php">
+                        <a class="nav-link" href="../faculty/dailyReports.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Advisory Class Assignment</span>
+                            <span class="menu-title">Attendance Report</span>
                         </a>
                     </li>
-                    <!-- line 4 -->
-                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Learning Areas</li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/editlearningareas.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Work Schedule Assignment</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/modifyCurriculum.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Edit Curriculum</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/modifySection.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Edit Section</span>
-                        </a>
-                    </li>
-                    <!-- line 5 -->
-                    <li class="nav-item nav-category" style="padding-top: 10px; color:#b9b9b9;">Attendance Report</li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/dailyReports.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Daily Attendance</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/monthlyReports.php">
-                            <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Monthly Attendance</span>
-                        </a>
-                    </li>
-                    <!-- line 5 -->
-                    <li class="nav-item nav-category" style="padding-top: 10px;"></li>
                     <li class="nav-item">
                         <a class="nav-link" href="../auth/logout.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Logout</span>
+                            <span class="menu-title">Logout</span>
                         </a>
                     </li>
                 </ul>
@@ -202,9 +138,6 @@ if (!isset($_SESSION['AD_number'])) {
                                     <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
                                         <h2 class="fw-bold text-primary text-uppercase">School Announcements</h2>
                                     </div>
-                                </div>
-                                <div style="text-align: right; margin-top: 30px; margin-right: 20px;">
-                                    <button type="button" onclick="location.href='../admin/createAnnouncement.php'" style="color: #ffffff;" class="btn btn-primary me-2">Create <i class="fa fa-plus" style="font-size: 10px;"></i></button>
                                 </div>
                                 <section class="post-content-area" style="background-color: #f4f5f7;">
                                     <div class="container">
@@ -227,7 +160,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                             <a class="posts-title" href="../admin/viewAnnouncement.php?postID=<?php echo $announcement['ANC_ID'] ?>">
                                                                                 <h3><?php echo $announcement['header'] ?></h3>
                                                                             </a>
-                                                                            <p class="excert text-truncate">
+                                                                            <p class="excert">
                                                                                 <?php
                                                                                 if (empty($announcement['msg'])) {
                                                                                     echo "No Description";
@@ -272,9 +205,11 @@ if (!isset($_SESSION['AD_number'])) {
                 </div>
                 <!-- main-panel ends -->
             </div>
-            <!-- main-panel ends -->
+            <!-- content-wrapper ends -->
         </div>
-        <!-- page-body-wrapper ends -->
+        <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
 
@@ -293,12 +228,11 @@ if (!isset($_SESSION['AD_number'])) {
     <!-- Footer End -->
 
 
-    <!-- JavaScript Libraries -->
 
-    <!-- Template Javascript -->
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>
     <script src="../assets/js/admin/off-canvas.js"></script>
+    <script src="../assets/js/admin/file-upload.js"></script>
 
 </body>
 
