@@ -45,7 +45,6 @@ if (!isset($_SESSION['AD_number'])) {
     <link href="../assets/css/style.css" rel="stylesheet">
     <link href="../assets/css/form-style.css" rel="stylesheet">
     <link href="../assets/css/admin/style.css" rel="stylesheet">
-    <link href="../assets/css/admin/materialdesignicons.min.css" rel="stylesheet">
 
 </head>
 
@@ -87,7 +86,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/resetPassword.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Reset Password</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Account Recovery</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -174,13 +173,13 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/dailyReports.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Daily Reports</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Daily Attendance</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/monthlyReports.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Monthly Reports</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Monthly Attendance</span>
                         </a>
                     </li>
                     <!-- line 5 -->
@@ -228,7 +227,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                             <a class="posts-title" href="../admin/viewAnnouncement.php?postID=<?php echo $announcement['ANC_ID'] ?>">
                                                                                 <h3><?php echo $announcement['header'] ?></h3>
                                                                             </a>
-                                                                            <p class="excert">
+                                                                            <p class="excert text-truncate">
                                                                                 <?php
                                                                                 if (empty($announcement['msg'])) {
                                                                                     echo "No Description";

@@ -84,7 +84,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/resetPassword.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Reset Password</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Account Recovery</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -171,13 +171,13 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/dailyReports.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Daily Reports</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Daily Attendance</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/monthlyReports.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Monthly Reports</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Monthly Attendance</span>
                         </a>
                     </li>
                     <!-- line 5 -->
@@ -208,7 +208,7 @@ if (!isset($_SESSION['AD_number'])) {
 
                                                 <form id="form-id" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
                                                     <div class="row">
-                                                        <div class="col-lg-3 col-sm-12">
+                                                        <div class="col-lg-3 col-sm-12" style="padding-top: 15px;">
                                                             <div class="card" style="text-align:center; padding-right: 0px; padding-left: 0px;">
                                                                 <div class="card-body" style="padding-right: 0px; padding-left: 0px;">
                                                                     <h3 style="font-size: 18px;"><?php echo "School Year: " . $currentSchoolYear ?></h3>
@@ -224,7 +224,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-3 col-sm-12">
+                                                        <div class="col-lg-3 col-sm-12" style="padding-top: 15px;">
                                                             <div class="card" style="text-align:center;">
                                                                 <div class="card-body">
                                                                     <h3 style="font-size: 18px;">Encoding of Grades</h3>
@@ -240,7 +240,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-6 col-sm-12">
+                                                        <div class="col-lg-6 col-sm-12" style="padding-top: 15px;">
                                                             <div class="card" style="text-align:center;">
                                                                 <div class="card-body" style="padding: 24px 0px 24px 0px;">
                                                                     <h3 style="font-size: 18px;">Quarterly Period</h3>
