@@ -81,7 +81,7 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/resetPassword.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Reset Password</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Account Recovery</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -168,13 +168,13 @@ if (!isset($_SESSION['AD_number'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/dailyReports.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Daily Reports</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Daily Attendance</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/monthlyReports.php">
                             <i class=""></i>
-                            <span class="menu-title" style="color: #b9b9b9;">Monthly Reports</span>
+                            <span class="menu-title" style="color: #b9b9b9;">Monthly Attendance</span>
                         </a>
                     </li>
                     <!-- line 5 -->
@@ -236,7 +236,10 @@ if (!isset($_SESSION['AD_number'])) {
                                                 <div class="mx-1">
                                                     <input type="date" class="form-control" name="end_date" required>
                                                 </div>
-                                                <button type="submit" href="advisoryConcern.php" style="margin-right: 0px;" class="btn btn-primary mx-2">Get records</button>
+                                                <div>
+                                                    <button type="submit" href="advisoryConcern.php" style="margin-right: 0px;" class="btn btn-primary mx-2">Get records</button>
+                                                </div>
+
                                             </div>
                                             <div class="row" style="margin-top: 15px;">
                                                 <div class="col-12 grid-margin">
