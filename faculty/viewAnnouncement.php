@@ -4,12 +4,15 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['F_number'])) {
     header('Location: ../auth/login.php');
 } else {
-    $facultyData = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
-    $getFacultyData = $facultyData->fetch_assoc();
-
-    $facultySchedule = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' ORDER BY WS_start_time ASC");
+    if (isset($_GET['postID'])) {
+        $getAnnouncementData = $mysqli->query("SELECT * FROM announcement WHERE ANC_ID = '{$_GET['postID']}'");
+        $announcement = $getAnnouncementData->fetch_assoc();
+    } else {
+        header('Location: announcement.php');
+    }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,7 +45,9 @@ if (!isset($_SESSION['F_number'])) {
 
     <!-- Template Stylesheet -->
     <link href="../assets/css/style.css" rel="stylesheet">
+    <link href="../assets/css/form-style.css" rel="stylesheet">
     <link href="../assets/css/admin/style.css" rel="stylesheet">
+    <link href="../assets/css/educ/main.css" rel="stylesheet">
 </head>
 
 <body>
@@ -80,6 +85,12 @@ if (!isset($_SESSION['F_number'])) {
                         <a class="nav-link" href="../faculty/reminders.php">
                             <i class=""></i>
                             <span class="menu-title">Reminders</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/announcement.php">
+                            <i class=""></i>
+                            <span class="menu-title">School Announcements</span>
                         </a>
                     </li>
                     <!-- line 2 -->
@@ -140,7 +151,7 @@ if (!isset($_SESSION['F_number'])) {
                                     </div>
                                 </div>
 
-                                <section class="course-details-area">
+                                <section class="course-details-area" style="margin-top: 50px">
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-lg-8 left-contents">
@@ -161,7 +172,7 @@ if (!isset($_SESSION['F_number'])) {
                                                     <li>
                                                         <a class="justify-content-between d-flex" href="#">
                                                             <p>Title</p>
-                                                            <span class="or"><?php echo $announcement['header'] ?></span>
+                                                            <span class="or" style="text-align: right;"><?php echo $announcement['header'] ?></span>
                                                         </a>
                                                     </li>
                                                     <li>
@@ -179,7 +190,7 @@ if (!isset($_SESSION['F_number'])) {
                                                     </li>
                                                     <li>
                                                         <a class="justify-content-between d-flex" href="#">
-                                                            <p>Date and Time</p>
+                                                            <p>Date of the Event</p>
                                                             <span><?php echo $announcement['date'] ?></span>
                                                         </a>
                                                     </li>
@@ -201,7 +212,7 @@ if (!isset($_SESSION['F_number'])) {
                                             <h2 class="fw-bold text-primary text-uppercase">More School Announcements</h2>
                                         </div>
                                         <?php
-                                        $getOtherAnnouncementData = $mysqli->query("SELECT * FROM announcement WHERE ANC_ID != '{$_GET['ID']}'");
+                                        $getOtherAnnouncementData = $mysqli->query("SELECT * FROM announcement WHERE ANC_ID != '{$_GET['postID']}'");
                                         if (mysqli_num_rows($getOtherAnnouncementData) > 0) {
                                             echo '<p></p>';
                                         } else {
@@ -262,13 +273,23 @@ if (!isset($_SESSION['F_number'])) {
     </div>
     <!-- Footer End -->
 
-
-
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/admin/vendor.bundle.base.js"></script>
     <script src="../assets/js/admin/off-canvas.js"></script>
     <script src="../assets/js/admin/file-upload.js"></script>
 
+    <script src="../assets/js/educ/vendor/jquery-2.2.4.min.js"></script>
+    <script src="../assets/js/educ/vendor/bootstrap.min.js"></script>
+    <script src="../assets/js/educ/easing.min.js"></script>
+    <script src="../assets/js/educ/hoverIntent.js"></script>
+    <script src="../assets/js/educ/superfish.min.js"></script>
+    <script src="../assets/js/educ/jquery.ajaxchimp.min.js"></script>
+    <script src="../assets/js/educ/jquery.magnific-popup.min.js"></script>
+    <script src="../assets/js/educ/jquery.tabs.min.js"></script>
+    <script src="../assets/js/educ/jquery.nice-select.min.js"></script>
+    <script src="../assets/js/educ/owl.carousel.min.js"></script>
+    <script src="../assets/js/educ/mail-script.js"></script>
+    <script src="../assets/js/educ/main.js"></script>
 </body>
 
 </html>

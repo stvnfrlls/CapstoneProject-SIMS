@@ -4,12 +4,10 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['F_number'])) {
     header('Location: ../auth/login.php');
 } else {
-    $facultyData = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
-    $getFacultyData = $facultyData->fetch_assoc();
-
-    $facultySchedule = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' ORDER BY WS_start_time ASC");
+    $announcementData = $mysqli->query("SELECT * FROM announcement ORDER BY date_posted DESC");
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -82,6 +80,12 @@ if (!isset($_SESSION['F_number'])) {
                             <span class="menu-title">Reminders</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/announcement.php">
+                            <i class=""></i>
+                            <span class="menu-title">School Announcements</span>
+                        </a>
+                    </li>
                     <!-- line 2 -->
                     <li class="nav-item nav-category">Menu</li>
                     <li class="nav-item">
@@ -147,9 +151,14 @@ if (!isset($_SESSION['F_number'])) {
                                                 <div class="row col-lg-10" style="padding-top: 15px;">
                                                     <div class="col-lg-10 posts-list" style="margin-left: auto;">
                                                         <div class="single-post row">
+                                                            <?php
+                                                            $getAuthorName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$announcement['author']}'");
+                                                            $AuthorName = $getAuthorName->fetch_assoc();
+                                                            ?>
+                                                            
                                                             <div class="col-lg-3  col-md-3 meta-details">
                                                                 <div class="user-details row" style="margin-top: 40px;">
-                                                                    <p class="user-name col-lg-12 col-md-12 col-6"><span class="far fa-user" style="color: #c02628;"> </span><a> <?php echo $admin['AD_name'] ?></a> </p>
+                                                                    <p class="user-name col-lg-12 col-md-12 col-6"><span class="far fa-user" style="color: #c02628;"> </span><a> <?php echo $AuthorName['AD_name']; ?></a> </p>
                                                                     <p class="date col-lg-12 col-md-12 col-6"><span class="fa fa-calendar" style="color: #c02628;"> </span><a> <?php echo $announcement['date'] ?></a> </p>
                                                                 </div>
                                                             </div>
@@ -160,7 +169,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                             <a class="posts-title" href="../admin/viewAnnouncement.php?postID=<?php echo $announcement['ANC_ID'] ?>">
                                                                                 <h3><?php echo $announcement['header'] ?></h3>
                                                                             </a>
-                                                                            <p class="excert">
+                                                                            <p class="excert text-truncate">
                                                                                 <?php
                                                                                 if (empty($announcement['msg'])) {
                                                                                     echo "No Description";
@@ -169,7 +178,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                                 }
                                                                                 ?>
                                                                             </p>
-                                                                            <button type="button" onclick="location.href='../admin/viewAnnouncement.php?postID=<?php echo $announcement['ANC_ID'] ?>'" class=" btn btn-primary me-2" name="">View More</button>
+                                                                            <button type="button" onclick="location.href='../faculty/viewAnnouncement.php?postID=<?php echo $announcement['ANC_ID'] ?>'" class=" btn btn-primary me-2" name="">View More</button>
                                                                         </div>
                                                                     </div>
                                                                 </div>

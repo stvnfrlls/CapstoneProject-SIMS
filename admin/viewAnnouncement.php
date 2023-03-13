@@ -232,7 +232,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                     <li>
                                                         <a class="justify-content-between d-flex" href="#">
                                                             <p>Title</p>
-                                                            <span class="or"><?php echo $announcement['header'] ?></span>
+                                                            <span class="or" style="text-align: right;"><?php echo $announcement['header'] ?></span>
                                                         </a>
                                                     </li>
                                                     <li>
@@ -250,7 +250,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                     </li>
                                                     <li>
                                                         <a class="justify-content-between d-flex" href="#">
-                                                            <p>Date and Time</p>
+                                                            <p>Date of the Event</p>
                                                             <span><?php echo $announcement['date'] ?></span>
                                                         </a>
                                                     </li>
