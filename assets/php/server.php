@@ -423,51 +423,32 @@ if (isset($_POST['saveBehavior'])) {
     showSweetAlert('Encoded student behavior', 'success');
 }
 if (isset($_POST['updateProfile'])) {
-    if (isset($_FILES['image'])) {
-        $currentEmail = $_POST['currentEmail'];
-        $F_email = $_POST['F_email'];
-        $F_number = $_POST['F_number'];
-        $newPassword = $_POST['newPassword'];
-        $confirmPassword = $_POST['confirmPassword'];
+    $F_number = $_POST['F_number'];
 
+    if (isset($_FILES['image']['name']) && $_FILES['image']['name'] != null) {
         $F_profile_img = $_FILES['image']['name'];
         $tempname = $_FILES['image']['tmp_name'];
         $folder = "../assets/img/profile/" . $F_profile_img;
-
         move_uploaded_file($tempname, $folder);
-        if ($confirmPassword != $newPassword) {
-            showSweetAlert('Password does not match', 'error');
+        $mysqli->query("UPDATE faculty 
+                        SET 
+                        F_profile_img = '{$F_profile_img}'
+                        WHERE F_number = '{$F_number}'");
+        showSweetAlert('Successfully updated your profile picture', 'success');
+    }
+    if (isset($_POST['F_email']) && $_POST['F_email'] != "" && isset($_POST['confirmPassword']) && $_POST['confirmPassword'] != "") {
+        if ($_POST['confirmPassword'] !=  $_POST['newPassword']) {
+            showSweetAlert('Password does not match', 'success');
         } else {
             $mysqli->query("UPDATE userdetails 
-                        SET 
-                        SR_email = '{$F_email}',
-                        SR_password = '{$confirmPassword}'
-                        WHERE SR_email = '{$currentEmail}'");
+                            SET 
+                            SR_email = '{$F_email}',
+                            SR_password = '{$confirmPassword}'
+                            WHERE SR_email = '{$currentEmail}'");
             $mysqli->query("UPDATE faculty 
-                        SET 
-                        F_profile_img = '{$F_profile_img}',
-                        F_email = '{$F_email}'
-                        WHERE F_number = '{$F_number}'");
-            showSweetAlert('Successfully updated your information', 'success');
-        }
-    } else {
-        $currentEmail = $_POST['currentEmail'];
-        $F_email = $_POST['F_email'];
-        $F_number = $_POST['F_number'];
-        $newPassword = $_POST['newPassword'];
-        $confirmPassword = $_POST['confirmPassword'];
-        if ($newPassword != $confirmPassword) {
-            showSweetAlert('Password does not match', 'error');
-        } else {
-            $updateUserDetails = $mysqli->query("UPDATE userdetails 
-                                                SET 
-                                                SR_email = '{$F_email}',
-                                                SR_password = '{$confirmPassword}'
-                                                WHERE SR_email = '{$currentEmail}'");
-            $updateStudentRecord = $mysqli->query("UPDATE faculty 
-                                                SET 
-                                                F_email = '{$F_email}'
-                                                WHERE F_email = '{$currentEmail}'");
+                            SET 
+                            F_email = '{$F_email}'
+                            WHERE F_number = '{$F_number}'");
             showSweetAlert('Successfully updated your information', 'success');
         }
     }

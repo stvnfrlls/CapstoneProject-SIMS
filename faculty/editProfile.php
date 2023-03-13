@@ -147,8 +147,8 @@ if (!isset($_SESSION['F_number'])) {
                   </div>
                   <div style="text-align: right; margin-top: 15px">
                     <input type="hidden" name="updateProfile" value="submit">
-                    <button type="submit" name="updateProfile" id="updateProfile" class="btn btn-primary me-2">Save</button>
-                    <button type="button" class="btn btn-light" onclick="location.href='../faculty/viewProfile.php'">Back</button>
+                    <button id="updateProfile" name="updateProfile" class="btn btn-primary me-2">Save</button>
+                    <button class="btn btn-light" onclick="location.href='../faculty/viewProfile.php'">Back</button>
                   </div>
                   <div class="tab-content tab-content-basic">
                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
@@ -160,11 +160,20 @@ if (!isset($_SESSION['F_number'])) {
                               <h4 class="card-title">Edit Information</h4>
                               <div class="row">
                                 <label class="col-sm-12 col-form-label">Profile Picture</label>
-                                <div class="col-sm-12">
+                                <div class="col-sm-8">
                                   <div class="form-group">
                                     <div class="input-group col-xs-12">
                                       <div class="input-group">
                                         <input type="file" class="form-control file-upload-info" name="image" accept="image/*" placeholder="Upload Image">
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-sm-4">
+                                  <div class="form-group">
+                                    <div class="input-group col-xs-12">
+                                      <div class="input-group">
+                                        <button class="btn btn-primary" id="enableUpdateForm">EDIT LOGIN DETAIL</button>
                                       </div>
                                     </div>
                                   </div>
@@ -174,21 +183,21 @@ if (!isset($_SESSION['F_number'])) {
                                 <div class="col-md-4">
                                   <label label class="col-sm-12 col-form-label">Email Address</label>
                                   <div class="col-sm-12">
-                                    <input type="hidden" class="form-control" name="F_number" value="<?php echo $faculty['F_number'] ?>" required>
-                                    <input type="hidden" class="form-control" name="currentEmail" value="<?php echo $faculty['F_email'] ?>" required>
-                                    <input type="email" class="form-control" name="F_email" value="<?php echo $faculty['F_email'] ?>" required>
+                                    <input type="hidden" class="form-control" id="F_number" name="F_number" value="<?php echo $faculty['F_number'] ?>" required>
+                                    <input type="hidden" class="form-control" id="currentEmail" name="currentEmail" value="<?php echo $faculty['F_email'] ?>" required>
+                                    <input type="email" class="form-control" id="F_email" name="F_email" required disabled>
                                   </div>
                                 </div>
                                 <div class="col-md-4">
                                   <label label class="col-sm-12 col-form-label">Change Password</label>
                                   <div class="col-sm-12">
-                                    <input type="password" class="form-control" name="newPassword" required>
+                                    <input type="password" class="form-control" id="newPassword" name="newPassword" required disabled>
                                   </div>
                                 </div>
                                 <div class="col-md-4">
                                   <label label class="col-sm-12 col-form-label">Confirm Password</label>
                                   <div class="col-sm-12">
-                                    <input type="password" class="form-control" name="confirmPassword" required>
+                                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required disabled>
                                   </div>
                                 </div>
                               </div>
@@ -238,33 +247,23 @@ if (!isset($_SESSION['F_number'])) {
   <script src="../assets/js/admin/file-upload.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
-  <!-- <script>
-    const editfacultyProfile = document.getElementById('editfacultyProfile');
-    const updateProfile = document.getElementById('updateProfile');
-    updateProfile.addEventListener('click', function() {
-      Swal.fire({
-        title: 'Are you sure you want to save your changes?',
-        showCancelButton: true,
-        confirmButtonText: 'Yes',
-        cancelButtonText: `No`,
-      }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-          Swal.fire({
-            title: 'Successfully changed!',
-            icon: 'success',
-          }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-              editfacultyProfile.submit();
-              window.location.href = '../faculty/viewProfile.php';
-            }
-          })
-        }
-      })
-
+  <script>
+    const currentEmail = document.getElementById('currentEmail');
+    const F_email = document.getElementById('F_email');
+    const newPassword = document.getElementById('newPassword');
+    const confirmPassword = document.getElementById('confirmPassword');
+    document.getElementById('enableUpdateForm').addEventListener('click', function() {
+      if (F_email.disabled && newPassword.disabled && confirmPassword.disabled) {
+        F_email.removeAttribute("disabled");
+        newPassword.removeAttribute("disabled");
+        confirmPassword.removeAttribute("disabled");
+      } else {
+        F_email.disabled = true;
+        newPassword.disabled = true;
+        confirmPassword.disabled = true;
+      }
     })
-  </script> -->
+  </script>
 </body>
 
 </html>

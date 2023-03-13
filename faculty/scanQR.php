@@ -20,11 +20,19 @@ if (!isset($_SESSION['F_number'])) {
             $NOTtimedOUT[] = $studentNumber_NOTtimedOUT;
         }
 
+        $timedOUT = array();
+        $gettimedOUT = $mysqli->query("SELECT studentrecord.SR_number FROM studentrecord LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number WHERE attendance.A_time_OUT IS NULL");
+        while ($studentNumber_timedOUT = $gettimedOUT->fetch_assoc()) {
+            $timedOUT[] = $studentNumber_timedOUT;
+        }
+
         $NOTtimedIN_js = json_encode($NOTtimedIN);
         $NOTtimedOUT_js = json_encode($NOTtimedOUT);
+        $timedOUT_js = json_encode($timedOUT);
 
         echo "<script>var NOTtimedIN = " . $NOTtimedIN_js . ";</script>";
         echo "<script>var NOTtimedOUT = " . $NOTtimedOUT_js . ";</script>";
+        echo "<script>var timedOUT = " . $timedOUT_js . ";</script>";
     }
 }
 ?>
@@ -276,37 +284,37 @@ if (!isset($_SESSION['F_number'])) {
     scanner.addListener('scan', function(content) {
         let input = content;
 
-        if (input.includes("FTH")) {
-            Swal.fire('Fetcher code detected');
-            document.getElementById('input2').value = input;
-        } else {
-            document.getElementById('input1').value = input;
-            if (NOTtimedIN.some(content => content.SR_number === input)) {
-                Swal.fire({
-                    title: 'Mark this student as present?',
-                    confirmButtonText: 'Proceed',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire('Timed in!', '', 'success').then((result) => {
-                            document.getElementById('qr_form').submit();
-                        })
-                    }
-                });
-            } else if (NOTtimedOUT.some(content => content.SR_number === input)) {
-                Swal.fire({
-                    title: 'Student ready to go home?',
-                    confirmButtonText: 'Proceed',
-                }).then((result) => {
-                    if (result.isConfirmed) {
+        document.getElementById('input1').value = input;
+        if (NOTtimedIN.some(content => content.SR_number === input)) {
+            Swal.fire({
+                title: 'Mark this student as present?',
+                confirmButtonText: 'Proceed',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire('Timed in!', '', 'success').then((result) => {
                         document.getElementById('qr_form').submit();
-                    }
-                })
-            } else {
-                Swal.fire({
-                    title: 'The student has left for home',
-                    confirmButtonText: 'OK',
-                });
-            }
+                    })
+                }
+            });
+        } else if (NOTtimedOUT.some(content => content.SR_number === input)) {
+            Swal.fire({
+                title: 'Student ready to go home?',
+                confirmButtonText: 'Proceed',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('qr_form').submit();
+                }
+            })
+        } else if (!NOTtimedIN.some(content => content.SR_number === input) && !timedOUT.some(content => content.SR_number === input)) {
+            Swal.fire({
+                title: 'The student has left for home',
+                confirmButtonText: 'Proceed',
+            });
+        } else {
+            Swal.fire({
+                title: 'Invalid QR Code',
+                confirmButtonText: 'OK',
+            });
         }
     });
 </script>
