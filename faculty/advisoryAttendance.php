@@ -113,6 +113,12 @@ if (!isset($_SESSION['F_number'])) {
               <span class="menu-title">Reminders</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../faculty/announcement.php">
+              <i class=""></i>
+              <span class="menu-title">School Announcements</span>
+            </a>
+          </li>
           <!-- line 2 -->
           <li class="nav-item nav-category">Menu</li>
           <li class="nav-item">
@@ -175,7 +181,7 @@ if (!isset($_SESSION['F_number'])) {
                   <nav class="nav">
                     <a class="nav-link" href="dailyReports.php">Daily</a>
                     <a class="nav-link" href="monthlyReports.php">Monthly</a>
-                    <a class="nav-link" href="attendance.php">Attendance Report</a>
+                    <a class="nav-link" href="attendance.php">Subject Attendance Report</a>
                     <a class="nav-link active ms-0" href="advisoryAttendance.php" style="color: #c02628;">Advisory Attendance</a>
                     <a class="nav-link" href="advisoryConcern.php">Advisory Concern</a>
                   </nav>

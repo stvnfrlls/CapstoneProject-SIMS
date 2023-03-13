@@ -111,6 +111,12 @@ if (!isset($_SESSION['F_number'])) {
               <span class="menu-title">Reminders</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../faculty/announcement.php">
+              <i class=""></i>
+              <span class="menu-title">School Announcements</span>
+            </a>
+          </li>
           <!-- line 2 -->
           <li class="nav-item nav-category">Menu</li>
           <li class="nav-item">
@@ -172,7 +178,7 @@ if (!isset($_SESSION['F_number'])) {
                   <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
                     <nav class="nav">
                       <a class="nav-link active ms-0" href="viewStudent.php?ID=<?php echo $_GET['ID'] ?>">Profile</a>
-                      <a class="nav-link" href="viewCard.php?ID=<?php echo $_GET['ID'] ?>"  style="color: #c02628;">Report Card</a>
+                      <a class="nav-link" href="viewCard.php?ID=<?php echo $_GET['ID'] ?>" style="color: #c02628;">Report Card</a>
                     </nav>
                     <div class="border-bottom"></div>
                   </div>

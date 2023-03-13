@@ -24,7 +24,7 @@ if (!isset($_SESSION['F_number'])) {
 
 <head>
     <meta charset="utf-8">
-    <title>Daily Attendance</title>
+    <title>Daily Attendance Report</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -94,6 +94,12 @@ if (!isset($_SESSION['F_number'])) {
                             <span class="menu-title">Reminders</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../faculty/announcement.php">
+                            <i class=""></i>
+                            <span class="menu-title">School Announcements</span>
+                        </a>
+                    </li>
                     <!-- line 2 -->
                     <li class="nav-item nav-category">Menu</li>
                     <li class="nav-item">
@@ -155,7 +161,7 @@ if (!isset($_SESSION['F_number'])) {
                                     <nav class="nav">
                                         <a class="nav-link active ms-0" href="dailyReports.php" style="color: #c02628;">Daily</a>
                                         <a class="nav-link" href="monthlyReports.php">Monthly</a>
-                                        <a class="nav-link" href="attendance.php">Attendance Report</a>
+                                        <a class="nav-link" href="attendance.php">Subject Attendance Report</a>
                                         <a class="nav-link" href="advisoryAttendance.php">Advisory Attendance</a>
                                         <a class="nav-link" href="advisoryConcern.php">Advisory Concern</a>
                                     </nav>
@@ -211,88 +217,87 @@ if (!isset($_SESSION['F_number'])) {
                                                     </div>
                                                 </div>
                                             </div>
+                                    </div>
+                                    <?php
+                                    if (isset($_GET['Grade']) && isset($_GET['Section'])) { ?>
+                                        <div class="btn-group" style="float: right;">
+                                            <a href="../reports/DailyAttendancebyClass.php?Grade=<?php echo $_GET['Grade'] . "&Section=" . $_GET['Section']; ?>" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
                                         </div>
-                                        <?php
-                                        if (isset($_GET['Grade']) && isset($_GET['Section'])) { ?>
-                                            <div class="btn-group" style="float: right;">
-                                                <a href="../reports/DailyAttendancebyClass.php?Grade=<?php echo $_GET['Grade'] . "&Section=" . $_GET['Section']; ?>" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
-                                            </div>
-                                        <?php }
-                                        ?>
-                                        </form>
-                                        <div class="row" style="margin-top: 15px;">
-                                            <div class="col-lg-12 d-flex flex-column">
-                                                <div class="row flex-grow">
-                                                    <div class="col-12">
-                                                        <div class="">
-                                                            <div class="table-responsive">
-                                                                <table class="table">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>No.</th>
-                                                                            <th>Name</th>
-                                                                            <th>Time In</th>
-                                                                            <th>Time Out</th>
-                                                                            <th>Remarks</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <style>
-                                                                            input[type='number'] {
-                                                                                width: 50px;
-                                                                            }
+                                    <?php }
+                                    ?>
+                                    </form>
+                                    <div class="row" style="margin-top: 15px;">
+                                        <div class="col-lg-12 d-flex flex-column">
+                                            <div class="row flex-grow">
+                                                <div class="col-12">
+                                                    <div class="">
+                                                        <div class="table-responsive">
+                                                            <table class="table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>No.</th>
+                                                                        <th>Name</th>
+                                                                        <th>Time In</th>
+                                                                        <th>Time Out</th>
+                                                                        <th>Remarks</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <style>
+                                                                        input[type='number'] {
+                                                                            width: 50px;
+                                                                        }
 
-                                                                            /* Chrome, Safari, Edge, Opera */
-                                                                            input::-webkit-outer-spin-button,
-                                                                            input::-webkit-inner-spin-button {
-                                                                                -webkit-appearance: none;
-                                                                                margin: 0;
-                                                                            }
+                                                                        /* Chrome, Safari, Edge, Opera */
+                                                                        input::-webkit-outer-spin-button,
+                                                                        input::-webkit-inner-spin-button {
+                                                                            -webkit-appearance: none;
+                                                                            margin: 0;
+                                                                        }
 
-                                                                            .tabledata {
-                                                                                border: 1px solid #ffffff;
-                                                                                text-align: center;
-                                                                                vertical-align: middle;
-                                                                                height: 30px;
-                                                                                color: #000000;
-                                                                            }
-                                                                        </style>
-                                                                        <?php
-                                                                        $rowCount = 1;
-                                                                        $dateNow = date("Y-m-d");
-                                                                        if (isset($_GET['Grade']) && isset($_GET['Section'])) {
-                                                                            $getDailyAttendanceData = $mysqli->query("SELECT DISTINCT SR_lname, SR_fname, SR_mname, SR_suffix, attendance.SR_number, attendance.A_time_IN, attendance.A_time_OUT, attendance.A_status 
+                                                                        .tabledata {
+                                                                            border: 1px solid #ffffff;
+                                                                            text-align: center;
+                                                                            vertical-align: middle;
+                                                                            height: 30px;
+                                                                            color: #000000;
+                                                                        }
+                                                                    </style>
+                                                                    <?php
+                                                                    $rowCount = 1;
+                                                                    $dateNow = date("Y-m-d");
+                                                                    if (isset($_GET['Grade']) && isset($_GET['Section'])) {
+                                                                        $getDailyAttendanceData = $mysqli->query("SELECT DISTINCT SR_lname, SR_fname, SR_mname, SR_suffix, attendance.SR_number, attendance.A_time_IN, attendance.A_time_OUT, attendance.A_status 
                                                                             FROM attendance 
                                                                             LEFT JOIN studentrecord ON attendance.SR_number = studentrecord.SR_number 
                                                                             WHERE acadYear = '{$currentSchoolYear}' 
                                                                             AND SR_section = '{$_GET['Section']}' 
                                                                             AND SR_grade = '{$_GET['Grade']}'
                                                                             AND A_date = '{$dateNow}'");
-                                                                            if (mysqli_num_rows($getDailyAttendanceData) > 0) {
-                                                                                while ($AttendanceData = $getDailyAttendanceData->fetch_assoc()) { ?>
-                                                                                    <tr>
-                                                                                        <td class="tabledata"><?php echo $rowCount; ?></td>
-                                                                                        <td class="tabledata"><?php echo $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'] . " " . substr($AttendanceData['SR_mname'], 0, 1) . ". " . $AttendanceData['SR_suffix']; ?></td>
-                                                                                        <td class="tabledata"><?php echo $AttendanceData['A_time_IN']; ?></td>
-                                                                                        <td class="tabledata"><?php echo $AttendanceData['A_time_OUT']; ?></td>
-                                                                                        <td class="tabledata"><?php echo $AttendanceData['A_status']; ?></td>
-                                                                                    </tr>
-                                                                                <?php $rowCount++;
-                                                                                }
-                                                                            } else { ?>
+                                                                        if (mysqli_num_rows($getDailyAttendanceData) > 0) {
+                                                                            while ($AttendanceData = $getDailyAttendanceData->fetch_assoc()) { ?>
                                                                                 <tr>
-                                                                                    <td colspan="6" class="tabledata">NO ATTENDANCE TODAY <?php echo $dateNow ?></td>
+                                                                                    <td class="tabledata"><?php echo $rowCount; ?></td>
+                                                                                    <td class="tabledata"><?php echo $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'] . " " . substr($AttendanceData['SR_mname'], 0, 1) . ". " . $AttendanceData['SR_suffix']; ?></td>
+                                                                                    <td class="tabledata"><?php echo $AttendanceData['A_time_IN']; ?></td>
+                                                                                    <td class="tabledata"><?php echo $AttendanceData['A_time_OUT']; ?></td>
+                                                                                    <td class="tabledata"><?php echo $AttendanceData['A_status']; ?></td>
                                                                                 </tr>
-                                                                            <?php }
+                                                                            <?php $rowCount++;
+                                                                            }
                                                                         } else { ?>
                                                                             <tr>
-                                                                                <td colspan="6" class="tabledata">Select grade level and section first</td>
+                                                                                <td colspan="6" class="tabledata">NO ATTENDANCE TODAY <?php echo $dateNow ?></td>
                                                                             </tr>
                                                                         <?php }
-                                                                        ?>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
+                                                                    } else { ?>
+                                                                        <tr>
+                                                                            <td colspan="6" class="tabledata">Select date then grade level and section first</td>
+                                                                        </tr>
+                                                                    <?php }
+                                                                    ?>
+                                                                </tbody>
+                                                            </table>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -304,11 +309,12 @@ if (!isset($_SESSION['F_number'])) {
                         </div>
                     </div>
                 </div>
-                <!-- content-wrapper ends -->
             </div>
-            <!-- main-panel ends -->
+            <!-- content-wrapper ends -->
         </div>
-        <!-- page-body-wrapper ends -->
+        <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
 
@@ -326,7 +332,7 @@ if (!isset($_SESSION['F_number'])) {
     </div>
     <!-- Footer End -->
 
- 
+
     <!-- JavaScript Libraries -->
     <script>
         function autocomplete(inp, arr) {
