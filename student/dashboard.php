@@ -312,7 +312,7 @@ if (!isset($_SESSION['SR_number'])) {
                             <h1 class="display-1 mb-n2" style="font-size:30px; color:#c02628; padding-bottom: 25px;"><i class="fa fa-edit"></i></h1>
                           </div>
                           <a href="../student/grades.php">
-                            <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Grades</h3>
+                            <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center">Report Card</h3>
                           </a>
                           <p class="d-flex flex-shrink-0 text-center">Evaluation of a user's performance or achievement.</p>
                         </div>
@@ -320,15 +320,13 @@ if (!isset($_SESSION['SR_number'])) {
                     </div>
                   </div>
                   <div class="row">
-                    <div class="row">
-                      <div class="col-lg-6 offset-lg-3" style="margin-top: 30px;">
-                        <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
-                          <h3 class="mb-0">Reminders</h3>
-                        </div>
+                    <div class="col-lg-6 offset-lg-3" style="margin-top: 30px;">
+                      <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
+                        <h3 class="mb-0">Reminders</h3>
                       </div>
-                      <div class="row" style="margin: auto;">
-                        <?php
-                        $getReminderData = $mysqli->query("SELECT * FROM reminders
+                    </div>
+                    <?php
+                    $getReminderData = $mysqli->query("SELECT * FROM reminders
                                                           WHERE forsection = '{$studentInfo['SR_section']}' 
                                                           AND acadYear = '{$currentSchoolYear}' 
                                                           AND reminderID 
@@ -336,60 +334,59 @@ if (!isset($_SESSION['SR_number'])) {
                                                                   WHERE SR_number = '{$_SESSION['SR_number']}')
                                                           ORDER BY deadline DESC
                                                           LIMIT 4");
-                        if ($getReminderData->num_rows > 0) {
-                          while ($reminders = $getReminderData->fetch_assoc()) { ?>
-                            <div class="col-lg-4 col-sm-12 mb-3">
-                              <div class="card">
-                                <div class="card-body">
-                                  <div class="user-details row">
+                    if ($getReminderData->num_rows > 0) {
+                      while ($reminders = $getReminderData->fetch_assoc()) { ?>
+                        <div class="col-lg-4 col-sm-12 mb-3">
+                          <div class="card" style="height: 220px;">
+                            <div class="card-body" style="align-content:space-between; display: flex; flex-wrap: wrap;">
+                              <div class="col-12">
+                                <?php
+                                $getAuthorInfo = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$reminders['author']}'");
+                                $AuthorInfo = $getAuthorInfo->fetch_assoc();
+                                ?>
+                                <p class="user-name col-12" style="text-align:center;">
+                                  <?php echo $AuthorInfo['F_lname'] .  ", " . $AuthorInfo['F_fname'] . " " . substr($AuthorInfo['F_mname'], 0, 1) . ". " . $AuthorInfo['F_suffix']; ?>
+                                  <span class="far fa-user" style="color: #c02628;"></span>
+                                </p>
+                                <p class="date col-12" style="text-align:center;">
+                                  <a>
                                     <?php
-                                    $getAuthorInfo = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$reminders['author']}'");
-                                    $AuthorInfo = $getAuthorInfo->fetch_assoc();
+                                    $storedDate = strtotime($reminders['date_posted']);
+                                    echo date("D M/d/Y", $storedDate);
                                     ?>
-                                    <p class="user-name col-12" style="text-align:center;">
-                                      <?php echo $AuthorInfo['F_lname'] .  ", " . $AuthorInfo['F_fname'] . " " . substr($AuthorInfo['F_mname'], 0, 1) . ". " . $AuthorInfo['F_suffix']; ?>
-                                      <span class="far fa-user" style="color: #c02628;"></span>
-                                    </p>
-                                    <p class="date col-12" style="text-align:center;">
-                                      <a>
-                                        <?php
-                                        $storedDate = strtotime($reminders['date_posted']);
-                                        echo date("D M/d/Y", $storedDate);
-                                        ?>
-                                      </a>
-                                      <span class="fa fa-calendar" style="color: #c02628;"></span>
-                                    </p>
-                                  </div>
-                                  <div class="col-12">
-                                    <p>Subject: <?php echo $reminders['subject'] ?></p>
-                                    <p class="excert text-truncate" <?php
-                                                                    if (empty($reminders['msg'])) {
-                                                                      echo "No description";
-                                                                    } else {
-                                                                      echo $reminders['msg'];
-                                                                    }
-                                                                    ?> </p>
-                                    <div class="text-center">
-                                      <a href="viewreminders.php?ID=<?php echo $reminders['reminderID'] ?>" class="primary-btn">View More</a>
-                                    </div>
-                                  </div>
-                                </div>
+                                  </a>
+                                  <span class="fa fa-calendar" style="color: #c02628;"></span>
+                                </p>
                               </div>
-                            </div>
-                          <?php
-                          }
-                        } else { ?>
-                          <div class="col mb-3">
-                            <div class="card">
-                              <div class="card-body text-center">
-                                <p>No Reminder Yet</p>
+                              <div class="col-12">
+                                <p style="text-align: left;">Subject: <?php echo $reminders['subject'] ?></p>
+                                <p class="excert text-truncate"> <?php
+                                                                  if (empty($reminders['msg'])) {
+                                                                    echo "No description";
+                                                                  } else {
+                                                                    echo $reminders['msg'];
+                                                                  }
+                                                                  ?> </p>
+
+                              </div>
+                              <div>
+                                <a href="viewreminders.php?ID=<?php echo $reminders['reminderID'] ?>" class="primary-btn">View More</a>
                               </div>
                             </div>
                           </div>
-                        <?php }
-                        ?>
+                        </div>
+                      <?php
+                      }
+                    } else { ?>
+                      <div class="col mb-3">
+                        <div class="card">
+                          <div class="card-body text-center">
+                            <p>No Reminder Yet</p>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    <?php }
+                    ?>
                   </div>
                 </div>
 

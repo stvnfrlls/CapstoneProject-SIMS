@@ -8,3 +8,4 @@ if ($mysqli->connect_errno) {
     echo "Error Connecting: " . $mysqli->connect_error;
     exit();
 }
+

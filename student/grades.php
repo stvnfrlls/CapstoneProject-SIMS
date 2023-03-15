@@ -126,7 +126,7 @@ if (!isset($_SESSION['SR_number'])) {
                                         if (mysqli_num_rows($resultgetStudentGrades) > 0) { ?>
                                             <div class="btn-group m-3">
                                                 <div style="text-align: right;">
-                                                    <a href="../reports/ReportCard.php?ID=<?php echo  $studentData['SR_number'] ?>" class="btn btn-light" style=" text-align:center; font-size: 13px">Download <i class="fa fa-print" style="font-size: 12px;"></i></a>
+                                                    <a href="../reports/ReportCard.php?ID=<?php echo  $studentData['SR_number'] ?>" class="btn btn-light" style=" text-align:center; font-size: 13px">Download <i class="fa fa-download" style="font-size: 12px;"></i></a>
                                                 </div>
                                             </div>
                                         <?php }

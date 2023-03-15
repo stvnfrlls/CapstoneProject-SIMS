@@ -106,7 +106,7 @@ if (!isset($_SESSION['SR_number'])) {
                         <div class="home-tab" style="margin-top: 0px !important;">
                             <div class="d-sm-flex align-items-center justify-content-between">
                                 <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
-                                    <h2 class="fw-bold text-primary text-uppercase" style="padding-top: 40px;">Daily Attendance</h2>
+                                    <h2 class="fw-bold text-primary text-uppercase" style="padding-top: 40px;">Monthly Attendance</h2>
                                 </div>
                             </div>
                             <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
@@ -164,7 +164,7 @@ if (!isset($_SESSION['SR_number'])) {
                                     </div>
 
                                     <div class="btn-group" style="margin: auto;">
-                                        <a href="../reports/MonthlyAttendance.php?ID=<?php echo $_SESSION['SR_number'] ?>" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3;">Download <i class="fa fa-print" style="font-size: 12px;"></i></a>
+                                        <a href="../reports/MonthlyAttendance.php?ID=<?php echo $_SESSION['SR_number'] ?>" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3;">Download <i class="fa fa-download" style="font-size: 12px;"></i></a>
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-lg-12 d-flex flex-column">

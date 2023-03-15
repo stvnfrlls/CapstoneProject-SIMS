@@ -98,10 +98,17 @@ if (!isset($_SESSION['SR_number'])) {
     <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
       <h5 class="fw-bold text-primary text-uppercase" style="font-size: 30px; margin-top:50px;">Edit Profile</h5>
     </div>
+    <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
+      <nav class="nav">
+        <a class="nav-link active ms-0" href="../student/editProfile.php" style="color: #c02628;">Edit Profile</a>
+        <a class="nav-link" href="../student/changePassword.php">Change Password</a>
+      </nav>
+      <div class="border-bottom"></div>
+    </div>
     <div class="container py-5">
       <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
         <div class="row">
-          <div class="col-lg-10" style="margin: auto;">
+          <div class="col-lg-6" style="margin: auto;">
             <div class="card mb-4">
               <div class="card-body">
                 <div class="row">
@@ -126,39 +133,6 @@ if (!isset($_SESSION['SR_number'])) {
                     </p>
                   </div>
                 </div>
-                <hr>
-                <div class="row">
-                  <div class="col-sm-3" style="padding-top:11px;">
-                    <p class="mb-0">Enter Current Password</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <p class="text-muted mb-0">
-                      <input type="password" class="form-control" name="currentPassword" required>
-                    </p>
-                  </div>
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col-sm-3" style="padding-top:11px;">
-                    <p class="mb-0">Enter New Password</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <p class="text-muted mb-0">
-                      <input type="password" class="form-control" name="newPassword" required>
-                    </p>
-                  </div>
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col-sm-3" style="padding-top:11px;">
-                    <p class="mb-0">Confirm New Password</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <p class="text-muted mb-0">
-                      <input type="password" class="form-control" name="confirmPassword" required>
-                    </p>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -172,7 +146,7 @@ if (!isset($_SESSION['SR_number'])) {
   </section>
 
   <!-- Footer Start -->
-  <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s">
+  <div class="container-fluid bg-dark text-body footer wow fadeIn" data-wow-delay="0.1s" style="margin-top: 80px;">
     <div class="container-fluid copyright" style="padding: 15px 0px 15px 0px;">
       <div class="container">
         <div class="row">
