@@ -247,8 +247,9 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     </div>
                                                                     <div class="col-12">
                                                                         <div class="form-floating">
-                                                                            <textarea class="form-control" placeholder="Leave a message here" id="message" name="message" style="height: 250px"></textarea>
-                                                                            <label for="message"><?php echo $announcementData['msg'] ?></label>
+                                                                            <textarea class="form-control" placeholder="" id="message" name="message" style="height: 250px"><?php echo $announcementData['msg'] ?></textarea>
+                                                                            <label for="message">Details</label>
+                                                                            
                                                                         </div>
                                                                     </div>
                                                                 </div>
