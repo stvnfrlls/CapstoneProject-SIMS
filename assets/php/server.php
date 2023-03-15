@@ -715,6 +715,68 @@ if (isset($_POST['resolveIssue']) && isset($_SESSION['F_number'])) {
         }
     }
 }
+if (isset($_POST['moveUpStatus']) && !empty($_SESSION['F_number'])) {
+    $ids = $_POST['ids'];
+    $FormsSR_number = $_POST['SR_number'];
+    $FormsGrade = $_POST['Grade'];
+    $FormsSection = $_POST['Section'];
+    $FormsstudentStatus = $_POST['studentStatus'];
+    $FormsmoveUpTo = $_POST['moveUpTo'];
+
+    foreach ($ids as $i => $id) {
+        $SR_number = $FormsSR_number[$i];
+        $Grade = $FormsGrade[$i];
+        $Section = $FormsSection[$i];
+        $studentStatus = $FormsstudentStatus[$i];
+        $moveUpTo = $FormsmoveUpTo[$i];
+
+        $GetSectionData = $mysqli->query("SELECT * FROM sections WHERE sectionID = '{$Section}' AND acadYear = '{$currentSchoolYear}'");
+        $SectionData = $GetSectionData->fetch_assoc();
+
+        if ($studentStatus == "GRADUATE") {
+            $getSchoolYearInfo = $mysqli->query("SELECT * FROM acad_year");
+            $schoolyear = $getSchoolYearInfo->fetch_assoc();
+            $nextSchoolYear = $schoolyear['endYear'] . "-" . $schoolyear['endYear'] + 1;
+
+            $status = $studentStatus . " - " . $currentSchoolYear;
+            $mysqli->query("UPDATE studentrecord SET SR_status = '{$status}' WHERE SR_number = '{$SR_number}'");
+            $mysqli->query("INSERT INTO classlist(acadYear, SR_number, SR_grade) VALUES('{$nextSchoolYear}', '{$SR_number}', '{$status}')");
+        } else if ($studentStatus == "MOVEUP") {
+            $getSchoolYearInfo = $mysqli->query("SELECT * FROM acad_year");
+            $schoolyear = $getSchoolYearInfo->fetch_assoc();
+            $nextSchoolYear = $schoolyear['endYear'] . "-" . $schoolyear['endYear'] + 1;
+
+            $GetSectionData = $mysqli->query("SELECT * FROM sections WHERE sectionID = '{$moveUpTo}' AND acadYear = '{$currentSchoolYear}'");
+            $SectionData = $GetSectionData->fetch_assoc();
+
+            $mysqli->query("UPDATE studentrecord SET SR_grade = '{$SectionData['S_yearLevel']}', SR_section = '{$SectionData['S_name']}' WHERE SR_number = '{$SR_number}'");
+            $mysqli->query("INSERT INTO classlist(acadYear, SR_number, SR_grade, SR_section) VALUES('{$nextSchoolYear}', '{$SR_number}', '{$SectionData['S_yearLevel']}', '{$SectionData['S_name']}')");
+        } else if ($studentStatus == "TRANSFER") {
+            $getSchoolYearInfo = $mysqli->query("SELECT * FROM acad_year");
+            $schoolyear = $getSchoolYearInfo->fetch_assoc();
+            $nextSchoolYear = $schoolyear['endYear'] . "-" . $schoolyear['endYear'] + 1;
+
+            $mysqli->query("UPDATE studentrecord SET SR_status = 'TRANSFERRED', SR_grade = '', SR_section = '' WHERE SR_number = '{$SR_number}'");
+            $mysqli->query("INSERT INTO classlist(acadYear, SR_number, SR_grade, SR_section) VALUES('{$nextSchoolYear}', '{$SR_number}', 'TRANSFERRED', 'TRANSFERRED')");
+        } elseif ($studentStatus == "REPEAT") {
+            $getSchoolYearInfo = $mysqli->query("SELECT * FROM acad_year");
+            $schoolyear = $getSchoolYearInfo->fetch_assoc();
+            $nextSchoolYear = $schoolyear['endYear'] . "-" . $schoolyear['endYear'] + 1;
+
+            $GetSectionData = $mysqli->query("SELECT * FROM sections WHERE sectionID = '{$moveUpTo}' AND acadYear = '{$currentSchoolYear}'");
+            $SectionData = $GetSectionData->fetch_assoc();
+
+            $mysqli->query("INSERT INTO classlist(acadYear, SR_number, SR_grade, SR_section) VALUES('{$nextSchoolYear}', '{$SR_number}', '{$SectionData['S_yearLevel']}', '{$SectionData['S_name']}')");
+        } elseif ($studentStatus == "DROP") {
+            $getSchoolYearInfo = $mysqli->query("SELECT * FROM acad_year");
+            $schoolyear = $getSchoolYearInfo->fetch_assoc();
+            $nextSchoolYear = $schoolyear['endYear'] . "-" . $schoolyear['endYear'] + 1;
+
+            $mysqli->query("UPDATE studentrecord SET SR_status = 'DROPPED', SR_grade = '', SR_section = '' WHERE SR_number = '{$SR_number}'");
+            $mysqli->query("INSERT INTO classlist(acadYear, SR_number, SR_grade, SR_section) VALUES('{$nextSchoolYear}', '{$SR_number}', 'DROPPED', 'DROPPED')");
+        }
+    }
+}
 //End
 
 //Admin Process
@@ -1158,35 +1220,6 @@ if (isset($_POST['assignAdvisor']) && !empty($_SESSION['AD_number'])) {
     } else {
         showSweetAlert('Teacher is already assigned', 'error');
     }
-}
-if (isset($_POST['moveUpStatus']) && !empty($_SESSION['AD_number'])) {
-    $ids = $_POST['ids'];
-    $FormsSR_number = $_POST['SR_number'];
-    $FormsGrade = $_POST['Grade'];
-    $FormsSection = $_POST['Section'];
-    $FormsstudentStatus = $_POST['studentStatus'];
-    $FormsmoveUpTo = $_POST['moveUpTo'];
-
-    foreach ($ids as $i => $id) {
-        $SR_number = $FormsSR_number[$i];
-        $Grade = $FormsGrade[$i];
-        $Section = $FormsSection[$i];
-        $studentStatus = $FormsstudentStatus[$i];
-        $moveUpTo = $FormsmoveUpTo[$i];
-
-        //update student record => grade amd section
-        $updateCurrentGradeSection = $mysqli->query("UPDATE studentrecord SET SR_grade = '$Grade', SR_section = '$Section' WHERE SR_number = '$SR_number'");
-
-        //insert into classlist
-        $insertIntoClassList = $mysqli->query("INSERT INTO classlist (acadYear, SR_number, SR_grade, SR_section) VALUES ('$currentSchoolYear', '$SR_number', '$Grade', '$Section')");
-    }
-    $assignClassListAdvisor = $mysqli->query("UPDATE classlist SET F_number = '{$advisor}' WHERE SR_section = '{$section}' AND acadYear = '{$currentSchoolYear}'");
-    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
-    $AdminName = $getAdminName->fetch_assoc();
-    $AD_action = "UPDATED STUDENT GRADE LEVEL";
-    $currentDate = date('Y-m-d H:i:s');
-    $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
-    VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
 }
 if (isset($_POST['changeto']) && !empty($_SESSION['AD_number'])) {
     $SR_number = $_POST['SR_number'];
