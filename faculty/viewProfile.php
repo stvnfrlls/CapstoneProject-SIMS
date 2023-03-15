@@ -159,14 +159,14 @@ if (!isset($_SESSION['F_number'])) {
                           <div class="card-body">
                             <h4 class="card-title">Profile Picture</h4>
                             <form class="form-sample">
-                              <div class="row" style="padding-bottom: 15px;">
-                                <div class="col-md-12 col-sm-6" style="text-align: center; margin-bottom: 20px; margin-top: 10px;">
+                              <div class="row" >
+                                <div class="col-md-12 col-sm-6" style="text-align: center;  margin-top: 10px;">
                                   <?php
                                   $profile_path = "../assets/img/profile/" . $facultyData['F_profile_img'];
                                   if (empty($facultyData['F_profile_img']) || !file_exists($profile_path)) { ?>
                                     <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
                                   <?php } else { ?>
-                                    <img src="../assets/img/profile/<?php echo $facultyData['F_profile_img'] ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
+                                    <img src="../assets/img/profile/<?php echo $facultyData['F_profile_img'] ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 150px; height: 150px;">
                                   <?php }
                                   ?>
                                 </div>
