@@ -229,7 +229,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                     ?>
                                                 </div>
                                             </div>
-                                            <div class="btn-group mx-2" style="float: right;">
+                                            <div class="btn-group" style="float: right;">
                                                 <div class="mx-1">
                                                     <input type="date" class="form-control" name="start_date" required>
                                                 </div>
@@ -239,14 +239,13 @@ if (!isset($_SESSION['AD_number'])) {
                                                 <div>
                                                     <button type="submit" href="advisoryConcern.php" style="margin-right: 0px;" class="btn btn-primary mx-2">Get records</button>
                                                 </div>
-
                                             </div>
                                             <div class="row" style="margin-top: 15px;">
                                                 <div class="col-12 grid-margin">
                                                     <div class="card">
                                                         <div class="card-body">
-                                                            <div class="table-responsive">
-                                                                <table class="table table-striped">
+                                                            <div class="table-responsive" style="overflow-y: scroll; height: 500px;">
+                                                                <table class="table table-striped" >
                                                                     <thead>
                                                                         <tr>
                                                                             <th>Full Name</th>

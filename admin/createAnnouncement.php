@@ -261,7 +261,7 @@ if (!isset($_SESSION['AD_number'])) {
                             </div>
                             <div style="text-align: center;">
                                 <button type="button" id="post_confirmation_modal_button" name="postAnnouncement" class="btn btn-primary me-2">Post</button>
-                                <button type="button" class="btn btn-light">Back</button>
+                                <button type="button" class="btn btn-light" onclick="location.href='../admin/announcement.php'">Back</button>
                             </div>
                         </form>
                     </div>
