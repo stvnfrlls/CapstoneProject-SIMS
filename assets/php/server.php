@@ -41,7 +41,7 @@ if (isset($_POST['login-button'])) {
                     $getSR_Number = $FindSR_Number->fetch_assoc();
 
                     $_SESSION['SR_number'] = $getSR_Number['SR_number'];
-                    header('Location: ../student/dashboard.php');
+                    header('Location: ../index.php');
                 }
                 if ($UD_role == "faculty") {
                     $FindF_number = $mysqli->query("SELECT F_number FROM faculty WHERE F_email = '{$UD_username}'");
@@ -240,8 +240,11 @@ if (isset($_POST['markAsDone'])) {
     $author = $_POST['author'];
     $viewedDate = date('Y-m-d H:i A');
 
-    $mysqli->query("INSERT INTO reminder_status(reminderID, author, SR_number, viewed_date) VALUES ('{$remindersID}', '{$author}', '{$SR_number}', '{$viewedDate}')");
-    showSweetAlert('Marked as done!', 'success');
+    $markedAsDone = $mysqli->query("INSERT INTO reminder_status(reminderID, author, SR_number, viewed_date) VALUES ('{$remindersID}', '{$author}', '{$SR_number}', '{$viewedDate}')");
+    if ($markedAsDone) {
+        header('Location: reminders.php');
+        showSweetAlert('Marked as done!', 'success');
+    }
 }
 
 //Faculty Process
@@ -345,6 +348,7 @@ if (isset($_POST['encodeGrade'])) {
             $G_gradesQ4 = $forms_G_gradesQ4[$i];
 
             $mysqli->query("UPDATE grades SET G_gradesQ4 = '{$G_gradesQ4}' WHERE SR_number = '{$SR_number}' AND SR_section = '{$Section}' AND acadYear = '{$currentSchoolYear}' AND G_learningArea = '{$Subject}'");
+            
         }
     }
     if (isset($_POST['FinalGrade'])) {
