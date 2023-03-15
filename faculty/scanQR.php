@@ -9,19 +9,28 @@ if (!isset($_SESSION['F_number'])) {
         $SectionLabel = $getSectionLabel->fetch_assoc();
 
         $NOTtimedIN = array();
-        $getNOTtimedIN = $mysqli->query("SELECT studentrecord.SR_number FROM studentrecord LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number WHERE attendance.A_time_IN IS NULL");
+        $today = date('Y-m-d');
+
+        echo $today;
+        $getNOTtimedIN = $mysqli->query("SELECT studentrecord.SR_lname, studentrecord.SR_fname, studentrecord.SR_number FROM studentrecord 
+                                        LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number WHERE attendance.A_time_IN IS NULL 
+                                        AND attendance.A_date != '{$today}'");
         while ($studentNumber_NOTtimedIN = $getNOTtimedIN->fetch_assoc()) {
             $NOTtimedIN[] = $studentNumber_NOTtimedIN;
         }
 
         $NOTtimedOUT = array();
-        $getNOTtimedOUT = $mysqli->query("SELECT studentrecord.SR_number FROM studentrecord LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number WHERE attendance.A_time_OUT IS NULL");
+        $getNOTtimedOUT = $mysqli->query("SELECT studentrecord.SR_lname, studentrecord.SR_fname, studentrecord.SR_number FROM studentrecord 
+                                        LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number WHERE attendance.A_time_OUT IS NULL
+                                        AND attendance.A_date != '{$today}'");
         while ($studentNumber_NOTtimedOUT = $getNOTtimedOUT->fetch_assoc()) {
             $NOTtimedOUT[] = $studentNumber_NOTtimedOUT;
         }
 
         $timedOUT = array();
-        $gettimedOUT = $mysqli->query("SELECT studentrecord.SR_number FROM studentrecord LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number WHERE attendance.A_time_OUT IS NULL");
+        $gettimedOUT = $mysqli->query("SELECT studentrecord.SR_lname, studentrecord.SR_fname, studentrecord.SR_number FROM studentrecord 
+                                    LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number WHERE attendance.A_time_OUT IS NOT NULL
+                                    AND attendance.A_date = '{$today}'");
         while ($studentNumber_timedOUT = $gettimedOUT->fetch_assoc()) {
             $timedOUT[] = $studentNumber_timedOUT;
         }
@@ -291,9 +300,12 @@ if (!isset($_SESSION['F_number'])) {
         let input = content;
 
         document.getElementById('input1').value = input;
-        if (NOTtimedIN.some(content => content.SR_number === input)) {
+        const NOTtimedINDATA = NOTtimedIN.find(content => content.SR_number === input);
+        const NOTtimedOUTDATA = NOTtimedOUT.find(content => content.SR_number === input);
+        const timedOUTDATA = timedOUT.find(content => content.SR_number === input);
+        if (NOTtimedINDATA) {
             Swal.fire({
-                title: 'Mark this student as present?',
+                title: `Student (${NOTtimedINDATA.SR_lname}, ${NOTtimedINDATA.SR_fname}) will be marked as present?`,
                 confirmButtonText: 'Proceed',
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -302,18 +314,20 @@ if (!isset($_SESSION['F_number'])) {
                     })
                 }
             });
-        } else if (NOTtimedOUT.some(content => content.SR_number === input)) {
+        } else if (NOTtimedOUTDATA) {
             Swal.fire({
-                title: 'Student ready to go home?',
+                title: `Student (${NOTtimedOUTDATA.SR_lname}, ${NOTtimedOUTDATA.SR_fname}) ready to go home?`,
                 confirmButtonText: 'Proceed',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    document.getElementById('qr_form').submit();
+                    Swal.fire('Timed Out!', '', 'success').then((result) => {
+                        document.getElementById('qr_form').submit();
+                    })
                 }
             })
-        } else if (!NOTtimedIN.some(content => content.SR_number === input) && !timedOUT.some(content => content.SR_number === input)) {
+        } else if (timedOUTDATA) {
             Swal.fire({
-                title: 'The student has left for home',
+                title: `Student (${timedOUTDATA.SR_lname}, ${timedOUTDATA .SR_fname}) has already timed out.`,
                 confirmButtonText: 'Proceed',
             });
         } else {
