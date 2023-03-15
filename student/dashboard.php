@@ -161,13 +161,11 @@ if (!isset($_SESSION['SR_number'])) {
                               <div class="col-8" style="align-self: center;">
                                 <h3 style="margin-bottom: 8px; text-align:left;">
                                   <?php
-                                  if ($studentInfo['SR_mname'] != "") {
-                                    echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . ". " . $studentInfo['SR_suffix'];
-                                  } else if ($studentInfo['SR_suffix'] != "") {
-                                    echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1);
-                                  } else if ($studentInfo['SR_mname'] != "" && $studentInfo['SR_suffix'] != "") {
-                                    echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix'];
-                                  } else {
+                                  if (!empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] != "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {
+                                    echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ".";
+                                  } else if (empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] = "" && !empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] != "") {
+                                    echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . $studentInfo['SR_suffix'];
+                                  } else if (empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] = "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {
                                     echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'];
                                   }
                                   ?>
@@ -177,13 +175,11 @@ if (!isset($_SESSION['SR_number'])) {
                                 <p style="margin-bottom: 2px;">
                                   <?php
                                   if (!empty($SectionInfo['S_adviser'])) {
-                                    if ($AdvisorInfo['F_mname'] != "") {
-                                      echo $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'] . ". " . $AdvisorInfo['F_suffix'];
-                                    } else if ($AdvisorInfo['F_suffix'] != "") {
-                                      echo $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'] . " " . substr($AdvisorInfo['F_mname'], 0, 1);
-                                    } else if ($AdvisorInfo['F_mname'] != "" && $AdvisorInfo['F_suffix'] != "") {
-                                      echo $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'] . " " . substr($AdvisorInfo['F_mname'], 0, 1) . ". " . $AdvisorInfo['F_suffix'];
-                                    } else {
+                                    if (!empty($AdvisorInfo['F_mname']) || $AdvisorInfo['F_mname'] != "" && empty($AdvisorInfo['F_suffix']) || $AdvisorInfo['F_suffix'] = "") {
+                                      echo $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'] . " " . substr($AdvisorInfo['F_mname'], 0, 1) . ".";
+                                    } else if (empty($AdvisorInfo['F_mname']) || $AdvisorInfo['F_mname'] = "" && !empty($AdvisorInfo['F_suffix']) || $AdvisorInfo['F_suffix'] != "") {
+                                      echo $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'] . " " . $AdvisorInfo['F_suffix'];
+                                    } else if (empty($AdvisorInfo['F_mname']) || $AdvisorInfo['F_mname'] = "" && empty($AdvisorInfo['F_suffix']) || $AdvisorInfo['F_suffix'] = "") {
                                       echo $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'];
                                     }
                                   } else {
@@ -383,7 +379,7 @@ if (!isset($_SESSION['SR_number'])) {
                         <div class="card">
                           <div class="card-body">
                             <div class="row">
-                              <div class="col-8" >
+                              <div class="col-8">
                                 <p style="margin-bottom: 0px; margin-top: 12px">There are no posted reminders at the moment. If there are any new ones, you will be notified via email. Thank you.</p>
                               </div>
                               <div class="col-4">

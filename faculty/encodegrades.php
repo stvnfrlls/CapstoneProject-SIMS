@@ -167,7 +167,28 @@ if (!isset($_SESSION['F_number'])) {
                 <div class="tab-content tab-content-basic">
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                     <div style="text-align: right; margin-bottom: 15px">
-                      <button id="saveGrades" class="btn btn-primary me-2">Save</button>
+                      <?php
+                      $checkGradeData = $mysqli->query("SELECT G_gradesQ4 FROM grades 
+                                                        WHERE G_gradesQ4 IS NOT NULL 
+                                                        AND SR_section = '{$_GET['Section']}' 
+                                                        AND G_learningArea = '{$_GET['Subject']}' 
+                                                        AND acadYear = '{$currentSchoolYear}'");
+                      if (mysqli_num_rows($checkGradeData) > 0) {
+                        echo '<button id="saveGrades" class="btn btn-primary me-2">Save Final Grades</button>';
+                      } else {
+                        echo '<button id="saveGrades" class="btn btn-primary me-2">Save</button>';
+                      }
+
+                      $checkFinalGrade = $mysqli->query("SELECT G_finalgrade FROM grades 
+                                                        WHERE G_gradesQ4 IS NOT NULL 
+                                                        AND G_finalgrade IS NULL 
+                                                        AND SR_section = '{$_GET['Section']}' 
+                                                        AND G_learningArea = '{$_GET['Subject']}' 
+                                                        AND acadYear = '{$currentSchoolYear}'");
+                      if (mysqli_num_rows($checkFinalGrade) > 0) {
+                        showSweetAlert('Do not forget to save the final grade', 'info');
+                      }
+                      ?>
                       <a href="" class="btn btn-light">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a>
                     </div>
                     <div class="row">
@@ -303,7 +324,7 @@ if (!isset($_SESSION['F_number'])) {
                                             <?php
                                             $checkQuarter1 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 1 AND quarterFormStatus = 'enabled'");
                                             if (mysqli_num_rows($checkQuarter1) == 1) { ?>
-                                              <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g1 = $arrayClassList[$rowCount]['G_gradesQ1']; ?>" name="G_gradesQ1[]" style="text-align: center; width: 30px;"></td>
+                                              <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g1 = $arrayClassList[$rowCount]['G_gradesQ1']; ?>" name="G_gradesQ1[]" style="text-align: center; width: 30px;" required></td>
                                             <?php } else { ?>
                                               <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g1 = $arrayClassList[$rowCount]['G_gradesQ1']; ?>" name="G_gradesQ1[]" style="text-align: center; width: 30px;" disabled></td>
                                             <?php } ?>
@@ -311,7 +332,7 @@ if (!isset($_SESSION['F_number'])) {
                                             <?php
                                             $checkQuarter2 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 2 AND quarterFormStatus = 'enabled'");
                                             if (mysqli_num_rows($checkQuarter2) == 1) { ?>
-                                              <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g2 = $arrayClassList[$rowCount]['G_gradesQ2']; ?>" name="G_gradesQ2[]" style="text-align: center; width: 30px;"></td>
+                                              <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g2 = $arrayClassList[$rowCount]['G_gradesQ2']; ?>" name="G_gradesQ2[]" style="text-align: center; width: 30px;" required></td>
                                             <?php } else { ?>
                                               <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g2 = $arrayClassList[$rowCount]['G_gradesQ2']; ?>" name="G_gradesQ2[]" style="text-align: center; width: 30px;" disabled></td>
                                             <?php } ?>
@@ -319,7 +340,7 @@ if (!isset($_SESSION['F_number'])) {
                                             <?php
                                             $checkQuarter3 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 3 AND quarterFormStatus = 'enabled'");
                                             if (mysqli_num_rows($checkQuarter3) == 1) { ?>
-                                              <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g3 = $arrayClassList[$rowCount]['G_gradesQ3']; ?>" name="G_gradesQ3[]" style="text-align: center; width: 30px;"></td>
+                                              <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g3 = $arrayClassList[$rowCount]['G_gradesQ3']; ?>" name="G_gradesQ3[]" style="text-align: center; width: 30px;" required></td>
                                             <?php } else { ?>
                                               <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g3 = $arrayClassList[$rowCount]['G_gradesQ3']; ?>" name="G_gradesQ3[]" style="text-align: center; width: 30px;" disabled></td>
                                             <?php } ?>
@@ -327,7 +348,7 @@ if (!isset($_SESSION['F_number'])) {
                                             <?php
                                             $checkQuarter4 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 4 AND quarterFormStatus = 'enabled'");
                                             if (mysqli_num_rows($checkQuarter4) == 1) { ?>
-                                              <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g4 = $arrayClassList[$rowCount]['G_gradesQ4']; ?>" name="G_gradesQ4[]" style="text-align: center; width: 30px;"></td>
+                                              <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g4 = $arrayClassList[$rowCount]['G_gradesQ4']; ?>" name="G_gradesQ4[]" style="text-align: center; width: 30px;" required></td>
                                             <?php } else { ?>
                                               <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g4 = $arrayClassList[$rowCount]['G_gradesQ4']; ?>" name="G_gradesQ4[]" style="text-align: center; width: 30px;" disabled></td>
                                             <?php } ?>
@@ -454,7 +475,7 @@ if (!isset($_SESSION['F_number'])) {
   </div>
   <!-- Footer End -->
 
- 
+
 
   <!-- Template Javascript -->
   <script src="../assets/js/main.js"></script>
@@ -473,12 +494,7 @@ if (!isset($_SESSION['F_number'])) {
         confirmButtonText: 'Yes',
         cancelButtonText: `No`,
       }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
-          Swal.fire({
-            title: 'Successfully changed!',
-            icon: 'success',
-          })
           FormGrades.submit();
         }
       })

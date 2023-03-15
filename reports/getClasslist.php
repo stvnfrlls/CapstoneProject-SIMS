@@ -69,12 +69,21 @@ if (isset($_GET['GradeLevel']) && isset($_GET['section'])) {
     $pdf->Cell(90, 10, 'Student Name', 1, 0, 'C');
     $pdf->Cell(50, 10, 'Grade and Section', 1, 1, 'C');
 
-    $ClasslistData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['section']}'");
+    $ClasslistData = $mysqli->query("SELECT * FROM classlist WHERE SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['section']}' AND acadYear = '{$currentSchoolYear}'");
     while ($classlist = $ClasslistData->fetch_assoc()) {
 
         $pdf->SetFont('Arial', '', 10);
         $pdf->Cell(50, 10, $classlist['SR_number'], 1, 0, 'C');
-        $pdf->Cell(90, 10, $classlist['SR_lname'] .  ", " . $classlist['SR_fname'] . " " . substr($classlist['SR_mname'], 0, 1) . ". " . $classlist['SR_suffix'], 1, 0, 'C');
+        $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$classlist['SR_number']}'");
+        $studentInfo = $getStudentInfo->fetch_assoc();
+        if (!empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] != "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {
+            $studentName = $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ".";
+        } else if (empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] = "" && !empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] != "") {
+            $studentName = $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . $studentInfo['SR_suffix'];
+        } else if (empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] = "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {
+            $studentName = $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'];
+        }
+        $pdf->Cell(90, 10,  $studentName, 1, 0, 'C');
         $pdf->Cell(50, 10, "Grade " . $classlist['SR_grade'] . " - " . $classlist['SR_section'], 1, 1, 'C');
     }
 

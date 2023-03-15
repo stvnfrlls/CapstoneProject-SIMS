@@ -159,7 +159,11 @@ if (!isset($_SESSION['F_number'])) {
                                                             <div class="col-lg-3  col-md-3 meta-details">
                                                                 <div class="user-details row" style="margin-top: 40px;">
                                                                     <p class="user-name col-lg-12 col-md-12 col-6"><span class="far fa-user" style="color: #c02628;"> </span><a> <?php echo $AuthorName['AD_name']; ?></a> </p>
-                                                                    <p class="date col-lg-12 col-md-12 col-6"><span class="fa fa-calendar" style="color: #c02628;"> </span><a> <?php echo $announcement['date'] ?></a> </p>
+                                                                    <p class="date col-lg-12 col-md-12 col-6"><span class="fa fa-calendar" style="color: #c02628;"> </span>
+                                                                        <a>
+                                                                            <?php echo date('D M-d-Y', strtotime($announcement['date'])) ?>
+                                                                        </a>
+                                                                    </p>
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-9">

@@ -259,7 +259,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                             <h3 class="mb-0" style="text-align:left;">Reminders posted by you</h3>
                                                                         </div>
                                                                         <?php
-                                                                        $getPostedReminders = $mysqli->query("SELECT * FROM reminders WHERE author = '{$_SESSION['F_number']}'");
+                                                                        $getPostedReminders = $mysqli->query("SELECT * FROM reminders WHERE author = '{$_SESSION['F_number']}' ORDER BY date_posted DESC LIMIT 5");
                                                                         if (mysqli_num_rows($getPostedReminders) > 0) {
                                                                             while ($remindersData = $getPostedReminders->fetch_assoc()) { ?>
                                                                                 <div class="col-12" style="padding-bottom: 15px;">
@@ -268,7 +268,15 @@ if (!isset($_SESSION['F_number'])) {
                                                                                             <div class="user-details row" style="padding: 10px 0px 0px 10px;">
                                                                                                 <p class="user-name col-lg-6 col-md-6">
                                                                                                     <span class="far fa-user" style="color: #c02628;"></span>
-                                                                                                    <?php echo $getFacultyData['F_lname'] . ", " . $getFacultyData['F_fname'] . " " . substr($getFacultyData['F_mname'], 0, 1) . ". " . $getFacultyData['F_suffix'] . "" ?>
+                                                                                                    <?php
+                                                                                                    if (!empty($getFacultyData['F_mname']) || $getFacultyData['F_mname'] != "" && empty($getFacultyData['F_suffix']) || $getFacultyData['F_suffix'] = "") {
+                                                                                                        echo $getFacultyData['F_lname'] .  ", " . $getFacultyData['F_fname'] . " " . substr($getFacultyData['F_mname'], 0, 1) . ".";
+                                                                                                    } else if (empty($getFacultyData['F_mname']) || $getFacultyData['F_mname'] = "" && !empty($getFacultyData['F_suffix']) || $getFacultyData['F_suffix'] != "") {
+                                                                                                        echo $getFacultyData['F_lname'] .  ", " . $getFacultyData['F_fname'] . " " . $getFacultyData['F_suffix'];
+                                                                                                    } else if (empty($getFacultyData['F_mname']) || $getFacultyData['F_mname'] = "" && empty($getFacultyData['F_suffix']) || $getFacultyData['F_suffix'] = "") {
+                                                                                                        echo $getFacultyData['F_lname'] .  ", " . $getFacultyData['F_fname'];
+                                                                                                    }
+                                                                                                    ?>
                                                                                                 </p>
                                                                                                 <p class="user-name col-lg-6 col-md-6">
                                                                                                     <span class="fa fa-calendar" style="color: #c02628;"></span>
@@ -317,7 +325,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                         <h3 class="mb-0" style="text-align:left;">School Announcements</h3>
                                                                     </div>
                                                                     <?php
-                                                                    $getAnnouncementData = $mysqli->query("SELECT * FROM announcement ORDER BY date_posted DESC LIMIT 5");
+                                                                    $getAnnouncementData = $mysqli->query("SELECT * FROM announcement ORDER BY date_posted DESC LIMIT 3");
                                                                     if (mysqli_num_rows($getAnnouncementData) > 0) {
                                                                         while ($announcement = $getAnnouncementData->fetch_assoc()) { ?>
                                                                             <div class="col-lg-12 wow " style="padding-bottom: 5px;">
