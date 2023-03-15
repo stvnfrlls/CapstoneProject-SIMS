@@ -192,9 +192,9 @@ if (!isset($_SESSION['SR_number'])) {
                                     <div class="btn-group" style="margin: auto;">
                                         <?php
                                         if (isset($_GET['month'])) {
-                                            echo '<a href="../reports/PDFAttendance.php?month=' . $_GET['month'] . '&ID=' . $_SESSION['SR_number'] . '" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3;">Download <i class="fa fa-print" style="font-size: 12px;"></i></a>';
+                                            echo '<a href="../reports/PDFAttendance.php?month=' . $_GET['month'] . '&ID=' . $_SESSION['SR_number'] . '" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3;">Download <i class="fa fa-download" style="font-size: 12px;"></i></a>';
                                         } else {
-                                            echo '<a href="../reports/PDFAttendance.php?ID=' . $_SESSION['SR_number'] . '" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3;">Download <i class="fa fa-print" style="font-size: 12px;"></i></a>';
+                                            echo '<a href="../reports/PDFAttendance.php?ID=' . $_SESSION['SR_number'] . '" class="btn btn-light" style="border-color: #e4e3e3; background-color:#e4e3e3;">Download <i class="fa fa-download" style="font-size: 12px;"></i></a>';
                                         }
                                         ?>
                                     </div>
