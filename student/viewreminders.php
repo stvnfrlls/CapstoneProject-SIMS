@@ -109,6 +109,9 @@ if (!isset($_SESSION['SR_number'])) {
             <div class="card">
               <div class="card-body">
                 <div class="right-content">
+                  <p class="user-name col-lg-6 col-sm-12"><span class="far fa-user" style="color: #c02628;"></span>
+                    Camille Sabile
+                  </p>
                   <div class="d-flex mb-3">
                     <small class="me-3">Subject: <?php echo $ReminderInfo['subject'] ?></small>
                     <small>Deadline: <?php echo $ReminderInfo['deadline'] ?></small>
@@ -136,14 +139,50 @@ if (!isset($_SESSION['SR_number'])) {
             <div class="section-title section-title-sm position-relative pb-3 mb-4">
               <h3 class="mb-0" style="text-align:left;">Other Reminders</h3>
             </div>
-            <div class="card">
+            <div class="card" style="margin-bottom: 15px;">
               <div class="card-body">
                 <?php
                 $getReminderDataExcept = $mysqli->query("SELECT * FROM reminders WHERE forsection = '{$studentInfo['SR_section']}' AND reminderID != '{$_GET['ID']}'");
                 if (mysqli_num_rows($getReminderDataExcept) > 0) {
                   while ($OtherReminderInfo = $getReminderDataExcept->fetch_assoc()) { ?>
+                    <div class="row">
+                      <p class="user-name col-lg-6 col-sm-12"><span class="far fa-user" style="color: #c02628;"></span>
+                        Camille Sabile
+                      </p>
+                      <p class="date col-lg-6 col-sm-12"><span class="fa fa-calendar" style="color: #c02628;"></span>
+                        March 12, 2023
+                      </p>
+                    </div>
+                    <p>Subject: Filipino</p>
                     <div class="d-flex rounded overflow-hidden mb-3">
-                      <a href="viewreminders.php?ID=<?php echo $OtherReminderInfo['reminderID'] ?>" class="h5 fw-semi-bold d-flex align-items-center px-3 mb-0"><?php echo $OtherReminderInfo['msg'] ?></a>
+                      <a href="viewreminders.php?ID=<?php echo $OtherReminderInfo['reminderID'] ?>" class="h5 fw-semi-bold d-flex align-items-center px-3 mb-0 text-truncate"><?php echo $OtherReminderInfo['msg'] ?></a>
+                    </div>
+                  <?php }
+                } else { ?>
+                  <a class="h5 fw-semi-bold d-flex align-items-center px-3 mb-0">
+                    No More Reminders
+                  </a>
+                <?php }
+                ?>
+              </div>
+            </div>
+            <div class="card" href="viewreminders.php?ID=<?php echo $OtherReminderInfo['reminderID'] ?>">
+              <div class="card-body">
+                <?php
+                $getReminderDataExcept = $mysqli->query("SELECT * FROM reminders WHERE forsection = '{$studentInfo['SR_section']}' AND reminderID != '{$_GET['ID']}'");
+                if (mysqli_num_rows($getReminderDataExcept) > 0) {
+                  while ($OtherReminderInfo = $getReminderDataExcept->fetch_assoc()) { ?>
+                    <div class="row">
+                      <p class="user-name col-lg-6 col-sm-12"><span class="far fa-user" style="color: #c02628;"></span>
+                        Camille Sabile
+                      </p>
+                      <p class="date col-lg-6 col-sm-12"><span class="fa fa-calendar" style="color: #c02628;"></span>
+                        March 12, 2023
+                      </p>
+                    </div>
+                    <p href="viewreminders.php?ID=<?php echo $OtherReminderInfo['reminderID'] ?>">Subject: Filipino</p>
+                    <div class="d-flex rounded overflow-hidden mb-3">
+                      <a href="viewreminders.php?ID=<?php echo $OtherReminderInfo['reminderID'] ?>" class="h5 fw-semi-bold d-flex align-items-center px-3 mb-0 text-truncate"><?php echo $OtherReminderInfo['msg'] ?></a>
                     </div>
                   <?php }
                 } else { ?>
