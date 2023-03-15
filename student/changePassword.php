@@ -100,7 +100,7 @@ if (!isset($_SESSION['SR_number'])) {
         </div>
         <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
             <nav class="nav">
-                <a class="nav-link active ms-0" href="../student/editProfile.php" >Edit Profile</a>
+                <a class="nav-link active ms-0" href="../student/editProfile.php">Edit Profile</a>
                 <a class="nav-link" href="../student/changePassword.php" style="color: #c02628;">Change Password</a>
             </nav>
             <div class="border-bottom"></div>
@@ -148,7 +148,7 @@ if (!isset($_SESSION['SR_number'])) {
                     </div>
                 </div>
                 <div style="text-align: center;">
-                    <button type="submit" class="btn btn-primary me-2" name="editStudentProfile">Save</button>
+                    <button type="submit" class="btn btn-primary me-2" name="editStudentPassword">Save</button>
                     <button type="button" class="btn btn-light" onclick="location.href='../student/profile.php'">Back</button>
                 </div>
             </form>

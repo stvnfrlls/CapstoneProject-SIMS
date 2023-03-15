@@ -106,7 +106,7 @@ if (!isset($_SESSION['SR_number'])) {
       <div class="border-bottom"></div>
     </div>
     <div class="container py-5">
-      <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
+      <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" enctype="multipart/form-data">
         <div class="row">
           <div class="col-lg-6" style="margin: auto;">
             <div class="card mb-4">
@@ -117,7 +117,7 @@ if (!isset($_SESSION['SR_number'])) {
                   </div>
                   <div class="col-sm-9">
                     <div class="input-group">
-                      <input type="file" class="form-control file-upload-info" name="image" placeholder="Upload Image">
+                      <input type="file" class="form-control file-upload-info" name="editimage" placeholder="Upload Image" accept="image/*">
                     </div>
                   </div>
                 </div>
