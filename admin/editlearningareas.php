@@ -378,7 +378,7 @@ if (empty($_SESSION['AD_number'])) {
                                                 ?>
 
                                                 <?php
-                                                $listFacultyData = $mysqli->query("SELECT F_number, F_lname, F_fname, F_mname, F_suffix FROM faculty ORDER BY F_lname");
+                                                $listFacultyData = $mysqli->query("SELECT F_number, F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_status = 'active' ORDER BY F_lname");
                                                 while ($listFaculty = $listFacultyData->fetch_assoc()) { ?>
                                                   <option value="<?php echo $listFaculty['F_number'] ?>"><?php echo $listFaculty['F_lname'] . ", " . $listFaculty['F_fname'] . " " . substr($listFaculty['F_mname'], 0, 1) . ". " . $listFaculty['F_suffix'] . "." ?></option>
                                                 <?php }
