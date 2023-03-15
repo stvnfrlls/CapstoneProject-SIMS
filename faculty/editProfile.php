@@ -146,10 +146,17 @@ if (!isset($_SESSION['F_number'])) {
             <div class="row">
               <div class="col-sm-12">
                 <div class="home-tab">
-                  <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                  <div class="d-sm-flex align-items-center justify-content-between">
                     <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
                       <h2 class="fw-bold text-primary text-uppercase">Profile Information</h2>
                     </div>
+                  </div>
+                  <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
+                    <nav class="nav">
+                      <a class="nav-link active ms-0" href="../student/editProfile.php" style="color: #c02628;">Edit Profile</a>
+                      <a class="nav-link" href="../student/changePassword.php">Change Password</a>
+                    </nav>
+                    <div class="border-bottom"></div>
                   </div>
                   <div style="text-align: right; margin-top: 15px">
                     <input type="hidden" name="updateProfile" value="submit">
@@ -160,13 +167,13 @@ if (!isset($_SESSION['F_number'])) {
                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
 
                       <div class="row">
-                        <div class="col-12 grid-margin">
+                        <div class="col-lg-6 col-sm-12 grid-margin" style="margin:auto">
                           <div class="card">
                             <div class="card-body">
                               <h4 class="card-title">Edit Information</h4>
                               <div class="row">
                                 <label class="col-sm-12 col-form-label">Profile Picture</label>
-                                <div class="col-sm-8">
+                                <div class="col-12">
                                   <div class="form-group">
                                     <div class="input-group col-xs-12">
                                       <div class="input-group">
@@ -175,35 +182,12 @@ if (!isset($_SESSION['F_number'])) {
                                     </div>
                                   </div>
                                 </div>
-                                <div class="col-sm-4">
-                                  <div class="form-group">
-                                    <div class="input-group col-xs-12">
-                                      <div class="input-group">
-                                        <button class="btn btn-primary" id="enableUpdateForm">EDIT LOGIN DETAIL</button>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
                               </div>
                               <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-12">
                                   <label label class="col-sm-12 col-form-label">Email Address</label>
                                   <div class="col-sm-12">
-                                    <input type="hidden" class="form-control" id="F_number" name="F_number" value="<?php echo $faculty['F_number'] ?>" required>
-                                    <input type="hidden" class="form-control" id="currentEmail" name="currentEmail" value="<?php echo $faculty['F_email'] ?>" required>
-                                    <input type="email" class="form-control" id="F_email" name="F_email" required disabled>
-                                  </div>
-                                </div>
-                                <div class="col-md-4">
-                                  <label label class="col-sm-12 col-form-label">Change Password</label>
-                                  <div class="col-sm-12">
-                                    <input type="password" class="form-control" id="newPassword" name="newPassword" required disabled>
-                                  </div>
-                                </div>
-                                <div class="col-md-4">
-                                  <label label class="col-sm-12 col-form-label">Confirm Password</label>
-                                  <div class="col-sm-12">
-                                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required disabled>
+                                    <input type="email" class="form-control" id="F_email" name="F_email" value="<?php echo $faculty['F_email'] ?>" required>
                                   </div>
                                 </div>
                               </div>
