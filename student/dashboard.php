@@ -35,8 +35,6 @@ if (!isset($_SESSION['SR_number'])) {
               }).then((result) => {
                   if (result.isConfirmed) {
                     window.location.href = 'reminders.php';
-                  } else {
-                    Swal.fire('View reminders when ready', '', 'info')
                   }
               });
           });
@@ -161,13 +159,33 @@ if (!isset($_SESSION['SR_number'])) {
                                 ?>
                               </div>
                               <div class="col-8" style="align-self: center;">
-                                <h3 style="margin-bottom: 8px; text-align:left;"><?php echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix']; ?></h3>
+                                <h3 style="margin-bottom: 8px; text-align:left;">
+                                  <?php
+                                  if ($studentInfo['SR_mname'] != "") {
+                                    echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . ". " . $studentInfo['SR_suffix'];
+                                  } else if ($studentInfo['SR_suffix'] != "") {
+                                    echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1);
+                                  } else if ($studentInfo['SR_mname'] != "" && $studentInfo['SR_suffix'] != "") {
+                                    echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix'];
+                                  } else {
+                                    echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'];
+                                  }
+                                  ?>
+                                </h3>
                                 <p style="margin-bottom: 2px;"><?php echo $studentInfo['SR_number'] ?></p>
                                 <p style="margin-bottom: 2px;"><?php echo "Grade " . $studentInfo['SR_grade'] . " - " . $studentInfo['SR_section'] ?></p>
                                 <p style="margin-bottom: 2px;">
                                   <?php
                                   if (!empty($SectionInfo['S_adviser'])) {
-                                    echo $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'] . " " . substr($AdvisorInfo['F_mname'], 0, 1) . ". " . $AdvisorInfo['F_suffix'];
+                                    if ($AdvisorInfo['F_mname'] != "") {
+                                      echo $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'] . ". " . $AdvisorInfo['F_suffix'];
+                                    } else if ($AdvisorInfo['F_suffix'] != "") {
+                                      echo $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'] . " " . substr($AdvisorInfo['F_mname'], 0, 1);
+                                    } else if ($AdvisorInfo['F_mname'] != "" && $AdvisorInfo['F_suffix'] != "") {
+                                      echo $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'] . " " . substr($AdvisorInfo['F_mname'], 0, 1) . ". " . $AdvisorInfo['F_suffix'];
+                                    } else {
+                                      echo $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'];
+                                    }
                                   } else {
                                     echo "Advisor not yet assigned";
                                   }

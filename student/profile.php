@@ -8,8 +8,6 @@ if (!isset($_SESSION['SR_number'])) {
   $getstudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$_SESSION['SR_number']}'");
   $studentInfo = $getstudentInfo->fetch_assoc();
 
-  $Student_Fullname = $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix'];
-
   $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_name = '{$studentInfo['SR_section']}' AND acadYear = '{$currentSchoolYear}'");
   $SectionInfo = $getSectionInfo->fetch_assoc();
 
@@ -119,7 +117,19 @@ if (!isset($_SESSION['SR_number'])) {
                 <img src="../assets/img/profile/<?php echo $studentInfo['SR_profile_img'] ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
               <?php }
               ?>
-              <h5 class="my-3"><?php echo $Student_Fullname ?></h5>
+              <h5 class="my-3">
+                <?php
+                if ($studentInfo['SR_mname'] != "") {
+                  echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . ". " . $studentInfo['SR_suffix'];
+                } else if ($studentInfo['SR_suffix'] != "") {
+                  echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1);
+                } else if ($studentInfo['SR_mname'] != "" && $studentInfo['SR_suffix'] != "") {
+                  echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix'];
+                } else {
+                  echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'];
+                }
+                ?>
+              </h5>
               <p class="text-muted mb-1"><?php echo $studentInfo['SR_number'] ?></p>
               <p class="text-muted mb-4"><?php echo $studentInfo['SR_grade'] . " - " . $studentInfo['SR_section'] ?></p>
               <div class="d-flex justify-content-center mb-2">
@@ -134,7 +144,15 @@ if (!isset($_SESSION['SR_number'])) {
               <p class="mb-1" style="font-size: .90rem; text-align: center;">
                 <?php
                 if (mysqli_num_rows($getAdvisorInfo) > 0) {
-                  echo $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'] . " " . substr($AdvisorInfo['F_mname'], 0, 1) . ". " . $AdvisorInfo['F_suffix'];
+                  if ($AdvisorInfo['F_mname'] != "") {
+                    echo $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'] . ". " . $AdvisorInfo['F_suffix'];
+                  } else if ($AdvisorInfo['F_suffix'] != "") {
+                    echo $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'] . " " . substr($AdvisorInfo['F_mname'], 0, 1);
+                  } else if ($AdvisorInfo['F_mname'] != "" && $AdvisorInfo['F_suffix'] != "") {
+                    echo $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'] . " " . substr($AdvisorInfo['F_mname'], 0, 1) . ". " . $AdvisorInfo['F_suffix'];
+                  } else {
+                    echo $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'];
+                  }
                 } else {
                   echo "Advisor not yet assigned";
                 }
@@ -172,7 +190,19 @@ if (!isset($_SESSION['SR_number'])) {
                   <p class="mb-0">Full Name</p>
                 </div>
                 <div class="col-sm-9">
-                  <p class="text-muted mb-0"><?php echo $Student_Fullname ?></p>
+                  <p class="text-muted mb-0">
+                    <?php
+                    if ($studentInfo['SR_mname'] != "") {
+                      echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . ". " . $studentInfo['SR_suffix'];
+                    } else if ($studentInfo['SR_suffix'] != "") {
+                      echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1);
+                    } else if ($studentInfo['SR_mname'] != "" && $studentInfo['SR_suffix'] != "") {
+                      echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix'];
+                    } else {
+                      echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'];
+                    }
+                    ?>
+                  </p>
                 </div>
               </div>
               <hr>
