@@ -240,8 +240,14 @@ if (!isset($_SESSION['F_number'])) {
                                               <?php
                                               $getStudentName = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$advisoryClass['SR_number']}'");
                                               $studentInfo = $getStudentName->fetch_assoc();
-
-                                              echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix'];
+                                              if (!empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] != "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {
+                                                $studentName = $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ".";
+                                              } else if (empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] = "" && !empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] != "") {
+                                                $studentName = $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . $studentInfo['SR_suffix'];
+                                              } else if (empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] = "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {
+                                                $studentName = $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'];
+                                              }
+                                              echo $studentName;
                                               ?>
                                               <input type="hidden" name="SR_number" value="<?php echo $advisoryClass['SR_number'] ?>">
                                             </td>
@@ -251,13 +257,7 @@ if (!isset($_SESSION['F_number'])) {
                                               $getAttendanceNow = $mysqli->query("SELECT * FROM attendance WHERE acadYear = '{$currentSchoolYear}' AND A_date = '{$dateNow}' AND SR_number = '{$studentInfo['SR_number']}'");
                                               $attendanceData = $getAttendanceNow->fetch_assoc();
 
-                                              if (isset($attendanceData['A_time_IN']) && isset($attendanceData['A_status'])) {
-                                                echo $attendanceData['A_time_IN'] . ' - ' . $attendanceData['A_status'];
-                                              } else if (empty($attendanceData['A_time_IN']) && isset($attendanceData['A_status'])) {
-                                                echo "MANUALLY ADDED";
-                                              } else {
-                                                echo "NO DATA";
-                                              }
+                                              echo $attendanceData['A_time_IN'];
                                               ?>
                                             </td>
                                             <td>
@@ -269,6 +269,7 @@ if (!isset($_SESSION['F_number'])) {
                                                   echo '<option selected></option>';
                                                 }
                                                 ?>
+                                                <option value="PRESENT">Present</option>
                                                 <option value="LATE">Late</option>
                                                 <option value="ABSENT">Absent</option>
                                                 <option value="EXCUSED">Excused</option>

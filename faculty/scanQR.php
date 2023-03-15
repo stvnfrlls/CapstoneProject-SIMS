@@ -11,7 +11,6 @@ if (!isset($_SESSION['F_number'])) {
         $NOTtimedIN = array();
         $today = date('Y-m-d');
 
-        echo $today;
         $getNOTtimedIN = $mysqli->query("SELECT studentrecord.SR_lname, studentrecord.SR_fname, studentrecord.SR_number FROM studentrecord 
                                         LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number WHERE attendance.A_time_IN IS NULL 
                                         AND attendance.A_date != '{$today}'");

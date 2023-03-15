@@ -62,7 +62,8 @@ if (isset($_GET['Grade']) || isset($_GET['Section'])) {
     $pdf->SetAutoPageBreak(true, 20);
 
     $pdf->SetFont('Arial', 'B', 10);
-    $pdf->Cell(50, 10, 'Student Name', 1, 0, 'C');
+    $pdf->Cell(70, 10, 'Student Name', 1, 0, 'C');
+    $pdf->Cell(30, 10, 'Date', 1, 0, 'C');
     $pdf->Cell(30, 10, 'Timed In', 1, 0, 'C');
     $pdf->Cell(30, 10, 'Timed Out', 1, 0, 'C');
     $pdf->Cell(30, 10, 'Status', 1, 1, 'C');
@@ -87,7 +88,8 @@ if (isset($_GET['Grade']) || isset($_GET['Section'])) {
             } else if (empty($attendance['SR_mname']) || $attendance['SR_mname'] = "" && empty($attendance['SR_suffix']) || $attendance['SR_suffix'] = "") {
                 $studentName = $attendance['SR_lname'] .  ", " . $attendance['SR_fname'];
             }
-            $pdf->Cell(50, 10, $studentName, 1, 0, 'C');
+            $pdf->Cell(70, 10, $studentName, 1, 0, 'C');
+            $pdf->Cell(30, 10, date('m-d-Y', strtotime($attendance['A_date'])), 1, 0, 'C');
             $pdf->Cell(30, 10, $attendance['A_time_IN'], 1, 0, 'C');
             $pdf->Cell(30, 10, $attendance['A_time_OUT'], 1, 0, 'C');
             $pdf->Cell(30, 10, $attendance['A_status'], 1, 1, 'C');
