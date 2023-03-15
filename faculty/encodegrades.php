@@ -168,25 +168,27 @@ if (!isset($_SESSION['F_number'])) {
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                     <div style="text-align: right; margin-bottom: 15px">
                       <?php
-                      $checkGradeData = $mysqli->query("SELECT G_gradesQ4 FROM grades 
-                                                        WHERE G_gradesQ4 IS NOT NULL 
-                                                        AND SR_section = '{$_GET['Section']}' 
-                                                        AND G_learningArea = '{$_GET['Subject']}' 
-                                                        AND acadYear = '{$currentSchoolYear}'");
-                      if (mysqli_num_rows($checkGradeData) > 0) {
-                        echo '<button id="saveGrades" class="btn btn-primary me-2">Save Final Grades</button>';
-                      } else {
-                        echo '<button id="saveGrades" class="btn btn-primary me-2">Save</button>';
-                      }
+                      if (isset($_GET['Section']) && isset($_GET['Subject'])) {
+                        $checkGradeData = $mysqli->query("SELECT G_gradesQ4 FROM grades 
+                        WHERE G_gradesQ4 IS NOT NULL 
+                        AND SR_section = '{$_GET['Section']}' 
+                        AND G_learningArea = '{$_GET['Subject']}' 
+                        AND acadYear = '{$currentSchoolYear}'");
+                        if (mysqli_num_rows($checkGradeData) > 0) {
+                          echo '<button id="saveGrades" class="btn btn-primary me-2">Save Final Grades</button>';
+                        } else {
+                          echo '<button id="saveGrades" class="btn btn-primary me-2">Save</button>';
+                        }
 
-                      $checkFinalGrade = $mysqli->query("SELECT G_finalgrade FROM grades 
-                                                        WHERE G_gradesQ4 IS NOT NULL 
-                                                        AND G_finalgrade IS NULL 
-                                                        AND SR_section = '{$_GET['Section']}' 
-                                                        AND G_learningArea = '{$_GET['Subject']}' 
-                                                        AND acadYear = '{$currentSchoolYear}'");
-                      if (mysqli_num_rows($checkFinalGrade) > 0) {
-                        showSweetAlert('Do not forget to save the final grade', 'info');
+                        $checkFinalGrade = $mysqli->query("SELECT G_finalgrade FROM grades 
+                        WHERE G_gradesQ4 IS NOT NULL 
+                        AND G_finalgrade IS NULL 
+                        AND SR_section = '{$_GET['Section']}' 
+                        AND G_learningArea = '{$_GET['Subject']}' 
+                        AND acadYear = '{$currentSchoolYear}'");
+                        if (mysqli_num_rows($checkFinalGrade) > 0) {
+                          showSweetAlert('Do not forget to save the final grade', 'info');
+                        }
                       }
                       ?>
                       <a href="" class="btn btn-light">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a>
