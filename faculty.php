@@ -74,7 +74,13 @@ require_once __DIR__ . "/assets/php/server.php";
                         <a href="student/dailyAttendance.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Attendance</a>
                         <a href="student/reminders.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Reminders</a>
                         <a href="student/announcement.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">School Announcements</a>
-                        <a href="auth/login.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Login</a>
+                        <?php
+                        if (isset($_SESSION['SR_number']) || isset($_SESSION['F_number']) || isset($_SESSION['AD_number'])) {
+                            echo '<a href="auth/logout.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Logout</a>';
+                        } else {
+                            echo '<a href="auth/login.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Login</a>';
+                        }
+                        ?>
                     </div>
                 </div>
                 <a href="faculty.php" class="nav-item nav-link" style="color: white; font-size: 14px;">Faculty Directory</a>

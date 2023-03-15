@@ -80,7 +80,14 @@ if (isset($_GET['Grade']) || isset($_GET['Section'])) {
     $pdf->SetFont('Arial', '', 9);
     if (mysqli_num_rows($getAttendance) > 0) {
         while ($attendance = $getAttendance->fetch_assoc()) {
-            $pdf->Cell(50, 10, $attendance['SR_lname'] .  ", " . $attendance['SR_fname'] . " " . substr($attendance['SR_mname'], 0, 1) . ". " . $attendance['SR_suffix'], 1, 0, 'C');
+            if (!empty($attendance['SR_mname']) || $attendance['SR_mname'] != "" && empty($attendance['SR_suffix']) || $attendance['SR_suffix'] = "") {
+                $studentName = $attendance['SR_lname'] .  ", " . $attendance['SR_fname'] . " " . substr($attendance['SR_mname'], 0, 1) . ".";
+            } else if (empty($attendance['SR_mname']) || $attendance['SR_mname'] = "" && !empty($attendance['SR_suffix']) || $attendance['SR_suffix'] != "") {
+                $studentName = $attendance['SR_lname'] .  ", " . $attendance['SR_fname'] . " " . $attendance['SR_suffix'];
+            } else if (empty($attendance['SR_mname']) || $attendance['SR_mname'] = "" && empty($attendance['SR_suffix']) || $attendance['SR_suffix'] = "") {
+                $studentName = $attendance['SR_lname'] .  ", " . $attendance['SR_fname'];
+            }
+            $pdf->Cell(50, 10, $studentName, 1, 0, 'C');
             $pdf->Cell(30, 10, $attendance['A_time_IN'], 1, 0, 'C');
             $pdf->Cell(30, 10, $attendance['A_time_OUT'], 1, 0, 'C');
             $pdf->Cell(30, 10, $attendance['A_status'], 1, 1, 'C');

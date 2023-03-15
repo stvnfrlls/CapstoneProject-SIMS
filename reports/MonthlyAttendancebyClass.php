@@ -112,7 +112,14 @@ if (isset($_GET['month']) && isset($_GET['Grade']) && isset($_GET['Section'])) {
             $TARDYvalue = $TARDY->fetch_assoc();
 
             $pdf->SetFont('Arial', '', 10);
-            $pdf->Cell(70, 10, $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'] . " " . substr($AttendanceData['SR_mname'], 0, 1) . ". " . $AttendanceData['SR_suffix'], 1, 0, 'C');
+            if (!empty($AttendanceData['SR_mname']) || $AttendanceData['SR_mname'] != "" && empty($AttendanceData['SR_suffix']) || $AttendanceData['SR_suffix'] = "") {
+                $Student_Fullname = $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'] . " " . substr($AttendanceData['SR_mname'], 0, 1) . ".";
+            } else if (empty($AttendanceData['SR_mname']) || $AttendanceData['SR_mname'] = "" && !empty($AttendanceData['SR_suffix']) || $AttendanceData['SR_suffix'] != "") {
+                $Student_Fullname = $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'] . " " . $AttendanceData['SR_suffix'];
+            } else if (empty($AttendanceData['SR_mname']) || $AttendanceData['SR_mname'] = "" && empty($AttendanceData['SR_suffix']) || $AttendanceData['SR_suffix'] = "") {
+                $Student_Fullname = $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'];
+            }
+            $pdf->Cell(70, 10, $Student_Fullname, 1, 0, 'C');
             $pdf->Cell(30, 10, $count_weekdays, 1, 0, 'C');
             $pdf->Cell(30, 10, $PRESENTvalue['COUNT(A_time_IN)'], 1, 0, 'C');
             $pdf->Cell(30, 10, $ABSENTvalue['COUNT(A_time_IN)'], 1, 0, 'C');

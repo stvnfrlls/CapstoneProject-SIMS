@@ -57,13 +57,27 @@ if (isset($_GET['ID'])) {
     $getstudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$_GET['ID']}'");
     $studentInfo = $getstudentInfo->fetch_assoc();
 
-    $Student_Fullname = $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix'];
+    if (!empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] != "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {
+        $Student_Fullname = $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ".";
+    } else if (empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] = "" && !empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] != "") {
+        $Student_Fullname = $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . $studentInfo['SR_suffix'];
+    } else if (empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] = "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {
+        $Student_Fullname = $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'];
+    }
 
     $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_name = '{$studentInfo['SR_section']}'");
     $SectionInfo = $getSectionInfo->fetch_assoc();
 
     $getAdvisorInfo = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$SectionInfo['S_adviser']}'");
     $AdvisorInfo = $getAdvisorInfo->fetch_assoc();
+
+    if (!empty($AdvisorInfo['F_mname']) || $AdvisorInfo['F_mname'] != "" && empty($AdvisorInfo['F_suffix']) || $AdvisorInfo['F_suffix'] = "") {
+        $AdviserName = $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'] . " " . substr($AdvisorInfo['F_mname'], 0, 1) . ".";
+    } else if (empty($AdvisorInfo['F_mname']) || $AdvisorInfo['F_mname'] = "" && !empty($AdvisorInfo['F_suffix']) || $AdvisorInfo['F_suffix'] != "") {
+        $AdviserName = $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'] . " " . $AdvisorInfo['F_suffix'];
+    } else if (empty($AdvisorInfo['F_mname']) || $AdvisorInfo['F_mname'] = "" && empty($AdvisorInfo['F_suffix']) || $AdvisorInfo['F_suffix'] = "") {
+        $AdviserName = $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'];
+    }
 
     $pdf = new PDF('P', 'mm', 'A4');
     $pdf->AddPage();
@@ -101,7 +115,7 @@ if (isset($_GET['ID'])) {
     $pdf->Cell(14, 10, 'Adviser:');
 
     $pdf->SetFont('Arial', '', 9);
-    $pdf->Cell(55, 8, $AdvisorInfo['F_lname'] .  ", " . $AdvisorInfo['F_fname'] . " " . substr($AdvisorInfo['F_mname'], 0, 1) . ". " . $AdvisorInfo['F_suffix'], 'B', '', 'C');
+    $pdf->Cell(55, 8, $AdviserName, 'B', '', 'C');
 
     $pdf->SetFont('Arial', 'B', 9);
     $pdf->Cell(10, 10, 'LRN:');
