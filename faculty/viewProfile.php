@@ -80,15 +80,15 @@ if (!isset($_SESSION['F_number'])) {
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../faculty/createReminder.php">
-              <i class=""></i>
-              <span class="menu-title">Create Reminders</span>
-            </a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="../faculty/reminders.php">
               <i class=""></i>
               <span class="menu-title">Reminders</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../faculty/announcement.php">
+              <i class=""></i>
+              <span class="menu-title">School Announcements</span>
             </a>
           </li>
           <!-- line 2 -->
@@ -154,7 +154,7 @@ if (!isset($_SESSION['F_number'])) {
                 <div class="tab-content tab-content-basic">
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                     <div class="row">
-                      <div class="col-lg-3 col-sm-12">
+                      <div class="col-lg-3 col-sm-12" style="padding-bottom: 20px;">
                         <div class="card">
                           <div class="card-body">
                             <h4 class="card-title">Profile Picture</h4>
@@ -181,7 +181,7 @@ if (!isset($_SESSION['F_number'])) {
                             <h4 class="card-title">Personal Information</h4>
                             <form class="form-sample" action="confirmfaculty.php" method="POST">
                               <div class="row" style="padding-bottom: 15px;">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                   <label class="col-sm-12 col-form-label">Last Name</label>
                                   <div class="col-sm-12">
                                     <input type="text" class="form-control" name="F_lname" value="<?php echo $facultyData['F_lname']; ?>" required readonly>
@@ -202,7 +202,7 @@ if (!isset($_SESSION['F_number'])) {
                                   </div>
                                 </div>
 
-                                <div class="col-md-1">
+                                <div class="col-md-2">
                                   <label class="col-sm-12 col-form-label">Suffix</label>
                                   <div class="col-sm-12">
                                     <input type="text" class="form-control" name="F_suffix" value="<?php echo $facultyData['F_suffix']; ?>" readonly>
@@ -212,7 +212,7 @@ if (!isset($_SESSION['F_number'])) {
 
                                 <div class="row" style="padding-bottom: 15px;">
 
-                                  <div class="col-md-4">
+                                  <div class="col-md-4 col-sm-12">
                                     <label class="col-sm-12 col-form-label">Age</label>
                                     <div class="col-sm-12">
                                       <input type="number" class="form-control" name="F_age" value="<?php echo $facultyData['F_age']; ?>" required readonly>
