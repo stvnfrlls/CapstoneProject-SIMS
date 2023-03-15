@@ -318,7 +318,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                             <canvas class="my-auto" id="doughnutChart" height="252"></canvas>
                                                             <div id="doughnut-chart-legend" class="mt-5 text-center"></div>
                                                         </div>
-                                                        <div class="row" style="margin: auto; padding-top:15px;">
+                                                        <div class="row" style="padding-top:15px;">
                                                             <style>
                                                                 table,
                                                                 th,
@@ -326,6 +326,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                     border: 1px solid white;
                                                                     border-collapse: collapse;
                                                                     margin: auto;
+                                                                    font-size: 12px;
                                                                 }
 
                                                                 th,
@@ -728,13 +729,13 @@ if (!isset($_SESSION['AD_number'])) {
 
             // These labels appear in the legend and in the tooltips when hovering different arcs
             labels: [
-                'KINDER',
-                'GR1',
-                'GR2',
-                'GR3',
-                'GR4',
-                'GR5',
-                'GR6',
+                'K',
+                'G1',
+                'G2',
+                'G3',
+                'G4',
+                'G5',
+                'G6',
             ]
         };
         var doughnutPieOptions = {
