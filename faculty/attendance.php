@@ -40,10 +40,11 @@ if (!isset($_SESSION['F_number'])) {
   <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Template Stylesheet -->
-  <link href="../assets/css/style.css" rel="stylesheet">
+  <link href="../assets/css/dashboard-admin.css" rel="stylesheet">
   <link href="../assets/css/form-style.css" rel="stylesheet">
   <link href="../assets/css/admin/style.css" rel="stylesheet">
-  <link href="../assets/css/admin/materialdesignicons.min.css" rel="stylesheet">
+  <link href="../assets/css/admin/style.css.map" rel="stylesheet">
+
 
 </head>
 
@@ -145,6 +146,7 @@ if (!isset($_SESSION['F_number'])) {
                 <div class="d-sm-flex align-items-center justify-content-between">
                   <div class="section-title text-center position-relative pb-3 mb-3 mx-auto">
                     <h2 class="fw-bold text-primary text-uppercase">Subject Attendance Report</h2>
+                    <p>DATE: <?php echo date('D M-d-Y') ?></p>
                   </div>
                 </div>
                 <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
@@ -199,110 +201,112 @@ if (!isset($_SESSION['F_number'])) {
                         <div class="col-lg-12 d-flex flex-column">
                           <div class="row flex-grow">
                             <div class="col-12 grid-margind">
-                              <div class="">
-                                <div class="table-responsive">
-                                  <table class="table">
-                                    <thead>
-                                      <tr>
-                                        <th>No.</th>
-                                        <th>Student Name</th>
-                                        <th>Date</th>
-                                        <th>Time</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <style>
-                                        input[type='number'] {
-                                          width: 50px;
-                                        }
+                              <div class="card">
+                                <div class="card-body">
+                                  <div class="table-responsive">
+                                    <table class="table table-striped">
+                                      <thead>
+                                        <tr>
+                                          <th>No.</th>
+                                          <th>Student Name</th>
+                                          <th>Date</th>
+                                          <th>Time</th>
+                                          <th>Status</th>
+                                          <th>Action</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <style>
+                                          input[type='number'] {
+                                            width: 50px;
+                                          }
 
-                                        /* Chrome, Safari, Edge, Opera */
-                                        input::-webkit-outer-spin-button,
-                                        input::-webkit-inner-spin-button {
-                                          -webkit-appearance: none;
-                                          margin: 0;
-                                        }
+                                          /* Chrome, Safari, Edge, Opera */
+                                          input::-webkit-outer-spin-button,
+                                          input::-webkit-inner-spin-button {
+                                            -webkit-appearance: none;
+                                            margin: 0;
+                                          }
 
-                                        .tabledata {
-                                          border: 1px solid #ffffff;
-                                          text-align: center;
-                                          vertical-align: middle;
-                                          height: 30px;
-                                          color: #000000;
-                                        }
-                                      </style>
-                                      <?php
-                                      $rowCount = 1;
-                                      if (isset($_GET['section']) && isset($_GET['subject'])) {
-                                        $getclasslistData = $mysqli->query("SELECT SR_number, SR_grade, SR_section FROM classlist 
+                                          .tabledata {
+                                            border: 1px solid #ffffff;
+                                            text-align: center;
+                                            vertical-align: middle;
+                                            height: 30px;
+                                            color: #000000;
+                                          }
+                                        </style>
+                                        <?php
+                                        $rowCount = 1;
+                                        if (isset($_GET['section']) && isset($_GET['subject'])) {
+                                          $getclasslistData = $mysqli->query("SELECT SR_number, SR_grade, SR_section FROM classlist 
                                                                           WHERE acadYear = '{$currentSchoolYear}' 
                                                                           AND F_number = '{$_SESSION['F_number']}'
                                                                           AND SR_section = '{$_GET['section']}'");
-                                        if (mysqli_num_rows($getclasslistData) > 0) {
-                                          while ($classlist = $getclasslistData->fetch_assoc()) { ?>
-                                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="attendanceReportForm">
-                                              <tr>
-                                                <td><?php echo $rowCount; ?></td>
-                                                <td>
-                                                  <?php
-                                                  $getStudentName = $mysqli->query("SELECT SR_lname, SR_fname, SR_mname, SR_suffix FROM studentrecord 
+                                          if (mysqli_num_rows($getclasslistData) > 0) {
+                                            while ($classlist = $getclasslistData->fetch_assoc()) { ?>
+                                              <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="attendanceReportForm">
+                                                <tr>
+                                                  <td><?php echo $rowCount; ?></td>
+                                                  <td>
+                                                    <?php
+                                                    $getStudentName = $mysqli->query("SELECT SR_lname, SR_fname, SR_mname, SR_suffix FROM studentrecord 
                                                                                   WHERE SR_number = '{$classlist['SR_number']}'");
-                                                  $StudentName = $getStudentName->fetch_assoc();
+                                                    $StudentName = $getStudentName->fetch_assoc();
 
-                                                  echo $StudentName['SR_lname'] .  ", " . $StudentName['SR_fname'] . " " . substr($StudentName['SR_mname'], 0, 1) . ". " . $StudentName['SR_suffix'];
-                                                  ?>
-                                                  <input type="hidden" name="SR_number" value="<?php echo $classlist['SR_number'] ?>">
-                                                  <input type="hidden" name="SR_grade" value="<?php echo $classlist['SR_grade'] ?>">
-                                                  <input type="hidden" name="SR_section" value="<?php echo $classlist['SR_section'] ?>">
-                                                </td>
-                                                <?php
-
-                                                ?>
-                                                <td><input type="date" class="form-control" name="RP_reportDate" required></td>
-                                                <td>
+                                                    echo $StudentName['SR_lname'] .  ", " . $StudentName['SR_fname'] . " " . substr($StudentName['SR_mname'], 0, 1) . ". " . $StudentName['SR_suffix'];
+                                                    ?>
+                                                    <input type="hidden" name="SR_number" value="<?php echo $classlist['SR_number'] ?>">
+                                                    <input type="hidden" name="SR_grade" value="<?php echo $classlist['SR_grade'] ?>">
+                                                    <input type="hidden" name="SR_section" value="<?php echo $classlist['SR_section'] ?>">
+                                                  </td>
                                                   <?php
-                                                  $getSubjectStartTime = $mysqli->query("SELECT WS_start_time FROM workschedule 
+
+                                                  ?>
+                                                  <td><input type="date" class="form-control" name="RP_reportDate" required></td>
+                                                  <td>
+                                                    <?php
+                                                    $getSubjectStartTime = $mysqli->query("SELECT WS_start_time FROM workschedule 
                                                                                         WHERE acadYear = '{$currentSchoolYear}'
                                                                                         AND S_subject = '{$_GET['subject']}'
                                                                                         AND F_number = '{$_SESSION['F_number']}'");
-                                                  $SubjectStartTime = $getSubjectStartTime->fetch_assoc();
-                                                  ?>
-                                                  <input type="time" class="form-control" name="RP_reportTime" value="<?php echo $SubjectStartTime['WS_start_time'] ?>" readonly>
-                                                </td>
-                                                <td>
-                                                  <select name="RP_attendanceReport" class="form-select" required>
-                                                    <option selected></option>
-                                                    <option value="LATE">Late</option>
-                                                    <option value="ABSENT">Absent</option>
-                                                    <option value="EXCUSED">Excused</option>
-                                                    <option value="CUTTING">Skip Class</option>
-                                                  </select>
-                                                </td>
-                                                <td>
-                                                  <button type="submit" class="btn btn-primary" name="attendanceReportButton">SUBMIT</button>
-                                                </td>
-                                              </tr>
-                                            </form>
+                                                    $SubjectStartTime = $getSubjectStartTime->fetch_assoc();
+                                                    ?>
+                                                    <input type="time" class="form-control" name="RP_reportTime" value="<?php echo $SubjectStartTime['WS_start_time'] ?>" readonly>
+                                                  </td>
+                                                  <td>
+                                                    <select name="RP_attendanceReport" class="form-select" required>
+                                                      <option selected></option>
+                                                      <option value="LATE">Late</option>
+                                                      <option value="ABSENT">Absent</option>
+                                                      <option value="EXCUSED">Excused</option>
+                                                      <option value="CUTTING">Skip Class</option>
+                                                    </select>
+                                                  </td>
+                                                  <td>
+                                                    <button type="submit" class="btn btn-primary" name="attendanceReportButton">SUBMIT</button>
+                                                  </td>
+                                                </tr>
+                                              </form>
+                                            <?php
+                                              $rowCount++;
+                                            }
+                                          } else { ?>
+                                            <tr>
+                                              <td colspan="6" style="text-align: center;">No data available</td>
+                                            </tr>
                                           <?php
-                                            $rowCount++;
                                           }
                                         } else { ?>
                                           <tr>
-                                            <td colspan="6">No data available</td>
+                                            <td colspan="6" style="text-align: center;">Select grade and section first</td>
                                           </tr>
                                         <?php
                                         }
-                                      } else { ?>
-                                        <tr>
-                                          <td colspan="6">Select grade and section first</td>
-                                        </tr>
-                                      <?php
-                                      }
-                                      ?>
-                                    </tbody>
-                                  </table>
+                                        ?>
+                                      </tbody>
+                                    </table>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -337,7 +341,7 @@ if (!isset($_SESSION['F_number'])) {
     </div>
     <!-- Footer End -->
 
- 
+
     <!-- Template Javascript -->
     <script src="../assets/js/main.js"></script>
 

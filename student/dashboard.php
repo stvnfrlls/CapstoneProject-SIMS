@@ -319,6 +319,7 @@ if (!isset($_SESSION['SR_number'])) {
                       </div>
                     </div>
                   </div>
+
                   <div class="row">
                     <div class="col-lg-6 offset-lg-3" style="margin-top: 30px;">
                       <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
@@ -378,10 +379,17 @@ if (!isset($_SESSION['SR_number'])) {
                       <?php
                       }
                     } else { ?>
-                      <div class="col mb-3">
+                      <div class="col-lg-6 col-sm-12 mb-3 text-center" style="margin: auto;">
                         <div class="card">
-                          <div class="card-body text-center">
-                            <p>No Reminder Yet</p>
+                          <div class="card-body">
+                            <div class="row">
+                              <div class="col-8" >
+                                <p style="margin-bottom: 0px; margin-top: 12px">There are no posted reminders at the moment. If there are any new ones, you will be notified via email. Thank you.</p>
+                              </div>
+                              <div class="col-4">
+                                <img src="../assets/img/mailbox.png" style="width: 80px; height: 100px;">
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>

@@ -69,10 +69,10 @@ if (!isset($_SESSION['F_number'])) {
   <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Template Stylesheet -->
-  <link href="../assets/css/style.css" rel="stylesheet">
+  <link href="../assets/css/dashboard-admin.css" rel="stylesheet">
   <link href="../assets/css/form-style.css" rel="stylesheet">
   <link href="../assets/css/admin/style.css" rel="stylesheet">
-  <link href="../assets/css/admin/materialdesignicons.min.css" rel="stylesheet">
+  <link href="../assets/css/admin/style.css.map" rel="stylesheet">
 
 </head>
 
@@ -192,97 +192,101 @@ if (!isset($_SESSION['F_number'])) {
                     <div class="row">
                       <div class="col-lg-12 d-flex flex-column">
                         <div class="row flex-grow">
-                          <div class="col-12 grid-margind">
-                            <div class="table-responsive">
-                              <table class="table">
-                                <thead>
-                                  <tr>
-                                    <th>No.</th>
-                                    <th>Student Name</th>
-                                    <th>Time In</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <style>
-                                    input[type='number'] {
-                                      width: 50px;
-                                    }
+                          <div class="col-12 grid-margin">
+                            <div class="card">
+                              <div class="card-body">
+                                <div class="table-responsive">
+                                  <table class="table table-striped">
+                                    <thead>
+                                      <tr>
+                                        <th>No.</th>
+                                        <th>Student Name</th>
+                                        <th>Time In</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <style>
+                                        input[type='number'] {
+                                          width: 50px;
+                                        }
 
-                                    /* Chrome, Safari, Edge, Opera */
-                                    input::-webkit-outer-spin-button,
-                                    input::-webkit-inner-spin-button {
-                                      -webkit-appearance: none;
-                                      margin: 0;
-                                    }
+                                        /* Chrome, Safari, Edge, Opera */
+                                        input::-webkit-outer-spin-button,
+                                        input::-webkit-inner-spin-button {
+                                          -webkit-appearance: none;
+                                          margin: 0;
+                                        }
 
-                                    .tabledata {
-                                      border: 1px solid #ffffff;
-                                      text-align: center;
-                                      vertical-align: middle;
-                                      height: 30px;
-                                      color: #000000;
-                                    }
-                                  </style>
-                                  <?php
-                                  $getAdvisoryClassData = $mysqli->query("SELECT SR_number, SR_grade, SR_section FROM classlist 
+                                        .tabledata {
+                                          border: 1px solid #ffffff;
+                                          text-align: center;
+                                          vertical-align: middle;
+                                          height: 30px;
+                                          color: #000000;
+                                        }
+                                      </style>
+                                      <?php
+                                      $getAdvisoryClassData = $mysqli->query("SELECT SR_number, SR_grade, SR_section FROM classlist 
                                                                               WHERE F_number = '{$_SESSION['F_number']}' 
                                                                               AND acadYear = '{$currentSchoolYear}'");
-                                  $row = 1;
-                                  while ($advisoryClass = $getAdvisoryClassData->fetch_assoc()) { ?>
-                                    <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
-                                      <tr>
-                                        <td><?php echo $row ?></td>
-                                        <td>
-                                          <?php
-                                          $getStudentName = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$advisoryClass['SR_number']}'");
-                                          $studentInfo = $getStudentName->fetch_assoc();
+                                      $row = 1;
+                                      while ($advisoryClass = $getAdvisoryClassData->fetch_assoc()) { ?>
+                                        <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">
+                                          <tr>
+                                            <td><?php echo $row ?></td>
+                                            <td>
+                                              <?php
+                                              $getStudentName = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$advisoryClass['SR_number']}'");
+                                              $studentInfo = $getStudentName->fetch_assoc();
 
-                                          echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix'];
-                                          ?>
-                                          <input type="hidden" name="SR_number" value="<?php echo $advisoryClass['SR_number'] ?>">
-                                        </td>
-                                        <td>
-                                          <?php
-                                          $dateNow = date('Y-m-d');
-                                          $getAttendanceNow = $mysqli->query("SELECT * FROM attendance WHERE acadYear = '{$currentSchoolYear}' AND A_date = '{$dateNow}' AND SR_number = '{$studentInfo['SR_number']}'");
-                                          $attendanceData = $getAttendanceNow->fetch_assoc();
+                                              echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix'];
+                                              ?>
+                                              <input type="hidden" name="SR_number" value="<?php echo $advisoryClass['SR_number'] ?>">
+                                            </td>
+                                            <td>
+                                              <?php
+                                              $dateNow = date('Y-m-d');
+                                              $getAttendanceNow = $mysqli->query("SELECT * FROM attendance WHERE acadYear = '{$currentSchoolYear}' AND A_date = '{$dateNow}' AND SR_number = '{$studentInfo['SR_number']}'");
+                                              $attendanceData = $getAttendanceNow->fetch_assoc();
 
-                                          if (isset($attendanceData['A_time_IN']) && isset($attendanceData['A_status'])) {
-                                            echo $attendanceData['A_time_IN'] . ' - ' . $attendanceData['A_status'];
-                                          } else if (empty($attendanceData['A_time_IN']) && isset($attendanceData['A_status'])) {
-                                            echo "MANUALLY ADDED";
-                                          } else {
-                                            echo "NO DATA";
-                                          }
-                                          ?>
-                                        </td>
-                                        <td>
-                                          <select class="form-select" name="AttendanceStatus" required>
-                                            <?php
-                                            if (isset($attendanceData['A_status'])) {
-                                              echo '<option selected value=' . $attendanceData['A_status'] . '>' . $attendanceData['A_status'] . '</option>';
-                                            } else {
-                                              echo '<option selected></option>';
-                                            }
-                                            ?>
-                                            <option value="LATE">Late</option>
-                                            <option value="ABSENT">Absent</option>
-                                            <option value="EXCUSED">Excused</option>
-                                            <option value="CUTTING">Skip Class</option>
-                                          </select>
-                                        </td>
-                                        <td><button class="btn btn-primary" name="updateAttendanceStatus">SET</button></td>
-                                      </tr>
-                                    </form>
-                                  <?php
-                                    $row++;
-                                  }
-                                  ?>
+                                              if (isset($attendanceData['A_time_IN']) && isset($attendanceData['A_status'])) {
+                                                echo $attendanceData['A_time_IN'] . ' - ' . $attendanceData['A_status'];
+                                              } else if (empty($attendanceData['A_time_IN']) && isset($attendanceData['A_status'])) {
+                                                echo "MANUALLY ADDED";
+                                              } else {
+                                                echo "NO DATA";
+                                              }
+                                              ?>
+                                            </td>
+                                            <td>
+                                              <select class="form-select" name="AttendanceStatus" required>
+                                                <?php
+                                                if (isset($attendanceData['A_status'])) {
+                                                  echo '<option selected value=' . $attendanceData['A_status'] . '>' . $attendanceData['A_status'] . '</option>';
+                                                } else {
+                                                  echo '<option selected></option>';
+                                                }
+                                                ?>
+                                                <option value="LATE">Late</option>
+                                                <option value="ABSENT">Absent</option>
+                                                <option value="EXCUSED">Excused</option>
+                                                <option value="CUTTING">Skip Class</option>
+                                              </select>
+                                            </td>
+                                            <td><button class="btn btn-primary" name="updateAttendanceStatus">SET</button></td>
+                                          </tr>
+                                        </form>
+                                      <?php
+                                        $row++;
+                                      }
+                                      ?>
 
-                                </tbody>
-                              </table>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -315,7 +319,7 @@ if (!isset($_SESSION['F_number'])) {
     </div>
     <!-- Footer End -->
 
- 
+
 
     <!-- Template Javascript -->
     <script src="../assets/js/main.js"></script>

@@ -149,8 +149,8 @@ if (!isset($_SESSION['F_number'])) {
                                 </div>
                                 <section class="post-content-area" style="background-color: #f4f5f7;">
                                     <div class="container">
-                                        <div class="row col-lg-10">
-                                            <div class="col-lg-10 posts-list" style="margin-left: auto; padding-top: 50px;">
+                                        <div class="row col-lg-12">
+                                            <div class="col-lg-9 posts-list" style="margin: auto; padding-top: 50px;">
                                                 <?php
                                                 $getreminders = $mysqli->query("SELECT * FROM reminders WHERE author = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
                                                 if (mysqli_num_rows($getreminders) > 0) {
@@ -162,8 +162,8 @@ if (!isset($_SESSION['F_number'])) {
                                                                     $getAuthorName = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$reminder['author']}'");
                                                                     $authorName = $getAuthorName->fetch_assoc();
                                                                     ?>
-                                                                    <p class="user-name col-lg-12 col-md-12 col-6"><span class="far fa-user" style="color: #c02628;"> </span><a href="#"> <?php echo $authorName['F_lname'] .  ", " . $authorName['F_fname'] . " " . substr($authorName['F_mname'], 0, 1) ?></a> </p>
-                                                                    <p class="date col-lg-12 col-md-12 col-6"><span class="fa fa-calendar" style="color: #c02628;"> </span><a> <?php echo $reminder['date_posted'] ?></a> </p>
+                                                                    <p class="user-name col-lg-12 col-md-12"><span class="far fa-user" style="color: #c02628;"> </span><a href="#"> <?php echo $authorName['F_lname'] .  ", " . $authorName['F_fname'] . " " . substr($authorName['F_mname'], 0, 1) ?></a> </p>
+                                                                    <p class="date col-lg-12 col-md-12"><span class="fa fa-calendar" style="color: #c02628;"> </span><a> <?php echo $reminder['date_posted'] ?></a> </p>
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-9">
@@ -181,15 +181,14 @@ if (!isset($_SESSION['F_number'])) {
                                                     <?php
                                                     }
                                                 } else { ?>
-                                                    <div class="single-post row">
-                                                        <div class="col">
-                                                            <div class="card">
-                                                                <div class="card-body">
-                                                                    <div class="text-center">
-                                                                        <h3>No reminders yet</h3>
-                                                                    </div>
-                                                                </div>
+                                                    <div class="single-post">
+                                                        <div class="col-6" style="margin:auto">
+
+                                                            <div style="text-align: center;">
+                                                                <img src="../assets/img/mailbox.png" style="width: 100px; height: 80px;" style="text-align:center;">
+                                                                <p>There are currently no reminders posted. If you wish to create one, click the <span><a href="../faculty/createReminder.php">create</a></span> button at the upper right side. Thank you.</p>
                                                             </div>
+
                                                         </div>
                                                     </div>
                                                 <?php }

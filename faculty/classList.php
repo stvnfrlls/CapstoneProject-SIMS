@@ -45,9 +45,10 @@ if (!isset($_SESSION['F_number'])) {
   <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Template Stylesheet -->
-  <link href="../assets/css/style.css" rel="stylesheet">
+  <link href="../assets/css/dashboard-admin.css" rel="stylesheet">
   <link href="../assets/css/form-style.css" rel="stylesheet">
   <link href="../assets/css/admin/style.css" rel="stylesheet">
+  <link href="../assets/css/admin/style.css.map" rel="stylesheet">
 
 </head>
 
@@ -155,74 +156,72 @@ if (!isset($_SESSION['F_number'])) {
                   <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                     <div class="row">
                       <div class="col-12 grid-margin">
-                        <div class="card">
-                          <div class="card-body">
-                            <div style="margin-bottom: 30px;">
-                              <div class="btn-group">
-                                <div>
-                                  <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
-                                    <?php
-                                    if (isset($_GET['SY'])) {
-                                      echo "School Year: " . $_GET['SY'];
-                                    } else {
-                                      echo "School Year: " . $currentSchoolYear;
-                                    }
-                                    ?>
-                                    <i class="fa fa-caret-down"></i>
-                                  </button>
-                                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <?php
-                                    $getAcadYears = $mysqli->query("SELECT DISTINCT acadYear FROM classlist WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
-                                    while ($acadYears = $getAcadYears->fetch_assoc()) {
-                                      if ($acadYears['acadYear'] != $currentSchoolYear) {
-                                        echo '<a class="dropdown-item" href="classList.php?SY=' . $acadYears['acadYear'] . '">' . $acadYears['acadYear'] . '</a>';
-                                      }
-                                    }
-                                    ?>
-                                  </div>
-                                </div>
-                              </div>
-                              <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                        <div style="margin-bottom: 30px;">
+                          <div class="btn-group">
+                            <div>
+                              <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
                                 <?php
-                                if (isset($_GET['Grade']) && isset($_GET['Section'])) {
-                                  if ($_GET['Grade'] == 'KINDER') {
-                                    echo $_GET['Grade'] . " - " . $_GET['Section'];
-                                  } else {
-                                    echo "Grade " . $_GET['Grade'] . " - " . $_GET['Section'];
-                                  }
+                                if (isset($_GET['SY'])) {
+                                  echo "School Year: " . $_GET['SY'];
                                 } else {
-                                  echo "Grade and Section ";
+                                  echo "School Year: " . $currentSchoolYear;
                                 }
                                 ?>
                                 <i class="fa fa-caret-down"></i>
                               </button>
-                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                 <?php
-                                $rowCount = 1;
-                                $GradeSectionRowCount = sizeof($array_GradeSection);
-                                while ($rowCount != $GradeSectionRowCount) { ?>
-                                  <a class="dropdown-item" href="<?php echo "classList.php?Grade=" . $array_GradeSection[$rowCount]['SR_grade'] . "&Section=" . $array_GradeSection[$rowCount]['SR_section']; ?>">
-                                    <?php
-                                    if ($array_GradeSection[$rowCount]['SR_grade'] == "KINDER") {
-                                      echo $array_GradeSection[$rowCount]['SR_grade'] . "-" . $array_GradeSection[$rowCount]['SR_section'];
-                                    } else {
-                                      echo "Grade " . $array_GradeSection[$rowCount]['SR_grade'] . "-" . $array_GradeSection[$rowCount]['SR_section'];
-                                    }
-
-                                    ?>
-                                  </a>
-                                <?php $rowCount++;
+                                $getAcadYears = $mysqli->query("SELECT DISTINCT acadYear FROM classlist WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
+                                while ($acadYears = $getAcadYears->fetch_assoc()) {
+                                  if ($acadYears['acadYear'] != $currentSchoolYear) {
+                                    echo '<a class="dropdown-item" href="classList.php?SY=' . $acadYears['acadYear'] . '">' . $acadYears['acadYear'] . '</a>';
+                                  }
                                 }
                                 ?>
                               </div>
-                              <div class="btn-group" style="float: right;">
-                                <a href="" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
-                              </div>
                             </div>
+                          </div>
+                          <button class="btn btn-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                            <?php
+                            if (isset($_GET['Grade']) && isset($_GET['Section'])) {
+                              if ($_GET['Grade'] == 'KINDER') {
+                                echo $_GET['Grade'] . " - " . $_GET['Section'];
+                              } else {
+                                echo "Grade " . $_GET['Grade'] . " - " . $_GET['Section'];
+                              }
+                            } else {
+                              echo "Grade and Section ";
+                            }
+                            ?>
+                            <i class="fa fa-caret-down"></i>
+                          </button>
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                            <?php
+                            $rowCount = 1;
+                            $GradeSectionRowCount = sizeof($array_GradeSection);
+                            while ($rowCount != $GradeSectionRowCount) { ?>
+                              <a class="dropdown-item" href="<?php echo "classList.php?Grade=" . $array_GradeSection[$rowCount]['SR_grade'] . "&Section=" . $array_GradeSection[$rowCount]['SR_section']; ?>">
+                                <?php
+                                if ($array_GradeSection[$rowCount]['SR_grade'] == "KINDER") {
+                                  echo $array_GradeSection[$rowCount]['SR_grade'] . "-" . $array_GradeSection[$rowCount]['SR_section'];
+                                } else {
+                                  echo "Grade " . $array_GradeSection[$rowCount]['SR_grade'] . "-" . $array_GradeSection[$rowCount]['SR_section'];
+                                }
 
-
+                                ?>
+                              </a>
+                            <?php $rowCount++;
+                            }
+                            ?>
+                          </div>
+                          <div class="btn-group" style="float: right;">
+                            <a href="" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a>
+                          </div>
+                        </div>
+                        <div class="card">
+                          <div class="card-body">
                             <div class="table-responsive">
-                              <table class="table table-striped table-class">
+                              <table class="table table-striped text-center">
                                 <thead>
                                   <tr>
                                     <th scope="col">No.</th>
@@ -314,7 +313,7 @@ if (!isset($_SESSION['F_number'])) {
     </div>
   </div>
   <!-- Footer End -->
- 
+
 
   <!-- Template Javascript -->
   <script src="../assets/js/main.js"></script>

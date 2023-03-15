@@ -22,7 +22,7 @@ if (!isset($_SESSION['F_number'])) {
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link href="../assets/img/favicon.png" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,10 +42,10 @@ if (!isset($_SESSION['F_number'])) {
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="../assets/css/style.css" rel="stylesheet">
+    <link href="../assets/css/dashboard-admin.css" rel="stylesheet">
     <link href="../assets/css/form-style.css" rel="stylesheet">
     <link href="../assets/css/admin/style.css" rel="stylesheet">
-    <link href="../assets/css/admin/materialdesignicons.min.css" rel="stylesheet">
+    <link href="../assets/css/admin/style.css.map" rel="stylesheet">
 
 </head>
 
@@ -193,7 +193,7 @@ if (!isset($_SESSION['F_number'])) {
                                                     </div>
                                                     <div class="btn-group">
                                                         <div>
-                                                            <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                            <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
                                                                 <?php
                                                                 if (isset($_GET['Grade']) && isset($_GET['Section'])) {
                                                                     if ($_GET['Grade'] == "KINDER") {
@@ -230,7 +230,7 @@ if (!isset($_SESSION['F_number'])) {
                                                     <?php
                                                     if (isset($_GET['month']) && isset($_GET['Grade']) && isset($_GET['Section'])) { ?>
                                                         <div class="btn-group" style="float: right;">
-                                                            <a href="../reports/MonthlyAttendancebyClass.php?month=<?php echo $_GET['month'] ?>&Grade=<?php echo $_GET['Grade'] ?>&Section=<?php echo $_GET['Section'] ?>" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
+                                                            <a href="../reports/MonthlyAttendancebyClass.php?month=<?php echo $_GET['month'] ?>&Grade=<?php echo $_GET['Grade'] ?>&Section=<?php echo $_GET['Section'] ?>" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a>
                                                         </div>
                                                     <?php }
                                                     ?>
@@ -243,110 +243,112 @@ if (!isset($_SESSION['F_number'])) {
                                             <div class="col-lg-12 d-flex flex-column">
                                                 <div class="row flex-grow">
                                                     <div class="col-12 grid-margind">
-                                                        <div class="">
-                                                            <div class="table-responsive">
-                                                                <table class="table">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>Student Name</th>
-                                                                            <th>No. of School Days</th>
-                                                                            <th>No. of Days Present</th>
-                                                                            <th>No. of Days Absent</th>
-                                                                            <th>No. of Days Tardy</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <style>
-                                                                            input[type='number'] {
-                                                                                width: 50px;
-                                                                            }
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-striped">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Student Name</th>
+                                                                                <th>No. of School Days</th>
+                                                                                <th>No. of Days Present</th>
+                                                                                <th>No. of Days Absent</th>
+                                                                                <th>No. of Days Tardy</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <style>
+                                                                                input[type='number'] {
+                                                                                    width: 50px;
+                                                                                }
 
-                                                                            /* Chrome, Safari, Edge, Opera */
-                                                                            input::-webkit-outer-spin-button,
-                                                                            input::-webkit-inner-spin-button {
-                                                                                -webkit-appearance: none;
-                                                                                margin: 0;
-                                                                            }
+                                                                                /* Chrome, Safari, Edge, Opera */
+                                                                                input::-webkit-outer-spin-button,
+                                                                                input::-webkit-inner-spin-button {
+                                                                                    -webkit-appearance: none;
+                                                                                    margin: 0;
+                                                                                }
 
-                                                                            .tabledata {
-                                                                                border: 1px solid #ffffff;
-                                                                                text-align: center;
-                                                                                vertical-align: middle;
-                                                                                height: 30px;
-                                                                                color: #000000;
-                                                                            }
-                                                                        </style>
-                                                                        <?php
-                                                                        $rowCount = 1;
-                                                                        $dateNow = date("Y-m-d");
-                                                                        if (isset($_GET['month']) && isset($_GET['Grade']) && isset($_GET['Section'])) {
-                                                                            $getMonthlyAttendanceData = $mysqli->query("SELECT DISTINCT SR_lname, SR_fname, SR_mname, SR_suffix, attendance.SR_number 
+                                                                                .tabledata {
+                                                                                    border: 1px solid #ffffff;
+                                                                                    text-align: center;
+                                                                                    vertical-align: middle;
+                                                                                    height: 30px;
+                                                                                    color: #000000;
+                                                                                }
+                                                                            </style>
+                                                                            <?php
+                                                                            $rowCount = 1;
+                                                                            $dateNow = date("Y-m-d");
+                                                                            if (isset($_GET['month']) && isset($_GET['Grade']) && isset($_GET['Section'])) {
+                                                                                $getMonthlyAttendanceData = $mysqli->query("SELECT DISTINCT SR_lname, SR_fname, SR_mname, SR_suffix, attendance.SR_number 
                                                                             FROM attendance 
                                                                             LEFT JOIN studentrecord ON attendance.SR_number = studentrecord.SR_number 
                                                                             WHERE acadYear = '{$currentSchoolYear}' 
                                                                             AND SR_grade = '{$_GET['Grade']}'
                                                                             AND SR_section = '{$_GET['Section']}' 
                                                                             AND MONTHNAME(A_date) = '{$_GET['month']}'");
-                                                                            if (mysqli_num_rows($getMonthlyAttendanceData) > 0) {
-                                                                                while ($AttendanceData = $getMonthlyAttendanceData->fetch_assoc()) { ?>
-                                                                                    <tr>
-                                                                                        <td class="tabledata"><?php echo $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'] . " " . substr($AttendanceData['SR_mname'], 0, 1) . ". " . $AttendanceData['SR_suffix']; ?></td>
-                                                                                        <td class="tabledata">
-                                                                                            <?php
-                                                                                            $month = date_parse($_GET['month'])['month'];
-                                                                                            $year = date("Y");
+                                                                                if (mysqli_num_rows($getMonthlyAttendanceData) > 0) {
+                                                                                    while ($AttendanceData = $getMonthlyAttendanceData->fetch_assoc()) { ?>
+                                                                                        <tr>
+                                                                                            <td class="tabledata"><?php echo $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'] . " " . substr($AttendanceData['SR_mname'], 0, 1) . ". " . $AttendanceData['SR_suffix']; ?></td>
+                                                                                            <td class="tabledata">
+                                                                                                <?php
+                                                                                                $month = date_parse($_GET['month'])['month'];
+                                                                                                $year = date("Y");
 
-                                                                                            $first_day = new DateTime("$year-$month-01");
-                                                                                            $num_days = $first_day->format('t');
-                                                                                            $count_weekdays = 0;
-                                                                                            for ($day = 1; $day <= $num_days; $day++) {
-                                                                                                $date = new DateTime("$year-$month-$day");
-                                                                                                if ($date->format('N') <= 5) {
-                                                                                                    $count_weekdays++;
+                                                                                                $first_day = new DateTime("$year-$month-01");
+                                                                                                $num_days = $first_day->format('t');
+                                                                                                $count_weekdays = 0;
+                                                                                                for ($day = 1; $day <= $num_days; $day++) {
+                                                                                                    $date = new DateTime("$year-$month-$day");
+                                                                                                    if ($date->format('N') <= 5) {
+                                                                                                        $count_weekdays++;
+                                                                                                    }
                                                                                                 }
-                                                                                            }
-                                                                                            echo $count_weekdays;
-                                                                                            ?>
-                                                                                        </td>
-                                                                                        <td class="tabledata">
-                                                                                            <?php
-                                                                                            $PRESENT = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$AttendanceData['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}'");
-                                                                                            $PRESENTvalue = $PRESENT->fetch_assoc();
+                                                                                                echo $count_weekdays;
+                                                                                                ?>
+                                                                                            </td>
+                                                                                            <td class="tabledata">
+                                                                                                <?php
+                                                                                                $PRESENT = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$AttendanceData['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}'");
+                                                                                                $PRESENTvalue = $PRESENT->fetch_assoc();
 
-                                                                                            echo $PRESENTvalue['COUNT(A_time_IN)'];
-                                                                                            ?>
-                                                                                        </td>
-                                                                                        <td class="tabledata">
-                                                                                            <?php
-                                                                                            $ABSENT = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$AttendanceData['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}' AND A_status = 'ABSENT'");
-                                                                                            $ABSENTvalue = $ABSENT->fetch_assoc();
+                                                                                                echo $PRESENTvalue['COUNT(A_time_IN)'];
+                                                                                                ?>
+                                                                                            </td>
+                                                                                            <td class="tabledata">
+                                                                                                <?php
+                                                                                                $ABSENT = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$AttendanceData['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}' AND A_status = 'ABSENT'");
+                                                                                                $ABSENTvalue = $ABSENT->fetch_assoc();
 
-                                                                                            echo $ABSENTvalue['COUNT(A_time_IN)'];
-                                                                                            ?>
-                                                                                        </td>
-                                                                                        <td class="tabledata">
-                                                                                            <?php
-                                                                                            $TARDY = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$AttendanceData['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}' AND A_status = 'TARDY'");
-                                                                                            $TARDYvalue = $TARDY->fetch_assoc();
+                                                                                                echo $ABSENTvalue['COUNT(A_time_IN)'];
+                                                                                                ?>
+                                                                                            </td>
+                                                                                            <td class="tabledata">
+                                                                                                <?php
+                                                                                                $TARDY = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$AttendanceData['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}' AND A_status = 'TARDY'");
+                                                                                                $TARDYvalue = $TARDY->fetch_assoc();
 
-                                                                                            echo $TARDYvalue['COUNT(A_time_IN)'];
-                                                                                            ?>
-                                                                                        </td>
+                                                                                                echo $TARDYvalue['COUNT(A_time_IN)'];
+                                                                                                ?>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    <?php }
+                                                                                } else { ?>
+                                                                                    <tr>
+                                                                                        <td colspan="6" class="tabledata">NO ATTENDANCE FOR THE MONTH OF <?php echo $_GET['month'] ?></td>
                                                                                     </tr>
                                                                                 <?php }
                                                                             } else { ?>
                                                                                 <tr>
-                                                                                    <td colspan="6" class="tabledata">NO ATTENDANCE FOR THE MONTH OF <?php echo $_GET['month'] ?></td>
+                                                                                    <td colspan="6" class="tabledata">Select month then grade level and section first</td>
                                                                                 </tr>
                                                                             <?php }
-                                                                        } else { ?>
-                                                                            <tr>
-                                                                                <td colspan="6" class="tabledata">Select month then grade level and section first</td>
-                                                                            </tr>
-                                                                        <?php }
-                                                                        ?>
-                                                                    </tbody>
-                                                                </table>
+                                                                            ?>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>

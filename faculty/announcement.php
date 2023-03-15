@@ -155,7 +155,7 @@ if (!isset($_SESSION['F_number'])) {
                                                             $getAuthorName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$announcement['author']}'");
                                                             $AuthorName = $getAuthorName->fetch_assoc();
                                                             ?>
-                                                            
+
                                                             <div class="col-lg-3  col-md-3 meta-details">
                                                                 <div class="user-details row" style="margin-top: 40px;">
                                                                     <p class="user-name col-lg-12 col-md-12 col-6"><span class="far fa-user" style="color: #c02628;"> </span><a> <?php echo $AuthorName['AD_name']; ?></a> </p>
@@ -188,18 +188,11 @@ if (!isset($_SESSION['F_number'])) {
                                                 </div>
                                             <?php }
                                         } else { ?>
-                                            <div class="row col-lg-10" style="padding-top: 15px;">
-                                                <div class="col-lg-10 posts-list" style="margin-left: auto;">
-                                                    <div class="single-post row">
-                                                        <div class="col-lg-12">
-                                                            <div class="card">
-                                                                <div class="card-body">
-                                                                    <div class="col-lg-12 col-md-9 text-center">
-                                                                        <h3>NO ANNOUNCEMENT YET</h3>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                            <div class="col-lg-6" style="margin:auto; padding-top:100px;">
+                                                <div class="row">
+                                                    <div class="text-center">
+                                                        <img src="../assets/img/announcement.png" style="width: 90px; height: 60px;">
+                                                        <p>At the moment, there are no announcements posted. They will appear here if there are any. Thank you.</p>
                                                     </div>
                                                 </div>
                                             </div>
