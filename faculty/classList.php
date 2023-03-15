@@ -264,7 +264,15 @@ if (!isset($_SESSION['F_number'])) {
                                               $studentInfo = $getstudentInfo->fetch_assoc();
                                               ?>
                                               <a href="viewStudent.php?ID=<?php echo $studentInfo['SR_number'] ?>">
-                                                <?php echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix']; ?>
+                                                <?php
+                                                if (!empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] != "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {
+                                                  echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ".";
+                                                } else if (empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] = "" && !empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] != "") {
+                                                  echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . $studentInfo['SR_suffix'];
+                                                } else if (empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] = "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {
+                                                  echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'];
+                                                }
+                                                ?>
                                               </a>
                                             </td>
                                           </tr>

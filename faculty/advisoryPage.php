@@ -225,6 +225,8 @@ if (!isset($_SESSION['F_number'])) {
                                   while ($acadYearData = $getAcadYear->fetch_assoc()) {
                                     if ($acadYearData['acadYear'] != $currentSchoolYear) {
                                       echo '<a class="dropdown-item" href="advisoryPage.php?SY=' . $acadYearData['acadYear'] . '">' . $acadYearData['acadYear'] . '</a>';
+                                    } else {
+                                      echo '<a class="dropdown-item" href="">CURRENT SCHOOL YEAR</a>';
                                     }
                                   }
                                   ?>
@@ -232,7 +234,9 @@ if (!isset($_SESSION['F_number'])) {
                               </div>
                             </div>
                             <div class="btn-group" style="float: right;">
-                              <a href="" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a>
+                              <?php
+                              echo '<a href="../reports/getClasslist.php?GradeLevel=' . $SectionData['S_yearLevel'] . '&section=' . $SectionData['S_name'] . '" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a>';
+                              ?>
                             </div>
                             <div class="table-responsive">
                               <table class="table">
@@ -265,7 +269,13 @@ if (!isset($_SESSION['F_number'])) {
                                             $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$SectionClassListData['SR_number']}'");
                                             $studentInfo = $getStudentInfo->fetch_assoc();
 
-                                            echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix'];
+                                            if (!empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] != "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {
+                                              echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ".";
+                                            } else if (empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] = "" && !empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] != "") {
+                                              echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . $studentInfo['SR_suffix'];
+                                            } else if (empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] = "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {
+                                              echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'];
+                                            }
                                             ?>
                                           </a>
                                         </td>
