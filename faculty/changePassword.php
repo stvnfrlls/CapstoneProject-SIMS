@@ -153,14 +153,14 @@ if (!isset($_SESSION['F_number'])) {
                                     </div>
                                     <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
                                         <nav class="nav">
-                                            <a class="nav-link active ms-0" href="../student/editProfile.php" style="color: #c02628;">Edit Profile</a>
-                                            <a class="nav-link" href="../student/changePassword.php">Change Password</a>
+                                            <a class="nav-link active ms-0" href="../faculty/editProfile.php">Edit Profile</a>
+                                            <a class="nav-link" href="../faculty/changePassword.php" style="color: #c02628;">Change Password</a>
                                         </nav>
                                         <div class="border-bottom"></div>
                                     </div>
                                     <div style="text-align: right; margin-top: 15px">
-                                        <input type="hidden" name="updateProfile" value="submit">
-                                        <button id="updateProfile" name="updateProfile" class="btn btn-primary me-2">Save</button>
+                                        <input type="hidden" name="updateProfilePassword" value="submit">
+                                        <button id="updateProfile" name="updateProfilePassword" class="btn btn-primary me-2">Save</button>
                                         <button class="btn btn-light" onclick="location.href='../faculty/viewProfile.php'">Back</button>
                                     </div>
                                     <div class="tab-content tab-content-basic">
@@ -175,7 +175,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                 <div class="col-12">
                                                                     <label label class="col-sm-12 col-form-label">Enter Current Password</label>
                                                                     <div class="col-sm-12">
-                                                                        <input type="password" class="form-control" id="newPassword" name="newPassword" required disabled>
+                                                                        <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -183,7 +183,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                 <div class="col-12">
                                                                     <label label class="col-sm-12 col-form-label">Enter New Password</label>
                                                                     <div class="col-sm-12">
-                                                                        <input type="password" class="form-control" id="newPassword" name="newPassword" required disabled>
+                                                                        <input type="password" class="form-control" id="newPassword" name="newPassword" required>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -191,7 +191,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                 <div class="col-12">
                                                                     <label label class="col-sm-12 col-form-label">Confirm New Password</label>
                                                                     <div class="col-sm-12">
-                                                                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required disabled>
+                                                                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
                                                                     </div>
                                                                 </div>
                                                             </div>
