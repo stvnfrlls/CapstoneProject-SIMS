@@ -232,7 +232,7 @@ if (!isset($_SESSION['F_number'])) {
                               </div>
                             </div>
                             <div class="btn-group" style="float: right;">
-                              <a href="" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
+                              <a href="" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a>
                             </div>
                             <div class="table-responsive">
                               <table class="table">

@@ -12,7 +12,7 @@ require_once __DIR__ . "/assets/php/server.php";
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon"> <!-- delete kasi di nag e exist -->
+    <link href="../assets/img/favicon.png" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,7 +49,7 @@ require_once __DIR__ . "/assets/php/server.php";
     <nav class="navbar navbar-expand-lg bg-dark navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
 
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
+            <span class="fa fa-bars" style="color:white;"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <style>
@@ -218,7 +218,7 @@ require_once __DIR__ . "/assets/php/server.php";
     <!-- Footer End -->
 
 
- 
+
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

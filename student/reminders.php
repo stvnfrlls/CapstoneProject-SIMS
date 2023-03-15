@@ -150,17 +150,10 @@ if (!isset($_SESSION['SR_number'])) {
                             </div>
                         <?php }
                     } else { ?>
-                        <div class="">
-                            <div class="col">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="text-center">
-                                            <p class="excert">
-                                                No Annoucement yet!
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="col-6" style="margin:auto">
+                            <div style="text-align: center; margin-top: 50px;">
+                                <img src="../assets/img/mailbox.png" style="width: 100px; height: 80px;" style="text-align:center;">
+                                <p>There are currently no reminders posted. If you wish to create one, click the <span><a href="../faculty/createReminder.php">create</a></span> button at the upper right side. Thank you.</p>
                             </div>
                         </div>
                     <?php }

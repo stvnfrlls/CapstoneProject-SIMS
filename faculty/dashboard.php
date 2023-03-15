@@ -160,7 +160,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                     if (empty($getFacultyData['F_profile_img']) || !file_exists($profile_path)) { ?>
                                                                         <img src="../assets/img/profile.png" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
                                                                     <?php } else { ?>
-                                                                        <img src="../assets/img/profile/<?php echo $getFacultyData['F_profile_img'] ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 100px;">
+                                                                        <img src="../assets/img/profile/<?php echo $getFacultyData['F_profile_img'] ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 100px; height: 60px;">
                                                                     <?php }
                                                                     ?>
                                                                     <div class="col-8" style="align-self: center;">
@@ -229,7 +229,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                                 ?>
                                                                             </h1>
                                                                         </div>
-                                                                        <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center" style="font-size: 20px; padding-top: 10px;">No. of Students</h3>
+                                                                        <h3 class="d-flex flex-shrink-0 align-items-center justify-content-center" style="font-size: 20px; padding-top: 10px; text-align:center;">No. of Students</h3>
 
                                                                     </div>
                                                                     <div class="col-6" style="align-self: center;">
@@ -297,8 +297,9 @@ if (!isset($_SESSION['F_number'])) {
                                                                             <div class="col-12" style="padding-bottom: 15px;">
                                                                                 <div class="single-post bg-light">
                                                                                     <div class="col-lg-12 col-sm-12" style="padding: 0px 10px 10px 10px;">
-                                                                                        <div class="posts-title" style="text-align: center;">
-                                                                                            <h3>NO REMINDERS YET</h3>
+                                                                                        <div style="text-align: center;">
+                                                                                            <img src="../assets/img/mailbox.png" style="width: 100px; height: 80px;" style="text-align:center;">
+                                                                                            <p style="text-align: justify;">There are currently no reminders posted. If you wish to create one, please go to the <span><a href="../faculty/reminders.php">reminders</a></span> page. Thank you.</p>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -332,7 +333,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                                             </small>
                                                                                             <small><i class="far fa-calendar-alt text-primary me-2"></i><?php echo $announcement['date']; ?></small>
                                                                                         </div>
-                                                                                        <h4 class="mb-3"><?php echo $announcement['header']; ?></h4>
+                                                                                        <h4 class="mb-3" style="text-align: left;"><?php echo $announcement['header']; ?></h4>
                                                                                         <p class="text-truncate"><?php echo $announcement['msg']; ?></p>
                                                                                         <a class="text-uppercase" href="viewannouncement.php?ID=<?php echo $announcement['ANC_ID']; ?>">Read More <i class="bi bi-arrow-right"></i></a>
                                                                                     </div>
@@ -348,7 +349,9 @@ if (!isset($_SESSION['F_number'])) {
                                                                         <div class="col-lg-12 wow " style="padding-bottom: 5px;">
                                                                             <div class="blog-item bg-light rounded overflow-hidden">
                                                                                 <div class="p-4 text-center">
-                                                                                    <h4>NO ANNOUNCEMENT YET</h4>
+                                                                                    <img src="../assets/img/announcement.png" style="width: 90px; height: 60px;" style="text-align:center;">
+                                                                                    <p style="text-align: justify;">At the moment, there are no announcements posted. They will appear here if there are any. Thank you.</p>
+
                                                                                 </div>
                                                                             </div>
                                                                         </div>
