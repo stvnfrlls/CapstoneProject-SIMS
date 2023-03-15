@@ -8,7 +8,7 @@ if (isset($_GET['ID'])) {
     {
         function Header()
         {
-            $mysqli = new mysqli("localhost", "u952901270_admin0326", "giTG^W3y", "u952901270_sis_cdsp");
+            $mysqli = new mysqli("localhost", "root", "", "sis_cdsp");
             $getAcadYear = $mysqli->query("SELECT * FROM acad_year");
             $acadYear_Data = $getAcadYear->fetch_assoc();
             //Logo Image
@@ -308,17 +308,28 @@ if (isset($_GET['ID'])) {
     $pdf->SetFont('Arial', '', 9);
     $pdf->SetFont('Arial', '', 9);
 
-    $pdf->Cell(10, 5, '22', 1, 0, 'C');
-    $pdf->Cell(10, 5, '26', 1, 0, 'C');
-    $pdf->Cell(10, 5, '23', 1, 0, 'C');
-    $pdf->Cell(10, 5, '16', 1, 0, 'C');
-    $pdf->Cell(10, 5, '15', 1, 0, 'C');
-    $pdf->Cell(10, 5, '22', 1, 0, 'C');
-    $pdf->Cell(10, 5, '27', 1, 0, 'C');
-    $pdf->Cell(10, 5, '22', 1, 0, 'C');
-    $pdf->Cell(10, 5, '24', 1, 0, 'C');
-    $pdf->Cell(10, 5, '26', 1, 0, 'C');
-    $pdf->Cell(20, 5, '223', 1, 1, 'C');
+    $year = date('Y');
+    $pdf->Cell(10, 5, countWeekdaysInMonth($year, 9), 1, 0, 'C');
+    $pdf->Cell(10, 5, countWeekdaysInMonth($year, 10), 1, 0, 'C');
+    $pdf->Cell(10, 5, countWeekdaysInMonth($year, 11), 1, 0, 'C');
+    $pdf->Cell(10, 5, countWeekdaysInMonth($year, 12), 1, 0, 'C');
+    $pdf->Cell(10, 5, countWeekdaysInMonth($year, 1), 1, 0, 'C');
+    $pdf->Cell(10, 5, countWeekdaysInMonth($year, 2), 1, 0, 'C');
+    $pdf->Cell(10, 5, countWeekdaysInMonth($year, 3), 1, 0, 'C');
+    $pdf->Cell(10, 5, countWeekdaysInMonth($year, 4), 1, 0, 'C');
+    $pdf->Cell(10, 5, countWeekdaysInMonth($year, 5), 1, 0, 'C');
+    $pdf->Cell(10, 5, countWeekdaysInMonth($year, 6), 1, 0, 'C');
+    $total = countWeekdaysInMonth($year, 9)
+        + countWeekdaysInMonth($year, 10)
+        + countWeekdaysInMonth($year, 11)
+        + countWeekdaysInMonth($year, 12)
+        + countWeekdaysInMonth($year, 1)
+        + countWeekdaysInMonth($year, 2)
+        + countWeekdaysInMonth($year, 3)
+        + countWeekdaysInMonth($year, 4)
+        + countWeekdaysInMonth($year, 5)
+        + countWeekdaysInMonth($year, 6);
+    $pdf->Cell(20, 5, $total, 1, 1, 'C');
 
     $pdf->SetFont('Arial', 'B', 9);
     $pdf->Cell(70, 5, 'No. of Days Present', 1, 0, 'C');

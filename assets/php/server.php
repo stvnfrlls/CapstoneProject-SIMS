@@ -41,7 +41,7 @@ if (isset($_POST['login-button'])) {
                     $getSR_Number = $FindSR_Number->fetch_assoc();
 
                     $_SESSION['SR_number'] = $getSR_Number['SR_number'];
-                    header('Location: ../student/dashboard.php');
+                    header('Location: ../index.php');
                 }
                 if ($UD_role == "faculty") {
                     $FindF_number = $mysqli->query("SELECT F_number FROM faculty WHERE F_email = '{$UD_username}'");
@@ -172,65 +172,45 @@ if (isset($_POST['updatePassword'])) {
 if (isset($_POST['editStudentProfile'])) {
     $currentEmail = $_POST['currentEmail'];
     $SR_email = $_POST['SR_email'];
+
+    $SR_profile_img = $_FILES['editimage']['name'];
+    $tempname = $_FILES["editimage"]["tmp_name"];
+    $folder = "../assets/img/profile/" . $SR_profile_img;
+
+    $mysqli->query("UPDATE studentrecord 
+                        SET 
+                        SR_profile_img = '{$SR_profile_img}'
+                        WHERE SR_number = '{$_SESSION['SR_number']}'");
+    move_uploaded_file($tempname, $folder);
+    showSweetAlert('Successfully updated your information', 'success');
+}
+if (isset($_POST['editStudentPassword'])) {
     $currentPassword = $_POST['currentPassword'];
-    $newPassword = $_POST['newPassword'];
-    $confirmPassword = $_POST['confirmPassword'];
 
-    if (isset($_FILES['image']['name'])) {
-        $SR_profile_img = $_FILES['image']['name'];
-        $tempname = $_FILES["image"]["tmp_name"];
-        $folder = "../assets/img/profile/" . $SR_profile_img;
+    $getSR_email = $mysqli->query("SELECT SR_email FROM studentrecord WHERE SR_number = '{$_SESSION['SR_number']}'");
+    $SR_emailData = $getSR_email->fetch_assoc();
+    if (mysqli_num_rows($getSR_email) == 1) {
+        $checkPassword = $mysqli->query("SELECT SR_password FROM userdetails WHERE SR_email = '{$SR_emailData['SR_email']}'");
+        $savedPassword = $checkPassword->fetch_assoc();
 
-        $checkUserData = $mysqli->query("SELECT * FROM userdetails WHERE SR_email = '{$currentEmail}'");
-        $checkExisting = $checkUserData->fetch_assoc();
-
-        if ($currentPassword != $checkExisting['SR_password']) {
-            showSweetAlert('Incorrect Password', 'error');
+        if ($savedPassword['SR_password'] != $currentPassword) {
+            showSweetAlert('Incorrect password', 'error');
         } else {
-            if ($newPasssword != $confirmPassword) {
-                showSweetAlert('Password does not match', 'error');
-            } else {
-                $mysqli->query("UPDATE userdetails 
-                            SET 
-                            SR_profile_img = '{$SR_profile_img}',
-                            SR_email = '{$SR_email}',
-                            SR_password = '{$confirmPassword}',
-                            WHERE SR_email = '{$currentEmail}'");
-                $mysqli->query("UPDATE studentrecord 
-                            SET 
-                            SR_profile_img = '{$SR_profile_img}',
-                            SR_email = '{$SR_email}',
-                            WHERE SR_number = '{$_POST['SR_number']}'");
-                move_uploaded_file($tempname, $folder);
-                showSweetAlert('Successfully updated your information', 'success');
+            if (mysqli_num_rows($checkPassword) == 1) {
+                $ResetnewPasssword = $_POST['newPassword'];
+                $ResetconfirmPassword = $_POST['confirmPassword'];
+                if ($ResetconfirmPassword != $ResetnewPasssword) {
+                    showSweetAlert('Password does not match', 'error');
+                } else if (empty($ResetnewPasssword) || empty($ResetconfirmPassword)) {
+                    showSweetAlert('Password field is empty', 'error');
+                } else {
+                    $mysqli->query("UPDATE userdetails 
+                                    SET 
+                                    SR_password = '{$ResetconfirmPassword}'
+                                    WHERE SR_email = '{$SR_emailData['SR_email']}'");
+                    showSweetAlert('Successfully updated your information', 'success');
+                }
             }
-        }
-    } else {
-        $currentEmail = $_POST['currentEmail'];
-        $SR_email = $_POST['SR_email'];
-        $currentPassword = $_POST['currentPassword'];
-        $newPassword = $_POST['newPassword'];
-        $confirmPassword = $_POST['confirmPassword'];
-
-        $checkUserData = $mysqli->query("SELECT * FROM userdetails WHERE SR_email = '{$currentEmail}'");
-        $checkExisting = $checkUserData->fetch_assoc();
-
-        if ($currentPassword != $checkExisting['SR_password']) {
-            showSweetAlert('Incorrect Password', 'error');
-        }
-        if ($newPassword != $confirmPassword) {
-            showSweetAlert('Password does not match', 'error');
-        } else {
-            $updateUserDetails = $mysqli->query("UPDATE userdetails 
-                                                SET 
-                                                SR_email = '{$SR_email}',
-                                                SR_password = '{$confirmPassword}'
-                                                WHERE userID = '{$checkExisting['userID']}'");
-            $updateStudentRecord = $mysqli->query("UPDATE studentrecord 
-                                                SET 
-                                                SR_email = '{$SR_email}'
-                                                WHERE SR_number = '{$currentEmail}'");
-            showSweetAlert('Successfully updated your information', 'success');
         }
     }
 }
@@ -240,8 +220,11 @@ if (isset($_POST['markAsDone'])) {
     $author = $_POST['author'];
     $viewedDate = date('Y-m-d H:i A');
 
-    $mysqli->query("INSERT INTO reminder_status(reminderID, author, SR_number, viewed_date) VALUES ('{$remindersID}', '{$author}', '{$SR_number}', '{$viewedDate}')");
-    showSweetAlert('Marked as done!', 'success');
+    $markedAsDone = $mysqli->query("INSERT INTO reminder_status(reminderID, author, SR_number, viewed_date) VALUES ('{$remindersID}', '{$author}', '{$SR_number}', '{$viewedDate}')");
+    if ($markedAsDone) {
+        header('Location: reminders.php');
+        showSweetAlert('Marked as done!', 'success');
+    }
 }
 
 //Faculty Process
