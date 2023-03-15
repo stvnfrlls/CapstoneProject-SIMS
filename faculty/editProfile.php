@@ -153,8 +153,8 @@ if (!isset($_SESSION['F_number'])) {
                   </div>
                   <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
                     <nav class="nav">
-                      <a class="nav-link active ms-0" href="../student/editProfile.php" style="color: #c02628;">Edit Profile</a>
-                      <a class="nav-link" href="../student/changePassword.php">Change Password</a>
+                      <a class="nav-link active ms-0" href="../faculty/editProfile.php" style="color: #c02628;">Edit Profile</a>
+                      <a class="nav-link" href="../faculty/changePassword.php">Change Password</a>
                     </nav>
                     <div class="border-bottom"></div>
                   </div>
@@ -187,6 +187,7 @@ if (!isset($_SESSION['F_number'])) {
                                 <div class="col-12">
                                   <label label class="col-sm-12 col-form-label">Email Address</label>
                                   <div class="col-sm-12">
+                                    <input type="hidden" class="form-control" id="currentEmail" name="currentEmail" value="<?php echo $faculty['F_email'] ?>" required>
                                     <input type="email" class="form-control" id="F_email" name="F_email" value="<?php echo $faculty['F_email'] ?>" required>
                                   </div>
                                 </div>
