@@ -280,7 +280,7 @@ if (!isset($_SESSION['AD_number'])) {
                         <?php
                         if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['date'])) { ?>
                           <div class="btn-group" style="float: right;">
-                            <a href="../reports/DailyAttendancebyClass.php?Grade=<?php echo $_GET['Grade'] . "&Section=" . $_GET['Section']; ?>" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-print" style="font-size: 12px; align-self:center;"></i></a>
+                            <a href="../reports/DailyAttendancebyClass.php?Grade=<?php echo $_GET['Grade'] . "&Section=" . $_GET['Section']; ?>" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a>
                           </div>
                       <?php }
                       }
