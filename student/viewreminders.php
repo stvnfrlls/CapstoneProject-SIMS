@@ -139,7 +139,7 @@ if (!isset($_SESSION['SR_number'])) {
             <div class="card">
               <div class="card-body">
                 <?php
-                $getReminderDataExcept = $mysqli->query("SELECT * FROM reminders WHERE forsection = '{$studentInfo['SR_section']}' AND reminderID != '{$_GET['ID']}'");
+                $getReminderDataExcept = $mysqli->query("SELECT * FROM reminders WHERE forsection = '{$studentInfo['SR_section']}' AND reminderID != '{$_GET['ID']}' AND reminderID NOT IN (SELECT reminderID FROM reminder_status)");
                 if (mysqli_num_rows($getReminderDataExcept) > 0) {
                   while ($OtherReminderInfo = $getReminderDataExcept->fetch_assoc()) { ?>
                     <div class="d-flex rounded overflow-hidden mb-3">
