@@ -12,7 +12,6 @@ global $currentSchoolYear;
 $errors = array();
 $year = date('Y');
 $month = date('m');
-date_default_timezone_set('Asia/Manila');
 
 $getSchoolYearInfo = $mysqli->query("SELECT * FROM acad_year");
 $SchoolYearData = $getSchoolYearInfo->fetch_assoc();
@@ -242,7 +241,7 @@ if (isset($_POST['student'])) {
                                         (SELECT SR_number FROM classlist WHERE SR_number = '{$studentID}' AND acadYear = '{$currentSchoolYear}')");
     $sendtoGuardian = $sendtoGuardianData->fetch_assoc();
     if (mysqli_num_rows($checkAttendance) == 0) {
-        $timeIN = $mysqli->query("INSERT INTO attendance (acadYear, SR_number, A_date, A_time_IN) VALUES ('{$currentSchoolYear}', '{$studentID}', '{$date}', '{$time}')");
+        $timeIN = $mysqli->query("INSERT INTO attendance (acadYear, SR_number, A_date, A_time_IN, A_status) VALUES ('{$currentSchoolYear}', '{$studentID}', '{$date}', '{$time}', 'PRESENT')");
         $mail->addAddress($sendtoGuardian['G_email']);
         $mail->Subject = 'Attendance: Time In';
 
@@ -660,6 +659,7 @@ if (isset($_POST['updateAttendanceStatus']) && isset($_SESSION['F_number'])) {
     }
 }
 if (isset($_POST['resolveIssue']) && isset($_SESSION['F_number'])) {
+    $A_date = $_POST['date'];
     $SR_number = $_POST['studentName'];
     $AttendanceStatus = $mysqli->real_escape_string($_POST['A_status']);
 
@@ -667,15 +667,14 @@ if (isset($_POST['resolveIssue']) && isset($_SESSION['F_number'])) {
                                        WHERE SR_number = '{$SR_number}'
                                        AND acadYear = '{$currentSchoolYear}' 
                                        AND A_date = '{$A_date}'");
-    if (mysqli_num_rows($checkAttendance) > 0) {
+    if (mysqli_num_rows($checkAttendance) == 1) {
         $mysqli->query("UPDATE attendance SET A_status = '{$AttendanceStatus}' 
                                        WHERE SR_number = '{$SR_number}'
                                        AND acadYear = '{$currentSchoolYear}' 
                                        AND A_date = '{$A_date}'");
         $mysqli->query("DELETE FROM attendance_student_report 
                         WHERE SR_number = '{$SR_number}'
-                        AND RP_reportDate = '{$A_date}' 
-                        AND RP_attendanceReport = '{$AttendanceStatus}'");
+                        AND RP_reportDate = '{$A_date}'");
 
         $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord 
                                         LEFT JOIN guardian 
@@ -1211,25 +1210,20 @@ if (isset($_POST['assignAdvisor']) && !empty($_SESSION['AD_number'])) {
     $section = $_POST['section'];
     $advisor = $_POST['advisor'];
 
-    $checkIfAssigned1 = $mysqli->query("SELECT F_number FROM classlist WHERE F_number = '{$advisor}'");
-    if (mysqli_num_rows($checkIfAssigned1) == 0) {
-        $checkIfAssigned2 = $mysqli->query("SELECT S_adviser FROM sections WHERE S_adviser = '{$advisor}'");
-        if (mysqli_num_rows($checkIfAssigned2) == 0) {
-            $assignSectionsAdvisor = $mysqli->query("UPDATE sections SET S_adviser = '{$advisor}' WHERE S_name = '{$section}' AND acadYear = '{$currentSchoolYear}'");
-            $assignClassListAdvisor = $mysqli->query("UPDATE classlist SET F_number = '{$advisor}' WHERE SR_section = '{$section}' AND acadYear = '{$currentSchoolYear}'");
+    $checkIfAssigned2 = $mysqli->query("SELECT S_adviser FROM sections WHERE S_adviser = '{$advisor}'");
+    if (mysqli_num_rows($checkIfAssigned2) == 0) {
+        $assignSectionsAdvisor = $mysqli->query("UPDATE sections SET S_adviser = '{$advisor}' WHERE S_name = '{$section}' AND acadYear = '{$currentSchoolYear}'");
+        $assignClassListAdvisor = $mysqli->query("UPDATE classlist SET F_number = '{$advisor}' WHERE SR_section = '{$section}' AND acadYear = '{$currentSchoolYear}'");
 
-            showSweetAlert('Successfully assigned advisory.', 'success');
-            if ($assignSectionsAdvisor && $assignClassListAdvisor) {
+        showSweetAlert('Successfully assigned advisory.', 'success');
+        if ($assignSectionsAdvisor && $assignClassListAdvisor) {
 
-                $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
-                $AdminName = $getAdminName->fetch_assoc();
-                $AD_action = "assigned an advisor to " . $section;
-                $currentDate = date('Y-m-d H:i:s');
-                $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
-                                            VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
-            }
-        } else {
-            showSweetAlert('Teacher is already assigned', 'error');
+            $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+            $AdminName = $getAdminName->fetch_assoc();
+            $AD_action = "assigned an advisor to " . $section;
+            $currentDate = date('Y-m-d H:i:s');
+            $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
+                                        VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
         }
     } else {
         showSweetAlert('Teacher is already assigned', 'error');
