@@ -205,103 +205,106 @@ if (!isset($_SESSION['AD_number'])) {
                                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                                         <div class="row">
                                             <div class="col-12 grid-margin">
+                                                <?php
+                                                if ($_SESSION['AD_number'] == "5UP3R4DM1N") { ?>
+                                                    <form id="form-id" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
+                                                        <div class="row">
+                                                            <div class="col-lg-3 col-sm-12" style="padding-top: 15px;">
+                                                                <div class="card" style="text-align:center; padding-right: 0px; padding-left: 0px;">
+                                                                    <div class="card-body" style="padding-right: 0px; padding-left: 0px;">
+                                                                        <h3 style="font-size: 18px;"><?php echo "School Year: " . $currentSchoolYear ?></h3>
+                                                                        <p>Colegio De San Pedro</p>
+                                                                        <?php
+                                                                        $getAcadYear = $mysqli->query("SELECT * FROM acad_year");
+                                                                        $acadYear_Data = $getAcadYear->fetch_assoc();
 
-                                                <form id="form-id" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
-                                                    <div class="row">
-                                                        <div class="col-lg-3 col-sm-12" style="padding-top: 15px;">
-                                                            <div class="card" style="text-align:center; padding-right: 0px; padding-left: 0px;">
-                                                                <div class="card-body" style="padding-right: 0px; padding-left: 0px;">
-                                                                    <h3 style="font-size: 18px;"><?php echo "School Year: " . $currentSchoolYear ?></h3>
-                                                                    <p>Colegio De San Pedro</p>
-                                                                    <?php
-                                                                    $getAcadYear = $mysqli->query("SELECT * FROM acad_year");
-                                                                    $acadYear_Data = $getAcadYear->fetch_assoc();
+                                                                        $startYear = $acadYear_Data['endYear'];
+                                                                        $endYear = (int) $startYear + 1;
+                                                                        ?>
+                                                                        <button type="submit" name="acadyear" class="btn btn-primary m-2"><?php echo 'Start S.Y. ' . $startYear . '-' . $endYear ?></button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 col-sm-12" style="padding-top: 15px;">
+                                                                <div class="card" style="text-align:center;">
+                                                                    <div class="card-body">
+                                                                        <h3 style="font-size: 18px;">Encoding of Grades</h3>
+                                                                        <?php
+                                                                        $EncodeStatus = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 'FORMS' AND quarterStatus = 'enabled'");
+                                                                        if (mysqli_num_rows($EncodeStatus) > 0) { ?>
+                                                                            <p>Status: Open</p>
+                                                                            <button type="submit" name="Close" class="btn btn-primary m-2">Close</button>
+                                                                        <?php } else { ?>
+                                                                            <p>Status: Closed</p>
+                                                                            <button type="submit" name="Open" class="btn btn-secondary m-2">Open</button>
+                                                                        <?php } ?>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6 col-sm-12" style="padding-top: 15px;">
+                                                                <div class="card" style="text-align:center;">
+                                                                    <div class="card-body" style="padding: 24px 0px 24px 0px;">
+                                                                        <h3 style="font-size: 18px;">Quarterly Period</h3>
+                                                                        <?php
+                                                                        $checkQuarterStatus = $mysqli->query("SELECT * FROM quartertable WHERE quarterStatus = 'current'");
+                                                                        if (mysqli_num_rows($checkQuarterStatus) == 0) {
+                                                                            echo '<p>Ongoing period: </p>';
+                                                                        } else {
+                                                                            $currentQuarter = $checkQuarterStatus->fetch_assoc();
+                                                                            if ($currentQuarter['quarterTag'] == 1) {
+                                                                                echo '<p>Ongoing period: 1st Quarter</p>';
+                                                                            }
+                                                                            if ($currentQuarter['quarterTag'] == 2) {
+                                                                                echo '<p>Ongoing period: 2nd Quarter</p>';
+                                                                            }
+                                                                            if ($currentQuarter['quarterTag'] == 3) {
+                                                                                echo '<p>Ongoing period: 3rd Quarter</p>';
+                                                                            }
+                                                                            if ($currentQuarter['quarterTag'] == 4) {
+                                                                                echo '<p>Ongoing period: 4th Quarter</p>';
+                                                                            }
+                                                                        }
+                                                                        ?>
+                                                                        <?php
+                                                                        $checkQuarter1 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 1 AND quarterStatus = 'current'");
+                                                                        if (mysqli_num_rows($checkQuarter1) > 0) { ?>
+                                                                            <button type=" submit" class="btn btn-primary m-2" name="disableQ1">1st Quarter</button>
+                                                                        <?php } else { ?>
+                                                                            <button type=" submit" class="btn btn-secondary m-2" name="enableFirst">1st Quarter</button>
+                                                                        <?php } ?>
 
-                                                                    $startYear = $acadYear_Data['endYear'];
-                                                                    $endYear = (int) $startYear + 1;
-                                                                    ?>
-                                                                    <button type="submit" name="acadyear" class="btn btn-primary m-2"><?php echo 'Start S.Y. ' . $startYear . '-' . $endYear ?></button>
+                                                                        <?php
+                                                                        $checkQuarter2 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 2 AND quarterStatus = 'current'");
+                                                                        if (mysqli_num_rows($checkQuarter2) > 0) { ?>
+                                                                            <button class="btn btn-primary m-2" name="disableQ2" style="font-size:12px;">2nd Quarter</button>
+                                                                        <?php } else { ?>
+                                                                            <button type="submit" name="enableSecond" class="btn btn-secondary m-2">2nd Quarter</button>
+                                                                        <?php } ?>
+
+
+                                                                        <?php
+                                                                        $checkQuarter3 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 3 AND quarterStatus = 'current'");
+                                                                        if (mysqli_num_rows($checkQuarter3) > 0) { ?>
+                                                                            <button class="btn btn-primary m-2" name="disableQ3">3rd Quarter</button>
+                                                                        <?php } else { ?>
+                                                                            <button type="submit" name="enableThird" class="btn btn-secondary m-2">3rd Quarter</button>
+                                                                        <?php } ?>
+
+                                                                        <?php
+                                                                        $checkQuarter4 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 4 AND quarterStatus = 'current'");
+                                                                        if (mysqli_num_rows($checkQuarter4) > 0) { ?>
+                                                                            <button class="btn btn-primary m-2" name="disableQ4">4th Quarter</button>
+                                                                        <?php } else { ?>
+                                                                            <button type="submit" name="enableFourth" class="btn btn-secondary m-2">4th Quarter</button>
+                                                                        <?php } ?>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-3 col-sm-12" style="padding-top: 15px;">
-                                                            <div class="card" style="text-align:center;">
-                                                                <div class="card-body">
-                                                                    <h3 style="font-size: 18px;">Encoding of Grades</h3>
-                                                                    <?php
-                                                                    $EncodeStatus = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 'FORMS' AND quarterStatus = 'enabled'");
-                                                                    if (mysqli_num_rows($EncodeStatus) > 0) { ?>
-                                                                        <p>Status: Open</p>
-                                                                        <button type="submit" name="Close" class="btn btn-primary m-2">Close</button>
-                                                                    <?php } else { ?>
-                                                                        <p>Status: Closed</p>
-                                                                        <button type="submit" name="Open" class="btn btn-secondary m-2">Open</button>
-                                                                    <?php } ?>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-6 col-sm-12" style="padding-top: 15px;">
-                                                            <div class="card" style="text-align:center;">
-                                                                <div class="card-body" style="padding: 24px 0px 24px 0px;">
-                                                                    <h3 style="font-size: 18px;">Quarterly Period</h3>
-                                                                    <?php
-                                                                    $checkQuarterStatus = $mysqli->query("SELECT * FROM quartertable WHERE quarterStatus = 'current'");
-                                                                    if (mysqli_num_rows($checkQuarterStatus) == 0) {
-                                                                        echo '<p>Ongoing period: </p>';
-                                                                    } else {
-                                                                        $currentQuarter = $checkQuarterStatus->fetch_assoc();
-                                                                        if ($currentQuarter['quarterTag'] == 1) {
-                                                                            echo '<p>Ongoing period: 1st Quarter</p>';
-                                                                        }
-                                                                        if ($currentQuarter['quarterTag'] == 2) {
-                                                                            echo '<p>Ongoing period: 2nd Quarter</p>';
-                                                                        }
-                                                                        if ($currentQuarter['quarterTag'] == 3) {
-                                                                            echo '<p>Ongoing period: 3rd Quarter</p>';
-                                                                        }
-                                                                        if ($currentQuarter['quarterTag'] == 4) {
-                                                                            echo '<p>Ongoing period: 4th Quarter</p>';
-                                                                        }
-                                                                    }
-                                                                    ?>
-                                                                    <?php
-                                                                    $checkQuarter1 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 1 AND quarterStatus = 'current'");
-                                                                    if (mysqli_num_rows($checkQuarter1) > 0) { ?>
-                                                                        <button type=" submit" class="btn btn-primary m-2" name="disableQ1">1st Quarter</button>
-                                                                    <?php } else { ?>
-                                                                        <button type=" submit" class="btn btn-secondary m-2" name="enableFirst">1st Quarter</button>
-                                                                    <?php } ?>
-
-                                                                    <?php
-                                                                    $checkQuarter2 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 2 AND quarterStatus = 'current'");
-                                                                    if (mysqli_num_rows($checkQuarter2) > 0) { ?>
-                                                                        <button class="btn btn-primary m-2" name="disableQ2" style="font-size:12px;">2nd Quarter</button>
-                                                                    <?php } else { ?>
-                                                                        <button type="submit" name="enableSecond" class="btn btn-secondary m-2">2nd Quarter</button>
-                                                                    <?php } ?>
-
-
-                                                                    <?php
-                                                                    $checkQuarter3 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 3 AND quarterStatus = 'current'");
-                                                                    if (mysqli_num_rows($checkQuarter3) > 0) { ?>
-                                                                        <button class="btn btn-primary m-2" name="disableQ3">3rd Quarter</button>
-                                                                    <?php } else { ?>
-                                                                        <button type="submit" name="enableThird" class="btn btn-secondary m-2">3rd Quarter</button>
-                                                                    <?php } ?>
-
-                                                                    <?php
-                                                                    $checkQuarter4 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 4 AND quarterStatus = 'current'");
-                                                                    if (mysqli_num_rows($checkQuarter4) > 0) { ?>
-                                                                        <button class="btn btn-primary m-2" name="disableQ4">4th Quarter</button>
-                                                                    <?php } else { ?>
-                                                                        <button type="submit" name="enableFourth" class="btn btn-secondary m-2">4th Quarter</button>
-                                                                    <?php } ?>
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
+                                                    </form>
+                                                <?php
+                                                }
+                                                ?>
                                             </div>
                                         </div>
                                         <div class="row">
