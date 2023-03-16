@@ -334,7 +334,7 @@ if (empty($_SESSION['AD_number'])) {
                                     <tr>
                                       <th>No.</th>
                                       <th>Subject Name</th>
-                                      <th>Assigned Professor</th>
+                                      <th>Assigned Teacher</th>
                                       <th>Start Time</th>
                                       <th>End Time</th>
                                       <th>Action</th>
