@@ -7,7 +7,7 @@ class PDF extends FPDF
 {
     function Header()
     {
-        $mysqli = new mysqli("localhost", "root", "", "sis_cdsp");
+        $mysqli = new mysqli("localhost", "u952901270_admin2311", "Eleven.11", "u952901270_sforms_cdsp");
         $getAcadYear = $mysqli->query("SELECT * FROM acad_year");
         $acadYear_Data = $getAcadYear->fetch_assoc();
         //Logo Image
