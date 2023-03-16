@@ -388,11 +388,20 @@ if (!isset($_SESSION['AD_number'])) {
                                                                         SELECT SR_number FROM classlist 
                                                                         WHERE SR_grade = '{$_GET['Grade']}' 
                                                                         AND SR_section = '{$_GET['Section']}' 
-                                                                        AND acadYear = '{$currentSchoolYear}')");
+                                                                        AND acadYear = '{$currentSchoolYear}')
+                                                                        ORDER BY SR_lname");
                                         while ($classList = $getClassList->fetch_assoc()) { ?>
                                           <tr>
                                             <td>
-                                              <?php echo $classList['SR_lname'] .  ", " . $classList['SR_fname'] . " " . substr($classList['SR_mname'], 0, 1) . ". " . $classList['SR_suffix']; ?>
+                                              <?php
+                                              if (!empty($classList['SR_mname']) || $classList['SR_mname'] != "" && empty($classList['SR_suffix']) || $classList['SR_suffix'] = "") {
+                                                echo $classList['SR_lname'] .  ", " . $classList['SR_fname'] . " " . substr($classList['SR_mname'], 0, 1) . ".";
+                                              } else if (empty($classList['SR_mname']) || $classList['SR_mname'] = "" && !empty($classList['SR_suffix']) || $classList['SR_suffix'] != "") {
+                                                echo $classList['SR_lname'] .  ", " . $classList['SR_fname'] . " " . $classList['SR_suffix'];
+                                              } else if (empty($classList['SR_mname']) || $classList['SR_mname'] = "" && empty($classList['SR_suffix']) || $classList['SR_suffix'] = "") {
+                                                echo $classList['SR_lname'] .  ", " . $classList['SR_fname'];
+                                              }
+                                              ?>
                                             </td>
                                             <?php
                                             $subjectHeaderCount = 0;
@@ -503,7 +512,7 @@ if (!isset($_SESSION['AD_number'])) {
   </div>
   <!-- Footer End -->
 
- 
+
 
   <!-- Template Javascript -->
   <script src="../assets/js/main.js"></script>

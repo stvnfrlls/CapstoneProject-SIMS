@@ -350,8 +350,10 @@ if (empty($_SESSION['AD_number'])) {
                                           <tr>
                                             <td><?php echo $rowCount; ?></td>
                                             <td>
-                                              <?php echo $subjects[$rowCount]['subjectName']; ?>
-                                              <input type="hidden" name="subjectname" value="<?php echo $subjects[$rowCount]['subjectName']; ?>">
+                                              <div class="text-wrap">
+                                                <?php echo $subjects[$rowCount]['subjectName']; ?>
+                                                <input type="hidden" name="subjectname" value="<?php echo $subjects[$rowCount]['subjectName']; ?>">
+                                              </div>
                                             </td>
                                             <td>
                                               <?php
@@ -369,7 +371,17 @@ if (empty($_SESSION['AD_number'])) {
                                                   $getFacultyName = $mysqli->query("SELECT F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$assignedFaculty['F_number']}'");
                                                   $FacultyName = $getFacultyName->fetch_assoc();
                                                 ?>
-                                                  <option value="<?php echo $assignedFaculty['F_number'] ?>" selected><?php echo $FacultyName['F_lname'] . ", " . $FacultyName['F_fname'] . " " . substr($FacultyName['F_mname'], 0, 1) . ". " . $FacultyName['F_suffix'] . "." ?></option>
+                                                  <option value="<?php echo $assignedFaculty['F_number'] ?>" selected>
+                                                    <?php
+                                                    if (!empty($FacultyName['F_mname']) || $FacultyName['F_mname'] != "" && empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] = "") {
+                                                      echo $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'] . " " . substr($FacultyName['F_mname'], 0, 1) . ".";
+                                                    } else if (empty($FacultyName['F_mname']) || $FacultyName['F_mname'] = "" && !empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] != "") {
+                                                      echo $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'] . " " . $FacultyName['F_suffix'];
+                                                    } else if (empty($FacultyName['F_mname']) || $FacultyName['F_mname'] = "" && empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] = "") {
+                                                      echo $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'];
+                                                    }
+                                                    ?>
+                                                  </option>
                                                   <option></option>
                                                 <?php } else { ?>
                                                   <option selected>Available Teachers</option>
@@ -379,8 +391,18 @@ if (empty($_SESSION['AD_number'])) {
 
                                                 <?php
                                                 $listFacultyData = $mysqli->query("SELECT F_number, F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_status = 'active' ORDER BY F_lname");
-                                                while ($listFaculty = $listFacultyData->fetch_assoc()) { ?>
-                                                  <option value="<?php echo $listFaculty['F_number'] ?>"><?php echo $listFaculty['F_lname'] . ", " . $listFaculty['F_fname'] . " " . substr($listFaculty['F_mname'], 0, 1) . ". " . $listFaculty['F_suffix'] . "." ?></option>
+                                                while ($FacultyName = $listFacultyData->fetch_assoc()) { ?>
+                                                  <option value="<?php echo $listFaculty['F_number'] ?>">
+                                                    <?php
+                                                    if (!empty($FacultyName['F_mname']) || $FacultyName['F_mname'] != "" && empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] = "") {
+                                                      echo $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'] . " " . substr($FacultyName['F_mname'], 0, 1) . ".";
+                                                    } else if (empty($FacultyName['F_mname']) || $FacultyName['F_mname'] = "" && !empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] != "") {
+                                                      echo $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'] . " " . $FacultyName['F_suffix'];
+                                                    } else if (empty($FacultyName['F_mname']) || $FacultyName['F_mname'] = "" && empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] = "") {
+                                                      echo $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'];
+                                                    }
+                                                    ?>
+                                                  </option>
                                                 <?php }
                                                 ?>
                                               </select>
@@ -462,7 +484,7 @@ if (empty($_SESSION['AD_number'])) {
   </div>
   <!-- Footer End -->
 
- 
+
   <!-- Template Javascript -->
   <script src="../assets/js/main.js"></script>
   <script src="../assets/js/admin/vendor.bundle.base.js"></script>

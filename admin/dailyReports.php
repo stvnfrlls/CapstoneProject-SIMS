@@ -334,12 +334,23 @@ if (!isset($_SESSION['AD_number'])) {
                                                                             WHERE acadYear = '{$currentSchoolYear}' 
                                                                             AND SR_section = '{$_GET['Section']}' 
                                                                             AND SR_grade = '{$_GET['Grade']}'
-                                                                            AND A_date = DATE(NOW())");
+                                                                            AND A_date = DATE(NOW())
+                                                                            ORDER BY SR_lname");
                                     if (mysqli_num_rows($getDailyAttendanceData) > 0) {
                                       while ($AttendanceData = $getDailyAttendanceData->fetch_assoc()) { ?>
                                         <tr>
                                           <td class="tabledata"><?php echo $rowCount; ?></td>
-                                          <td class="tabledata"><?php echo $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'] . " " . substr($AttendanceData['SR_mname'], 0, 1) . ". " . $AttendanceData['SR_suffix']; ?></td>
+                                          <td class="tabledata">
+                                            <?php
+                                            if (!empty($AttendanceData['SR_mname']) || $AttendanceData['SR_mname'] != "" && empty($AttendanceData['SR_suffix']) || $AttendanceData['SR_suffix'] = "") {
+                                              echo $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'] . " " . substr($AttendanceData['SR_mname'], 0, 1) . ".";
+                                            } else if (empty($AttendanceData['SR_mname']) || $AttendanceData['SR_mname'] = "" && !empty($AttendanceData['SR_suffix']) || $AttendanceData['SR_suffix'] != "") {
+                                              echo $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'] . " " . $AttendanceData['SR_suffix'];
+                                            } else if (empty($AttendanceData['SR_mname']) || $AttendanceData['SR_mname'] = "" && empty($AttendanceData['SR_suffix']) || $AttendanceData['SR_suffix'] = "") {
+                                              echo $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'];
+                                            }
+                                            ?>
+                                          </td>
                                           <td class="tabledata"><?php echo $AttendanceData['A_time_IN']; ?></td>
                                           <td class="tabledata"><?php echo $AttendanceData['A_time_OUT']; ?></td>
                                           <td class="tabledata"><?php echo $AttendanceData['A_status']; ?></td>
@@ -356,7 +367,8 @@ if (!isset($_SESSION['AD_number'])) {
                                                                             FROM attendance 
                                                                             LEFT JOIN studentrecord ON attendance.SR_number = studentrecord.SR_number 
                                                                             WHERE acadYear = '{$currentSchoolYear}' 
-                                                                            AND A_date = '{$_GET['date']}'");
+                                                                            AND A_date = '{$_GET['date']}'
+                                                                            ORDER BY SR_lname");
                                     if (mysqli_num_rows($getDailyAttendanceData) > 0) {
                                       while ($AttendanceData = $getDailyAttendanceData->fetch_assoc()) { ?>
                                         <tr>

@@ -312,7 +312,13 @@ if (!isset($_SESSION['AD_number'])) {
                                                     <?php
                                                     $getFacultyName = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$AssignedFaculty['S_adviser']}'");
                                                     $FacultyName = $getFacultyName->fetch_assoc();
-                                                    echo $FacultyName['F_lname'] . ", " . $FacultyName['F_fname'] . " " . substr($FacultyName['F_mname'], 0, 1) . ". " . $FacultyName['F_suffix'] . "."
+                                                    if (!empty($FacultyName['F_mname']) || $FacultyName['F_mname'] != "" && empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] = "") {
+                                                      echo $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'] . " " . substr($FacultyName['F_mname'], 0, 1) . ".";
+                                                    } else if (empty($FacultyName['F_mname']) || $FacultyName['F_mname'] = "" && !empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] != "") {
+                                                      echo $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'] . " " . $FacultyName['F_suffix'];
+                                                    } else if (empty($FacultyName['F_mname']) || $FacultyName['F_mname'] = "" && empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] = "") {
+                                                      echo $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'];
+                                                    }
                                                     ?>
                                                   </option>
                                                 <?php }
@@ -322,7 +328,17 @@ if (!isset($_SESSION['AD_number'])) {
                                                 $getFacultyData = $mysqli->query("SELECT * FROM faculty WHERE F_number NOT IN (SELECT F_number FROM sections WHERE F_number = '{$AdvisoryData['S_adviser']}') AND F_status = 'active' ORDER BY F_lname");
 
                                                 while ($FacultyData = $getFacultyData->fetch_assoc()) { ?>
-                                                  <option value="<?php echo $FacultyData['F_number'] ?>"><?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1) . ". " . $FacultyData['F_suffix'] . "." ?></option>
+                                                  <option value="<?php echo $FacultyData['F_number'] ?>">
+                                                    <?php
+                                                    if (!empty($FacultyData['F_mname']) || $FacultyData['F_mname'] != "" && empty($FacultyData['F_suffix']) || $FacultyData['F_suffix'] = "") {
+                                                      echo $FacultyData['F_lname'] .  ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1) . ".";
+                                                    } else if (empty($FacultyData['F_mname']) || $FacultyData['F_mname'] = "" && !empty($FacultyData['F_suffix']) || $FacultyData['F_suffix'] != "") {
+                                                      echo $FacultyData['F_lname'] .  ", " . $FacultyData['F_fname'] . " " . $FacultyData['F_suffix'];
+                                                    } else if (empty($FacultyData['F_mname']) || $FacultyData['F_mname'] = "" && empty($FacultyData['F_suffix']) || $FacultyData['F_suffix'] = "") {
+                                                      echo $FacultyData['F_lname'] .  ", " . $FacultyData['F_fname'];
+                                                    }
+                                                    ?>
+                                                  </option>
                                                 <?php }
                                                 ?>
                                               </select>

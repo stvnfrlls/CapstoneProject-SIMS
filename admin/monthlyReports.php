@@ -353,11 +353,22 @@ if (!isset($_SESSION['AD_number'])) {
                                                                             WHERE acadYear = '{$currentSchoolYear}' 
                                                                             AND SR_section = '{$_GET['Section']}' 
                                                                             AND SR_grade = '{$_GET['Grade']}'
-                                                                            AND MONTHNAME(A_date) = '{$_GET['month']}'");
+                                                                            AND MONTHNAME(A_date) = '{$_GET['month']}'
+                                                                            ORDER BY SR_lname");
                                       if (mysqli_num_rows($getMonthlyAttendanceData) > 0) {
                                         while ($AttendanceData = $getMonthlyAttendanceData->fetch_assoc()) { ?>
                                           <tr>
-                                            <td class="tabledata"><?php echo $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'] . " " . substr($AttendanceData['SR_mname'], 0, 1) . ". " . $AttendanceData['SR_suffix']; ?></td>
+                                            <td class="tabledata">
+                                              <?php
+                                              if (!empty($AttendanceData['SR_mname']) || $AttendanceData['SR_mname'] != "" && empty($AttendanceData['SR_suffix']) || $AttendanceData['SR_suffix'] = "") {
+                                                echo $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'] . " " . substr($AttendanceData['SR_mname'], 0, 1) . ".";
+                                              } else if (empty($AttendanceData['SR_mname']) || $AttendanceData['SR_mname'] = "" && !empty($AttendanceData['SR_suffix']) || $AttendanceData['SR_suffix'] != "") {
+                                                echo $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'] . " " . $AttendanceData['SR_suffix'];
+                                              } else if (empty($AttendanceData['SR_mname']) || $AttendanceData['SR_mname'] = "" && empty($AttendanceData['SR_suffix']) || $AttendanceData['SR_suffix'] = "") {
+                                                echo $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'];
+                                              }
+                                              ?>
+                                            </td>
                                             <td class="tabledata">
                                               <?php
                                               $month = date_parse($_GET['month'])['month'];
@@ -447,7 +458,7 @@ if (!isset($_SESSION['AD_number'])) {
   </div>
   <!-- Footer End -->
 
- 
+
 
   <!-- Template Javascript -->
   <script src="../assets/js/main.js"></script>

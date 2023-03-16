@@ -208,7 +208,11 @@ if (!isset($_SESSION['AD_number'])) {
                                         <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                                             <div class="btn-group" style="float: right;">
                                                 <div>
-                                                    <button type="button" id="updateStatus" class="btn btn-primary">Update</button>
+                                                    <?php
+                                                    if (isset($_GET['GradeLevel']) && isset($_GET['section'])) {
+                                                        echo '<button type="button" id="updateStatus" class="btn btn-primary">Update</button>';
+                                                    }
+                                                    ?>
                                                     <button type="button" style="margin-right: 0px;" class="btn btn-light">Back</button>
                                                 </div>
                                             </div>
@@ -229,7 +233,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                         <i class='fa fa-caret-down'></i>
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                        <a class="dropdown-item" href="movingUp.php?GradeLevel">ALL</a>
+                                                        <a class="dropdown-item" href="movingUp.php">ALL</a>
                                                         <?php
                                                         $gradelevelList = $mysqli->query("SELECT DISTINCT(S_yearLevel) FROM sections WHERE acadYear = '{$currentSchoolYear}'");
                                                         while ($gradelevel = $gradelevelList->fetch_assoc()) { ?>
@@ -300,118 +304,115 @@ if (!isset($_SESSION['AD_number'])) {
                                                                         </thead>
                                                                         <tbody>
                                                                             <?php
-                                                                            if (!empty($_GET['GradeLevel']) && empty($_GET['section'])) {
-                                                                                $ListofStudents = "SELECT * FROM classlist WHERE SR_grade = '{$_GET['GradeLevel']}' AND acadYear = '{$currentSchoolYear}' ORDER BY SR_number";
-                                                                            } else if (!empty($_GET['GradeLevel']) && !empty($_GET['section'])) {
-                                                                                $ListofStudents = "SELECT * FROM classlist WHERE SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['section']}' AND acadYear = '{$currentSchoolYear}' ORDER BY SR_number";
-                                                                            } else {
-                                                                                $ListofStudents = "SELECT * FROM classlist WHERE acadYear = '{$currentSchoolYear}'";
-                                                                            }
-
-                                                                            $resultListofStudents = $mysqli->query($ListofStudents);
                                                                             $rowCount = 1;
+                                                                            if (isset($_GET['GradeLevel']) && isset($_GET['section'])) {
+                                                                                $ListofStudents = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number IN 
+                                                                                                                (SELECT SR_number FROM classlist 
+                                                                                                                WHERE SR_grade = '{$_GET['GradeLevel']}' 
+                                                                                                                AND SR_section = '{$_GET['section']}' 
+                                                                                                                AND acadYear = '{$currentSchoolYear}')
+                                                                                                                ORDER BY SR_lname");
+                                                                                if (mysqli_num_rows($ListofStudents) > 0) {
+                                                                                    while ($StudentData = $ListofStudents->fetch_assoc()) { ?>
+                                                                                        <tr>
+                                                                                            <td class="tablestyle">
+                                                                                                <?php echo $rowCount ?>
+                                                                                                <input type="hidden" name="ids[]" value="<?php echo $rowCount ?>">
+                                                                                            </td>
+                                                                                            <td class="tablestyle">
+                                                                                                <?php
+                                                                                                if (!empty($StudentData['SR_mname']) || $StudentData['SR_mname'] != "" && empty($StudentData['SR_suffix']) || $StudentData['SR_suffix'] = "") {
+                                                                                                    echo $StudentData['SR_lname'] .  ", " . $StudentData['SR_fname'] . " " . substr($StudentData['SR_mname'], 0, 1) . ".";
+                                                                                                } else if (empty($StudentData['SR_mname']) || $StudentData['SR_mname'] = "" && !empty($StudentData['SR_suffix']) || $StudentData['SR_suffix'] != "") {
+                                                                                                    echo $StudentData['SR_lname'] .  ", " . $StudentData['SR_fname'] . " " . $StudentData['SR_suffix'];
+                                                                                                } else if (empty($StudentData['SR_mname']) || $StudentData['SR_mname'] = "" && empty($StudentData['SR_suffix']) || $StudentData['SR_suffix'] = "") {
+                                                                                                    echo $StudentData['SR_lname'] .  ", " . $StudentData['SR_fname'];
+                                                                                                }
+                                                                                                ?>
+                                                                                                <input type="hidden" name="SR_number[]" value="<?php echo $StudentData['SR_number'] ?>">
+                                                                                            </td>
+                                                                                            <td class="tablestyle">
+                                                                                                <?php
+                                                                                                if ($StudentData['SR_grade'] == 'KINDER') {
+                                                                                                    echo $StudentData['SR_grade'] . " - " . $StudentData['SR_section'];
+                                                                                                } else {
+                                                                                                    echo "Grade " . $StudentData['SR_grade'] . " - " . $StudentData['SR_section'];
+                                                                                                }
+                                                                                                ?>
+                                                                                                <input type="hidden" name="Grade[]" value="<?php echo $StudentData['SR_grade'] ?>">
+                                                                                                <input type="hidden" name="Section[]" value="<?php echo $StudentData['SR_section'] ?>">
+                                                                                            </td>
+                                                                                            <td class="tablestyle">
+                                                                                                <?php
+                                                                                                $GradeStatus = $mysqli->query("SELECT ROUND(AVG(G_finalgrade)) AS finalgrade FROM grades WHERE SR_number = '{$StudentData['SR_number']}' AND acadYear = '{$currentSchoolYear}'");
+                                                                                                $getAvgGrade = $GradeStatus->fetch_assoc();
 
-                                                                            $numrows = mysqli_num_rows($resultListofStudents);
-                                                                            if ($numrows >= 1) {
-                                                                                while ($data = $resultListofStudents->fetch_assoc()) { ?>
-                                                                                    <tr>
-                                                                                        <td class="tablestyle">
-                                                                                            <?php echo $rowCount ?>
-                                                                                            <input type="hidden" name="ids[]" value="<?php echo $rowCount ?>">
-                                                                                        </td>
-                                                                                        <td class="tablestyle">
-                                                                                            <?php
-                                                                                            $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$data['SR_number']}'");
-                                                                                            $studentInfo = $getStudentInfo->fetch_assoc();
+                                                                                                if ($getAvgGrade['finalgrade'] >= 75) {
+                                                                                                    echo "PASSED";
+                                                                                                } elseif ($getAvgGrade['finalgrade'] == 0) {
+                                                                                                    echo "No Grades yet";
+                                                                                                } else {
+                                                                                                    echo "FAILED";
+                                                                                                }
+                                                                                                ?>
+                                                                                            </td>
+                                                                                            <td class="tablestyle">
+                                                                                                <?php
+                                                                                                if ($getAvgGrade['finalgrade'] >= 75) { ?>
+                                                                                                    <select class="form-select" name="studentStatus[]" aria-label="Default select example">
+                                                                                                        <option value=""></option>
+                                                                                                        <option value="Dropped">Dropped</option>
+                                                                                                        <option value="MovingUp">Moving Up</option>
+                                                                                                        <option value="Transferring">Transferring</option>
+                                                                                                    </select>
+                                                                                                <?php
+                                                                                                } else {
+                                                                                                    echo '<select class="form-select" name="studentStatus" aria-label="Default select example" disabled><option selected>Unavailable</option></select>';
+                                                                                                }
+                                                                                                ?>
+                                                                                            </td>
+                                                                                            <td class="tablestyle">
+                                                                                                <?php
+                                                                                                if ($getAvgGrade['finalgrade'] >= 75) { ?>
+                                                                                                    <select class="form-select" name="moveUpTo[]" aria-label="Default select example">
+                                                                                                        <option value=""></option>
+                                                                                                        <?php
+                                                                                                        if ($StudentData['SR_grade'] == "KINDER") {
+                                                                                                            $StudentData['SR_grade'] = 0;
+                                                                                                        }
+                                                                                                        $next = $StudentData['SR_grade'] + 1;
+                                                                                                        $sections = $mysqli->query("SELECT S_name, S_yearLevel FROM sections WHERE S_yearLevel = '{$next}'");
 
-                                                                                            echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix']
-                                                                                            ?>
-                                                                                            <input type="hidden" name="SR_number[]" value="<?php echo $studentInfo['SR_number'] ?>">
-                                                                                        </td>
-                                                                                        <td class="tablestyle">
-                                                                                            <?php
-                                                                                            if ($data['SR_grade'] == 'KINDER') {
-                                                                                                echo $data['SR_grade'] . " - " . $data['SR_section'];
-                                                                                            } else {
-                                                                                                echo "Grade " . $data['SR_grade'] . " - " . $data['SR_section'];
-                                                                                            }
-                                                                                            ?>
-                                                                                            <input type="hidden" name="Grade[]" value="<?php echo $data['SR_grade'] ?>">
-                                                                                            <input type="hidden" name="Section[]" value="<?php echo $data['SR_section'] ?>">
-                                                                                        </td>
-                                                                                        <td class="tablestyle">
-                                                                                            <?php
-                                                                                            $GradeStatus = $mysqli->query("SELECT ROUND(AVG(G_finalgrade)) AS finalgrade FROM grades WHERE SR_number = '{$data['SR_number']}' AND acadYear = '{$currentSchoolYear}'");
-                                                                                            $getAvgGrade = $GradeStatus->fetch_assoc();
-
-                                                                                            if ($getAvgGrade['finalgrade'] >= 75) {
-                                                                                                echo "PASSED";
-                                                                                            } elseif ($getAvgGrade['finalgrade'] == 0) {
-                                                                                                echo "No Grades yet";
-                                                                                            } else {
-                                                                                                echo "FAILED";
-                                                                                            }
-                                                                                            ?>
-                                                                                        </td>
-                                                                                        <td class="tablestyle">
-                                                                                            <?php
-                                                                                            if ($getAvgGrade['finalgrade'] >= 75) { ?>
-                                                                                                <select class="form-select" name="studentStatus[]" aria-label="Default select example">
-                                                                                                    <option value=""></option>
-                                                                                                    <option value="Dropped">Dropped</option>
-                                                                                                    <option value="MovingUp">Moving Up</option>
-                                                                                                    <option value="Transferring">Transferring</option>
-                                                                                                </select>
-                                                                                            <?php
-                                                                                            } else { ?>
-                                                                                                <select class="form-select" name="studentStatus" aria-label="Default select example" disabled>
-                                                                                                    <option selected>Unavailable</option>
-                                                                                                </select>
-                                                                                            <?php }
-                                                                                            ?>
-                                                                                        </td>
-                                                                                        <td class="tablestyle">
-                                                                                            <?php
-                                                                                            if ($getAvgGrade['finalgrade'] >= 75) { ?>
-                                                                                                <select class="form-select" name="moveUpTo[]" aria-label="Default select example">
-                                                                                                    <option value=""></option>
-                                                                                                    <?php
-                                                                                                    if ($data['SR_grade'] == "KINDER") {
-                                                                                                        $data['SR_grade'] = 0;
-                                                                                                    }
-                                                                                                    $next = $data['SR_grade'] + 1;
-                                                                                                    $sections = $mysqli->query("SELECT S_name, S_yearLevel FROM sections WHERE S_yearLevel = '{$next}'");
-
-                                                                                                    if ($data['SR_grade'] == 6) {
-                                                                                                        echo '<option value="">Graduation</option>';
-                                                                                                    } else {
-                                                                                                        while ($listSections = $sections->fetch_assoc()) {
-                                                                                                            if ($listSections['S_yearLevel'] == 'KINDER') {
-                                                                                                                echo '<option value="">Grade ' . $listSections['S_yearLevel'] . " - " . $listSections['S_name'] . '</option>';
-                                                                                                            } else {
-                                                                                                                echo '<option value="">Grade ' . $listSections['S_yearLevel'] . " - " . $listSections['S_name'] . '</option>';
+                                                                                                        if ($StudentData['SR_grade'] == 6) {
+                                                                                                            echo '<option value="">Graduation</option>';
+                                                                                                        } else {
+                                                                                                            while ($listSections = $sections->fetch_assoc()) {
+                                                                                                                if ($listSections['S_yearLevel'] == 'KINDER') {
+                                                                                                                    echo '<option value="">Grade ' . $listSections['S_yearLevel'] . " - " . $listSections['S_name'] . '</option>';
+                                                                                                                } else {
+                                                                                                                    echo '<option value="">Grade ' . $listSections['S_yearLevel'] . " - " . $listSections['S_name'] . '</option>';
+                                                                                                                }
                                                                                                             }
                                                                                                         }
-                                                                                                    }
-                                                                                                    ?>
-                                                                                                </select>
-                                                                                            <?php
-                                                                                            } else { ?>
-                                                                                                <select class="form-select" aria-label="Default select example" disabled>
-                                                                                                    <option selected>Unavailable</option>
-                                                                                                </select>
-                                                                                            <?php }
-                                                                                            ?>
-                                                                                        </td>
-
-                                                                                    </tr>
-                                                                                <?php $rowCount++;
+                                                                                                        ?>
+                                                                                                    </select>
+                                                                                                <?php
+                                                                                                } else {
+                                                                                                    echo '<select class="form-select" aria-label="Default select example" disabled><option selected>Unavailable</option></select>';
+                                                                                                }
+                                                                                                ?>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                            <?php
+                                                                                        $rowCount++;
+                                                                                    }
+                                                                                } else {
+                                                                                    echo '<tr><td colspan="6">No enrolled student</td></tr>';
                                                                                 }
-                                                                            } else if ($numrows == 0) { ?>
-                                                                                <tr>
-                                                                                    <td colspan="10">No Data.</td>
-                                                                                </tr>
-                                                                            <?php } ?>
+                                                                            } else {
+                                                                                echo '<tr><td colspan="6">Select grade and section first.</td></tr>';
+                                                                            }
+                                                                            ?>
                                                                         </tbody>
                                                                     </table>
                                                                 </div>
@@ -449,7 +450,7 @@ if (!isset($_SESSION['AD_number'])) {
     </div>
     <!-- Footer End -->
 
- 
+
 
     <!-- Template Javascript -->
     <script src="../assets/js/main.js"></script>

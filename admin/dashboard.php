@@ -529,7 +529,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                     <thead>
                                                                                         <tr>
                                                                                             <th>No.</th>
-                                                                                            <th>Student Number</th>
+                                                                                            <th>LRN</th>
                                                                                             <th>Student Name</th>
                                                                                             <th>Grade and Section</th>
                                                                                         </tr>
@@ -537,14 +537,24 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                     <tbody>
                                                                                         <?php
                                                                                         $rowCount = 1;
-                                                                                        $studentPopulationData = $mysqli->query("SELECT * FROM studentrecord ORDER BY RAND() LIMIT 5");
+                                                                                        $studentPopulationData = $mysqli->query("SELECT * FROM studentrecord ORDER BY SR_lname LIMIT 5");
 
                                                                                         if (mysqli_num_rows($studentPopulationData) > 0) {
                                                                                             while ($studentPopulation = $studentPopulationData->fetch_assoc()) { ?>
                                                                                                 <tr>
                                                                                                     <td><?php echo $rowCount; ?></td>
                                                                                                     <td><?php echo $studentPopulation['SR_number']; ?></td>
-                                                                                                    <td><?php echo $studentPopulation['SR_lname'] .  ", " . $studentPopulation['SR_fname'] . " " . substr($studentPopulation['SR_mname'], 0, 1) ?></td>
+                                                                                                    <td>
+                                                                                                        <?php
+                                                                                                        if (!empty($studentPopulation['SR_mname']) || $studentPopulation['SR_mname'] != "" && empty($studentPopulation['SR_suffix']) || $studentPopulation['SR_suffix'] = "") {
+                                                                                                            echo $studentPopulation['SR_lname'] .  ", " . $studentPopulation['SR_fname'] . " " . substr($studentPopulation['SR_mname'], 0, 1) . ".";
+                                                                                                        } else if (empty($studentPopulation['SR_mname']) || $studentPopulation['SR_mname'] = "" && !empty($studentPopulation['SR_suffix']) || $studentPopulation['SR_suffix'] != "") {
+                                                                                                            echo $studentPopulation['SR_lname'] .  ", " . $studentPopulation['SR_fname'] . " " . $studentPopulation['SR_suffix'];
+                                                                                                        } else if (empty($studentPopulation['SR_mname']) || $studentPopulation['SR_mname'] = "" && empty($studentPopulation['SR_suffix']) || $studentPopulation['SR_suffix'] = "") {
+                                                                                                            echo $studentPopulation['SR_lname'] .  ", " . $studentPopulation['SR_fname'];
+                                                                                                        }
+                                                                                                        ?>
+                                                                                                    </td>
                                                                                                     <td><?php echo "Grade " . $studentPopulation['SR_grade'] . " - " . $studentPopulation['SR_section']; ?></td>
                                                                                                 </tr>
                                                                                             <?php
@@ -585,7 +595,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                     <tbody>
                                                                                         <?php
                                                                                         $rowCount = 1;
-                                                                                        $facultyPopulationData = $mysqli->query("SELECT * FROM faculty ORDER BY RAND() LIMIT 5");
+                                                                                        $facultyPopulationData = $mysqli->query("SELECT * FROM faculty ORDER BY F_lname LIMIT 5");
 
                                                                                         if (mysqli_num_rows($facultyPopulationData) > 0) {
                                                                                             while ($rowCount <= 5) {
@@ -593,7 +603,17 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                                 <tr>
                                                                                                     <td><?php echo $rowCount; ?></td>
                                                                                                     <td><?php echo $facultyPopulation['F_number']; ?></td>
-                                                                                                    <td><?php echo $facultyPopulation['F_lname'] .  ", " . $facultyPopulation['F_fname'] . " " . substr($facultyPopulation['F_mname'], 0, 1) ?></td>
+                                                                                                    <td>
+                                                                                                        <?php
+                                                                                                        if (!empty($facultyPopulation['F_mname']) || $facultyPopulation['F_mname'] != "" && empty($facultyPopulation['F_suffix']) || $facultyPopulation['F_suffix'] = "") {
+                                                                                                            echo $facultyPopulation['F_lname'] .  ", " . $facultyPopulation['F_fname'] . " " . substr($facultyPopulation['F_mname'], 0, 1) . ".";
+                                                                                                        } else if (empty($facultyPopulation['F_mname']) || $facultyPopulation['F_mname'] = "" && !empty($facultyPopulation['F_suffix']) || $facultyPopulation['F_suffix'] != "") {
+                                                                                                            echo $facultyPopulation['F_lname'] .  ", " . $facultyPopulation['F_fname'] . " " . $facultyPopulation['F_suffix'];
+                                                                                                        } else if (empty($facultyPopulation['F_mname']) || $facultyPopulation['F_mname'] = "" && empty($facultyPopulation['F_suffix']) || $facultyPopulation['F_suffix'] = "") {
+                                                                                                            echo $facultyPopulation['F_lname'] .  ", " . $facultyPopulation['F_fname'];
+                                                                                                        }
+                                                                                                        ?>
+                                                                                                    </td>
                                                                                                 </tr>
                                                                                             <?php
                                                                                                 $rowCount++;
