@@ -4,6 +4,7 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 }
+var_dump($_POST);
 ?>
 
 <!DOCTYPE html>
@@ -341,6 +342,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                                 ?>
                                                                                                 <input type="hidden" name="Grade[]" value="<?php echo $StudentData['SR_grade'] ?>">
                                                                                                 <input type="hidden" name="Section[]" value="<?php echo $StudentData['SR_section'] ?>">
+                                                                                                <input type="hidden" name="updateStudentStatus" value="submit">
                                                                                             </td>
                                                                                             <td class="tablestyle">
                                                                                                 <?php
@@ -360,7 +362,11 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                                 <?php
                                                                                                 if ($getAvgGrade['finalgrade'] >= 75) { ?>
                                                                                                     <select class="form-select" name="studentStatus[]" aria-label="Default select example">
+                                                                                                        <?php if ($StudentData['SR_status'] != NULL) {
+                                                                                                            echo '<option selected value="' . $StudentData['SR_status'] . '">' . $StudentData['SR_status'] . '</option>';
+                                                                                                        } ?>
                                                                                                         <option value=""></option>
+                                                                                                        <option value="TEST">TEST</option>
                                                                                                         <option value="Dropped">Dropped</option>
                                                                                                         <option value="MovingUp">Moving Up</option>
                                                                                                         <option value="Transferring">Transferring</option>
@@ -373,7 +379,9 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                             </td>
                                                                                             <td class="tablestyle">
                                                                                                 <?php
-                                                                                                if ($getAvgGrade['finalgrade'] >= 75) { ?>
+                                                                                                if ($StudentData['SR_status'] != NULL) {
+                                                                                                    echo '<select class="form-select" aria-label="Default select example" disabled></select>';
+                                                                                                } else if ($getAvgGrade['finalgrade'] >= 75) { ?>
                                                                                                     <select class="form-select" name="moveUpTo[]" aria-label="Default select example">
                                                                                                         <option value=""></option>
                                                                                                         <?php
@@ -469,14 +477,8 @@ if (!isset($_SESSION['AD_number'])) {
                 confirmButtonText: 'Yes',
                 cancelButtonText: `No`,
             }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                    Swal.fire({
-                        title: 'Successfully changed!',
-                        icon: 'success',
-                    }).then(() => {
-                        updateStatusForm.submit();
-                    });
+                    updateStatusForm.submit();
                 }
             })
 

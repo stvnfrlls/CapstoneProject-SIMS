@@ -243,9 +243,11 @@ if (!isset($_SESSION['F_number'])) {
                                                                                             </td>
                                                                                             <td class="tablestyle">
                                                                                                 <?php
-                                                                                                if ($getAvgGrade['finalgrade'] >= 75) { ?>
+                                                                                                if ($data['SR_status'] != NULL) {
+                                                                                                    echo '<select class="form-select text-center" aria-label="Default select example" disabled><option selected>' . $data['SR_status'] . '</option></select>';
+                                                                                                } else if ($getAvgGrade['finalgrade'] >= 75) { ?>
                                                                                                     <select class="form-select" name="studentStatus[]" id="studentStatus" aria-label="Default select example" required>
-                                                                                                        <option></option>
+                                                                                                        <option selected></option>
                                                                                                         <?php
                                                                                                         if ($data['SR_grade'] == 6) {
                                                                                                             echo '<option value="GRADUATE">Graduate</option>';
@@ -263,10 +265,13 @@ if (!isset($_SESSION['F_number'])) {
                                                                                                     </select>
                                                                                                 <?php }
                                                                                                 ?>
+
                                                                                             </td>
                                                                                             <td class="tablestyle">
                                                                                                 <?php
-                                                                                                if ($getAvgGrade['finalgrade'] >= 75) { ?>
+                                                                                                if ($data['SR_status'] != NULL || $data['SR_grade'] = 6) {
+                                                                                                    echo '<select class="form-select" aria-label="Default select example" disabled></select>';
+                                                                                                } else if ($getAvgGrade['finalgrade'] >= 75) { ?>
                                                                                                     <select class="form-select" name="moveUpTo[]" id="moveUpTo" aria-label="Default select example" required>
                                                                                                         <option selected></option>
                                                                                                         <?php
@@ -292,6 +297,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                                                 <?php
                                                                                                 } else { ?>
                                                                                                     <select class="form-select" name="moveUpTo[]" id="moveUpTo" aria-label="Default select example" required>
+                                                                                                        <option selected></option>
                                                                                                         <?php
                                                                                                         if ($data['SR_grade'] == "KINDER") {
                                                                                                             $data['SR_grade'] = 0;
@@ -376,21 +382,15 @@ if (!isset($_SESSION['F_number'])) {
         const StudentStatusForm = document.getElementById('StudentStatusForm');
         const setStudentStatus = document.getElementById('setStudentStatus');
         setStudentStatus.addEventListener('click', function() {
-            if (studentStatus.value != "" && moveUpTo.value != "") {
+            if (studentStatus.value != "") {
                 Swal.fire({
                     title: 'Are you sure you want save your changes?',
                     showCancelButton: true,
                     confirmButtonText: 'Yes',
                     cancelButtonText: `No`,
                 }).then((result) => {
-                    /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
                         StudentStatusForm.submit();
-                        Swal.fire({
-                            title: 'Successfully changed!',
-                            icon: 'success',
-                        })
-
                     }
                 })
             } else {
