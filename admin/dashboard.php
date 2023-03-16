@@ -537,7 +537,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                     <tbody>
                                                                                         <?php
                                                                                         $rowCount = 1;
-                                                                                        $studentPopulationData = $mysqli->query("SELECT * FROM studentrecord ORDER BY SR_lname LIMIT 5");
+                                                                                        $studentPopulationData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_status IS NULL ORDER BY SR_lname LIMIT 5");
 
                                                                                         if (mysqli_num_rows($studentPopulationData) > 0) {
                                                                                             while ($studentPopulation = $studentPopulationData->fetch_assoc()) { ?>
@@ -595,7 +595,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                     <tbody>
                                                                                         <?php
                                                                                         $rowCount = 1;
-                                                                                        $facultyPopulationData = $mysqli->query("SELECT * FROM faculty ORDER BY F_lname LIMIT 5");
+                                                                                        $facultyPopulationData = $mysqli->query("SELECT * FROM faculty WHERE F_status = 'active' ORDER BY F_lname LIMIT 5");
 
                                                                                         if (mysqli_num_rows($facultyPopulationData) > 0) {
                                                                                             while ($rowCount <= 5) {
