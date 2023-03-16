@@ -257,6 +257,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                         <div class="col-sm-12">
                                                                             <select class="form-select" name="studentName" id="studentName" required readonly>
                                                                             </select>
+                                                                            <input type="hidden" name="date" id="dateValue">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -326,6 +327,7 @@ if (!isset($_SESSION['F_number'])) {
     <script>
         const reportID = document.getElementById('reportID');
         const studentName = document.getElementById('studentName');
+        const dateValue = document.getElementById('dateValue');
 
         for (let i = 0; i < AttendanceConcern.length; i++) {
             const option = document.createElement('option');
@@ -340,7 +342,7 @@ if (!isset($_SESSION['F_number'])) {
                 return element.reportID == reportIDValue;
             });
             studentName.value = findReportID.SR_lname + ", " + findReportID.SR_fname;
-
+            dateValue.value = findReportID.RP_reportDate;
             const option = document.createElement('option');
             option.value = findReportID.SR_number;
             option.text = findReportID.SR_lname + ", " + findReportID.SR_fname;

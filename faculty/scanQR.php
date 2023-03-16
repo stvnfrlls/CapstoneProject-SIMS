@@ -11,25 +11,19 @@ if (!isset($_SESSION['F_number'])) {
         $NOTtimedIN = array();
         $today = date('Y-m-d');
 
-        $getNOTtimedIN = $mysqli->query("SELECT studentrecord.SR_lname, studentrecord.SR_fname, studentrecord.SR_number FROM studentrecord 
-                                        LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number WHERE attendance.A_time_IN IS NULL 
-                                        AND attendance.A_date != '{$today}'");
+        $getNOTtimedIN = $mysqli->query("SELECT SR_lname, SR_fname, SR_number FROM studentrecord WHERE SR_number NOT IN (SELECT SR_number FROM attendance WHERE A_time_IN = NULL AND A_date = '{$today}')");
         while ($studentNumber_NOTtimedIN = $getNOTtimedIN->fetch_assoc()) {
             $NOTtimedIN[] = $studentNumber_NOTtimedIN;
         }
 
         $NOTtimedOUT = array();
-        $getNOTtimedOUT = $mysqli->query("SELECT studentrecord.SR_lname, studentrecord.SR_fname, studentrecord.SR_number FROM studentrecord 
-                                        LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number WHERE attendance.A_time_OUT IS NULL
-                                        AND attendance.A_date != '{$today}'");
+        $getNOTtimedOUT = $mysqli->query("SELECT SR_lname, SR_fname, SR_number FROM studentrecord WHERE SR_number NOT IN (SELECT SR_number FROM attendance WHERE A_time_OUT = NULL AND A_date = '{$today}')");
         while ($studentNumber_NOTtimedOUT = $getNOTtimedOUT->fetch_assoc()) {
             $NOTtimedOUT[] = $studentNumber_NOTtimedOUT;
         }
 
         $timedOUT = array();
-        $gettimedOUT = $mysqli->query("SELECT studentrecord.SR_lname, studentrecord.SR_fname, studentrecord.SR_number FROM studentrecord 
-                                    LEFT JOIN attendance ON studentrecord.SR_number = attendance.SR_number WHERE attendance.A_time_OUT IS NOT NULL
-                                    AND attendance.A_date = '{$today}'");
+        $gettimedOUT = $mysqli->query("SELECT SR_lname, SR_fname, SR_number FROM studentrecord WHERE SR_number NOT IN (SELECT SR_number FROM attendance WHERE A_time_OUT != NULL AND A_date != '{$today}')");
         while ($studentNumber_timedOUT = $gettimedOUT->fetch_assoc()) {
             $timedOUT[] = $studentNumber_timedOUT;
         }
@@ -329,7 +323,7 @@ if (!isset($_SESSION['F_number'])) {
                 title: `Student (${timedOUTDATA.SR_lname}, ${timedOUTDATA .SR_fname}) has already timed out.`,
                 confirmButtonText: 'Proceed',
             });
-        } else {
+        } else if (!timedOUTDATA) {
             Swal.fire({
                 title: 'Invalid QR Code',
                 confirmButtonText: 'OK',

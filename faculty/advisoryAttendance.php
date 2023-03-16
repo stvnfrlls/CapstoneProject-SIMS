@@ -257,7 +257,11 @@ if (!isset($_SESSION['F_number'])) {
                                               $getAttendanceNow = $mysqli->query("SELECT * FROM attendance WHERE acadYear = '{$currentSchoolYear}' AND A_date = '{$dateNow}' AND SR_number = '{$studentInfo['SR_number']}'");
                                               $attendanceData = $getAttendanceNow->fetch_assoc();
 
-                                              echo $attendanceData['A_time_IN'];
+                                              if (isset($attendanceData['A_time_IN'])) {
+                                                echo $attendanceData['A_time_IN'] . "-" . $attendanceData['A_status'];
+                                              } else if (!isset($attendanceData['A_time_IN']) && !isset($attendanceData['A_time_OUT']) && isset($attendanceData['A_status'])) {
+                                                echo "MANUAL ATTENDANCE";
+                                              }
                                               ?>
                                             </td>
                                             <td>

@@ -268,7 +268,7 @@ if (!isset($_SESSION['AD_number'])) {
                                         </tr>
                                         <?php }
                                     } else {
-                                      $ListofFaculty = "SELECT * FROM faculty";
+                                      $ListofFaculty = "SELECT * FROM faculty ORDER BY F_lname";
                                       $resultListofFaculty = $mysqli->query($ListofFaculty);
                                       if (mysqli_num_rows($resultListofFaculty) > 0) {
                                         while ($data = $resultListofFaculty->fetch_assoc()) { ?>

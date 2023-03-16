@@ -324,7 +324,11 @@ if (mysqli_num_rows($checkQuarter) > 0) {
                                                                         <?php
                                                                         $rowCount = 1;
                                                                         if (isset($_GET['grade']) && isset($_GET['section'])) {
-                                                                            $getClasslistData = $mysqli->query("SELECT * FROM classlist WHERE SR_grade = '{$_GET['grade']}' AND SR_section = '{$_GET['section']}' AND acadYear = '{$currentSchoolYear}'");
+                                                                            $getClasslistData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist 
+                                                                                                                WHERE SR_grade = '{$_GET['grade']}' 
+                                                                                                                AND SR_section = '{$_GET['section']}' 
+                                                                                                                AND acadYear = '{$currentSchoolYear}')
+                                                                                                                ORDER BY SR_lname");
                                                                             if (mysqli_num_rows($getClasslistData) > 0) {
                                                                                 while ($ClasslistData = $getClasslistData->fetch_assoc()) { ?>
                                                                                     <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="changeSectionForm">
@@ -338,9 +342,14 @@ if (mysqli_num_rows($checkQuarter) > 0) {
                                                                                                 <?php
                                                                                                 $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$ClasslistData['SR_number']}'");
                                                                                                 $studentInfo = $getStudentInfo->fetch_assoc();
-                                                                                                echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix'];
+                                                                                                if (!empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] != "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {
+                                                                                                    echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ".";
+                                                                                                } else if (empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] = "" && !empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] != "") {
+                                                                                                    echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . $studentInfo['SR_suffix'];
+                                                                                                } else if (empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] = "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {
+                                                                                                    echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'];
+                                                                                                }
                                                                                                 ?>
-
                                                                                             </td>
                                                                                             <td class="hatdog">
                                                                                                 <?php
@@ -435,7 +444,7 @@ if (mysqli_num_rows($checkQuarter) > 0) {
     </div>
     <!-- Footer End -->
 
- 
+
     <!-- Template Javascript -->
     <script src="../assets/js/main.js"></script>
 

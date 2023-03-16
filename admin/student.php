@@ -340,15 +340,15 @@ if (!isset($_SESSION['AD_number'])) {
                                   <tbody>
                                     <?php
                                     if (isset($_GET['SY']) && !empty($_GET['SY'])) {
-                                      $ListofStudents = "SELECT * FROM classlist WHERE acadYear = '{$_GET['SY']}'";
+                                      $ListofStudents = "SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE acadYear = '{$_GET['SY']}' ORDER BY SR_lname)";
                                     } else if (isset($_GET['GradeLevel']) && !empty($_GET['GradeLevel']) && !isset($_GET['section']) && empty($_GET['section'])) {
-                                      $ListofStudents = "SELECT * FROM classlist WHERE SR_grade = '{$_GET['GradeLevel']}' AND acadYear = '{$currentSchoolYear}'";
+                                      $ListofStudents = "SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE SR_grade = '{$_GET['GradeLevel']}' AND acadYear = '{$currentSchoolYear}') ORDER BY SR_lname";
                                     } else if (isset($_GET['GradeLevel']) && !empty($_GET['GradeLevel']) && isset($_GET['section']) && !empty($_GET['section'])) {
-                                      $ListofStudents = "SELECT * FROM classlist WHERE SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['section']}' AND acadYear = '{$currentSchoolYear}'";
+                                      $ListofStudents = "SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['section']}' AND acadYear = '{$currentSchoolYear}') ORDER BY SR_lname";
                                     } else if (isset($_GET['SY']) && !empty($_GET['SY']) && isset($_GET['GradeLevel']) && !empty($_GET['GradeLevel']) && isset($_GET['section']) && !empty($_GET['section'])) {
-                                      $ListofStudents = "SELECT * FROM classlist WHERE SR_section = '{$_GET['section']}' AND acadYear = '{$_GET['SY']}'";
+                                      $ListofStudents = "SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE SR_section = '{$_GET['section']}' AND acadYear = '{$_GET['SY']}') ORDER BY SR_lname";
                                     } else {
-                                      $ListofStudents = "SELECT * FROM classlist WHERE acadYear = '{$currentSchoolYear}'";
+                                      $ListofStudents = "SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE acadYear = '{$currentSchoolYear}') ORDER BY SR_lname";
                                     }
 
                                     $resultListofStudents = $mysqli->query($ListofStudents);
@@ -375,7 +375,13 @@ if (!isset($_SESSION['AD_number'])) {
                                               $getstudentname = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$data['SR_number']}'");
                                               $studentname = $getstudentname->fetch_assoc();
 
-                                              echo $studentname['SR_lname'] .  ", " . $studentname['SR_fname'] . " " . substr($studentname['SR_mname'], 0, 1) . ". " . $studentname['SR_suffix'];
+                                              if (!empty($studentname['SR_mname']) || $studentname['SR_mname'] != "" && empty($studentname['SR_suffix']) || $studentname['SR_suffix'] = "") {
+                                                echo $studentname['SR_lname'] .  ", " . $studentname['SR_fname'] . " " . substr($studentname['SR_mname'], 0, 1) . ".";
+                                              } else if (empty($studentname['SR_mname']) || $studentname['SR_mname'] = "" && !empty($studentname['SR_suffix']) || $studentname['SR_suffix'] != "") {
+                                                echo $studentname['SR_lname'] .  ", " . $studentname['SR_fname'] . " " . $studentname['SR_suffix'];
+                                              } else if (empty($studentname['SR_mname']) || $studentname['SR_mname'] = "" && empty($studentname['SR_suffix']) || $studentname['SR_suffix'] = "") {
+                                                echo $studentname['SR_lname'] .  ", " . $studentname['SR_fname'];
+                                              }
                                               ?>
                                             </a>
                                           </td>
@@ -423,7 +429,7 @@ if (!isset($_SESSION['AD_number'])) {
   </div>
   <!-- Footer End -->
 
- 
+
 
   <!-- Template Javascript -->
   <script src="../assets/js/main.js"></script>

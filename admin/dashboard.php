@@ -205,103 +205,106 @@ if (!isset($_SESSION['AD_number'])) {
                                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                                         <div class="row">
                                             <div class="col-12 grid-margin">
+                                                <?php
+                                                if ($_SESSION['AD_number'] == "5UP3R4DM1N") { ?>
+                                                    <form id="form-id" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
+                                                        <div class="row">
+                                                            <div class="col-lg-3 col-sm-12" style="padding-top: 15px;">
+                                                                <div class="card" style="text-align:center; padding-right: 0px; padding-left: 0px;">
+                                                                    <div class="card-body" style="padding-right: 0px; padding-left: 0px;">
+                                                                        <h3 style="font-size: 18px;"><?php echo "School Year: " . $currentSchoolYear ?></h3>
+                                                                        <p>Colegio De San Pedro</p>
+                                                                        <?php
+                                                                        $getAcadYear = $mysqli->query("SELECT * FROM acad_year");
+                                                                        $acadYear_Data = $getAcadYear->fetch_assoc();
 
-                                                <form id="form-id" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
-                                                    <div class="row">
-                                                        <div class="col-lg-3 col-sm-12" style="padding-top: 15px;">
-                                                            <div class="card" style="text-align:center; padding-right: 0px; padding-left: 0px;">
-                                                                <div class="card-body" style="padding-right: 0px; padding-left: 0px;">
-                                                                    <h3 style="font-size: 18px;"><?php echo "School Year: " . $currentSchoolYear ?></h3>
-                                                                    <p>Colegio De San Pedro</p>
-                                                                    <?php
-                                                                    $getAcadYear = $mysqli->query("SELECT * FROM acad_year");
-                                                                    $acadYear_Data = $getAcadYear->fetch_assoc();
+                                                                        $startYear = $acadYear_Data['endYear'];
+                                                                        $endYear = (int) $startYear + 1;
+                                                                        ?>
+                                                                        <button type="submit" name="acadyear" class="btn btn-primary m-2"><?php echo 'Start S.Y. ' . $startYear . '-' . $endYear ?></button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 col-sm-12" style="padding-top: 15px;">
+                                                                <div class="card" style="text-align:center;">
+                                                                    <div class="card-body">
+                                                                        <h3 style="font-size: 18px;">Encoding of Grades</h3>
+                                                                        <?php
+                                                                        $EncodeStatus = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 'FORMS' AND quarterStatus = 'enabled'");
+                                                                        if (mysqli_num_rows($EncodeStatus) > 0) { ?>
+                                                                            <p>Status: Open</p>
+                                                                            <button type="submit" name="Close" class="btn btn-primary m-2">Close</button>
+                                                                        <?php } else { ?>
+                                                                            <p>Status: Closed</p>
+                                                                            <button type="submit" name="Open" class="btn btn-secondary m-2">Open</button>
+                                                                        <?php } ?>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6 col-sm-12" style="padding-top: 15px;">
+                                                                <div class="card" style="text-align:center;">
+                                                                    <div class="card-body" style="padding: 24px 0px 24px 0px;">
+                                                                        <h3 style="font-size: 18px;">Quarterly Period</h3>
+                                                                        <?php
+                                                                        $checkQuarterStatus = $mysqli->query("SELECT * FROM quartertable WHERE quarterStatus = 'current'");
+                                                                        if (mysqli_num_rows($checkQuarterStatus) == 0) {
+                                                                            echo '<p>Ongoing period: </p>';
+                                                                        } else {
+                                                                            $currentQuarter = $checkQuarterStatus->fetch_assoc();
+                                                                            if ($currentQuarter['quarterTag'] == 1) {
+                                                                                echo '<p>Ongoing period: 1st Quarter</p>';
+                                                                            }
+                                                                            if ($currentQuarter['quarterTag'] == 2) {
+                                                                                echo '<p>Ongoing period: 2nd Quarter</p>';
+                                                                            }
+                                                                            if ($currentQuarter['quarterTag'] == 3) {
+                                                                                echo '<p>Ongoing period: 3rd Quarter</p>';
+                                                                            }
+                                                                            if ($currentQuarter['quarterTag'] == 4) {
+                                                                                echo '<p>Ongoing period: 4th Quarter</p>';
+                                                                            }
+                                                                        }
+                                                                        ?>
+                                                                        <?php
+                                                                        $checkQuarter1 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 1 AND quarterStatus = 'current'");
+                                                                        if (mysqli_num_rows($checkQuarter1) > 0) { ?>
+                                                                            <button type=" submit" class="btn btn-primary m-2" name="disableQ1">1st Quarter</button>
+                                                                        <?php } else { ?>
+                                                                            <button type=" submit" class="btn btn-secondary m-2" name="enableFirst">1st Quarter</button>
+                                                                        <?php } ?>
 
-                                                                    $startYear = $acadYear_Data['endYear'];
-                                                                    $endYear = (int) $startYear + 1;
-                                                                    ?>
-                                                                    <button type="submit" name="acadyear" class="btn btn-primary m-2"><?php echo 'Start S.Y. ' . $startYear . '-' . $endYear ?></button>
+                                                                        <?php
+                                                                        $checkQuarter2 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 2 AND quarterStatus = 'current'");
+                                                                        if (mysqli_num_rows($checkQuarter2) > 0) { ?>
+                                                                            <button class="btn btn-primary m-2" name="disableQ2" style="font-size:12px;">2nd Quarter</button>
+                                                                        <?php } else { ?>
+                                                                            <button type="submit" name="enableSecond" class="btn btn-secondary m-2">2nd Quarter</button>
+                                                                        <?php } ?>
+
+
+                                                                        <?php
+                                                                        $checkQuarter3 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 3 AND quarterStatus = 'current'");
+                                                                        if (mysqli_num_rows($checkQuarter3) > 0) { ?>
+                                                                            <button class="btn btn-primary m-2" name="disableQ3">3rd Quarter</button>
+                                                                        <?php } else { ?>
+                                                                            <button type="submit" name="enableThird" class="btn btn-secondary m-2">3rd Quarter</button>
+                                                                        <?php } ?>
+
+                                                                        <?php
+                                                                        $checkQuarter4 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 4 AND quarterStatus = 'current'");
+                                                                        if (mysqli_num_rows($checkQuarter4) > 0) { ?>
+                                                                            <button class="btn btn-primary m-2" name="disableQ4">4th Quarter</button>
+                                                                        <?php } else { ?>
+                                                                            <button type="submit" name="enableFourth" class="btn btn-secondary m-2">4th Quarter</button>
+                                                                        <?php } ?>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-3 col-sm-12" style="padding-top: 15px;">
-                                                            <div class="card" style="text-align:center;">
-                                                                <div class="card-body">
-                                                                    <h3 style="font-size: 18px;">Encoding of Grades</h3>
-                                                                    <?php
-                                                                    $EncodeStatus = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 'FORMS' AND quarterStatus = 'enabled'");
-                                                                    if (mysqli_num_rows($EncodeStatus) > 0) { ?>
-                                                                        <p>Status: Open</p>
-                                                                        <button type="submit" name="Close" class="btn btn-primary m-2">Close</button>
-                                                                    <?php } else { ?>
-                                                                        <p>Status: Closed</p>
-                                                                        <button type="submit" name="Open" class="btn btn-secondary m-2">Open</button>
-                                                                    <?php } ?>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-6 col-sm-12" style="padding-top: 15px;">
-                                                            <div class="card" style="text-align:center;">
-                                                                <div class="card-body" style="padding: 24px 0px 24px 0px;">
-                                                                    <h3 style="font-size: 18px;">Quarterly Period</h3>
-                                                                    <?php
-                                                                    $checkQuarterStatus = $mysqli->query("SELECT * FROM quartertable WHERE quarterStatus = 'current'");
-                                                                    if (mysqli_num_rows($checkQuarterStatus) == 0) {
-                                                                        echo '<p>Ongoing period: </p>';
-                                                                    } else {
-                                                                        $currentQuarter = $checkQuarterStatus->fetch_assoc();
-                                                                        if ($currentQuarter['quarterTag'] == 1) {
-                                                                            echo '<p>Ongoing period: 1st Quarter</p>';
-                                                                        }
-                                                                        if ($currentQuarter['quarterTag'] == 2) {
-                                                                            echo '<p>Ongoing period: 2nd Quarter</p>';
-                                                                        }
-                                                                        if ($currentQuarter['quarterTag'] == 3) {
-                                                                            echo '<p>Ongoing period: 3rd Quarter</p>';
-                                                                        }
-                                                                        if ($currentQuarter['quarterTag'] == 4) {
-                                                                            echo '<p>Ongoing period: 4th Quarter</p>';
-                                                                        }
-                                                                    }
-                                                                    ?>
-                                                                    <?php
-                                                                    $checkQuarter1 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 1 AND quarterStatus = 'current'");
-                                                                    if (mysqli_num_rows($checkQuarter1) > 0) { ?>
-                                                                        <button type=" submit" class="btn btn-primary m-2" name="disableQ1">1st Quarter</button>
-                                                                    <?php } else { ?>
-                                                                        <button type=" submit" class="btn btn-secondary m-2" name="enableFirst">1st Quarter</button>
-                                                                    <?php } ?>
-
-                                                                    <?php
-                                                                    $checkQuarter2 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 2 AND quarterStatus = 'current'");
-                                                                    if (mysqli_num_rows($checkQuarter2) > 0) { ?>
-                                                                        <button class="btn btn-primary m-2" name="disableQ2" style="font-size:12px;">2nd Quarter</button>
-                                                                    <?php } else { ?>
-                                                                        <button type="submit" name="enableSecond" class="btn btn-secondary m-2">2nd Quarter</button>
-                                                                    <?php } ?>
-
-
-                                                                    <?php
-                                                                    $checkQuarter3 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 3 AND quarterStatus = 'current'");
-                                                                    if (mysqli_num_rows($checkQuarter3) > 0) { ?>
-                                                                        <button class="btn btn-primary m-2" name="disableQ3">3rd Quarter</button>
-                                                                    <?php } else { ?>
-                                                                        <button type="submit" name="enableThird" class="btn btn-secondary m-2">3rd Quarter</button>
-                                                                    <?php } ?>
-
-                                                                    <?php
-                                                                    $checkQuarter4 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 4 AND quarterStatus = 'current'");
-                                                                    if (mysqli_num_rows($checkQuarter4) > 0) { ?>
-                                                                        <button class="btn btn-primary m-2" name="disableQ4">4th Quarter</button>
-                                                                    <?php } else { ?>
-                                                                        <button type="submit" name="enableFourth" class="btn btn-secondary m-2">4th Quarter</button>
-                                                                    <?php } ?>
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
+                                                    </form>
+                                                <?php
+                                                }
+                                                ?>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -526,7 +529,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                     <thead>
                                                                                         <tr>
                                                                                             <th>No.</th>
-                                                                                            <th>Student Number</th>
+                                                                                            <th>LRN</th>
                                                                                             <th>Student Name</th>
                                                                                             <th>Grade and Section</th>
                                                                                         </tr>
@@ -534,14 +537,24 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                     <tbody>
                                                                                         <?php
                                                                                         $rowCount = 1;
-                                                                                        $studentPopulationData = $mysqli->query("SELECT * FROM studentrecord ORDER BY RAND() LIMIT 5");
+                                                                                        $studentPopulationData = $mysqli->query("SELECT * FROM studentrecord ORDER BY SR_lname LIMIT 5");
 
                                                                                         if (mysqli_num_rows($studentPopulationData) > 0) {
                                                                                             while ($studentPopulation = $studentPopulationData->fetch_assoc()) { ?>
                                                                                                 <tr>
                                                                                                     <td><?php echo $rowCount; ?></td>
                                                                                                     <td><?php echo $studentPopulation['SR_number']; ?></td>
-                                                                                                    <td><?php echo $studentPopulation['SR_lname'] .  ", " . $studentPopulation['SR_fname'] . " " . substr($studentPopulation['SR_mname'], 0, 1) ?></td>
+                                                                                                    <td>
+                                                                                                        <?php
+                                                                                                        if (!empty($studentPopulation['SR_mname']) || $studentPopulation['SR_mname'] != "" && empty($studentPopulation['SR_suffix']) || $studentPopulation['SR_suffix'] = "") {
+                                                                                                            echo $studentPopulation['SR_lname'] .  ", " . $studentPopulation['SR_fname'] . " " . substr($studentPopulation['SR_mname'], 0, 1) . ".";
+                                                                                                        } else if (empty($studentPopulation['SR_mname']) || $studentPopulation['SR_mname'] = "" && !empty($studentPopulation['SR_suffix']) || $studentPopulation['SR_suffix'] != "") {
+                                                                                                            echo $studentPopulation['SR_lname'] .  ", " . $studentPopulation['SR_fname'] . " " . $studentPopulation['SR_suffix'];
+                                                                                                        } else if (empty($studentPopulation['SR_mname']) || $studentPopulation['SR_mname'] = "" && empty($studentPopulation['SR_suffix']) || $studentPopulation['SR_suffix'] = "") {
+                                                                                                            echo $studentPopulation['SR_lname'] .  ", " . $studentPopulation['SR_fname'];
+                                                                                                        }
+                                                                                                        ?>
+                                                                                                    </td>
                                                                                                     <td><?php echo "Grade " . $studentPopulation['SR_grade'] . " - " . $studentPopulation['SR_section']; ?></td>
                                                                                                 </tr>
                                                                                             <?php
@@ -582,7 +595,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                     <tbody>
                                                                                         <?php
                                                                                         $rowCount = 1;
-                                                                                        $facultyPopulationData = $mysqli->query("SELECT * FROM faculty ORDER BY RAND() LIMIT 5");
+                                                                                        $facultyPopulationData = $mysqli->query("SELECT * FROM faculty ORDER BY F_lname LIMIT 5");
 
                                                                                         if (mysqli_num_rows($facultyPopulationData) > 0) {
                                                                                             while ($rowCount <= 5) {
@@ -590,7 +603,17 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                                 <tr>
                                                                                                     <td><?php echo $rowCount; ?></td>
                                                                                                     <td><?php echo $facultyPopulation['F_number']; ?></td>
-                                                                                                    <td><?php echo $facultyPopulation['F_lname'] .  ", " . $facultyPopulation['F_fname'] . " " . substr($facultyPopulation['F_mname'], 0, 1) ?></td>
+                                                                                                    <td>
+                                                                                                        <?php
+                                                                                                        if (!empty($facultyPopulation['F_mname']) || $facultyPopulation['F_mname'] != "" && empty($facultyPopulation['F_suffix']) || $facultyPopulation['F_suffix'] = "") {
+                                                                                                            echo $facultyPopulation['F_lname'] .  ", " . $facultyPopulation['F_fname'] . " " . substr($facultyPopulation['F_mname'], 0, 1) . ".";
+                                                                                                        } else if (empty($facultyPopulation['F_mname']) || $facultyPopulation['F_mname'] = "" && !empty($facultyPopulation['F_suffix']) || $facultyPopulation['F_suffix'] != "") {
+                                                                                                            echo $facultyPopulation['F_lname'] .  ", " . $facultyPopulation['F_fname'] . " " . $facultyPopulation['F_suffix'];
+                                                                                                        } else if (empty($facultyPopulation['F_mname']) || $facultyPopulation['F_mname'] = "" && empty($facultyPopulation['F_suffix']) || $facultyPopulation['F_suffix'] = "") {
+                                                                                                            echo $facultyPopulation['F_lname'] .  ", " . $facultyPopulation['F_fname'];
+                                                                                                        }
+                                                                                                        ?>
+                                                                                                    </td>
                                                                                                 </tr>
                                                                                             <?php
                                                                                                 $rowCount++;
