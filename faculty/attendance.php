@@ -239,10 +239,12 @@ if (!isset($_SESSION['F_number'])) {
                                         <?php
                                         $rowCount = 1;
                                         if (isset($_GET['section']) && isset($_GET['subject'])) {
-                                          $getclasslistData = $mysqli->query("SELECT SR_number, SR_grade, SR_section FROM classlist 
-                                                                          WHERE acadYear = '{$currentSchoolYear}' 
-                                                                          AND F_number = '{$_SESSION['F_number']}'
-                                                                          AND SR_section = '{$_GET['section']}'");
+                                          $getclasslistData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number IN 
+                                                                            (SELECT SR_number FROM classlist 
+                                                                            WHERE acadYear = '{$currentSchoolYear}' 
+                                                                            AND F_number = '{$_SESSION['F_number']}'
+                                                                            AND SR_section = '{$_GET['section']}')
+                                                                            ORDER BY SR_lname");
                                           if (mysqli_num_rows($getclasslistData) > 0) {
                                             while ($classlist = $getclasslistData->fetch_assoc()) { ?>
                                               <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="attendanceReportForm">
@@ -252,9 +254,14 @@ if (!isset($_SESSION['F_number'])) {
                                                     <?php
                                                     $getStudentName = $mysqli->query("SELECT SR_lname, SR_fname, SR_mname, SR_suffix FROM studentrecord 
                                                                                   WHERE SR_number = '{$classlist['SR_number']}'");
-                                                    $StudentName = $getStudentName->fetch_assoc();
-
-                                                    echo $StudentName['SR_lname'] .  ", " . $StudentName['SR_fname'] . " " . substr($StudentName['SR_mname'], 0, 1) . ". " . $StudentName['SR_suffix'];
+                                                    $studentInfo = $getStudentName->fetch_assoc();
+                                                    if (!empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] != "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {
+                                                      echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ".";
+                                                    } else if (empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] = "" && !empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] != "") {
+                                                      echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . $studentInfo['SR_suffix'];
+                                                    } else if (empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] = "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {
+                                                      echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'];
+                                                    }
                                                     ?>
                                                     <input type="hidden" name="SR_number" value="<?php echo $classlist['SR_number'] ?>">
                                                     <input type="hidden" name="SR_grade" value="<?php echo $classlist['SR_grade'] ?>">

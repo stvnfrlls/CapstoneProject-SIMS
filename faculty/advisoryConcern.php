@@ -213,7 +213,14 @@ if (!isset($_SESSION['F_number'])) {
                                                                                         <?php
                                                                                         $getStudentName = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$AttendanceConcern_Storage[$rowCount]['SR_number']}'");
                                                                                         $studentInfo = $getStudentName->fetch_assoc();
-                                                                                        echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix']
+
+                                                                                        if (!empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] != "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {
+                                                                                            echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ".";
+                                                                                        } else if (empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] = "" && !empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] != "") {
+                                                                                            echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . $studentInfo['SR_suffix'];
+                                                                                        } else if (empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] = "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {
+                                                                                            echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'];
+                                                                                        }
                                                                                         ?>
                                                                                     </td>
                                                                                     <td><?php echo $AttendanceConcern_Storage[$rowCount]['subjectName']; ?></td>

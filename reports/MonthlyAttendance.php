@@ -101,61 +101,90 @@ if (isset($_GET['ID'])) {
     $pdf->Cell(70, 10, 'SEPTEMBER', 1, 0, 'C');
     $pdf->Cell(60, 10, $SEPvalue['COUNT(A_time_IN)'], 1, 0, 'C');
 
-    $pdf->Cell(60, 10, $SEPvalue['COUNT(A_time_IN)'], 1, 1, 'C');
+    $ABSENT_SEP = $mysqli->query("SELECT COUNT(A_status) FROM attendance WHERE SR_number = '{$_GET['ID']}'AND A_status = 'ABSENT' AND MONTHNAME(A_date) = 'September'");
+    $ABSENT_SEPvalue = $ABSENT_SEP->fetch_assoc();
+    $pdf->Cell(60, 10, $ABSENT_SEPvalue['COUNT(A_time_IN)'], 1, 1, 'C');
 
     $OCT = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'October'");
     $OCTvalue = $OCT->fetch_assoc();
     $pdf->Cell(70, 10, 'OCTOBER', 1, 0, 'C');
     $pdf->Cell(60, 10, $OCTvalue['COUNT(A_time_IN)'], 1, 0, 'C');
-    $pdf->Cell(60, 10, $OCTvalue['COUNT(A_time_IN)'], 1, 1, 'C');
+
+    $ABSENT_OCT = $mysqli->query("SELECT COUNT(A_status) FROM attendance WHERE SR_number = '{$_GET['ID']}'AND A_status = 'ABSENT' AND MONTHNAME(A_date) = 'October'");
+    $ABSENT_OCTvalue = $ABSENT_OCT->fetch_assoc();
+    $pdf->Cell(60, 10, $ABSENT_OCTvalue['COUNT(A_time_IN)'], 1, 1, 'C');
 
     $NOV = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'November'");
     $NOVvalue = $NOV->fetch_assoc();
     $pdf->Cell(70, 10, 'NOVEMBER', 1, 0, 'C');
     $pdf->Cell(60, 10, $NOVvalue['COUNT(A_time_IN)'], 1, 0, 'C');
-    $pdf->Cell(60, 10, $NOVvalue['COUNT(A_time_IN)'], 1, 1, 'C');
+
+    $ABSENT_NOV = $mysqli->query("SELECT COUNT(A_status) FROM attendance WHERE SR_number = '{$_GET['ID']}'AND A_status = 'ABSENT' AND MONTHNAME(A_date) = 'November'");
+    $ABSENT_NOVvalue = $ABSENT_NOV->fetch_assoc();
+    $pdf->Cell(60, 10, $ABSENT_NOVvalue['COUNT(A_time_IN)'], 1, 1, 'C');
 
     $DEC = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'December'");
     $DECvalue = $DEC->fetch_assoc();
     $pdf->Cell(70, 10, 'DECEMBER', 1, 0, 'C');
     $pdf->Cell(60, 10, $DECvalue['COUNT(A_time_IN)'], 1, 0, 'C');
-    $pdf->Cell(60, 10, $DECvalue['COUNT(A_time_IN)'], 1, 1, 'C');
+
+    $ABSENT_DEC = $mysqli->query("SELECT COUNT(A_status) FROM attendance WHERE SR_number = '{$_GET['ID']}'AND A_status = 'ABSENT' AND MONTHNAME(A_date) = 'December'");
+    $ABSENT_DECvalue = $ABSENT_DEC->fetch_assoc();
+    $pdf->Cell(60, 10, $ABSENT_DECvalue['COUNT(A_time_IN)'], 1, 1, 'C');
 
     $JAN = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'January'");
     $JANvalue = $JAN->fetch_assoc();
     $pdf->Cell(70, 10, 'JANUARY', 1, 0, 'C');
     $pdf->Cell(60, 10, $JANvalue['COUNT(A_time_IN)'], 1, 0, 'C');
-    $pdf->Cell(60, 10, $JANvalue['COUNT(A_time_IN)'], 1, 1, 'C');
+
+    $ABSENT_JAN = $mysqli->query("SELECT COUNT(A_status) FROM attendance WHERE SR_number = '{$_GET['ID']}'AND A_status = 'ABSENT' AND MONTHNAME(A_date) = 'January'");
+    $ABSENT_JANvalue = $ABSENT_JAN->fetch_assoc();
+    $pdf->Cell(60, 10, $ABSENT_JANvalue['COUNT(A_time_IN)'], 1, 1, 'C');
 
     $FEB = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'February'");
     $FEBvalue = $FEB->fetch_assoc();
     $pdf->Cell(70, 10, 'FEBUARY', 1, 0, 'C');
     $pdf->Cell(60, 10, $SEPvalue['COUNT(A_time_IN)'], 1, 0, 'C');
-    $pdf->Cell(60, 10, $SEPvalue['COUNT(A_time_IN)'], 1, 1, 'C');
+
+    $ABSENT_FEB = $mysqli->query("SELECT COUNT(A_status) FROM attendance WHERE SR_number = '{$_GET['ID']}'AND A_status = 'ABSENT' AND MONTHNAME(A_date) = 'February'");
+    $ABSENT_FEBvalue = $ABSENT_FEB->fetch_assoc();
+    $pdf->Cell(60, 10, $ABSENT_SEPvalue['COUNT(A_time_IN)'], 1, 1, 'C');
 
     $MAR = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'March'");
     $MARvalue = $MAR->fetch_assoc();
     $pdf->Cell(70, 10, 'MARCH', 1, 0, 'C');
     $pdf->Cell(60, 10, $MARvalue['COUNT(A_time_IN)'], 1, 0, 'C');
-    $pdf->Cell(60, 10, $MARvalue['COUNT(A_time_IN)'], 1, 1, 'C');
+
+    $ABSENT_MAR = $mysqli->query("SELECT COUNT(A_status) FROM attendance WHERE SR_number = '{$_GET['ID']}'AND A_status = 'ABSENT' AND MONTHNAME(A_date) = 'March'");
+    $ABSENT_MARvalue = $ABSENT_MAR->fetch_assoc();
+    $pdf->Cell(60, 10, $ABSENT_MARvalue['COUNT(A_time_IN)'], 1, 1, 'C');
 
     $APR = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'April'");
     $APRvalue = $APR->fetch_assoc();
     $pdf->Cell(70, 10, 'APRIL', 1, 0, 'C');
     $pdf->Cell(60, 10, $APRvalue['COUNT(A_time_IN)'], 1, 0, 'C');
-    $pdf->Cell(60, 10, $APRvalue['COUNT(A_time_IN)'], 1, 1, 'C');
+
+    $ABSENT_APR = $mysqli->query("SELECT COUNT(A_status) FROM attendance WHERE SR_number = '{$_GET['ID']}'AND A_status = 'ABSENT' AND MONTHNAME(A_date) = 'April'");
+    $ABSENT_APRvalue = $ABSENT_APR->fetch_assoc();
+    $pdf->Cell(60, 10, $ABSENT_APRvalue['COUNT(A_time_IN)'], 1, 1, 'C');
 
     $MAY = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'May'");
     $MAYvalue = $MAY->fetch_assoc();
     $pdf->Cell(70, 10, 'MAY', 1, 0, 'C');
     $pdf->Cell(60, 10, $MAYvalue['COUNT(A_time_IN)'], 1, 0, 'C');
-    $pdf->Cell(60, 10, $MAYvalue['COUNT(A_time_IN)'], 1, 1, 'C');
+
+    $ABSENT_MAY = $mysqli->query("SELECT COUNT(A_status) FROM attendance WHERE SR_number = '{$_GET['ID']}'AND A_status = 'ABSENT' AND MONTHNAME(A_date) = 'May'");
+    $ABSENT_MAYvalue = $ABSENT_MAY->fetch_assoc();
+    $pdf->Cell(60, 10, $ABSENT_MAYvalue['COUNT(A_time_IN)'], 1, 1, 'C');
 
     $JUN = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['ID']}' AND MONTHNAME(A_date) = 'June'");
     $JUNvalue = $JUN->fetch_assoc();
     $pdf->Cell(70, 10, 'JUNE', 1, 0, 'C');
     $pdf->Cell(60, 10, $JUNvalue['COUNT(A_time_IN)'], 1, 0, 'C');
-    $pdf->Cell(60, 10, $JUNvalue['COUNT(A_time_IN)'], 1, 1, 'C');
+
+    $ABSENT_JUN = $mysqli->query("SELECT COUNT(A_status) FROM attendance WHERE SR_number = '{$_GET['ID']}'AND A_status = 'ABSENT' AND MONTHNAME(A_date) = 'June'");
+    $ABSENT_JUNvalue = $ABSENT_JUN->fetch_assoc();
+    $pdf->Cell(60, 10, $ABSENT_JUNvalue['COUNT(A_time_IN)'], 1, 1, 'C');
 
     ob_end_clean();
     $pdf->Output('I', "Monthly Attendance - " . $studentInfo['SR_lname'] . " (" . $studentInfo['SR_grade'] . "-" . $studentInfo['SR_section'] . ")" . '.pdf');

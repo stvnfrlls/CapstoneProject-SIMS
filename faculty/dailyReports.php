@@ -238,11 +238,11 @@ if (!isset($_SESSION['F_number'])) {
                                                                 <table class="table table-striped">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th>No.</th>
-                                                                            <th>Name</th>
-                                                                            <th>Time In</th>
-                                                                            <th>Time Out</th>
-                                                                            <th>Remarks</th>
+                                                                            <th class="tabledata">No.</th>
+                                                                            <th class="tabledata">Name</th>
+                                                                            <th class="tabledata">Time In</th>
+                                                                            <th class="tabledata">Time Out</th>
+                                                                            <th class="tabledata">Remarks</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
@@ -271,17 +271,28 @@ if (!isset($_SESSION['F_number'])) {
                                                                         $dateNow = date("Y-m-d");
                                                                         if (isset($_GET['Grade']) && isset($_GET['Section'])) {
                                                                             $getDailyAttendanceData = $mysqli->query("SELECT DISTINCT SR_lname, SR_fname, SR_mname, SR_suffix, attendance.SR_number, attendance.A_time_IN, attendance.A_time_OUT, attendance.A_status 
-                                                                            FROM attendance 
-                                                                            LEFT JOIN studentrecord ON attendance.SR_number = studentrecord.SR_number 
-                                                                            WHERE acadYear = '{$currentSchoolYear}' 
-                                                                            AND SR_section = '{$_GET['Section']}' 
-                                                                            AND SR_grade = '{$_GET['Grade']}'
-                                                                            AND A_date = '{$dateNow}'");
+                                                                                                                    FROM attendance 
+                                                                                                                    LEFT JOIN studentrecord ON attendance.SR_number = studentrecord.SR_number 
+                                                                                                                    WHERE acadYear = '{$currentSchoolYear}' 
+                                                                                                                    AND SR_section = '{$_GET['Section']}' 
+                                                                                                                    AND SR_grade = '{$_GET['Grade']}'
+                                                                                                                    AND A_date = '{$dateNow}'
+                                                                                                                    ORDER BY SR_lname");
                                                                             if (mysqli_num_rows($getDailyAttendanceData) > 0) {
                                                                                 while ($AttendanceData = $getDailyAttendanceData->fetch_assoc()) { ?>
                                                                                     <tr>
                                                                                         <td class="tabledata"><?php echo $rowCount; ?></td>
-                                                                                        <td class="tabledata"><?php echo $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'] . " " . substr($AttendanceData['SR_mname'], 0, 1) . ". " . $AttendanceData['SR_suffix']; ?></td>
+                                                                                        <td class="tabledata">
+                                                                                            <?php
+                                                                                            if (!empty($AttendanceData['SR_mname']) || $AttendanceData['SR_mname'] != "" && empty($AttendanceData['SR_suffix']) || $AttendanceData['SR_suffix'] = "") {
+                                                                                                echo $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'] . " " . substr($AttendanceData['SR_mname'], 0, 1) . ".";
+                                                                                            } else if (empty($AttendanceData['SR_mname']) || $AttendanceData['SR_mname'] = "" && !empty($AttendanceData['SR_suffix']) || $AttendanceData['SR_suffix'] != "") {
+                                                                                                echo $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'] . " " . $AttendanceData['SR_suffix'];
+                                                                                            } else if (empty($AttendanceData['SR_mname']) || $AttendanceData['SR_mname'] = "" && empty($AttendanceData['SR_suffix']) || $AttendanceData['SR_suffix'] = "") {
+                                                                                                echo $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'];
+                                                                                            }
+                                                                                            ?>
+                                                                                        </td>
                                                                                         <td class="tabledata"><?php echo $AttendanceData['A_time_IN']; ?></td>
                                                                                         <td class="tabledata"><?php echo $AttendanceData['A_time_OUT']; ?></td>
                                                                                         <td class="tabledata"><?php echo $AttendanceData['A_status']; ?></td>

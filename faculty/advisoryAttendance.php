@@ -228,9 +228,11 @@ if (!isset($_SESSION['F_number'])) {
                                         }
                                       </style>
                                       <?php
-                                      $getAdvisoryClassData = $mysqli->query("SELECT SR_number, SR_grade, SR_section FROM classlist 
-                                                                              WHERE F_number = '{$_SESSION['F_number']}' 
-                                                                              AND acadYear = '{$currentSchoolYear}'");
+                                      $getAdvisoryClassData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number IN 
+                                                                            (SELECT SR_number FROM classlist 
+                                                                            WHERE F_number = '{$_SESSION['F_number']}' 
+                                                                            AND acadYear = '{$currentSchoolYear}')
+                                                                            ORDER BY SR_lname");
                                       $row = 1;
                                       while ($advisoryClass = $getAdvisoryClassData->fetch_assoc()) { ?>
                                         <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post">

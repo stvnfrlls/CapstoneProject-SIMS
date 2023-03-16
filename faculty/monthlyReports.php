@@ -249,11 +249,11 @@ if (!isset($_SESSION['F_number'])) {
                                                                     <table class="table table-striped">
                                                                         <thead>
                                                                             <tr>
-                                                                                <th>Student Name</th>
-                                                                                <th>No. of School Days</th>
-                                                                                <th>No. of Days Present</th>
-                                                                                <th>No. of Days Absent</th>
-                                                                                <th>No. of Days Tardy</th>
+                                                                                <th class="tabledata">Student Name</th>
+                                                                                <th class="tabledata">No. of School Days</th>
+                                                                                <th class="tabledata">No. of Days Present</th>
+                                                                                <th class="tabledata">No. of Days Absent</th>
+                                                                                <th class="tabledata">No. of Days Tardy</th>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
@@ -282,16 +282,27 @@ if (!isset($_SESSION['F_number'])) {
                                                                             $dateNow = date("Y-m-d");
                                                                             if (isset($_GET['month']) && isset($_GET['Grade']) && isset($_GET['Section'])) {
                                                                                 $getMonthlyAttendanceData = $mysqli->query("SELECT DISTINCT SR_lname, SR_fname, SR_mname, SR_suffix, attendance.SR_number 
-                                                                            FROM attendance 
-                                                                            LEFT JOIN studentrecord ON attendance.SR_number = studentrecord.SR_number 
-                                                                            WHERE acadYear = '{$currentSchoolYear}' 
-                                                                            AND SR_grade = '{$_GET['Grade']}'
-                                                                            AND SR_section = '{$_GET['Section']}' 
-                                                                            AND MONTHNAME(A_date) = '{$_GET['month']}'");
+                                                                                                                            FROM attendance 
+                                                                                                                            LEFT JOIN studentrecord ON attendance.SR_number = studentrecord.SR_number 
+                                                                                                                            WHERE acadYear = '{$currentSchoolYear}' 
+                                                                                                                            AND SR_grade = '{$_GET['Grade']}'
+                                                                                                                            AND SR_section = '{$_GET['Section']}' 
+                                                                                                                            AND MONTHNAME(A_date) = '{$_GET['month']}'
+                                                                                                                            ORDER BY SR_lname");
                                                                                 if (mysqli_num_rows($getMonthlyAttendanceData) > 0) {
                                                                                     while ($AttendanceData = $getMonthlyAttendanceData->fetch_assoc()) { ?>
                                                                                         <tr>
-                                                                                            <td class="tabledata"><?php echo $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'] . " " . substr($AttendanceData['SR_mname'], 0, 1) . ". " . $AttendanceData['SR_suffix']; ?></td>
+                                                                                            <td class="tabledata">
+                                                                                                <?php
+                                                                                                if (!empty($AttendanceData['SR_mname']) || $AttendanceData['SR_mname'] != "" && empty($AttendanceData['SR_suffix']) || $AttendanceData['SR_suffix'] = "") {
+                                                                                                    echo $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'] . " " . substr($AttendanceData['SR_mname'], 0, 1) . ".";
+                                                                                                } else if (empty($AttendanceData['SR_mname']) || $AttendanceData['SR_mname'] = "" && !empty($AttendanceData['SR_suffix']) || $AttendanceData['SR_suffix'] != "") {
+                                                                                                    echo $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'] . " " . $AttendanceData['SR_suffix'];
+                                                                                                } else if (empty($AttendanceData['SR_mname']) || $AttendanceData['SR_mname'] = "" && empty($AttendanceData['SR_suffix']) || $AttendanceData['SR_suffix'] = "") {
+                                                                                                    echo $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'];
+                                                                                                }
+                                                                                                ?>
+                                                                                            </td>
                                                                                             <td class="tabledata">
                                                                                                 <?php
                                                                                                 $month = date_parse($_GET['month'])['month'];
@@ -311,26 +322,26 @@ if (!isset($_SESSION['F_number'])) {
                                                                                             </td>
                                                                                             <td class="tabledata">
                                                                                                 <?php
-                                                                                                $PRESENT = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$AttendanceData['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}'");
+                                                                                                $PRESENT = $mysqli->query("SELECT COUNT(A_status) FROM attendance WHERE SR_number = '{$AttendanceData['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}' AND A_status = 'PRESENT'");
                                                                                                 $PRESENTvalue = $PRESENT->fetch_assoc();
 
-                                                                                                echo $PRESENTvalue['COUNT(A_time_IN)'];
+                                                                                                echo $PRESENTvalue['COUNT(A_status)'];
                                                                                                 ?>
                                                                                             </td>
                                                                                             <td class="tabledata">
                                                                                                 <?php
-                                                                                                $ABSENT = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$AttendanceData['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}' AND A_status = 'ABSENT'");
+                                                                                                $ABSENT = $mysqli->query("SELECT COUNT(A_status) FROM attendance WHERE SR_number = '{$AttendanceData['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}' AND A_status = 'ABSENT'");
                                                                                                 $ABSENTvalue = $ABSENT->fetch_assoc();
 
-                                                                                                echo $ABSENTvalue['COUNT(A_time_IN)'];
+                                                                                                echo $ABSENTvalue['COUNT(A_status)'];
                                                                                                 ?>
                                                                                             </td>
                                                                                             <td class="tabledata">
                                                                                                 <?php
-                                                                                                $TARDY = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$AttendanceData['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}' AND A_status = 'TARDY'");
+                                                                                                $TARDY = $mysqli->query("SELECT COUNT(A_status) FROM attendance WHERE SR_number = '{$AttendanceData['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}' AND A_status != 'PRESENT' || A_status != 'ABSENT'");
                                                                                                 $TARDYvalue = $TARDY->fetch_assoc();
 
-                                                                                                echo $TARDYvalue['COUNT(A_time_IN)'];
+                                                                                                echo $TARDYvalue['COUNT(A_status)'];
                                                                                                 ?>
                                                                                             </td>
                                                                                         </tr>

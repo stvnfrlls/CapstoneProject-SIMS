@@ -69,7 +69,7 @@ if (isset($_GET['GradeLevel']) && isset($_GET['section'])) {
     $pdf->Cell(90, 10, 'Student Name', 1, 0, 'C');
     $pdf->Cell(50, 10, 'Grade and Section', 1, 1, 'C');
 
-    $ClasslistData = $mysqli->query("SELECT * FROM classlist WHERE SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['section']}' AND acadYear = '{$currentSchoolYear}'");
+    $ClasslistData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['section']}' AND acadYear = '{$currentSchoolYear}') ORDER BY SR_lname");
     while ($classlist = $ClasslistData->fetch_assoc()) {
 
         $pdf->SetFont('Arial', '', 10);
