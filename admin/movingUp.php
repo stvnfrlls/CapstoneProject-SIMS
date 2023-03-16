@@ -4,7 +4,6 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['AD_number'])) {
     header('Location: ../auth/login.php');
 }
-var_dump($_POST);
 ?>
 
 <!DOCTYPE html>
