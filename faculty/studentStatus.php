@@ -189,11 +189,11 @@ if (!isset($_SESSION['F_number'])) {
                                                                                 $getSchoolYearInfo = $mysqli->query("SELECT * FROM acad_year");
                                                                                 $schoolyear = $getSchoolYearInfo->fetch_assoc();
                                                                                 $nextSchoolYear = $schoolyear['endYear'] . "-" . $schoolyear['endYear'] + 1;
-                                                                                $ListofStudents = $mysqli->query("SELECT * FROM classlist 
+                                                                                $ListofStudents = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number IN 
+                                                                                                                (SELECT SR_number FROM classlist 
                                                                                                                 WHERE SR_section = '{$SectionInfo['S_name']}' 
-                                                                                                                AND acadYear = '{$currentSchoolYear}' 
-                                                                                                                AND SR_number NOT IN 
-                                                                                                                (SELECT SR_number FROM classlist WHERE acadYear = '{$nextSchoolYear}')");
+                                                                                                                AND acadYear = '{$currentSchoolYear}')
+                                                                                                                ORDER BY SR_lname");
                                                                                 if (mysqli_num_rows($ListofStudents) > 0) {
                                                                                     while ($data = $ListofStudents->fetch_assoc()) { ?>
                                                                                         <tr>

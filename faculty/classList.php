@@ -215,7 +215,11 @@ if (!isset($_SESSION['F_number'])) {
                             ?>
                           </div>
                           <div class="btn-group" style="float: right;">
-                            <a href="" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a>
+                            <?php
+                            if (isset($_GET['Grade']) && isset($_GET['Section'])) {
+                              echo '<a href="../reports/getClasslist.php?GradeLevel=' . $_GET['Grade'] . '&section=' . $_GET['Section'] . '" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a>';
+                            }
+                            ?>
                           </div>
                         </div>
                         <div class="card">
@@ -247,11 +251,20 @@ if (!isset($_SESSION['F_number'])) {
                                       <?php
                                     } else {
                                       if (isset($_GET['SY'])) {
-                                        $getClassList = $mysqli->query("SELECT * FROM classlist WHERE SR_grade = '{$_GET['Grade']}' AND SR_section = '{$_GET['Section']}' AND acadYear = '{$_GET['SY']}'");
+                                        $getClassList = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number IN 
+                                                                      (SELECT SR_number FROM classlist 
+                                                                      WHERE SR_grade = '{$_GET['Grade']}' 
+                                                                      AND SR_section = '{$_GET['Section']}' 
+                                                                      AND acadYear = '{$_GET['SY']}')
+                                                                      ORDER BY SR_lname");
                                       } else {
-                                        $getClassList = $mysqli->query("SELECT * FROM classlist WHERE SR_grade = '{$_GET['Grade']}' AND SR_section = '{$_GET['Section']}' AND acadYear = '{$currentSchoolYear}'");
+                                        $getClassList = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number IN 
+                                                                      (SELECT SR_number FROM classlist 
+                                                                      WHERE SR_grade = '{$_GET['Grade']}' 
+                                                                      AND SR_section = '{$_GET['Section']}' 
+                                                                      AND acadYear = '{$currentSchoolYear}')
+                                                                      ORDER BY SR_lname");
                                       }
-
                                       if (mysqli_num_rows($getClassList) > 0) {
                                         $rowCount = 1;
                                         while ($dataClassList = $getClassList->fetch_assoc()) { ?>

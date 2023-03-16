@@ -191,7 +191,11 @@ if (!isset($_SESSION['F_number'])) {
                         }
                       }
                       ?>
-                      <a href="" class="btn btn-light">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a>
+                      <?php
+                      if (isset($_GET['Grade']) && isset($_GET['Section']) && isset($_GET['Subject'])) {
+                        echo '<a href="../reports/classGradesperQuarter.php?grade=' . $_GET['Grade'] . '&section=' . $_GET['Section'] . '&subject=' . $_GET['Subject'] . '" class="btn btn-light">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a>';
+                      }
+                      ?>
                     </div>
                     <div class="row">
                       <div class="col-12 grid-margin">

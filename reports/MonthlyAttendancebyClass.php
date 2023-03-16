@@ -85,7 +85,8 @@ if (isset($_GET['month']) && isset($_GET['Grade']) && isset($_GET['Section'])) {
                                                 WHERE acadYear = '{$currentSchoolYear}' 
                                                 AND SR_section = '{$_GET['Section']}' 
                                                 AND SR_grade = '{$_GET['Grade']}'
-                                                AND MONTHNAME(A_date) = '{$_GET['month']}'");
+                                                AND MONTHNAME(A_date) = '{$_GET['month']}'
+                                                ORDER BY SR_lname");
 
     $month = date_parse($_GET['month'])['month'];
     $year = date("Y");
@@ -102,13 +103,13 @@ if (isset($_GET['month']) && isset($_GET['Grade']) && isset($_GET['Section'])) {
 
     if (mysqli_num_rows($getMonthlyAttendanceData) > 0) {
         while ($AttendanceData = $getMonthlyAttendanceData->fetch_assoc()) {
-            $PRESENT = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$AttendanceData['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}'");
+            $PRESENT = $mysqli->query("SELECT COUNT(A_status) FROM attendance WHERE SR_number = '{$AttendanceData['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}' AND A_status = 'PRESENT'");
             $PRESENTvalue = $PRESENT->fetch_assoc();
 
-            $ABSENT = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$AttendanceData['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}' AND A_status = 'ABSENT'");
+            $ABSENT = $mysqli->query("SELECT COUNT(A_status) FROM attendance WHERE SR_number = '{$AttendanceData['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}' AND A_status = 'ABSENT'");
             $ABSENTvalue = $ABSENT->fetch_assoc();
 
-            $TARDY = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$AttendanceData['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}' AND A_status = 'TARDY'");
+            $TARDY = $mysqli->query("SELECT COUNT(A_status) FROM attendance WHERE SR_number = '{$AttendanceData['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}' AND A_status != 'PRESENT' AND A_status != 'ABSENT'");
             $TARDYvalue = $TARDY->fetch_assoc();
 
             $pdf->SetFont('Arial', '', 10);
@@ -121,9 +122,9 @@ if (isset($_GET['month']) && isset($_GET['Grade']) && isset($_GET['Section'])) {
             }
             $pdf->Cell(70, 10, $Student_Fullname, 1, 0, 'C');
             $pdf->Cell(30, 10, $count_weekdays, 1, 0, 'C');
-            $pdf->Cell(30, 10, $PRESENTvalue['COUNT(A_time_IN)'], 1, 0, 'C');
-            $pdf->Cell(30, 10, $ABSENTvalue['COUNT(A_time_IN)'], 1, 0, 'C');
-            $pdf->Cell(30, 10, $TARDYvalue['COUNT(A_time_IN)'], 1, 1, 'C');
+            $pdf->Cell(30, 10, $PRESENTvalue['COUNT(A_status)'], 1, 0, 'C');
+            $pdf->Cell(30, 10, $ABSENTvalue['COUNT(A_status)'], 1, 0, 'C');
+            $pdf->Cell(30, 10, $TARDYvalue['COUNT(A_status)'], 1, 1, 'C');
         }
     } else {
         $pdf->Cell(190, 20, 'No Data', 1, 1, 'C');
