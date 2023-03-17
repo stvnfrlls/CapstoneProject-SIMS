@@ -382,10 +382,8 @@ if (empty($_SESSION['AD_number'])) {
                                                     }
                                                     ?>
                                                   </option>
-                                                  <option></option>
                                                 <?php } else { ?>
                                                   <option selected>Available Teachers</option>
-                                                  <option></option>
                                                 <?php }
                                                 ?>
 
