@@ -1,4 +1,5 @@
 <?php
+include '../vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 
