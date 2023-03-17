@@ -8,7 +8,7 @@ if (isset($_GET['month']) && isset($_GET['Grade']) && isset($_GET['Section'])) {
     {
         function Header()
         {
-            $mysqli = new mysqli("localhost", "u952901270_admin2311", "Eleven.11", "u952901270_sforms_cdsp");
+            $mysqli = new mysqli("localhost", "root", "", "sis_cdsp");
             $getAcadYear = $mysqli->query("SELECT * FROM acad_year");
             $acadYear_Data = $getAcadYear->fetch_assoc();
             //Logo Image
@@ -57,27 +57,22 @@ if (isset($_GET['month']) && isset($_GET['Grade']) && isset($_GET['Section'])) {
         }
     }
 
-    // $getstudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$_GET['ID']}'");
-    // $studentInfo = $getstudentInfo->fetch_assoc();
-
-    // $Student_Fullname = $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ". " . $studentInfo['SR_suffix'];
-
-    // $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_name = '{$studentInfo['SR_section']}'");
-    // $SectionInfo = $getSectionInfo->fetch_assoc();
-
-    // $getAdvisorInfo = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$SectionInfo['S_adviser']}'");
-    // $AdvisorInfo = $getAdvisorInfo->fetch_assoc();
-
     $pdf = new PDF('P', 'mm', 'A4');
     $pdf->AddPage();
     $pdf->SetAutoPageBreak(true, 20);
 
     $pdf->SetFont('Arial', 'B', 10);
-    $pdf->Cell(70, 10, 'Student Name', 1, 0, 'C');
-    $pdf->Cell(30, 10, 'School Days', 1, 0, 'C');
-    $pdf->Cell(30, 10, 'Days Present', 1, 0, 'C');
-    $pdf->Cell(30, 10, 'Days Absent', 1, 0, 'C');
-    $pdf->Cell(30, 10, 'Days Tardy', 1, 1, 'C');
+    $pdf->Cell(78, 20, 'Student Name', 1, 0, 'C');
+    $pdf->MultiCell(28, 10, 'No. of School Days', 1, 'C', FALSE);
+
+    $pdf->SetXY(116, 58);
+    $pdf->MultiCell(28, 10, 'No. of Days Present', 1, 'C', FALSE);
+
+    $pdf->SetXY(144, 58);
+    $pdf->MultiCell(28, 10, 'No. of Days Absent', 1, 'C', FALSE);
+
+    $pdf->SetXY(172, 58);
+    $pdf->MultiCell(28, 10, 'No. of Days Tardy', 1, 'C', FALSE);
 
     $getMonthlyAttendanceData = $mysqli->query("SELECT DISTINCT SR_lname, SR_fname, SR_mname, SR_suffix, attendance.SR_number 
                                                 FROM attendance 
@@ -120,11 +115,11 @@ if (isset($_GET['month']) && isset($_GET['Grade']) && isset($_GET['Section'])) {
             } else if (empty($AttendanceData['SR_mname']) || $AttendanceData['SR_mname'] = "" && empty($AttendanceData['SR_suffix']) || $AttendanceData['SR_suffix'] = "") {
                 $Student_Fullname = $AttendanceData['SR_lname'] .  ", " . $AttendanceData['SR_fname'];
             }
-            $pdf->Cell(70, 10, $Student_Fullname, 1, 0, 'C');
-            $pdf->Cell(30, 10, $count_weekdays, 1, 0, 'C');
-            $pdf->Cell(30, 10, $PRESENTvalue['COUNT(A_status)'], 1, 0, 'C');
-            $pdf->Cell(30, 10, $ABSENTvalue['COUNT(A_status)'], 1, 0, 'C');
-            $pdf->Cell(30, 10, $TARDYvalue['COUNT(A_status)'], 1, 1, 'C');
+            $pdf->Cell(78, 10, $Student_Fullname, 1, 0, 'C');
+            $pdf->Cell(28, 10, $count_weekdays, 1, 0, 'C');
+            $pdf->Cell(28, 10, $PRESENTvalue['COUNT(A_status)'], 1, 0, 'C');
+            $pdf->Cell(28, 10, $ABSENTvalue['COUNT(A_status)'], 1, 0, 'C');
+            $pdf->Cell(28, 10, $TARDYvalue['COUNT(A_status)'], 1, 1, 'C');
         }
     } else {
         $pdf->Cell(190, 20, 'No Data', 1, 1, 'C');
