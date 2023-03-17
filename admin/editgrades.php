@@ -323,7 +323,7 @@ if (!isset($_SESSION['AD_number'])) {
                         <button type="submit" class="btn btn-primary" id="confirmChanges" name="releaseGrades" value="Release">Release Grades</button>
                         <?php
                         if (isset($_GET['Quarter']) && isset($_GET['Grade']) && isset($_GET['Section'])) {
-                          echo '<a href="../reports/gradePerQuarter.php?quarter=' . $_GET['Quarter'] . '&grade=' . $_GET['Grade'] . '&section=' . $_GET['Section'] . '" class="btn btn-light">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a>';
+                          echo '<a href="../reports/classGrades.php" class="btn btn-light">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a>';
                         }
                         ?>
                       </div>
