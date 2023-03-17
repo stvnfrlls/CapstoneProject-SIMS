@@ -224,6 +224,7 @@ if (!isset($_SESSION['AD_number'])) {
                             <i class="fa fa-caret-down"></i>
                           </button>
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                            <a class="dropdown-item" href="assignAdvisory.php">ALL</a>
                             <?php
                             $getgradelevel = $mysqli->query("SELECT DISTINCT(S_yearLevel) FROM sections");
 
@@ -322,10 +323,11 @@ if (!isset($_SESSION['AD_number'])) {
                                                     ?>
                                                   </option>
                                                 <?php }
-                                                ?>
-                                                <option></option>
-                                                <?php
-                                                $getFacultyData = $mysqli->query("SELECT * FROM faculty WHERE F_number NOT IN (SELECT F_number FROM sections WHERE F_number = '{$AdvisoryData['S_adviser']}') AND F_status = 'active' ORDER BY F_lname");
+                                                if (empty($AssignedFaculty['S_adviser']) || $AssignedFaculty['S_adviser'] == "") {
+                                                  $getFacultyData = $mysqli->query("SELECT * FROM faculty WHERE F_number NOT IN (SELECT S_adviser FROM sections WHERE S_adviser != '{$AssignedFaculty['S_adviser']}' AND acadYear = '{$currentSchoolYear}') AND F_status = 'active' ORDER BY F_lname");
+                                                } else {
+                                                  $getFacultyData = $mysqli->query("SELECT * FROM faculty WHERE F_number != '{$AssignedFaculty['S_adviser']}' AND F_number NOT IN (SELECT S_adviser FROM sections WHERE acadYear = '{$currentSchoolYear}')  AND F_status = 'active' ORDER BY F_lname");
+                                                }
 
                                                 while ($FacultyData = $getFacultyData->fetch_assoc()) { ?>
                                                   <option value="<?php echo $FacultyData['F_number'] ?>">

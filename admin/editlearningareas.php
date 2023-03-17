@@ -382,17 +382,15 @@ if (empty($_SESSION['AD_number'])) {
                                                     }
                                                     ?>
                                                   </option>
-                                                  <option></option>
                                                 <?php } else { ?>
                                                   <option selected>Available Teachers</option>
-                                                  <option></option>
                                                 <?php }
                                                 ?>
 
                                                 <?php
                                                 $listFacultyData = $mysqli->query("SELECT F_number, F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_status = 'active' ORDER BY F_lname");
                                                 while ($FacultyName = $listFacultyData->fetch_assoc()) { ?>
-                                                  <option value="<?php echo $listFaculty['F_number'] ?>">
+                                                  <option value="<?php echo $FacultyName['F_number'] ?>">
                                                     <?php
                                                     if (!empty($FacultyName['F_mname']) || $FacultyName['F_mname'] != "" && empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] = "") {
                                                       echo $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'] . " " . substr($FacultyName['F_mname'], 0, 1) . ".";

@@ -6,7 +6,6 @@ require_once("../assets/php/server.php");
 if (isset($_GET['GradeLevel']) && isset($_GET['section'])) {
     class PDF extends FPDF
     {
-
         function Header()
         {
             $mysqli = new mysqli("localhost", "u952901270_admin2311", "Eleven.11", "u952901270_sforms_cdsp");
@@ -45,7 +44,7 @@ if (isset($_GET['GradeLevel']) && isset($_GET['section'])) {
             // Line break
             $this->Ln(5);
             $this->SetFont('Arial', 'B', 12);
-            $this->Cell(190, 10, 'Classlist', 0, 0, 'C');
+            $this->Cell(190, 10, 'Section Classlist', 0, 0, 'C');
             $this->Ln(15);
         }
         function Footer()
@@ -129,7 +128,7 @@ if (isset($_GET['GradeLevel']) && isset($_GET['section'])) {
             // Line break
             $this->Ln(5);
             $this->SetFont('Arial', 'B', 12);
-            $this->Cell(190, 10, 'Classlist', 0, 0, 'C');
+            $this->Cell(190, 10, 'Overall Student Classlist', 0, 0, 'C');
             $this->Ln(15);
         }
         function Footer()
@@ -152,7 +151,7 @@ if (isset($_GET['GradeLevel']) && isset($_GET['section'])) {
     $pdf->Cell(90, 10, 'Student Name', 1, 0, 'C');
     $pdf->Cell(50, 10, 'Grade and Section', 1, 1, 'C');
 
-    $ClasslistData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_status IS NULL ORDER BY SR_lname");
+    $ClasslistData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_status IS NULL ORDER BY SR_grade, SR_lname");
     while ($classlist = $ClasslistData->fetch_assoc()) {
 
         $pdf->SetFont('Arial', '', 10);

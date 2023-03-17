@@ -99,10 +99,12 @@ if (mysqli_num_rows($getGradesPerSubject) > 0) {
         $pdf->Cell(15, 10, $GradesPerSubject['G_gradesQ3'], 1, 0, 'C');
         $pdf->Cell(15, 10, $GradesPerSubject['G_gradesQ4'], 1, 0, 'C');
         $pdf->Cell(30, 10, $GradesPerSubject['G_finalgrade'], 1, 0, 'C');
-        if ($GradesPerSubject['G_finalgrade'] < 75) {
+        if ($GradesPerSubject['G_finalgrade'] > 75) {
+            $finalgradeRemarks = "PASSED";
+        } elseif ($GradesPerSubject['G_finalgrade'] < 75 && $GradesPerSubject['G_finalgrade'] != "" && !empty($GradesPerSubject['G_finalgrade'])) {
             $finalgradeRemarks = "FAILED";
         } else {
-            $finalgradeRemarks = "PASSED";
+            $finalgradeRemarks = "";
         }
         $pdf->Cell(30, 10, $finalgradeRemarks, 1, 1, 'C');
     }

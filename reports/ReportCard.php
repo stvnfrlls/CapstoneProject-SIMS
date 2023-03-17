@@ -148,10 +148,12 @@ if (isset($_GET['ID'])) {
             $pdf->Cell(15, 10, $studentGrades['G_gradesQ4'], 1, 0, 'C');
             $pdf->Cell(30, 10, $studentGrades['G_finalgrade'], 1, 0, 'C');
 
-            if ($studentGrades['G_finalgrade'] < 75) {
+            if ($studentGrades['G_finalgrade'] > 75) {
+                $finalgradeRemarks = "PASSED";
+            } else if ($studentGrades['G_finalgrade'] < 75 && !empty($studentGrades['G_finalgrade']) || $studentGrades['G_finalgrade'] != "") {
                 $finalgradeRemarks = "FAILED";
-            } else {
-                $finalgradeRemarks = "PASSSED";
+            } else if ($studentGrades['G_finalgrade'] == 0 || empty($studentGrades['G_finalgrade'])) {
+                $finalgradeRemarks = "";
             }
             $pdf->Cell(30, 10, $finalgradeRemarks, 1, 1, 'C');
         }
@@ -184,7 +186,7 @@ if (isset($_GET['ID'])) {
         $genAveRemarks = "PASSED";
     } else if ($GradeAve['average'] == 0 || empty($GradeAve['average'])) {
         $genAveRemarks = "";
-    } else {
+    } else if ($GradeAve['average'] < 75 && !empty($GradeAve['average'])) {
         $genAveRemarks = "FAILED";
     }
 
