@@ -1,3 +1,6 @@
+<?php
+require_once __DIR__ . "/assets/php/server.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 

@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . "/assets/php/server.php";
+clearstatcache();
 ?>
 <!DOCTYPE html>
 <html lang="en">
