@@ -6,7 +6,7 @@ if (!isset($_SESSION['AD_number'])) {
 } else {
     $getAdminData = $mysqli->query("SELECT * FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
     $AdminData = $getAdminData->fetch_assoc();
-}
+}   
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,12 +37,13 @@ if (!isset($_SESSION['AD_number'])) {
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="../assets/css/sweetAlert.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
     <link href="../assets/css/dashboard-admin.css" rel="stylesheet">
     <link href="../assets/css/admin/style.css" rel="stylesheet">
     <link href="../assets/css/admin/style.css.map" rel="stylesheet">
-
 
 </head>
 
@@ -207,7 +208,7 @@ if (!isset($_SESSION['AD_number'])) {
                                             <div class="col-12 grid-margin">
                                                 <?php
                                                 if ($_SESSION['AD_number'] == "5UP3R4DM1N") { ?>
-                                                    <form id="form-id" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
+                                                    <form id="adminTools" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
                                                         <div class="row">
                                                             <div class="col-lg-3 col-sm-12" style="padding-top: 15px;">
                                                                 <div class="card" style="text-align:center; padding-right: 0px; padding-left: 0px;">
@@ -221,7 +222,8 @@ if (!isset($_SESSION['AD_number'])) {
                                                                         $startYear = $acadYear_Data['endYear'];
                                                                         $endYear = (int) $startYear + 1;
                                                                         ?>
-                                                                        <button type="submit" name="acadyear" class="btn btn-primary m-2"><?php echo 'Start S.Y. ' . $startYear . '-' . $endYear ?></button>
+                                                                        <input type="hidden" id="acadyear" name="acadyear" value="submit" disabled>
+                                                                        <button type="button" id="acadyearBTN" class="btn btn-primary m-2"><?php echo 'Start S.Y. ' . $startYear . '-' . $endYear ?></button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -233,10 +235,16 @@ if (!isset($_SESSION['AD_number'])) {
                                                                         $EncodeStatus = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 'FORMS' AND quarterStatus = 'enabled'");
                                                                         if (mysqli_num_rows($EncodeStatus) > 0) { ?>
                                                                             <p>Status: Open</p>
-                                                                            <button type="submit" name="Close" class="btn btn-primary m-2">Close</button>
+                                                                            <input type="hidden" id="Close" name="Close" value="submit" disabled>
+                                                                            <button type="button" class="btn btn-primary m-2" id="CloseBTN">Close</button>
+                                                                            <input type="hidden" id="Open" name="Open" value="submit" disabled>
+                                                                            <button type="button" class="btn btn-secondary m-2" id="OpenBTN" style="display: none;" disabled>Open</button>
                                                                         <?php } else { ?>
                                                                             <p>Status: Closed</p>
-                                                                            <button type="submit" name="Open" class="btn btn-secondary m-2">Open</button>
+                                                                            <input type="hidden" id="Close" name="Close" value="submit" disabled>
+                                                                            <button type="button" class="btn btn-primary m-2" id="CloseBTN" style="display: none;" disabled>Close</button>
+                                                                            <input type="hidden" id="Open" name="Open" value="submit" disabled>
+                                                                            <button type="button" class="btn btn-secondary m-2" id="OpenBTN">Open</button>
                                                                         <?php } ?>
                                                                     </div>
                                                                 </div>
@@ -268,34 +276,58 @@ if (!isset($_SESSION['AD_number'])) {
                                                                         <?php
                                                                         $checkQuarter1 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 1 AND quarterStatus = 'current'");
                                                                         if (mysqli_num_rows($checkQuarter1) > 0) { ?>
-                                                                            <button type=" submit" class="btn btn-primary m-2" name="disableQ1">1st Quarter</button>
+                                                                            <input type="hidden" id="disableQ1" name="disableQ1" value="submit" disabled>
+                                                                            <button type="button" class="btn btn-primary m-2" id="disableQ1BTN" style="font-size:12px;">1st Quarter</button>
+                                                                            <input type="hidden" id="enableFirst" name="enableFirst" value="submit" disabled>
+                                                                            <button type="button" class="btn btn-secondary m-2" id="enableFirstBTN" style="font-size:12px;display: none;" disabled>1st Quarter</button>
                                                                         <?php } else { ?>
-                                                                            <button type=" submit" class="btn btn-secondary m-2" name="enableFirst">1st Quarter</button>
+                                                                            <input type="hidden" id="disableQ1" name="disableQ1" value="submit" disabled>
+                                                                            <button type="button" class="btn btn-primary m-2" id="disableQ1BTN" style="font-size:12px;display: none;" disabled>1st Quarter</button>
+                                                                            <input type="hidden" id="enableFirst" name="enableFirst" value="submit" disabled>
+                                                                            <button type="button" class="btn btn-secondary m-2" id="enableFirstBTN">1st Quarter</button>
                                                                         <?php } ?>
 
                                                                         <?php
                                                                         $checkQuarter2 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 2 AND quarterStatus = 'current'");
                                                                         if (mysqli_num_rows($checkQuarter2) > 0) { ?>
-                                                                            <button class="btn btn-primary m-2" name="disableQ2" style="font-size:12px;">2nd Quarter</button>
+                                                                            <input type="hidden" id="disableQ2" name="disableQ2" value="submit" disabled>
+                                                                            <button type="button" class="btn btn-primary m-2" id="disableQ2BTN" style="font-size:12px;">2nd Quarter</button>
+                                                                            <input type="hidden" id="enableSecond" name="enableSecond" value="submit" disabled>
+                                                                            <button type="button" class="btn btn-secondary m-2" id="enableSecondBTN" style="font-size:12px;display: none;" disabled>2nd Quarter</button>
                                                                         <?php } else { ?>
-                                                                            <button type="submit" name="enableSecond" class="btn btn-secondary m-2">2nd Quarter</button>
+                                                                            <input type="hidden" id="disableQ2" name="disableQ2" value="submit" disabled>
+                                                                            <button type="button" class="btn btn-primary m-2" id="disableQ2BTN" style="font-size:12px;display: none;" disabled>2nd Quarter</button>
+                                                                            <input type="hidden" id="enableSecond" name="enableSecond" value="submit" disabled>
+                                                                            <button type="button" class="btn btn-secondary m-2" id="enableSecondBTN">2nd Quarter</button>
                                                                         <?php } ?>
 
 
                                                                         <?php
                                                                         $checkQuarter3 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 3 AND quarterStatus = 'current'");
                                                                         if (mysqli_num_rows($checkQuarter3) > 0) { ?>
-                                                                            <button class="btn btn-primary m-2" name="disableQ3">3rd Quarter</button>
+                                                                            <input type="hidden" id="disableQ3" name="disableQ3" value="submit" disabled>
+                                                                            <button type="button" class="btn btn-primary m-2" id="disableQ3BTN" name="disableQ3" style="font-size:12px;">3rd Quarter</button>
+                                                                            <input type="hidden" id="enableThird" name="enableThird" value="submit" disabled>
+                                                                            <button type="button" class="btn btn-secondary m-2" id="enableThirdBTN" style="font-size:12px;display: none;" disabled>3rd Quarter</button>
                                                                         <?php } else { ?>
-                                                                            <button type="submit" name="enableThird" class="btn btn-secondary m-2">3rd Quarter</button>
+                                                                            <input type="hidden" id="disableQ3" name="disableQ3" value="submit" disabled>
+                                                                            <button type="button" class="btn btn-primary m-2" id="disableQ3BTN" name="disableQ3" style="font-size:12px;display: none;" disabled>3rd Quarter</button>
+                                                                            <input type="hidden" id="enableThird" name="enableThird" value="submit" disabled>
+                                                                            <button type="button" class="btn btn-secondary m-2" id="enableThirdBTN">3rd Quarter</button>
                                                                         <?php } ?>
 
                                                                         <?php
                                                                         $checkQuarter4 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 4 AND quarterStatus = 'current'");
                                                                         if (mysqli_num_rows($checkQuarter4) > 0) { ?>
-                                                                            <button class="btn btn-primary m-2" name="disableQ4">4th Quarter</button>
+                                                                            <input type="hidden" id="disableQ4" name="disableQ4" value="submit" disabled>
+                                                                            <button type="button" class="btn btn-primary m-2" id="disableQ4BTN" style="font-size:12px;">4th Quarter</button>
+                                                                            <input type="hidden" id="enableFourth" name="enableFourth" value="submit" disabled>
+                                                                            <button type="button" class="btn btn-secondary m-2" id="enableFourthBTN" style="font-size:12px;display: none;" disabled>4th Quarter</button>
                                                                         <?php } else { ?>
-                                                                            <button type="submit" name="enableFourth" class="btn btn-secondary m-2">4th Quarter</button>
+                                                                            <input type="hidden" id="disableQ4" name="disableQ4" value="submit" disabled>
+                                                                            <button type="button" class="btn btn-primary m-2" id="disableQ4BTN" style="font-size:12px;display: none;" disabled>4th Quarter</button>
+                                                                            <input type="hidden" id="enableFourth" name="enableFourth" value="submit" disabled>
+                                                                            <button type="button" class="btn btn-secondary m-2" id="enableFourthBTN">4th Quarter</button>
                                                                         <?php } ?>
                                                                     </div>
                                                                 </div>
@@ -537,7 +569,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                     <tbody>
                                                                                         <?php
                                                                                         $rowCount = 1;
-                                                                                        $studentPopulationData = $mysqli->query("SELECT * FROM studentrecord ORDER BY SR_lname LIMIT 5");
+                                                                                        $studentPopulationData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_status IS NULL ORDER BY SR_lname LIMIT 5");
 
                                                                                         if (mysqli_num_rows($studentPopulationData) > 0) {
                                                                                             while ($studentPopulation = $studentPopulationData->fetch_assoc()) { ?>
@@ -595,7 +627,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                     <tbody>
                                                                                         <?php
                                                                                         $rowCount = 1;
-                                                                                        $facultyPopulationData = $mysqli->query("SELECT * FROM faculty ORDER BY F_lname LIMIT 5");
+                                                                                        $facultyPopulationData = $mysqli->query("SELECT * FROM faculty WHERE F_status = 'active' ORDER BY F_lname LIMIT 5");
 
                                                                                         if (mysqli_num_rows($facultyPopulationData) > 0) {
                                                                                             while ($rowCount <= 5) {
@@ -724,6 +756,182 @@ if (!isset($_SESSION['AD_number'])) {
 <script src="../assets/js/admin/off-canvas.js"></script>
 <script src="../assets/js/admin/progressbar.min.js"></script>
 <script src="../assets/js/admin/Chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+<script>
+    const adminTools = document.getElementById('adminTools');
+
+    const acadyearBTN = document.getElementById('acadyearBTN');
+    const OpenBTN = document.getElementById('OpenBTN');
+    const CloseBTN = document.getElementById('CloseBTN');
+    const enableFirstBTN = document.getElementById('enableFirstBTN');
+    const enableSecondBTN = document.getElementById('enableSecondBTN');
+    const enableThirdBTN = document.getElementById('enableThirdBTN');
+    const enableFourthBTN = document.getElementById('enableFourthBTN');
+    const disableQ1BTN = document.getElementById('disableQ1BTN');
+    const disableQ2BTN = document.getElementById('disableQ2BTN');
+    const disableQ3BTN = document.getElementById('disableQ3BTN');
+    const disableQ4BTN = document.getElementById('disableQ4BTN');
+
+
+    acadyearBTN.addEventListener('click', function() {
+        const acadyear = document.getElementById('acadyear');
+        Swal.fire({
+            title: 'This action cannot be undone and will impact new records. Do you want to proceed?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: `No`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                acadyear.removeAttribute("disabled");
+                adminTools.submit();
+            }
+        })
+    });
+
+    OpenBTN.addEventListener('click', function() {
+        const Open = document.getElementById('Open');
+        Swal.fire({
+            title: 'This action will open the encoding of grades. Do you want to proceed?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: `No`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Open.removeAttribute("disabled");
+                adminTools.submit();
+            }
+        })
+    });
+
+    CloseBTN.addEventListener('click', function() {
+        const Close = document.getElementById('Close');
+        Swal.fire({
+            title: 'This action will close the encoding of grades. Do you want to proceed?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: `No`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Close.removeAttribute("disabled");
+                adminTools.submit();
+            }
+        })
+    });
+
+    enableFirstBTN.addEventListener('click', function() {
+        const enableFirst = document.getElementById('enableFirst');
+        Swal.fire({
+            title: 'This action will change the current grading period. Do you want to proceed?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: `No`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                enableFirst.removeAttribute("disabled");
+                adminTools.submit();
+            }
+        })
+    });
+    enableSecondBTN.addEventListener('click', function() {
+        const enableSecond = document.getElementById('enableSecond');
+        Swal.fire({
+            title: 'This action will change the current grading period. Do you want to proceed?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: `No`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                enableSecond.removeAttribute("disabled");
+                adminTools.submit();
+            }
+        })
+    });
+    enableThirdBTN.addEventListener('click', function() {
+        const enableThird = document.getElementById('enableThird');
+        Swal.fire({
+            title: 'This action will change the current grading period. Do you want to proceed?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: `No`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                enableThird.removeAttribute("disabled");
+                adminTools.submit();
+            }
+        })
+    });
+    enableFourthBTN.addEventListener('click', function() {
+        const enableFourth = document.getElementById('enableFourth');
+        Swal.fire({
+            title: 'This action will change the current grading period. Do you want to proceed?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: `No`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                enableFourth.removeAttribute("disabled");
+                adminTools.submit();
+            }
+        })
+    });
+
+    disableQ1BTN.addEventListener('click', function() {
+        const disableQ1 = document.getElementById('disableQ1');
+        Swal.fire({
+            title: 'This action will disable the current grading period. Do you want to proceed?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: `No`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                disableQ1.removeAttribute("disabled");
+                adminTools.submit();
+            }
+        })
+    });
+    disableQ2BTN.addEventListener('click', function() {
+        const disableQ2 = document.getElementById('disableQ2');
+        Swal.fire({
+            title: 'This action will disable the current grading period. Do you want to proceed?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: `No`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                disableQ2.removeAttribute("disabled");
+                adminTools.submit();
+            }
+        })
+    });
+    disableQ3BTN.addEventListener('click', function() {
+        const disableQ3 = document.getElementById('disableQ3');
+        Swal.fire({
+            title: 'This action will disable the current grading period. Do you want to proceed?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: `No`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                disableQ3.removeAttribute("disabled");
+                adminTools.submit();
+            }
+        })
+    });
+    disableQ4BTN.addEventListener('click', function() {
+        const disableQ4 = document.getElementById('disableQ4');
+        Swal.fire({
+            title: 'This action will disable the current grading period. Do you want to proceed?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: `No`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                disableQ4.removeAttribute("disabled");
+                adminTools.submit();
+            }
+        })
+    });
+</script>
 <script>
     if ($("#doughnutChart").length) {
         var doughnutChartCanvas = $("#doughnutChart").get(0).getContext("2d");

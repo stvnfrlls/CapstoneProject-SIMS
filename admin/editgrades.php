@@ -9,16 +9,22 @@ if (!isset($_SESSION['AD_number'])) {
     $subject_Array = array();
     if ($_GET['Grade'] == "KINDER") {
       $getSubject = $mysqli->query("SELECT subjectName FROM subjectperyear
-                                        WHERE
-                                        subjectperyear.minYearLevel = '0' 
-                                        AND
-                                        subjectperyear.maxYearLevel >= '0'");
+                                    WHERE minYearLevel = '0' 
+                                    AND maxYearLevel >= '0'
+                                    AND subjectName IN 
+                                    (SELECT S_subject FROM workschedule 
+                                    WHERE SR_grade = 0
+                                    AND SR_section = '{$_GET['Section']}')
+                                    ORDER BY subjectName");
     } else {
       $getSubject = $mysqli->query("SELECT subjectName FROM subjectperyear
-                                        WHERE 
-                                        subjectperyear.minYearLevel <= '{$_GET['Grade']}' 
-                                        AND
-                                        subjectperyear.maxYearLevel >= '{$_GET['Grade']}'");
+                                    WHERE minYearLevel <= '{$_GET['Grade']}' 
+                                    AND maxYearLevel >= '{$_GET['Grade']}'
+                                    AND subjectName IN 
+                                    (SELECT S_subject FROM workschedule 
+                                    WHERE SR_grade = '{$_GET['Grade']}'
+                                    AND SR_section = '{$_GET['Section']}')
+                                    ORDER BY subjectName");
     }
     if (mysqli_num_rows($getSubject) > 0) {
       $colspan = mysqli_num_rows($getSubject);
@@ -311,9 +317,15 @@ if (!isset($_SESSION['AD_number'])) {
                         </div>
                       <?php }
                       ?>
+
                       <div style="text-align: right;">
                         <button type="submit" class="btn btn-primary" id="confirmChanges" name="UpdateGrade" value="Save">Save Grades</button>
                         <button type="submit" class="btn btn-primary" id="confirmChanges" name="releaseGrades" value="Release">Release Grades</button>
+                        <?php
+                        if (isset($_GET['Quarter']) && isset($_GET['Grade']) && isset($_GET['Section'])) {
+                          echo '<a href="../reports/gradePerQuarter.php?quarter=' . $_GET['Quarter'] . '&grade=' . $_GET['Grade'] . '&section=' . $_GET['Section'] . '" class="btn btn-light">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a>';
+                        }
+                        ?>
                       </div>
                       <div class="row" style="margin-top: 15px;;">
                         <div class="col-lg-12 d-flex flex-column">

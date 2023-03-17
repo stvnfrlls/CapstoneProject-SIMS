@@ -307,11 +307,11 @@ if (!isset($_SESSION['AD_number'])) {
                     <?php }
                     ?>
                     <?php
-                    if (isset($_GET['GradeLevel']) && isset($_GET['section'])) { ?>
-                      <div class="btn-group" style="float: right;">
-                        <a href="../reports/getClasslist.php?GradeLevel=<?php echo $_GET['GradeLevel'] ?>&section=<?php echo $_GET['section'] ?>" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a>
-                      </div>
-                    <?php }
+                    if (isset($_GET['GradeLevel']) && isset($_GET['section'])) {
+                      echo '<div class="btn-group" style="float: right;"><a href="../reports/getClasslist.php?GradeLevel=' . $_GET['GradeLevel'] . '&section=' . $_GET['section'] . '" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a></div>';
+                    } else {
+                      echo '<div class="btn-group" style="float: right;"><a href="../reports/getClasslist.php?allstudent=true" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a></div>';
+                    }
                     ?>
                     <div class="row" style="margin-top: 15px;">
                       <div class="col-lg-12 d-flex flex-column">
