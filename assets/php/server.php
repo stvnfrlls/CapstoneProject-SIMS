@@ -1825,7 +1825,6 @@ if (isset($_POST['Close']) && !empty($_SESSION['AD_number'])) {
 if (isset($_POST['enableFirst']) && !empty($_SESSION['AD_number'])) {
     $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
     $enableFirst = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "1"');
-    header("Refresh:0");
     $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
     $AdminName = $getAdminName->fetch_assoc();
     $AD_action = " has opened the grade encoding for the first quarter.";
@@ -1845,7 +1844,6 @@ if (isset($_POST['disableQ1']) && !empty($_SESSION['AD_number'])) {
 if (isset($_POST['enableSecond']) && !empty($_SESSION['AD_number'])) {
     $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
     $enableSecond = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "2"');
-    header("Refresh:0");
     $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
     $AdminName = $getAdminName->fetch_assoc();
     $AD_action = " has opened the grade encoding for the second quarter.";
@@ -1865,7 +1863,6 @@ if (isset($_POST['disableQ2']) && !empty($_SESSION['AD_number'])) {
 if (isset($_POST['enableThird']) && !empty($_SESSION['AD_number'])) {
     $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
     $enableThird = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "3"');
-    header("Refresh:0");
     $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
     $AdminName = $getAdminName->fetch_assoc();
     $AD_action = " has opened the grade encoding for the third quarter.";
@@ -1885,7 +1882,6 @@ if (isset($_POST['disableQ3']) && !empty($_SESSION['AD_number'])) {
 if (isset($_POST['enableFourth']) && !empty($_SESSION['AD_number'])) {
     $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
     $enableFourth = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "4"');
-    header("Refresh:0");
     $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
     $AdminName = $getAdminName->fetch_assoc();
     $AD_action = " has opened the grade encoding for the fourth quarter.";
