@@ -40,7 +40,7 @@ if (isset($_POST['login-button'])) {
                     $getSR_Number = $FindSR_Number->fetch_assoc();
 
                     $_SESSION['SR_number'] = $getSR_Number['SR_number'];
-                    header('Location: ../index.php');
+                    header('Location: ../student/dasboard.php');
                 }
                 if ($UD_role == "faculty") {
                     $FindF_number = $mysqli->query("SELECT F_number FROM faculty WHERE F_email = '{$UD_username}'");
@@ -1110,9 +1110,8 @@ if (isset($_POST['setSchedule']) && !empty($_SESSION['AD_number'])) {
     $input_start = $_POST['WS_start_time'];
     $input_end = timeMinusOneMinute($_POST['WS_end_time']);
 
-    if ($assignedFaculty == "" || empty($assignedFaculty)) {
-        showSweetAlert('Assigned Professor is empty', 'error');
-    } else {
+    $checkIfNull = $mysqli->query("SELECT F_number FROM faculty WHERE F_number = '{$assignedFaculty}'");
+    if (mysqli_num_rows($checkIfNull) > 0) {
         $time_intervals  = array();
 
         $checkTeacherSchedule = $mysqli->query("SELECT WS_start_time, WS_end_time FROM workschedule WHERE F_number = '{$assignedFaculty}'");
@@ -1150,6 +1149,8 @@ if (isset($_POST['setSchedule']) && !empty($_SESSION['AD_number'])) {
             $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
                                     VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
         }
+    } else {
+        showSweetAlert('You forgot to assign a teacher', 'error');
     }
 }
 if (isset($_POST['postAnnouncement']) && !empty($_SESSION['AD_number'])) {
@@ -1159,7 +1160,7 @@ if (isset($_POST['postAnnouncement']) && !empty($_SESSION['AD_number'])) {
     $subject = $_POST['subject'];
     $message = $mysqli->real_escape_string($_POST['message']);
 
-    if ($subject != "" && $message != "" || !empty($subject) && !empty($message)) {
+    if ($subject != "" && $message != "" && $date != ""  || !empty($subject) && !empty($message) && !empty($date)) {
         $CreateAnnouncement = $mysqli->query("INSERT INTO announcement(acadYear, header, date_posted, author, date, msg) 
                                             VALUES ('{$currentSchoolYear}', '{$subject}', '{$date_posted}', '{$author}', '{$date}', '{$message}')");
 
@@ -1650,36 +1651,42 @@ if (isset($_POST['updateSchedule']) && !empty($_SESSION['AD_number'])) {
     $input_start = $_POST['WS_start_time'];
     $input_end = $_POST['WS_end_time'];
 
+    $checkIfNull = $mysqli->query("SELECT F_number FROM faculty WHERE F_number = '{$assignedFaculty}'");
+
     $time_intervals  = array();
 
-    $checkTeacherSchedule = $mysqli->query("SELECT WS_start_time, WS_end_time FROM workschedule WHERE F_number = '{$assignedFaculty}'");
-    while ($TeacherSchedule = $checkTeacherSchedule->fetch_assoc()) {
-        $time_intervals[] = $TeacherSchedule;
-    }
-
-    $overlapping_interval = null;
-    foreach ($time_intervals as $interval) {
-        $interval_start = strtotime($interval['WS_start_time']);
-        $interval_end = strtotime($interval['WS_end_time']);
-        $input_start_time = strtotime($input_start);
-        $input_end_time = strtotime($input_end);
-        if (($input_start_time >= $interval_start && $input_start_time <= $interval_end) || ($input_end_time >= $interval_start && $input_end_time <= $interval_end)) {
-            $overlapping_interval = $interval;
-            break;
+    if (mysqli_num_rows($checkIfNull) > 0) {
+        $checkTeacherSchedule = $mysqli->query("SELECT WS_start_time, WS_end_time FROM workschedule WHERE F_number = '{$assignedFaculty}'");
+        while ($TeacherSchedule = $checkTeacherSchedule->fetch_assoc()) {
+            $time_intervals[] = $TeacherSchedule;
         }
-    }
-    if ($overlapping_interval) {
-        $errors['nocontent'] = "The input time overlaps with the following interval: Start Time: " . $overlapping_interval['WS_start_time'] . ", End Time: " . $overlapping_interval['WS_end_time'] . ".";
-    } else {
-        $UpdateSchedule = $mysqli->query("UPDATE workschedule SET F_number = '{$assignedFaculty}', WS_start_time = '{$input_start}', WS_end_time = '{$input_end}' 
+
+        $overlapping_interval = null;
+        foreach ($time_intervals as $interval) {
+            $interval_start = strtotime($interval['WS_start_time']);
+            $interval_end = strtotime($interval['WS_end_time']);
+            $input_start_time = strtotime($input_start);
+            $input_end_time = strtotime($input_end);
+            if (($input_start_time >= $interval_start && $input_start_time <= $interval_end) || ($input_end_time >= $interval_start && $input_end_time <= $interval_end)) {
+                $overlapping_interval = $interval;
+                break;
+            }
+        }
+        if ($overlapping_interval) {
+            $errors['nocontent'] = "The input time overlaps with the following interval: Start Time: " . $overlapping_interval['WS_start_time'] . ", End Time: " . $overlapping_interval['WS_end_time'] . ".";
+        } else {
+            $UpdateSchedule = $mysqli->query("UPDATE workschedule SET F_number = '{$assignedFaculty}', WS_start_time = '{$input_start}', WS_end_time = '{$input_end}' 
                                     WHERE S_subject = '{$subjectname}' AND SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['SectionName']}' AND acadYear = '{$currentSchoolYear}'");
-        showSweetAlert('Schedule successfully updated.', 'success');
-        $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
-        $AdminName = $getAdminName->fetch_assoc();
-        $AD_action = "UPDATED SCHEDULE OF " . $assignedFaculty . "FOR SECTION" . $_GET['SectionName'];
-        $currentDate = date('Y-m-d H:i:s');
-        $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
+            showSweetAlert('Schedule successfully updated.', 'success');
+            $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+            $AdminName = $getAdminName->fetch_assoc();
+            $AD_action = "UPDATED SCHEDULE OF " . $assignedFaculty . "FOR SECTION" . $_GET['SectionName'];
+            $currentDate = date('Y-m-d H:i:s');
+            $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
                                     VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
+        }
+    } else {
+        showSweetAlert('You forgot to assign a teacher!', 'error');
     }
 }
 if (isset($_POST['deleteSchedule']) && !empty($_SESSION['AD_number'])) {
