@@ -1,5 +1,5 @@
 <?php
-include '../assets/vendor/autoload.php';
+include __DIR__ . '\..\vendor\autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 
