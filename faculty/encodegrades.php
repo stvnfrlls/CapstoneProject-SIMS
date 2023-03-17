@@ -170,10 +170,10 @@ if (!isset($_SESSION['F_number'])) {
                       <?php
                       if (isset($_GET['Section']) && isset($_GET['Subject'])) {
                         $checkGradeData = $mysqli->query("SELECT G_gradesQ4 FROM grades 
-                        WHERE G_gradesQ4 IS NOT NULL 
-                        AND SR_section = '{$_GET['Section']}' 
-                        AND G_learningArea = '{$_GET['Subject']}' 
-                        AND acadYear = '{$currentSchoolYear}'");
+                                                        WHERE G_gradesQ4 IS NOT NULL 
+                                                        AND SR_section = '{$_GET['Section']}' 
+                                                        AND G_learningArea = '{$_GET['Subject']}' 
+                                                        AND acadYear = '{$currentSchoolYear}'");
                         if (mysqli_num_rows($checkGradeData) > 0) {
                           echo '<button id="saveGrades" class="btn btn-primary me-2">Save Final Grades</button>';
                         } else {
@@ -181,11 +181,11 @@ if (!isset($_SESSION['F_number'])) {
                         }
 
                         $checkFinalGrade = $mysqli->query("SELECT G_finalgrade FROM grades 
-                        WHERE G_gradesQ4 IS NOT NULL 
-                        AND G_finalgrade IS NULL 
-                        AND SR_section = '{$_GET['Section']}' 
-                        AND G_learningArea = '{$_GET['Subject']}' 
-                        AND acadYear = '{$currentSchoolYear}'");
+                                                          WHERE G_gradesQ4 IS NOT NULL 
+                                                          AND G_finalgrade IS NULL 
+                                                          AND SR_section = '{$_GET['Section']}' 
+                                                          AND G_learningArea = '{$_GET['Subject']}' 
+                                                          AND acadYear = '{$currentSchoolYear}'");
                         if (mysqli_num_rows($checkFinalGrade) > 0) {
                           showSweetAlert('Do not forget to save the final grade', 'info');
                         }
@@ -310,21 +310,31 @@ if (!isset($_SESSION['F_number'])) {
                                           $arrayClassList[] = $dataClassList;
                                         }
                                         $rowCount = 0;
-                                        $getClassListData = $mysqli->query("SELECT SR_number FROM classlist WHERE SR_grade = '{$_GET['Grade']}' AND SR_section = '{$_GET['Section']}' AND acadYear = '{$currentSchoolYear}'");
+                                        $getClassListData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number IN 
+                                                                          (SELECT SR_number FROM classlist 
+                                                                          WHERE SR_grade = '{$_GET['Grade']}' 
+                                                                          AND SR_section = '{$_GET['Section']}' 
+                                                                          AND acadYear = '{$currentSchoolYear}')
+                                                                          ORDER BY SR_lname");
                                         while ($Classlist = $getClassListData->fetch_assoc()) { ?>
                                           <tr>
                                             <td class="hatdog">
                                               <?php
                                               $getStudentNameData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$Classlist['SR_number']}'");
-                                              $StudentName = $getStudentNameData->fetch_assoc();
-
-                                              echo $StudentName['SR_lname'] .  ", " . $StudentName['SR_fname'] . " " . substr($StudentName['SR_mname'], 0, 1) . ". " . $StudentName['SR_suffix'];
+                                              $studentInfo = $getStudentNameData->fetch_assoc();
+                                              if (!empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] != "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {
+                                                echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ".";
+                                              } else if (empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] = "" && !empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] != "") {
+                                                echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . $studentInfo['SR_suffix'];
+                                              } else if (empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] = "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {
+                                                echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'];
+                                              }
                                               ?>
                                               <input type="hidden" name="row[]" value="<?php echo $rowCount ?>">
                                               <input type="hidden" name="encodeGrade" value="submit">
                                               <input type="hidden" name="SR_number[]" value="<?php echo $Classlist['SR_number'] ?>">
-                                              <input type="hidden" name="Grade[]" value="<?php echo  $StudentName['SR_grade'] ?>">
-                                              <input type="hidden" name="Section[]" value="<?php echo $StudentName['SR_section'] ?>">
+                                              <input type="hidden" name="Grade[]" value="<?php echo  $studentInfo['SR_grade'] ?>">
+                                              <input type="hidden" name="Section[]" value="<?php echo $studentInfo['SR_section'] ?>">
                                               <input type="hidden" name="Subject[]" value="<?php echo mysqli_escape_string($mysqli, $_GET['Subject']) ?>">
                                             </td>
                                             <?php
