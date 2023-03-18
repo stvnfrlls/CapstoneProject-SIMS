@@ -5,7 +5,24 @@
 </head>
 
 <?php
+// Set session timeout to 30 minutes
+ini_set('session.gc_maxlifetime', 1400);
+session_set_cookie_params(1400);
+
+// Start or resume the session
 session_start();
+
+// Check if session has expired
+if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 1400)) {
+    session_unset();
+    session_destroy();
+}
+
+// Update LAST_ACTIVITY time on each request
+$_SESSION['LAST_ACTIVITY'] = time();
+// Send a new session cookie with the updated LAST_ACTIVITY value
+setcookie(session_name(), session_id(), time() + 1400);
+
 include('database.php');
 include('mail.php');
 global $currentSchoolYear;
