@@ -323,7 +323,24 @@ if (!isset($_SESSION['AD_number'])) {
                         <button type="submit" class="btn btn-primary" id="confirmChanges" name="releaseGrades" value="Release">Release Grades</button>
                         <?php
                         if (isset($_GET['Quarter']) && isset($_GET['Grade']) && isset($_GET['Section'])) {
-                          echo '<a href="../reports/gradePerQuarter.php?quarter=' . $_GET['Quarter'] . '&grade=' . $_GET['Grade'] . '&section=' . $_GET['Section'] . '" class="btn btn-light">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a>';
+                          $checkClasslist = $mysqli->query("SELECT SR_number FROM classlist 
+                                                            WHERE SR_grade = '{$_GET['Grade']}' 
+                                                            AND SR_section = '{$_GET['Section']}' 
+                                                            AND acadYear = '{$currentSchoolYear}'");
+                          $checkifGraded = $mysqli->query("SELECT SR_number FROM classlist 
+                                                          WHERE SR_number 
+                                                          IN (SELECT SR_number FROM grades WHERE acadYear = '{$currentSchoolYear}')
+                                                          AND SR_grade = '{$_GET['Grade']}' 
+                                                          AND SR_section = '{$_GET['Section']}' 
+                                                          AND acadYear = '{$currentSchoolYear}'");
+                          if (mysqli_num_rows($checkClasslist) == mysqli_num_rows($checkifGraded) && mysqli_num_rows($checkClasslist) != 0 && mysqli_num_rows($checkifGraded) != 0) {
+                            // echo '<button type="submit" class="btn btn-primary" id="confirmChanges" name="UpdateGrade" value="Save" disabled>Save Grades</button>';
+                            // echo '<button type="submit" class="btn btn-primary" id="confirmChanges" name="releaseGrades" value="Release" disabled>Release Grades</button>';
+                            echo '<a href="../reports/classGrades.php?Quarter=' . $_GET['Quarter'] . '&Grade=' . $_GET['Grade'] . '&Section=' . $_GET['Section'] . '" class="btn btn-light">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a>';
+                          } else {
+                            // echo '<button type="submit" class="btn btn-secondary" disabled>Save Grades</button>';
+                            // echo '<button type="submit" class="btn btn-secondary" disabled>Release Grades</button>';
+                          }
                         }
                         ?>
                       </div>
