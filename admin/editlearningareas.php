@@ -15,8 +15,6 @@ if (empty($_SESSION['AD_number'])) {
   if (isset($_GET['GradeLevel']) && isset($_GET['SectionName'])) {
     $subjects     = array();
     array_unshift($subjects, null);
-    $schedule     = array();
-    array_unshift($schedule, null);
     $FacultyName  = array();
     array_unshift($FacultyName, null);
     $AllFacultyName  = array();
@@ -38,15 +36,6 @@ if (empty($_SESSION['AD_number'])) {
     $rungetSubject = $mysqli->query($getSubject);
     while ($dataSubject = $rungetSubject->fetch_assoc()) {
       $subjects[] = $dataSubject;
-    }
-
-    $getSchedule = "SELECT F_number, S_subject, WS_start_time, WS_end_time FROM workschedule
-                  WHERE SR_grade = '{$_GET['GradeLevel']}' 
-                  AND SR_section = '{$_GET['SectionName']}'
-                  AND acadYear = '{$currentSchoolYear}'";
-    $rungetSchedule = $mysqli->query($getSchedule);
-    while ($dataSchedule = $rungetSchedule->fetch_assoc()) {
-      $schedule[] = $dataSchedule;
     }
   }
 }
@@ -407,26 +396,38 @@ if (empty($_SESSION['AD_number'])) {
                                             </td>
                                             <td>
                                               <?php
-                                              if (empty($schedule[$rowCount]['WS_start_time'])) {
+                                              $getStartSchedule = $mysqli->query("SELECT F_number, S_subject, WS_start_time FROM workschedule
+                                                                                  WHERE S_subject = '{$subjects[$rowCount]['subjectName']}'
+                                                                                  AND SR_grade = '{$_GET['GradeLevel']}' 
+                                                                                  AND SR_section = '{$_GET['SectionName']}'
+                                                                                  AND acadYear = '{$currentSchoolYear}'");
+                                              $StartSchedule = $getStartSchedule->fetch_assoc();
+                                              if (empty($StartSchedule['WS_start_time'])) {
                                                 echo '<input type="time" class="form-control" name="WS_start_time" required>';
                                               } else {
-                                                echo '<input type="time" class="form-control" name="WS_start_time" value=' . $schedule[$rowCount]['WS_start_time'] . ' required>';
+                                                echo '<input type="time" class="form-control" name="WS_start_time" value=' . $StartSchedule['WS_start_time'] . ' required>';
                                               }
                                               ?>
                                             </td>
                                             <td>
                                               <?php
-                                              if (empty($schedule[$rowCount]['WS_start_time'])) {
+                                              $getEndSchedule = $mysqli->query("SELECT F_number, S_subject, WS_end_time FROM workschedule
+                                                                                  WHERE S_subject = '{$subjects[$rowCount]['subjectName']}'
+                                                                                  AND SR_grade = '{$_GET['GradeLevel']}' 
+                                                                                  AND SR_section = '{$_GET['SectionName']}'
+                                                                                  AND acadYear = '{$currentSchoolYear}'");
+                                              $EndSchedule = $getEndSchedule->fetch_assoc();
+                                              if (empty($EndSchedule['WS_end_time'])) {
                                                 echo '<input type="time" class="form-control" name="WS_end_time" required>';
                                               } else {
-                                                echo '<input type="time" class="form-control" name="WS_end_time" value=' . timePlusOneMinute($schedule[$rowCount]['WS_end_time']) . ' required>';
+                                                echo '<input type="time" class="form-control" name="WS_end_time" value=' . timePlusOneMinute($EndSchedule['WS_end_time']) . ' required>';
                                               }
                                               ?>
                                             </td>
                                             <td>
 
                                               <?php
-                                              if (empty($schedule[$rowCount]['F_number'])) { ?>
+                                              if (empty($assignedFaculty['F_number'])) { ?>
                                                 <input type="submit" class="btn btn-primary" name="setSchedule" id="setSchedule" value="SET">
                                               <?php
                                               } else {
