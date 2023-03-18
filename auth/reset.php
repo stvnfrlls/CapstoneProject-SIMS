@@ -48,18 +48,18 @@ if (!isset($_SESSION['verifyEmailData']) && !isset($_POST['submitOTP'])) {
 </head>
 
 <body>
-
     <!-- Navbar Start -->
-    <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-        <span class="fa fa-bars" style="color:white;"></span>
-    </button>
+    <nav class="navbar navbar-expand-lg bg-primary navbar-light py-lg-0 px-lg-5">
+        <img class="m-3" href="../index.php" src="../assets/img/logo.png" style="height: 50px; width:300px;" alt="Icon">
+    </nav>
     <!-- Navbar End -->
 
     <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-dark navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
+
+    <nav class="navbar navbar-expand-lg bg-dark navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
 
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
+            <span class="fa fa-bars" style="color:white;"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <style>
@@ -87,9 +87,9 @@ if (!isset($_SESSION['verifyEmailData']) && !isset($_POST['submitOTP'])) {
                         <a href="../student/announcement.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">School Announcements</a>
                         <?php
                         if (isset($_SESSION['SR_number']) || isset($_SESSION['F_number']) || isset($_SESSION['AD_number'])) {
-                            echo '<a href="auth/logout.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Logout</a>';
+                            echo '<a href="logout.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Logout</a>';
                         } else {
-                            echo '<a href="auth/login.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Login</a>';
+                            echo '<a href="login.php" class="dropdown-item" style="color: white; font-size: 14px; text-align:left;">Login</a>';
                         }
                         ?>
                     </div>
@@ -98,6 +98,7 @@ if (!isset($_SESSION['verifyEmailData']) && !isset($_POST['submitOTP'])) {
             </div>
         </div>
     </nav>
+
     <!-- Navbar End -->
 
     <div class="limiter">
@@ -164,12 +165,13 @@ if (!isset($_SESSION['verifyEmailData']) && !isset($_POST['submitOTP'])) {
         submitBTN.addEventListener('click', function() {
             const password = passwordInput.value;
             const confirmPassword = confirmPasswordInput.value;
+            let errorMessageHtml = ""; // define errorMessageHtml outside the if block
 
             if (password !== confirmPassword) {
                 Swal.fire({
                     icon: 'error',
                     text: 'Passwords do not match'
-                })
+                });
                 return false;
             }
 
@@ -178,26 +180,26 @@ if (!isset($_SESSION['verifyEmailData']) && !isset($_POST['submitOTP'])) {
             if (!regex.test(password)) {
                 let errorMessages = [];
 
-                if (password.length < 8) {
+                if (password.length < 8 && confirmPassword.length < 8) {
                     errorMessages.push("Password must be at least 8 characters long.");
                 }
 
                 const uppercaseRegex = /[A-Z]/;
-                if (!uppercaseRegex.test(password)) {
+                if (!uppercaseRegex.test(confirmPassword)) {
                     errorMessages.push("Password must include at least one uppercase letter.");
                 }
 
                 const numberRegex = /\d/;
-                if (!numberRegex.test(password)) {
+                if (!numberRegex.test(confirmPassword)) {
                     errorMessages.push("Password must include at least one number.");
                 }
 
                 const specialCharRegex = /[@$!%*?&]/;
-                if (!specialCharRegex.test(password)) {
+                if (!specialCharRegex.test(confirmPassword)) {
                     errorMessages.push("Password must include at least one special character.");
                 }
 
-                let errorMessageHtml = "<ul>";
+                errorMessageHtml = "<ul>";
                 for (const errorMessage of errorMessages) {
                     errorMessageHtml += `<li>${errorMessage}</li>`;
                 }
@@ -209,16 +211,18 @@ if (!isset($_SESSION['verifyEmailData']) && !isset($_POST['submitOTP'])) {
                     html: `Password does not meet criteria:<br>${errorMessageHtml}`
                 }).then((result) => {
                     return false;
-                })
+                });
             }
-            Swal.fire({
-                icon: 'success',
-                title: 'Success!',
-                text: 'Password meets criteria.'
-            }).then((result) => {
-                form.submit();
-            })
-        })
+            if (errorMessageHtml.length == 0) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Password meets criteria.'
+                }).then((result) => {
+                    form.submit();
+                });
+            }
+        });
     </script>
 </body>
 

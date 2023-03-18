@@ -100,15 +100,14 @@ if (isset($_POST['verifyEmail'])) {
             $check_existingOTP = $mysqli->query("SELECT OTP FROM userdetails WHERE SR_email = '{$email}'");
             $otpData = $check_existingOTP->fetch_assoc();
 
-            if ($otpData['OTP'] == "" || empty($otpData['OTP'])) {
-                $otp = generateOTP();
-                $createOTP = $mysqli->query("UPDATE userdetails SET OTP = '{$otp}' WHERE SR_email = '{$verifyData['SR_email']}'");
-                $_SESSION['verifyEmailData'] = $verifyData['SR_email'];
+            $otp = generateOTP();
+            $createOTP = $mysqli->query("UPDATE userdetails SET OTP = '{$otp}' WHERE SR_email = '{$verifyData['SR_email']}'");
+            $_SESSION['verifyEmailData'] = $verifyData['SR_email'];
 
-                $mail->addAddress($verifyData['SR_email']);
-                $mail->Subject = 'Password Change Request';
+            $mail->addAddress($verifyData['SR_email']);
+            $mail->Subject = 'Password Change Request';
 
-                $mail->Body = '<p>We have received a request to change the password for your email account. 
+            $mail->Body = '<p>We have received a request to change the password for your email account. 
                                 Your one-time password (OTP) code is: <strong>' . $otp . '</strong>.</p>
                                 <p>If you did not initiate this request, please ignore this email. 
                                 However, we recommend that you change your password as soon as possible to ensure the security of your account. 
@@ -121,11 +120,8 @@ if (isset($_POST['verifyEmail'])) {
                                 <strong>Best regards, </strong><br>
                                 <strong>CDSP Admin Office</strong>
                                 <br>';
-                if ($mail->send()) {
-                    header('Location: ../auth/otp.php');
-                }
-            } else {
-                $errors['LoginError'] = "Check your email for the OTP Code.";
+            if ($mail->send()) {
+                header('Location: ../auth/otp.php');
             }
         } else {
             $errors['LoginError'] = "Account does not exist!";
