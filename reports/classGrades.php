@@ -7,7 +7,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 if (!empty($_GET['Quarter']) && !empty($_GET['Grade']) && !empty($_GET['Section'])) {
-    $mysqli = new mysqli("localhost", "root", "", "sis_cdsp");
+    $mysqli = new mysqli("localhost", "u952901270_admin2311", "Eleven.11", "u952901270_sforms_cdsp");
 
     $letters = range('B', 'Z');
     $capitalLetters = array_map('strtoupper', $letters);
