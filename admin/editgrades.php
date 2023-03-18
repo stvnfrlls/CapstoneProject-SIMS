@@ -319,8 +319,6 @@ if (!isset($_SESSION['AD_number'])) {
                       ?>
 
                       <div style="text-align: right;">
-                        <button type="submit" class="btn btn-primary" id="confirmChanges" name="UpdateGrade" value="Save">Save Grades</button>
-                        <button type="submit" class="btn btn-primary" id="confirmChanges" name="releaseGrades" value="Release">Release Grades</button>
                         <?php
                         if (isset($_GET['Quarter']) && isset($_GET['Grade']) && isset($_GET['Section'])) {
                           $checkClasslist = $mysqli->query("SELECT SR_number FROM classlist 
@@ -334,12 +332,12 @@ if (!isset($_SESSION['AD_number'])) {
                                                           AND SR_section = '{$_GET['Section']}' 
                                                           AND acadYear = '{$currentSchoolYear}'");
                           if (mysqli_num_rows($checkClasslist) == mysqli_num_rows($checkifGraded) && mysqli_num_rows($checkClasslist) != 0 && mysqli_num_rows($checkifGraded) != 0) {
-                            // echo '<button type="submit" class="btn btn-primary" id="confirmChanges" name="UpdateGrade" value="Save" disabled>Save Grades</button>';
-                            // echo '<button type="submit" class="btn btn-primary" id="confirmChanges" name="releaseGrades" value="Release" disabled>Release Grades</button>';
+                            echo '<button type="submit" class="btn btn-primary" id="confirmChanges" name="UpdateGrade" value="Save">Save Grades</button>';
+                            echo '<button type="submit" class="btn btn-primary" id="confirmChanges" name="releaseGrades" value="Release">Release Grades</button>';
                             echo '<a href="../reports/classGrades.php?Quarter=' . $_GET['Quarter'] . '&Grade=' . $_GET['Grade'] . '&Section=' . $_GET['Section'] . '" class="btn btn-light">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a>';
                           } else {
-                            // echo '<button type="submit" class="btn btn-secondary" disabled>Save Grades</button>';
-                            // echo '<button type="submit" class="btn btn-secondary" disabled>Release Grades</button>';
+                            echo '<button type="submit" class="btn btn-secondary" disabled style="background-color: #6c757d; color: #fff;">Save Grades</button>';
+                            echo '<button type="submit" class="btn btn-secondary" disabled style="background-color: #6c757d; color: #fff;">Release Grades</button>';
                           }
                         }
                         ?>
