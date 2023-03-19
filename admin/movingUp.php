@@ -210,7 +210,15 @@ if (!isset($_SESSION['AD_number'])) {
                                                 <div>
                                                     <?php
                                                     if (isset($_GET['GradeLevel']) && isset($_GET['section'])) {
-                                                        echo '<button type="button" id="updateStatus" class="btn btn-primary">Update</button>';
+                                                        $checkStudentCount = $mysqli->query("SELECT SR_number FROM classlist 
+                                                        WHERE SR_grade = '{$_GET['GradeLevel']}'
+                                                        AND SR_section = '{$_GET['section']}'
+                                                        AND acadYear = '{$currentSchoolYear}'");
+                                                        if (mysqli_num_rows($checkStudentCount) > 0) {
+                                                            echo '<button type="button" id="updateStatus" class="btn btn-primary">Update</button>';
+                                                        } else {
+                                                            echo '<button type="button" id="updateStatus" class="btn btn-secondary" disabled style="background-color: #6c757d; color: #fff;">Update</button>';
+                                                        }
                                                     }
                                                     ?>
                                                     <button type="button" style="margin-right: 0px;" class="btn btn-light">Back</button>
