@@ -340,33 +340,33 @@ if (!isset($_SESSION['F_number'])) {
                                             <?php
                                             $checkQuarter1 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 1 AND quarterFormStatus = 'enabled'");
                                             if (mysqli_num_rows($checkQuarter1) == 1) { ?>
-                                              <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g1 = $arrayClassList[$rowCount]['G_gradesQ1']; ?>" name="G_gradesQ1[]" style="text-align: center; width: 30px;" required></td>
+                                              <td class="hatdog"><input type="number" oninput="limitInputLength(event)" maxlength="2" value="<?php echo $g1 = $arrayClassList[$rowCount]['G_gradesQ1']; ?>" name="G_gradesQ1[]" style="text-align: center; width: 30px;" required></td>
                                             <?php } else { ?>
-                                              <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g1 = $arrayClassList[$rowCount]['G_gradesQ1']; ?>" name="G_gradesQ1[]" style="text-align: center; width: 30px;" disabled></td>
+                                              <td class="hatdog"><input type="number" oninput="limitInputLength(event)" maxlength="2" value="<?php echo $g1 = $arrayClassList[$rowCount]['G_gradesQ1']; ?>" name="G_gradesQ1[]" style="text-align: center; width: 30px;" disabled></td>
                                             <?php } ?>
 
                                             <?php
                                             $checkQuarter2 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 2 AND quarterFormStatus = 'enabled'");
                                             if (mysqli_num_rows($checkQuarter2) == 1) { ?>
-                                              <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g2 = $arrayClassList[$rowCount]['G_gradesQ2']; ?>" name="G_gradesQ2[]" style="text-align: center; width: 30px;" required></td>
+                                              <td class="hatdog"><input type="number" oninput="limitInputLength(event)" maxlength="2" value="<?php echo $g2 = $arrayClassList[$rowCount]['G_gradesQ2']; ?>" name="G_gradesQ2[]" style="text-align: center; width: 30px;" required></td>
                                             <?php } else { ?>
-                                              <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g2 = $arrayClassList[$rowCount]['G_gradesQ2']; ?>" name="G_gradesQ2[]" style="text-align: center; width: 30px;" disabled></td>
+                                              <td class="hatdog"><input type="number" oninput="limitInputLength(event)" maxlength="2" value="<?php echo $g2 = $arrayClassList[$rowCount]['G_gradesQ2']; ?>" name="G_gradesQ2[]" style="text-align: center; width: 30px;" disabled></td>
                                             <?php } ?>
 
                                             <?php
                                             $checkQuarter3 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 3 AND quarterFormStatus = 'enabled'");
                                             if (mysqli_num_rows($checkQuarter3) == 1) { ?>
-                                              <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g3 = $arrayClassList[$rowCount]['G_gradesQ3']; ?>" name="G_gradesQ3[]" style="text-align: center; width: 30px;" required></td>
+                                              <td class="hatdog"><input type="number" oninput="limitInputLength(event)" maxlength="2" value="<?php echo $g3 = $arrayClassList[$rowCount]['G_gradesQ3']; ?>" name="G_gradesQ3[]" style="text-align: center; width: 30px;" required></td>
                                             <?php } else { ?>
-                                              <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g3 = $arrayClassList[$rowCount]['G_gradesQ3']; ?>" name="G_gradesQ3[]" style="text-align: center; width: 30px;" disabled></td>
+                                              <td class="hatdog"><input type="number" oninput="limitInputLength(event)" maxlength="2" value="<?php echo $g3 = $arrayClassList[$rowCount]['G_gradesQ3']; ?>" name="G_gradesQ3[]" style="text-align: center; width: 30px;" disabled></td>
                                             <?php } ?>
 
                                             <?php
                                             $checkQuarter4 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 4 AND quarterFormStatus = 'enabled'");
                                             if (mysqli_num_rows($checkQuarter4) == 1) { ?>
-                                              <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g4 = $arrayClassList[$rowCount]['G_gradesQ4']; ?>" name="G_gradesQ4[]" style="text-align: center; width: 30px;" required></td>
+                                              <td class="hatdog"><input type="number" oninput="limitInputLength(event)" maxlength="2" value="<?php echo $g4 = $arrayClassList[$rowCount]['G_gradesQ4']; ?>" name="G_gradesQ4[]" style="text-align: center; width: 30px;" required></td>
                                             <?php } else { ?>
-                                              <td class="hatdog"><input type="number" maxlength="2" value="<?php echo $g4 = $arrayClassList[$rowCount]['G_gradesQ4']; ?>" name="G_gradesQ4[]" style="text-align: center; width: 30px;" disabled></td>
+                                              <td class="hatdog"><input type="number" oninput="limitInputLength(event)" maxlength="2" value="<?php echo $g4 = $arrayClassList[$rowCount]['G_gradesQ4']; ?>" name="G_gradesQ4[]" style="text-align: center; width: 30px;" disabled></td>
                                             <?php } ?>
 
 
@@ -500,6 +500,17 @@ if (!isset($_SESSION['F_number'])) {
   <script src="../assets/js/admin/off-canvas.js"></script>
   <script src="../assets/js/admin/file-upload.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+  <script>
+    function limitInputLength(event) {
+      var element = event.target;
+      var value = element.value;
+      var regex = /^[0-9]{0,2}$/;
+
+      if (!regex.test(value)) {
+        element.value = value.slice(0, 2);
+      }
+    }
+  </script>
   <script>
     const FormGrades = document.getElementById('FormGrades');
     const saveGrades = document.getElementById('saveGrades');

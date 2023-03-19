@@ -475,10 +475,10 @@ if (!isset($_SESSION['AD_number'])) {
                                                 echo "<input type='hidden' name='SR_number[]' value = '" . $classList['SR_number'] . "'>";
                                                 if (isset($Grade['G_learningArea'])) {
                                                   echo "<input type='hidden' name='subject[]' value='" .  $Grade['G_learningArea'] . "'>";
-                                                  echo "<td class='cell expand-maximum-on-hover'><input type='number' maxlength='2' class='form-control text-center' name='grade[]' value='" . $gradeHolder . "'></td>";
+                                                  echo '<td class="cell expand-maximum-on-hover"><input type="number" oninput="limitInputLength(event)" maxlength="2" class="form-control text-center" name="grade[]" value="' . $gradeHolder . '"></td>';
                                                 } else {
                                                   echo "<input type='hidden' name='subject[]'>";
-                                                  echo "<td class='cell expand-maximum-on-hover'><input type='number' maxlength='2' class='form-control text-center' name='grade[]'></td>";
+                                                  echo '<td class="cell expand-maximum-on-hover"><input type="number" oninput="limitInputLength(event)" maxlength="2" class="form-control text-center" name="grade[]"></td>';
                                                 }
                                               } else {
                                                 echo "<input type='hidden' name='row[]' value='" .  $subjectHeaderCount . "'>";
@@ -488,7 +488,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                   echo "<input type='hidden' name='subject[]' value='" .  $subject_Array[$subjectHeaderCount]['subjectName'] . "'>";
                                                 }
                                                 echo "<input type='hidden' name='SR_number[]'>";
-                                                echo "<td class='cell expand-maximum-on-hover'><input type='number' maxlength='2' class='form-control text-center' name='grade[]'></td>";
+                                                echo '<td class="cell expand-maximum-on-hover"><input type="number" oninput="limitInputLength(event)" maxlength="2" class="form-control text-center" name="grade[]"></td>';
                                               }
                                               $subjectHeaderCount++;
                                             }
@@ -549,6 +549,17 @@ if (!isset($_SESSION['AD_number'])) {
   <script src="../assets/js/admin/file-upload.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+  <script>
+    function limitInputLength(event) {
+      var element = event.target;
+      var value = element.value;
+      var regex = /^[0-9]{0,2}$/;
+
+      if (!regex.test(value)) {
+        element.value = value.slice(0, 2);
+      }
+    }
+  </script>
   <script>
     const confirmChanges = document.getElementById('confirmChanges');
     const gradeForm = document.getElementById('gradeForm');
