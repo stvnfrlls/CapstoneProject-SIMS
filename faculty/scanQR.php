@@ -4,32 +4,32 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['F_number'])) {
     header('Location: ../auth/login.php');
 } else {
+    $NOTtimedIN = array();
+    $NOTtimedOUT = array();
+    $timedOUT = array();
     if (isset($_SESSION['F_number'])) {
         $getSectionLabel = $mysqli->query("SELECT S_name FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'");
         $SectionLabel = $getSectionLabel->fetch_assoc();
 
-        $NOTtimedIN = array();
         $today = date('Y-m-d');
 
         $getNOTtimedIN = $mysqli->query("SELECT SR_lname, SR_fname, SR_number FROM studentrecord 
                                         WHERE SR_number 
-                                        NOT IN (SELECT SR_number FROM attendance WHERE A_time_IN = NULL AND A_time_OUT = NULL AND A_date = '{$today}')");
+                                        NOT IN (SELECT SR_number FROM attendance WHERE A_date = '{$today}')");
         while ($studentNumber_NOTtimedIN = $getNOTtimedIN->fetch_assoc()) {
             $NOTtimedIN[] = $studentNumber_NOTtimedIN;
         }
 
-        $NOTtimedOUT = array();
         $getNOTtimedOUT = $mysqli->query("SELECT SR_lname, SR_fname, SR_number FROM studentrecord 
                                         WHERE SR_number 
-                                        NOT IN (SELECT SR_number FROM attendance WHERE A_time_IN != NULL AND A_time_OUT = NULL AND A_date = '{$today}')");
+                                        NOT IN (SELECT SR_number FROM attendance WHERE A_time_OUT = NULL AND A_status != NULL AND A_date = '{$today}')");
         while ($studentNumber_NOTtimedOUT = $getNOTtimedOUT->fetch_assoc()) {
             $NOTtimedOUT[] = $studentNumber_NOTtimedOUT;
         }
 
-        $timedOUT = array();
         $gettimedOUT = $mysqli->query("SELECT SR_lname, SR_fname, SR_number FROM studentrecord 
                                     WHERE SR_number 
-                                    NOT IN (SELECT SR_number FROM attendance WHERE A_time_IN != NULL AND A_time_OUT != NULL AND A_date = '{$today}')");
+                                    NOT IN (SELECT SR_number FROM attendance WHERE A_time_OUT != NULL AND A_status != NULL AND A_date = '{$today}')");
         while ($studentNumber_timedOUT = $gettimedOUT->fetch_assoc()) {
             $timedOUT[] = $studentNumber_timedOUT;
         }
@@ -358,7 +358,8 @@ if (!isset($_SESSION['F_number'])) {
                     })
                 }
             });
-        } else if (NOTtimedOUTDATA) {
+        } 
+        if (NOTtimedOUTDATA) {
             Swal.fire({
                 title: `Student (${NOTtimedOUTDATA.SR_lname}, ${NOTtimedOUTDATA.SR_fname}) ready to go home?`,
                 confirmButtonText: 'Proceed',
@@ -369,7 +370,8 @@ if (!isset($_SESSION['F_number'])) {
                     })
                 }
             })
-        } else if (timedOUTDATA) {
+        } 
+        if (timedOUTDATA) {
             Swal.fire({
                 title: `Student (${timedOUTDATA.SR_lname}, ${timedOUTDATA .SR_fname}) has already timed out.`,
                 confirmButtonText: 'Proceed',
