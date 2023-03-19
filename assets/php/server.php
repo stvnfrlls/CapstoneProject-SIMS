@@ -57,7 +57,7 @@ if (isset($_POST['login-button'])) {
                     $getSR_Number = $FindSR_Number->fetch_assoc();
 
                     $_SESSION['SR_number'] = $getSR_Number['SR_number'];
-                    header('Location: ../student/dasboard.php');
+                    header('Location: ../student/dashboard.php');
                 }
                 if ($UD_role == "faculty") {
                     $FindF_number = $mysqli->query("SELECT F_number FROM faculty WHERE F_email = '{$UD_username}'");
