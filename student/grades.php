@@ -141,28 +141,17 @@ if (!isset($_SESSION['SR_number'])) {
                                                 <div class="card-body" style="text-align: left;">
                                                     <div class="row">
                                                         <div class="col-sm-12 col-lg-6">
-                                                            <p>
-                                                                Name: <?php echo $studentData['SR_lname'] . ", " . $studentData['SR_fname'] . " " . substr($studentData['SR_mname'], 0, 1) ?>
-                                                            </p>
-
+                                                            <p>Name: <?php echo $studentData['SR_lname'] . ", " . $studentData['SR_fname'] . " " . substr($studentData['SR_mname'], 0, 1) ?></p>
                                                         </div>
                                                         <div class="col-sm-12 col-lg-6">
-
                                                             <p>Student Number: <?php echo $studentData['SR_number']; ?></p>
-                                                            </p>
-
                                                         </div>
-
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-sm-12 col-lg-6">
-                                                            <p>
-                                                                Grade and Section: <?php echo $GradeSectionData['S_yearLevel'] . " - " . $GradeSectionData['S_name']; ?>
-                                                            </p>
-
+                                                            <p>Grade and Section: <?php echo $GradeSectionData['S_yearLevel'] . " - " . $GradeSectionData['S_name']; ?></p>
                                                         </div>
                                                         <div class="col-sm-12 col-lg-6">
-
                                                             <p>
                                                                 <?php
                                                                 if (mysqli_num_rows($Faculty) > 0) {
