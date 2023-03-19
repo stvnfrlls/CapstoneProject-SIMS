@@ -250,19 +250,19 @@ if (!isset($_SESSION['SR_number'])) {
 
                                                                             $average = $studentGradesData['G_finalgrade'];
                                                                             if ($average >= 90) {
-                                                                                echo "Outstanding";
+                                                                                $remarks = "Outstanding";
                                                                             } else if ($average >= 85 || $average <= 89) {
-                                                                                echo "Very Satisfactory";
+                                                                                $remarks = "Very Satisfactory";
                                                                             } else if ($average >= 80 || $average <= 84) {
-                                                                                echo "Satisfactory";
+                                                                                $remarks = "Satisfactory";
                                                                             } else if ($average >= 75 || $average <= 79) {
-                                                                                echo "Fairly Satisfactory";
+                                                                                $remarks = "Fairly Satisfactory";
                                                                             } else if ($average < 75) {
-                                                                                echo "Did Not Meet Expectations";
+                                                                                $remarks = "Did Not Meet Expectations";
                                                                             }
 
                                                                             echo '<td class="hatdog">' . round($average) . '</td>';
-                                                                            echo '<td class="hatdog">' . $average . '</td>';
+                                                                            echo '<td class="hatdog">' . $remarks . '</td>';
                                                                         } else {
                                                                             echo '<td class="hatdog"></td>';
                                                                             echo '<td class="hatdog"></td>';
