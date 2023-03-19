@@ -6,22 +6,22 @@
 
 <?php
 // Set session timeout to 30 minutes
-ini_set('session.gc_maxlifetime', 1400);
-session_set_cookie_params(1400);
+// ini_set('session.gc_maxlifetime', 1400);
+// session_set_cookie_params(1400);
 
 // Start or resume the session
 session_start();
 
 // Check if session has expired
-if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 1400)) {
-    session_unset();
-    session_destroy();
-}
+// if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 1400)) {
+//     session_unset();
+//     session_destroy();
+// }
 
-// Update LAST_ACTIVITY time on each request
-$_SESSION['LAST_ACTIVITY'] = time();
-// Send a new session cookie with the updated LAST_ACTIVITY value
-setcookie(session_name(), session_id(), time() + 1400);
+// // Update LAST_ACTIVITY time on each request
+// $_SESSION['LAST_ACTIVITY'] = time();
+// // Send a new session cookie with the updated LAST_ACTIVITY value
+// setcookie(session_name(), session_id(), time() + 1400);
 
 include('database.php');
 include('mail.php');
@@ -1862,7 +1862,7 @@ if (isset($_POST['acadyear']) && !empty($_SESSION['AD_number'])) {
     $endYear = (int) $startYear + 1;
 
     $updateAcadYear = $mysqli->query("UPDATE acad_year SET currentYear = '{$startYear}', endYear = '{$endYear}' WHERE rowID = 1");
-    $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+    $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "", gradeStatus = "hidden" WHERE quarterID != 0');
     // header("Refresh:0");
 
     showSweetAlert('Academic Year Updated' . $startYear . "-" . $endYear, 'success');
@@ -1891,6 +1891,9 @@ if (isset($_POST['Open']) && !empty($_SESSION['AD_number'])) {
 }
 if (isset($_POST['Close']) && !empty($_SESSION['AD_number'])) {
     $disableForms = $mysqli->query('UPDATE quartertable SET quarterStatus = "disabled" WHERE quarterTag = "FORMS"');
+
+    $releaseGrades = $mysqli->query("UPDATE quartertable SET gradeStatus = 'visible' WHERE quarterStatus = 'current'");
+
     $disableCurrentQuarter = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled" WHERE quarterStatus = "current"');
     $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
     $AdminName = $getAdminName->fetch_assoc();
@@ -1922,6 +1925,11 @@ if (isset($_POST['disableQ1']) && !empty($_SESSION['AD_number'])) {
 }
 if (isset($_POST['enableSecond']) && !empty($_SESSION['AD_number'])) {
     $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+
+    $checkIfReleasedQ1 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 1 AND gradeStatus = 'visible'");
+    if (mysqli_num_rows($checkIfReleasedQ1) == 0) {
+        $releaseQ1Grade = $mysqli->query("UPDATE quartertable SET gradeStatus = 'visible' WHERE quarterTag = 1");
+    }
     $enableSecond = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "2"');
     $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
     $AdminName = $getAdminName->fetch_assoc();
@@ -1941,6 +1949,12 @@ if (isset($_POST['disableQ2']) && !empty($_SESSION['AD_number'])) {
 }
 if (isset($_POST['enableThird']) && !empty($_SESSION['AD_number'])) {
     $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+
+    $checkIfReleasedQ2 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 2 AND gradeStatus = 'visible'");
+    if (mysqli_num_rows($checkIfReleasedQ2) == 0) {
+        $releaseQ2Grade = $mysqli->query("UPDATE quartertable SET gradeStatus = 'visible' WHERE quarterTag = 2");
+    }
+
     $enableThird = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "3"');
     $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
     $AdminName = $getAdminName->fetch_assoc();
@@ -1960,6 +1974,12 @@ if (isset($_POST['disableQ3']) && !empty($_SESSION['AD_number'])) {
 }
 if (isset($_POST['enableFourth']) && !empty($_SESSION['AD_number'])) {
     $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "" WHERE quarterID != 0');
+
+    $checkIfReleasedQ3 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 3 AND gradeStatus = 'visible'");
+    if (mysqli_num_rows($checkIfReleasedQ3) == 0) {
+        $releaseQ3Grade = $mysqli->query("UPDATE quartertable SET gradeStatus = 'visible' WHERE quarterTag = 3");
+    }
+
     $enableFourth = $mysqli->query('UPDATE quartertable SET quarterStatus = "current" WHERE quarterTag = "4"');
     $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
     $AdminName = $getAdminName->fetch_assoc();
