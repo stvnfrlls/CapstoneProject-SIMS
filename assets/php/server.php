@@ -1819,16 +1819,20 @@ if (isset($_POST['acadyear']) && !empty($_SESSION['AD_number'])) {
     VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
 }
 if (isset($_POST['Open']) && !empty($_SESSION['AD_number'])) {
-    $enableForms = $mysqli->query('UPDATE quartertable SET quarterStatus = "enabled" WHERE quarterTag = "FORMS"');
-    $enableCurrentQuarter = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "enabled" WHERE quarterStatus = "current"');
-    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
-    $AdminName = $getAdminName->fetch_assoc();
-    $AD_action = "OPENED ENCODING OF GRADES";
-    $currentDate = date('Y-m-d H:i:s');
-    $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
-    VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
-
-    showSweetAlert('Encoding of grades is now open.', 'info');
+    $checkQuarter = $mysqli->query("SELECT quarterStatus FROM quartertable WHERE quarterStatus = 'current'");
+    if (mysqli_num_rows($checkQuarter) > 0) {
+        $enableForms = $mysqli->query('UPDATE quartertable SET quarterStatus = "enabled" WHERE quarterTag = "FORMS"');
+        $enableCurrentQuarter = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "enabled" WHERE quarterStatus = "current"');
+        $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+        $AdminName = $getAdminName->fetch_assoc();
+        $AD_action = "OPENED ENCODING OF GRADES";
+        $currentDate = date('Y-m-d H:i:s');
+        $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
+                                    VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
+        showSweetAlert('Encoding of grades is now open.', 'info');
+    } else {
+        showSweetAlert('Enable a quarterly period first.', 'info');
+    }
 }
 if (isset($_POST['Close']) && !empty($_SESSION['AD_number'])) {
     $disableForms = $mysqli->query('UPDATE quartertable SET quarterStatus = "disabled" WHERE quarterTag = "FORMS"');
