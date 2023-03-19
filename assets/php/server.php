@@ -108,18 +108,18 @@ if (isset($_POST['verifyEmail'])) {
             $mail->Subject = 'Password Change Request';
 
             $mail->Body = '<p>We have received a request to change the password for your email account. 
-                                Your one-time password (OTP) code is: <strong>' . $otp . '</strong>.</p>
-                                <p>If you did not initiate this request, please ignore this email. 
-                                However, we recommend that you change your password as soon as possible to ensure the security of your account. 
-                                <br>
-                                If you have any questions or concerns, please contact our customer support team. </p>
-                                <br>
-                                <br>
-                                <p>Thank you for using CDSP SIS.</p>
-                                <br>
-                                <strong>Best regards, </strong><br>
-                                <strong>CDSP Admin Office</strong>
-                                <br>';
+                            Your one-time password (OTP) code is: <strong>' . $otp . '</strong>.</p>
+                            <p>If you did not initiate this request, please ignore this email. 
+                            However, we recommend that you change your password as soon as possible to ensure the security of your account. 
+                            <br>
+                            If you have any questions or concerns, please contact our customer support team. </p>
+                            <br>
+                            <br>
+                            <p>Thank you for using CDSP SIS.</p>
+                            <br>
+                            <strong>Best regards, </strong><br>
+                            <strong>CDSP Admin Office</strong>
+                            <br>';
             if ($mail->send()) {
                 header('Location: ../auth/otp.php');
             }
@@ -256,24 +256,34 @@ if (isset($_POST['student'])) {
     if (mysqli_num_rows($checkAttendance) == 0) {
         $timeIN = $mysqli->query("INSERT INTO attendance (acadYear, SR_number, A_date, A_time_IN, A_status) VALUES ('{$currentSchoolYear}', '{$studentID}', '{$date}', '{$time}', 'PRESENT')");
         $mail->addAddress($sendtoGuardian['G_email']);
-        $mail->Subject = 'Attendance: Time In';
+        $mail->Subject = 'Attendance (' . date('M d, Y') . ')';
 
-        $mail->Body = '<h1>Student Timed In</h1>
+        $mail->Body = '<p>I hope you are doing well. I am writing to inform you that your child, ' . $studentname . ', has successfully entered our school and joined their classroom.</p>
                        <br>
-                       <p>ATTENDANCE DETAILS</p><br>
+                       <p>Here are the attendance details for your child\'s first day:</p><br>
                        <b>Time: </b>' . date('h:i A', strtotime($time)) . '<br>
-                       <b>Date: </b>' . $date . '<br>';
+                       <b>Date: </b>' . date('M d, Y') . '
+                       <br>
+                       <p>Thank you for entrusting your child\'s education to us. We are committed to providing the highest quality education possible and ensuring that your child feels safe and supported in our school.</p>
+                       <br>
+                       <p>' . $facultteacher . '</p>
+                       <b>CDSP Faculty Teacher</b>';
         $mail->send();
     } else if (empty($attendanceData['A_time_OUT']) || $attendanceData['A_time_OUT'] = NULL) {
         $timeOUT = $mysqli->query("UPDATE attendance SET A_time_OUT = '{$time}' WHERE SR_number = '{$studentID}'");
         $mail->addAddress($sendtoGuardian['G_email']);
-        $mail->Subject = 'Attendance: Time Out';
+        $mail->Subject = 'Departure (' . date('M d, Y') . ')';
 
-        $mail->Body = '<h1>Student Timed Out</h1>
-                       <br>
-                       <p>Attendance Detail</p><br>
-                       <b>Timedout: </b>' . date('h:i A', strtotime($time)) . '<br>
-                       <b>Date: </b>' . $date . '<br>';
+        $mail->Body  = '<p>I hope you are doing well. I am writing to inform you that your child, ' . $studentname . ',  has successfully left our school and their classroom.</p>
+                        <br>
+                        <p>Here are the attendance details for your child\'s departure time: </p>
+                        <b>Time: </b>' . date('h:i A', strtotime($time)) . '<br>
+                        <b>Date: </b>' . date('M d, Y') . '
+                        <br>
+                        <p>Thank you for entrusting your child\'s education to us. We are committed to providing the highest quality education possible and ensuring that your child feels safe and supported in our school.</p>
+                        <br>
+                        <p>' . $facultteacher . '</p>
+                        <b>CDSP Faculty Teacher</b>';
         $mail->send();
     }
 }
@@ -477,28 +487,23 @@ if (isset($_POST['addReminders'])) {
             $sendtoGuardianData = $mysqli->query("SELECT G_email FROM guardian WHERE G_guardianOfStudent 
                                             IN 
                                             (SELECT SR_number FROM classlist WHERE SR_section = '{$forsection}' AND acadYear = '{$currentSchoolYear}')");
-            // $sendtoStudentData = $mysqli->query("SELECT SR_email FROM studentrecord WHERE SR_number 
-            //                                 IN 
-            //                                 (SELECT SR_number FROM classlist WHERE SR_section = '{$forsection}' AND acadYear = '{$currentSchoolYear}')");
-            // if (mysqli_num_rows($sendtoGuardianData) > 0) {
-            //     while ($GuardianData = $sendtoGuardianData->fetch_assoc()) {
-            //         $mail->addAddress($GuardianData['G_email']);
-            //     }
-            //     $mail->Subject = $subject;
-            //     $mail->Body = '<h1>Reminders</h1><br>
-            //                       <p>' . $MSG . '</p><br>';
-            //     $mail->send();
-            //     showSweetAlert('Reminders sent!', 'success');
-            // } else {
-            //     showSweetAlert('No receiver', 'error');
-            // }
             if (mysqli_num_rows($sendtoStudentData) > 0) {
                 while ($StudentData = $sendtoStudentData->fetch_assoc()) {
                     $mail->addAddress($StudentData['SR_email']);
                 }
-                $mail->Subject = $subject;
-                $mail->Body = '<h1>Reminders</h1><br>
-                                   <p>' . $MSG . '</p><br>';
+                $mail->Subject = 'Reminder';
+                $mail->Body =  '<p>Subject: ' . $subject . '
+                                <br>
+                                Deadline: ' . date('M d, Y', $date) . '
+                                <br>
+                                </p>
+                                <p>' . $MSG . '</p>
+                                <br>
+                                <br>
+                                Sincerely, <br>
+                                ' . $facultyname . ' <br>
+                                <b>CDSP Faculty Teacher</b>
+                                ';
                 $mail->send();
                 showSweetAlert('Reminders sent!', 'success');
             } else {
@@ -564,6 +569,8 @@ EOT;
         showSweetAlert('Failed to update reminder.', 'error');
     }
 }
+
+//TEST EMAIL
 if (isset($_POST['attendanceReportButton']) && isset($_SESSION['F_number'])) {
     $SR_number = $_POST['SR_number'];
     $Subject = $mysqli->real_escape_string($_GET['subject']);
@@ -594,14 +601,63 @@ if (isset($_POST['attendanceReportButton']) && isset($_SESSION['F_number'])) {
                     $FullName = $name['SR_lname'] .  ", " . $name['SR_fname'] . " " . substr($name['SR_mname'], 0, 1) . ". " . $name['SR_suffix'];
                 }
                 $mail->addAddress($G_email['G_email']);
-                $mail->Subject = 'ISSUE: ATTENDANCE';
-
-                $mail->Body = '<h1>A professor has reported your child, ' . $FullName . '</h1>
-                           <br>
-                           <p>Your child was reported to be ' . $RP_attendanceReport . ' on ' . $RP_reportDate . '</p>
-                           <p>Please contact your child(s) advisor about this issue.</p><br>
-                           <br>';
-                $mail->send();
+                if ($RP_attendanceReport == "CUTTING") {
+                    $mail->Subject = 'SKIPPED CLASS ';
+                    $mail->Body  = '<p>I hope you are doing well. I am writing to express my concern regarding your child, ' . $FullName . '\s attendance in his/her ' . $Subject . ' class from ' . $RP_reportTime . ' today. It has been reported to me that your child may have skipped this class.</p>
+                                    <br>
+                                    <p>As you know, attending all classes is important for your child\'s academic success. I encourage you to discuss this matter with your child and with me, and to let us know if there are any issues that may have led to your child\'s absence.</p>
+                                    <br>
+                                    <p>We want to work together to ensure that your child receives the best possible education and support, and we are here to help in any way we can. If you have any questions or concerns, please do not hesitate to reach out to me.</p>
+                                    <br>
+                                    <p>Thank you for your attention to this matter.</p>
+                                    <br>
+                                    <p>Sincerely,</p>
+                                    ' . $facultyname . '
+                                    <b>CDSP Faculty Teacher</b>';
+                    $mail->send();
+                } elseif ($RP_attendanceReport == "EXCUSED") {
+                    $mail->Subject = 'EXCUSED';
+                    $mail->Body  = '<p>I hope you are doing well. I am writing to express my concern regarding your child, ' . $FullName . '\s attendance in his/her ' . $Subject . ' class from ' . $RP_reportTime . ' today. I have marked his/her absence as excused in our attendance records.</p>
+                                    <br>
+                                    <p>We are here to support your child and want to make sure they are able to keep up with their studies despite any temporary setbacks.</p>
+                                    <br>
+                                    <p>If your child needs to be absent again for any reason, please make sure to notify us in advance so we can make appropriate accommodations.</p>
+                                    <br>
+                                    <p>Thank you for your attention to this matter.</p>
+                                    <br>
+                                    <p>Sincerely,</p>
+                                    ' . $facultyname . '
+                                    <b>CDSP Faculty Teacher</b>';
+                    $mail->send();
+                } elseif ($RP_attendanceReport == "TARDINESS") {
+                    $mail->Subject = 'EXCUSED';
+                    $mail->Body  = '<p>I hope you are doing well. I am writing to express my concern regarding your child, ' . $FullName . '\s attendance in his/her ' . $Subject . ' class from ' . $RP_reportTime . ' today.  It has been reported to me that your child arrived late to this class.</p>
+                                    <br>
+                                    <p>As you know, being on time for all classes is important for your child\'s academic success. I encourage you to discuss this matter with your child and with me, and to let us know if there are any issues that may have led to your child\'s absence.</p>
+                                    <br>
+                                    <p>We want to work together to ensure that your child receives the best possible education and support, and we are here to help in any way we can. If you have any questions or concerns, please do not hesitate to reach out to me.</p>
+                                    <br>
+                                    <p>Thank you for your attention to this matter.</p>
+                                    <br>
+                                    <p>Sincerely,</p>
+                                    ' . $facultyname . '
+                                    <b>CDSP Faculty Teacher</b>';
+                    $mail->send();
+                } elseif ($RP_attendanceReport == "ABSENT") {
+                    $mail->Subject = 'ABSENT';
+                    $mail->Body  = '<p>I hope this message finds you well. I am writing to express my concern regarding your child\'s, ' . $FullName . ', absence from her/his ' . $Subject . ' class today. It has been reported to me that your child was absent from ' . $RP_reportTime . ' class today.</p>
+                                    <br>
+                                    <p>As you know, attending all classes is important for your child\'s academic success. I encourage you to discuss this matter with your child and with me, and to let us know if there are any issues that may have led to your child\'s absence.</p>
+                                    <br>
+                                    <p>We want to work together to ensure that your child receives the best possible education and support, and we are here to help in any way we can. If you have any questions or concerns, please do not hesitate to reach out to me.</p>
+                                    <br>
+                                    <p>Thank you for your attention to this matter.</p>
+                                    <br>
+                                    <p>Sincerely,</p>
+                                    ' . $facultyname . '
+                                    <b>CDSP Faculty Teacher</b>';
+                    $mail->send();
+                }
             } else {
                 showSweetAlert('No Guardian Email saved', 'error');
             }
@@ -610,6 +666,7 @@ if (isset($_POST['attendanceReportButton']) && isset($_SESSION['F_number'])) {
         }
     }
 }
+//INCOMPLETE EMAIL MESSAGE
 if (isset($_POST['updateAttendanceStatus']) && isset($_SESSION['F_number'])) {
     $SR_number = $_POST['SR_number'];
     $AttendanceStatus = $mysqli->real_escape_string($_POST['AttendanceStatus']);
@@ -671,6 +728,7 @@ if (isset($_POST['updateAttendanceStatus']) && isset($_SESSION['F_number'])) {
         }
     }
 }
+//INCOMPLETE EMAIL MESSAGE
 if (isset($_POST['resolveIssue']) && isset($_SESSION['F_number'])) {
     $A_date = $_POST['date'];
     $SR_number = $_POST['studentName'];
@@ -741,6 +799,7 @@ if (isset($_POST['resolveIssue']) && isset($_SESSION['F_number'])) {
         }
     }
 }
+
 if (isset($_POST['moveUpStatus']) && !empty($_SESSION['F_number'])) {
     $ids = $_POST['ids'];
     $FormsSR_number = $_POST['SR_number'];
@@ -889,16 +948,19 @@ if (isset($_POST['regStudent']) && !empty($_SESSION['AD_number'])) {
             $createStudentLoginCredentials = $mysqli->query("INSERT INTO userdetails(SR_email, SR_password, role) VALUES ('$S_email', '$GenPass', 'student')");
 
             $mail->addAddress($S_email);
-            $mail->Subject = 'STUDENT REGISTRATION';
+            $mail->Subject = 'Registration Complete';
 
-            $mail->Body = '<h1>Registration Complete</h1>
+            $mail->Body = '<p>We would like to inform you that your registration process has been successfully completed. Kindly note your login credentials below: </p>
                            <br>
-                           <p>Your login credentials is:</p><br>
                            <b>Email: </b>' . $S_email . '<br>
                            <b>Password: </b>' . $GenPass . '<br>
                            <br>
-                           <strong>IT IS RECOMMENDED TO RESET YOUR PASSWORD</strong><br>
-                           <a href="siscdsp.online/auth/login.php">Login now</a>';
+                           <strong>For security purposes, we highly recommend that you reset your password upon logging in for the first time. <a href="http://sformscdsp.online/auth/login.php">LOGIN NOW!</a></strong><br>
+                           <br>
+                           <b>Best regards, 
+                           <br>
+                           CDSP Admin Office
+                           </b>';
             $mail->send();
 
             $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
@@ -969,14 +1031,17 @@ if (isset($_POST['regFaculty']) && !empty($_SESSION['AD_number'])) {
             $mail->addAddress($F_email);
             $mail->Subject = 'FACULTY REGISTRATION';
 
-            $mail->Body = '<h1>Registration Complete</h1>
-                           <br>
-                           <p>Your login credentials is:</p><br>
-                           <b>Email: </b>' . $F_email . '<br>
-                           <b>Password: </b>' . $GenPass . '<br>
-                           <br>
-                           <strong>IT IS RECOMMENDED TO RESET YOUR PASSWORD</strong><br>
-                           <a href="siscdsp.online/auth/login.php">Login now</a>';
+            $mail->Body = '<p>We would like to inform you that your registration process has been successfully completed. Kindly note your login credentials below: </p>
+                            <br>
+                            <b>Email: </b>' . $F_email . '<br>
+                            <b>Password: </b>' . $GenPass . '<br>
+                            <br>
+                            <strong>For security purposes, we highly recommend that you reset your password upon logging in for the first time. <a href="http://sformscdsp.online/auth/login.php">LOGIN NOW!</a></strong><br>
+                            <br>
+                            <b>Best regards, 
+                            <br>
+                            CDSP Admin Office
+                            </b>';
             $mail->send();
         } else {
             showSweetAlert('Failed to register teacher.', 'error');
@@ -1172,6 +1237,8 @@ if (isset($_POST['postAnnouncement']) && !empty($_SESSION['AD_number'])) {
     $date_posted = date('Y-m-d');
     $subject = $_POST['subject'];
     $message = nl2br($_POST['message']);
+    $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
+    $AdminName = $getAdminName->fetch_assoc();
 
     if ($subject != "" && $message != "" && $date != ""  || !empty($subject) && !empty($message) && !empty($date)) {
         $CreateAnnouncement = $mysqli->query("INSERT INTO announcement(acadYear, header, date_posted, author, date, msg) 
@@ -1181,35 +1248,23 @@ if (isset($_POST['postAnnouncement']) && !empty($_SESSION['AD_number'])) {
             $sendtoGuardianData = $mysqli->query("SELECT G_email FROM guardian WHERE G_guardianOfStudent 
                                         IN 
                                         (SELECT SR_number FROM classlist WHERE acadYear = '{$currentSchoolYear}')");
-            // $sendtoStudentData = $mysqli->query("SELECT SR_email FROM studentrecord WHERE SR_number 
-            //                             IN 
-            //                             (SELECT SR_number FROM classlist WHERE acadYear = '{$currentSchoolYear}')");
-            // if (mysqli_num_rows($sendtoGuardianData) > 0) {
-            //     while ($GuardianData = $sendtoGuardianData->fetch_assoc()) {
-            //         $mail->addAddress($GuardianData['G_email']);
-            //     }
-            //     $mail->Subject = $subject;
-            //     $mail->Body = '<h1>School Annoucement</h1><br>
-            //                       <p>' . $message . '</p><br>';
-            //     $mail->send();
-            //     showSweetAlert('Annoucement sent!', 'success');
-            // } else {
-            //     showSweetAlert('No receiver', 'error');
-            // }
             if (mysqli_num_rows($sendtoStudentData) > 0) {
                 while ($StudentData = $sendtoStudentData->fetch_assoc()) {
                     $mail->addAddress($StudentData['SR_email']);
                 }
-                $mail->Subject = $subject;
-                $mail->Body = '<h1>School Annoucement</h1><br>
-                                   <p>' . $message . '</p><br>';
+                $mail->Subject = 'School Announcement';
+                $mail->Body = '<p>Title: ' . $subject . ' <br>
+                                Date of the Event: ' . date('M d, Y', $date) . '</p>
+                                <br>
+                                ' . $msg . '
+                                <br>
+                                ' . $AdminName['AD_name'] . ' <br>
+                                <b>CDSP Admin Office</b>';
                 $mail->send();
                 showSweetAlert('Annoucement sent!', 'success');
             } else {
                 showSweetAlert('No receiver', 'error');
             }
-            $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
-            $AdminName = $getAdminName->fetch_assoc();
             $AD_action = "POSTED ANNOUNCEMENT";
             $currentDate = date('Y-m-d H:i:s');
             $log_action = $mysqli->query("INSERT INTO admin_logs(acadYear, AD_number, AD_name, AD_action, logDate)
