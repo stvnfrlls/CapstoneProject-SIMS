@@ -466,7 +466,7 @@ if (isset($_POST['addReminders'])) {
     $author = $mysqli->real_escape_string($_POST['author']);
     $subject = $mysqli->real_escape_string($_POST['subject']);
     $forsection = $mysqli->real_escape_string($_POST['forsection']);
-    $MSG = $mysqli->real_escape_string($_POST['MSG']);
+    $MSG = nl2br($_POST['MSG']);
     $date = $_POST['date'];
     $dateposted = date("Y/m/d");
 
@@ -515,7 +515,7 @@ if (isset($_POST['updateReminder'])) {
     $date = $_POST['date'];
     $forsection = $mysqli->real_escape_string($_POST['forsection']);
     $subject = $mysqli->real_escape_string($_POST['subject']);
-    $MSG = $mysqli->real_escape_string($_POST['MSG']);
+    $MSG = nl2br($_POST['MSG']);
 
     $updateReminder = "UPDATE reminders 
                        SET
@@ -1171,7 +1171,7 @@ if (isset($_POST['postAnnouncement']) && !empty($_SESSION['AD_number'])) {
     $date = $_POST['date'];
     $date_posted = date('Y-m-d');
     $subject = $_POST['subject'];
-    $message = $mysqli->real_escape_string($_POST['message']);
+    $message = nl2br($_POST['message']);
 
     if ($subject != "" && $message != "" && $date != ""  || !empty($subject) && !empty($message) && !empty($date)) {
         $CreateAnnouncement = $mysqli->query("INSERT INTO announcement(acadYear, header, date_posted, author, date, msg) 
@@ -1438,7 +1438,7 @@ if (isset($_POST['deleteAdminDetails']) && !empty($_SESSION['AD_number'])) {
 if (isset($_POST['updateAnnouncement']) && !empty($_SESSION['AD_number'])) {
     $author = $mysqli->real_escape_string($_POST['author']);
     $subject = $mysqli->real_escape_string($_POST['subject']);
-    $MSG = $mysqli->real_escape_string($_POST['message']);
+    $MSG = nl2br($_POST['message']);
     $ANC_ID = $_POST['ANC_ID'];
     $date = $_POST['date'];
     $dateposted = date("Y/m/d");
