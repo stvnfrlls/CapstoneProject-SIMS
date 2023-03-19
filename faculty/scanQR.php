@@ -11,19 +11,25 @@ if (!isset($_SESSION['F_number'])) {
         $NOTtimedIN = array();
         $today = date('Y-m-d');
 
-        $getNOTtimedIN = $mysqli->query("SELECT SR_lname, SR_fname, SR_number FROM studentrecord WHERE SR_number NOT IN (SELECT SR_number FROM attendance WHERE A_time_IN = NULL AND A_date = '{$today}')");
+        $getNOTtimedIN = $mysqli->query("SELECT SR_lname, SR_fname, SR_number FROM studentrecord 
+                                        WHERE SR_number 
+                                        NOT IN (SELECT SR_number FROM attendance WHERE A_time_IN = NULL AND A_time_OUT = NULL AND A_date = '{$today}')");
         while ($studentNumber_NOTtimedIN = $getNOTtimedIN->fetch_assoc()) {
             $NOTtimedIN[] = $studentNumber_NOTtimedIN;
         }
 
         $NOTtimedOUT = array();
-        $getNOTtimedOUT = $mysqli->query("SELECT SR_lname, SR_fname, SR_number FROM studentrecord WHERE SR_number NOT IN (SELECT SR_number FROM attendance WHERE A_time_OUT = NULL AND A_date = '{$today}')");
+        $getNOTtimedOUT = $mysqli->query("SELECT SR_lname, SR_fname, SR_number FROM studentrecord 
+                                        WHERE SR_number 
+                                        NOT IN (SELECT SR_number FROM attendance WHERE A_time_IN != NULL AND A_time_OUT = NULL AND A_date = '{$today}')");
         while ($studentNumber_NOTtimedOUT = $getNOTtimedOUT->fetch_assoc()) {
             $NOTtimedOUT[] = $studentNumber_NOTtimedOUT;
         }
 
         $timedOUT = array();
-        $gettimedOUT = $mysqli->query("SELECT SR_lname, SR_fname, SR_number FROM studentrecord WHERE SR_number NOT IN (SELECT SR_number FROM attendance WHERE A_time_OUT != NULL AND A_date != '{$today}')");
+        $gettimedOUT = $mysqli->query("SELECT SR_lname, SR_fname, SR_number FROM studentrecord 
+                                    WHERE SR_number 
+                                    NOT IN (SELECT SR_number FROM attendance WHERE A_time_IN != NULL AND A_time_OUT != NULL AND A_date = '{$today}')");
         while ($studentNumber_timedOUT = $gettimedOUT->fetch_assoc()) {
             $timedOUT[] = $studentNumber_timedOUT;
         }
@@ -199,11 +205,33 @@ if (!isset($_SESSION['F_number'])) {
                                                     height: 100%;
                                                     object-fit: contain;
                                                 }
+
+                                                .camera-options {
+                                                    display: flex;
+                                                    justify-content: center;
+                                                    align-items: center;
+                                                }
+
+                                                #camera-select {
+
+                                                    width: 300px;
+                                                    /* Set the width to 200 pixels */
+                                                }
                                             </style>
 
                                             <div class="camera-container" id="camera">
-                                                <video id="preview"></video>
+                                                <div class="row">
+                                                    <video id="preview"></video>
+                                                </div>
                                             </div>
+                                            <div class="camera-options mt-2">
+                                                <div class="row">
+                                                    <select class="form-select" id="camera-select"></select>
+                                                </div>
+                                            </div>
+
+
+
 
                                             <form style="text-align: center;">
                                                 <style>
@@ -232,6 +260,7 @@ if (!isset($_SESSION['F_number'])) {
                                                 <input type="hidden" name="fetcher" id="input2">
                                             </form>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -271,6 +300,7 @@ if (!isset($_SESSION['F_number'])) {
             exact: 'environment'
         } // Use the back camera
     });
+
     Instascan.Camera.getCameras().then((cameras) => {
         if (cameras.length > 0) {
             // Look for a camera with the specified facing mode
@@ -281,7 +311,28 @@ if (!isset($_SESSION['F_number'])) {
                 backCamera = cameras[0];
             }
 
+            // Start the scanner
             scanner.start(backCamera);
+
+            // Populate the select tag with camera options
+            let cameraSelect = document.getElementById('camera-select');
+            cameras.forEach((camera) => {
+                let option = document.createElement('option');
+                option.value = camera.id;
+                option.text = camera.name;
+                cameraSelect.appendChild(option);
+            });
+
+            // Add an event listener to the select tag to switch cameras
+            cameraSelect.addEventListener('change', (event) => {
+                let selectedCameraId = event.target.value;
+                let selectedCamera = cameras.find((camera) => camera.id === selectedCameraId);
+                if (selectedCamera) {
+                    scanner.start(selectedCamera);
+                } else {
+                    Swal.fire('Selected camera not found');
+                }
+            });
         } else {
             Swal.fire('No Cameras');
         }
