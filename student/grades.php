@@ -133,7 +133,31 @@ if (!isset($_SESSION['SR_number'])) {
                                         ?>
                                     </div>
                                 </div>
-
+                                <div class="btn-group">
+                                    <div>
+                                        <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                                            <?php
+                                            if (!isset($_GET['SY'])) {
+                                                echo 'School Year';
+                                            } else {
+                                                echo $_GET['SY'];
+                                            }
+                                            ?>
+                                            <i class="fa fa-caret-down"></i>
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            <?php
+                                            echo '<a class="dropdown-item" href="grades.php">' . $currentSchoolYear . '</a>';
+                                            $previousData = $mysqli->query("SELECT DISTINCT acadYear FROM grades WHERE SR_number = '{$_SESSION['SR_number']}'");
+                                            if (mysqli_num_rows($previousData) != 0) {
+                                                while ($previousGrades = $previousData->fetch_assoc()) {
+                                                    echo '<a class="dropdown-item" href="grades.php?SY=' . $previousGrades['acadYear'] . '">' . $previousGrades['acadYear'] . '</a>';
+                                                }
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-12 grid-margin">
                                     <div class="row">
                                         <div class="col-sm-12 col-lg-6 grid-margin">
@@ -191,7 +215,11 @@ if (!isset($_SESSION['SR_number'])) {
                                                         </thead>
                                                         <tbody style=" background-color: #f4f5f7 !important;">
                                                             <?php
-                                                            $studentGrades = $mysqli->query("SELECT * FROM grades WHERE SR_number = '{$_SESSION['SR_number']}' AND acadYear = '{$currentSchoolYear}'");
+                                                            if (isset($_GET['SY'])) {
+                                                                $studentGrades = $mysqli->query("SELECT * FROM grades WHERE SR_number = '{$_SESSION['SR_number']}' AND acadYear = '{$_GET['SY']}'");
+                                                            } else {
+                                                                $studentGrades = $mysqli->query("SELECT * FROM grades WHERE SR_number = '{$_SESSION['SR_number']}' AND acadYear = '{$currentSchoolYear}'");
+                                                            }
 
                                                             if (mysqli_num_rows($studentGrades) > 0) {
                                                                 while ($studentGradesData = $studentGrades->fetch_assoc()) { ?>
@@ -202,8 +230,10 @@ if (!isset($_SESSION['SR_number'])) {
                                                                         if (mysqli_num_rows($getquarterTag1) > 0) {
                                                                             if ($studentGradesData['G_gradesQ1']) {
                                                                                 echo '<td class="hatdog">' . $studentGradesData['G_gradesQ1'] . '</td>';
-                                                                            } else {
-                                                                                echo '<td class="hatdog"></td>';
+                                                                            }
+                                                                        } elseif (isset($_GET['SY']) && $_GET['SY'] != $currentSchoolYear) {
+                                                                            if ($studentGradesData['G_gradesQ1']) {
+                                                                                echo '<td class="hatdog">' . $studentGradesData['G_gradesQ1'] . '</td>';
                                                                             }
                                                                         } else {
                                                                             echo '<td class="hatdog"></td>';
@@ -213,8 +243,10 @@ if (!isset($_SESSION['SR_number'])) {
                                                                         if (mysqli_num_rows($getquarterTag2) > 0) {
                                                                             if ($studentGradesData['G_gradesQ2']) {
                                                                                 echo '<td class="hatdog">' . $studentGradesData['G_gradesQ2'] . '</td>';
-                                                                            } else {
-                                                                                echo '<td class="hatdog"></td>';
+                                                                            }
+                                                                        } elseif (isset($_GET['SY']) && $_GET['SY'] != $currentSchoolYear) {
+                                                                            if ($studentGradesData['G_gradesQ2']) {
+                                                                                echo '<td class="hatdog">' . $studentGradesData['G_gradesQ2'] . '</td>';
                                                                             }
                                                                         } else {
                                                                             echo '<td class="hatdog"></td>';
@@ -224,8 +256,10 @@ if (!isset($_SESSION['SR_number'])) {
                                                                         if (mysqli_num_rows($getquarterTag3) > 0) {
                                                                             if ($studentGradesData['G_gradesQ3']) {
                                                                                 echo '<td class="hatdog">' . $studentGradesData['G_gradesQ3'] . '</td>';
-                                                                            } else {
-                                                                                echo '<td class="hatdog"></td>';
+                                                                            }
+                                                                        } elseif (isset($_GET['SY']) && $_GET['SY'] != $currentSchoolYear) {
+                                                                            if ($studentGradesData['G_gradesQ3']) {
+                                                                                echo '<td class="hatdog">' . $studentGradesData['G_gradesQ3'] . '</td>';
                                                                             }
                                                                         } else {
                                                                             echo '<td class="hatdog"></td>';
@@ -235,8 +269,10 @@ if (!isset($_SESSION['SR_number'])) {
                                                                         if (mysqli_num_rows($getquarterTag4) > 0) {
                                                                             if ($studentGradesData['G_gradesQ4']) {
                                                                                 echo '<td class="hatdog">' . $studentGradesData['G_gradesQ4'] . '</td>';
-                                                                            } else {
-                                                                                echo '<td class="hatdog"></td>';
+                                                                            }
+                                                                        } elseif (isset($_GET['SY']) && $_GET['SY'] != $currentSchoolYear) {
+                                                                            if ($studentGradesData['G_gradesQ4']) {
+                                                                                echo '<td class="hatdog">' . $studentGradesData['G_gradesQ4'] . '</td>';
                                                                             }
                                                                         } else {
                                                                             echo '<td class="hatdog"></td>';
@@ -249,16 +285,10 @@ if (!isset($_SESSION['SR_number'])) {
                                                                             $average = $sum / 4;
 
                                                                             $average = $studentGradesData['G_finalgrade'];
-                                                                            if ($average >= 90) {
-                                                                                $remarks = "Outstanding";
-                                                                            } else if ($average >= 85 || $average <= 89) {
-                                                                                $remarks = "Very Satisfactory";
-                                                                            } else if ($average >= 80 || $average <= 84) {
-                                                                                $remarks = "Satisfactory";
-                                                                            } else if ($average >= 75 || $average <= 79) {
-                                                                                $remarks = "Fairly Satisfactory";
-                                                                            } else if ($average < 75) {
-                                                                                $remarks = "Did Not Meet Expectations";
+                                                                            if ($average < 75) {
+                                                                                $remarks = "Failed";
+                                                                            } else {
+                                                                                $remarks = "Passed";
                                                                             }
 
                                                                             echo '<td class="hatdog">' . round($average) . '</td>';
@@ -302,7 +332,12 @@ if (!isset($_SESSION['SR_number'])) {
                                                             <tr>
                                                                 <td class="hatdog">General Average</td>
                                                                 <?php
-                                                                $GenAveQuery = $mysqli->query("SELECT round(avg(G_finalgrade)) FROM grades WHERE SR_number = '{$_SESSION['SR_number']}' AND acadYear = '{$currentSchoolYear}'");
+                                                                if (isset($_GET['SY']) && $_GET['SY'] != $currentSchoolYear) {
+                                                                    $GenAveQuery = $mysqli->query("SELECT round(avg(G_finalgrade)) FROM grades WHERE SR_number = '{$_SESSION['SR_number']}' AND acadYear = '{$_GET['SY']}'");
+                                                                } else {
+                                                                    $GenAveQuery = $mysqli->query("SELECT round(avg(G_finalgrade)) FROM grades WHERE SR_number = '{$_SESSION['SR_number']}' AND acadYear = '{$currentSchoolYear}'");
+                                                                }
+
                                                                 $GetgenAve = $GenAveQuery->fetch_assoc();
                                                                 echo '<td class="hatdog">' . $GetgenAve['round(avg(G_finalgrade))'] . '</td>';
                                                                 ?>
@@ -373,8 +408,14 @@ if (!isset($_SESSION['SR_number'])) {
                                                         </thead>
                                                         <tbody>
                                                             <?php
-                                                            $getBehaviorData = $mysqli->query("SELECT SR_number, CV_Area, CV_valueQ1, CV_valueQ2, CV_valueQ3, CV_valueQ4
-                                                                  FROM behavior WHERE SR_number = '{$_SESSION['SR_number']}' AND acadYear = '{$currentSchoolYear}'");
+                                                            if (isset($_GET['SY']) && $_GET['SY'] != $currentSchoolYear) {
+                                                                $getBehaviorData = $mysqli->query("SELECT SR_number, CV_Area, CV_valueQ1, CV_valueQ2, CV_valueQ3, CV_valueQ4 FROM behavior 
+                                                                                                    WHERE SR_number = '{$_SESSION['SR_number']}' AND acadYear = '{$_GET['SY']}'");
+                                                            } else {
+                                                                $getBehaviorData = $mysqli->query("SELECT SR_number, CV_Area, CV_valueQ1, CV_valueQ2, CV_valueQ3, CV_valueQ4 FROM behavior 
+                                                                                                WHERE SR_number = '{$_SESSION['SR_number']}' AND acadYear = '{$currentSchoolYear}'");
+                                                            }
+
                                                             $getBehaviorAreas = $mysqli->query("SELECT * FROM behavior_category");
                                                             $BehaviorAreasArray = array();
                                                             while ($DataBehaviorCategory = $getBehaviorAreas->fetch_assoc()) {
@@ -400,9 +441,9 @@ if (!isset($_SESSION['SR_number'])) {
                                                                         if (mysqli_num_rows($getquarterTag1) > 0) {
                                                                             if ($BehaviorData['CV_valueQ1']) {
                                                                                 echo '<td rowspan="1" class="hatdog">' . $BehaviorData['CV_valueQ1'] . '</td>';
-                                                                            } else {
-                                                                                echo '<td rowspan="1" class="hatdog"></td>';
                                                                             }
+                                                                        } elseif (isset($_GET['SY']) && $_GET['SY'] != $currentSchoolYear) {
+                                                                            echo '<td rowspan="1" class="hatdog">' . $BehaviorData['CV_valueQ1'] . '</td>';
                                                                         } else {
                                                                             echo '<td rowspan="1" class="hatdog"></td>';
                                                                         }
@@ -411,9 +452,9 @@ if (!isset($_SESSION['SR_number'])) {
                                                                         if (mysqli_num_rows($getquarterTag2) > 0) {
                                                                             if ($BehaviorData['CV_valueQ2']) {
                                                                                 echo '<td rowspan="1" class="hatdog">' . $BehaviorData['CV_valueQ2'] . '</td>';
-                                                                            } else {
-                                                                                echo '<td rowspan="1" class="hatdog"></td>';
                                                                             }
+                                                                        } elseif (isset($_GET['SY']) && $_GET['SY'] != $currentSchoolYear) {
+                                                                            echo '<td rowspan="1" class="hatdog">' . $BehaviorData['CV_valueQ2'] . '</td>';
                                                                         } else {
                                                                             echo '<td rowspan="1" class="hatdog"></td>';
                                                                         }
@@ -422,9 +463,9 @@ if (!isset($_SESSION['SR_number'])) {
                                                                         if (mysqli_num_rows($getquarterTag3) > 0) {
                                                                             if ($BehaviorData['CV_valueQ3']) {
                                                                                 echo '<td rowspan="1" class="hatdog">' . $BehaviorData['CV_valueQ3'] . '</td>';
-                                                                            } else {
-                                                                                echo '<td rowspan="1" class="hatdog"></td>';
                                                                             }
+                                                                        } elseif (isset($_GET['SY']) && $_GET['SY'] != $currentSchoolYear) {
+                                                                            echo '<td rowspan="1" class="hatdog">' . $BehaviorData['CV_valueQ3'] . '</td>';
                                                                         } else {
                                                                             echo '<td rowspan="1" class="hatdog"></td>';
                                                                         }
@@ -433,9 +474,9 @@ if (!isset($_SESSION['SR_number'])) {
                                                                         if (mysqli_num_rows($getquarterTag4) > 0) {
                                                                             if ($BehaviorData['CV_valueQ4']) {
                                                                                 echo '<td rowspan="1" class="hatdog">' . $BehaviorData['CV_valueQ4'] . '</td>';
-                                                                            } else {
-                                                                                echo '<td rowspan="1" class="hatdog"></td>';
                                                                             }
+                                                                        } elseif (isset($_GET['SY']) && $_GET['SY'] != $currentSchoolYear) {
+                                                                            echo '<td rowspan="1" class="hatdog">' . $BehaviorData['CV_valueQ4'] . '</td>';
                                                                         } else {
                                                                             echo '<td rowspan="1" class="hatdog"></td>';
                                                                         }
@@ -543,6 +584,13 @@ if (!isset($_SESSION['SR_number'])) {
                                                                     <td class="hatdog">223</td>
                                                                 </tr>
                                                                 <tr>
+                                                                    <?php
+                                                                    if (isset($_GET['SY']) && $_GET['SY'] != $currentSchoolYear) {
+                                                                        $currentSchoolYear = $_GET['SY'];
+                                                                    } else {
+                                                                        $currentSchoolYear = $currentSchoolYear;
+                                                                    }
+                                                                    ?>
                                                                     <td class="hatdog">No. of Days Present</td>
                                                                     <?php
                                                                     $SEP = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_SESSION['SR_number']}' AND MONTHNAME(A_date) = 'September' AND acadYear = '{$currentSchoolYear}'");

@@ -4,7 +4,12 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['F_number'])) {
   header('Location: ../auth/login.php');
 } else {
-  $getWorkSchedule = $mysqli->query("SELECT DISTINCT SR_grade, SR_section FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
+  if (isset($_GET['SY'])) {
+    $getWorkSchedule = $mysqli->query("SELECT DISTINCT SR_grade, SR_section FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$_GET['SY']}'");
+  } else {
+    $getWorkSchedule = $mysqli->query("SELECT DISTINCT SR_grade, SR_section FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
+  }
+
   $array_GradeSection = array();
   array_unshift($array_GradeSection, null);
 
@@ -171,7 +176,8 @@ if (!isset($_SESSION['F_number'])) {
                               </button>
                               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                 <?php
-                                $getAcadYears = $mysqli->query("SELECT DISTINCT acadYear FROM classlist WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
+                                echo '<a class="dropdown-item" href="classList.php">Current</a>';
+                                $getAcadYears = $mysqli->query("SELECT DISTINCT acadYear FROM classlist WHERE F_number = '{$_SESSION['F_number']}'");
                                 while ($acadYears = $getAcadYears->fetch_assoc()) {
                                   if ($acadYears['acadYear'] != $currentSchoolYear) {
                                     echo '<a class="dropdown-item" href="classList.php?SY=' . $acadYears['acadYear'] . '">' . $acadYears['acadYear'] . '</a>';
@@ -199,18 +205,20 @@ if (!isset($_SESSION['F_number'])) {
                             <?php
                             $rowCount = 1;
                             $GradeSectionRowCount = sizeof($array_GradeSection);
-                            while ($rowCount != $GradeSectionRowCount) { ?>
-                              <a class="dropdown-item" href="<?php echo "classList.php?Grade=" . $array_GradeSection[$rowCount]['SR_grade'] . "&Section=" . $array_GradeSection[$rowCount]['SR_section']; ?>">
-                                <?php
-                                if ($array_GradeSection[$rowCount]['SR_grade'] == "KINDER") {
-                                  echo $array_GradeSection[$rowCount]['SR_grade'] . "-" . $array_GradeSection[$rowCount]['SR_section'];
-                                } else {
-                                  echo "Grade " . $array_GradeSection[$rowCount]['SR_grade'] . "-" . $array_GradeSection[$rowCount]['SR_section'];
-                                }
+                            while ($rowCount != $GradeSectionRowCount) {
+                              if ($array_GradeSection[$rowCount]['SR_grade'] == "KINDER") {
+                                $gradeLABEL =  $array_GradeSection[$rowCount]['SR_grade'] . "-" . $array_GradeSection[$rowCount]['SR_section'];
+                              } else {
+                                $gradeLABEL = "Grade " . $array_GradeSection[$rowCount]['SR_grade'] . "-" . $array_GradeSection[$rowCount]['SR_section'];
+                              }
+                              if (isset($_GET['SY'])) {
+                                echo '<a class="dropdown-item" href="classList.php?SY=' . $_GET['SY'] . '&Grade=' . $array_GradeSection[$rowCount]['SR_grade'] . '&Section=' . $array_GradeSection[$rowCount]['SR_section'] . '">' . $gradeLABEL . '</a>';
+                              } else {
+                                echo '<a class="dropdown-item" href="classList.php?Grade=' . $array_GradeSection[$rowCount]['SR_grade'] . '&Section=' . $array_GradeSection[$rowCount]['SR_section'] . '">' . $gradeLABEL . '</a>';
+                              }
 
-                                ?>
-                              </a>
-                            <?php $rowCount++;
+
+                              $rowCount++;
                             }
                             ?>
                           </div>
@@ -276,8 +284,13 @@ if (!isset($_SESSION['F_number'])) {
                                               $getstudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$dataClassList['SR_number']}'");
                                               $studentInfo = $getstudentInfo->fetch_assoc();
                                               ?>
-                                              <a href="viewStudent.php?ID=<?php echo $studentInfo['SR_number'] ?>">
-                                                <?php
+
+                                              <?php
+                                              if (isset($_GET['SY'])) { ?>
+                                                <a href="viewStudent.php?SY=<?php echo $_GET['SY'] ?>&ID=<?php echo $studentInfo['SR_number'] ?>">
+                                                <?php } else { ?>
+                                                  <a href="viewStudent.php?ID=<?php echo $studentInfo['SR_number'] ?>">
+                                                  <?php }
                                                 if (!empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] != "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {
                                                   echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ".";
                                                 } else if (empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] = "" && !empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] != "") {
@@ -285,8 +298,8 @@ if (!isset($_SESSION['F_number'])) {
                                                 } else if (empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] = "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {
                                                   echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'];
                                                 }
-                                                ?>
-                                              </a>
+                                                  ?>
+                                                  </a>
                                             </td>
                                           </tr>
                                         <?php

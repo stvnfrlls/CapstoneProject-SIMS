@@ -11,7 +11,7 @@ if (!isset($_SESSION['AD_number'])) {
 
 <head>
   <meta charset="utf-8">
-  <title>Advisory Class AssignmentT</title>
+  <title>Advisory Class Assignment</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta content="" name="keywords">
   <meta content="" name="description">
@@ -226,7 +226,7 @@ if (!isset($_SESSION['AD_number'])) {
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
                             <a class="dropdown-item" href="assignAdvisory.php">ALL</a>
                             <?php
-                            $getgradelevel = $mysqli->query("SELECT DISTINCT(S_yearLevel) FROM sections");
+                            $getgradelevel = $mysqli->query("SELECT DISTINCT(S_yearLevel) FROM sections WHERE acadYear = '{$currentSchoolYear}'");
 
                             while ($gradeLevel = $getgradelevel->fetch_assoc()) {
                               if ($gradeLevel['S_yearLevel'] == "KINDER") {
@@ -303,7 +303,7 @@ if (!isset($_SESSION['AD_number'])) {
                                             <td class="hatdog">
                                               <select class="form-select" name="advisor" aria-label="Default select example" required>
                                                 <?php
-                                                $getAssignedFaculty = $mysqli->query("SELECT * FROM sections WHERE S_name = '{$AdvisoryData['S_name']}'");
+                                                $getAssignedFaculty = $mysqli->query("SELECT * FROM sections WHERE S_name = '{$AdvisoryData['S_name']}' AND acadYear = '{$currentSchoolYear}'");
                                                 $AssignedFaculty = $getAssignedFaculty->fetch_assoc();
 
                                                 if (empty($AssignedFaculty['S_adviser']) || $AssignedFaculty['S_adviser'] == "") { ?>

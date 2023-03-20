@@ -1163,7 +1163,7 @@ if (isset($_POST['setSchedule']) && !empty($_SESSION['AD_number'])) {
     if (mysqli_num_rows($checkIfNull) > 0) {
         $time_intervals  = array();
 
-        $checkTeacherSchedule = $mysqli->query("SELECT WS_start_time, WS_end_time FROM workschedule WHERE F_number = '{$assignedFaculty}'");
+        $checkTeacherSchedule = $mysqli->query("SELECT WS_start_time, WS_end_time FROM workschedule WHERE F_number = '{$assignedFaculty}' AND acadYear = '{$currentSchoolYear}'");
         while ($TeacherSchedule = $checkTeacherSchedule->fetch_assoc()) {
             $time_intervals[] = $TeacherSchedule;
         }
@@ -1249,7 +1249,7 @@ if (isset($_POST['assignAdvisor']) && !empty($_SESSION['AD_number'])) {
     $section = $_POST['section'];
     $advisor = $_POST['advisor'];
 
-    $checkIfAssigned2 = $mysqli->query("SELECT S_adviser FROM sections WHERE S_adviser = '{$advisor}'");
+    $checkIfAssigned2 = $mysqli->query("SELECT S_adviser FROM sections WHERE S_adviser = '{$advisor}' AND acadYear = '{$currentSchoolYear}'");
     if (mysqli_num_rows($checkIfAssigned2) == 0) {
         $assignSectionsAdvisor = $mysqli->query("UPDATE sections SET S_adviser = '{$advisor}' WHERE S_name = '{$section}' AND acadYear = '{$currentSchoolYear}'");
         $assignClassListAdvisor = $mysqli->query("UPDATE classlist SET F_number = '{$advisor}' WHERE SR_section = '{$section}' AND acadYear = '{$currentSchoolYear}'");
@@ -1839,8 +1839,11 @@ if (isset($_POST['acadyear']) && !empty($_SESSION['AD_number'])) {
     $startYear = $acadYear_Data['endYear'];
     $endYear = (int) $startYear + 1;
 
+    $nextSchoolYear = $startYear . "-" . $endYear;
     $updateAcadYear = $mysqli->query("UPDATE acad_year SET currentYear = '{$startYear}', endYear = '{$endYear}' WHERE rowID = 1");
     $disableExisting = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled", quarterStatus = "", gradeStatus = "hidden" WHERE quarterID != 0');
+    $updateSectionList = $mysqli->query("INSERT INTO sections (acadYear, S_yearLevel, S_name)
+                                        SELECT '{$nextSchoolYear}', S_yearLevel, S_name FROM sections");
     // header("Refresh:0");
 
     showSweetAlert('Academic Year Updated' . $startYear . "-" . $endYear, 'success');

@@ -7,7 +7,7 @@ if (!isset($_SESSION['F_number'])) {
     $facultyData = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
     $getFacultyData = $facultyData->fetch_assoc();
 
-    $facultySchedule = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' ORDER BY WS_start_time ASC");
+    $facultySchedule = $mysqli->query("SELECT * FROM workschedule WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}' ORDER BY WS_start_time ASC");
 }
 ?>
 <!DOCTYPE html>
@@ -222,7 +222,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                         <div class="d-flex flex-shrink-0 align-items-center justify-content-center">
                                                                             <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:40px; color:#c02628;">
                                                                                 <?php
-                                                                                $countStudent = $mysqli->query("SELECT COUNT(SR_number) AS numStudent FROM classlist WHERE F_number = '{$_SESSION['F_number']}'");
+                                                                                $countStudent = $mysqli->query("SELECT COUNT(SR_number) AS numStudent FROM classlist WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}' ");
                                                                                 $getNumStudent = $countStudent->fetch_assoc();
 
                                                                                 echo $getNumStudent['numStudent'];
@@ -237,7 +237,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                             <h1 class="display-1 mb-n2" data-toggle="counter-up" style="font-size:40px; color:#c02628;">
                                                                                 <?php
                                                                                 $currentDate = date("Y-m-d");
-                                                                                $getAttendanceCountToday = $mysqli->query("SELECT COUNT(SR_number) FROM attendance WHERE A_date = '{$currentDate}' AND SR_number IN (SELECT SR_number FROM classlist WHERE F_number = '{$_SESSION['F_number']}')");
+                                                                                $getAttendanceCountToday = $mysqli->query("SELECT COUNT(SR_number) FROM attendance WHERE A_date = '{$currentDate}' AND SR_number IN (SELECT SR_number FROM classlist WHERE F_number = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}' )");
                                                                                 $AttendanceCountToday = $getAttendanceCountToday->fetch_assoc();
 
                                                                                 echo $AttendanceCountToday['COUNT(SR_number)'];
@@ -259,7 +259,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                             <h3 class="mb-0" style="text-align:left;">Reminders posted by you</h3>
                                                                         </div>
                                                                         <?php
-                                                                        $getPostedReminders = $mysqli->query("SELECT * FROM reminders WHERE author = '{$_SESSION['F_number']}' ORDER BY date_posted DESC LIMIT 5");
+                                                                        $getPostedReminders = $mysqli->query("SELECT * FROM reminders WHERE author = '{$_SESSION['F_number']}'AND acadYear = '{$currentSchoolYear}'  ORDER BY date_posted DESC LIMIT 5");
                                                                         if (mysqli_num_rows($getPostedReminders) > 0) {
                                                                             while ($remindersData = $getPostedReminders->fetch_assoc()) { ?>
                                                                                 <div class="col-12" style="padding-bottom: 15px;">
@@ -325,7 +325,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                         <h3 class="mb-0" style="text-align:left;">School Announcements</h3>
                                                                     </div>
                                                                     <?php
-                                                                    $getAnnouncementData = $mysqli->query("SELECT * FROM announcement ORDER BY date_posted DESC LIMIT 3");
+                                                                    $getAnnouncementData = $mysqli->query("SELECT * FROM announcement WHERE acadYear = '{$currentSchoolYear}' ORDER BY date_posted DESC LIMIT 3");
                                                                     if (mysqli_num_rows($getAnnouncementData) > 0) {
                                                                         while ($announcement = $getAnnouncementData->fetch_assoc()) { ?>
                                                                             <div class="col-lg-12 wow " style="padding-bottom: 5px;">

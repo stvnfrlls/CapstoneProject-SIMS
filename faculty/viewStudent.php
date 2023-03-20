@@ -183,8 +183,15 @@ if (empty($_SESSION['F_number'])) {
                                     if (mysqli_num_rows($CheckPermission) == 1) { ?>
                                         <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
                                             <nav class="nav">
-                                                <a class="nav-link active ms-0" href="viewStudent.php?ID=<?php echo $_GET['ID'] ?>" style="color: #c02628;">Profile</a>
-                                                <a class="nav-link" href="viewCard.php?ID=<?php echo $_GET['ID'] ?>">Report Card</a>
+                                                <?php
+                                                if (isset($_GET['SY'])) { ?>
+                                                    <a class="nav-link active ms-0" href="viewStudent.php?SY=<?php echo $_GET['SY'] ?>&ID=<?php echo $_GET['ID'] ?>" style="color: #c02628;">Profile</a>
+                                                    <a class="nav-link" href="viewCard.php?SY=<?php echo $_GET['SY'] ?>&ID=<?php echo $_GET['ID'] ?>">Report Card</a>
+                                                <?php } else { ?>
+                                                    <a class="nav-link active ms-0" href="viewStudent.php?ID=<?php echo $_GET['ID'] ?>" style="color: #c02628;">Profile</a>
+                                                    <a class="nav-link" href="viewCard.php?ID=<?php echo $_GET['ID'] ?>">Report Card</a>
+                                                <?php }
+                                                ?>
                                             </nav>
                                             <div class="border-bottom"></div>
                                         </div>
@@ -196,7 +203,6 @@ if (empty($_SESSION['F_number'])) {
                                             <?php
                                             $value = $_GET['ID'];
                                             $index = array_search($value, $studentLink);
-
                                             if ($index !== false) {
                                                 if ($index > 0) {
                                                     $previous = $studentLink[$index - 1];
@@ -206,8 +212,16 @@ if (empty($_SESSION['F_number'])) {
                                                 }
                                             }
                                             ?>
-                                            <a href="viewStudent.php?ID=<?php echo $previous ?>" class="btn btn-primary"><i class="fa fa-angle-double-left"></i>Previous </a>
-                                            <a href="viewStudent.php?ID=<?php echo $next ?>" class="btn btn-primary">Next <i class="fa fa-angle-double-right"></i></a>
+                                            <?php
+                                            if (isset($_GET['SY'])) { ?>
+                                                <a href="viewStudent.php?SY= <?php echo $_GET['SY'] ?>&ID=<?php echo $previous ?>" class="btn btn-primary"><i class="fa fa-angle-double-left"></i>Previous </a>
+                                                <a href="viewStudent.php?SY= <?php echo $_GET['SY'] ?>&ID=<?php echo $next ?>" class="btn btn-primary">Next <i class="fa fa-angle-double-right"></i></a>
+                                            <?php
+                                            } else { ?>
+                                                <a href="viewStudent.php?ID=<?php echo $previous ?>" class="btn btn-primary"><i class="fa fa-angle-double-left"></i>Previous </a>
+                                                <a href="viewStudent.php?ID=<?php echo $next ?>" class="btn btn-primary">Next <i class="fa fa-angle-double-right"></i></a>
+                                            <?php }
+                                            ?>
                                         </div>
                                     </div>
                                     <div class="tab-content tab-content-basic">

@@ -7,8 +7,6 @@ if (!isset($_SESSION['F_number'])) {
   $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'");
   if (mysqli_num_rows($getSectionInfo) > 0) {
     $ClassListRow = 1;
-
-    $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'");
     $SectionData = $getSectionInfo->fetch_assoc();
 
     $getFacultyName = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
@@ -258,25 +256,32 @@ if (!isset($_SESSION['F_number'])) {
                                 </thead>
                                 <tbody>
                                   <?php
-                                  if (mysqli_num_rows($getSectionInfo) > 0) {
+                                  if (mysqli_num_rows($getSectionClassList) != 0) {
                                     while ($SectionClassListData = $getSectionClassList->fetch_assoc()) { ?>
                                       <tr>
                                         <td class="hatdog"><?php echo $ClassListRow; ?></td>
                                         <td class="hatdog"><?php echo $SectionClassListData['SR_number']; ?></td>
                                         <td class="hatdog">
-                                          <a href="viewStudent.php?ID=<?php echo $SectionClassListData['SR_number']; ?>">
-                                            <?php
-                                            $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$SectionClassListData['SR_number']}'");
-                                            $studentInfo = $getStudentInfo->fetch_assoc();
+                                          <?php
+                                          if (isset($_GET['SY'])) {
+                                            echo '<a href="viewStudent.php?SY=' . $_GET['SY'] . '&ID=' . $SectionClassListData['SR_number'] . '">';
+                                          } else {
+                                            echo '<a href="viewStudent.php?ID=' . $SectionClassListData['SR_number'] . '">';
+                                          }
+                                          ?>
 
-                                            if (!empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] != "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {
-                                              echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ".";
-                                            } else if (empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] = "" && !empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] != "") {
-                                              echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . $studentInfo['SR_suffix'];
-                                            } else if (empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] = "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {
-                                              echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'];
-                                            }
-                                            ?>
+                                          <?php
+                                          $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$SectionClassListData['SR_number']}'");
+                                          $studentInfo = $getStudentInfo->fetch_assoc();
+
+                                          if (!empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] != "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {
+                                            echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ".";
+                                          } else if (empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] = "" && !empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] != "") {
+                                            echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . $studentInfo['SR_suffix'];
+                                          } else if (empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] = "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {
+                                            echo $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'];
+                                          }
+                                          ?>
                                           </a>
                                         </td>
                                       </tr>
@@ -284,7 +289,7 @@ if (!isset($_SESSION['F_number'])) {
                                     }
                                   } else { ?>
                                     <tr>
-                                      <td class="hatdog" colspan="3">NO DATA</td>
+                                      <td class="hatdog" colspan="3">NO CLASS ASSIGNED.</td>
                                     </tr>
                                   <?php }
                                   ?>

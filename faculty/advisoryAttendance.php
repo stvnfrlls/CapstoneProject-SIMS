@@ -7,13 +7,29 @@ if (!isset($_SESSION['F_number'])) {
   $getSectionData = $mysqli->query("SELECT SR_number, SR_grade, SR_section FROM classlist 
                                           WHERE F_number = '{$_SESSION['F_number']}' 
                                           AND acadYear = '{$currentSchoolYear}'");
-  $sectionData = $getSectionData->fetch_assoc();
-  $getUnresolveNotification = $mysqli->query("SELECT * FROM attendance_student_report 
+  if (mysqli_num_rows($getSectionData) == 0) {
+    echo <<<EOT
+      <script>
+          document.addEventListener("DOMContentLoaded", function(event) { 
+              swal.fire({
+                  text: 'You do not have any advisory class',
+                  confirmButtonText: 'OKAY'
+              }).then((result) => {
+                  if (result.isConfirmed) {
+                    window.location.href = 'dailyReports.php';
+                  } 
+              });
+          });
+      </script>
+    EOT;
+  } elseif (mysqli_num_rows($getSectionData) > 0) {
+    $sectionData = $getSectionData->fetch_assoc();
+    $getUnresolveNotification = $mysqli->query("SELECT * FROM attendance_student_report 
                                             WHERE SR_grade = '{$sectionData['SR_grade']}' 
                                             AND SR_section = '{$sectionData['SR_section']}'");
-  if (mysqli_num_rows($getUnresolveNotification) > 0) {
-    $reminderCounter = mysqli_num_rows($getUnresolveNotification);
-    echo <<<EOT
+    if (mysqli_num_rows($getUnresolveNotification) > 0) {
+      $reminderCounter = mysqli_num_rows($getUnresolveNotification);
+      echo <<<EOT
       <script>
           document.addEventListener("DOMContentLoaded", function(event) { 
               swal.fire({
@@ -31,6 +47,7 @@ if (!isset($_SESSION['F_number'])) {
           });
       </script>
     EOT;
+    }
   }
 }
 ?>

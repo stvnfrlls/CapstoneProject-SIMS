@@ -214,7 +214,8 @@ if (!isset($_SESSION['AD_number'])) {
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                           <?php
-                          $getstudentbyAcadYear = $mysqli->query("SELECT DISTINCT(acadYear) FROM classlist");
+                          echo '<a class="dropdown-item" href="student.php">' . $currentSchoolYear . '</a>';
+                          $getstudentbyAcadYear = $mysqli->query("SELECT DISTINCT acadYear FROM classlist");
                           while ($byacadYear = $getstudentbyAcadYear->fetch_assoc()) {
                             if ($byacadYear['acadYear'] != $currentSchoolYear) {
                               echo '<a class="dropdown-item" href="student.php?SY=' . $byacadYear['acadYear'] . '">' . $byacadYear['acadYear'] . '</a>';
@@ -339,23 +340,22 @@ if (!isset($_SESSION['AD_number'])) {
                                   </thead>
                                   <tbody>
                                     <?php
-                                    if (isset($_GET['SY']) && !empty($_GET['SY'])) {
-                                      $ListofStudents = "SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE acadYear = '{$_GET['SY']}' ORDER BY SR_lname)";
-                                    } else if (isset($_GET['GradeLevel']) && !empty($_GET['GradeLevel']) && !isset($_GET['section']) && empty($_GET['section'])) {
-                                      $ListofStudents = "SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE SR_grade = '{$_GET['GradeLevel']}' AND acadYear = '{$currentSchoolYear}') ORDER BY SR_lname";
-                                    } else if (isset($_GET['GradeLevel']) && !empty($_GET['GradeLevel']) && isset($_GET['section']) && !empty($_GET['section'])) {
-                                      $ListofStudents = "SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['section']}' AND acadYear = '{$currentSchoolYear}') ORDER BY SR_lname";
-                                    } else if (isset($_GET['SY']) && !empty($_GET['SY']) && isset($_GET['GradeLevel']) && !empty($_GET['GradeLevel']) && isset($_GET['section']) && !empty($_GET['section'])) {
-                                      $ListofStudents = "SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE SR_section = '{$_GET['section']}' AND acadYear = '{$_GET['SY']}') ORDER BY SR_lname";
-                                    } else {
-                                      $ListofStudents = "SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE acadYear = '{$currentSchoolYear}') ORDER BY SR_lname";
+                                    if (isset($_GET['SY'])) {
+                                      $ListofStudents = "SELECT * FROM studentrecord JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE classlist.acadYear = '{$_GET['SY']}' ORDER BY SR_lname";
+                                    } else if (isset($_GET['SY']) && isset($_GET['GradeLevel'])  && isset($_GET['section'])) {
+                                      $ListofStudents = "SELECT * FROM studentrecord JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE classlist.SR_grade = '{$_GET['GradeLevel']}' AND classlist.acadYear = '{$_GET['SY']}' ORDER BY SR_lname";
+                                    }
+
+                                    if (!isset($_GET['SY'])) {
+                                      $ListofStudents = "SELECT * FROM studentrecord JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE classlist.acadYear = '{$currentSchoolYear}' ORDER BY SR_lname";
+                                    } elseif (!isset($_GET['SY']) && isset($_GET['GradeLevel'])  && isset($_GET['section'])) {
+                                      $ListofStudents = "SELECT * FROM studentrecord JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE classlist.SR_grade = '{$_GET['GradeLevel']}' AND classlist.acadYear = '{$currentSchoolYear}' ORDER BY SR_lname";
                                     }
 
                                     $resultListofStudents = $mysqli->query($ListofStudents);
                                     $rowCount = 1;
 
-                                    $numrows = mysqli_num_rows($resultListofStudents);
-                                    if ($numrows >= 1) {
+                                    if (mysqli_num_rows($resultListofStudents)) {
                                       while ($data = $resultListofStudents->fetch_assoc()) { ?>
                                         <tr>
                                           <td class="tablestyle"><?php echo $rowCount ?></td>
@@ -388,7 +388,7 @@ if (!isset($_SESSION['AD_number'])) {
                                         </tr>
                                       <?php $rowCount++;
                                       }
-                                    } else if ($numrows == 0) { ?>
+                                    } else if (mysqli_num_rows($resultListofStudents) == 0) { ?>
                                       <tr>
                                         <td colspan="10">No Data.</td>
                                       </tr>

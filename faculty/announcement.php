@@ -4,7 +4,7 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['F_number'])) {
     header('Location: ../auth/login.php');
 } else {
-    $announcementData = $mysqli->query("SELECT * FROM announcement ORDER BY date_posted DESC");
+    $announcementData = $mysqli->query("SELECT * FROM announcement WHERE acadYear = '{$currentSchoolYear}' ORDER BY date_posted DESC");
 }
 ?>
 

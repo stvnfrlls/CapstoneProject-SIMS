@@ -5,29 +5,46 @@ if (!isset($_SESSION['F_number'])) {
     header('Location: ../auth/login.php');
 } else {
     $rowCount = 0;
+    $AttendanceConcern_Storage = array();
+    $StudentNames_Storage = array();
     $getAdvisoryClassData = $mysqli->query("SELECT SR_number, SR_grade, SR_section FROM classlist 
                                             WHERE F_number = '{$_SESSION['F_number']}' 
                                             AND acadYear = '{$currentSchoolYear}'");
-    $advisoryClass = $getAdvisoryClassData->fetch_assoc();
-    $getAttendanceConcern = $mysqli->query("SELECT * FROM attendance_student_report
-                                            INNER JOIN studentrecord 
-                                            ON attendance_student_report.SR_number = studentrecord.SR_number
-                                            WHERE attendance_student_report.SR_section = '{$advisoryClass['SR_section']}'
-                                            ORDER BY RP_reportDate DESC");
-    $AttendanceConcern_Storage = array();
-    while ($AttendanceConcern = $getAttendanceConcern->fetch_assoc()) {
-        $AttendanceConcern_Storage[] = $AttendanceConcern;
-    }
+    if (mysqli_num_rows($getAdvisoryClassData) > 0) {
+        $advisoryClass = $getAdvisoryClassData->fetch_assoc();
+        $getAttendanceConcern = $mysqli->query("SELECT * FROM attendance_student_report
+                                                INNER JOIN studentrecord 
+                                                ON attendance_student_report.SR_number = studentrecord.SR_number
+                                                WHERE attendance_student_report.SR_section = '{$advisoryClass['SR_section']}'
+                                                ORDER BY RP_reportDate DESC");
+        while ($AttendanceConcern = $getAttendanceConcern->fetch_assoc()) {
+            $AttendanceConcern_Storage[] = $AttendanceConcern;
+        }
+        $getAllStudentName = $mysqli->query("SELECT * FROM studentrecord");
+        while ($AllStudentName = $getAllStudentName->fetch_assoc()) {
+            $StudentNames[] = $AllStudentName;
+        }
 
-    $StudentNames_Storage = array();
-    $getAllStudentName = $mysqli->query("SELECT * FROM studentrecord");
-    while ($AllStudentName = $getAllStudentName->fetch_assoc()) {
-        $StudentNames[] = $AllStudentName;
+        $StudentName = json_encode($StudentNames_Storage);
+        echo "<script>var StudentName = " . $StudentName . ";</script>";
+        $AttendanceConcern = json_encode($AttendanceConcern_Storage);
+        echo "<script>var AttendanceConcern = " . $AttendanceConcern . ";</script>";
+    } else {
+        echo <<<EOT
+        <script>
+            document.addEventListener("DOMContentLoaded", function(event) { 
+                swal.fire({
+                    text: 'You do not have any advisory class',
+                    confirmButtonText: 'OKAY'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = 'dailyReports.php';
+                    } 
+                });
+            });
+        </script>
+        EOT;
     }
-    $StudentName = json_encode($StudentNames_Storage);
-    echo "<script>var StudentName = " . $StudentName . ";</script>";
-    $AttendanceConcern = json_encode($AttendanceConcern_Storage);
-    echo "<script>var AttendanceConcern = " . $AttendanceConcern . ";</script>";
 }
 ?>
 
@@ -205,7 +222,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                     </thead>
                                                                     <tbody>
                                                                         <?php
-                                                                        if (mysqli_num_rows($getAttendanceConcern) > 0) {
+                                                                        if (sizeof($AttendanceConcern_Storage) > 0) {
                                                                             while ($rowCount != sizeof($AttendanceConcern_Storage)) { ?>
                                                                                 <tr>
                                                                                     <td><?php echo $AttendanceConcern_Storage[$rowCount]['reportID']; ?></td>
