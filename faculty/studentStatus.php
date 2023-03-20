@@ -154,7 +154,7 @@ if (!isset($_SESSION['F_number'])) {
                                         <form action="<?php $_SERVER["PHP_SELF"] ?>" id="StudentStatusForm" method="post">
                                             <div style="text-align: right;">
                                                 <button type="button" id="setStudentStatus" class="btn btn-primary">Save</button>
-                                                <input type="hidden" name="moveUpStatus" value="su">
+                                                <input type="hidden" name="moveUpStatus" value="submit">
                                             </div>
                                             <div class="row" style="margin-top: 15px;">
                                                 <div class="col-lg-12 d-flex flex-column">
@@ -235,7 +235,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                                                 if ($getAvgGrade['finalgrade'] >= 75) {
                                                                                                     echo "PASSED";
                                                                                                 } elseif ($getAvgGrade['finalgrade'] == 0) {
-                                                                                                    echo "No Grades yet";
+                                                                                                    echo "NO FINAL GRADES YET";
                                                                                                 } else {
                                                                                                     echo "FAILED";
                                                                                                 }
@@ -269,11 +269,17 @@ if (!isset($_SESSION['F_number'])) {
                                                                                             </td>
                                                                                             <td class="tablestyle">
                                                                                                 <?php
-                                                                                                if ($data['SR_status'] != NULL || $data['SR_grade'] = 6) {
-                                                                                                    echo '<select class="form-select" aria-label="Default select example" disabled></select>';
+                                                                                                if ($data['SR_status'] != NULL) {
+                                                                                                    $getSectionID = $mysqli->query("SELECT * FROM sections WHERE sectionID = '{$data['SR_moveupto']}'");
+                                                                                                    $sectionID = $getSectionID->fetch_assoc();
+                                                                                                    if ($sectionID['S_yearLevel'] == "KINDER") {
+                                                                                                        $moveUpTo_Label = $sectionID['S_yearLevel'] . " - " . $sectionID['S_name'];
+                                                                                                    } else {
+                                                                                                        $moveUpTo_Label = "Grade " . $sectionID['S_yearLevel'] . " - " . $sectionID['S_name'];
+                                                                                                    }
+                                                                                                    echo '<select class="form-select text-center" aria-label="Default select example" disabled><option selected>' .  $moveUpTo_Label . '</option></select>';
                                                                                                 } else if ($getAvgGrade['finalgrade'] >= 75) { ?>
                                                                                                     <select class="form-select" name="moveUpTo[]" id="moveUpTo" aria-label="Default select example" required>
-                                                                                                        <option selected></option>
                                                                                                         <?php
                                                                                                         if ($data['SR_grade'] == "KINDER") {
                                                                                                             $data['SR_grade'] = 0;
@@ -284,32 +290,33 @@ if (!isset($_SESSION['F_number'])) {
                                                                                                         if ($data['SR_grade'] == 6) {
                                                                                                             echo '<option value="GRADUATE">Graduation</option>';
                                                                                                         } else {
-                                                                                                            while ($listSections = $sections->fetch_assoc()) {
+                                                                                                            if (mysqli_num_rows($sections) == 1) {
+                                                                                                                $listSections = $sections->fetch_assoc();
                                                                                                                 if ($data['SR_grade'] == "KINDER") {
-                                                                                                                    echo '<option value="' . $listSections['sectionID'] . '">' . $listSections['S_yearLevel'] . ' - ' . $listSections['S_name'] . '</option>';
+                                                                                                                    echo '<option selected value="' . $listSections['sectionID'] . '">' . $listSections['S_yearLevel'] . ' - ' . $listSections['S_name'] . '</option>';
                                                                                                                 } else {
-                                                                                                                    echo '<option value="' . $listSections['sectionID'] . '">Grade ' . $listSections['S_yearLevel'] . ' - ' . $listSections['S_name'] . '</option>';
+                                                                                                                    echo '<option selected value="' . $listSections['sectionID'] . '">Grade ' . $listSections['S_yearLevel'] . ' - ' . $listSections['S_name'] . '</option>';
+                                                                                                                }
+                                                                                                            } else {
+                                                                                                                while ($listSections = $sections->fetch_assoc()) {
+                                                                                                                    if ($data['SR_grade'] == "KINDER") {
+                                                                                                                        echo '<option selected></option>';
+                                                                                                                        echo '<option value="' . $listSections['sectionID'] . '">' . $listSections['S_yearLevel'] . ' - ' . $listSections['S_name'] . '</option>';
+                                                                                                                    } else {
+                                                                                                                        echo '<option selected></option>';
+                                                                                                                        echo '<option value="' . $listSections['sectionID'] . '">Grade ' . $listSections['S_yearLevel'] . ' - ' . $listSections['S_name'] . '</option>';
+                                                                                                                    }
                                                                                                                 }
                                                                                                             }
                                                                                                         }
                                                                                                         ?>
                                                                                                     </select>
                                                                                                 <?php
+                                                                                                } else if ($data['SR_status'] != NULL || $data['SR_grade'] == 6) {
+                                                                                                    echo '<select class="form-select" aria-label="Default select example" disabled></select>';
                                                                                                 } else { ?>
-                                                                                                    <select class="form-select" name="moveUpTo[]" id="moveUpTo" aria-label="Default select example" required>
+                                                                                                    <select class="form-select" name="moveUpTo[]" id="moveUpTo" aria-label="Default select example" disabled>
                                                                                                         <option selected></option>
-                                                                                                        <?php
-                                                                                                        if ($data['SR_grade'] == "KINDER") {
-                                                                                                            $data['SR_grade'] = 0;
-                                                                                                        }
-                                                                                                        $sections = $mysqli->query("SELECT sectionID, S_name, S_yearLevel FROM sections WHERE S_yearLevel = '{$data['SR_grade']}' AND acadYear = '{$currentSchoolYear}'");
-                                                                                                        $listSections = $sections->fetch_assoc();
-                                                                                                        if ($data['SR_grade'] == "KINDER") {
-                                                                                                            echo '<option value="' . $listSections['sectionID'] . '">' . $listSections['S_yearLevel'] . ' - ' . $listSections['S_name'] . '</option>';
-                                                                                                        } else {
-                                                                                                            echo '<option value="' . $listSections['sectionID'] . '">Grade ' . $listSections['S_yearLevel'] . ' - ' . $listSections['S_name'] . '</option>';
-                                                                                                        }
-                                                                                                        ?>
                                                                                                     </select>
                                                                                                 <?php }
                                                                                                 ?>

@@ -819,45 +819,16 @@ if (isset($_POST['moveUpStatus']) && !empty($_SESSION['F_number'])) {
             $moveUpTo = $FormsmoveUpTo[$i];
         }
 
-        $GetSectionData = $mysqli->query("SELECT * FROM sections WHERE sectionID = '{$Section}' AND acadYear = '{$currentSchoolYear}'");
-        $SectionData = $GetSectionData->fetch_assoc();
-
         if ($studentStatus == "GRADUATE") {
-            $mysqli->query("UPDATE studentrecord SET SR_status = 'GRADUATING' WHERE SR_number = '{$SR_number}'");
-            // $mysqli->query("INSERT INTO classlist(acadYear, SR_number, SR_grade) VALUES('{$nextSchoolYear}', '{$SR_number}', '{$status}')");
+            $mysqli->query("UPDATE studentrecord SET SR_status = 'GRADUATE', SR_moveupto = NULL WHERE SR_number = '{$SR_number}'");
         } else if ($studentStatus == "MOVEUP") {
-            $getSchoolYearInfo = $mysqli->query("SELECT * FROM acad_year");
-            $schoolyear = $getSchoolYearInfo->fetch_assoc();
-            $nextSchoolYear = $schoolyear['endYear'] . "-" . $schoolyear['endYear'] + 1;
-
-            $GetSectionData = $mysqli->query("SELECT * FROM sections WHERE sectionID = '{$moveUpTo}' AND acadYear = '{$currentSchoolYear}'");
-            $SectionData = $GetSectionData->fetch_assoc();
-
-            $mysqli->query("UPDATE studentrecord SET SR_grade = '{$SectionData['S_yearLevel']}', SR_section = '{$SectionData['S_name']}' WHERE SR_number = '{$SR_number}'");
-            $mysqli->query("INSERT INTO classlist(acadYear, SR_number, SR_grade, SR_section) VALUES('{$nextSchoolYear}', '{$SR_number}', '{$SectionData['S_yearLevel']}', '{$SectionData['S_name']}')");
+            $mysqli->query("UPDATE studentrecord SET SR_status = 'MOVEUP', SR_moveupto = '{$moveUpTo}' WHERE SR_number = '{$SR_number}'");
         } else if ($studentStatus == "TRANSFER") {
-            $getSchoolYearInfo = $mysqli->query("SELECT * FROM acad_year");
-            $schoolyear = $getSchoolYearInfo->fetch_assoc();
-            $nextSchoolYear = $schoolyear['endYear'] . "-" . $schoolyear['endYear'] + 1;
-
-            $mysqli->query("UPDATE studentrecord SET SR_status = 'TRANSFERRED', SR_grade = NULL, SR_section = NULL WHERE SR_number = '{$SR_number}'");
-            // $mysqli->query("INSERT INTO classlist(acadYear, SR_number, SR_grade, SR_section) VALUES('{$nextSchoolYear}', '{$SR_number}', 'TRANSFERRED', 'TRANSFERRED')");
+            $mysqli->query("UPDATE studentrecord SET SR_status = 'TRANSFER', SR_moveupto = NULL WHERE SR_number = '{$SR_number}'");
         } elseif ($studentStatus == "REPEAT") {
-            $getSchoolYearInfo = $mysqli->query("SELECT * FROM acad_year");
-            $schoolyear = $getSchoolYearInfo->fetch_assoc();
-            $nextSchoolYear = $schoolyear['endYear'] . "-" . $schoolyear['endYear'] + 1;
-
-            $GetSectionData = $mysqli->query("SELECT * FROM sections WHERE sectionID = '{$moveUpTo}' AND acadYear = '{$currentSchoolYear}'");
-            $SectionData = $GetSectionData->fetch_assoc();
-
-            $mysqli->query("INSERT INTO classlist(acadYear, SR_number, SR_grade, SR_section) VALUES('{$nextSchoolYear}', '{$SR_number}', '{$SectionData['S_yearLevel']}', '{$SectionData['S_name']}')");
+            $mysqli->query("UPDATE studentrecord SET SR_status = 'REPEAT', SR_moveupto = NULL WHERE SR_number = '{$SR_number}'");
         } elseif ($studentStatus == "DROP") {
-            $getSchoolYearInfo = $mysqli->query("SELECT * FROM acad_year");
-            $schoolyear = $getSchoolYearInfo->fetch_assoc();
-            $nextSchoolYear = $schoolyear['endYear'] . "-" . $schoolyear['endYear'] + 1;
-
-            $mysqli->query("UPDATE studentrecord SET SR_status = 'DROPPED', SR_grade = '', SR_section = '' WHERE SR_number = '{$SR_number}'");
-            // $mysqli->query("INSERT INTO classlist(acadYear, SR_number, SR_grade, SR_section) VALUES('{$nextSchoolYear}', '{$SR_number}', 'DROPPED', 'DROPPED')");
+            $mysqli->query("UPDATE studentrecord SET SR_status = 'DROP', SR_moveupto = NULL WHERE SR_number = '{$SR_number}'");
         }
     }
 }
@@ -1349,53 +1320,60 @@ if (isset($_POST['updateStudentStatus']) && !empty($_SESSION['AD_number'])) {
         if (isset($_POST['moveUpTo'])) {
             $moveUpTo = $FormsmoveUpTo[$i];
         }
+        if ($studentStatus == "GRADUATE") {
+            $mysqli->query("UPDATE studentrecord SET SR_status = 'GRADUATING', SR_moveupto = NULL WHERE SR_number = '{$SR_number}'");
+        } else if ($studentStatus == "MOVEUP") {
+            $mysqli->query("UPDATE studentrecord SET SR_status = 'MOVEUP', SR_moveupto = '{$moveUpTo}' WHERE SR_number = '{$SR_number}'");
+        } else if ($studentStatus == "TRANSFER") {
+            $mysqli->query("UPDATE studentrecord SET SR_status = 'TRANSFERRED', SR_moveupto = NULL WHERE SR_number = '{$SR_number}'");
+        } elseif ($studentStatus == "REPEAT") {
+            $mysqli->query("UPDATE studentrecord SET SR_status = 'REPEAT', SR_moveupto = NULL WHERE SR_number = '{$SR_number}'");
+        } elseif ($studentStatus == "DROP") {
+            $mysqli->query("UPDATE studentrecord SET SR_status = 'DROPPED', SR_moveupto = NULL WHERE SR_number = '{$SR_number}'");
+        }
+    }
+}
+if (isset($_POST['finalizeStudentStatus']) && !empty($_SESSION['AD_number'])) {
+    $ids = $_POST['ids'];
+    $FormsSR_number = $_POST['SR_number'];
+    $FormsGrade = $_POST['Grade'];
+    $FormsSection = $_POST['Section'];
+    $FormsstudentStatus = $_POST['studentStatus'];
+    if (isset($_POST['moveUpTo'])) {
+        $FormsmoveUpTo = $_POST['moveUpTo'];
+    }
 
-        $GetSectionData = $mysqli->query("SELECT * FROM sections WHERE sectionID = '{$Section}' AND acadYear = '{$currentSchoolYear}'");
-        $SectionData = $GetSectionData->fetch_assoc();
+    $getSchoolYearInfo = $mysqli->query("SELECT * FROM acad_year");
+    $schoolyear = $getSchoolYearInfo->fetch_assoc();
+    $nextSchoolYear = $schoolyear['endYear'] . "-" . $schoolyear['endYear'] + 1;
+
+    foreach ($ids as $i => $id) {
+        $SR_number = $FormsSR_number[$i];
+        $Grade = $FormsGrade[$i];
+        $Section = $FormsSection[$i];
+        $studentStatus = $FormsstudentStatus[$i];
+        if (isset($_POST['moveUpTo'])) {
+            $moveUpTo = $FormsmoveUpTo[$i];
+        }
 
         if ($studentStatus == "GRADUATE") {
-            $getSchoolYearInfo = $mysqli->query("SELECT * FROM acad_year");
-            $schoolyear = $getSchoolYearInfo->fetch_assoc();
-            $nextSchoolYear = $schoolyear['endYear'] . "-" . $schoolyear['endYear'] + 1;
-
-            $status = $studentStatus . " - " . $currentSchoolYear;
-            $mysqli->query("UPDATE studentrecord SET SR_status = '{$status}', SR_grade = NULL, SR_section = NULL WHERE SR_number = '{$SR_number}'");
-            // $mysqli->query("INSERT INTO classlist(acadYear, SR_number, SR_grade) VALUES('{$nextSchoolYear}', '{$SR_number}', '{$status}')");
+            $mysqli->query("UPDATE studentrecord SET SR_status = 'GRADUATE', SR_moveupto = NULL WHERE SR_number = '{$SR_number}'");
         } else if ($studentStatus == "MOVEUP") {
-            $getSchoolYearInfo = $mysqli->query("SELECT * FROM acad_year");
-            $schoolyear = $getSchoolYearInfo->fetch_assoc();
-            $nextSchoolYear = $schoolyear['endYear'] . "-" . $schoolyear['endYear'] + 1;
-
             $GetSectionData = $mysqli->query("SELECT * FROM sections WHERE sectionID = '{$moveUpTo}' AND acadYear = '{$currentSchoolYear}'");
             $SectionData = $GetSectionData->fetch_assoc();
 
-            $mysqli->query("UPDATE studentrecord SET SR_grade = '{$SectionData['S_yearLevel']}', SR_section = '{$SectionData['S_name']}' WHERE SR_number = '{$SR_number}'");
+            $mysqli->query("UPDATE studentrecord SET SR_grade = '{$SectionData['S_yearLevel']}', SR_section = '{$SectionData['S_name']}', SR_status = NULL, SR_moveupto = NULL WHERE SR_number = '{$SR_number}'");
             $mysqli->query("INSERT INTO classlist(acadYear, SR_number, SR_grade, SR_section) VALUES('{$nextSchoolYear}', '{$SR_number}', '{$SectionData['S_yearLevel']}', '{$SectionData['S_name']}')");
         } else if ($studentStatus == "TRANSFER") {
-            $getSchoolYearInfo = $mysqli->query("SELECT * FROM acad_year");
-            $schoolyear = $getSchoolYearInfo->fetch_assoc();
-            $nextSchoolYear = $schoolyear['endYear'] . "-" . $schoolyear['endYear'] + 1;
-
-            $mysqli->query("UPDATE studentrecord SET SR_status = 'TRANSFERRED', SR_grade = NULL, SR_section = NULL WHERE SR_number = '{$SR_number}'");
-            // $mysqli->query("INSERT INTO classlist(acadYear, SR_number, SR_grade, SR_section) VALUES('{$nextSchoolYear}', '{$SR_number}', 'TRANSFERRED', 'TRANSFERRED')");
+            $mysqli->query("UPDATE studentrecord SET SR_status = 'TRANSFER', SR_moveupto = NULL WHERE SR_number = '{$SR_number}'");
         } elseif ($studentStatus == "REPEAT") {
-            $getSchoolYearInfo = $mysqli->query("SELECT * FROM acad_year");
-            $schoolyear = $getSchoolYearInfo->fetch_assoc();
-            $nextSchoolYear = $schoolyear['endYear'] . "-" . $schoolyear['endYear'] + 1;
-
             $GetSectionData = $mysqli->query("SELECT * FROM sections WHERE sectionID = '{$moveUpTo}' AND acadYear = '{$currentSchoolYear}'");
             $SectionData = $GetSectionData->fetch_assoc();
 
+            $mysqli->query("UPDATE studentrecord SET SR_status = NULL, SR_moveupto = NULL WHERE SR_number = '{$SR_number}'");
             $mysqli->query("INSERT INTO classlist(acadYear, SR_number, SR_grade, SR_section) VALUES('{$nextSchoolYear}', '{$SR_number}', '{$SectionData['S_yearLevel']}', '{$SectionData['S_name']}')");
         } elseif ($studentStatus == "DROP") {
-            $getSchoolYearInfo = $mysqli->query("SELECT * FROM acad_year");
-            $schoolyear = $getSchoolYearInfo->fetch_assoc();
-            $nextSchoolYear = $schoolyear['endYear'] . "-" . $schoolyear['endYear'] + 1;
-
-            $mysqli->query("UPDATE studentrecord SET SR_status = 'DROPPED', SR_grade = '', SR_section = '' WHERE SR_number = '{$SR_number}'");
-            // $mysqli->query("INSERT INTO classlist(acadYear, SR_number, SR_grade, SR_section) VALUES('{$nextSchoolYear}', '{$SR_number}', 'DROPPED', 'DROPPED')");
-        } else {
-            showSweetAlert('unknown student status', 'error');
+            $mysqli->query("UPDATE studentrecord SET SR_status = 'DROP', SR_moveupto = NULL WHERE SR_number = '{$SR_number}'");
         }
     }
 }
