@@ -259,7 +259,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                                                     </select>
                                                                                                 <?php
                                                                                                 } else { ?>
-                                                                                                    <select class="form-select" name="studentStatus[]" aria-label="Default select example">
+                                                                                                    <select class="form-select" name="studentStatus[]" id="studentStatus" aria-label="Default select example">
                                                                                                         <option value="REPEAT">Retain</option>
                                                                                                         <option value="DROP">Drop</option>
                                                                                                     </select>
@@ -269,7 +269,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                                             </td>
                                                                                             <td class="tablestyle">
                                                                                                 <?php
-                                                                                                if ($data['SR_status'] != NULL) {
+                                                                                                if ($data['SR_status'] != NULL && !empty($data['SR_moveupto'])) {
                                                                                                     $getSectionID = $mysqli->query("SELECT * FROM sections WHERE sectionID = '{$data['SR_moveupto']}'");
                                                                                                     $sectionID = $getSectionID->fetch_assoc();
                                                                                                     if ($sectionID['S_yearLevel'] == "KINDER") {
@@ -278,6 +278,15 @@ if (!isset($_SESSION['F_number'])) {
                                                                                                         $moveUpTo_Label = "Grade " . $sectionID['S_yearLevel'] . " - " . $sectionID['S_name'];
                                                                                                     }
                                                                                                     echo '<select class="form-select text-center" aria-label="Default select example" disabled><option selected>' .  $moveUpTo_Label . '</option></select>';
+                                                                                                } elseif ($data['SR_status'] == "REPEAT") {
+                                                                                                    if ($data['SR_grade'] == 'KINDER') {
+                                                                                                        $retainGradeLevel = $data['SR_grade'] . " - " . $data['SR_section'];
+                                                                                                    } else {
+                                                                                                        $retainGradeLevel = "Grade " . $data['SR_grade'] . " - " . $data['SR_section'];
+                                                                                                    }
+                                                                                                    echo '<select class="form-select" id="moveUpTo" aria-label="Default select example" disabled><option selected>' . $retainGradeLevel . '</option></select>';
+                                                                                                } else if ($data['SR_status'] == "DROP") {
+                                                                                                    echo '<select class="form-select" id="moveUpTo" aria-label="Default select example" disabled><option selected>DROPPED</option></select>';
                                                                                                 } else if ($getAvgGrade['finalgrade'] >= 75) { ?>
                                                                                                     <select class="form-select" name="moveUpTo[]" id="moveUpTo" aria-label="Default select example" required>
                                                                                                         <?php
@@ -314,27 +323,20 @@ if (!isset($_SESSION['F_number'])) {
                                                                                                 <?php
                                                                                                 } else if ($data['SR_status'] != NULL || $data['SR_grade'] == 6) {
                                                                                                     echo '<select class="form-select" aria-label="Default select example" disabled></select>';
-                                                                                                } else { ?>
-                                                                                                    <select class="form-select" name="moveUpTo[]" id="moveUpTo" aria-label="Default select example" disabled>
-                                                                                                        <option selected></option>
-                                                                                                    </select>
-                                                                                                <?php }
+                                                                                                } else {
+                                                                                                    echo '<select class="form-select" name="moveUpTo[]" id="moveUpTo" aria-label="Default select example" disabled><option selected></option></select>';
+                                                                                                }
                                                                                                 ?>
                                                                                             </td>
-
                                                                                         </tr>
-                                                                                    <?php $rowCount++;
+                                                                            <?php $rowCount++;
                                                                                     }
-                                                                                } else { ?>
-                                                                                    <tr>
-                                                                                        <td colspan="10">No Data.</td>
-                                                                                    </tr>
-                                                                                <?php }
-                                                                            } else { ?>
-                                                                                <tr>
-                                                                                    <td colspan="10">No assigned section</td>
-                                                                                </tr>
-                                                                            <?php }
+                                                                                } else {
+                                                                                    echo '<tr><td colspan="10">No Data.</td></tr>';
+                                                                                }
+                                                                            } else {
+                                                                                echo '<tr><td colspan="10">No assigned section</td></tr>';
+                                                                            }
                                                                             ?>
                                                                         </tbody>
                                                                     </table>
@@ -388,6 +390,9 @@ if (!isset($_SESSION['F_number'])) {
         const moveUpTo = document.getElementById('moveUpTo');
         const StudentStatusForm = document.getElementById('StudentStatusForm');
         const setStudentStatus = document.getElementById('setStudentStatus');
+        studentStatus.addEventListener('change', function() {
+
+        });
         setStudentStatus.addEventListener('click', function() {
             if (studentStatus.value != "") {
                 Swal.fire({
@@ -407,7 +412,7 @@ if (!isset($_SESSION['F_number'])) {
                     icon: 'error'
                 })
             }
-        })
+        });
     </script>
     <script>
         function sweetalert() {
