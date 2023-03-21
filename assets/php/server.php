@@ -253,6 +253,24 @@ if (isset($_POST['student'])) {
                                         IN 
                                         (SELECT SR_number FROM classlist WHERE SR_number = '{$studentID}' AND acadYear = '{$currentSchoolYear}')");
     $sendtoGuardian = $sendtoGuardianData->fetch_assoc();
+    $getStudentName = $mysqli->query("SELECT SR_fname, SR_mname, SR_lname, SR_suffix FROM studentrecord WHERE SR_number = '{$studentID}'");
+    $StudentName = $getStudentName->fetch_assoc();
+    if (!empty($StudentName['SR_mname']) || $StudentName['SR_mname'] != "" && empty($StudentName['SR_suffix']) || $StudentName['SR_suffix'] = "") {
+        $studentname = $StudentName['SR_lname'] .  ", " . $StudentName['SR_fname'] . " " . substr($StudentName['SR_mname'], 0, 1) . ".";
+    } else if (empty($StudentName['SR_mname']) || $StudentName['SR_mname'] = "" && !empty($StudentName['SR_suffix']) || $StudentName['SR_suffix'] != "") {
+        $studentname = $StudentName['SR_lname'] .  ", " . $StudentName['SR_fname'] . " " . $StudentName['SR_suffix'];
+    } else if (empty($StudentName['SR_mname']) || $StudentName['SR_mname'] = "" && empty($StudentName['SR_suffix']) || $StudentName['SR_suffix'] = "") {
+        $studentname = $StudentName['SR_lname'] .  ", " . $StudentName['SR_fname'];
+    }
+    $getFacultyName = $mysqli->query("SELECT F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
+    $FacultyName = $getFacultyName->fetch_assoc();
+    if (!empty($FacultyName['F_mname']) || $FacultyName['F_mname'] != "" && empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] = "") {
+        $facultyteacher = $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'] . " " . substr($FacultyName['SR_mname'], 0, 1) . ".";
+    } else if (empty($FacultyName['F_mname']) || $FacultyName['F_mname'] = "" && !empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] != "") {
+        $facultyteacher = $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'] . " " . $FacultyName['F_suffix'];
+    } else if (empty($FacultyName['F_mname']) || $FacultyName['F_mname'] = "" && empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] = "") {
+        $facultyteacher = $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'];
+    }
     if (mysqli_num_rows($checkAttendance) == 0) {
         $timeIN = $mysqli->query("INSERT INTO attendance (acadYear, SR_number, A_date, A_time_IN, A_status) VALUES ('{$currentSchoolYear}', '{$studentID}', '{$date}', '{$time}', 'PRESENT')");
         $mail->addAddress($sendtoGuardian['G_email']);
@@ -266,7 +284,7 @@ if (isset($_POST['student'])) {
                        <br>
                        <p>Thank you for entrusting your child\'s education to us. We are committed to providing the highest quality education possible and ensuring that your child feels safe and supported in our school.</p>
                        <br>
-                       <p>' . $facultteacher . '</p>
+                       <p>' . $facultyteacher . '</p>
                        <b>CDSP Faculty Teacher</b>';
         $mail->send();
     } else if (empty($attendanceData['A_time_OUT']) || $attendanceData['A_time_OUT'] = NULL) {
@@ -282,7 +300,7 @@ if (isset($_POST['student'])) {
                         <br>
                         <p>Thank you for entrusting your child\'s education to us. We are committed to providing the highest quality education possible and ensuring that your child feels safe and supported in our school.</p>
                         <br>
-                        <p>' . $facultteacher . '</p>
+                        <p>' . $facultyteacher . '</p>
                         <b>CDSP Faculty Teacher</b>';
         $mail->send();
     }
@@ -491,6 +509,15 @@ if (isset($_POST['addReminders'])) {
                 while ($StudentData = $sendtoStudentData->fetch_assoc()) {
                     $mail->addAddress($StudentData['SR_email']);
                 }
+                $getFacultyName = $mysqli->query("SELECT F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
+                $FacultyName = $getFacultyName->fetch_assoc();
+                if (!empty($FacultyName['F_mname']) || $FacultyName['F_mname'] != "" && empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] = "") {
+                    $facultyteacher = $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'] . " " . substr($FacultyName['SR_mname'], 0, 1) . ".";
+                } else if (empty($FacultyName['F_mname']) || $FacultyName['F_mname'] = "" && !empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] != "") {
+                    $facultyteacher = $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'] . " " . $FacultyName['F_suffix'];
+                } else if (empty($FacultyName['F_mname']) || $FacultyName['F_mname'] = "" && empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] = "") {
+                    $facultyteacher = $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'];
+                }
                 $mail->Subject = 'Reminder';
                 $mail->Body =  '<p>Subject: ' . $subject . '
                                 <br>
@@ -501,7 +528,7 @@ if (isset($_POST['addReminders'])) {
                                 <br>
                                 <br>
                                 Sincerely, <br>
-                                ' . $facultyname . ' <br>
+                                ' . $facultyteacher . ' <br>
                                 <b>CDSP Faculty Teacher</b>
                                 ';
                 $mail->send();
@@ -601,6 +628,26 @@ if (isset($_POST['attendanceReportButton']) && isset($_SESSION['F_number'])) {
                     $FullName = $name['SR_lname'] .  ", " . $name['SR_fname'] . " " . substr($name['SR_mname'], 0, 1) . ". " . $name['SR_suffix'];
                 }
                 $mail->addAddress($G_email['G_email']);
+
+                $getStudentName = $mysqli->query("SELECT SR_fname, SR_mname, SR_lname, SR_suffix FROM studentrecord WHERE SR_number = '{$studentID}'");
+                $StudentName = $getStudentName->fetch_assoc();
+                if (!empty($StudentName['SR_mname']) || $StudentName['SR_mname'] != "" && empty($StudentName['SR_suffix']) || $StudentName['SR_suffix'] = "") {
+                    $FullName = $StudentName['SR_lname'] .  ", " . $StudentName['SR_fname'] . " " . substr($StudentName['SR_mname'], 0, 1) . ".";
+                } else if (empty($StudentName['SR_mname']) || $StudentName['SR_mname'] = "" && !empty($StudentName['SR_suffix']) || $StudentName['SR_suffix'] != "") {
+                    $FullName = $StudentName['SR_lname'] .  ", " . $StudentName['SR_fname'] . " " . $StudentName['SR_suffix'];
+                } else if (empty($StudentName['SR_mname']) || $StudentName['SR_mname'] = "" && empty($StudentName['SR_suffix']) || $StudentName['SR_suffix'] = "") {
+                    $FullName = $StudentName['SR_lname'] .  ", " . $StudentName['SR_fname'];
+                }
+                $getFacultyName = $mysqli->query("SELECT F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
+                $FacultyName = $getFacultyName->fetch_assoc();
+                if (!empty($FacultyName['F_mname']) || $FacultyName['F_mname'] != "" && empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] = "") {
+                    $facultyname = $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'] . " " . substr($FacultyName['SR_mname'], 0, 1) . ".";
+                } else if (empty($FacultyName['F_mname']) || $FacultyName['F_mname'] = "" && !empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] != "") {
+                    $facultyname = $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'] . " " . $FacultyName['F_suffix'];
+                } else if (empty($FacultyName['F_mname']) || $FacultyName['F_mname'] = "" && empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] = "") {
+                    $facultyname = $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'];
+                }
+
                 if ($RP_attendanceReport == "CUTTING") {
                     $mail->Subject = 'SKIPPED CLASS ';
                     $mail->Body  = '<p>I hope you are doing well. I am writing to express my concern regarding your child, ' . $FullName . '\s attendance in his/her ' . $Subject . ' class from ' . $RP_reportTime . ' today. It has been reported to me that your child may have skipped this class.</p>
@@ -678,54 +725,11 @@ if (isset($_POST['updateAttendanceStatus']) && isset($_SESSION['F_number'])) {
                                        AND A_date = '{$A_date}'");
     if (mysqli_num_rows($checkAttendance) > 0) {
         $updateAttendace = $mysqli->query("UPDATE attendance SET A_status = '{$AttendanceStatus}' 
-                                       WHERE SR_number = '{$SR_number}'
-                                       AND acadYear = '{$currentSchoolYear}' 
-                                       AND A_date = '{$A_date}'");
-        $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord 
-                                        LEFT JOIN guardian 
-                                        ON studentrecord.SR_number = guardian.G_guardianOfStudent
-                                        WHERE studentrecord.SR_number = '{$SR_number}'");
-        $studentData = $getStudentInfo->fetch_assoc();
-        if (mysqli_num_rows($getStudentInfo) > 0) {
-            $FullName = $studentData['SR_lname'] .  ", " . $studentData['SR_fname'];
-
-            $mail->addAddress($studentData['G_email']);
-            $mail->Subject = 'ATTENDANCE UPDATE';
-
-            $mail->Body = '<h1>A professor has updated your child, ' . $FullName . '</h1>
-                                <br>
-                                <p>Your child was reported to be ' . $AttendanceStatus . ' on ' . $A_date . '</p>
-                                <p>Please contact your child(s) advisor about this issue.</p><br>
-                                <br>';
-            $mail->send();
-            showSweetAlert('Successfully updated attendance', 'success');
-        } else {
-            showSweetAlert('No guardian email detected', 'error');
-        }
+                                        WHERE SR_number = '{$SR_number}'
+                                        AND acadYear = '{$currentSchoolYear}' 
+                                        AND A_date = '{$A_date}'");
     } else {
-        $emailGuardian = $mysqli->query("SELECT G_email FROM guardian WHERE G_guardianOfStudent = '{$SR_number}'");
-        if (mysqli_num_rows($emailGuardian) > 0) {
-            $manualAttendance = $mysqli->query("INSERT INTO attendance(acadYear, SR_number, A_date, A_status)
-                                                VALUES ('{$currentSchoolYear}', '{$SR_number}', '{$A_date}', '{$AttendanceStatus}')");
-            $getFullname = $mysqli->query("SELECT SR_fname, SR_mname, SR_lname, SR_suffix FROM studentrecord WHERE SR_number = '{$SR_number}'");
-            if (mysqli_num_rows($getFullname) > 0) {
-                $G_email = $emailGuardian->fetch_assoc();
-                $name = $getFullname->fetch_assoc();
-                $FullName = $name['SR_lname'] .  ", " . $name['SR_fname'];
-                $mail->addAddress($G_email['G_email']);
-                $mail->Subject = 'ATTENDANCE UPDATE';
-
-                $mail->Body = '<h1>A professor has reported your child, ' . $FullName . '</h1>
-                                <br>
-                                <p>Your child was reported to be ' . $AttendanceStatus . ' on ' . $A_date . '</p>
-                                <p>Please contact your child(s) advisor about this issue.</p><br>
-                                <br>';
-                $mail->send();
-                showSweetAlert('Attendance manually added', 'success');
-            }
-        } else {
-            showSweetAlert('No Guardian Email saved', 'error');
-        }
+        $manualAttendance = $mysqli->query("INSERT INTO attendance(acadYear, SR_number, A_date, A_status) VALUES ('{$currentSchoolYear}', '{$SR_number}', '{$A_date}', '{$AttendanceStatus}')");
     }
 }
 //INCOMPLETE EMAIL MESSAGE
@@ -734,69 +738,13 @@ if (isset($_POST['resolveIssue']) && isset($_SESSION['F_number'])) {
     $SR_number = $_POST['studentName'];
     $AttendanceStatus = $mysqli->real_escape_string($_POST['A_status']);
 
-    $checkAttendance = $mysqli->query("SELECT * FROM attendance 
-                                       WHERE SR_number = '{$SR_number}'
-                                       AND acadYear = '{$currentSchoolYear}' 
-                                       AND A_date = '{$A_date}'");
+    $checkAttendance = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$SR_number}' AND acadYear = '{$currentSchoolYear}' AND A_date = '{$A_date}'");
     if (mysqli_num_rows($checkAttendance) == 1) {
-        $mysqli->query("UPDATE attendance SET A_status = '{$AttendanceStatus}' 
-                                       WHERE SR_number = '{$SR_number}'
-                                       AND acadYear = '{$currentSchoolYear}' 
-                                       AND A_date = '{$A_date}'");
-        $mysqli->query("DELETE FROM attendance_student_report 
-                        WHERE SR_number = '{$SR_number}'
-                        AND RP_reportDate = '{$A_date}'");
-
-        $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord 
-                                        LEFT JOIN guardian 
-                                        ON studentrecord.SR_number = guardian.G_guardianOfStudent
-                                        WHERE studentrecord.SR_number = '{$SR_number}'");
-        $studentData = $getStudentInfo->fetch_assoc();
-        if (mysqli_num_rows($getStudentInfo) > 0) {
-            $FullName = $studentData['SR_lname'] .  ", " . $studentData['SR_fname'];
-
-            $mail->addAddress($studentData['G_email']);
-            $mail->Subject = 'ATTENDANCE UPDATE';
-
-            $mail->Body = '<h1>A professor has resolve your child, ' . $FullName . ' attendance status</h1>
-                                <br>
-                                <p>Your child is now ' . $AttendanceStatus . ' on ' . $A_date . '</p>
-                                <p>Please contact your child(s) advisor about this issue.</p><br>
-                                <br>';
-            $mail->send();
-            showSweetAlert('Successfully updated attendance', 'success');
-        } else {
-            showSweetAlert('No guardian email detected', 'error');
-        }
+        $mysqli->query("UPDATE attendance SET A_status = '{$AttendanceStatus}' WHERE SR_number = '{$SR_number}' AND acadYear = '{$currentSchoolYear}' AND A_date = '{$A_date}'");
+        $mysqli->query("DELETE FROM attendance_student_report WHERE SR_number = '{$SR_number}' AND RP_reportDate = '{$A_date}'");
     } else {
-        $manualAttendance = $mysqli->query("INSERT INTO attendance(acadYear, SR_number, A_date, A_status)
-                                            VALUES ('{$currentSchoolYear}', '{$SR_number}', '{$A_date}', '{$AttendanceStatus}')");
-        $mysqli->query("DELETE FROM attendance_student_report 
-                        WHERE SR_number = '{$SR_number}'
-                        AND RP_reportDate = '{$A_date}' 
-                        AND RP_attendanceReport = '{$AttendanceStatus}'");
-
-        $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord 
-                                        LEFT JOIN guardian 
-                                        ON studentrecord.SR_number = guardian.G_guardianOfStudent
-                                        WHERE studentrecord.SR_number = '{$SR_number}'");
-        $studentData = $getStudentInfo->fetch_assoc();
-        if (mysqli_num_rows($getStudentInfo) > 0) {
-            $FullName = $studentData['SR_lname'] .  ", " . $studentData['SR_fname'];
-
-            $mail->addAddress($studentData['G_email']);
-            $mail->Subject = 'ATTENDANCE UPDATE';
-
-            $mail->Body = '<h1>A professor has resolve your child, ' . $FullName . ' attendance status</h1>
-                            <br>
-                            <p>Your child is now ' . $AttendanceStatus . ' on ' . $A_date . '</p>
-                            <p>Please contact your child(s) advisor about this issue.</p><br>
-                            <br>';
-            $mail->send();
-            showSweetAlert('Attendance manually added', 'success');
-        } else {
-            showSweetAlert('No guardian email detected', 'error');
-        }
+        $mysqli->query("INSERT INTO attendance(acadYear, SR_number, A_date, A_status) VALUES ('{$currentSchoolYear}', '{$SR_number}', '{$A_date}', '{$AttendanceStatus}')");
+        $mysqli->query("DELETE FROM attendance_student_report WHERE SR_number = '{$SR_number}' AND RP_reportDate = '{$A_date}' AND RP_attendanceReport = '{$AttendanceStatus}'");
     }
 }
 
