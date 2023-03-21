@@ -292,6 +292,7 @@ if (!isset($_SESSION['F_number'])) {
                                                   echo '<option selected></option>';
                                                 }
                                                 ?>
+                                                <option value="PRESENT">Present</option>
                                                 <option value="LATE">Late</option>
                                                 <option value="ABSENT">Absent</option>
                                                 <option value="EXCUSED">Excused</option>
