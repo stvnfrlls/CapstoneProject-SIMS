@@ -377,19 +377,15 @@ if (isset($_POST['encodeGrade'])) {
             $G_gradesQ4 = $forms_G_gradesQ4[$i];
 
             $mysqli->query("UPDATE grades SET G_gradesQ4 = '{$G_gradesQ4}' WHERE SR_number = '{$SR_number}' AND SR_section = '{$Section}' AND acadYear = '{$currentSchoolYear}' AND G_learningArea = '{$Subject}'");
-        }
-    }
-    if (isset($_POST['FinalGrade'])) {
-        $forms_FinalGrade = $_POST['FinalGrade'];
-        foreach ($ids as $i => $id) {
-            $SR_number = $forms_SR_number[$i];
-            $Grade = $forms_Grade[$i];
-            $Section = $forms_Section[$i];
-            $Subject = $forms_Subject[$i];
-
-            $G_finalgrade = $forms_FinalGrade[$i];
-
-            $mysqli->query("UPDATE grades SET G_finalgrade = '{$G_finalgrade}' WHERE SR_number = '{$SR_number}' AND SR_section = '{$Section}' AND acadYear = '{$currentSchoolYear}' AND G_learningArea = '{$Subject}'");
+            $checkQ4value = $mysqli->query("SELECT G_gradesQ4 FROM grades WHERE SR_number = '{$SR_number}' AND SR_section = '{$Section}' AND acadYear = '{$currentSchoolYear}' AND G_learningArea = '{$Subject}'");
+            $Q4value = $checkQ4value->fetch_assoc();
+            if ($Q4value['G_gradesQ4'] != "" || !empty($Q4value['G_gradesQ4'])) {
+                $mysqli->query("UPDATE grades SET G_finalgrade = (G_gradesQ1 + G_gradesQ2 + G_gradesQ3 + G_gradesQ4) / 4
+                                WHERE SR_number = '{$SR_number}' 
+                                AND SR_section = '{$Section}' 
+                                AND acadYear = '{$currentSchoolYear}' 
+                                AND G_learningArea = '{$Subject}'");
+            }
         }
     }
     showSweetAlert('Successfully encoded grades', 'success');
