@@ -39,7 +39,11 @@ if (isset($_GET['ID'])) {
             $this->Cell(45, 3, 'PROGRESS REPORT CARD', 0, 2, 'C');
 
             $this->SetFont('Arial', '', 7);
-            $this->Cell(45, 3, 'School Year: ' . $acadYear_Data['currentYear'] . " - " . $acadYear_Data['endYear'], 0, 2, 'C');
+            if (isset($_GET['SY'])) {
+                $this->Cell(45, 3, 'School Year: ' . $_GET['SY'], 0, 2, 'C');
+            } else {
+                $this->Cell(45, 3, 'School Year: ' . $acadYear_Data['currentYear'] . " - " . $acadYear_Data['endYear'], 0, 2, 'C');
+            }
             // Line break
             $this->Ln(5);
         }
@@ -54,7 +58,15 @@ if (isset($_GET['ID'])) {
         }
     }
 
-    $getstudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$_GET['ID']}'");
+    if (isset($_GET['SY'])) {
+        $getstudentInfo = $mysqli->query("SELECT * FROM studentrecord JOIN classlist 
+                                        ON studentrecord.SR_number = classlist.SR_number 
+                                        WHERE studentrecord.SR_number = '{$_GET['ID']}' 
+                                        AND classlist.acadYear = '{$_GET['SY']}'");
+    } else {
+        $getstudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$_GET['ID']}'");
+    }
+
     $studentInfo = $getstudentInfo->fetch_assoc();
 
     if (!empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] != "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {

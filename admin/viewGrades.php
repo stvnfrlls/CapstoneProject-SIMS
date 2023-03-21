@@ -1,17 +1,34 @@
 <?php
 require_once("../assets/php/server.php");
 
-$studentInformation = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$_GET['SR_Number']}'");
-$studentData = $studentInformation->fetch_assoc();
+if (!isset($_SESSION['AD_number'])) {
+    header('Location: auth/login');
+} else {
+    if (isset($_GET['SY'])) {
+        $studentInformation = $mysqli->query("SELECT * FROM studentrecord JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE studentrecord.SR_number = '{$_GET['SR_Number']}' AND classlist.acadYear = '{$_GET['SY']}'");
+        $studentData = $studentInformation->fetch_assoc();
 
-$GradeSection = $mysqli->query("SELECT * FROM sections WHERE S_yearLevel = '{$studentData['SR_grade']}' AND S_name = '{$studentData['SR_section']}'");
-$GradeSectionData = $GradeSection->fetch_assoc();
+        $GradeSection = $mysqli->query("SELECT * FROM sections WHERE S_yearLevel = '{$studentData['SR_grade']}' AND S_name = '{$studentData['SR_section']}' AND acadYear = '{$_GET['SY']}'");
+        $GradeSectionData = $GradeSection->fetch_assoc();
+        $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '{$_GET['SR_Number']}' AND acadYear = '{$_GET['SY']}'";
+        $resultgetStudentGrades = $mysqli->query($getStudentGrades);
 
-$Faculty = $mysqli->query("SELECT F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$GradeSectionData['S_adviser']}'");
-$FacultyData = $Faculty->fetch_assoc();
+        $Faculty = $mysqli->query("SELECT F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$GradeSectionData['S_adviser']}'");
+        $FacultyData = $Faculty->fetch_assoc();
+    } else {
+        $studentInformation = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$_GET['SR_Number']}'");
+        $studentData = $studentInformation->fetch_assoc();
 
-$getStudentGrades = "SELECT * FROM grades WHERE SR_number = '{$_GET['SR_Number']}'";
-$resultgetStudentGrades = $mysqli->query($getStudentGrades);
+        $GradeSection = $mysqli->query("SELECT * FROM sections WHERE S_yearLevel = '{$studentData['SR_grade']}' AND S_name = '{$studentData['SR_section']}'");
+        $GradeSectionData = $GradeSection->fetch_assoc();
+        $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '{$_GET['SR_Number']}'";
+        $resultgetStudentGrades = $mysqli->query($getStudentGrades);
+
+        $Faculty = $mysqli->query("SELECT F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$GradeSectionData['S_adviser']}'");
+        $FacultyData = $Faculty->fetch_assoc();
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -207,13 +224,26 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                 </div>
                                 <div class="container-xl px-4 mt-4" style="padding-bottom:0px">
                                     <nav class="nav">
-                                        <a class="nav-link " href="../admin/viewStudent.php?SR_Number=<?php echo $_GET['SR_Number'] ?>">Profile</a>
-                                        <a class="nav-link active ms-0" href="../admin/viewGrades.php?SR_Number=<?php echo $_GET['SR_Number'] ?>" style="color: #c02628;">Report Card</a>
+                                        <?php
+                                        if (isset($_GET['SY'])) {
+                                            echo '<a class="nav-link " href="../admin/viewStudent.php?SY=' . $_GET['SY'] . '&SR_Number=' . $_GET['SR_Number'] . '">Profile</a>';
+                                            echo '<a class="nav-link active ms-0" href="../admin/viewGrades.php?SY=' . $_GET['SY'] . '&SR_Number=' . $_GET['SR_Number'] . '" style="color: #c02628;">Report Card</a>';
+                                        } else {
+                                            echo '<a class="nav-link " href="../admin/viewStudent.php?SR_Number=' . $_GET['SR_Number'] . '">Profile</a>';
+                                            echo '<a class="nav-link active ms-0" href="../admin/viewGrades.php?SR_Number=' . $_GET['SR_Number'] . '" style="color: #c02628;">Report Card</a>';
+                                        }
+                                        ?>
                                     </nav>
                                     <div class="border-bottom"></div>
                                 </div>
                                 <div style="text-align: right; margin-top: 20px">
-                                    <a href="../reports/ReportCard.php?ID=<?php echo  $studentData['SR_number'] ?>" class="btn btn-light" style=" text-align:center; font-size: 13px">Download <i class="fa fa-download" style="font-size: 12px;"></i></a>
+                                    <?php
+                                    if (isset($_GET['SY'])) {
+                                        echo '<a href="../reports/ReportCard.php?SY=' . $_GET['SY'] . '&ID=' . $studentData['SR_number'] . '" class="btn btn-primary" style=" text-align:center; font-size: 13px">Download <i class="fa fa-download" style="font-size: 12px;"></i></a>';
+                                    } else {
+                                        echo '<a href="../reports/ReportCard.php?ID=' . $studentData['SR_number'] . '" class="btn btn-primary" style=" text-align:center; font-size: 13px">Download <i class="fa fa-download" style="font-size: 12px;"></i></a>';
+                                    }
+                                    ?>
                                     <button class="btn btn-light" onclick="location.href='../admin/viewStudent.php'">Back</button>
                                 </div>
                                 <div class="tab-content tab-content-basic">
@@ -285,7 +315,12 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                                                 </thead>
                                                                 <tbody>
                                                                     <?php
-                                                                    $studentGrades = $mysqli->query("SELECT * FROM grades WHERE SR_number = '{$_GET['SR_Number']}' AND acadYear = '{$currentSchoolYear}'");
+                                                                    if (isset($_GET['SY'])) {
+                                                                        $studentGrades = $mysqli->query("SELECT * FROM grades WHERE SR_number = '{$_GET['SR_Number']}' AND acadYear = '{$_GET['SY']}'");
+                                                                    } else {
+                                                                        $studentGrades = $mysqli->query("SELECT * FROM grades WHERE SR_number = '{$_GET['SR_Number']}' AND acadYear = '{$currentSchoolYear}'");
+                                                                    }
+
                                                                     if (mysqli_num_rows($studentGrades) > 0) {
                                                                         while ($studentGradesData = $studentGrades->fetch_assoc()) { ?>
                                                                             <tr>
@@ -356,7 +391,11 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                                                 <td class="hatdog"> General Average</td>
                                                                 <td class="hatdog">
                                                                     <?php
-                                                                    $getGradeAve = $mysqli->query("SELECT ROUND(AVG(G_finalgrade)) AS average FROM grades WHERE SR_number = '{$_GET['SR_Number']}' AND acadYear = '{$currentSchoolYear}'");
+                                                                    if (isset($_GET['SY'])) {
+                                                                        $getGradeAve = $mysqli->query("SELECT ROUND(AVG(G_finalgrade)) AS average FROM grades WHERE SR_number = '{$_GET['SR_Number']}' AND acadYear = '{$_GET['SY']}'");
+                                                                    } else {
+                                                                        $getGradeAve = $mysqli->query("SELECT ROUND(AVG(G_finalgrade)) AS average FROM grades WHERE SR_number = '{$_GET['SR_Number']}' AND acadYear = '{$currentSchoolYear}'");
+                                                                    }
                                                                     $GradeAve = $getGradeAve->fetch_assoc();
 
                                                                     echo $GradeAve['average'];
@@ -420,7 +459,18 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                                                 </thead>
                                                                 <tbody>
                                                                     <?php
-                                                                    $getBehaviorData = $mysqli->query("SELECT 
+                                                                    if (isset($_GET['SY'])) {
+                                                                        $getBehaviorData = $mysqli->query("SELECT 
+                                                                                                    behavior_category.B_ID, behavior_category.core_value_area, behavior_category.core_value_subheading,
+                                                                                                    behavior.SR_number, behavior.CV_Area, behavior.CV_valueQ1,
+                                                                                                    behavior.CV_valueQ2, behavior.CV_valueQ3, behavior.CV_valueQ4
+                                                                                                    FROM behavior_category
+                                                                                                    INNER JOIN behavior 
+                                                                                                    ON behavior_category.core_value_area = behavior.CV_Area
+                                                                                                    WHERE behavior.SR_number = '{$_GET['SR_Number']}'
+                                                                                                    AND behavior.acadYear = '{$_GET['SY']}'");
+                                                                    } else {
+                                                                        $getBehaviorData = $mysqli->query("SELECT 
                                                                                                     behavior_category.B_ID, behavior_category.core_value_area, behavior_category.core_value_subheading,
                                                                                                     behavior.SR_number, behavior.CV_Area, behavior.CV_valueQ1,
                                                                                                     behavior.CV_valueQ2, behavior.CV_valueQ3, behavior.CV_valueQ4
@@ -429,6 +479,8 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                                                                                     ON behavior_category.core_value_area = behavior.CV_Area
                                                                                                     WHERE behavior.SR_number = '{$_GET['SR_Number']}'
                                                                                                     AND behavior.acadYear = '{$currentSchoolYear}'");
+                                                                    }
+
                                                                     $getBehaviorAreas = $mysqli->query("SELECT * FROM behavior_category");
                                                                     $BehaviorDataArray = array();
                                                                     while ($DataBehaviorCategory = $getBehaviorAreas->fetch_assoc()) {
@@ -550,6 +602,10 @@ $resultgetStudentGrades = $mysqli->query($getStudentGrades);
                                                                     <tr>
                                                                         <td class="hatdog">No. of Days Present</td>
                                                                         <?php
+                                                                        if (isset($_GET['SY'])) {
+                                                                            $currentSchoolYear = $_GET['SY'];
+                                                                        }
+
                                                                         $SEP = $mysqli->query("SELECT COUNT(A_time_IN) FROM attendance WHERE SR_number = '{$_GET['SR_Number']}' AND MONTHNAME(A_date) = 'September' AND acadYear = '{$currentSchoolYear}'");
                                                                         $SEPvalue = $SEP->fetch_assoc();
                                                                         echo '<td class="hatdog">' . $SEPvalue['COUNT(A_time_IN)'] . '</td>';
