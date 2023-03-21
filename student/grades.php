@@ -277,10 +277,8 @@ if (!isset($_SESSION['SR_number'])) {
                                                                         } else {
                                                                             echo '<td class="hatdog"></td>';
                                                                         }
-                                                                        ?>
 
-                                                                        <?php
-                                                                        if (!empty($studentGradesData['G_finalgrade'])) {
+                                                                        if (mysqli_num_rows($getquarterTag4) > 0 && !empty($studentGradesData['G_finalgrade'])) {
                                                                             $sum = $studentGradesData['G_gradesQ1'] + $studentGradesData['G_gradesQ2'] + $studentGradesData['G_gradesQ3'] + $studentGradesData['G_gradesQ4'];
                                                                             $average = $sum / 4;
 
