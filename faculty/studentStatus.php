@@ -257,7 +257,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                                                         ?>
                                                                                                     </select>
                                                                                                 <?php
-                                                                                                } else { ?>
+                                                                                                } elseif ($getAvgGrade['finalgrade'] <= 74) { ?>
                                                                                                     <select class="form-select" name="studentStatus[]" id="studentStatus" aria-label="Default select example">
                                                                                                         <option value="REPEAT">Retain</option>
                                                                                                         <option value="DROP">Drop</option>
@@ -278,7 +278,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                                                     }
                                                                                                     $gradeLevel = json_encode($moveUpTo_Label);
                                                                                                     echo "<script>var gradeLevel = " . $gradeLevel . ";</script>";
-                                                                                                    
+
                                                                                                     echo '<select class="form-select text-center" aria-label="Default select example" disabled><option selected>' .  $moveUpTo_Label . '</option></select>';
                                                                                                 } elseif ($data['SR_status'] == "REPEAT") {
                                                                                                     if ($data['SR_grade'] == 'KINDER') {
@@ -393,9 +393,9 @@ if (!isset($_SESSION['F_number'])) {
         const StudentStatusForm = document.getElementById('StudentStatusForm');
         const setStudentStatus = document.getElementById('setStudentStatus');
         studentStatus.addEventListener('change', function() {
-            if(studentStatus.value == "TRANSFER") {
+            if (studentStatus.value == "TRANSFER") {
                 moveUpTo.setAttribute('disabled', true);
-            } else if(studentStatus.value == "MOVEUP") {
+            } else if (studentStatus.value == "MOVEUP") {
                 moveUpTo.removeAttribute('disabled');
             }
         });

@@ -327,8 +327,8 @@ if (!isset($_SESSION['AD_number'])) {
                                                                             <?php
                                                                             $rowCount = 1;
                                                                             if (isset($_GET['GradeLevel']) && isset($_GET['section'])) {
-                                                                                $ListofStudents = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number IN 
-                                                                                                                (SELECT SR_number FROM classlist 
+                                                                                $ListofStudents = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number
+                                                                                                                IN (SELECT SR_number FROM classlist 
                                                                                                                 WHERE SR_grade = '{$_GET['GradeLevel']}' 
                                                                                                                 AND SR_section = '{$_GET['section']}' 
                                                                                                                 AND acadYear = '{$currentSchoolYear}')
@@ -439,16 +439,16 @@ if (!isset($_SESSION['AD_number'])) {
                                                                                                     } else {
                                                                                                         $moveUpTo_Label = "Grade " . $sectionID['S_yearLevel'] . " - " . $sectionID['S_name'];
                                                                                                     }
-                                                                                                    echo '<select class="form-select text-center" aria-label="Default select example" disabled><option selected>' .  $moveUpTo_Label . '</option></select>';
+                                                                                                    echo '<select class="form-select" name="moveUpTo[]" aria-label="Default select example"><option value="' . $sectionID['sectionID'] . '" selected>' .  $moveUpTo_Label . '</option></select>';
                                                                                                 } elseif ($StudentData['SR_status'] == "REPEAT") {
                                                                                                     if ($StudentData['SR_grade'] == 'KINDER') {
                                                                                                         $retainGradeLevel = $StudentData['SR_grade'] . " - " . $StudentData['SR_section'];
                                                                                                     } else {
                                                                                                         $retainGradeLevel = "Grade " . $StudentData['SR_grade'] . " - " . $StudentData['SR_section'];
                                                                                                     }
-                                                                                                    echo '<select class="form-select" id="moveUpTo" aria-label="Default select example" disabled><option selected>' . $retainGradeLevel . '</option></select>';
+                                                                                                    echo '<select class="form-select" name="moveUpTo[]" id="moveUpTo" aria-label="Default select example" disabled><option selected>' . $retainGradeLevel . '</option></select>';
                                                                                                 } else if ($StudentData['SR_status'] == "DROP") {
-                                                                                                    echo '<select class="form-select" id="moveUpTo" aria-label="Default select example" disabled><option selected>DROPPED</option></select>';
+                                                                                                    echo '<select class="form-select" name="moveUpTo[]" id="moveUpTo" aria-label="Default select example" disabled><option selected>DROPPED</option></select>';
                                                                                                 } else if ($getAvgGrade['finalgrade'] >= 75) { ?>
                                                                                                     <select class="form-select" name="moveUpTo[]" id="moveUpTo" aria-label="Default select example" required>
                                                                                                         <?php
