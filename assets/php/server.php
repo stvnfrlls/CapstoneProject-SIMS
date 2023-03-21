@@ -241,42 +241,45 @@ if (isset($_POST['markAsDone'])) {
 
 //Faculty Process
 if (isset($_POST['student'])) {
-    $studentID = $_POST['student'];
+    if (empty($_POST['student']) || $_POST['student'] == "") {
+        showSweetAlert('NO INPUTS', 'error');
+    } else if (!empty($_POST['student']) || $_POST['student'] != "") {
+        $studentID = $_POST['student'];
 
-    $date = date("Y-m-d");
-    $time = date("h:i A");
+        $date = date("Y-m-d");
+        $time = date("h:i A");
 
-    $checkAttendance = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$studentID}' AND A_date = '{$date}'");
-    $attendanceData = $checkAttendance->fetch_assoc();
+        $checkAttendance = $mysqli->query("SELECT * FROM attendance WHERE SR_number = '{$studentID}' AND A_date = '{$date}'");
+        $attendanceData = $checkAttendance->fetch_assoc();
 
-    $sendtoGuardianData = $mysqli->query("SELECT G_email FROM guardian WHERE G_guardianOfStudent 
+        $sendtoGuardianData = $mysqli->query("SELECT G_email FROM guardian WHERE G_guardianOfStudent 
                                         IN 
                                         (SELECT SR_number FROM classlist WHERE SR_number = '{$studentID}' AND acadYear = '{$currentSchoolYear}')");
-    $sendtoGuardian = $sendtoGuardianData->fetch_assoc();
-    $getStudentName = $mysqli->query("SELECT SR_fname, SR_mname, SR_lname, SR_suffix FROM studentrecord WHERE SR_number = '{$studentID}'");
-    $StudentName = $getStudentName->fetch_assoc();
-    if (!empty($StudentName['SR_mname']) || $StudentName['SR_mname'] != "" && empty($StudentName['SR_suffix']) || $StudentName['SR_suffix'] = "") {
-        $studentname = $StudentName['SR_lname'] .  ", " . $StudentName['SR_fname'] . " " . substr($StudentName['SR_mname'], 0, 1) . ".";
-    } else if (empty($StudentName['SR_mname']) || $StudentName['SR_mname'] = "" && !empty($StudentName['SR_suffix']) || $StudentName['SR_suffix'] != "") {
-        $studentname = $StudentName['SR_lname'] .  ", " . $StudentName['SR_fname'] . " " . $StudentName['SR_suffix'];
-    } else if (empty($StudentName['SR_mname']) || $StudentName['SR_mname'] = "" && empty($StudentName['SR_suffix']) || $StudentName['SR_suffix'] = "") {
-        $studentname = $StudentName['SR_lname'] .  ", " . $StudentName['SR_fname'];
-    }
-    $getFacultyName = $mysqli->query("SELECT F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
-    $FacultyName = $getFacultyName->fetch_assoc();
-    if (!empty($FacultyName['F_mname']) || $FacultyName['F_mname'] != "" && empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] = "") {
-        $facultyteacher = $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'] . " " . substr($FacultyName['SR_mname'], 0, 1) . ".";
-    } else if (empty($FacultyName['F_mname']) || $FacultyName['F_mname'] = "" && !empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] != "") {
-        $facultyteacher = $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'] . " " . $FacultyName['F_suffix'];
-    } else if (empty($FacultyName['F_mname']) || $FacultyName['F_mname'] = "" && empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] = "") {
-        $facultyteacher = $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'];
-    }
-    if (mysqli_num_rows($checkAttendance) == 0) {
-        $timeIN = $mysqli->query("INSERT INTO attendance (acadYear, SR_number, A_date, A_time_IN, A_status) VALUES ('{$currentSchoolYear}', '{$studentID}', '{$date}', '{$time}', 'PRESENT')");
-        $mail->addAddress($sendtoGuardian['G_email']);
-        $mail->Subject = 'Attendance (' . date('M d, Y') . ')';
+        $sendtoGuardian = $sendtoGuardianData->fetch_assoc();
+        $getStudentName = $mysqli->query("SELECT SR_fname, SR_mname, SR_lname, SR_suffix FROM studentrecord WHERE SR_number = '{$studentID}'");
+        $StudentName = $getStudentName->fetch_assoc();
+        if (!empty($StudentName['SR_mname']) || $StudentName['SR_mname'] != "" && empty($StudentName['SR_suffix']) || $StudentName['SR_suffix'] = "") {
+            $studentname = $StudentName['SR_lname'] .  ", " . $StudentName['SR_fname'] . " " . substr($StudentName['SR_mname'], 0, 1) . ".";
+        } else if (empty($StudentName['SR_mname']) || $StudentName['SR_mname'] = "" && !empty($StudentName['SR_suffix']) || $StudentName['SR_suffix'] != "") {
+            $studentname = $StudentName['SR_lname'] .  ", " . $StudentName['SR_fname'] . " " . $StudentName['SR_suffix'];
+        } else if (empty($StudentName['SR_mname']) || $StudentName['SR_mname'] = "" && empty($StudentName['SR_suffix']) || $StudentName['SR_suffix'] = "") {
+            $studentname = $StudentName['SR_lname'] .  ", " . $StudentName['SR_fname'];
+        }
+        $getFacultyName = $mysqli->query("SELECT F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
+        $FacultyName = $getFacultyName->fetch_assoc();
+        if (!empty($FacultyName['F_mname']) || $FacultyName['F_mname'] != "" && empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] = "") {
+            $facultyteacher = $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'] . " " . substr($FacultyName['SR_mname'], 0, 1) . ".";
+        } else if (empty($FacultyName['F_mname']) || $FacultyName['F_mname'] = "" && !empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] != "") {
+            $facultyteacher = $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'] . " " . $FacultyName['F_suffix'];
+        } else if (empty($FacultyName['F_mname']) || $FacultyName['F_mname'] = "" && empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] = "") {
+            $facultyteacher = $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'];
+        }
+        if (mysqli_num_rows($checkAttendance) == 0) {
+            $timeIN = $mysqli->query("INSERT INTO attendance (acadYear, SR_number, A_date, A_time_IN, A_status) VALUES ('{$currentSchoolYear}', '{$studentID}', '{$date}', '{$time}', 'PRESENT')");
+            $mail->addAddress($sendtoGuardian['G_email']);
+            $mail->Subject = 'Attendance (' . date('M d, Y') . ')';
 
-        $mail->Body = '<p>I hope you are doing well. I am writing to inform you that your child, ' . $studentname . ', has successfully entered our school and joined their classroom.</p>
+            $mail->Body = '<p>I hope you are doing well. I am writing to inform you that your child, ' . $studentname . ', has successfully entered our school and joined their classroom.</p>
                        <br>
                        <p>Here are the attendance details for your child\'s first day:</p><br>
                        <b>Time: </b>' . date('h:i A', strtotime($time)) . '<br>
@@ -286,13 +289,13 @@ if (isset($_POST['student'])) {
                        <br>
                        <p>' . $facultyteacher . '</p>
                        <b>CDSP Faculty Teacher</b>';
-        $mail->send();
-    } else if (empty($attendanceData['A_time_OUT']) || $attendanceData['A_time_OUT'] = NULL) {
-        $timeOUT = $mysqli->query("UPDATE attendance SET A_time_OUT = '{$time}' WHERE SR_number = '{$studentID}'");
-        $mail->addAddress($sendtoGuardian['G_email']);
-        $mail->Subject = 'Departure (' . date('M d, Y') . ')';
+            $mail->send();
+        } else if (empty($attendanceData['A_time_OUT']) || $attendanceData['A_time_OUT'] = NULL) {
+            $timeOUT = $mysqli->query("UPDATE attendance SET A_time_OUT = '{$time}' WHERE SR_number = '{$studentID}' AND A_date = CURDATE()");
+            $mail->addAddress($sendtoGuardian['G_email']);
+            $mail->Subject = 'Departure (' . date('M d, Y') . ')';
 
-        $mail->Body  = '<p>I hope you are doing well. I am writing to inform you that your child, ' . $studentname . ',  has successfully left our school and their classroom.</p>
+            $mail->Body  = '<p>I hope you are doing well. I am writing to inform you that your child, ' . $studentname . ',  has successfully left our school and their classroom.</p>
                         <br>
                         <p>Here are the attendance details for your child\'s departure time: </p>
                         <b>Time: </b>' . date('h:i A', strtotime($time)) . '<br>
@@ -302,7 +305,8 @@ if (isset($_POST['student'])) {
                         <br>
                         <p>' . $facultyteacher . '</p>
                         <b>CDSP Faculty Teacher</b>';
-        $mail->send();
+            $mail->send();
+        }
     }
 }
 if (isset($_POST['encodeGrade'])) {

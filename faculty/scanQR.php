@@ -15,25 +15,28 @@ if (!isset($_SESSION['F_number'])) {
 
         $getNOTtimedIN = $mysqli->query("SELECT SR_lname, SR_fname, SR_number FROM studentrecord 
                                         WHERE SR_number 
-                                        NOT IN (SELECT SR_number FROM attendance WHERE A_date = '{$today}')");
+                                        NOT IN (SELECT SR_number FROM attendance WHERE A_date = CURDATE())
+                                        AND SR_grade = 6");
         while ($studentNumber_NOTtimedIN = $getNOTtimedIN->fetch_assoc()) {
             $NOTtimedIN[] = $studentNumber_NOTtimedIN;
         }
 
         $getNOTtimedOUT = $mysqli->query("SELECT SR_lname, SR_fname, SR_number FROM studentrecord 
                                         WHERE SR_number 
-                                        NOT IN (SELECT SR_number FROM attendance WHERE A_time_OUT = NULL AND A_status != NULL AND A_date = '{$today}')");
+                                        IN (SELECT SR_number FROM attendance WHERE A_time_OUT IS NULL AND A_status IS NOT NULL AND A_date = CURDATE())
+                                        AND SR_grade = 6");
         while ($studentNumber_NOTtimedOUT = $getNOTtimedOUT->fetch_assoc()) {
             $NOTtimedOUT[] = $studentNumber_NOTtimedOUT;
         }
 
         $gettimedOUT = $mysqli->query("SELECT SR_lname, SR_fname, SR_number FROM studentrecord 
-                                    WHERE SR_number 
-                                    NOT IN (SELECT SR_number FROM attendance WHERE A_time_OUT != NULL AND A_status != NULL AND A_date = '{$today}')");
+                                        WHERE SR_number 
+                                        IN (SELECT SR_number FROM attendance WHERE A_time_OUT IS NOT NULL AND A_status IS NOT NULL AND A_date = CURDATE())
+                                        AND SR_grade = 6");
         while ($studentNumber_timedOUT = $gettimedOUT->fetch_assoc()) {
             $timedOUT[] = $studentNumber_timedOUT;
         }
-
+        var_dump($NOTtimedOUT);
         $NOTtimedIN_js = json_encode($NOTtimedIN);
         $NOTtimedOUT_js = json_encode($NOTtimedOUT);
         $timedOUT_js = json_encode($timedOUT);
@@ -217,6 +220,14 @@ if (!isset($_SESSION['F_number'])) {
                                                     width: 300px;
                                                     /* Set the width to 200 pixels */
                                                 }
+
+                                                .form-div {
+                                                    display: flex;
+                                                    justify-content: center;
+                                                    align-items: center;
+                                                    width: 400px;
+                                                    margin: 0 auto;
+                                                }
                                             </style>
 
                                             <div class="camera-container" id="camera">
@@ -224,41 +235,18 @@ if (!isset($_SESSION['F_number'])) {
                                                     <video id="preview"></video>
                                                 </div>
                                             </div>
-                                            <div class="camera-options mt-2">
+                                            <div class="camera-options m-2">
                                                 <div class="row">
                                                     <select class="form-select" id="camera-select"></select>
                                                 </div>
                                             </div>
 
-
-
-
-                                            <form style="text-align: center;">
-                                                <style>
-                                                    @media (max-width: 414px) {
-                                                        .custom {
-                                                            width: 100%
-                                                        }
-                                                    }
-
-                                                    @media (max-width: 768px) {
-                                                        .custom {
-                                                            width: 100%;
-                                                        }
-                                                    }
-
-                                                    @media (max-width: 1024px) {
-                                                        .custom {
-                                                            width: 100%;
-
-                                                        }
-                                                    }
-                                                </style>
-                                            </form>
-                                            <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="qr_form" class="form-horizontal">
-                                                <input type="hidden" name="student" id="input1">
-                                                <input type="hidden" name="fetcher" id="input2">
-                                            </form>
+                                            <div class="form-div">
+                                                <form action="<?php $_SERVER["PHP_SELF"] ?>" method="post" id="qr_form" class="form-horizontal">
+                                                    <input type="number" class="form-control mb-2" name="student" id="input1" placeholder="LRN" required>
+                                                    <input type="submit" class="btn btn-primary" name="present" style="display: block;margin: 0 auto;">
+                                                </form>
+                                            </div>
                                         </div>
 
                                     </div>
@@ -358,8 +346,7 @@ if (!isset($_SESSION['F_number'])) {
                     })
                 }
             });
-        } 
-        if (NOTtimedOUTDATA) {
+        } else if (NOTtimedOUTDATA) {
             Swal.fire({
                 title: `Student (${NOTtimedOUTDATA.SR_lname}, ${NOTtimedOUTDATA.SR_fname}) ready to go home?`,
                 confirmButtonText: 'Proceed',
@@ -370,8 +357,7 @@ if (!isset($_SESSION['F_number'])) {
                     })
                 }
             })
-        } 
-        if (timedOUTDATA) {
+        } else if (timedOUTDATA) {
             Swal.fire({
                 title: `Student (${timedOUTDATA.SR_lname}, ${timedOUTDATA .SR_fname}) has already timed out.`,
                 confirmButtonText: 'Proceed',
