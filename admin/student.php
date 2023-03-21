@@ -340,23 +340,27 @@ if (!isset($_SESSION['AD_number'])) {
                                   </thead>
                                   <tbody>
                                     <?php
-                                    if (isset($_GET['SY'])) {
-                                      $ListofStudents = "SELECT * FROM studentrecord JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE classlist.acadYear = '{$_GET['SY']}' ORDER BY SR_lname";
+                                    if (isset($_GET['SY']) && !isset($_GET['GradeLevel'])  && !isset($_GET['section'])) {
+                                      $ListofStudents = $mysqli->query("SELECT * FROM studentrecord RIGHT JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE classlist.acadYear = '{$_GET['SY']}' ORDER BY SR_lname");
+                                    } else if (isset($_GET['SY']) && isset($_GET['GradeLevel'])  && !isset($_GET['section'])) {
+                                      $ListofStudents = $mysqli->query("SELECT * FROM studentrecord RIGHT JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE classlist.SR_grade = '{$_GET['GradeLevel']}' AND classlist.acadYear = '{$_GET['SY']}' ORDER BY SR_lname");
                                     } else if (isset($_GET['SY']) && isset($_GET['GradeLevel'])  && isset($_GET['section'])) {
-                                      $ListofStudents = "SELECT * FROM studentrecord JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE classlist.SR_grade = '{$_GET['GradeLevel']}' AND classlist.acadYear = '{$_GET['SY']}' ORDER BY SR_lname";
+                                      $ListofStudents = $mysqli->query("SELECT * FROM studentrecord RIGHT JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE classlist.SR_grade = '{$_GET['GradeLevel']}' AND classlist.SR_section = '{$_GET['section']}' AND classlist.acadYear = '{$_GET['SY']}' ORDER BY SR_lname");
                                     }
 
-                                    if (!isset($_GET['SY'])) {
-                                      $ListofStudents = "SELECT * FROM studentrecord JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE classlist.acadYear = '{$currentSchoolYear}' ORDER BY SR_lname";
-                                    } elseif (!isset($_GET['SY']) && isset($_GET['GradeLevel'])  && isset($_GET['section'])) {
-                                      $ListofStudents = "SELECT * FROM studentrecord JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE classlist.SR_grade = '{$_GET['GradeLevel']}' AND classlist.acadYear = '{$currentSchoolYear}' ORDER BY SR_lname";
+                                    if (!isset($_GET['SY']) && !isset($_GET['GradeLevel'])  && !isset($_GET['section'])) {
+                                      $ListofStudents = $mysqli->query("SELECT * FROM studentrecord JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE classlist.acadYear = '{$currentSchoolYear}' ORDER BY SR_lname");
+                                    } elseif (!isset($_GET['SY']) && isset($_GET['GradeLevel'])) {
+                                      $ListofStudents = $mysqli->query("SELECT * FROM studentrecord JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE classlist.SR_grade = '{$_GET['GradeLevel']}' AND classlist.acadYear = '{$currentSchoolYear}' ORDER BY SR_lname");
+                                    } else if (!isset($_GET['SY']) && isset($_GET['GradeLevel'])  && isset($_GET['section'])) {
+                                      $ListofStudents = $mysqli->query("SELECT * FROM studentrecord JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE classlist.SR_grade = '{$_GET['GradeLevel']}' AND classlist.SR_section = '{$_GET['section']}' AND classlist.acadYear = '{$currentSchoolYear}' ORDER BY SR_lname");
+                                    } else {
+                                      $ListofStudents = $mysqli->query("SELECT * FROM studentrecord RIGHT JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE classlist.acadYear = '{$currentSchoolYear}' ORDER BY SR_lname");
                                     }
-
-                                    $resultListofStudents = $mysqli->query($ListofStudents);
                                     $rowCount = 1;
 
-                                    if (mysqli_num_rows($resultListofStudents)) {
-                                      while ($data = $resultListofStudents->fetch_assoc()) { ?>
+                                    if (mysqli_num_rows($ListofStudents) > 0) {
+                                      while ($data = $ListofStudents->fetch_assoc()) { ?>
                                         <tr>
                                           <td class="tablestyle"><?php echo $rowCount ?></td>
                                           <td class="tablestyle"><?php echo $data['SR_number'] ?></td>
@@ -370,25 +374,30 @@ if (!isset($_SESSION['AD_number'])) {
                                             ?>
                                           </td>
                                           <td class="tablestyle">
-                                            <a href="viewStudent.php?SR_Number=<?php echo $data['SR_number'] ?>">
-                                              <?php
-                                              $getstudentname = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$data['SR_number']}'");
-                                              $studentname = $getstudentname->fetch_assoc();
+                                            <?php
+                                            if (isset($_GET['SY'])) {
+                                              echo '<a href="viewStudent.php?SY=' . $_GET['SY'] . '&SR_Number=' . $data['SR_number'] . '">';
+                                            } else {
+                                              echo '<a href="viewStudent.php?SR_Number=' . $data['SR_number'] . '">';
+                                            }
 
-                                              if (!empty($studentname['SR_mname']) || $studentname['SR_mname'] != "" && empty($studentname['SR_suffix']) || $studentname['SR_suffix'] = "") {
-                                                echo $studentname['SR_lname'] .  ", " . $studentname['SR_fname'] . " " . substr($studentname['SR_mname'], 0, 1) . ".";
-                                              } else if (empty($studentname['SR_mname']) || $studentname['SR_mname'] = "" && !empty($studentname['SR_suffix']) || $studentname['SR_suffix'] != "") {
-                                                echo $studentname['SR_lname'] .  ", " . $studentname['SR_fname'] . " " . $studentname['SR_suffix'];
-                                              } else if (empty($studentname['SR_mname']) || $studentname['SR_mname'] = "" && empty($studentname['SR_suffix']) || $studentname['SR_suffix'] = "") {
-                                                echo $studentname['SR_lname'] .  ", " . $studentname['SR_fname'];
-                                              }
-                                              ?>
+                                            $getstudentname = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$data['SR_number']}'");
+                                            $studentname = $getstudentname->fetch_assoc();
+
+                                            if (!empty($studentname['SR_mname']) || $studentname['SR_mname'] != "" && empty($studentname['SR_suffix']) || $studentname['SR_suffix'] = "") {
+                                              echo $studentname['SR_lname'] .  ", " . $studentname['SR_fname'] . " " . substr($studentname['SR_mname'], 0, 1) . ".";
+                                            } else if (empty($studentname['SR_mname']) || $studentname['SR_mname'] = "" && !empty($studentname['SR_suffix']) || $studentname['SR_suffix'] != "") {
+                                              echo $studentname['SR_lname'] .  ", " . $studentname['SR_fname'] . " " . $studentname['SR_suffix'];
+                                            } else if (empty($studentname['SR_mname']) || $studentname['SR_mname'] = "" && empty($studentname['SR_suffix']) || $studentname['SR_suffix'] = "") {
+                                              echo $studentname['SR_lname'] .  ", " . $studentname['SR_fname'];
+                                            }
+                                            ?>
                                             </a>
                                           </td>
                                         </tr>
                                       <?php $rowCount++;
                                       }
-                                    } else if (mysqli_num_rows($resultListofStudents) == 0) { ?>
+                                    } else { ?>
                                       <tr>
                                         <td colspan="10">No Data.</td>
                                       </tr>
