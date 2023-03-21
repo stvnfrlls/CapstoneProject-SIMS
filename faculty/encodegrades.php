@@ -387,22 +387,10 @@ if (!isset($_SESSION['F_number'])) {
                                             <td class="hatdog">
                                               <?php
                                               if (!empty($average) || $average != 0) {
-                                                if ($average >= 90) {
-                                                  echo "Outstanding";
-                                                } else if ($average >= 85 || $average <= 89) {
-                                                  echo "Very Satisfactory";
-                                                } else if ($average >= 80 || $average <= 84) {
-                                                  echo "Satisfactory";
-                                                } else if ($average >= 75 || $average <= 79) {
-                                                  echo "Fairly Satisfactory";
-                                                } else if ($average < 75) {
-                                                  echo "Did Not Meet Expectations";
-                                                } else if ($currentQuarter == 0) {
-                                                  echo "Academic year not yeilt available";
-                                                } else if ($g2 == 0 || $g3 == 0 || $g4 == 0) {
-                                                  echo "Grades are incomplete";
-                                                } else {
+                                                if ($average < 75) {
                                                   echo "Failed";
+                                                } else {
+                                                  echo "Passed";
                                                 }
                                               }
                                               ?>
