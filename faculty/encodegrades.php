@@ -169,7 +169,7 @@ if (!isset($_SESSION['F_number'])) {
                     <div style="text-align: right; margin-bottom: 15px">
                       <?php
                       if (isset($_GET['Section']) && isset($_GET['Subject'])) {
-                        $checkFormStatus = $mysqli->query("SELECT quarterStatus FROM quartertable WHERE quarterTag = 'FORMS' AND quarterStatus = 'OPEN'");
+                        $checkFormStatus = $mysqli->query("SELECT quarterStatus FROM quartertable WHERE quarterTag = 'FORMS' AND quarterStatus = 'enabled'");
                         if (mysqli_num_rows($checkFormStatus) != 0) {
                           echo '<button id="saveGrades" class="btn btn-primary me-2">Save</button>';
                         } else {
