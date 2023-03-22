@@ -634,7 +634,7 @@ if (isset($_POST['attendanceReportButton']) && isset($_SESSION['F_number'])) {
                 }
                 $mail->addAddress($G_email['G_email']);
 
-                $getStudentName = $mysqli->query("SELECT SR_fname, SR_mname, SR_lname, SR_suffix FROM studentrecord WHERE SR_number = '{$studentID}'");
+                $getStudentName = $mysqli->query("SELECT SR_fname, SR_mname, SR_lname, SR_suffix FROM studentrecord WHERE SR_number = '{$SR_number}'");
                 $StudentName = $getStudentName->fetch_assoc();
                 if (!empty($StudentName['SR_mname']) || $StudentName['SR_mname'] != "" && empty($StudentName['SR_suffix']) || $StudentName['SR_suffix'] = "") {
                     $FullName = $StudentName['SR_lname'] .  ", " . $StudentName['SR_fname'] . " " . substr($StudentName['SR_mname'], 0, 1) . ".";
