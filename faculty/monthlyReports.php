@@ -338,7 +338,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                                             </td>
                                                                                             <td class="tabledata">
                                                                                                 <?php
-                                                                                                $TARDY = $mysqli->query("SELECT COUNT(A_status) FROM attendance WHERE SR_number = '{$AttendanceData['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}' AND A_status != 'PRESENT' || A_status != 'ABSENT'");
+                                                                                                $TARDY = $mysqli->query("SELECT COUNT(A_status) FROM attendance WHERE SR_number = '{$AttendanceData['SR_number']}' AND MONTHNAME(A_date) = '{$_GET['month']}' AND acadYear = '{$currentSchoolYear}' AND A_status != 'PRESENT' && A_status != 'ABSENT'");
                                                                                                 $TARDYvalue = $TARDY->fetch_assoc();
 
                                                                                                 echo $TARDYvalue['COUNT(A_status)'];
