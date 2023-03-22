@@ -360,14 +360,17 @@ if (!isset($_SESSION['F_number'])) {
             Swal.fire({
                 title: `Student (${timedOUTDATA.SR_lname}, ${timedOUTDATA .SR_fname}) has already timed out.`,
                 confirmButtonText: 'Proceed',
+            }).then((result) => {
+                document.getElementById('input1').value = "";
             });
-            document.getElementById('input1').value = "";
+
         } else if (!timedOUTDATA) {
             Swal.fire({
                 title: 'Invalid QR Code',
                 confirmButtonText: 'OK',
+            }).then((result) => {
+                document.getElementById('input1').value = "";
             });
-            document.getElementById('input1').value = "";
         }
     });
 </script>
