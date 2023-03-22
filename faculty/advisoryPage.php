@@ -4,22 +4,33 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['F_number'])) {
   header('Location: ../auth/login.php');
 } else {
-  $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'");
-  if (mysqli_num_rows($getSectionInfo) > 0) {
-    $ClassListRow = 1;
-    $SectionData = $getSectionInfo->fetch_assoc();
+  if (isset($_GET['SY'])) {
+    $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_adviser = '{$_SESSION['F_number']}' AND acadYear = '{$_GET['SY']}'");
+    if (mysqli_num_rows($getSectionInfo) > 0) {
+      $ClassListRow = 1;
+      $SectionData = $getSectionInfo->fetch_assoc();
 
-    $getFacultyName = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
-    $FacultyData = $getFacultyName->fetch_assoc();
+      $getFacultyName = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
+      $FacultyData = $getFacultyName->fetch_assoc();
 
-    if (isset($_GET['SY'])) {
-      $getSectionClassList = $mysqli->query("SELECT * FROM classlist 
+      if (isset($_GET['SY'])) {
+        $getSectionClassList = $mysqli->query("SELECT * FROM classlist 
                                             LEFT JOIN studentrecord 
                                             ON classlist.SR_number = studentrecord.SR_number
                                             WHERE classlist.SR_section = '{$SectionData['S_name']}' 
                                             AND classlist.acadYear = '{$_GET['SY']}' 
                                             ORDER BY studentrecord.SR_lname");
-    } else {
+      }
+    }
+  } else {
+    $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_adviser = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
+    if (mysqli_num_rows($getSectionInfo) > 0) {
+      $ClassListRow = 1;
+      $SectionData = $getSectionInfo->fetch_assoc();
+
+      $getFacultyName = $mysqli->query("SELECT * FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
+      $FacultyData = $getFacultyName->fetch_assoc();
+
       $getSectionClassList = $mysqli->query("SELECT * FROM classlist 
                                             LEFT JOIN studentrecord 
                                             ON classlist.SR_number = studentrecord.SR_number
@@ -190,7 +201,15 @@ if (!isset($_SESSION['F_number'])) {
                                 ?>
                               </h3>
                               <p style="margin-bottom: 5px;"><?php echo $FacultyData['F_lname'] . ", " . $FacultyData['F_fname'] . " " . substr($FacultyData['F_mname'], 0, 1); ?></p>
-                              <p style="margin-bottom: 5px;">School Year: <?php echo $currentSchoolYear ?></p>
+                              <p style="margin-bottom: 5px;">
+                                <?php
+                                if (isset($_GET['SY'])) {
+                                  echo "School Year: " . $_GET['SY'];
+                                } else {
+                                  echo "School Year: " . $currentSchoolYear;
+                                }
+                                ?>
+                              </p>
                             <?php } else { ?>
                               <h3>NO DATA</h3>
                               <p style="margin-bottom: 5px;">NO DATA</p>
@@ -222,9 +241,8 @@ if (!isset($_SESSION['F_number'])) {
                                   $getAcadYear = $mysqli->query("SELECT DISTINCT(acadYear) FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'");
                                   while ($acadYearData = $getAcadYear->fetch_assoc()) {
                                     if ($acadYearData['acadYear'] != $currentSchoolYear) {
+                                      echo '<a class="dropdown-item" href="advisoryPage.php">CURRENT SCHOOL YEAR</a>';
                                       echo '<a class="dropdown-item" href="advisoryPage.php?SY=' . $acadYearData['acadYear'] . '">' . $acadYearData['acadYear'] . '</a>';
-                                    } else {
-                                      echo '<a class="dropdown-item" href="">CURRENT SCHOOL YEAR</a>';
                                     }
                                   }
                                   ?>
@@ -233,7 +251,11 @@ if (!isset($_SESSION['F_number'])) {
                             </div>
                             <div class="btn-group" style="float: right;">
                               <?php
-                              echo '<a href="../reports/getClasslist.php?GradeLevel=' . $SectionData['S_yearLevel'] . '&section=' . $SectionData['S_name'] . '" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a>';
+                              if (isset($_GET['SY'])) {
+                                echo '<a href="../reports/getClasslist.php?SY=' . $_GET['SY'] . '&GradeLevel=' . $SectionData['S_yearLevel'] . '&section=' . $SectionData['S_name'] . '" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a>';
+                              } else {
+                                echo '<a href="../reports/getClasslist.php?GradeLevel=' . $SectionData['S_yearLevel'] . '&section=' . $SectionData['S_name'] . '" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a>';
+                              }
                               ?>
                             </div>
                             <div class="table-responsive">

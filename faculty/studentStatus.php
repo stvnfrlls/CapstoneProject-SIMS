@@ -4,7 +4,7 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['F_number'])) {
     header('Location: ../auth/login.php');
 } else {
-    $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_adviser = '{$_SESSION['F_number']}'");
+    $getSectionInfo = $mysqli->query("SELECT * FROM sections WHERE S_adviser = '{$_SESSION['F_number']}' AND acadYear = '{$currentSchoolYear}'");
     $SectionInfo = $getSectionInfo->fetch_assoc();
 }
 ?>
@@ -194,7 +194,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                                                                 WHERE SR_section = '{$SectionInfo['S_name']}' 
                                                                                                                 AND acadYear = '{$currentSchoolYear}')
                                                                                                                 ORDER BY SR_lname");
-                                                                                if (mysqli_num_rows($ListofStudents) > 0) {
+                                                                                if (mysqli_num_rows($ListofStudents) != 0) {
                                                                                     while ($data = $ListofStudents->fetch_assoc()) { ?>
                                                                                         <tr>
                                                                                             <td class="tablestyle">
@@ -257,11 +257,13 @@ if (!isset($_SESSION['F_number'])) {
                                                                                                         ?>
                                                                                                     </select>
                                                                                                 <?php
-                                                                                                } elseif ($getAvgGrade['finalgrade'] <= 74) { ?>
+                                                                                                } elseif ($getAvgGrade['finalgrade'] <= 74 && !empty($getAvgGrade['finalgrade'])) { ?>
                                                                                                     <select class="form-select" name="studentStatus[]" id="studentStatus" aria-label="Default select example">
                                                                                                         <option value="REPEAT">Retain</option>
                                                                                                         <option value="DROP">Drop</option>
                                                                                                     </select>
+                                                                                                <?php } else { ?>
+                                                                                                    <select class="form-select" name="studentStatus[]" id="studentStatus" aria-label="Default select example" disabled></select>
                                                                                                 <?php }
                                                                                                 ?>
 

@@ -308,10 +308,20 @@ if (!isset($_SESSION['AD_number'])) {
                     <?php }
                     ?>
                     <?php
-                    if (isset($_GET['GradeLevel']) && isset($_GET['section'])) {
+                    if (isset($_GET['SY']) && !isset($_GET['GradeLevel'])  && !isset($_GET['section'])) {
+                      echo '<div class="btn-group" style="float: right;"><a href="../reports/getClasslist.php?SY=' . $_GET['SY'] . '" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a></div>';
+                    } else if (isset($_GET['SY']) && isset($_GET['GradeLevel'])  && !isset($_GET['section'])) {
+                      echo '<div class="btn-group" style="float: right;"><a href="../reports/getClasslist.php?SY=' . $_GET['SY'] . '&GradeLevel=' . $_GET['GradeLevel'] . '" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a></div>';
+                    } else if (isset($_GET['SY']) && isset($_GET['GradeLevel'])  && isset($_GET['section'])) {
+                      echo '<div class="btn-group" style="float: right;"><a href="../reports/getClasslist.php?SY=' . $_GET['SY'] . '&GradeLevel=' . $_GET['GradeLevel'] . '&section=' . $_GET['section'] . '" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a></div>';
+                    } else if (!isset($_GET['SY']) && !isset($_GET['GradeLevel'])  && !isset($_GET['section'])) {
+                      echo '<div class="btn-group" style="float: right;"><a href="../reports/getClasslist.php?allstudent=true" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a></div>';
+                    } elseif (!isset($_GET['SY']) && isset($_GET['GradeLevel'])) {
+                      echo '<div class="btn-group" style="float: right;"><a href="../reports/getClasslist.php?GradeLevel=' . $_GET['GradeLevel'] . '" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a></div>';
+                    } else if (!isset($_GET['SY']) && isset($_GET['GradeLevel'])  && isset($_GET['section'])) {
                       echo '<div class="btn-group" style="float: right;"><a href="../reports/getClasslist.php?GradeLevel=' . $_GET['GradeLevel'] . '&section=' . $_GET['section'] . '" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a></div>';
                     } else {
-                      echo '<div class="btn-group" style="float: right;"><a href="../reports/getClasslist.php?allstudent=true" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a></div>';
+                      echo '<div class="btn-group" style="float: right;"><a href="../reports/getClasslist.php?GradeLevel=' . $_GET['GradeLevel'] . '&section=' . $_GET['section'] . '" style="background-color: #e4e3e3; margin-right: 0px;" class="btn btn-secondary">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a></div>';
                     }
                     ?>
                     <div class="row" style="margin-top: 15px;">
@@ -341,21 +351,19 @@ if (!isset($_SESSION['AD_number'])) {
                                   <tbody>
                                     <?php
                                     if (isset($_GET['SY']) && !isset($_GET['GradeLevel'])  && !isset($_GET['section'])) {
-                                      $ListofStudents = $mysqli->query("SELECT * FROM studentrecord RIGHT JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE classlist.acadYear = '{$_GET['SY']}' ORDER BY SR_lname");
+                                      $ListofStudents = $mysqli->query("SELECT * FROM studentrecord JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE classlist.acadYear = '{$_GET['SY']}' ORDER BY SR_lname");
                                     } else if (isset($_GET['SY']) && isset($_GET['GradeLevel'])  && !isset($_GET['section'])) {
-                                      $ListofStudents = $mysqli->query("SELECT * FROM studentrecord RIGHT JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE classlist.SR_grade = '{$_GET['GradeLevel']}' AND classlist.acadYear = '{$_GET['SY']}' ORDER BY SR_lname");
+                                      $ListofStudents = $mysqli->query("SELECT * FROM studentrecord JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE classlist.SR_grade = '{$_GET['GradeLevel']}' AND classlist.acadYear = '{$_GET['SY']}' ORDER BY SR_lname");
                                     } else if (isset($_GET['SY']) && isset($_GET['GradeLevel'])  && isset($_GET['section'])) {
-                                      $ListofStudents = $mysqli->query("SELECT * FROM studentrecord RIGHT JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE classlist.SR_grade = '{$_GET['GradeLevel']}' AND classlist.SR_section = '{$_GET['section']}' AND classlist.acadYear = '{$_GET['SY']}' ORDER BY SR_lname");
-                                    }
-
-                                    if (!isset($_GET['SY']) && !isset($_GET['GradeLevel'])  && !isset($_GET['section'])) {
+                                      $ListofStudents = $mysqli->query("SELECT * FROM studentrecord JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE classlist.SR_grade = '{$_GET['GradeLevel']}' AND classlist.SR_section = '{$_GET['section']}' AND classlist.acadYear = '{$_GET['SY']}' ORDER BY SR_lname");
+                                    } else if (!isset($_GET['SY']) && !isset($_GET['GradeLevel'])  && !isset($_GET['section'])) {
                                       $ListofStudents = $mysqli->query("SELECT * FROM studentrecord JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE classlist.acadYear = '{$currentSchoolYear}' ORDER BY SR_lname");
                                     } elseif (!isset($_GET['SY']) && isset($_GET['GradeLevel'])) {
                                       $ListofStudents = $mysqli->query("SELECT * FROM studentrecord JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE classlist.SR_grade = '{$_GET['GradeLevel']}' AND classlist.acadYear = '{$currentSchoolYear}' ORDER BY SR_lname");
                                     } else if (!isset($_GET['SY']) && isset($_GET['GradeLevel'])  && isset($_GET['section'])) {
                                       $ListofStudents = $mysqli->query("SELECT * FROM studentrecord JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE classlist.SR_grade = '{$_GET['GradeLevel']}' AND classlist.SR_section = '{$_GET['section']}' AND classlist.acadYear = '{$currentSchoolYear}' ORDER BY SR_lname");
                                     } else {
-                                      $ListofStudents = $mysqli->query("SELECT * FROM studentrecord RIGHT JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE classlist.acadYear = '{$currentSchoolYear}' ORDER BY SR_lname");
+                                      $ListofStudents = $mysqli->query("SELECT * FROM studentrecord JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE classlist.acadYear = '{$currentSchoolYear}' ORDER BY SR_lname");
                                     }
                                     $rowCount = 1;
 

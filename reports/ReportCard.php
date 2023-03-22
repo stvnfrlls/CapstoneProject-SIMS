@@ -64,7 +64,10 @@ if (isset($_GET['ID'])) {
                                         WHERE studentrecord.SR_number = '{$_GET['ID']}' 
                                         AND classlist.acadYear = '{$_GET['SY']}'");
     } else {
-        $getstudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$_GET['ID']}'");
+        $getstudentInfo = $mysqli->query("SELECT * FROM studentrecord JOIN classlist 
+                                        ON studentrecord.SR_number = classlist.SR_number 
+                                        WHERE studentrecord.SR_number = '{$_GET['ID']}' 
+                                        AND classlist.acadYear = '{$currentSchoolYear}'");
     }
 
     $studentInfo = $getstudentInfo->fetch_assoc();
