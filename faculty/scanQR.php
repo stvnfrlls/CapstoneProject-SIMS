@@ -36,7 +36,6 @@ if (!isset($_SESSION['F_number'])) {
         while ($studentNumber_timedOUT = $gettimedOUT->fetch_assoc()) {
             $timedOUT[] = $studentNumber_timedOUT;
         }
-        var_dump($NOTtimedOUT);
         $NOTtimedIN_js = json_encode($NOTtimedIN);
         $NOTtimedOUT_js = json_encode($NOTtimedOUT);
         $timedOUT_js = json_encode($timedOUT);
