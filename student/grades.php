@@ -4,17 +4,25 @@ require_once("../assets/php/server.php");
 if (!isset($_SESSION['SR_number'])) {
     header('Location: ../auth/login.php');
 } else {
-    $studentInformation = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$_SESSION['SR_number']}'");
-    $studentData = $studentInformation->fetch_assoc();
-
-    $GradeSection = $mysqli->query("SELECT * FROM sections WHERE S_yearLevel = '{$studentData['SR_grade']}' AND S_name = '{$studentData['SR_section']}' AND acadYear = '{$currentSchoolYear}'");
-    $GradeSectionData = $GradeSection->fetch_assoc();
-
-    $Faculty = $mysqli->query("SELECT F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$GradeSectionData['S_adviser']}'");
-    $FacultyData = $Faculty->fetch_assoc();
-
-    $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '{$_SESSION['SR_number']}' AND acadYear = '{$currentSchoolYear}'";
-    $resultgetStudentGrades = $mysqli->query($getStudentGrades);
+    if (isset($_GET['SY'])) {
+        $studentInformation = $mysqli->query("SELECT studentrecord.SR_number, studentrecord.SR_fname, studentrecord.SR_mname, studentrecord.SR_lname, studentrecord.SR_suffix, classlist.SR_grade, classlist.SR_section, classlist.F_number FROM studentrecord JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE studentrecord.SR_number = '{$_SESSION['SR_number']}' AND classlist.acadYear = '{$_GET['SY']}'");
+        $studentData = $studentInformation->fetch_assoc();
+        $GradeSection = $mysqli->query("SELECT * FROM sections WHERE S_yearLevel = '{$studentData['SR_grade']}' AND S_name = '{$studentData['SR_section']}' AND acadYear = '{$_GET['SY']}'");
+        $GradeSectionData = $GradeSection->fetch_assoc();
+        $Faculty = $mysqli->query("SELECT F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$studentData['F_number']}'");
+        $FacultyData = $Faculty->fetch_assoc();
+        $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '{$_SESSION['SR_number']}' AND acadYear = '{$_GET['SY']}'";
+        $resultgetStudentGrades = $mysqli->query($getStudentGrades);
+    } else {
+        $studentInformation = $mysqli->query("SELECT studentrecord.SR_number, studentrecord.SR_fname, studentrecord.SR_mname, studentrecord.SR_lname, studentrecord.SR_suffix, classlist.SR_grade, classlist.SR_section, classlist.F_number FROM studentrecord JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE studentrecord.SR_number = '{$_SESSION['SR_number']}' AND classlist.acadYear = '{$currentSchoolYear}'");
+        $studentData = $studentInformation->fetch_assoc();
+        $GradeSection = $mysqli->query("SELECT * FROM sections WHERE S_yearLevel = '{$studentData['SR_grade']}' AND S_name = '{$studentData['SR_section']}' AND acadYear = '{$currentSchoolYear}'");
+        $GradeSectionData = $GradeSection->fetch_assoc();
+        $Faculty = $mysqli->query("SELECT F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$studentData['F_number']}'");
+        $FacultyData = $Faculty->fetch_assoc();
+        $getStudentGrades = "SELECT * FROM grades WHERE SR_number = '{$_SESSION['SR_number']}' AND acadYear = '{$currentSchoolYear}'";
+        $resultgetStudentGrades = $mysqli->query($getStudentGrades);
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -118,46 +126,64 @@ if (!isset($_SESSION['SR_number'])) {
                                 }
                             </style>
                             <div>
-                                <div class="row">
+                                <div class="row mb-3">
                                     <div class="col-12">
                                         <h2 class="text-uppercase text-center" style="padding-top: 40px;">Report Card</h2>
-                                        <p style="text-align: center;">School Year: <?php echo $currentSchoolYear ?></p>
+                                        <p style="text-align: center;">
+                                            <?php
+                                            if (isset($_GET['SY'])) {
+                                                echo "School Year: " . $_GET['SY'];
+                                            } else {
+                                                echo "School Year: " . $currentSchoolYear;
+                                            }
+
+
+                                            ?>
+                                        </p>
+
+                                        <div class="btn-group">
+                                            <div>
+                                                <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
+                                                    <?php
+                                                    if (!isset($_GET['SY'])) {
+                                                        echo 'School Year';
+                                                    } else {
+                                                        echo  'School Year: ' . $_GET['SY'];
+                                                    }
+                                                    ?>
+                                                    <i class="fa fa-caret-down"></i>
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                    <?php
+                                                    echo '<a class="dropdown-item" href="grades.php">School Year: ' . $currentSchoolYear . '</a>';
+                                                    $previousData = $mysqli->query("SELECT DISTINCT acadYear FROM grades WHERE SR_number = '{$_SESSION['SR_number']}'");
+                                                    if (mysqli_num_rows($previousData) != 0) {
+                                                        while ($previousGrades = $previousData->fetch_assoc()) {
+                                                            echo '<a class="dropdown-item" href="grades.php?SY=' . $previousGrades['acadYear'] . '">School Year: ' . $previousGrades['acadYear'] . '</a>';
+                                                        }
+                                                    }
+                                                    ?>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <?php
                                         if (mysqli_num_rows($resultgetStudentGrades) > 0) { ?>
-                                            <div class="btn-group m-3">
+                                            <div class="btn-group">
                                                 <div style="text-align: right;">
-                                                    <a href="../reports/ReportCard.php?ID=<?php echo  $studentData['SR_number'] ?>" class="btn btn-light" style=" text-align:center; font-size: 13px">Download <i class="fa fa-download" style="font-size: 12px;"></i></a>
+                                                    <?php
+                                                    if (isset($_GET['SY'])) {
+                                                        echo '<a href="../reports/ReportCard.php?SY=' . $_GET['SY'] . '&ID=' . $studentData['SR_number'] . '" class="btn btn-light" style=" text-align:center; font-size: 13px">Download <i class="fa fa-download" style="font-size: 12px;"></i></a>';
+                                                    } else {
+                                                        echo '<a href="../reports/ReportCard.php?ID=' . $studentData['SR_number'] . '" class="btn btn-light" style=" text-align:center; font-size: 13px">Download <i class="fa fa-download" style="font-size: 12px;"></i></a>';
+                                                    }
+                                                    ?>
                                                 </div>
                                             </div>
                                         <?php }
                                         ?>
                                     </div>
                                 </div>
-                                <div class="btn-group">
-                                    <div>
-                                        <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
-                                            <?php
-                                            if (!isset($_GET['SY'])) {
-                                                echo 'School Year';
-                                            } else {
-                                                echo $_GET['SY'];
-                                            }
-                                            ?>
-                                            <i class="fa fa-caret-down"></i>
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                            <?php
-                                            echo '<a class="dropdown-item" href="grades.php">' . $currentSchoolYear . '</a>';
-                                            $previousData = $mysqli->query("SELECT DISTINCT acadYear FROM grades WHERE SR_number = '{$_SESSION['SR_number']}'");
-                                            if (mysqli_num_rows($previousData) != 0) {
-                                                while ($previousGrades = $previousData->fetch_assoc()) {
-                                                    echo '<a class="dropdown-item" href="grades.php?SY=' . $previousGrades['acadYear'] . '">' . $previousGrades['acadYear'] . '</a>';
-                                                }
-                                            }
-                                            ?>
-                                        </div>
-                                    </div>
-                                </div>
+
                                 <div class="col-12 grid-margin">
                                     <div class="row">
                                         <div class="col-sm-12 col-lg-6 grid-margin">
@@ -173,7 +199,7 @@ if (!isset($_SESSION['SR_number'])) {
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-sm-12 col-lg-6">
-                                                            <p>Grade and Section: <?php echo $GradeSectionData['S_yearLevel'] . " - " . $GradeSectionData['S_name']; ?></p>
+                                                            <p>Grade and Section: <?php echo $studentData['SR_grade'] . " - " . $studentData['SR_section']; ?></p>
                                                         </div>
                                                         <div class="col-sm-12 col-lg-6">
                                                             <p>
@@ -278,7 +304,7 @@ if (!isset($_SESSION['SR_number'])) {
                                                                             echo '<td class="hatdog"></td>';
                                                                         }
 
-                                                                        if (mysqli_num_rows($getquarterTag4) > 0 && !empty($studentGradesData['G_finalgrade'])) {
+                                                                        if (mysqli_num_rows($getquarterTag4) > 0 && !empty($studentGradesData['G_finalgrade']) || isset($_GET['SY'])) {
                                                                             $sum = $studentGradesData['G_gradesQ1'] + $studentGradesData['G_gradesQ2'] + $studentGradesData['G_gradesQ3'] + $studentGradesData['G_gradesQ4'];
                                                                             $average = $sum / 4;
 
@@ -540,8 +566,6 @@ if (!isset($_SESSION['SR_number'])) {
 
                                     </div>
                                 </div>
-
-
 
                                 <div class="row">
                                     <div>

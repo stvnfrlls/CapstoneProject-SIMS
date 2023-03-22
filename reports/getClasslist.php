@@ -3,7 +3,7 @@ ob_start();
 require '../assets/fpdf/fpdf.php';
 require_once("../assets/php/server.php");
 
-if (isset($_GET['GradeLevel']) && isset($_GET['section'])) {
+if (isset($_GET['GradeLevel'])) {
     class PDF extends FPDF
     {
         function Header()
@@ -40,7 +40,11 @@ if (isset($_GET['GradeLevel']) && isset($_GET['section'])) {
 
             $this->SetFont('Arial', '', 7);
 
-            $this->Cell(45, 3, 'School Year: ' . $acadYear_Data['currentYear'] . " - " . $acadYear_Data['endYear'], 0, 2, 'C');
+            if (isset($_GET['SY'])) {
+                $this->Cell(45, 3, 'School Year: ' . $_GET['SY'], 0, 2, 'C');
+            } else {
+                $this->Cell(45, 3, 'School Year: ' . $acadYear_Data['currentYear'] . " - " . $acadYear_Data['endYear'], 0, 2, 'C');
+            }
             // Line break
             $this->Ln(5);
             $this->SetFont('Arial', 'B', 12);
@@ -66,13 +70,31 @@ if (isset($_GET['GradeLevel']) && isset($_GET['section'])) {
     $pdf->Cell(50, 10, 'Student Number', 1, 0, 'C');
     $pdf->Cell(90, 10, 'Student Name', 1, 0, 'C');
     $pdf->Cell(50, 10, 'Grade and Section', 1, 1, 'C');
+    if (isset($_GET['SY'])) {
+        $ClasslistData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE acadYear = '{$_GET['SY']}') ORDER BY SR_lname");
+    } elseif (isset($_GET['SY']) && isset($_GET['GradeLevel']) && !isset($_GET['section'])) {
+        $ClasslistData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE SR_grade = '{$_GET['GradeLevel']}' AND acadYear = '{$_GET['SY']}') ORDER BY SR_lname");
+    } elseif (isset($_GET['SY']) && isset($_GET['GradeLevel']) && isset($_GET['section'])) {
+        $ClasslistData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['section']}' AND acadYear = '{$_GET['SY']}') ORDER BY SR_lname");
+    } elseif (!isset($_GET['SY'])) {
+        $ClasslistData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE acadYear = '{$currentSchoolYear}') ORDER BY SR_lname");
+    } elseif (!isset($_GET['SY']) && isset($_GET['GradeLevel']) && !isset($_GET['section'])) {
+        $ClasslistData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE SR_grade = '{$_GET['GradeLevel']}' AND acadYear = '{$currentSchoolYear}') ORDER BY SR_lname");
+    } elseif (!isset($_GET['SY']) && isset($_GET['GradeLevel']) && isset($_GET['section'])) {
+        $ClasslistData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['section']}' AND acadYear = '{$currentSchoolYear}') ORDER BY SR_lname");
+    } else {
+        $ClasslistData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['section']}' AND acadYear = '{$currentSchoolYear}') ORDER BY SR_lname");
+    }
 
-    $ClasslistData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['section']}' AND acadYear = '{$currentSchoolYear}') ORDER BY SR_lname");
     while ($classlist = $ClasslistData->fetch_assoc()) {
 
         $pdf->SetFont('Arial', '', 10);
         $pdf->Cell(50, 10, $classlist['SR_number'], 1, 0, 'C');
-        $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$classlist['SR_number']}'");
+        if (isset($_GET['SY'])) {
+            $getStudentInfo = $mysqli->query("SELECT studentrecord.SR_lname, studentrecord.SR_fname, studentrecord.SR_mname, studentrecord.SR_suffix, classlist.SR_grade, classlist.SR_section FROM studentrecord JOIN classlist ON studentrecord.SR_number = classlist.SR_number WHERE classlist.acadYear = '{$_GET['SY']}' AND studentrecord.SR_number = '{$classlist['SR_number']}'");
+        } else {
+            $getStudentInfo = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number = '{$classlist['SR_number']}'");
+        }
         $studentInfo = $getStudentInfo->fetch_assoc();
         if (!empty($studentInfo['SR_mname']) || $studentInfo['SR_mname'] != "" && empty($studentInfo['SR_suffix']) || $studentInfo['SR_suffix'] = "") {
             $studentName = $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'] . " " . substr($studentInfo['SR_mname'], 0, 1) . ".";
@@ -82,11 +104,27 @@ if (isset($_GET['GradeLevel']) && isset($_GET['section'])) {
             $studentName = $studentInfo['SR_lname'] .  ", " . $studentInfo['SR_fname'];
         }
         $pdf->Cell(90, 10,  mb_convert_encoding($studentName, "ISO-8859-1", "UTF-8"), 1, 0, 'C');
-        $pdf->Cell(50, 10, "Grade " . $classlist['SR_grade'] . " - " . $classlist['SR_section'], 1, 1, 'C');
+        if (isset($_GET['SY'])) {
+            if ($studentInfo['SR_grade'] == "KINDER") {
+                $pdf->Cell(50, 10, "Grade " . $studentInfo['SR_grade'] . " - " . $studentInfo['SR_section'], 1, 1, 'C');
+            } else {
+                $pdf->Cell(50, 10, "Grade " . $studentInfo['SR_grade'] . " - " . $studentInfo['SR_section'], 1, 1, 'C');
+            }
+        } else {
+            if ($classlist['SR_grade'] == "KINDER") {
+                $pdf->Cell(50, 10, "Grade " . $classlist['SR_grade'] . " - " . $classlist['SR_section'], 1, 1, 'C');
+            } else {
+                $pdf->Cell(50, 10, "Grade " . $classlist['SR_grade'] . " - " . $classlist['SR_section'], 1, 1, 'C');
+            }
+        }
     }
 
     ob_end_clean();
-    $pdf->Output('I', "Classlist - " . $_GET['GradeLevel'] . " - " . $_GET['section'] . '.pdf');
+    if (isset($_GET['GradeLevel'])) {
+        $pdf->Output('I', "Classlist - " . $_GET['GradeLevel'] . '.pdf');
+    } else if (isset($_GET['section']) && isset($_GET['section'])) {
+        $pdf->Output('I', "Classlist - " . $_GET['GradeLevel'] . " - " . $_GET['section'] . '.pdf');
+    }
 } elseif (isset($_GET['allstudent']) && isset($_SESSION['AD_number'])) {
     class PDF extends FPDF
     {
@@ -124,11 +162,15 @@ if (isset($_GET['GradeLevel']) && isset($_GET['section'])) {
 
             $this->SetFont('Arial', '', 7);
 
-            $this->Cell(45, 3, 'School Year: ' . $acadYear_Data['currentYear'] . " - " . $acadYear_Data['endYear'], 0, 2, 'C');
+            if (isset($_GET['SY'])) {
+                $this->Cell(45, 3, 'School Year: ' . $_GET['SY'], 0, 2, 'C');
+            } else {
+                $this->Cell(45, 3, 'School Year: ' . $acadYear_Data['currentYear'] . " - " . $acadYear_Data['endYear'], 0, 2, 'C');
+            }
             // Line break
             $this->Ln(5);
             $this->SetFont('Arial', 'B', 12);
-            $this->Cell(190, 10, 'Overall Student Classlist', 0, 0, 'C');
+            $this->Cell(190, 10, 'Section Classlist', 0, 0, 'C');
             $this->Ln(15);
         }
         function Footer()
@@ -151,7 +193,13 @@ if (isset($_GET['GradeLevel']) && isset($_GET['section'])) {
     $pdf->Cell(90, 10, 'Student Name', 1, 0, 'C');
     $pdf->Cell(50, 10, 'Grade and Section', 1, 1, 'C');
 
-    $ClasslistData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_status IS NULL ORDER BY SR_grade, SR_lname");
+    if (isset($_GET['SY'])) {
+        $ClasslistData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE acadYear = '{$_GET['SY']}') ORDER BY SR_grade, SR_lname");
+    } else {
+        $ClasslistData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE acadYear = '{$currentSchoolYear}') ORDER BY SR_grade, SR_lname");
+    }
+
+
     while ($classlist = $ClasslistData->fetch_assoc()) {
 
         $pdf->SetFont('Arial', '', 10);

@@ -358,7 +358,7 @@ if (!isset($_SESSION['AD_number'])) {
                                                           AND acadYear = '{$currentSchoolYear}'");
                           $notGraded = $countNotGraded->fetch_assoc();
 
-                          if (mysqli_num_rows($checkClasslist) == mysqli_num_rows($checkifGraded) && $notGraded['not_graded'] == 0) {
+                          if (mysqli_num_rows($checkClasslist) == mysqli_num_rows($checkifGraded) && !empty($notGraded['not_graded']) && $notGraded['not_graded'] == 0) {
                             echo '<button type="submit" class="btn btn-primary" id="confirmChanges" name="UpdateGrade" value="Save">Update encoded Grades</button>';
                             echo '<button type="submit" class="btn btn-primary" id="confirmChanges" name="releaseGrades" value="Release">Release Grades</button>';
                             echo '<a href="../reports/classGrades.php?Quarter=' . $_GET['Quarter'] . '&Grade=' . $_GET['Grade'] . '&Section=' . $_GET['Section'] . '" class="btn btn-light">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a>';
