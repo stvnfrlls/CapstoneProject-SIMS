@@ -11,7 +11,7 @@ $mail->Port = 465;
 $mail->SMTPAuth = true;
 $mail->isHTML(true);
 
-$mail->Username = 'testmail@sformscdsp.online';
+$mail->Username = 'sforms_notify@sformscdsp.online';
 $mail->Password = 'Eleven.11';
 
-$mail->setFrom('testmail@sformscdsp.online', 'CDSP Notification');
+$mail->setFrom('sforms_notify@sformscdsp.online', 'CDSP Notification');
