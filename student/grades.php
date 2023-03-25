@@ -146,7 +146,7 @@ if (!isset($_SESSION['SR_number'])) {
                                                 <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background-color: #e4e3e3;">
                                                     <?php
                                                     if (!isset($_GET['SY'])) {
-                                                        echo 'School Year';
+                                                        echo 'School Year: ' . $currentSchoolYear;
                                                     } else {
                                                         echo  'School Year: ' . $_GET['SY'];
                                                     }
@@ -155,11 +155,15 @@ if (!isset($_SESSION['SR_number'])) {
                                                 </button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                                     <?php
-                                                    echo '<a class="dropdown-item" href="grades.php">School Year: ' . $currentSchoolYear . '</a>';
                                                     $previousData = $mysqli->query("SELECT DISTINCT acadYear FROM grades WHERE SR_number = '{$_SESSION['SR_number']}'");
                                                     if (mysqli_num_rows($previousData) != 0) {
                                                         while ($previousGrades = $previousData->fetch_assoc()) {
-                                                            echo '<a class="dropdown-item" href="grades.php?SY=' . $previousGrades['acadYear'] . '">School Year: ' . $previousGrades['acadYear'] . '</a>';
+                                                            if ($currentSchoolYear != $previousGrades['acadYear']) {
+                                                                echo '<a class="dropdown-item" href="grades.php">School Year: ' . $currentSchoolYear . '</a>';
+                                                                echo '<a class="dropdown-item" href="grades.php?SY=' . $previousGrades['acadYear'] . '">School Year: ' . $previousGrades['acadYear'] . '</a>';
+                                                            } else {
+                                                                echo '<a class="dropdown-item" href="grades.php">School Year: ' . $currentSchoolYear . '</a>';
+                                                            }
                                                         }
                                                     }
                                                     ?>
