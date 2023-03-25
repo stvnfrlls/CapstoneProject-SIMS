@@ -322,25 +322,25 @@ if (!isset($_SESSION['AD_number'])) {
                         <?php
                         if (isset($_GET['Quarter']) && isset($_GET['Grade']) && isset($_GET['Section'])) {
                           if ($_GET['Quarter'] == 1) {
-                            $countNotGraded = $mysqli->query("SELECT COUNT(*) AS not_graded FROM grades 
+                            $countNotGraded = $mysqli->query("SELECT COUNT(SR_number) FROM grades 
                                                             WHERE G_gradesQ1 IS NULL 
                                                             AND acadYear = '{$currentSchoolYear}'
                                                             AND SR_gradeLevel = '{$_GET['Grade']}' 
                                                             AND SR_section = '{$_GET['Section']}'");
                           } elseif ($_GET['Quarter'] == 2) {
-                            $countNotGraded = $mysqli->query("SELECT COUNT(*) AS not_graded FROM grades 
+                            $countNotGraded = $mysqli->query("SELECT COUNT(SR_number) FROM grades 
                                                             WHERE G_gradesQ2 IS NULL 
                                                             AND acadYear = '{$currentSchoolYear}'
                                                             AND SR_gradeLevel = '{$_GET['Grade']}' 
                                                             AND SR_section = '{$_GET['Section']}'");
                           } elseif ($_GET['Quarter'] == 3) {
-                            $countNotGraded = $mysqli->query("SELECT COUNT(*) AS not_graded FROM grades 
+                            $countNotGraded = $mysqli->query("SELECT COUNT(SR_number) FROM grades 
                                                             WHERE G_gradesQ3 IS NULL 
                                                             AND acadYear = '{$currentSchoolYear}'
                                                             AND SR_gradeLevel = '{$_GET['Grade']}' 
                                                             AND SR_section = '{$_GET['Section']}'");
                           } elseif ($_GET['Quarter'] == 4) {
-                            $countNotGraded = $mysqli->query("SELECT COUNT(*) AS not_graded FROM grades 
+                            $countNotGraded = $mysqli->query("SELECT COUNT(SR_number) FROM grades 
                                                             WHERE G_gradesQ4 IS NULL 
                                                             AND acadYear = '{$currentSchoolYear}'
                                                             AND SR_gradeLevel = '{$_GET['Grade']}' 
@@ -357,24 +357,11 @@ if (!isset($_SESSION['AD_number'])) {
                                                           AND SR_section = '{$_GET['Section']}' 
                                                           AND acadYear = '{$currentSchoolYear}'");
                           $notGraded = $countNotGraded->fetch_assoc();
-
-                          if (mysqli_num_rows($checkClasslist) == mysqli_num_rows($checkifGraded) && !empty($notGraded['not_graded']) && $notGraded['not_graded'] == 0) {
+                          if (mysqli_num_rows($checkifGraded) == mysqli_num_rows($checkClasslist)) {
                             echo '<button type="submit" class="btn btn-primary" id="confirmChanges" name="UpdateGrade" value="Save">Update encoded Grades</button>';
                             echo '<button type="submit" class="btn btn-primary" id="confirmChanges" name="releaseGrades" value="Release">Release Grades</button>';
                             echo '<a href="../reports/classGrades.php?Quarter=' . $_GET['Quarter'] . '&Grade=' . $_GET['Grade'] . '&Section=' . $_GET['Section'] . '" class="btn btn-light">Download <i class="fa fa-download" style="font-size: 12px; align-self:center;"></i></a>';
-                          } else if (mysqli_num_rows($checkifGraded) > 0 && $notGraded['not_graded'] > 0) {
-                            echo <<<EOT
-                                <script>
-                                  swal.fire({
-                                    text: 'Releasing of grades is disabled because grades are not complete yet.',
-                                    icon: 'info',
-                                    confirmButtonText: 'OK',
-                                  });
-                                </script>
-                            EOT;
-                            echo '<button type="submit" class="btn btn-primary">Update encoded Grades</button>';
-                            echo '<button type="submit" class="btn btn-secondary" disabled style="background-color: #6c757d; color: #fff;">Release Grades</button>';
-                          } else if (mysqli_num_rows($checkifGraded) == 0 && $notGraded['not_graded'] == 0) {
+                          } else {
                             echo <<<EOT
                                 <script>
                                   swal.fire({

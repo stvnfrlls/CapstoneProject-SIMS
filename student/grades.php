@@ -299,29 +299,31 @@ if (!isset($_SESSION['SR_number'])) {
                                                                         if (mysqli_num_rows($getquarterTag4) > 0) {
                                                                             if ($studentGradesData['G_gradesQ4']) {
                                                                                 echo '<td class="hatdog">' . $studentGradesData['G_gradesQ4'] . '</td>';
+                                                                                if ($studentGradesData['G_finalgrade'] < 75) {
+                                                                                    $remarks = "Failed";
+                                                                                } else {
+                                                                                    $remarks = "Passed";
+                                                                                }
+                                                                                echo '<td class="hatdog">' . round($studentGradesData['G_finalgrade']) . '</td>';
+                                                                                echo '<td class="hatdog">' . $remarks . '</td>';
+                                                                            } else {
+                                                                                echo '<td class="hatdog"></td>';
+                                                                                echo '<td class="hatdog"></td>';
+                                                                                echo '<td class="hatdog"></td>';
                                                                             }
                                                                         } elseif (isset($_GET['SY']) && $_GET['SY'] != $currentSchoolYear) {
                                                                             if ($studentGradesData['G_gradesQ4']) {
                                                                                 echo '<td class="hatdog">' . $studentGradesData['G_gradesQ4'] . '</td>';
+                                                                                if ($studentGradesData['G_finalgrade'] < 75) {
+                                                                                    $remarks = "Failed";
+                                                                                } else {
+                                                                                    $remarks = "Passed";
+                                                                                }
+                                                                                echo '<td class="hatdog">' . round($studentGradesData['G_finalgrade']) . '</td>';
+                                                                                echo '<td class="hatdog">' . $remarks . '</td>';
                                                                             }
                                                                         } else {
                                                                             echo '<td class="hatdog"></td>';
-                                                                        }
-
-                                                                        if (mysqli_num_rows($getquarterTag4) > 0 && !empty($studentGradesData['G_finalgrade']) || isset($_GET['SY'])) {
-                                                                            $sum = $studentGradesData['G_gradesQ1'] + $studentGradesData['G_gradesQ2'] + $studentGradesData['G_gradesQ3'] + $studentGradesData['G_gradesQ4'];
-                                                                            $average = $sum / 4;
-
-                                                                            $average = $studentGradesData['G_finalgrade'];
-                                                                            if ($average < 75) {
-                                                                                $remarks = "Failed";
-                                                                            } else {
-                                                                                $remarks = "Passed";
-                                                                            }
-
-                                                                            echo '<td class="hatdog">' . round($average) . '</td>';
-                                                                            echo '<td class="hatdog">' . $remarks . '</td>';
-                                                                        } else {
                                                                             echo '<td class="hatdog"></td>';
                                                                             echo '<td class="hatdog"></td>';
                                                                         }

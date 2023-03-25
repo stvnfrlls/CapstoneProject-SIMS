@@ -994,11 +994,13 @@ if (isset($_POST['UpdateGrade']) && !empty($_SESSION['AD_number'])) {
         $SR_number = $forms_SR_number[$i];
         $G_learningArea = $forms_G_learningArea[$i];
         $Grade = $forms_Grade[$i];
+        $Section = $forms_SR_Section[$i];
 
         if ($_GET['Quarter'] == 1) {
             $updateGrade = "UPDATE grades 
                             SET 
-                            G_gradesQ1 = '$Grade'
+                            G_gradesQ1 = '$Grade',
+                            G_finalgrade = ('$Grade' + G_gradesQ2 + G_gradesQ3 + G_gradesQ4) / 4
                             WHERE SR_number = '$SR_number'
                             AND G_learningArea = '$G_learningArea'";
             $resultupdateGrade = $mysqli->query($updateGrade);
@@ -1006,7 +1008,8 @@ if (isset($_POST['UpdateGrade']) && !empty($_SESSION['AD_number'])) {
         if ($_GET['Quarter'] == 2) {
             $updateGrade = "UPDATE grades 
                             SET 
-                            G_gradesQ2 = '$Grade'
+                            G_gradesQ2 = '$Grade',
+                            G_finalgrade = (G_gradesQ1 + '$Grade' + G_gradesQ3 + G_gradesQ4) / 4
                             WHERE SR_number = '$SR_number'
                             AND G_learningArea = '$G_learningArea'";
             $resultupdateGrade = $mysqli->query($updateGrade);
@@ -1014,7 +1017,8 @@ if (isset($_POST['UpdateGrade']) && !empty($_SESSION['AD_number'])) {
         if ($_GET['Quarter'] == 3) {
             $updateGrade = "UPDATE grades 
                             SET 
-                            G_gradesQ3 = '$Grade'
+                            G_gradesQ3 = '$Grade',
+                            G_finalgrade = (G_gradesQ1 + G_gradesQ2 + '$Grade' + G_gradesQ4) / 4
                             WHERE SR_number = '$SR_number'
                             AND G_learningArea = '$G_learningArea'";
             $resultupdateGrade = $mysqli->query($updateGrade);
@@ -1022,7 +1026,8 @@ if (isset($_POST['UpdateGrade']) && !empty($_SESSION['AD_number'])) {
         if ($_GET['Quarter'] == 4) {
             $updateGrade = "UPDATE grades 
                             SET 
-                            G_gradesQ4 = '$Grade'
+                            G_gradesQ4 = '$Grade',
+                            G_finalgrade = (G_gradesQ1 + G_gradesQ2 + G_gradesQ3 + '$Grade') / 4
                             WHERE SR_number = '$SR_number'
                             AND G_learningArea = '$G_learningArea'";
             $resultupdateGrade = $mysqli->query($updateGrade);
@@ -1820,11 +1825,24 @@ if (isset($_POST['Open']) && !empty($_SESSION['AD_number'])) {
     }
 }
 if (isset($_POST['Close']) && !empty($_SESSION['AD_number'])) {
-    $disableForms = $mysqli->query('UPDATE quartertable SET quarterStatus = "disabled" WHERE quarterTag = "FORMS"');
+    $disableForms = $mysqli->query("UPDATE quartertable SET quarterStatus = 'disabled' WHERE quarterTag = 'FORMS'");
 
     $releaseGrades = $mysqli->query("UPDATE quartertable SET gradeStatus = 'visible' WHERE quarterStatus = 'current'");
 
-    $disableCurrentQuarter = $mysqli->query('UPDATE quartertable SET quarterFormStatus = "disabled" WHERE quarterStatus = "current"');
+    $getQuarter = $mysqli->query("SELECT quarterTag FROM quartertable WHERE quarterStatus == 'current'");
+    $currentQuarter = $getQuarter->fetch_assoc();
+
+    if ($currentQuarter['quarterTag'] == 1) {
+        $mysqli->query("UPDATE grades SET G_gradesQ1 = 'P' WHERE G_gradesQ1 IS NULL");
+    } else if ($currentQuarter['quarterTag'] == 2) {
+        $mysqli->query("UPDATE grades SET G_gradesQ2 = 'P' WHERE G_gradesQ2 IS NULL");
+    } else if ($currentQuarter['quarterTag'] == 3) {
+        $mysqli->query("UPDATE grades SET G_gradesQ3 = 'P' WHERE G_gradesQ3 IS NULL");
+    } else if ($currentQuarter['quarterTag'] == 4) {
+        $mysqli->query("UPDATE grades SET G_gradesQ4 = 'P' WHERE G_gradesQ4 IS NULL");
+    }
+
+    $disableCurrentQuarter = $mysqli->query("UPDATE quartertable SET quarterFormStatus = 'disabled' WHERE quarterStatus = 'current'");
     $getAdminName = $mysqli->query("SELECT AD_name FROM admin_accounts WHERE AD_number = '{$_SESSION['AD_number']}'");
     $AdminName = $getAdminName->fetch_assoc();
     $AD_action = "CLOSED ENCODING OF GRADES";
