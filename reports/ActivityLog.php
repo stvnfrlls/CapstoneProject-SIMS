@@ -10,7 +10,7 @@ if (isset($_GET['start_date']) && isset($_GET['end_date'])) {
 
         function Header()
         {
-            $mysqli = new mysqli("localhost", "u952901270_admin2311", "Eleven.11", "u952901270_sforms_cdsp");
+            $mysqli = new mysqli("localhost", "root", "", "sis_cdsp");
             $getAcadYear = $mysqli->query("SELECT * FROM acad_year");
             $acadYear_Data = $getAcadYear->fetch_assoc();
             //Logo Image
@@ -65,16 +65,29 @@ if (isset($_GET['start_date']) && isset($_GET['end_date'])) {
     $pdf->SetAutoPageBreak(true, 20);
 
     $pdf->SetFont('Arial', 'B', 10);
-    $pdf->Cell(40, 10, 'Account Name', 1, 0, 'C');
-    $pdf->Cell(40, 10, 'Date Time', 1, 0, 'C');
-    $pdf->Cell(110, 10, 'Action', 1, 1, 'C');
+    // Set the column widths
+    $column_widths = array(40, 40, 110);
 
+    // Output the table header
+    $pdf->Cell($column_widths[0], 10, 'Name', 1, 0, 'C');
+    $pdf->Cell($column_widths[1], 10, 'Date', 1, 0, 'C');
+    $pdf->Cell($column_widths[2], 10, 'Action', 1, 1, 'C');
+
+    // Query the database
     $LoggedData = $mysqli->query("SELECT * FROM admin_logs WHERE logDate BETWEEN '{$_GET['start_date']}' AND '{$_GET['end_date']}'");
+
+    // Output the table data
     while ($Log = $LoggedData->fetch_assoc()) {
         $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(40, 10, $Log['AD_name'], 1, 0, 'C');
-        $pdf->Cell(40, 10, $Log['logDate'], 1, 0, 'C');
-        $pdf->Cell(110, 10, $Log['AD_action'], 1, 1, 'C');
+
+        // Output the name column
+        $pdf->Cell($column_widths[0], 10, $Log['AD_name'], 1, 0, 'C');
+
+        // Output the date column
+        $pdf->Cell($column_widths[1], 10, date('m-d-Y h:i A', strtotime($Log['logDate'])), 1, 0, 'C');
+
+        // Output the action column
+        $pdf->MultiCell($column_widths[2], 10, $Log['AD_action'], 1, 'C');
     }
 
     ob_end_clean();
