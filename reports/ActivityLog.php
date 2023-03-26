@@ -73,10 +73,10 @@ if (isset($_GET['start_date']) && isset($_GET['end_date'])) {
     while ($Log = $LoggedData->fetch_assoc()) {
         $pdf->SetFont('Arial', '', 10);
         $pdf->Cell(40, 10, $Log['AD_name'], 1, 0, 'C');
-        $pdf->Cell(40, 10, $Log['logDate'], 1, 0, 'C');
+        $pdf->Cell(40, 10, date('M-D-Y H:i A', strtotime($Log['logDate'])), 1, 0, 'C');
         $pdf->Cell(110, 10, $Log['AD_action'], 1, 1, 'C');
     }
 
     ob_end_clean();
-    $pdf->Output('I', "Classlist - " . $_GET['start_date'] . " - " . $_GET['end_date'] . '.pdf');
+    $pdf->Output('I', "Activity Log - " . $_GET['start_date'] . " - " . $_GET['end_date'] . '.pdf');
 }
