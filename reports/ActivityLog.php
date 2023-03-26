@@ -73,7 +73,7 @@ if (isset($_GET['start_date']) && isset($_GET['end_date'])) {
     while ($Log = $LoggedData->fetch_assoc()) {
         $pdf->SetFont('Arial', '', 10);
         $pdf->Cell(40, 10, $Log['AD_name'], 1, 0, 'C');
-        $pdf->Cell(40, 10, date('M-D-Y H:i A', strtotime($Log['logDate'])), 1, 0, 'C');
+        $pdf->Cell(40, 10, date('m-d-Y H:i A', strtotime($Log['logDate'])), 1, 0, 'C');
         $pdf->Cell(110, 10, $Log['AD_action'], 1, 1, 'C');
     }
 
