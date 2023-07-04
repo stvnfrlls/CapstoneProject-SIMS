@@ -103,5 +103,5 @@ if (isset($_GET['start_date']) && isset($_GET['end_date'])) {
     }
 
     ob_end_clean();
-    $pdf->Output('I', "Classlist - " . $_GET['start_date'] . " - " . $_GET['end_date'] . '.pdf');
+    $pdf->Output('I', "Activity Log - " . $_GET['start_date'] . " - " . $_GET['end_date'] . '.pdf');
 }

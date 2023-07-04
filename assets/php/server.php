@@ -621,21 +621,16 @@ if (isset($_POST['attendanceReportButton']) && isset($_SESSION['F_number'])) {
         showSweetAlert('Report already exist', 'error');
     } else {
         $reportAttendanceIssue = $mysqli->query("INSERT INTO attendance_student_report(reportID, F_number, subjectName, SR_number, SR_grade, SR_section, RP_reportDate, RP_reportTime, RP_attendanceReport)
-                                            VALUES('{$reportID}', '{$_SESSION['F_number']}', '{$Subject}', '{$SR_number}', '{$SR_grade}', '{$SR_section}', '{$RP_reportDate}', '{$RP_reportTime}', '{$RP_attendanceReport}')");
+                                                VALUES('{$reportID}', '{$_SESSION['F_number']}', '{$Subject}', '{$SR_number}', '{$SR_grade}', '{$SR_section}', '{$RP_reportDate}', '{$RP_reportTime}', '{$RP_attendanceReport}')");
         if ($reportAttendanceIssue) {
             $emailGuardian = $mysqli->query("SELECT G_email FROM guardian WHERE G_guardianOfStudent = '{$SR_number}'");
             if (mysqli_num_rows($emailGuardian) > 0) {
                 $G_email = $emailGuardian->fetch_assoc();
-
-                $getFullname = $mysqli->query("SELECT SR_fname, SR_mname, SR_lname, SR_suffix FROM studentrecord WHERE SR_number = '{$SR_number}'");
-                if (mysqli_num_rows($getFullname) > 0) {
-                    $name = $getFullname->fetch_assoc();
-                    $FullName = $name['SR_lname'] .  ", " . $name['SR_fname'] . " " . substr($name['SR_mname'], 0, 1) . ". " . $name['SR_suffix'];
-                }
                 $mail->addAddress($G_email['G_email']);
 
-                $getStudentName = $mysqli->query("SELECT SR_fname, SR_mname, SR_lname, SR_suffix FROM studentrecord WHERE SR_number = '{$studentID}'");
-                $StudentName = $getStudentName->fetch_assoc();
+                $getFullname = $mysqli->query("SELECT SR_fname, SR_mname, SR_lname, SR_suffix FROM studentrecord WHERE SR_number = '{$SR_number}'");
+                $StudentName = $getFullname->fetch_assoc();
+
                 if (!empty($StudentName['SR_mname']) || $StudentName['SR_mname'] != "" && empty($StudentName['SR_suffix']) || $StudentName['SR_suffix'] = "") {
                     $FullName = $StudentName['SR_lname'] .  ", " . $StudentName['SR_fname'] . " " . substr($StudentName['SR_mname'], 0, 1) . ".";
                 } else if (empty($StudentName['SR_mname']) || $StudentName['SR_mname'] = "" && !empty($StudentName['SR_suffix']) || $StudentName['SR_suffix'] != "") {
@@ -643,6 +638,7 @@ if (isset($_POST['attendanceReportButton']) && isset($_SESSION['F_number'])) {
                 } else if (empty($StudentName['SR_mname']) || $StudentName['SR_mname'] = "" && empty($StudentName['SR_suffix']) || $StudentName['SR_suffix'] = "") {
                     $FullName = $StudentName['SR_lname'] .  ", " . $StudentName['SR_fname'];
                 }
+
                 $getFacultyName = $mysqli->query("SELECT F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
                 $FacultyName = $getFacultyName->fetch_assoc();
                 if (!empty($FacultyName['F_mname']) || $FacultyName['F_mname'] != "" && empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] = "") {
@@ -663,7 +659,7 @@ if (isset($_POST['attendanceReportButton']) && isset($_SESSION['F_number'])) {
                                     <br>
                                     <p>Thank you for your attention to this matter.</p>
                                     <br>
-                                    <p>Sincerely,</p>
+                                    <p>Sincerely,</p><br>
                                     ' . $facultyname . '
                                     <b>CDSP Faculty Teacher</b>';
                     $mail->send();
@@ -677,7 +673,7 @@ if (isset($_POST['attendanceReportButton']) && isset($_SESSION['F_number'])) {
                                     <br>
                                     <p>Thank you for your attention to this matter.</p>
                                     <br>
-                                    <p>Sincerely,</p>
+                                    <p>Sincerely,</p><br>
                                     ' . $facultyname . '
                                     <b>CDSP Faculty Teacher</b>';
                     $mail->send();
@@ -691,7 +687,7 @@ if (isset($_POST['attendanceReportButton']) && isset($_SESSION['F_number'])) {
                                     <br>
                                     <p>Thank you for your attention to this matter.</p>
                                     <br>
-                                    <p>Sincerely,</p>
+                                    <p>Sincerely,</p><br>
                                     ' . $facultyname . '
                                     <b>CDSP Faculty Teacher</b>';
                     $mail->send();
@@ -705,7 +701,7 @@ if (isset($_POST['attendanceReportButton']) && isset($_SESSION['F_number'])) {
                                     <br>
                                     <p>Thank you for your attention to this matter.</p>
                                     <br>
-                                    <p>Sincerely,</p>
+                                    <p>Sincerely,</p><br>
                                     ' . $facultyname . '
                                     <b>CDSP Faculty Teacher</b>';
                     $mail->send();
