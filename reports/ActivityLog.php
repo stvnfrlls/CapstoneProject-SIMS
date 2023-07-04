@@ -3,6 +3,18 @@ ob_start();
 require '../assets/fpdf/fpdf.php';
 require_once("../assets/php/server.php");
 
+$envFile = file_get_contents('../.env');
+
+$envVariables = explode("\n", $envFile);
+foreach ($envVariables as $envVariable) {
+    $envVariable = trim($envVariable);
+    if (!empty($envVariable) && strpos($envVariable, '=') !== false) {
+        list($key, $value) = explode('=', $envVariable, 2);
+        $_ENV[$key] = $value;
+        putenv("$key=$value");
+    }
+}
+
 if (isset($_GET['start_date']) && isset($_GET['end_date'])) {
 
     class PDF extends FPDF
@@ -10,7 +22,7 @@ if (isset($_GET['start_date']) && isset($_GET['end_date'])) {
 
         function Header()
         {
-            $mysqli = new mysqli("localhost", "root", "", "sis_cdsp");
+            $mysqli = new mysqli($_ENV['DB_HOST'], getenv('DB_USER'), $_ENV['DB_PASSWORD'], $_ENV['DB_NAME']);
             $getAcadYear = $mysqli->query("SELECT * FROM acad_year");
             $acadYear_Data = $getAcadYear->fetch_assoc();
             //Logo Image
