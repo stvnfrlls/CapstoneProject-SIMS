@@ -3,11 +3,23 @@ ob_start();
 include '..\assets\vendor\autoload.php';
 require_once '..\assets\php\server.php';
 
+$envFile = file_get_contents('../.env');
+
+$envVariables = explode("\n", $envFile);
+foreach ($envVariables as $envVariable) {
+    $envVariable = trim($envVariable);
+    if (!empty($envVariable) && strpos($envVariable, '=') !== false) {
+        list($key, $value) = explode('=', $envVariable, 2);
+        $_ENV[$key] = $value;
+        putenv("$key=$value");
+    }
+}
+
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 if (!empty($_GET['Quarter']) && !empty($_GET['Grade']) && !empty($_GET['Section'])) {
-    $mysqli = new mysqli("localhost", "u952901270_admin2311", "Eleven.11", "u952901270_sforms_cdsp");
+    $mysqli = new mysqli($_ENV['DB_HOST'], getenv('DB_USER'), $_ENV['DB_PASSWORD'], $_ENV['DB_NAME']);
 
     $letters = range('B', 'Z');
     $capitalLetters = array_map('strtoupper', $letters);
