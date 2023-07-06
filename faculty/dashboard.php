@@ -343,7 +343,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                                         </div>
                                                                                         <h4 class="mb-3" style="text-align: left;"><?php echo $announcement['header']; ?></h4>
                                                                                         <p class="text-truncate"><?php echo $announcement['msg']; ?></p>
-                                                                                        <a class="text-uppercase" href="viewannouncement.php?ID=<?php echo $announcement['ANC_ID']; ?>">Read More <i class="bi bi-arrow-right"></i></a>
+                                                                                        <a class="text-uppercase" href="viewAnnouncement.php?ID=<?php echo $announcement['ANC_ID']; ?>">Read More <i class="bi bi-arrow-right"></i></a>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>

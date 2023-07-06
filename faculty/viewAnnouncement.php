@@ -230,7 +230,7 @@ if (!isset($_SESSION['F_number'])) {
                                             <div class="card">
                                                 <div class="card-body">
                                                     <div class="details">
-                                                        <a href="viewannouncement.php?ID=<?php echo $OtherAnnouncement['ANC_ID'] ?>">
+                                                        <a href="viewAnnouncement.php?ID=<?php echo $OtherAnnouncement['ANC_ID'] ?>">
                                                             <h4><?php echo $OtherAnnouncement['header'] ?></h4>
                                                         </a>
                                                         <div class="d-flex mb-3">

@@ -170,7 +170,7 @@ if (!isset($_SESSION['F_number'])) {
                                                                 <div class="card">
                                                                     <div class="card-body">
                                                                         <div class="col-lg-12 col-md-9 ">
-                                                                            <a class="posts-title" href="../admin/viewAnnouncement.php?postID=<?php echo $announcement['ANC_ID'] ?>">
+                                                                            <a class="posts-title" href="../faculty/viewAnnouncement.php?postID=<?php echo $announcement['ANC_ID'] ?>">
                                                                                 <h3><?php echo $announcement['header'] ?></h3>
                                                                             </a>
                                                                             <p class="excert text-truncate">

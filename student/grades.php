@@ -296,18 +296,21 @@ if (!isset($_SESSION['SR_number'])) {
                                                                         }
 
                                                                         $getquarterTag4 = $mysqli->query("SELECT * FROM quartertable WHERE quarterTag = 4 AND gradeStatus = 'visible'");
-                                                                        if (mysqli_num_rows($getquarterTag4) > 0) {
-                                                                            if ($studentGradesData['G_gradesQ4']) {
-                                                                                echo '<td class="hatdog">' . $studentGradesData['G_gradesQ4'] . '</td>';
-                                                                                if ($studentGradesData['G_finalgrade'] < 75) {
-                                                                                    $remarks = "Failed";
-                                                                                } else {
-                                                                                    $remarks = "Passed";
-                                                                                }
-                                                                                echo '<td class="hatdog">' . round($studentGradesData['G_finalgrade']) . '</td>';
+                                                                        if ($studentGradesData['G_gradesQ4']) {
+                                                                            echo '<td class="hatdog">' . $studentGradesData['G_gradesQ4'] . '</td>';
+
+                                                                            if ($studentGradesData['G_finalgrade'] < 75) {
+                                                                                $remarks = "Failed";
+                                                                            } else {
+                                                                                $remarks = "Passed";
+                                                                            }
+
+                                                                            $finalGrade = round($studentGradesData['G_finalgrade']);
+
+                                                                            if ($finalGrade != 0) {
+                                                                                echo '<td class="hatdog">' . $finalGrade . '</td>';
                                                                                 echo '<td class="hatdog">' . $remarks . '</td>';
                                                                             } else {
-                                                                                echo '<td class="hatdog"></td>';
                                                                                 echo '<td class="hatdog"></td>';
                                                                                 echo '<td class="hatdog"></td>';
                                                                             }
