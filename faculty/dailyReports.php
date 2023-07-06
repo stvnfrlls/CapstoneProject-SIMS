@@ -455,11 +455,9 @@ if (!isset($_SESSION['F_number'])) {
         /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
         autocomplete(document.getElementById("myInput"), sr_numbers);
     </script>
-
-    < !--Template Javascript-->
-        <script src="../assets/js/main.js"></script>
-        <script src="../assets/js/admin/vendor.bundle.base.js"></script>
-        <script src="../assets/js/admin/off-canvas.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/admin/vendor.bundle.base.js"></script>
+    <script src="../assets/js/admin/off-canvas.js"></script>
 </body>
 
 </html>
