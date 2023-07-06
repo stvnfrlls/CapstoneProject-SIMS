@@ -203,12 +203,17 @@ if (empty($_SESSION['F_number'])) {
                                             <?php
                                             $value = $_GET['ID'];
                                             $index = array_search($value, $studentLink);
+                                            $count = count($studentLink);
+
                                             if ($index !== false) {
                                                 if ($index > 0) {
                                                     $previous = $studentLink[$index - 1];
                                                 }
-                                                if ($index < count($studentLink) - 1) {
+
+                                                if ($index < $count - 1) {
                                                     $next = $studentLink[$index + 1];
+                                                } elseif ($index === $count - 1) {
+                                                    $next = $studentLink[0]; // Repeat the first value
                                                 }
                                             }
                                             ?>
