@@ -510,8 +510,8 @@ if (isset($_POST['addReminders'])) {
             $sendtoGuardianData = $mysqli->query("SELECT G_email FROM guardian WHERE G_guardianOfStudent 
                                             IN 
                                             (SELECT SR_number FROM classlist WHERE SR_section = '{$forsection}' AND acadYear = '{$currentSchoolYear}')");
-            if (mysqli_num_rows($sendtoStudentData) > 0) {
-                while ($StudentData = $sendtoStudentData->fetch_assoc()) {
+            if (mysqli_num_rows($sendtoGuardianData) > 0) {
+                while ($StudentData = $sendtoGuardianData->fetch_assoc()) {
                     $mail->addAddress($StudentData['SR_email']);
                 }
                 $getFacultyName = $mysqli->query("SELECT F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
@@ -1173,8 +1173,8 @@ if (isset($_POST['postAnnouncement']) && !empty($_SESSION['AD_number'])) {
             $sendtoGuardianData = $mysqli->query("SELECT G_email FROM guardian WHERE G_guardianOfStudent 
                                         IN 
                                         (SELECT SR_number FROM classlist WHERE acadYear = '{$currentSchoolYear}')");
-            if (mysqli_num_rows($sendtoStudentData) > 0) {
-                while ($StudentData = $sendtoStudentData->fetch_assoc()) {
+            if (mysqli_num_rows($sendtoGuardianData) > 0) {
+                while ($StudentData = $sendtoGuardianData->fetch_assoc()) {
                     $mail->addAddress($StudentData['SR_email']);
                 }
                 $mail->Subject = 'School Announcement';
@@ -1219,7 +1219,8 @@ if (isset($_POST['assignAdvisor']) && !empty($_SESSION['AD_number'])) {
                                         VALUES('{$currentSchoolYear}', '{$_SESSION['AD_number']}', '{$AdminName['AD_name']}', '{$AD_action}', '{$currentDate}')");
         }
     } else {
-        showSweetAlert('Teacher is already assigned', 'error');
+        $assignClassListAdvisor = $mysqli->query("UPDATE classlist SET F_number = '{$advisor}' WHERE SR_section = '{$section}' AND acadYear = '{$currentSchoolYear}'");
+        showSweetAlert('Teacher is already assigned. but if there is a late enrollee or student not tag to that teacher, it is tagged now.', 'info');
     }
 }
 if (isset($_POST['changeto']) && !empty($_SESSION['AD_number'])) {
