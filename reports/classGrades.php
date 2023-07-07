@@ -1,7 +1,7 @@
 <?php
 ob_start();
-include '..\assets\vendor\autoload.php';
-require_once '..\assets\php\server.php';
+include '../assets/vendor/autoload.php';
+require_once '../assets/php/server.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
