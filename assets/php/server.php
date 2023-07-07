@@ -512,7 +512,7 @@ if (isset($_POST['addReminders'])) {
                                             (SELECT SR_number FROM classlist WHERE SR_section = '{$forsection}' AND acadYear = '{$currentSchoolYear}')");
             if (mysqli_num_rows($sendtoGuardianData) > 0) {
                 while ($StudentData = $sendtoGuardianData->fetch_assoc()) {
-                    $mail->addAddress($StudentData['SR_email']);
+                    $mail->addAddress($StudentData['G_email']);
                 }
                 $getFacultyName = $mysqli->query("SELECT F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
                 $FacultyName = $getFacultyName->fetch_assoc();
@@ -1175,7 +1175,7 @@ if (isset($_POST['postAnnouncement']) && !empty($_SESSION['AD_number'])) {
                                         (SELECT SR_number FROM classlist WHERE acadYear = '{$currentSchoolYear}')");
             if (mysqli_num_rows($sendtoGuardianData) > 0) {
                 while ($StudentData = $sendtoGuardianData->fetch_assoc()) {
-                    $mail->addAddress($StudentData['SR_email']);
+                    $mail->addAddress($StudentData['G_email']);
                 }
                 $mail->Subject = 'School Announcement';
                 $mail->Body = '<p>Title: ' . $subject . ' <br>
