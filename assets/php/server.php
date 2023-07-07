@@ -5,14 +5,14 @@
 </head>
 
 <?php
-// Set session timeout to 30 minutes
+// // Set session timeout to 30 minutes
 // ini_set('session.gc_maxlifetime', 1400);
 // session_set_cookie_params(1400);
 
 // Start or resume the session
 session_start();
 
-// Check if session has expired
+// // Check if session has expired
 // if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 1400)) {
 //     session_unset();
 //     session_destroy();
@@ -500,7 +500,7 @@ if (isset($_POST['addReminders'])) {
     $subject = $mysqli->real_escape_string($_POST['subject']);
     $forsection = $mysqli->real_escape_string($_POST['forsection']);
     $MSG = nl2br($_POST['MSG']);
-    $date = $_POST['date'];
+    $date = strtotime($_POST['date']);
     $dateposted = date("Y/m/d");
 
     if (!empty($subject) && !empty($forsection) && !empty($MSG) && !empty($date)) {
@@ -516,13 +516,15 @@ if (isset($_POST['addReminders'])) {
                 }
                 $getFacultyName = $mysqli->query("SELECT F_lname, F_fname, F_mname, F_suffix FROM faculty WHERE F_number = '{$_SESSION['F_number']}'");
                 $FacultyName = $getFacultyName->fetch_assoc();
-                if (!empty($FacultyName['F_mname']) || $FacultyName['F_mname'] != "" && empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] = "") {
-                    $facultyteacher = $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'] . " " . substr($FacultyName['SR_mname'], 0, 1) . ".";
-                } else if (empty($FacultyName['F_mname']) || $FacultyName['F_mname'] = "" && !empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] != "") {
-                    $facultyteacher = $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'] . " " . $FacultyName['F_suffix'];
-                } else if (empty($FacultyName['F_mname']) || $FacultyName['F_mname'] = "" && empty($FacultyName['F_suffix']) || $FacultyName['F_suffix'] = "") {
-                    $facultyteacher = $FacultyName['F_lname'] .  ", " . $FacultyName['F_fname'];
+
+                if (!empty($FacultyName['F_mname']) && empty($FacultyName['F_suffix'])) {
+                    $facultyteacher = $FacultyName['F_lname'] . ", " . $FacultyName['F_fname'] . " " . substr($FacultyName['F_mname'], 0, 1) . ".";
+                } else if (empty($FacultyName['F_mname']) && !empty($FacultyName['F_suffix'])) {
+                    $facultyteacher = $FacultyName['F_lname'] . ", " . $FacultyName['F_fname'] . " " . $FacultyName['F_suffix'];
+                } else if (empty($FacultyName['F_mname']) && empty($FacultyName['F_suffix'])) {
+                    $facultyteacher = $FacultyName['F_lname'] . ", " . $FacultyName['F_fname'];
                 }
+
                 $mail->Subject = 'Reminder';
                 $mail->Body =  '<p>Subject: ' . $subject . '
                                 <br>
