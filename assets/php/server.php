@@ -1829,7 +1829,8 @@ if (isset($_POST['Close']) && !empty($_SESSION['AD_number'])) {
 
     $releaseGrades = $mysqli->query("UPDATE quartertable SET gradeStatus = 'visible' WHERE quarterStatus = 'current'");
 
-    $getQuarter = $mysqli->query("SELECT quarterTag FROM quartertable WHERE quarterStatus == 'current'");
+    $getQuarter = $mysqli->query("SELECT quarterTag FROM quartertable WHERE quarterStatus = 'current'");
+
     $currentQuarter = $getQuarter->fetch_assoc();
 
     if ($currentQuarter['quarterTag'] == 1) {

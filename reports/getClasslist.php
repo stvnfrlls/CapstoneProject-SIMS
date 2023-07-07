@@ -70,21 +70,28 @@ if (isset($_GET['GradeLevel'])) {
     $pdf->Cell(50, 10, 'Student Number', 1, 0, 'C');
     $pdf->Cell(90, 10, 'Student Name', 1, 0, 'C');
     $pdf->Cell(50, 10, 'Grade and Section', 1, 1, 'C');
+    
+    $condition = '';
     if (isset($_GET['SY'])) {
-        $ClasslistData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE acadYear = '{$_GET['SY']}') ORDER BY SR_lname");
-    } elseif (isset($_GET['SY']) && isset($_GET['GradeLevel']) && !isset($_GET['section'])) {
-        $ClasslistData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE SR_grade = '{$_GET['GradeLevel']}' AND acadYear = '{$_GET['SY']}') ORDER BY SR_lname");
-    } elseif (isset($_GET['SY']) && isset($_GET['GradeLevel']) && isset($_GET['section'])) {
-        $ClasslistData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['section']}' AND acadYear = '{$_GET['SY']}') ORDER BY SR_lname");
-    } elseif (!isset($_GET['SY'])) {
-        $ClasslistData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE acadYear = '{$currentSchoolYear}') ORDER BY SR_lname");
-    } elseif (!isset($_GET['SY']) && isset($_GET['GradeLevel']) && !isset($_GET['section'])) {
-        $ClasslistData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE SR_grade = '{$_GET['GradeLevel']}' AND acadYear = '{$currentSchoolYear}') ORDER BY SR_lname");
-    } elseif (!isset($_GET['SY']) && isset($_GET['GradeLevel']) && isset($_GET['section'])) {
-        $ClasslistData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['section']}' AND acadYear = '{$currentSchoolYear}') ORDER BY SR_lname");
-    } else {
-        $ClasslistData = $mysqli->query("SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE SR_grade = '{$_GET['GradeLevel']}' AND SR_section = '{$_GET['section']}' AND acadYear = '{$currentSchoolYear}') ORDER BY SR_lname");
+        $condition .= "acadYear = '{$_GET['SY']}'";
     }
+
+    if (isset($_GET['GradeLevel'])) {
+        $gradeLevel = $_GET['GradeLevel'];
+        $condition .= ($condition ? ' AND ' : '') . "SR_grade = '$gradeLevel'";
+    }
+
+    if (isset($_GET['section'])) {
+        $section = $_GET['section'];
+        $condition .= ($condition ? ' AND ' : '') . "SR_section = '$section'";
+    }
+
+    if (!$condition) {
+        $condition = "acadYear = '{$currentSchoolYear}'";
+    }
+
+    $query = "SELECT * FROM studentrecord WHERE SR_number IN (SELECT SR_number FROM classlist WHERE $condition) ORDER BY SR_lname";
+    $ClasslistData = $mysqli->query($query);
 
     while ($classlist = $ClasslistData->fetch_assoc()) {
 
