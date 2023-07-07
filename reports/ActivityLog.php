@@ -76,19 +76,27 @@ if (isset($_GET['start_date']) && isset($_GET['end_date'])) {
     // Query the database
     $LoggedData = $mysqli->query("SELECT * FROM admin_logs WHERE logDate BETWEEN '{$_GET['start_date']}' AND '{$_GET['end_date']}'");
 
-    // Output the table data
-    while ($Log = $LoggedData->fetch_assoc()) {
-        $pdf->SetFont('Arial', '', 10);
+    // Check if there are any results
+    if ($LoggedData->num_rows > 0) {
+        // Output the table data
+        while ($Log = $LoggedData->fetch_assoc()) {
+            $pdf->SetFont('Arial', '', 10);
 
-        // Output the name column
-        $pdf->Cell($column_widths[0], 10, $Log['AD_name'], 1, 0, 'C');
+            // Output the name column
+            $pdf->Cell($column_widths[0], 10, $Log['AD_name'], 1, 0, 'C');
 
-        // Output the date column
-        $pdf->Cell($column_widths[1], 10, date('m-d-Y h:i A', strtotime($Log['logDate'])), 1, 0, 'C');
+            // Output the date column
+            $pdf->Cell($column_widths[1], 10, date('m-d-Y h:i A', strtotime($Log['logDate'])), 1, 0, 'C');
 
-        // Output the action column
-        $pdf->MultiCell($column_widths[2], 10, $Log['AD_action'], 1, 'C');
+            // Output the action column
+            $pdf->MultiCell($column_widths[2], 10, $Log['AD_action'], 1, 'C');
+        }
+    } else {
+        // Output "No data" message
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->Cell(0, 10, 'No data available', 0, 1, 'C');
     }
+
 
     ob_end_clean();
     $pdf->Output('I', "Activity Log - " . $_GET['start_date'] . " - " . $_GET['end_date'] . '.pdf');
